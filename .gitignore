@@ -6,7 +6,7 @@ access.log
 error.log
 .htaccess
 laravel_project/storage/*.key
-laravel_project/storage/tmp
+laravel_project/storage/*
 laravel_project/vendor
 laravel_project/public/upload
 laravel_project/public/storage
