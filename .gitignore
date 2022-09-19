@@ -1,0 +1,16 @@
+.access.log
+.error.log
+.htaccess
+laravel_project/storage/*.key
+laravel_project/storage/tmp
+laravel_project/vendor
+laravel_project/public/upload
+laravel_project/public/storage
+laravel_project/.env
+laravel_project/.env.backup
+laravel_project/.phpunit.result.cache
+laravel_project/docker-compose.override.yml
+laravel_project/Homestead.json
+laravel_project/Homestead.yaml
+laravel_project/npm-debug.log
+laravel_project/yarn-error.log
