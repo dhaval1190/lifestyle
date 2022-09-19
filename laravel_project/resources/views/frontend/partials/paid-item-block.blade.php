@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="col-7 col-md-5 pl-0 text-right">
+            {{-- <div class="col-7 col-md-5 pl-0 text-right">
                 @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                     @if($item->hasOpened())
                         <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -94,7 +94,7 @@
                         <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                     @endif
                 @endif
-            </div>
+            </div> --}}
         </div>
 
 

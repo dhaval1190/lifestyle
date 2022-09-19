@@ -713,7 +713,7 @@
 
                     <div class="pt-3">
 
-                        @if($ads_before_sidebar_content->count() > 0)
+                        {{-- @if($ads_before_sidebar_content->count() > 0)
                             @foreach($ads_before_sidebar_content as $ads_before_sidebar_content_key => $ad_before_sidebar_content)
                                 <div class="row mb-5">
                                     @if($ad_before_sidebar_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_LEFT)
@@ -986,7 +986,7 @@
 
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
 
                         @if(\Illuminate\Support\Facades\Auth::check())
                             @if(\Illuminate\Support\Facades\Auth::user()->id != $item->user_id)
@@ -1062,7 +1062,7 @@
                             @endif
                         @endif
 
-                        <div class="row mb-2 align-items-center">
+                        {{-- <div class="row mb-2 align-items-center">
                             <div class="col-12">
                                 <h3 class="h5 text-black">{{ __('rating_summary.managed-by') }}</h3>
                             </div>
@@ -1119,7 +1119,7 @@
                                     @endif
                                 </div>
                             @endforeach
-                        @endif
+                        @endif --}}
 
                     </div>
 
@@ -1214,7 +1214,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-7 col-md-5 pl-0 text-right">
+                                {{-- <div class="col-7 col-md-5 pl-0 text-right">
                                     @if($similar_item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                                         @if($similar_item->hasOpened())
                                             <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -1222,7 +1222,7 @@
                                             <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                                         @endif
                                     @endif
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>
@@ -1320,7 +1320,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-7 col-md-5 pl-0 text-right">
+                                    {{-- <div class="col-7 col-md-5 pl-0 text-right">
                                         @if($nearby_item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                                             @if($nearby_item->hasOpened())
                                                 <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -1328,7 +1328,7 @@
                                                 <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                                             @endif
                                         @endif
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>

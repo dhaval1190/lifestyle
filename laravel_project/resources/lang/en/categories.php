@@ -15,7 +15,7 @@ return array (
   'parent-cat' => 'Parent Category',
   'search-city-format-alert' => 'Must in city, state format',
   'search-city-placeholder' => 'Near city',
-  'search-query-placeholder' => 'Search coaches',
+  'search-query-placeholder' => 'Ex: Wellness coach, Health coach, country, state, city, postal code etc...',
   'self-parent-cat-error' => 'Cannot set self as parent category.',
   'update-cat' => 'Update Category',
 );

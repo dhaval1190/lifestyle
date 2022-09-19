@@ -105,7 +105,7 @@ return array (
     'contact' => 'Contact',
     'dashboard' => 'Dashboard',
     'home' => 'Home',
-    'list-business' => 'Become a Coaches',
+    'list-business' => 'Become a Coach',
     'listings' => 'Listings',
     'login' => 'Log In',
     'register' => 'Sign Up',

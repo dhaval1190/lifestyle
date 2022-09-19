@@ -88,7 +88,7 @@
         </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_comment" aria-expanded="true" aria-controls="collapse_comment">
             <i class="fas fa-comment-alt"></i>
             <span>{{ __('backend.sidebar.comments') }}</span>
@@ -112,7 +112,7 @@
         </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_product" aria-expanded="true" aria-controls="collapse_product">
             <i class="fas fa-box-open"></i>
             <span>{{ __('product_attributes.sidebar.admin.product') }}</span>

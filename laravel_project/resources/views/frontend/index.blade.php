@@ -7,7 +7,7 @@
 @section('content')
 
     @if($site_homepage_header_background_type == \App\Customization::SITE_HOMEPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
-        <div class="site-blocks-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/header-1.webp') }});">
+        <div class="site-blocks-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/health-wellness-coach-with-client.jpg') }});">
 
     @elseif($site_homepage_header_background_type == \App\Customization::SITE_HOMEPAGE_HEADER_BACKGROUND_TYPE_COLOR)
         <div class="site-blocks-cover overlay" style="background-color: {{ $site_homepage_header_background_color }};">
@@ -268,7 +268,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-7 col-md-5 pl-0 text-right">
+                                        {{-- <div class="col-7 col-md-5 pl-0 text-right">
                                             @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                                                 @if($item->hasOpened())
                                                     <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -276,7 +276,7 @@
                                                     <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                                                 @endif
                                             @endif
-                                        </div>
+                                        </div> --}}
 
                                     </div>
 
@@ -393,7 +393,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-7 col-md-5 pl-0 text-right">
+                                    {{-- <div class="col-7 col-md-5 pl-0 text-right">
                                         @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                                             @if($item->hasOpened())
                                                 <span class="item-box-index-nearby-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -401,7 +401,7 @@
                                                 <span class="item-box-index-nearby-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                                             @endif
                                         @endif
-                                    </div>
+                                    </div> --}}
 
                                 </div>
 
@@ -511,7 +511,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-7 col-md-5 pl-0 text-right">
+                                    {{-- <div class="col-7 col-md-5 pl-0 text-right">
                                         @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
                                             @if($item->hasOpened())
                                                 <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
@@ -519,7 +519,7 @@
                                                 <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
                                             @endif
                                         @endif
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>
