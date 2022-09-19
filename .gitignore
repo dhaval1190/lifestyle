@@ -1,5 +1,5 @@
-.access.log
-.error.log
+access.log
+error.log
 .htaccess
 laravel_project/storage/*.key
 laravel_project/storage/tmp
