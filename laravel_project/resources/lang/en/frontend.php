@@ -105,7 +105,7 @@ return array (
     'contact' => 'Contact',
     'dashboard' => 'Dashboard',
     'home' => 'Home',
-    'list-business' => 'Get Listed',
+    'list-business' => 'Become a Coaches',
     'listings' => 'Listings',
     'login' => 'Log In',
     'register' => 'Sign Up',
@@ -123,7 +123,7 @@ return array (
     'popular-listings' => 'Popular listings around you',
     'recent-listings' => 'Recent Listings',
     'testimonials' => 'Testimonials',
-    'title' => 'Find the Best Businesses in Town',
+    'title' => 'Find the Best Coaches in Town',
   ),
   'item' =>
   array (
