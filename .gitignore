@@ -1,3 +1,7 @@
+/backend
+/frontend
+/installer
+/vendor
 access.log
 error.log
 .htaccess
