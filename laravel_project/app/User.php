@@ -48,6 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
         'password',
         'role_id',
+        'category_id',
         'user_image',
         'user_about',
         'user_suspended',
@@ -87,6 +88,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role_id == Role::ADMIN_ROLE_ID;
     }
 
+    public function isCoach()
+    {
+        return $this->role_id == Role::COACH_ROLE_ID;
+    }
+
     public function isUser()
     {
         return $this->role_id == Role::USER_ROLE_ID;
@@ -116,6 +122,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function products()
     {
         return $this->hasMany('App\Product');
+    }
+
+    /**
+     * Get the items for the user.
+     */
+    public function category()
+    {
+        return $this->belongsTo('App\Category','category_id');
     }
 
     /**

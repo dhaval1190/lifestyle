@@ -4596,10 +4596,14 @@ class PagesController extends Controller
          * End initial blade view file path
          */
 
+        $printable_categories = new Category();
+        $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
+
+
         return response()->view($theme_view_path . 'pricing',
             compact('plans','login_user', 'site_name', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                 'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
-                'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color'));
+                'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'printable_categories'));
     }
 
     public function termsOfService(Request $request)

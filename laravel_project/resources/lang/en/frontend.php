@@ -27,9 +27,9 @@ return array (
   'categories' =>
   array (
     'description' => 'Choose category you want',
-    'sub-title-1' => 'Latest listings',
-    'sub-title-2' => 'All listings by states',
-    'title' => 'All Listings',
+    'sub-title-1' => 'Latest coaches',
+    'sub-title-2' => 'All coaches by states',
+    'title' => 'All Coaches',
   ),
   'category' =>
   array (
@@ -48,7 +48,7 @@ return array (
   'city' =>
   array (
     'description' => 'All categories',
-    'sub-title-2' => 'All listings in :state_name by cities',
+    'sub-title-2' => 'All coaches in :state_name by cities',
   ),
   'comment' =>
   array (
@@ -106,7 +106,7 @@ return array (
     'dashboard' => 'Dashboard',
     'home' => 'Home',
     'list-business' => 'Become a Coach',
-    'listings' => 'Listings',
+    'listings' => 'Coaches',
     'login' => 'Log In',
     'register' => 'Sign Up',
   ),
@@ -114,14 +114,14 @@ return array (
   array (
     'all-categories' => 'All Categories',
     'all-posts' => 'View All Posts',
-    'description' => 'Browse our top categories and locations.',
-    'featured-ads' => 'Featured Listings',
-    'nearby-listings' => 'Nearby Listings',
+    'description' => 'Browse our top coaches and locations.',
+    'featured-ads' => 'Featured Coaches',
+    'nearby-listings' => 'Nearby Coaches',
     'no-categories' => 'No categories',
     'our-blog' => 'Our Blog',
     'our-blog-decr' => 'See Our Daily News & Updates',
-    'popular-listings' => 'Popular listings around you',
-    'recent-listings' => 'Recent Listings',
+    'popular-listings' => 'Popular coaches around you',
+    'recent-listings' => 'Recent Coaches',
     'testimonials' => 'Testimonials',
     'title' => 'Find the Best Coaches in Town',
   ),
@@ -132,7 +132,7 @@ return array (
     'call' => 'Call',
     'comments' => 'Comments',
     'description' => 'Description',
-    'edit-listing' => 'Edit Listing',
+    'edit-listing' => 'Edit Coach',
     'email' => 'Your Email',
     'email-to' => 'To Email Address',
     'featured' => 'Featured',
@@ -143,15 +143,15 @@ return array (
     'nearby-listings' => 'Nearby',
     'posted' => 'Posted',
     'save' => 'Save',
-    'save-item-error-exist' => 'You already saved the listing.',
-    'save-item-error-login' => 'You must log in to save the listing.',
-    'save-item-success' => 'Business listing saved.',
+    'save-item-error-exist' => 'You already saved the coach.',
+    'save-item-error-login' => 'You must log in to save the coach.',
+    'save-item-success' => 'Business coach saved.',
     'saved' => 'Saved',
     'send-email' => 'Send Email',
-    'send-email-body' => ':from_name shared a business listing with you on :url',
+    'send-email-body' => ':from_name shared a business coach with you on :url',
     'send-email-error-login' => 'You must log in to share via email.',
     'send-email-note' => 'Note:',
-    'send-email-subject' => ':name shared a business listing with you',
+    'send-email-subject' => ':name shared a business coach with you',
     'send-email-success' => 'Email send successfully',
     'send-message' => 'Send Message',
     'share' => 'Share',
@@ -160,10 +160,10 @@ return array (
     'share-listing-social-media' => 'Share via social media',
     'similar-listings' => 'Similar',
     'unsave' => 'Remove',
-    'unsave-item-error-exist' => 'You had not saved the listing.',
-    'unsave-item-error-login' => 'You must log in to remove a saved listing.',
-    'unsave-item-success' => 'Listing removed from your saved collection.',
-    'view-listing' => 'View Listing',
+    'unsave-item-error-exist' => 'You had not saved the coach.',
+    'unsave-item-error-login' => 'You must log in to remove a saved coach.',
+    'unsave-item-success' => 'Coach removed from your saved collection.',
+    'view-listing' => 'View Coach',
   ),
   'privacy-policy' =>
   array (
@@ -176,20 +176,20 @@ return array (
     'search' => 'Search',
     'state-or-city' => 'State or City',
     'sub-title-1' => 'Search results',
-    'title' => 'Search all business listings',
+    'title' => 'Search all business coaches',
     'title-search' => 'Search',
     'what-are-you-looking-for' => 'Look for...',
   ),
   'shared' =>
   array (
     'home' => 'Home',
-    'no-listing' => 'No business listings found',
+    'no-listing' => 'No business coaches found',
   ),
   'state' =>
   array (
     'description' => 'All categories',
-    'sub-title-2' => 'All listings in :state_name by cities',
-    'title' => ':state_name listings',
+    'sub-title-2' => 'All coaches in :state_name by cities',
+    'title' => ':state_name coaches',
   ),
   'terms-of-service' =>
   array (

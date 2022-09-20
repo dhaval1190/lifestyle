@@ -18,18 +18,18 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.dashboard') }}</h1>
-        <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
+        {{-- <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
                 </span>
             <span class="text">{{ __('backend.homepage.post-a-listing') }}</span>
-        </a>
+        </a> --}}
     </div>
 
     <!-- Content Row -->
     <div class="row">
 
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4 d-none">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4  d-none">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4  d-none">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">

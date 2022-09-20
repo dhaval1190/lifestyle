@@ -28,7 +28,7 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_listing" aria-expanded="true" aria-controls="collapse_listing">
             <i class="fas fa-sign"></i>
             <span>{{ __('backend.sidebar.listing') }}</span>
@@ -93,7 +93,7 @@
         </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item d-none">
         <a class="nav-link" href="{{ route('user.subscriptions.index') }}">
             <i class="far fa-credit-card"></i>
             <span>{{ __('backend.sidebar.subscription') }}</span></a>

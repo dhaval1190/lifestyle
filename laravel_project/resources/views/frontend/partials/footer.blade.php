@@ -11,20 +11,20 @@
                     <div class="col-md-3">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.navigations') }}</strong></h2>
                         <ul class="list-unstyled">
-                            <li><a href="{{ route('page.pricing') }}">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li>
+                            <li><a href="#">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li>
 
                             @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
                             <li><a href="{{ route('page.about') }}">{{ __('frontend.footer.about-us') }}</a></li>
                             @endif
                             <li><a href="{{ route('page.contact') }}">{{ __('frontend.footer.contact-us') }}</a></li>
                             @if($site_global_settings->setting_page_terms_of_service_enable == \App\Setting::TERM_PAGE_ENABLED)
-                                <li><a href="{{ route('page.terms-of-service') }}">{{ __('frontend.footer.terms-of-service') }}</a></li>
+                                <li><a href="#">{{ __('frontend.footer.terms-of-service') }}</a></li>
                             @endif
                             @if($site_global_settings->setting_page_privacy_policy_enable == \App\Setting::PRIVACY_PAGE_ENABLED)
-                                <li><a href="{{ route('page.privacy-policy') }}">{{ __('frontend.footer.privacy-policy') }}</a></li>
+                                <li><a href="#">{{ __('frontend.footer.privacy-policy') }}</a></li>
                             @endif
                             @if($site_global_settings->setting_site_sitemap_show_in_footer == \App\Setting::SITE_SITEMAP_SHOW_IN_FOOTER)
-                                <li><a href="{{ route('page.sitemap.index') }}">{{ __('sitemap.sitemap') }}</a></li>
+                                <li><a href="#">{{ __('sitemap.sitemap') }}</a></li>
                             @endif
                         </ul>
                     </div>

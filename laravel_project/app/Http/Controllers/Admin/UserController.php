@@ -51,7 +51,7 @@ class UserController extends Controller
         $count_per_page = empty($request->count_per_page) ? User::COUNT_PER_PAGE_10 : $request->count_per_page;
 
         $all_users_query = User::query();
-        $all_users_query->where('role_id', Role::USER_ROLE_ID);
+        $all_users_query->whereIn('role_id', [Role::USER_ROLE_ID, Role::COACH_ROLE_ID]);
 
         // email verification query
         if($user_email_verified == User::USER_EMAIL_VERIFIED)

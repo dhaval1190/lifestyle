@@ -3,5 +3,5 @@
  * all latest listings translation
  */
 return array (
-    'view-all-latest' => "View All Listings",
+    'view-all-latest' => "View All Coaches",
 );

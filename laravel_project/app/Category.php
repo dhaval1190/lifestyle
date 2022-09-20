@@ -177,7 +177,7 @@ class Category extends Model
         {
             $dash_str .= " ";
         }
-        $children_categories_array = array(['category_id' => $category->id, 'category_name' => $dash_str . $category->category_name]);
+        $children_categories_array = array(['category_id' => $category->id, 'category_name' => $dash_str . $category->category_name, 'is_parent' => $category->category_parent_id]);
 
         $children_categories = $category->children()->orderBy('category_name')->get();
 
@@ -245,7 +245,7 @@ class Category extends Model
 
     private function getChildrenCategoriesNoDash($category)
     {
-        $children_categories_array = array(['category_id' => $category->id, 'category_name' => $category->category_name]);
+        $children_categories_array = array(['category_id' => $category->id, 'category_name' => $category->category_name, 'is_parent' => $category->category_parent_id]);
 
         $children_categories = $category->children()->orderBy('category_name')->get();
 

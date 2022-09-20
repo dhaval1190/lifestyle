@@ -45,26 +45,26 @@
         <div class="container">
 
             @if(!empty($login_user))
-            <div class="row justify-content-center">
-                <div class="col-10 col-md-12">
-                    <div class="alert alert-info" role="alert">
-                        @if($login_user->isAdmin())
-                           {{ __('theme_directory_hub.pricing.info-admin') }}
-                        @else
-                            @if($login_user->hasPaidSubscription())
-                                {{ __('theme_directory_hub.pricing.info-user-paid', ['site_name' => $site_name]) }}
+                <div class="row justify-content-center">
+                    <div class="col-10 col-md-12">
+                        <div class="alert alert-info" role="alert">
+                            @if($login_user->isAdmin())
+                               {{ __('theme_directory_hub.pricing.info-admin') }}
                             @else
-                                {{ __('theme_directory_hub.pricing.info-user-free', ['site_name' => $site_name]) }}
+                                @if($login_user->hasPaidSubscription())
+                                    {{ __('theme_directory_hub.pricing.info-user-paid', ['site_name' => $site_name]) }}
+                                @else
+                                    {{ __('theme_directory_hub.pricing.info-user-free', ['site_name' => $site_name]) }}
+                                @endif
                             @endif
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </div>
             @endif
 
             <div class="row justify-content-center">
                 @foreach($plans as $plans_key => $plan)
-                    <div class="col-10 col-md-6 col-lg-4">
+                    <div class="col-10 col-md-6 col-lg-3">
                         <div class="card mb-4 box-shadow text-center">
                             <div class="card-header">
                                 <h4 class="my-0 font-weight-normal">
@@ -93,7 +93,7 @@
                             </div>
                             <div class="card-body">
                                 <h1 class="card-title pricing-card-title">{{ $site_global_settings->setting_product_currency_symbol . $plan->plan_price }}
-                                    <small class="text-muted">/
+                                    {{-- <small class="text-muted">/
                                         @if($plan->plan_period == \App\Plan::PLAN_LIFETIME)
                                             {{ __('backend.plan.lifetime') }}
                                         @elseif($plan->plan_period == \App\Plan::PLAN_MONTHLY)
@@ -103,7 +103,7 @@
                                         @else
                                             {{ __('backend.plan.yearly') }}
                                         @endif
-                                    </small>
+                                    </small> --}}
                                 </h1>
                                 <ul class="list-unstyled mt-3 mb-4">
                                     @if(is_null($plan->plan_max_free_listing))
@@ -204,6 +204,112 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            @include('frontend.partials.alert')
+
+            <div class="row justify-content-center">
+                <div class="col-md-7 mb-5">
+                    <form method="POST" action="{{ route('register') }}" class="p-5 bg-white">
+                        @csrf
+                        <input type="hidden" name="is_coach" value="2">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="category_id" class="text-black">Category</label>
+                                <select class="custom-select @error('category_id') is-invalid @enderror" name="category_id" required>
+                                    <option value="">Select Category</option>
+                                @foreach($printable_categories as $key => $printable_category)
+                                    @php
+                                        if(empty($printable_category["is_parent"])) continue;
+                                    @endphp
+                                    <option value="{{ $printable_category["category_id"] }}" {{ old('category_id') == $printable_category["category_id"] ? 'selected' : '' }}>{{ $printable_category["category_name"] }}</option>
+                                @endforeach
+                                </select>
+                                @error('category_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="name" class="text-black">{{ __('auth.name') }}</label>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+
+                            <div class="col-md-12">
+                                <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="subject">{{ __('auth.password') }}</label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}</label>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <!-- Start Google reCAPTCHA version 2 -->
+                        @if($site_global_settings->setting_site_recaptcha_sign_up_enable == \App\Setting::SITE_RECAPTCHA_SIGN_UP_ENABLE)
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    {!! htmlFormSnippet() !!}
+                                    @error('g-recaptcha-response')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        @endif
+                        <!-- End Google reCAPTCHA version 2 -->
+
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <p>{{ __('auth.have-an-account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded">Signup as Coach
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
             </div>
 
         </div>

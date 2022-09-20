@@ -103,6 +103,8 @@
                                 <th>{{ __('backend.user.name') }}</th>
                                 <th>{{ __('backend.user.email') }}</th>
                                 <th>{{ __('backend.user.email-verified') }}</th>
+                                <th>Role</th>
+                                <th>Category</th>
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
@@ -114,6 +116,8 @@
                                 <th>{{ __('backend.user.name') }}</th>
                                 <th>{{ __('backend.user.email') }}</th>
                                 <th>{{ __('backend.user.email-verified') }}</th>
+                                <th>Role</th>
+                                <th>Category</th>
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
@@ -141,6 +145,8 @@
                                             <span class="rounded bg-success text-white pl-2 pr-2 pt-1 pb-1">{{ __('backend.user.verified') }}</span>
                                         @endif
                                     </td>
+                                    <td>{{ $user->role ? $user->role->name : '-' }}</td>
+                                    <td>{{ $user->category ? $user->category->category_name : '-' }}</td>
                                     <td>
                                         @if($user->user_suspended == \App\User::USER_SUSPENDED)
                                             <span class="rounded bg-warning text-white pl-2 pr-2 pt-1 pb-1">{{ __('backend.user.suspended') }}</span>

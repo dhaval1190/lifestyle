@@ -74,6 +74,8 @@ class RegisterController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'g-recaptcha-response' => ['recaptcha'],
+                'is_coach' => ['nullable'],
+                'category_id' => ['required_with:is_coach|exists:categories,id']
             ]);
         }
         else
@@ -82,6 +84,8 @@ class RegisterController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'is_coach' => ['nullable'],
+                'category_id' => ['required_with:is_coach|exists:categories,id']
             ]);
         }
     }
@@ -98,7 +102,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role_id'   => Role::USER_ROLE_ID,
+            'role_id'   => (isset($data['is_coach']) && $data['is_coach'] == 2) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
+            'category_id'   => isset($data['category_id']) ? $data['category_id'] : null,
             'user_suspended' => User::USER_NOT_SUSPENDED,
         ]);
 

@@ -113,7 +113,7 @@ return array (
         ],
 
         'head-title' => "Pricing",
-        'head-description' => "Choose a plan that's right for your business",
+        'head-description' => "Choose a plan that's right for you",
         'manage-pricing' => "Manage Pricing",
         'get-started' => "Get Started",
         'upgrade' => "Upgrade",
