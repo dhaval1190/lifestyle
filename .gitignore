@@ -21,7 +21,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .phpstorm.meta.php
-/laravel_project/bootstrap/cache
+/laravel_project/bootstrap/cache/*
 /laravel_project/node_modules
 /laravel_project/storage/*.key
 /laravel_project/storage/*
