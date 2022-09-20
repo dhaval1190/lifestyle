@@ -6,6 +6,7 @@ access.log
 error.log
 .htaccess
 /node_modules
+/storage
 /storage/*.key
 /storage/*
 /vendor
@@ -24,6 +25,7 @@ yarn-error.log
 /laravel_project/storage/*.key
 /laravel_project/storage/*
 /laravel_project/vendor
+/laravel_project/public
 /laravel_project/public/upload
 /laravel_project/public/storage
 /laravel_project/.env
