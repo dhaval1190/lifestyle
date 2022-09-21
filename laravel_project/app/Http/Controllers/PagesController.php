@@ -19,6 +19,7 @@ use App\Product;
 use App\ProductImageGallery;
 use App\Setting;
 use App\State;
+use App\City;
 use App\Subscription;
 use App\Testimonial;
 use App\Theme;
@@ -4600,10 +4601,17 @@ class PagesController extends Controller
         $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
 
 
+        $all_countries = Country::orderBy('country_name')->get();
+
+        // $all_states_ids = Country::find(395)->states()->pluck('states.id')->all();
+        // $all_states = Country::find(395)->states()->orderBy('states.state_name')->pluck('states.state_name', 'states.id')->all();
+        // $all_cities = City::whereIn('state_id', $all_states_ids)->orderBy('city_name')->pluck('city_name', 'id')->all();
+
         return response()->view($theme_view_path . 'pricing',
             compact('plans','login_user', 'site_name', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                 'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
-                'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'printable_categories'));
+                'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
+                'printable_categories','all_countries'));
     }
 
     public function termsOfService(Request $request)

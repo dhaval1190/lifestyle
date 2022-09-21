@@ -99,12 +99,23 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $new_user =  User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id'   => (isset($data['is_coach']) && $data['is_coach'] == 2) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
-            'category_id'   => isset($data['category_id']) ? $data['category_id'] : null,
-            'user_suspended' => User::USER_NOT_SUSPENDED,
+            'name'              => $data['name'],
+            'email'             => $data['email'],
+            'password'          => Hash::make($data['password']),
+            'role_id'           => (isset($data['is_coach']) && $data['is_coach'] == 2) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
+            'category_id'       => isset($data['category_id']) ? $data['category_id'] : null,
+            'user_suspended'    => User::USER_NOT_SUSPENDED,
+            'gender'            => isset($data['gender']) ? $data['gender'] : null,
+            'phone'             => isset($data['phone']) ? $data['phone'] : null,
+            'category_id'       => isset($data['category_id']) ? $data['category_id'] : null,
+            'hourly_rate'       => isset($data['hourly_rate']) ? $data['hourly_rate'] : null,
+            'experience_year'   => isset($data['experience_year']) ? $data['experience_year'] : null,
+            'availability'      => isset($data['availability']) ? $data['availability'] : null,
+            'address'           => isset($data['address']) ? $data['address'] : null,
+            'city_id'           => isset($data['city_id']) ? $data['city_id'] : null,
+            'post_code'         => isset($data['post_code']) ? $data['post_code'] : null,
+            'state_id'          => isset($data['state_id']) ? $data['state_id'] : null,
+            'country_id'        => isset($data['country_id']) ? $data['country_id'] : null,
         ]);
 
         // assign the new user a subscription with free plan
