@@ -74,6 +74,19 @@ class LoginController extends Controller
             //$this->redirectTo = route('user.index');
             $this->redirectTo = route('page.home');
         }
+
+        if ($user->isCoach())
+        {
+            // if the website is in maintenance mode, forcely logout user
+            $settings = app('site_global_settings');
+            if($settings->setting_site_maintenance_mode == Setting::SITE_MAINTENANCE_MODE_ON)
+            {
+                Auth::logout();
+            }
+
+            //$this->redirectTo = route('user.index');
+            $this->redirectTo = route('page.home');
+        }
     }
 
     /**

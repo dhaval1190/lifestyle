@@ -11,6 +11,12 @@
             <p class="mb-4">{{ __('backend.user.user-desc') }}</p>
         </div>
         <div class="col-3 text-right">
+            <a href="{{ route('admin.users.create') }}?is_coach=1" class="btn btn-info btn-icon-split">
+                <span class="icon text-white-50">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Add a Coach</span>
+            </a>
             <a href="{{ route('admin.users.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
@@ -102,9 +108,10 @@
                                 <th>{{ __('importer_csv.select') }}</th>
                                 <th>{{ __('backend.user.name') }}</th>
                                 <th>{{ __('backend.user.email') }}</th>
-                                <th>{{ __('backend.user.email-verified') }}</th>
+                                <th>Phone</th>
                                 <th>Role</th>
                                 <th>Category</th>
+                                <th>{{ __('backend.user.email-verified') }}</th>
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
@@ -115,9 +122,10 @@
                                 <th>{{ __('importer_csv.select') }}</th>
                                 <th>{{ __('backend.user.name') }}</th>
                                 <th>{{ __('backend.user.email') }}</th>
-                                <th>{{ __('backend.user.email-verified') }}</th>
+                                <th>Phone</th>
                                 <th>Role</th>
                                 <th>Category</th>
+                                <th>{{ __('backend.user.email-verified') }}</th>
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
@@ -138,6 +146,9 @@
                                     </td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->phone }}</td>
+                                    <td>{{ $user->role ? $user->role->name : '-' }}</td>
+                                    <td>{{ $user->categories ? implode(", ", $user->categories()->orderBy('category_name', 'asc')->pluck('category_name')->all()) : '-' }}</td>
                                     <td>
                                         @if(empty($user->email_verified_at))
                                             <span class="rounded bg-warning text-white pl-2 pr-2 pt-1 pb-1">{{ __('backend.user.pending') }}</span>
@@ -145,8 +156,6 @@
                                             <span class="rounded bg-success text-white pl-2 pr-2 pt-1 pb-1">{{ __('backend.user.verified') }}</span>
                                         @endif
                                     </td>
-                                    <td>{{ $user->role ? $user->role->name : '-' }}</td>
-                                    <td>{{ $user->category ? $user->category->category_name : '-' }}</td>
                                     <td>
                                         @if($user->user_suspended == \App\User::USER_SUSPENDED)
                                             <span class="rounded bg-warning text-white pl-2 pr-2 pt-1 pb-1">{{ __('backend.user.suspended') }}</span>

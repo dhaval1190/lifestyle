@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^7.3",
         "ext-json": "*",
         "artesaos/seotools": "^0.17.2",
         "biscolab/laravel-recaptcha": "^4.2",

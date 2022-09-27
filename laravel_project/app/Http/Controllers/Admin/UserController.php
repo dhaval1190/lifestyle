@@ -8,6 +8,7 @@ use App\Plan;
 use App\Role;
 use App\Subscription;
 use App\User;
+use App\Category;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Exception;
@@ -132,8 +133,11 @@ class UserController extends Controller
 
         $all_countries = Country::orderBy('country_name')->get();
 
+        $printable_categories = new Category();
+        $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
+
         return response()->view('backend.admin.user.create',
-            compact('all_countries'));
+            compact('all_countries','printable_categories'));
     }
 
     /**
@@ -144,22 +148,53 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|min:8|confirmed',
-            'user_prefer_language' => 'nullable|max:5',
-            'user_prefer_country_id' => 'nullable|numeric',
-        ]);
+        $input = $request->all();
+
+        $rules = [];
+        $rulesMessage = [];
+
+        $rules['name']                      = ['required', 'string', 'max:255'];
+        $rules['email']                     = ['required', 'string', 'email', 'max:255', 'unique:users'];
+        $rules['phone']                     = ['required','string','max:20'];
+        $rules['gender']                    = ['required','string','in:male,female','max:20'];
+        $rules['password']                  = ['required', 'string', 'min:8', 'confirmed'];
+        // $rules['user_prefer_language']   = ['nullable', 'max:5'];
+        // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
+        $rules['user_about']             = ['nullable'];
+
+        if(isset($input['is_coach']) && !empty($input['is_coach'])) {
+            $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
+            $rules['category_ids']          = ['required'];
+            $rules['company_name']          = ['nullable','string','max:100'];
+            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
+            $rules['instagram']             = ['nullable','string','url','max:100'];
+            $rules['linkedin']              = ['nullable','string','url','max:100'];
+            $rules['facebook']              = ['nullable','string','url','max:100'];
+            $rules['youtube']               = ['nullable','string','url','max:100'];
+            $rules['experience_year']       = ['required','string','max:50'];
+            $rules['website']               = ['nullable','string','url','max:100'];
+            $rules['address']               = ['required','string','max:160'];
+            $rules['country_id']            = ['required'];
+            $rules['state_id']              = ['required'];
+            $rules['city_id']               = ['required'];
+            $rules['post_code']             = ['required','string','max:10'];
+            $rules['user_image']            = ['nullable'];
+
+            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
+        }
+
+        $request->validate($rules, $rulesMessage);
 
         $name = $request->name;
         $email = $request->email;
         $email_verified_at = date("Y-m-d H:i:s");
-        $password = bcrypt($request->password);
-        $role_id = Role::USER_ROLE_ID;
+        $password = Hash::make($request->password);
+        $role_id = (isset($input['is_coach']) && $input['is_coach'] == Role::COACH_ROLE_ID) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID;
+
         $user_about = $request->user_about;
-        $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
-        $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
+        $user_prefer_language = empty($request->user_prefer_language) ? 'en' : $request->user_prefer_language;
+        $user_prefer_country_id = empty($request->user_prefer_country_id) ? $request->country_id : $request->user_prefer_country_id;
 
         // validate country_id
         $validate_error = array();
@@ -179,31 +214,49 @@ class UserController extends Controller
         $user_image = $request->user_image;
         $user_image_name = null;
         if(!empty($user_image)){
-
             $currentDate = Carbon::now()->toDateString();
-
             $user_image_name = 'user-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
-
             if(!Storage::disk('public')->exists('user')){
                 Storage::disk('public')->makeDirectory('user');
             }
-
             $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 70);
-
             Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
         }
 
         $user = new User();
-        $user->name = $name;
-        $user->email = $email;
-        $user->email_verified_at = $email_verified_at;
-        $user->password = $password;
-        $user->role_id = $role_id;
-        $user->user_about = $user_about;
-        $user->user_image = $user_image_name;
-        $user->user_prefer_language = $user_prefer_language;
-        $user->user_prefer_country_id = $user_prefer_country_id;
+        $user->name                     = $name;
+        $user->email                    = $email;
+        $user->email_verified_at        = $email_verified_at;
+        $user->password                 = $password;
+        $user->role_id                  = $role_id;
+
+        $user->gender                   = isset($input['gender']) ? $input['gender'] : null;
+        $user->phone                    = isset($input['phone']) ? $input['phone'] : null;
+        $user->hourly_rate              = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+        $user->experience_year          = isset($input['experience_year']) ? $input['experience_year'] : null;
+        $user->availability             = isset($input['availability']) ? $input['availability'] : null;
+        $user->company_name             = isset($input['company_name']) ? $input['company_name'] : null;
+        $user->instagram                = isset($input['instagram']) ? $input['instagram'] : null;
+        $user->linkedin                 = isset($input['linkedin']) ? $input['linkedin'] : null;
+        $user->facebook                 = isset($input['facebook']) ? $input['facebook'] : null;
+        $user->youtube                  = isset($input['youtube']) ? $input['youtube'] : null;
+        $user->website                  = isset($input['website']) ? $input['website'] : null;
+        $user->preferred_pronouns       = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+        $user->address                  = isset($input['address']) ? $input['address'] : null;
+        $user->city_id                  = isset($input['city_id']) ? $input['city_id'] : null;
+        $user->post_code                = isset($input['post_code']) ? $input['post_code'] : null;
+        $user->state_id                 = isset($input['state_id']) ? $input['state_id'] : null;
+        $user->country_id               = isset($input['country_id']) ? $input['country_id'] : null;
+
+        $user->user_about               = $user_about;
+        $user->user_image               = $user_image_name;
+        $user->user_prefer_language     = $user_prefer_language;
+        $user->user_prefer_country_id   = $user_prefer_country_id;
         $user->save();
+
+        if(isset($input['category_ids']) && !empty($input['category_ids'])) {
+            $user->categories()->attach($input['category_ids']);
+        }
 
         // when create a new user, we also need to create a free subscription record
         $free_plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
@@ -211,11 +264,10 @@ class UserController extends Controller
             'user_id' => $user->id,
             'plan_id' => $free_plan->id,
             'subscription_start_date' => Carbon::now()->toDateString(),
-//            'subscription_max_featured_listing' => is_null($free_plan->plan_max_featured_listing) ? null : $free_plan->plan_max_featured_listing,
-//            'subscription_max_free_listing' => is_null($free_plan->plan_max_free_listing) ? null : $free_plan->plan_max_free_listing,
+            // 'subscription_max_featured_listing' => is_null($free_plan->plan_max_featured_listing) ? null : $free_plan->plan_max_featured_listing,
+            // 'subscription_max_free_listing' => is_null($free_plan->plan_max_free_listing) ? null : $free_plan->plan_max_free_listing,
         ));
         $new_free_subscription = $user->subscription()->save($free_subscription);
-
 
         \Session::flash('flash_message', __('alert.user-created'));
         \Session::flash('flash_type', 'success');
@@ -260,10 +312,15 @@ class UserController extends Controller
          */
         $social_accounts = $user->socialiteAccounts()->get();
 
+        $printable_categories = new Category();
+        $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
+
         $all_countries = Country::orderBy('country_name')->get();
+        $all_states = $user->country ? $user->country()->first()->states()->orderBy('state_name')->get() : null;
+        $all_cities = $user->state ? $user->state()->first()->cities()->orderBy('city_name')->get() : null;
 
         return response()->view('backend.admin.user.edit',
-            compact('user', 'social_accounts', 'all_countries'));
+            compact('user', 'social_accounts', 'printable_categories', 'all_countries', 'all_states', 'all_cities'));
     }
 
     /**
@@ -276,69 +333,111 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'user_prefer_language' => 'nullable|max:5',
-            'user_prefer_country_id' => 'nullable|numeric',
-        ]);
+        $input = $request->all();
+
+        $rules = [];
+        $rulesMessage = [];
+
+        $rules['name']                      = ['required', 'string', 'max:255'];
+        $rules['email']                     = ['required', 'string', 'email', 'max:255'];
+        $rules['phone']                     = ['required','string','max:20'];
+        $rules['gender']                    = ['required','string','in:male,female','max:20'];
+        // $rules['user_prefer_language']   = ['nullable', 'max:5'];
+        // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
+        $rules['user_about']             = ['nullable'];
+
+        if(isset($input['is_coach']) && !empty($input['is_coach'])) {
+            $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
+            $rules['category_ids']          = ['required'];
+            $rules['company_name']          = ['nullable','string','max:100'];
+            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
+            $rules['instagram']             = ['nullable','string','url','max:100'];
+            $rules['linkedin']              = ['nullable','string','url','max:100'];
+            $rules['facebook']              = ['nullable','string','url','max:100'];
+            $rules['youtube']               = ['nullable','string','url','max:100'];
+            $rules['experience_year']       = ['required','string','max:50'];
+            $rules['website']               = ['nullable','string','url','max:100'];
+            $rules['address']               = ['required','string','max:160'];
+            $rules['country_id']            = ['required'];
+            $rules['state_id']              = ['required'];
+            $rules['city_id']               = ['required'];
+            $rules['post_code']             = ['required','string','max:10'];
+            $rules['user_image']            = ['nullable'];
+
+            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
+        }
+
+        $request->validate($rules, $rulesMessage);
 
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
-        $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
-        $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
+        // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
+        // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
         $validate_error = array();
-        $user_email_exist = User::where('email', $email)
-            ->where('id', '!=', $user->id)
-            ->count();
-        if($user_email_exist > 0)
-        {
+        $user_email_exist = User::where('email', $email)->where('id', '!=', $user->id)->count();
+        if($user_email_exist > 0) {
             $validate_error['email'] = __('prefer_country.error.user-email-exist');
         }
 
-        if(!empty($user_prefer_country_id))
-        {
+        if(!empty($user_prefer_country_id)) {
             $country_exist = Country::find($user_prefer_country_id);
-            if(!$country_exist)
-            {
+            if(!$country_exist) {
                 $validate_error['user_prefer_country_id'] = __('prefer_country.alert.country-not-found');
             }
         }
 
-        if(count($validate_error) > 0)
-        {
+        if(count($validate_error) > 0) {
             throw ValidationException::withMessages($validate_error);
         }
 
         $user_image = $request->user_image;
         $user_image_name = $user->user_image;
-        if(!empty($user_image)){
-
+        if(!empty($user_image)) {
             $currentDate = Carbon::now()->toDateString();
-
             $user_image_name = 'user-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
-
             if(!Storage::disk('public')->exists('user')){
                 Storage::disk('public')->makeDirectory('user');
             }
             if(Storage::disk('public')->exists('user/' . $user->user_image)){
                 Storage::disk('public')->delete('user/' . $user->user_image);
             }
-
             $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 70);
-
             Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
         }
 
-        $user->name = $name;
-        $user->email = $email;
+        $user->name                 = $name;
+        $user->email                = $email;
+
+        $user->gender               = isset($input['gender']) ? $input['gender'] : null;
+        $user->phone                = isset($input['phone']) ? $input['phone'] : null;
+        $user->hourly_rate          = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+        $user->experience_year      = isset($input['experience_year']) ? $input['experience_year'] : null;
+        $user->availability         = isset($input['availability']) ? $input['availability'] : null;
+        $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
+        $user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+        $user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
+        $user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
+        $user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+        $user->website              = isset($input['website']) ? $input['website'] : null;
+        $user->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+        $user->address              = isset($input['address']) ? $input['address'] : null;
+        $user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
+        $user->post_code            = isset($input['post_code']) ? $input['post_code'] : null;
+        $user->state_id             = isset($input['state_id']) ? $input['state_id'] : null;
+        $user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
+
         $user->user_about = $user_about;
-        $user->user_prefer_language = $user_prefer_language;
-        $user->user_prefer_country_id = $user_prefer_country_id;
+        // $user->user_prefer_language = $user_prefer_language;
+        // $user->user_prefer_country_id = $user_prefer_country_id;
         $user->user_image = $user_image_name;
         $user->save();
+
+        if(isset($input['category_ids']) && !empty($input['category_ids'])) {
+            $user->categories()->sync($input['category_ids']);
+        }
 
         \Session::flash('flash_message', __('alert.user-updated'));
         \Session::flash('flash_type', 'success');
@@ -426,10 +525,15 @@ class UserController extends Controller
 
         $user_admin = User::getAdmin();
 
-        $all_countries = Country::orderBy('country_name')->get();
+        // $printable_categories = new Category();
+        // $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
+
+        // $all_countries = Country::orderBy('country_name')->get();
+        // $all_states = $user_admin->country ? $user_admin->country()->first()->states()->orderBy('state_name')->get() : null;
+        // $all_cities = $user_admin->state ? $user_admin->state()->first()->cities()->orderBy('city_name')->get() : null;
 
         return response()->view('backend.admin.user.profile.edit',
-            compact('user_admin', 'all_countries'));
+            compact('user_admin'));
     }
 
     /**
@@ -442,15 +546,35 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',
-            'user_prefer_language' => 'nullable|max:5',
-            'user_prefer_country_id' => 'nullable|numeric',
+            // 'user_prefer_language' => 'nullable|max:5',
+            // 'user_prefer_country_id' => 'nullable|numeric',
+            // 'category_ids'          => 'nullable',
+            // 'company_name'          => 'nullable|string|max:100',
+            'phone'                 => 'required|string|max:20',
+            // 'preferred_pronouns'    => 'nullable|string|in:she_her,he_his|max:100',
+            // 'gender'                => 'required|string|in:male,female|max:20',
+            // 'instagram'             => 'nullable|string|url|max:100',
+            // 'linkedin'              => 'nullable|string|url|max:100',
+            // 'facebook'              => 'nullable|string|url|max:100',
+            // 'youtube'               => 'nullable|string|url|max:100',
+            // 'experience_year'       => 'nullable|string|max:50',
+            // 'website'               => 'nullable|string|url|max:100',
+            // 'address'               => 'required|string|max:160',
+            // 'country_id'            => 'required',
+            // 'state_id'              => 'required',
+            // 'city_id'               => 'required',
+            // 'post_code'             => 'required|string|max:10',
+            'user_image'            => 'nullable',
+            'user_about'            => 'nullable'
         ]);
+
+        $input = $request->all();
 
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
-        $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
-        $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
+        // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
+        // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
         $user_admin = User::getAdmin();
 
@@ -480,31 +604,49 @@ class UserController extends Controller
         {
             $user_image = $request->user_image;
             $user_image_name = $user_admin->user_image;
-            if(!empty($user_image)){
-
+            if(!empty($user_image)) {
                 $currentDate = Carbon::now()->toDateString();
-
                 $user_image_name = 'admin-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
-
                 if(!Storage::disk('public')->exists('user')){
                     Storage::disk('public')->makeDirectory('user');
                 }
                 if(Storage::disk('public')->exists('user/' . $user_admin->user_image)){
                     Storage::disk('public')->delete('user/' . $user_admin->user_image);
                 }
-
                 $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 70);
-
                 Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
             }
 
             $user_admin->name = $name;
             $user_admin->email = $email;
+
+            // $user_admin->gender               = isset($input['gender']) ? $input['gender'] : null;
+            $user_admin->phone                = isset($input['phone']) ? $input['phone'] : null;
+            // $user_admin->hourly_rate          = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+            // $user_admin->experience_year      = isset($input['experience_year']) ? $input['experience_year'] : null;
+            // $user_admin->availability         = isset($input['availability']) ? $input['availability'] : null;
+            // $user_admin->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
+            // $user_admin->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+            // $user_admin->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
+            // $user_admin->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
+            // $user_admin->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+            // $user_admin->website              = isset($input['website']) ? $input['website'] : null;
+            // $user_admin->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+            // $user_admin->address              = isset($input['address']) ? $input['address'] : null;
+            // $user_admin->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
+            // $user_admin->post_code            = isset($input['post_code']) ? $input['post_code'] : null;
+            // $user_admin->state_id             = isset($input['state_id']) ? $input['state_id'] : null;
+            // $user_admin->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
+
             $user_admin->user_about = $user_about;
             $user_admin->user_image = $user_image_name;
-            $user_admin->user_prefer_language = $user_prefer_language;
-            $user_admin->user_prefer_country_id = $user_prefer_country_id;
+            // $user_admin->user_prefer_language = $user_prefer_language;
+            // $user_admin->user_prefer_country_id = $user_prefer_country_id;
             $user_admin->save();
+
+            // if(isset($input['category_ids']) && !empty($input['category_ids'])) {
+            //     $user_admin->categories()->sync($input['category_ids']);
+            // }
 
             \Session::flash('flash_message', __('alert.user-profile-updated'));
             \Session::flash('flash_type', 'success');

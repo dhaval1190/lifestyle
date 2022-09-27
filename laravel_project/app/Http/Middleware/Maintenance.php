@@ -40,7 +40,7 @@ class Maintenance
                 {
                     $login_user = Auth::user();
 
-                    if($login_user->isUser())
+                    if($login_user->isUser() || $login_user->isCoach())
                     {
                         $show_maintenance_mode = true;
                     }

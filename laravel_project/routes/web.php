@@ -30,6 +30,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
      */
     Auth::routes(['verify' => true]);
 
+    Route::post('/register-coach', 'Auth\CoachRegisterController@register')->name('register-coach');
+
     /**
      * Social login routes
      */
@@ -154,11 +156,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/sitemap/state/{page_number}', 'SitemapController@statePagination')->name('page.sitemap.state.pagination');
     Route::get('/sitemap/city', 'SitemapController@city')->name('page.sitemap.city');
     Route::get('/sitemap/city/{page_number}', 'SitemapController@cityPagination')->name('page.sitemap.city.pagination');
-
     /**
      * End site map routes
      */
-
 
     /**
      * ajax routes serve frontend elements
@@ -467,6 +467,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
      * Back-end user routes
      */
     Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user'],'as'=>'user.'], function(){
+
+        Route::resource('/articles', 'ArticleController');
 
         Route::get('/dashboard','PagesController@index')->name('index');
         Route::resource('/items', 'ItemController');

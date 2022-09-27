@@ -27,6 +27,13 @@
         {{ __('backend.sidebar.main-content') }}
     </div>
 
+     <li class="nav-item">
+        <a class="nav-link" href="{{ route('user.articles.index') }}">
+            <i class="fas fa-address-card"></i>
+            <span>{{ __('backend.sidebar.articles') }}</span>
+        </a>
+    </li>
+
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_listing" aria-expanded="true" aria-controls="collapse_listing">

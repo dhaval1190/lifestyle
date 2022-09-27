@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Country;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Category;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -41,10 +42,15 @@ class UserController extends Controller
 
         $login_user = Auth::user();
 
+        $printable_categories = new Category();
+        $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
+
         $all_countries = Country::orderBy('country_name')->get();
+        $all_states = $login_user->country()->first()->states()->orderBy('state_name')->get();
+        $all_cities = $login_user->state()->first()->cities()->orderBy('city_name')->get();
 
         return response()->view('backend.user.profile.edit',
-            compact('login_user', 'all_countries'));
+            compact('login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities'));
     }
 
     /**
@@ -57,15 +63,34 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|max:255',
-            'user_prefer_language' => 'nullable|max:5',
-            'user_prefer_country_id' => 'nullable|numeric',
+            // 'user_prefer_language' => 'nullable|max:5',
+            // 'user_prefer_country_id' => 'nullable|numeric',
+            'category_ids'          => 'nullable',
+            'company_name'          => 'nullable|string|max:100',
+            'phone'                 => 'required|string|max:20',
+            'preferred_pronouns'    => 'nullable|string|in:she_her,he_his|max:100',
+            'gender'                => 'required|string|in:male,female|max:20',
+            'instagram'             => 'nullable|string|url|max:100',
+            'linkedin'              => 'nullable|string|url|max:100',
+            'facebook'              => 'nullable|string|url|max:100',
+            'youtube'               => 'nullable|string|url|max:100',
+            'experience_year'       => 'nullable|string|max:50',
+            'website'               => 'nullable|string|url|max:100',
+            'address'               => 'required|string|max:160',
+            'country_id'            => 'required',
+            'state_id'              => 'required',
+            'city_id'               => 'required',
+            'post_code'             => 'required|string|max:10',
+            'user_image'            => 'nullable',
         ]);
+
+        $input = $request->all();
 
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
-        $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
-        $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
+        // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
+        // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
         $login_user = Auth::user();
 
@@ -95,31 +120,49 @@ class UserController extends Controller
         {
             $user_image = $request->user_image;
             $user_image_name = $login_user->user_image;
-            if(!empty($user_image)){
-
+            if(!empty($user_image)) {
                 $currentDate = Carbon::now()->toDateString();
-
                 $user_image_name = 'user-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
-
                 if(!Storage::disk('public')->exists('user')){
                     Storage::disk('public')->makeDirectory('user');
                 }
                 if(Storage::disk('public')->exists('user/' . $login_user->user_image)){
                     Storage::disk('public')->delete('user/' . $login_user->user_image);
                 }
-
                 $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 70);
-
                 Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
             }
 
             $login_user->name = $name;
             $login_user->email = $email;
+
+            $login_user->gender               = isset($input['gender']) ? $input['gender'] : null;
+            $login_user->phone                = isset($input['phone']) ? $input['phone'] : null;
+            $login_user->hourly_rate          = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+            $login_user->experience_year      = isset($input['experience_year']) ? $input['experience_year'] : null;
+            $login_user->availability         = isset($input['availability']) ? $input['availability'] : null;
+            $login_user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
+            $login_user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+            $login_user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
+            $login_user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
+            $login_user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+            $login_user->website              = isset($input['website']) ? $input['website'] : null;
+            $login_user->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+            $login_user->address              = isset($input['address']) ? $input['address'] : null;
+            $login_user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
+            $login_user->post_code            = isset($input['post_code']) ? $input['post_code'] : null;
+            $login_user->state_id             = isset($input['state_id']) ? $input['state_id'] : null;
+            // $login_user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
+
             $login_user->user_about = $user_about;
             $login_user->user_image = $user_image_name;
-            $login_user->user_prefer_language = $user_prefer_language;
-            $login_user->user_prefer_country_id = $user_prefer_country_id;
+            // $login_user->user_prefer_language = $user_prefer_language;
+            // $login_user->user_prefer_country_id = $user_prefer_country_id;
             $login_user->save();
+
+            if(isset($input['category_ids']) && !empty($input['category_ids'])) {
+                $login_user->categories()->sync($input['category_ids']);
+            }
 
             \Session::flash('flash_message', __('alert.user-profile-updated'));
             \Session::flash('flash_type', 'success');

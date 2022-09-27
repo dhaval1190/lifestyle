@@ -11170,3 +11170,5 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+.bootstrap-select.form-control { border: 1px solid #ced4da !important; }

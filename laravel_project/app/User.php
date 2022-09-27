@@ -54,6 +54,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'hourly_rate',
         'experience_year',
         'availability',
+        'company_name',
+        'instagram',
+        'linkedin',
+        'facebook',
+        'youtube',
+        'website',
+        'preferred_pronouns',
         'address',
         'city_id',
         'post_code',
@@ -140,6 +147,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function category()
     {
         return $this->belongsTo('App\Category','category_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany('App\Category', 'user_categories', 'user_id', 'category_id');
+    }
+
+    /**
+     * Get the item state that owns the item.
+     */
+    public function state()
+    {
+        return $this->belongsTo('App\State', 'state_id');
+    }
+
+    /**
+     * Get the item city that owns the item.
+     */
+    public function city()
+    {
+        return $this->belongsTo('App\City', 'city_id');
+    }
+
+    /**
+     * Get the item country that owns the item.
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Country', 'country_id');
     }
 
     /**

@@ -15,7 +15,7 @@ class UserMiddleware
     public function handle($request, Closure $next)
     {
         // check if user login and has user role
-        if(Auth::check() && Auth::user()->isUser())
+        if(Auth::check() && (Auth::user()->isUser() || Auth::user()->isCoach()))
         {
             // check if user account suspended
             if(Auth::user()->hasActive())

@@ -20,11 +20,19 @@ class AddColumnsToUsersTable extends Migration
             $table->decimal('hourly_rate', 8, 2)->after('category_id')->default(0)->nullable();
             $table->string('experience_year',50)->after('hourly_rate')->nullable();
             $table->string('availability',50)->after('experience_year')->nullable();
-            $table->string('address', 160)->after('availability')->nullable();
+            $table->string('company_name', 100)->after('availability')->nullable();
+            $table->string('instagram', 100)->after('company_name')->nullable();
+            $table->string('linkedin', 100)->after('instagram')->nullable();
+            $table->string('facebook', 100)->after('linkedin')->nullable();
+            $table->string('youtube', 100)->after('facebook')->nullable();
+            $table->string('website', 100)->after('youtube')->nullable();
+            $table->string('preferred_pronouns', 100)->after('website')->nullable();
+            $table->string('address', 160)->after('preferred_pronouns')->nullable();
             $table->integer('city_id')->after('address')->nullable();
             $table->string('post_code', 10)->after('city_id')->nullable();
             $table->integer('state_id')->after('post_code')->nullable();
             $table->integer('country_id')->after('state_id')->nullable();
+
         });
     }
 
