@@ -50,6 +50,11 @@ class SettingController extends Controller
          * End SEO
          */
 
+        $all_countries = Country::orderBy('country_name')->get();
+
+        return response()->view('backend.admin.setting.general.edit',
+                    compact('settings', 'all_countries'));
+
         // license check starts here
         $verify_response = do_license_verify(
             SettingLicense::LICENSE_API_HOST.SettingLicense::LICENSE_API_ROUTE_VERIFY,
