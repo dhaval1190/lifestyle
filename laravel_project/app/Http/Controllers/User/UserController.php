@@ -46,8 +46,8 @@ class UserController extends Controller
         $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
 
         $all_countries = Country::orderBy('country_name')->get();
-        $all_states = $login_user->country()->first()->states()->orderBy('state_name')->get();
-        $all_cities = $login_user->state()->first()->cities()->orderBy('city_name')->get();
+        $all_states = $login_user->country ? $login_user->country()->first()->states()->orderBy('state_name')->get() : null;
+        $all_cities = $login_user->state ? $login_user->state()->first()->cities()->orderBy('city_name')->get() : null;
 
         return response()->view('backend.user.profile.edit',
             compact('login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities'));
@@ -60,31 +60,42 @@ class UserController extends Controller
      */
     public function updateProfile(Request $request)
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            // 'user_prefer_language' => 'nullable|max:5',
-            // 'user_prefer_country_id' => 'nullable|numeric',
-            'category_ids'          => 'nullable',
-            'company_name'          => 'nullable|string|max:100',
-            'phone'                 => 'required|string|max:20',
-            'preferred_pronouns'    => 'nullable|string|in:she_her,he_his|max:100',
-            'gender'                => 'required|string|in:male,female|max:20',
-            'instagram'             => 'nullable|string|url|max:100',
-            'linkedin'              => 'nullable|string|url|max:100',
-            'facebook'              => 'nullable|string|url|max:100',
-            'youtube'               => 'nullable|string|url|max:100',
-            'experience_year'       => 'nullable|string|max:50',
-            'website'               => 'nullable|string|url|max:100',
-            'address'               => 'required|string|max:160',
-            'country_id'            => 'required',
-            'state_id'              => 'required',
-            'city_id'               => 'required',
-            'post_code'             => 'required|string|max:10',
-            'user_image'            => 'nullable',
-        ]);
-
         $input = $request->all();
+
+        $rules = [];
+        $rulesMessage = [];
+
+        $rules['name']                      = ['required', 'string', 'max:255'];
+        $rules['email']                     = ['required', 'string', 'email', 'max:255'];
+        $rules['phone']                     = ['required','string','max:20'];
+        $rules['gender']                    = ['required','string','in:male,female','max:20'];
+        // $rules['user_prefer_language']   = ['nullable', 'max:5'];
+        // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
+        $rules['user_about']             = ['nullable'];
+
+        if(isset($input['is_coach']) && !empty($input['is_coach'])) {
+            $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
+            $rules['category_ids']          = ['required'];
+            $rules['company_name']          = ['nullable','string','max:100'];
+            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
+            $rules['instagram']             = ['nullable','string','url','max:100'];
+            $rules['linkedin']              = ['nullable','string','url','max:100'];
+            $rules['facebook']              = ['nullable','string','url','max:100'];
+            $rules['youtube']               = ['nullable','string','url','max:100'];
+            $rules['experience_year']       = ['required','string','max:50'];
+            $rules['website']               = ['nullable','string','url','max:100'];
+            $rules['address']               = ['required','string','max:160'];
+            $rules['country_id']            = ['required'];
+            $rules['state_id']              = ['required'];
+            $rules['city_id']               = ['required'];
+            $rules['post_code']             = ['required','string','max:10'];
+            $rules['user_image']            = ['nullable'];
+
+            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
+        }
+
+        $request->validate($rules, $rulesMessage);
 
         $name = $request->name;
         $email = $request->email;
@@ -95,29 +106,21 @@ class UserController extends Controller
         $login_user = Auth::user();
 
         $validate_error = array();
-        $email_exist = User::where('email', $email)
-            ->where('id', '!=', $login_user->id)
-            ->count();
-        if($email_exist > 0)
-        {
+        $email_exist = User::where('email', $email)->where('id', '!=', $login_user->id)->count();
+        if($email_exist > 0) {
             $validate_error['email'] = __('prefer_country.error.user-email-exist');
         }
 
-        if(!empty($user_prefer_country_id))
-        {
+        if(!empty($user_prefer_country_id)) {
             $country_exist = Country::find($user_prefer_country_id);
-            if(!$country_exist)
-            {
+            if(!$country_exist) {
                 $validate_error['user_prefer_country_id'] = __('prefer_country.alert.country-not-found');
             }
         }
 
-        if(count($validate_error) > 0)
-        {
+        if(count($validate_error) > 0) {
             throw ValidationException::withMessages($validate_error);
-        }
-        else
-        {
+        } else {
             $user_image = $request->user_image;
             $user_image_name = $login_user->user_image;
             if(!empty($user_image)) {
@@ -152,7 +155,7 @@ class UserController extends Controller
             $login_user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
             $login_user->post_code            = isset($input['post_code']) ? $input['post_code'] : null;
             $login_user->state_id             = isset($input['state_id']) ? $input['state_id'] : null;
-            // $login_user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
+            $login_user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
 
             $login_user->user_about = $user_about;
             $login_user->user_image = $user_image_name;
