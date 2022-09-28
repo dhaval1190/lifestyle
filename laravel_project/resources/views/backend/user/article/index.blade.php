@@ -15,7 +15,7 @@
             <p class="mb-4">{{ __('backend.article.article-desc-user') }}</p>
         </div>
         <div class="col-3 text-right">
-            <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
+            <a href="{{ route('user.articles.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
                 </span>
@@ -111,7 +111,7 @@
                                                             {{ __('prefer_country.view-item') }}
                                                         </a>
                                                         @endif
-                                                        <a href="{{ route('user.items.edit', $item->id) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <a href="{{ route('user.articles.edit', $item->id) }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                                             <i class="far fa-edit"></i>
                                                             {{ __('backend.shared.edit') }}
                                                         </a>
@@ -188,7 +188,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <form method="GET" action="{{ route('user.items.index') }}">
+                            <form method="GET" action="{{ route('user.articles.index') }}">
 
                                 <div class="row form-group">
                                     <div class="col-md-12">
@@ -399,7 +399,7 @@
 
                                 <div class="row form-group">
                                     <div class="col-12">
-                                        <a class="btn btn-outline-primary btn-block" href="{{ route('user.items.index') }}">
+                                        <a class="btn btn-outline-primary btn-block" href="{{ route('user.articles.index') }}">
                                             {{ __('theme_directory_hub.filter-link-reset-all') }}
                                         </a>
                                     </div>
@@ -431,7 +431,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
 
-                    <form action="{{ route('user.items.bulk.delete', $request_query_array) }}" method="POST" id="form_delete_selected">
+                    <form action="{{ route('user.articles.bulk.delete', $request_query_array) }}" method="POST" id="form_delete_selected">
                         @csrf
                         <button id="delete_selected_button"  class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                     </form>

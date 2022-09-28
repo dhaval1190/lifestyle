@@ -929,6 +929,16 @@ class ItemController extends Controller
 
         $setting_item_max_gallery_photos = $settings->settingItem->setting_item_max_gallery_photos;
 
+        $time_zone_identifiers = DateTimeZone::listIdentifiers();
+
+        $item_hours = [];
+        $item_hour_exceptions = [];
+
+        return response()->view('backend.admin.item.edit',
+                    compact('item_owner', 'all_countries', 'all_states', 'all_cities', 'all_customFields',
+                        'item', 'categories', 'all_categories', 'category_ids', 'setting_item_max_gallery_photos',
+                        'time_zone_identifiers', 'item_hours', 'item_hour_exceptions'));
+
         // license check starts here
         $verify_response = do_license_verify(
             SettingLicense::LICENSE_API_HOST.SettingLicense::LICENSE_API_ROUTE_VERIFY,

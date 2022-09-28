@@ -15,17 +15,19 @@
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
 @endsection
 
 @section('content')
 
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.item.edit-item') }}</h1>
-            <p class="mb-4">{{ __('backend.item.edit-item-desc-user') }}</p>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.edit-article') }}</h1>
+            <p class="mb-4">{{ __('backend.article.edit-article-desc-user') }}</p>
         </div>
         <div class="col-3 text-right">
-            <a href="{{ route('user.items.index') }}" class="btn btn-info btn-icon-split">
+            <a href="{{ route('user.articles.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
                 </span>
@@ -38,47 +40,47 @@
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
 
-            <div class="row border-left-info mb-4">
+            <div class="row border-left-primary mb-4">
                 <div class="col-12">
                     <div class="row mb-2">
                         <div class="col-12">
-                            <span class="text-lg text-gray-800">{{ __('backend.item.status') }}: </span>
-                            @if($item->item_status == \App\Item::ITEM_SUBMITTED)
-                                <span class="text-warning">{{ __('backend.item.submitted') }}</span>
-                            @elseif($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                <span class="text-success">{{ __('backend.item.published') }}</span>
-                            @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
-                                <span class="text-danger">{{ __('backend.item.suspended') }}</span>
+                            <span class="text-lg text-gray-800">{{ __('backend.article.status') }}: </span>
+                            @if($article->item_status == \App\Item::ITEM_SUBMITTED)
+                                <span class="text-warning">{{ __('backend.article.submitted') }}</span>
+                            @elseif($article->item_status == \App\Item::ITEM_PUBLISHED)
+                                <span class="text-success">{{ __('backend.article.published') }}</span>
+                            @elseif($article->item_status == \App\Item::ITEM_SUSPENDED)
+                                <span class="text-danger">{{ __('backend.article.suspended') }}</span>
                             @endif
                         </div>
                     </div>
 
                     <div class="row mb-2">
                         <div class="col-12">
-                            <span class="text-lg text-gray-800">{{ __('backend.item.item-link') }}:</span>
+                            <span class="text-lg text-gray-800">{{ __('backend.article.article-link') }}:</span>
 
-                            @if($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                <a href="{{ route('page.item', $item->item_slug) }}" target="_blank">{{ route('page.item', $item->item_slug) }}</a>
+                            @if($article->item_status == \App\Item::ITEM_PUBLISHED)
+                                <a href="{{ route('page.item', $article->item_slug) }}" target="_blank">{{ route('page.item', $article->item_slug) }}</a>
                             @else
-                                <span>{{ route('page.item', $item->item_slug) }}</span>
+                                <span>{{ route('page.item', $article->item_slug) }}</span>
                             @endif
-                            <a class="text-info pl-2" href="#" data-toggle="modal" data-target="#itemSlugModal">
+                            <a class="text-info pl-2" href="#" data-toggle="modal" data-target="#articleSlugModal">
                                 <i class="far fa-edit"></i>
-                                {{ __('item_slug.update-url') }}
+                                {{ __('article_slug.update-url') }}
                             </a>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12">
-                            <a class="btn btn-sm btn-primary" href="{{ route('user.items.sections.index', ['item' => $item]) }}">
+                            {{-- <a class="btn btn-sm btn-primary" href="{{ route('user.articles.sections.index', ['article' => $article]) }}">
                                 <i class="fas fa-bars"></i>
-                                {{ __('item_section.manage-sections') }}
-                            </a>
+                                {{ __('article_section.manage-sections') }}
+                            </a> --}}
 
                             <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#deleteModal">
                                 <i class="far fa-trash-alt"></i>
-                                {{ __('backend.item.delete-item') }}
+                                {{ __('backend.article.delete-article') }}
                             </a>
                         </div>
                     </div>
@@ -116,7 +118,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <form method="POST" action="{{ route('user.items.update', $item) }}" id="item-create-form">
+                    <form method="POST" action="{{ route('user.articles.update', $article) }}" id="article-create-form">
                         @csrf
                         @method('PUT')
 
@@ -126,22 +128,22 @@
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
                                         <div class="form-check">
-                                            <input {{ (old('item_type') ? old('item_type') : $item->item_type) == \App\Item::ITEM_TYPE_REGULAR ? 'checked' : '' }} class="form-check-input" type="radio" name="item_type" id="item_type_regular" value="{{ \App\Item::ITEM_TYPE_REGULAR }}" aria-describedby="item_type_regularHelpBlock">
-                                            <label class="form-check-label" for="item_type_regular">
+                                            <input {{ (old('article_type') ? old('article_type') : $article->item_type) == \App\Item::ITEM_TYPE_REGULAR ? 'checked' : '' }} class="form-check-input" type="radio" name="article_type" id="article_type_regular" value="{{ \App\Item::ITEM_TYPE_REGULAR }}" aria-describedby="article_type_regularHelpBlock">
+                                            <label class="form-check-label" for="article_type_regular">
                                                 {{ __('theme_directory_hub.online-listing.regular-listing') }}
                                             </label>
-                                            <small id="item_type_regularHelpBlock" class="form-text text-muted">
+                                            <small id="article_type_regularHelpBlock" class="form-text text-muted">
                                                 {{ __('theme_directory_hub.online-listing.regular-listing-help') }}
                                             </small>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-check">
-                                            <input {{ (old('item_type') ? old('item_type') : $item->item_type) == \App\Item::ITEM_TYPE_ONLINE ? 'checked' : '' }} class="form-check-input" type="radio" name="item_type" id="item_type_online" value="{{ \App\Item::ITEM_TYPE_ONLINE }}" aria-describedby="item_type_onlineHelpBlock">
-                                            <label class="form-check-label" for="item_type_online">
+                                            <input {{ (old('article_type') ? old('article_type') : $article->item_type) == \App\Item::ITEM_TYPE_ONLINE ? 'checked' : '' }} class="form-check-input" type="radio" name="article_type" id="article_type_online" value="{{ \App\Item::ITEM_TYPE_ONLINE }}" aria-describedby="article_type_onlineHelpBlock">
+                                            <label class="form-check-label" for="article_type_online">
                                                 {{ __('theme_directory_hub.online-listing.online-listing') }}
                                             </label>
-                                            <small id="item_type_onlineHelpBlock" class="form-text text-muted">
+                                            <small id="article_type_onlineHelpBlock" class="form-text text-muted">
                                                 {{ __('theme_directory_hub.online-listing.online-listing-help') }}
                                             </small>
                                         </div>
@@ -157,18 +159,18 @@
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-store"></i>
-                                            {{ __('backend.item.general-info') }}
+                                            {{ __('backend.article.general-info') }}
                                         </span>
                                         <small class="form-text text-white">
-                                            {{ __('item_hour.item-general-info-help') }}
+                                            {{ __('article_hour.article-general-info-help') }}
                                         </small>
                                     </div>
                                 </div>
                                 <div class="form-row mb-3">
                                     <div class="col-md-4">
-                                        <label for="item_title" class="text-black">{{ __('backend.item.title') }}</label>
-                                        <input id="item_title" type="text" class="form-control @error('item_title') is-invalid @enderror" name="item_title" value="{{ old('item_title') ? old('item_title') : $item->item_title }}">
-                                        @error('item_title')
+                                        <label for="article_title" class="text-black">{{ __('backend.article.title') }}</label>
+                                        <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') ? old('article_title') : $article->item_title }}">
+                                        @error('article_title')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -176,9 +178,9 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="item_address" class="text-black">{{ __('backend.item.address') }}</label>
-                                        <input id="item_address" type="text" class="form-control @error('item_address') is-invalid @enderror" name="item_address" value="{{ old('item_address') ? old('item_address') : $item->item_address }}">
-                                        @error('item_address')
+                                        <label for="article_address" class="text-black">{{ __('backend.article.address') }}</label>
+                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') ? old('article_address') : $article->item_address }}">
+                                        @error('article_address')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -187,23 +189,23 @@
 
                                     <div class="col-md-4">
 
-                                        @if($show_item_featured_selector)
+                                        @if($show_article_featured_selector)
 
-                                            <label for="item_featured" class="text-black">{{ __('backend.item.featured') }}</label>
-                                            <select class="selectpicker form-control @error('item_featured') is-invalid @enderror" name="item_featured">
+                                            <label for="article_featured" class="text-black">{{ __('backend.article.featured') }}</label>
+                                            <select class="selectpicker form-control @error('article_featured') is-invalid @enderror" name="article_featured">
 
-                                                <option {{ (old('item_featured') ? old('item_featured') : $item->item_featured) == \App\Item::ITEM_NOT_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_NOT_FEATURED }}">{{ __('backend.shared.no') }}</option>
-                                                <option {{ (old('item_featured') ? old('item_featured') : $item->item_featured) == \App\Item::ITEM_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_FEATURED }}">{{ __('backend.shared.yes') }}</option>
+                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_NOT_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_NOT_FEATURED }}">{{ __('backend.shared.no') }}</option>
+                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_FEATURED }}">{{ __('backend.shared.yes') }}</option>
 
                                             </select>
-                                            @error('item_featured')
+                                            @error('article_featured')
                                             <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                             @enderror
 
                                         @else
-                                            <input type="hidden" name="item_featured" value="{{ $item->item_featured }}">
+                                            <input type="hidden" name="article_featured" value="{{ $article->item_featured }}">
                                         @endif
 
                                     </div>
@@ -213,15 +215,15 @@
 
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline">
-                                            <input {{ $item->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="item_address_hide" name="item_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
-                                            <label class="form-check-label" for="item_address_hide">
-                                                {{ __('backend.item.hide-address') }}
+                                            <input {{ $article->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
+                                            <label class="form-check-label" for="article_address_hide">
+                                                {{ __('backend.article.hide-address') }}
                                                 <small class="text-muted">
-                                                    {{ __('backend.item.hide-address-help') }}
+                                                    {{ __('backend.article.hide-address-help') }}
                                                 </small>
                                             </label>
                                         </div>
-                                        @error('item_address_hide')
+                                        @error('article_address_hide')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -236,8 +238,8 @@
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             <option selected value="0">{{ __('prefer_country.select-country') }}</option>
                                             @foreach($all_countries as $all_countries_key => $country)
-                                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $item->country_id == $country->id))
-                                                    <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $item->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $article->country_id == $country->id))
+                                                    <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $article->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -251,9 +253,9 @@
                                     <div class="col-md-3">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
-                                            <option selected value="0">{{ __('backend.item.select-state') }}</option>
+                                            <option selected value="0">{{ __('backend.article.select-state') }}</option>
                                             @foreach($all_states as $key => $state)
-                                                <option {{ $item->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
+                                                <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
                                             @endforeach
                                         </select>
                                         @error('state_id')
@@ -266,9 +268,9 @@
                                     <div class="col-md-3">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
-                                            <option selected value="0">{{ __('backend.item.select-city') }}</option>
+                                            <option selected value="0">{{ __('backend.article.select-city') }}</option>
                                             @foreach($all_cities as $key => $city)
-                                                <option {{ $item->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
+                                                <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
                                             @endforeach
                                         </select>
                                         @error('city_id')
@@ -279,9 +281,9 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="item_postal_code" class="text-black">{{ __('backend.item.postal-code') }}</label>
-                                        <input id="item_postal_code" type="text" class="form-control @error('item_postal_code') is-invalid @enderror" name="item_postal_code" value="{{ old('item_postal_code') ? old('item_postal_code') : $item->item_postal_code }}">
-                                        @error('item_postal_code')
+                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
+                                        @error('article_postal_code')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -293,12 +295,12 @@
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-3">
-                                        <label for="item_lat" class="text-black">{{ __('backend.item.lat') }}</label>
-                                        <input id="item_lat" type="text" class="form-control @error('item_lat') is-invalid @enderror" name="item_lat" value="{{ old('item_lat') ? old('item_lat') : $item->item_lat }}" aria-describedby="latHelpBlock">
+                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }}</label>
+                                        <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
                                         <small id="latHelpBlock" class="form-text text-muted">
-                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.item.select-map') }}</a>
+                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.article.select-map') }}</a>
                                         </small>
-                                        @error('item_lat')
+                                        @error('article_lat')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -306,12 +308,12 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="item_lng" class="text-black">{{ __('backend.item.lng') }}</label>
-                                        <input id="item_lng" type="text" class="form-control @error('item_lng') is-invalid @enderror" name="item_lng" value="{{ old('item_lng') ? old('item_lng') : $item->item_lng }}" aria-describedby="lngHelpBlock">
+                                        <label for="article_lng" class="text-black">{{ __('backend.article.lng') }}</label>
+                                        <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') ? old('article_lng') : $article->item_lng }}" aria-describedby="lngHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
-                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.item.select-map') }}</a>
+                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.article.select-map') }}</a>
                                         </small>
-                                        @error('item_lng')
+                                        @error('article_lng')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -319,9 +321,9 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
-                                        <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') ? old('item_phone') : $item->item_phone }}" aria-describedby="lngHelpBlock">
-                                        @error('item_phone')
+                                        <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
+                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock">
+                                        @error('article_phone')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -329,9 +331,9 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="item_youtube_id" class="text-black">{{ __('customization.item.youtube-id') }}</label>
-                                        <input id="item_youtube_id" type="text" class="form-control @error('item_youtube_id') is-invalid @enderror" name="item_youtube_id" value="{{ old('item_youtube_id') ? old('item_youtube_id') : $item->item_youtube_id }}">
-                                        @error('item_youtube_id')
+                                        <label for="article_youtube_id" class="text-black">{{ __('customization.article.youtube-id') }}</label>
+                                        <input id="article_youtube_id" type="text" class="form-control @error('article_youtube_id') is-invalid @enderror" name="article_youtube_id" value="{{ old('article_youtube_id') ? old('article_youtube_id') : $article->item_youtube_id }}">
+                                        @error('article_youtube_id')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -343,9 +345,9 @@
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-12">
-                                        <label for="item_description" class="text-black">{{ __('backend.item.description') }}</label>
-                                        <textarea class="form-control @error('item_description') is-invalid @enderror" id="item_description" rows="5" name="item_description">{{ old('item_description') ? old('item_description') : $item->item_description }}</textarea>
-                                        @error('item_description')
+                                        <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
+                                        <textarea class="form-control @error('article_description') is-invalid @enderror" id="article_description" rows="5" name="article_description">{{ old('article_description') ? old('article_description') : $article->item_description }}</textarea>
+                                        @error('article_description')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -356,15 +358,15 @@
                                 <!-- Start web & social media -->
                                 <div class="form-row mb-3">
                                     <div class="col-md-4">
-                                        <label for="item_website" class="text-black">
+                                        <label for="article_website" class="text-black">
                                             <i class="fa-solid fa-globe"></i>
-                                            {{ __('backend.item.website') }}
+                                            {{ __('backend.article.website') }}
                                         </label>
-                                        <input id="item_website" type="text" class="form-control @error('item_website') is-invalid @enderror" name="item_website" value="{{ old('item_website') ? old('item_website') : $item->item_website }}">
+                                        <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website') ? old('article_website') : $article->item_website }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
-                                        @error('item_website')
+                                        @error('article_website')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -372,15 +374,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="item_social_facebook" class="text-black">
+                                        <label for="article_social_facebook" class="text-black">
                                             <i class="fa-brands fa-facebook-square"></i>
-                                            {{ __('backend.item.facebook') }}
+                                            {{ __('backend.article.facebook') }}
                                         </label>
-                                        <input id="item_social_facebook" type="text" class="form-control @error('item_social_facebook') is-invalid @enderror" name="item_social_facebook" value="{{ old('item_social_facebook') ? old('item_social_facebook') : $item->item_social_facebook }}">
+                                        <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook') ? old('article_social_facebook') : $article->item_social_facebook }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
-                                        @error('item_social_facebook')
+                                        @error('article_social_facebook')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -388,15 +390,15 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="item_social_twitter" class="text-black">
+                                        <label for="article_social_twitter" class="text-black">
                                             <i class="fa-brands fa-twitter-square"></i>
-                                            {{ __('backend.item.twitter') }}
+                                            {{ __('backend.article.twitter') }}
                                         </label>
-                                        <input id="item_social_twitter" type="text" class="form-control @error('item_social_twitter') is-invalid @enderror" name="item_social_twitter" value="{{ old('item_social_twitter') ? old('item_social_twitter') : $item->item_social_twitter }}">
+                                        <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') ? old('article_social_twitter') : $article->item_social_twitter }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
-                                        @error('item_social_twitter')
+                                        @error('article_social_twitter')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -406,45 +408,45 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-4">
-                                        <label for="item_social_linkedin" class="text-black">
+                                        <label for="article_social_linkedin" class="text-black">
                                             <i class="fa-brands fa-linkedin"></i>
-                                            {{ __('backend.item.linkedin') }}
+                                            {{ __('backend.article.linkedin') }}
                                         </label>
-                                        <input id="item_social_linkedin" type="text" class="form-control @error('item_social_linkedin') is-invalid @enderror" name="item_social_linkedin" value="{{ old('item_social_linkedin') ? old('item_social_linkedin') : $item->item_social_linkedin }}">
+                                        <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin') ? old('article_social_linkedin') : $article->item_social_linkedin }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
-                                        @error('item_social_linkedin')
+                                        @error('article_social_linkedin')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="item_social_instagram" class="text-black">
+                                        <label for="article_social_instagram" class="text-black">
                                             <i class="fa-brands fa-instagram-square"></i>
-                                            {{ __('item_whatsapp_instagram.item-social-instagram') }}
+                                            {{ __('article_whatsapp_instagram.article-social-instagram') }}
                                         </label>
-                                        <input id="item_social_instagram" type="text" class="form-control @error('item_social_instagram') is-invalid @enderror" name="item_social_instagram" value="{{ old('item_social_instagram') ? old('item_social_instagram') : $item->item_social_instagram }}">
+                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') ? old('article_social_instagram') : $article->item_social_instagram }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-instagram-help') }}
+                                            {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
                                         </small>
-                                        @error('item_social_instagram')
+                                        @error('article_social_instagram')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="item_social_whatsapp" class="text-black">
+                                        <label for="article_social_whatsapp" class="text-black">
                                             <i class="fa-brands fa-whatsapp-square"></i>
-                                            {{ __('item_whatsapp_instagram.item-social-whatsapp') }}
+                                            {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
                                         </label>
-                                        <input id="item_social_whatsapp" type="text" class="form-control @error('item_social_whatsapp') is-invalid @enderror" name="item_social_whatsapp" value="{{ old('item_social_whatsapp') ? old('item_social_whatsapp') : $item->item_social_whatsapp }}">
+                                        <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') ? old('article_social_whatsapp') : $article->item_social_whatsapp }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }}
+                                            {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
                                         </small>
-                                        @error('item_social_whatsapp')
+                                        @error('article_social_whatsapp')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -463,25 +465,25 @@
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-clock"></i>
-                                            {{ __('item_hour.open-hour') }}
+                                            {{ __('article_hour.open-hour') }}
                                         </span>
                                         <small class="form-text text-white">
-                                            {{ __('item_hour.open-hour-help') }}
+                                            {{ __('article_hour.open-hour-help') }}
                                         </small>
                                     </div>
                                 </div>
                                 <div class="form-row mb-3">
                                     <div class="col-12 col-md-6">
-                                        <label for="item_hour_time_zone" class="text-black">{{ __('item_hour.timezone') }}</label>
-                                        <select id="item_hour_time_zone" class="selectpicker form-control @error('item_hour_time_zone') is-invalid @enderror" name="item_hour_time_zone" data-live-search="true">
+                                        <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
+                                        <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
                                             @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
-                                                <option value="{{ $time_zone_identifier }}" {{ (old('item_hour_time_zone') ? old('item_hour_time_zone') : $item->item_hour_time_zone) == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
+                                                <option value="{{ $time_zone_identifier }}" {{ (old('article_hour_time_zone') ? old('article_hour_time_zone') : $article->item_hour_time_zone) == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
                                             @endforeach
                                         </select>
                                         <small class="form-text text-muted">
-                                            {{ __('item_hour.timezone-help') }}
+                                            {{ __('article_hour.timezone-help') }}
                                         </small>
-                                        @error('item_hour_time_zone')
+                                        @error('article_hour_time_zone')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -489,15 +491,15 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        <label for="item_hour_show_hours" class="text-black">{{ __('item_hour.show-open-hour') }}</label>
-                                        <select id="item_hour_show_hours" class="selectpicker form-control @error('item_hour_show_hours') is-invalid @enderror" name="item_hour_show_hours" data-live-search="true">
-                                            <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ (old('item_hour_show_hours') ? old('item_hour_show_hours') : $item->item_hour_show_hours) == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('item_hour.show-hour') }}</option>
-                                            <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ (old('item_hour_show_hours') ? old('item_hour_show_hours') : $item->item_hour_show_hours) == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('item_hour.not-show-hour') }}</option>
+                                        <label for="article_hour_show_hours" class="text-black">{{ __('article_hour.show-open-hour') }}</label>
+                                        <select id="article_hour_show_hours" class="selectpicker form-control @error('article_hour_show_hours') is-invalid @enderror" name="article_hour_show_hours" data-live-search="true">
+                                            <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ (old('article_hour_show_hours') ? old('article_hour_show_hours') : $article->item_hour_show_hours) == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('article_hour.show-hour') }}</option>
+                                            <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ (old('article_hour_show_hours') ? old('article_hour_show_hours') : $article->item_hour_show_hours) == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('article_hour.not-show-hour') }}</option>
                                         </select>
                                         <small class="form-text text-muted">
-                                            {{ __('item_hour.show-open-hour-help') }}
+                                            {{ __('article_hour.show-open-hour-help') }}
                                         </small>
-                                        @error('item_hour_show_hours')
+                                        @error('article_hour_show_hours')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -507,87 +509,87 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-12">
-                                        <span class="text-gray-800">{{ __('item_hour.open-hour-hours') }}</span>
+                                        <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
                                         <small class="form-text text-muted">
-                                            {{ __('item_hour.open-hour-hours-help') }}
+                                            {{ __('article_hour.open-hour-hours-help') }}
                                         </small>
                                     </div>
                                 </div>
-                                <div class="form-row mb-3 align-items-end">
+                                <div class="form-row mb-3 align-articles-end">
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_day_of_week" class="text-black">{{ __('item_hour.day-of-week') }}</label>
-                                        <select id="item_hour_day_of_week" class="selectpicker form-control" name="item_hour_day_of_week" data-live-search="true">
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}">{{ __('item_hour.monday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}">{{ __('item_hour.tuesday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}">{{ __('item_hour.wednesday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}">{{ __('item_hour.thursday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}">{{ __('item_hour.friday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}">{{ __('item_hour.saturday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}">{{ __('item_hour.sunday') }}</option>
+                                        <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
+                                        <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}">{{ __('article_hour.monday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}">{{ __('article_hour.tuesday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}">{{ __('article_hour.wednesday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}">{{ __('article_hour.thursday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}">{{ __('article_hour.friday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}">{{ __('article_hour.saturday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}">{{ __('article_hour.sunday') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_open_time_open_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
-                                        <select id="item_hour_open_time_open_hour" class="selectpicker form-control" name="item_hour_open_time_open_hour" data-live-search="true">
+                                        <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                        <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_open_time_open_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
-                                        <select id="item_hour_open_time_open_minute" class="selectpicker form-control" name="item_hour_open_time_open_minute" data-live-search="true">
+                                        <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                        <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
                                                 <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_open_time_close_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
-                                        <select id="item_hour_open_time_close_hour" class="selectpicker form-control" name="item_hour_open_time_close_hour" data-live-search="true">
+                                        <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                        <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
-                                        <select id="item_hour_open_time_close_minute" class="selectpicker form-control" name="item_hour_open_time_close_minute" data-live-search="true">
+                                        <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                        <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
                                                 <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_create_button">
+                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="article_hour_create_button">
                                             <i class="fas fa-plus"></i>
-                                            {{ __('item_hour.add-open-hour') }}
+                                            {{ __('article_hour.add-open-hour') }}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="form-row mb-3" id="open_hour_added_hours">
-                                    @foreach($item_hours as $item_hours_key => $item_hour)
+                                    @foreach($article_hours as $article_hours_key => $article_hour)
                                         <div class="col-12 col-md-3">
-                                            @if($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY)
-                                                {{ __('item_hour.monday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY)
-                                                {{ __('item_hour.tuesday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY)
-                                                {{ __('item_hour.wednesday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY)
-                                                {{ __('item_hour.thursday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY)
-                                                {{ __('item_hour.friday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY)
-                                                {{ __('item_hour.saturday') }}
-                                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY)
-                                                {{ __('item_hour.sunday') }}
+                                            @if($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY)
+                                                {{ __('article_hour.monday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY)
+                                                {{ __('article_hour.tuesday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY)
+                                                {{ __('article_hour.wednesday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY)
+                                                {{ __('article_hour.thursday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY)
+                                                {{ __('article_hour.friday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY)
+                                                {{ __('article_hour.saturday') }}
+                                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY)
+                                                {{ __('article_hour.sunday') }}
                                             @endif
-                                            {{ substr($item_hour->item_hour_open_time, 0, -3) . '-' . substr($item_hour->item_hour_close_time, 0, -3) }}
-                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editItemHourModal_{{ $item_hour->id }}">
+                                            {{ substr($article_hour->item_hour_open_time, 0, -3) . '-' . substr($article_hour->item_hour_close_time, 0, -3) }}
+                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editarticleHourModal_{{ $article_hour->id }}">
                                                 <i class="far fa-edit"></i>
                                             </a>
-                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteItemHourModal_{{ $item_hour->id }}">
+                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deletearticleHourModal_{{ $article_hour->id }}">
                                                 <i class='far fa-trash-alt'></i>
                                             </a>
                                         </div>
@@ -596,73 +598,73 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-12">
-                                        <span class="text-gray-800">{{ __('item_hour.open-hour-exceptions') }}</span>
+                                        <span class="text-gray-800">{{ __('article_hour.open-hour-exceptions') }}</span>
                                         <small class="form-text text-muted">
-                                            {{ __('item_hour.open-hour-exceptions-help') }}
+                                            {{ __('article_hour.open-hour-exceptions-help') }}
                                         </small>
                                     </div>
                                 </div>
-                                <div class="form-row mb-3 align-items-end">
+                                <div class="form-row mb-3 align-articles-end">
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_exception_date" class="text-black">{{ __('item_hour.open-hour-exception-date') }}</label>
-                                        <input id="item_hour_exception_date" type="text" class="form-control date-picker-input" name="item_hour_exception_date" value="" placeholder="{{ __('item_hour.open-hour-exception-date-placeholder') }}">
+                                        <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
+                                        <input id="article_hour_exception_date" type="text" class="form-control date-picker-input" name="article_hour_exception_date" value="" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_exception_open_time_open_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
-                                        <select id="item_hour_exception_open_time_open_hour" class="selectpicker form-control" name="item_hour_exception_open_time_open_hour" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                        <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                        <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_exception_open_time_open_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
-                                        <select id="item_hour_exception_open_time_open_minute" class="selectpicker form-control" name="item_hour_exception_open_time_open_minute" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                        <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                        <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
                                                 <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_exception_open_time_close_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
-                                        <select id="item_hour_exception_open_time_close_hour" class="selectpicker form-control" name="item_hour_exception_open_time_close_hour" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                        <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                        <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <label for="item_hour_exception_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
-                                        <select id="item_hour_exception_open_time_close_minute" class="selectpicker form-control" name="item_hour_exception_open_time_close_minute" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                        <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                        <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
                                                 <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
-                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_exception_create_button">
+                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="article_hour_exception_create_button">
                                             <i class="fas fa-plus"></i>
-                                            {{ __('item_hour.add-open-hour-exception') }}
+                                            {{ __('article_hour.add-open-hour-exception') }}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="form-row mb-3" id="open_hour_added_exceptions">
-                                    @foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
+                                    @foreach($article_hour_exceptions as $article_hour_exceptions_key => $article_hour_exception)
                                         <div class="col-12 col-md-3">
-                                            {{ $item_hour_exception->item_hour_exception_date }}
-                                            @if(!empty($item_hour_exception->item_hour_exception_open_time) && !empty($item_hour_exception->item_hour_exception_close_time))
-                                                {{ substr($item_hour_exception->item_hour_exception_open_time, 0, -3) . '-' . substr($item_hour_exception->item_hour_exception_close_time, 0, -3) }}
+                                            {{ $article_hour_exception->item_hour_exception_date }}
+                                            @if(!empty($article_hour_exception->item_hour_exception_open_time) && !empty($article_hour_exception->item_hour_exception_close_time))
+                                                {{ substr($article_hour_exception->item_hour_exception_open_time, 0, -3) . '-' . substr($article_hour_exception->item_hour_exception_close_time, 0, -3) }}
                                             @else
-                                                {{ __('item_hour.open-hour-exception-close-all-day') }}
+                                                {{ __('article_hour.open-hour-exception-close-all-day') }}
                                             @endif
-                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editItemHourExceptionModal_{{ $item_hour_exception->id }}">
+                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editarticleHourExceptionModal_{{ $article_hour_exception->id }}">
                                                 <i class="far fa-edit"></i>
                                             </a>
-                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteItemHourExceptionModal_{{ $item_hour_exception->id }}">
+                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deletearticleHourExceptionModal_{{ $article_hour_exception->id }}">
                                                 <i class='far fa-trash-alt'></i>
                                             </a>
                                         </div>
@@ -672,93 +674,6 @@
                         </div>
                         <!-- end opening hour section -->
 
-                        <!-- Start custom field section -->
-                        <div class="row border-left-primary mb-4">
-                            <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
-                                    <div class="col-md-12">
-                                        <span class="text-lg text-white">
-                                            <i class="fas fa-tasks"></i>
-                                            {{ __('backend.item.custom-fields') }}
-                                        </span>
-                                        <small class="form-text text-white">
-                                            {{ __('backend.item.custom-field-help') }}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div class="form-row mb-3">
-                                    @foreach($all_customFields as $all_customFields_key => $customField)
-
-                                        @php
-                                            $find_item_feature = $item->features()->where('custom_field_id', $customField->id)->get();
-                                        @endphp
-
-                                        <div class="col-md-4 mb-3">
-                                            @if($customField->custom_field_type == \App\CustomField::TYPE_TEXT)
-                                                <label for="{{ str_slug($customField->custom_field_name . $customField->id) }}" class="text-black">{{ $customField->custom_field_name }}</label>
-                                                <textarea class="form-control @error(str_slug($customField->custom_field_name . $customField->id)) is-invalid @enderror" id="{{ str_slug($customField->custom_field_name . $customField->id) }}" rows="5" name="{{ str_slug($customField->custom_field_name . $customField->id) }}">{{ old(str_slug($customField->custom_field_name . $customField->id)) ? old(str_slug($customField->custom_field_name . $customField->id)) : ($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : '') }}</textarea>
-                                                @error(str_slug($customField->custom_field_name . $customField->id))
-                                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                                @enderror
-                                            @endif
-                                            @if($customField->custom_field_type == \App\CustomField::TYPE_SELECT)
-                                                <label for="{{ str_slug($customField->custom_field_name . $customField->id) }}" class="text-black">{{ $customField->custom_field_name }}</label>
-                                                <select class="selectpicker form-control" name="{{ str_slug($customField->custom_field_name . $customField->id) }}" id="{{ str_slug($customField->custom_field_name . $customField->id) }}" data-live-search="true">
-
-                                                    @php
-                                                        $single_select_custom_fields_array = explode(',', $customField->custom_field_seed_value);
-                                                    @endphp
-
-                                                    @foreach($single_select_custom_fields_array as $single_select_custom_fields_array_key => $custom_field_value)
-                                                        <option {{ ($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : '') == trim($custom_field_value) ? 'selected' : '' }} value="{{ $custom_field_value }}">{{ $custom_field_value }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error(str_slug($customField->custom_field_name . $customField->id))
-                                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                                @enderror
-                                            @endif
-                                            @if($customField->custom_field_type == \App\CustomField::TYPE_MULTI_SELECT)
-                                                <label for="{{ str_slug($customField->custom_field_name . $customField->id) }}" class="text-black">{{ $customField->custom_field_name }}</label>
-                                                <select multiple class="selectpicker form-control" name="{{ str_slug($customField->custom_field_name . $customField->id) }}[]" id="{{ str_slug($customField->custom_field_name . $customField->id) }}" data-live-search="true" data-actions-box="true">
-
-                                                    @php
-                                                        $multiple_select_custom_fields_array = explode(',', $customField->custom_field_seed_value);
-                                                    @endphp
-
-                                                    @foreach($multiple_select_custom_fields_array as $multiple_select_custom_fields_array_key => $custom_field_value)
-                                                        <option {{ ( (($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : '') == trim($custom_field_value) ? true : false) || (strpos(($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : ''), trim($custom_field_value) . ',') === 0 ? true : false) || (strpos(($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : ''), ', ' . trim($custom_field_value) . ',') !== false ? true : false) || (strpos(($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : ''), ',' . trim($custom_field_value) . ',') !== false ? true : false) || (strpos(($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : ''), ', ' . trim($custom_field_value) ) !== false ? true : false) || (strpos(($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : ''), ',' . trim($custom_field_value) ) !== false ? true : false) ) == true ? 'selected' : '' }} value="{{ $custom_field_value }}">{{ $custom_field_value }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error($customField->custom_field_name . $customField->id)
-                                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                                @enderror
-                                            @endif
-                                            @if($customField->custom_field_type == \App\CustomField::TYPE_LINK)
-                                                <label for="{{ str_slug($customField->custom_field_name . $customField->id) }}" class="text-black">{{ $customField->custom_field_name }}</label>
-                                                <input id="{{ str_slug($customField->custom_field_name . $customField->id) }}" type="text" class="form-control @error(str_slug($customField->custom_field_name . $customField->id)) is-invalid @enderror" name="{{ str_slug($customField->custom_field_name . $customField->id) }}" value="{{ old(str_slug($customField->custom_field_name . $customField->id)) ? old(str_slug($customField->custom_field_name . $customField->id)) : ($find_item_feature->count() > 0 ? $find_item_feature->first()->item_feature_value : '') }}" aria-describedby="linkHelpBlock">
-                                                <small id="linkHelpBlock" class="form-text text-muted">
-                                                    {{ __('backend.shared.url-help') }}
-                                                </small>
-                                                @error(str_slug($customField->custom_field_name . $customField->id))
-                                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                                @enderror
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End custom field section -->
-
-
                         <!-- Start feature image and gallery image -->
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -766,19 +681,19 @@
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-images"></i>
-                                            {{ __('item_hour.item-photos') }}
+                                            {{ __('article_hour.article-photos') }}
                                         </span>
                                         <small class="form-text text-white">
-                                            {{ __('item_hour.item-photos-help') }}
+                                            {{ __('article_hour.article-photos-help') }}
                                         </small>
                                     </div>
                                 </div>
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-lg text-gray-800">{{ __('backend.item.feature-image') }}</span>
+                                        <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                                         <small class="form-text text-muted">
-                                            {{ __('backend.item.feature-image-help') }}
+                                            {{ __('backend.article.feature-image-help') }}
                                         </small>
                                         @error('feature_image')
                                         <span class="invalid-tooltip">
@@ -787,11 +702,11 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-8">
-                                                <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-image') }}</button>
-                                                @if(empty($item->item_image))
-                                                    <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
+                                                <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
+                                                @if(empty($article->item_image))
+                                                    <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive">
                                                 @else
-                                                    <img id="image_preview" src="{{ Storage::disk('public')->url('item/'. $item->item_image) }}" class="img-responsive">
+                                                    <img id="image_preview" src="{{ Storage::disk('public')->url('item/'. $article->item_image) }}" class="img-responsive">
                                                 @endif
                                                 <input id="feature_image" type="hidden" name="feature_image">
                                             </div>
@@ -801,16 +716,16 @@
                                             <div class="col-8">
                                                 <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
                                                     <i class="fas fa-trash-alt"></i>
-                                                    {{ __('role_permission.item.delete-feature-image') }}
+                                                    {{ __('role_permission.article.delete-feature-image') }}
                                                 </a>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="col-md-6">
-                                        <span class="text-lg text-gray-800">{{ __('backend.item.gallery-images') }}</span>
+                                        <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                                         <small class="form-text text-muted">
-                                            {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_item_max_gallery_photos]) }}
+                                            {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
                                         </small>
                                         @error('image_gallery')
                                         <span class="invalid-tooltip">
@@ -819,11 +734,11 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
-                                                <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-images') }}</button>
+                                                <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
                                                 <div class="row" id="selected-images">
-                                                    @foreach($item->galleries as $key => $gallery)
-                                                        <div class="col-3 mb-2" id="item_image_gallery_{{ $gallery->id }}">
-                                                            <img class="item_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}">
+                                                    @foreach($article->galleries as $key => $gallery)
+                                                        <div class="col-3 mb-2" id="article_image_gallery_{{ $gallery->id }}">
+                                                            <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}">
                                                             <br/><button class="btn btn-danger btn-sm text-white mt-1" onclick="$(this).attr('disabled', true); deleteGallery({{ $gallery->id }});">{{ __('backend.shared.delete') }}</button>
                                                         </div>
                                                     @endforeach
@@ -856,7 +771,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.item.crop-feature-image') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.crop-feature-image') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -872,7 +787,7 @@
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
                                 <input id="upload_image_input" type="file" class="custom-file-input">
-                                <label class="custom-file-label" for="upload_image_input">{{ __('backend.item.choose-image') }}</label>
+                                <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
                             </div>
                         </div>
                     </div>
@@ -880,7 +795,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button id="crop_image" type="button" class="btn btn-primary">{{ __('backend.item.crop-image') }}</button>
+                    <button id="crop_image" type="button" class="btn btn-primary">{{ __('backend.article.crop-image') }}</button>
                 </div>
             </div>
         </div>
@@ -897,11 +812,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ __('backend.shared.delete-message', ['record_type' => __('backend.shared.item'), 'record_name' => $item->item_title]) }}
+                    {{ __('backend.shared.delete-message', ['record_type' => __('backend.shared.article'), 'record_name' => $article->item_title]) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <form action="{{ route('user.items.destroy', $item) }}" method="POST">
+                    <form action="{{ route('user.articles.destroy', $article) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
@@ -916,7 +831,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.item.select-map-title') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.select-map-title') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -954,7 +869,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="update-item-category-form" action="{{ route('user.item.category.update', $item) }}" method="POST">
+                    <form id="update-article-category-form" action="{{ route('user.article.category.update', $article) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control" name="category[]" id="category" data-live-search="true" data-actions-box="true">
@@ -971,24 +886,24 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="button" class="btn btn-success" id="update-item-category-button">{{ __('categories.update-cat') }}</button>
+                    <button type="button" class="btn btn-success" id="update-article-category-button">{{ __('categories.update-cat') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal item slug -->
-    <div class="modal fade" id="itemSlugModal" tabindex="-1" role="dialog" aria-labelledby="itemSlugModal" aria-hidden="true">
+    <!-- Modal article slug -->
+    <div class="modal fade" id="articleSlugModal" tabindex="-1" role="dialog" aria-labelledby="articleSlugModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('item_slug.update-url') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_slug.update-url') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="update-item-slug-form" action="{{ route('user.item.slug.update', ['item' => $item]) }}" method="POST">
+                    <form id="update-article-slug-form" action="{{ route('user.article.slug.update', ['article' => $article]) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -998,12 +913,12 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">{{ '/' }}</div>
                                     </div>
-                                    <input type="text" class="form-control" name="item_slug" value="{{ old('item_slug') ? old('item_slug') : $item->item_slug }}" id="item_slug">
+                                    <input type="text" class="form-control" name="article_slug" value="{{ old('article_slug') ? old('article_slug') : $article->item_slug }}" id="article_slug">
                                 </div>
                                 <small class="form-text text-muted">
-                                    {{ __('item_slug.item-slug-help') }}
+                                    {{ __('article_slug.article-slug-help') }}
                                 </small>
-                                @error('item_slug')
+                                @error('article_slug')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -1015,77 +930,77 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="button" class="btn btn-success" id="update-item-slug-button">{{ __('item_slug.update-url') }}</button>
+                    <button type="button" class="btn btn-success" id="update-article-slug-button">{{ __('article_slug.update-url') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Start edit item hour & delete item hour -->
-    @foreach($item_hours as $item_hours_key => $item_hour)
-        <div class="modal fade" id="editItemHourModal_{{ $item_hour->id }}" tabindex="-1" role="dialog" aria-labelledby="editItemHourModal_{{ $item_hour->id }}" aria-hidden="true">
+    <!-- Start edit article hour & delete article hour -->
+    @foreach($article_hours as $article_hours_key => $article_hour)
+        <div class="modal fade" id="editarticleHourModal_{{ $article_hour->id }}" tabindex="-1" role="dialog" aria-labelledby="editarticleHourModal_{{ $article_hour->id }}" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('item_hour.modal-edit-hours-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-edit-hours-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="update-item-slug-form" action="{{ route('user.items.hours.update', ['item_hour' => $item_hour]) }}" method="POST">
+                    <form id="update-article-slug-form" action="{{ route('user.articles.hours.update', ['article_hour' => $article_hour]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
 
                             @php
-                                $item_hour_open_time_hour = intval(substr($item_hour->item_hour_open_time, 0, 2));
-                                $item_hour_open_time_minute = intval(substr($item_hour->item_hour_open_time, 3, 2));
-                                $item_hour_close_time_hour = intval(substr($item_hour->item_hour_close_time, 0, 2));
-                                $item_hour_close_time_minute = intval(substr($item_hour->item_hour_close_time, 3, 2));
+                                $article_hour_open_time_hour = intval(substr($article_hour->item_hour_open_time, 0, 2));
+                                $article_hour_open_time_minute = intval(substr($article_hour->item_hour_open_time, 3, 2));
+                                $article_hour_close_time_hour = intval(substr($article_hour->item_hour_close_time, 0, 2));
+                                $article_hour_close_time_minute = intval(substr($article_hour->item_hour_close_time, 3, 2));
                             @endphp
 
-                            <div class="form-row mb-3 align-items-end">
+                            <div class="form-row mb-3 align-articles-end">
                                 <div class="col-12 col-md-4">
-                                    <label for="item_hour_day_of_week" class="text-black">{{ __('item_hour.day-of-week') }}</label>
-                                    <select id="item_hour_day_of_week" class="selectpicker form-control" name="item_hour_day_of_week" data-live-search="true">
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('item_hour.monday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('item_hour.tuesday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('item_hour.wednesday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('item_hour.thursday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('item_hour.friday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('item_hour.saturday') }}</option>
-                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ $item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('item_hour.sunday') }}</option>
+                                    <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
+                                    <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('article_hour.monday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('article_hour.tuesday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('article_hour.wednesday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('article_hour.thursday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('article_hour.friday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('article_hour.saturday') }}</option>
+                                        <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_open_time_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
-                                    <select id="item_hour_open_time_hour" class="selectpicker form-control" name="item_hour_open_time_hour" data-live-search="true">
+                                    <label for="article_hour_open_time_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                    <select id="article_hour_open_time_hour" class="selectpicker form-control" name="article_hour_open_time_hour" data-live-search="true">
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_open_time_hour ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $article_hour_open_time_hour ? 'selected' :'' }}>{{ $full_hour }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_open_time_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
-                                    <select id="item_hour_open_time_minute" class="selectpicker form-control" name="item_hour_open_time_minute" data-live-search="true">
+                                    <label for="article_hour_open_time_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                    <select id="article_hour_open_time_minute" class="selectpicker form-control" name="article_hour_open_time_minute" data-live-search="true">
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_open_time_minute ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ $full_minute == $article_hour_open_time_minute ? 'selected' :'' }}>{{ $full_minute }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_close_time_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
-                                    <select id="item_hour_close_time_hour" class="selectpicker form-control" name="item_hour_close_time_hour" data-live-search="true">
+                                    <label for="article_hour_close_time_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                    <select id="article_hour_close_time_hour" class="selectpicker form-control" name="article_hour_close_time_hour" data-live-search="true">
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time_hour ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $article_hour_close_time_hour ? 'selected' :'' }}>{{ $full_hour }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_close_time_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
-                                    <select id="item_hour_close_time_minute" class="selectpicker form-control" name="item_hour_close_time_minute" data-live-search="true">
+                                    <label for="article_hour_close_time_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                    <select id="article_hour_close_time_minute" class="selectpicker form-control" name="article_hour_close_time_minute" data-live-search="true">
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_close_time_minute ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ $full_minute == $article_hour_close_time_minute ? 'selected' :'' }}>{{ $full_minute }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -1093,7 +1008,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-12">
-                                    {{ __('item_hour.open-hour-hours-help') }}
+                                    {{ __('article_hour.open-hour-hours-help') }}
                                 </div>
                             </div>
 
@@ -1107,39 +1022,39 @@
             </div>
         </div>
 
-        <div class="modal fade" id="deleteItemHourModal_{{ $item_hour->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteItemHourModal_{{ $item_hour->id }}" aria-hidden="true">
+        <div class="modal fade" id="deletearticleHourModal_{{ $article_hour->id }}" tabindex="-1" role="dialog" aria-labelledby="deletearticleHourModal_{{ $article_hour->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('item_hour.modal-delete-hours-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-delete-hours-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>{{ __('item_hour.modal-delete-hours-description') }}</p>
+                        <p>{{ __('article_hour.modal-delete-hours-description') }}</p>
                         <p>
-                            @if($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY)
-                                {{ __('item_hour.monday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY)
-                                {{ __('item_hour.tuesday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY)
-                                {{ __('item_hour.wednesday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY)
-                                {{ __('item_hour.thursday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY)
-                                {{ __('item_hour.friday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY)
-                                {{ __('item_hour.saturday') }}
-                            @elseif($item_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY)
-                                {{ __('item_hour.sunday') }}
+                            @if($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY)
+                                {{ __('article_hour.monday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY)
+                                {{ __('article_hour.tuesday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY)
+                                {{ __('article_hour.wednesday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY)
+                                {{ __('article_hour.thursday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY)
+                                {{ __('article_hour.friday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY)
+                                {{ __('article_hour.saturday') }}
+                            @elseif($article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY)
+                                {{ __('article_hour.sunday') }}
                             @endif
-                            {{ substr($item_hour->item_hour_open_time, 0, -3) . '-' . substr($item_hour->item_hour_close_time, 0, -3) }}
+                            {{ substr($article_hour->item_hour_open_time, 0, -3) . '-' . substr($article_hour->item_hour_close_time, 0, -3) }}
                         </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                        <form action="{{ route('user.items.hours.destroy', ['item_hour' => $item_hour]) }}" method="POST">
+                        <form action="{{ route('user.articles.hours.destroy', ['article_hour' => $article_hour]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
@@ -1150,65 +1065,65 @@
         </div>
     @endforeach
 
-    @foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
-        <div class="modal fade" id="editItemHourExceptionModal_{{ $item_hour_exception->id }}" tabindex="-1" role="dialog" aria-labelledby="editItemHourExceptionModal_{{ $item_hour_exception->id }}" aria-hidden="true">
+    @foreach($article_hour_exceptions as $article_hour_exceptions_key => $article_hour_exception)
+        <div class="modal fade" id="editarticleHourExceptionModal_{{ $article_hour_exception->id }}" tabindex="-1" role="dialog" aria-labelledby="editarticleHourExceptionModal_{{ $article_hour_exception->id }}" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('item_hour.modal-edit-hour-exceptions-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-edit-hour-exceptions-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="update-item-slug-form" action="{{ route('user.items.hour-exceptions.update', ['item_hour_exception' => $item_hour_exception]) }}" method="POST">
+                    <form id="update-article-slug-form" action="{{ route('user.articles.hour-exceptions.update', ['article_hour_exception' => $article_hour_exception]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
                             @php
-                                $item_hour_exception_open_time_hour = empty($item_hour_exception->item_hour_exception_open_time) ? null : intval(substr($item_hour_exception->item_hour_exception_open_time, 0, 2));
-                                $item_hour_exception_open_time_minute = empty($item_hour_exception->item_hour_exception_open_time) ? null : intval(substr($item_hour_exception->item_hour_exception_open_time, 3, 2));
-                                $item_hour_exception_close_time_hour = empty($item_hour_exception->item_hour_exception_close_time) ? null : intval(substr($item_hour_exception->item_hour_exception_close_time, 0, 2));
-                                $item_hour_exception_close_time_minute = empty($item_hour_exception->item_hour_exception_close_time) ? null : intval(substr($item_hour_exception->item_hour_exception_close_time, 3, 2));
+                                $article_hour_exception_open_time_hour = empty($article_hour_exception->item_hour_exception_open_time) ? null : intval(substr($article_hour_exception->item_hour_exception_open_time, 0, 2));
+                                $article_hour_exception_open_time_minute = empty($article_hour_exception->item_hour_exception_open_time) ? null : intval(substr($article_hour_exception->item_hour_exception_open_time, 3, 2));
+                                $article_hour_exception_close_time_hour = empty($article_hour_exception->item_hour_exception_close_time) ? null : intval(substr($article_hour_exception->item_hour_exception_close_time, 0, 2));
+                                $article_hour_exception_close_time_minute = empty($article_hour_exception->item_hour_exception_close_time) ? null : intval(substr($article_hour_exception->item_hour_exception_close_time, 3, 2));
                             @endphp
 
-                            <div class="form-row mb-3 align-items-end">
+                            <div class="form-row mb-3 align-articles-end">
                                 <div class="col-12 col-md-4">
-                                    <label for="item_hour_exception_date" class="text-black">{{ __('item_hour.open-hour-exception-date') }}</label>
-                                    <input id="item_hour_exception_date" type="text" class="form-control date-picker-input" name="item_hour_exception_date" value="{{ $item_hour_exception->item_hour_exception_date }}" placeholder="{{ __('item_hour.open-hour-exception-date-placeholder') }}">
+                                    <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
+                                    <input id="article_hour_exception_date" type="text" class="form-control date-picker-input" name="article_hour_exception_date" value="{{ $article_hour_exception->item_hour_exception_date }}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_exception_open_time_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
-                                    <select id="item_hour_exception_open_time_hour" class="selectpicker form-control" name="item_hour_exception_open_time_hour" data-live-search="true">
-                                        <option value="" {{ is_null($item_hour_exception_open_time_hour) ? 'selected' :'' }}>{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                    <label for="article_hour_exception_open_time_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                    <select id="article_hour_exception_open_time_hour" class="selectpicker form-control" name="article_hour_exception_open_time_hour" data-live-search="true">
+                                        <option value="" {{ is_null($article_hour_exception_open_time_hour) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}" {{ (!is_null($item_hour_exception_open_time_hour) && $full_hour == $item_hour_exception_open_time_hour) ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ (!is_null($article_hour_exception_open_time_hour) && $full_hour == $article_hour_exception_open_time_hour) ? 'selected' :'' }}>{{ $full_hour }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_exception_open_time_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
-                                    <select id="item_hour_exception_open_time_minute" class="selectpicker form-control" name="item_hour_exception_open_time_minute" data-live-search="true">
-                                        <option value="" {{ is_null($item_hour_exception_open_time_minute) ? 'selected' :'' }}>{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                    <label for="article_hour_exception_open_time_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                    <select id="article_hour_exception_open_time_minute" class="selectpicker form-control" name="article_hour_exception_open_time_minute" data-live-search="true">
+                                        <option value="" {{ is_null($article_hour_exception_open_time_minute) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}" {{ (!is_null($item_hour_exception_open_time_minute) && $full_minute == $item_hour_exception_open_time_minute) ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ (!is_null($article_hour_exception_open_time_minute) && $full_minute == $article_hour_exception_open_time_minute) ? 'selected' :'' }}>{{ $full_minute }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_exception_close_time_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
-                                    <select id="item_hour_exception_close_time_hour" class="selectpicker form-control" name="item_hour_exception_close_time_hour" data-live-search="true">
-                                        <option value="" {{ is_null($item_hour_exception_close_time_hour) ? 'selected' :'' }}>{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                    <label for="article_hour_exception_close_time_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                    <select id="article_hour_exception_close_time_hour" class="selectpicker form-control" name="article_hour_exception_close_time_hour" data-live-search="true">
+                                        <option value="" {{ is_null($article_hour_exception_close_time_hour) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}" {{ (!is_null($item_hour_exception_close_time_hour) && $full_hour == $item_hour_exception_close_time_hour) ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ (!is_null($article_hour_exception_close_time_hour) && $full_hour == $article_hour_exception_close_time_hour) ? 'selected' :'' }}>{{ $full_hour }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-2">
-                                    <label for="item_hour_exception_close_time_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
-                                    <select id="item_hour_exception_close_time_minute" class="selectpicker form-control" name="item_hour_exception_close_time_minute" data-live-search="true">
-                                        <option value="" {{ is_null($item_hour_exception_close_time_minute) ? 'selected' :'' }}>{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
+                                    <label for="article_hour_exception_close_time_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                    <select id="article_hour_exception_close_time_minute" class="selectpicker form-control" name="article_hour_exception_close_time_minute" data-live-search="true">
+                                        <option value="" {{ is_null($article_hour_exception_close_time_minute) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}" {{ (!is_null($item_hour_exception_close_time_minute) && $full_minute == $item_hour_exception_close_time_minute) ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ (!is_null($article_hour_exception_close_time_minute) && $full_minute == $article_hour_exception_close_time_minute) ? 'selected' :'' }}>{{ $full_minute }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -1216,7 +1131,7 @@
 
                             <div class="form-row mb-3">
                                 <div class="col-12">
-                                    {{ __('item_hour.open-hour-exceptions-help') }}
+                                    {{ __('article_hour.open-hour-exceptions-help') }}
                                 </div>
                             </div>
 
@@ -1230,29 +1145,29 @@
             </div>
         </div>
 
-        <div class="modal fade" id="deleteItemHourExceptionModal_{{ $item_hour_exception->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteItemHourExceptionModal_{{ $item_hour_exception->id }}" aria-hidden="true">
+        <div class="modal fade" id="deletearticleHourExceptionModal_{{ $article_hour_exception->id }}" tabindex="-1" role="dialog" aria-labelledby="deletearticleHourExceptionModal_{{ $article_hour_exception->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('item_hour.modal-delete-hour-exception-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-delete-hour-exception-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>{{ __('item_hour.modal-delete-hour-exception-description') }}</p>
+                        <p>{{ __('article_hour.modal-delete-hour-exception-description') }}</p>
                         <p>
-                            {{ $item_hour_exception->item_hour_exception_date }}
-                            @if(!empty($item_hour_exception->item_hour_exception_open_time) && !empty($item_hour_exception->item_hour_exception_close_time))
-                                {{ substr($item_hour_exception->item_hour_exception_open_time, 0, -3) . '-' . substr($item_hour_exception->item_hour_exception_close_time, 0, -3) }}
+                            {{ $article_hour_exception->item_hour_exception_date }}
+                            @if(!empty($article_hour_exception->item_hour_exception_open_time) && !empty($article_hour_exception->item_hour_exception_close_time))
+                                {{ substr($article_hour_exception->item_hour_exception_open_time, 0, -3) . '-' . substr($article_hour_exception->item_hour_exception_close_time, 0, -3) }}
                             @else
-                                {{ __('item_hour.open-hour-exception-close-all-day') }}
+                                {{ __('article_hour.open-hour-exception-close-all-day') }}
                             @endif
                         </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                        <form action="{{ route('user.items.hour-exceptions.destroy', ['item_hour_exception' => $item_hour_exception]) }}" method="POST">
+                        <form action="{{ route('user.articles.hour-exceptions.destroy', ['article_hour_exception' => $article_hour_exception]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
@@ -1262,7 +1177,7 @@
             </div>
         </div>
     @endforeach
-    <!-- End edit item hour & delete item hour -->
+    <!-- End edit article hour & delete article hour -->
 
 @endsection
 
@@ -1283,13 +1198,20 @@
     @include('backend.user.partials.bootstrap-select-locale')
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
+
     <script>
 
         function deleteGallery(domId)
         {
             //$("form :submit").attr("disabled", true);
 
-            var ajax_url = '/ajax/item/gallery/delete/' + domId;
+            var ajax_url = '/ajax/article/gallery/delete/' + domId;
 
             $.ajaxSetup({
                 headers: {
@@ -1303,7 +1225,7 @@
                 },
                 success: function(result){
                     console.log(result);
-                    $('#item_image_gallery_' + domId).remove();
+                    $('#article_image_gallery_' + domId).remove();
 
                 }});
 
@@ -1316,33 +1238,33 @@
             /**
              * Start listing type radio button select
              */
-            @if((old('item_type') ? old('item_type') : $item->item_type) == \App\Item::ITEM_TYPE_ONLINE)
-            $( "#item_address" ).prop( "disabled", true );
-            $( "#item_address_hide" ).prop( "disabled", true );
+            @if((old('article_type') ? old('article_type') : $article->item_type) == \App\Item::ITEM_TYPE_ONLINE)
+            $( "#article_address" ).prop( "disabled", true );
+            $( "#article_address_hide" ).prop( "disabled", true );
             $( "#select_country_id" ).prop( "disabled", true );
             $( "#select_state_id" ).prop( "disabled", true );
             $( "#select_city_id" ).prop( "disabled", true );
-            $( "#item_postal_code" ).prop( "disabled", true );
-            $( "#item_lat" ).prop( "disabled", true );
-            $( "#item_lng" ).prop( "disabled", true );
+            $( "#article_postal_code" ).prop( "disabled", true );
+            $( "#article_lat" ).prop( "disabled", true );
+            $( "#article_lng" ).prop( "disabled", true );
 
             $('#select_country_id').selectpicker('refresh');
             $('#select_state_id').selectpicker('refresh');
             $('#select_city_id').selectpicker('refresh');
             @endif
-            $('input:radio[name="item_type"]').change(
+            $('input:radio[name="article_type"]').change(
                 function(){
                     if ($(this).is(':checked') && $(this).val() == '{{ \App\Item::ITEM_TYPE_REGULAR }}') {
 
                         // enable all location related input
-                        $( "#item_address" ).prop( "disabled", false );
-                        $( "#item_address_hide" ).prop( "disabled", false );
+                        $( "#article_address" ).prop( "disabled", false );
+                        $( "#article_address_hide" ).prop( "disabled", false );
                         $( "#select_country_id" ).prop( "disabled", false );
                         $( "#select_state_id" ).prop( "disabled", false );
                         $( "#select_city_id" ).prop( "disabled", false );
-                        $( "#item_postal_code" ).prop( "disabled", false );
-                        $( "#item_lat" ).prop( "disabled", false );
-                        $( "#item_lng" ).prop( "disabled", false );
+                        $( "#article_postal_code" ).prop( "disabled", false );
+                        $( "#article_lat" ).prop( "disabled", false );
+                        $( "#article_lng" ).prop( "disabled", false );
 
                         $('#select_country_id').selectpicker('refresh');
                         $('#select_state_id').selectpicker('refresh');
@@ -1351,14 +1273,14 @@
                     else
                     {
                         // disable all location related input
-                        $( "#item_address" ).prop( "disabled", true );
-                        $( "#item_address_hide" ).prop( "disabled", true );
+                        $( "#article_address" ).prop( "disabled", true );
+                        $( "#article_address_hide" ).prop( "disabled", true );
                         $( "#select_country_id" ).prop( "disabled", true );
                         $( "#select_state_id" ).prop( "disabled", true );
                         $( "#select_city_id" ).prop( "disabled", true );
-                        $( "#item_postal_code" ).prop( "disabled", true );
-                        $( "#item_lat" ).prop( "disabled", true );
-                        $( "#item_lng" ).prop( "disabled", true );
+                        $( "#article_postal_code" ).prop( "disabled", true );
+                        $( "#article_lat" ).prop( "disabled", true );
+                        $( "#article_lng" ).prop( "disabled", true );
 
                         $('#select_country_id').selectpicker('refresh');
                         $('#select_state_id').selectpicker('refresh');
@@ -1375,15 +1297,15 @@
              * Start map modal
              */
             var map = L.map('map-modal-body', {
-                center: [{{ empty($item->item_lat) ? $site_global_settings->setting_site_location_lat : $item->item_lat }}, {{ empty($item->item_lng) ? $site_global_settings->setting_site_location_lng : $item->item_lng }}],
+                center: [{{ empty($article->item_lat) ? $site_global_settings->setting_site_location_lat : $article->item_lat }}, {{ empty($article->item_lng) ? $site_global_settings->setting_site_location_lng : $article->item_lng }}],
                 zoom: 10,
             });
 
             var layerGroup = L.layerGroup().addTo(map);
-            L.marker([{{ empty($item->item_lat) ? $site_global_settings->setting_site_location_lat : $item->item_lat }}, {{ empty($item->item_lng) ? $site_global_settings->setting_site_location_lng : $item->item_lng }}]).addTo(layerGroup);
+            L.marker([{{ empty($article->item_lat) ? $site_global_settings->setting_site_location_lat : $article->item_lat }}, {{ empty($article->item_lng) ? $site_global_settings->setting_site_location_lng : $article->item_lng }}]).addTo(layerGroup);
 
-            var current_lat = {{ empty($item->item_lat) ? $site_global_settings->setting_site_location_lat : $item->item_lat }};
-            var current_lng = {{ empty($item->item_lng) ? $site_global_settings->setting_site_location_lng : $item->item_lng }};
+            var current_lat = {{ empty($article->item_lat) ? $site_global_settings->setting_site_location_lat : $article->item_lat }};
+            var current_lng = {{ empty($article->item_lng) ? $site_global_settings->setting_site_location_lng : $article->item_lng }};
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -1403,8 +1325,8 @@
 
             $('#lat_lng_confirm').on('click', function(){
 
-                $('#item_lat').val(current_lat);
-                $('#item_lng').val(current_lng);
+                $('#article_lat').val(current_lat);
+                $('#article_lng').val(current_lng);
                 $('#map-modal').modal('hide')
             });
             $('.lat_lng_select_button').on('click', function(){
@@ -1440,7 +1362,7 @@
                         },
                         success: function(result){
 
-                            $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
+                            $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var state_id = value.id;
                                 var state_name = value.state_name;
@@ -1473,7 +1395,7 @@
                         },
                         success: function(result){
 
-                            $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
+                            $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var city_id = value.id;
                                 var city_name = value.city_name;
@@ -1500,7 +1422,7 @@
                     },
                     success: function(result){
 
-                        $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
+                        $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var state_id = value.id;
                             var state_name = value.state_name;
@@ -1534,7 +1456,7 @@
                     },
                     success: function(result){
 
-                        $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
+                        $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var city_id = value.id;
                             var city_name = value.city_name;
@@ -1569,9 +1491,9 @@
 
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
-                        html += "<div class='col-3 mb-2' id='item_image_gallery_" + a + "'>" +
+                        html += "<div class='col-3 mb-2' id='article_image_gallery_" + a + "'>" +
                             "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +
-                            "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#item_image_gallery_" + a + "\").remove();'>Delete</button>" +
+                            "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
                     }
@@ -1665,9 +1587,9 @@
             /**
              * Start category update modal form submit
              */
-            $('#update-item-category-button').on('click', function(){
-                $('#update-item-category-button').attr("disabled", true);
-                $('#update-item-category-form').submit();
+            $('#update-article-category-button').on('click', function(){
+                $('#update-article-category-button').attr("disabled", true);
+                $('#update-article-category-form').submit();
             });
 
             @error('category')
@@ -1679,18 +1601,18 @@
 
 
             /**
-             * Start item slug update modal form submit
+             * Start article slug update modal form submit
              */
-            $('#update-item-slug-button').on('click', function(){
-                $('#update-item-slug-button').attr("disabled", true);
-                $('#update-item-slug-form').submit();
+            $('#update-article-slug-button').on('click', function(){
+                $('#update-article-slug-button').attr("disabled", true);
+                $('#update-article-slug-form').submit();
             });
 
-            @error('item_slug')
-            $('#itemSlugModal').modal('show');
+            @error('article_slug')
+            $('#articleSlugModal').modal('show');
             @enderror
             /**
-             * End item slug update modal form submit
+             * End article slug update modal form submit
              */
 
             /**
@@ -1700,7 +1622,7 @@
 
                 $('#delete_feature_image_button').attr("disabled", true);
 
-                var ajax_url = '/ajax/item/image/delete/' + '{{ $item->id }}';
+                var ajax_url = '/ajax/article/image/delete/' + '{{ $article->id }}';
 
                 $.ajaxSetup({
                     headers: {
@@ -1715,7 +1637,7 @@
                     success: function(result){
                         console.log(result);
 
-                        $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}");
+                        $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}");
                         $('#feature_image').val("");
 
                         $('#delete_feature_image_button').attr("disabled", false);
@@ -1728,19 +1650,19 @@
             /**
              * Start open hour add button
              */
-            $('#item_hour_create_button').on('click', function(){
+            $('#article_hour_create_button').on('click', function(){
 
-                var item_hour_day_of_week_text = $("#item_hour_day_of_week option:selected").text();
-                var item_hour_day_of_week_value = $("#item_hour_day_of_week").val();
-                var item_hour_open_time_open_hour = $("#item_hour_open_time_open_hour").val();
-                var item_hour_open_time_open_minute = $("#item_hour_open_time_open_minute").val();
-                var item_hour_open_time_close_hour = $("#item_hour_open_time_close_hour").val();
-                var item_hour_open_time_close_minute = $("#item_hour_open_time_close_minute").val();
+                var article_hour_day_of_week_text = $("#article_hour_day_of_week option:selected").text();
+                var article_hour_day_of_week_value = $("#article_hour_day_of_week").val();
+                var article_hour_open_time_open_hour = $("#article_hour_open_time_open_hour").val();
+                var article_hour_open_time_open_minute = $("#article_hour_open_time_open_minute").val();
+                var article_hour_open_time_close_hour = $("#article_hour_open_time_close_hour").val();
+                var article_hour_open_time_close_minute = $("#article_hour_open_time_close_minute").val();
 
-                var item_hours_value = item_hour_day_of_week_value + ' ' + item_hour_open_time_open_hour + ':' + item_hour_open_time_open_minute + ' ' + item_hour_open_time_close_hour + ':' + item_hour_open_time_close_minute;
-                var item_hour_span_text = item_hour_day_of_week_text + ' ' + item_hour_open_time_open_hour + ':' + item_hour_open_time_open_minute + '-' + item_hour_open_time_close_hour + ':' + item_hour_open_time_close_minute;
+                var article_hours_value = article_hour_day_of_week_value + ' ' + article_hour_open_time_open_hour + ':' + article_hour_open_time_open_minute + ' ' + article_hour_open_time_close_hour + ':' + article_hour_open_time_close_minute;
+                var article_hour_span_text = article_hour_day_of_week_text + ' ' + article_hour_open_time_open_hour + ':' + article_hour_open_time_open_minute + '-' + article_hour_open_time_close_hour + ':' + article_hour_open_time_close_minute;
 
-                $( "#open_hour_added_hours" ).append("<div class='col-12 col-md-3'><input type='hidden' name='item_hours[]' value='" + item_hours_value + "'>"+item_hour_span_text+"<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
+                $( "#open_hour_added_hours" ).append("<div class='col-12 col-md-3'><input type='hidden' name='article_hours[]' value='" + article_hours_value + "'>"+article_hour_span_text+"<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
             });
             /**
              * End open hour add button
@@ -1753,33 +1675,64 @@
                 format: 'yyyy-mm-dd',
             });
 
-            $('#item_hour_exception_create_button').on('click', function(){
+            $('#article_hour_exception_create_button').on('click', function(){
 
-                var item_hour_exception_date = $("#item_hour_exception_date").val();
-                var item_hour_exception_open_time_open_hour = $("#item_hour_exception_open_time_open_hour").val();
-                var item_hour_exception_open_time_open_minute = $("#item_hour_exception_open_time_open_minute").val();
-                var item_hour_exception_open_time_close_hour = $("#item_hour_exception_open_time_close_hour").val();
-                var item_hour_exception_open_time_close_minute = $("#item_hour_exception_open_time_close_minute").val();
+                var article_hour_exception_date = $("#article_hour_exception_date").val();
+                var article_hour_exception_open_time_open_hour = $("#article_hour_exception_open_time_open_hour").val();
+                var article_hour_exception_open_time_open_minute = $("#article_hour_exception_open_time_open_minute").val();
+                var article_hour_exception_open_time_close_hour = $("#article_hour_exception_open_time_close_hour").val();
+                var article_hour_exception_open_time_close_minute = $("#article_hour_exception_open_time_close_minute").val();
 
-                var item_hours_exception_value = item_hour_exception_date;
-                var item_hours_exception_span_text = item_hour_exception_date;
+                var article_hours_exception_value = article_hour_exception_date;
+                var article_hours_exception_span_text = article_hour_exception_date;
 
-                if(item_hour_exception_open_time_open_hour !== "" && item_hour_exception_open_time_open_minute !== "" && item_hour_exception_open_time_close_hour !== "" && item_hour_exception_open_time_close_minute !== "")
+                if(article_hour_exception_open_time_open_hour !== "" && article_hour_exception_open_time_open_minute !== "" && article_hour_exception_open_time_close_hour !== "" && article_hour_exception_open_time_close_minute !== "")
                 {
-                    item_hours_exception_value += ' ' + item_hour_exception_open_time_open_hour + ':' + item_hour_exception_open_time_open_minute + ' ' + item_hour_exception_open_time_close_hour + ':' + item_hour_exception_open_time_close_minute;
-                    item_hours_exception_span_text += ' ' + item_hour_exception_open_time_open_hour + ':' + item_hour_exception_open_time_open_minute + '-' + item_hour_exception_open_time_close_hour + ':' + item_hour_exception_open_time_close_minute;
+                    article_hours_exception_value += ' ' + article_hour_exception_open_time_open_hour + ':' + article_hour_exception_open_time_open_minute + ' ' + article_hour_exception_open_time_close_hour + ':' + article_hour_exception_open_time_close_minute;
+                    article_hours_exception_span_text += ' ' + article_hour_exception_open_time_open_hour + ':' + article_hour_exception_open_time_open_minute + '-' + article_hour_exception_open_time_close_hour + ':' + article_hour_exception_open_time_close_minute;
                 }
                 else
                 {
-                    item_hours_exception_span_text += " {{ __('item_hour.open-hour-exception-close-all-day') }}";
+                    article_hours_exception_span_text += " {{ __('article_hour.open-hour-exception-close-all-day') }}";
                 }
 
-                $( "#open_hour_added_exceptions" ).append("<div class='col-12 col-md-3'><input type='hidden' name='item_hour_exceptions[]' value='" + item_hours_exception_value + "'>" + item_hours_exception_span_text + "<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
+                $( "#open_hour_added_exceptions" ).append("<div class='col-12 col-md-3'><input type='hidden' name='article_hour_exceptions[]' value='" + article_hours_exception_value + "'>" + article_hours_exception_span_text + "<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
 
             });
             /**
              * End open hour exception add button
              */
+
+            $('#article_description').trumbowyg({
+                plugins: {
+                    resizimg: {
+                        minSize: 32,
+                        step: 16,
+                    }
+                },
+                btnsDef: {
+                    // Create a new dropdown
+                    image: {
+                        dropdown: ['insertImage', 'base64'],
+                        ico: 'insertImage'
+                    }
+                },
+                // Redefine the button pane
+                btns: [
+                    ['viewHTML'],
+                    ['formatting'],
+                    ['strong', 'em', 'del'],
+                    ['superscript', 'subscript'],
+                    ['link'],
+                    ['image'], // Our fresh created dropdown
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['unorderedList', 'orderedList'],
+                    ['horizontalRule'],
+                    ['removeformat'],
+                    ['fullscreen']
+                ]
+            });
+
         });
     </script>
 
@@ -1788,7 +1741,7 @@
         <script>
             function initMap()
             {
-                const myLatlng = { lat: {{ empty($item->item_lat) ? $site_global_settings->setting_site_location_lat : $item->item_lat }}, lng: {{ empty($item->item_lng) ? $site_global_settings->setting_site_location_lng : $item->item_lng }} };
+                const myLatlng = { lat: {{ empty($article->item_lat) ? $site_global_settings->setting_site_location_lat : $article->item_lat }}, lng: {{ empty($article->item_lng) ? $site_global_settings->setting_site_location_lng : $article->item_lng }} };
                 const map = new google.maps.Map(document.getElementById('map-modal-body'), {
                     zoom: 4,
                     center: myLatlng,
@@ -1825,8 +1778,8 @@
 
                 $('#lat_lng_confirm').on('click', function(){
 
-                    $('#item_lat').val(current_lat);
-                    $('#item_lng').val(current_lng);
+                    $('#article_lat').val(current_lat);
+                    $('#article_lng').val(current_lng);
                     $('#map-modal').modal('hide');
                 });
                 $('.lat_lng_select_button').on('click', function(){

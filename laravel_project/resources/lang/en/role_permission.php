@@ -11,6 +11,16 @@ return array (
         'listing-owner-help' => "Listing owner cannot change after creation",
     ],
 
+    'article' => [
+        'alert' => [
+            'user-not-exist' => "The user account does not exist",
+        ],
+        'delete-feature-image' => "Remove Feature Image",
+        'myself' => "Myself",
+        'listing-owner' => "Listing owner",
+        'listing-owner-help' => "Listing owner cannot change after creation",
+    ],
+
     'user' => [
         'delete-profile-image' => "Remove",
     ],

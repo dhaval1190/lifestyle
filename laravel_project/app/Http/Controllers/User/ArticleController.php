@@ -41,6 +41,8 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
+
+        $login_user = Auth::user();
         $settings = app('site_global_settings');
 
         /**
@@ -59,8 +61,13 @@ class ArticleController extends Controller
          */
         $request_query_array = $request->query();
 
-        $all_printable_categories = new Category();
-        $all_printable_categories = $all_printable_categories->getPrintableCategoriesNoDash();
+        // $all_printable_categories = new Category();
+        // $all_printable_categories = $all_printable_categories->getPrintableCategoriesNoDash();
+
+        $all_printable_categories = [];
+        if($login_user->categories->count() > 0) {
+            $all_printable_categories = $login_user->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+        }
 
         // filter search query
         $search_query = empty($request->search_query) ? null : $request->search_query;
@@ -292,12 +299,14 @@ class ArticleController extends Controller
      */
     public function create(Request $request)
     {
+        $login_user = Auth::user();
+
         $settings = app('site_global_settings');
 
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.backend.user.article.create-item', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.backend.user.article.create-article', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -305,23 +314,27 @@ class ArticleController extends Controller
          * End SEO
          */
 
-        $all_categories = new Category();
-        $all_categories = $all_categories->getPrintableCategories();
-
-        $category_ids = empty($request->category) ? array() : $request->category;
-
-        if(!empty($category_ids) && !is_array($category_ids))
-        {
-            return redirect()->back();
+        $all_categories = [];
+        if($login_user->categories->count() > 0) {
+            $all_categories = $login_user->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
         }
 
-        $all_customFields = collect();
+        // $all_categories = new Category();
+        // $all_categories = $all_categories->getPrintableCategories();
 
-        if(count($category_ids) > 0)
-        {
-            $all_customFields = new CustomField();
-            $all_customFields = $all_customFields->getDistinctCustomFieldsByCategories($category_ids);
-        }
+        // $category_ids = empty($request->category) ? array() : $request->category;
+        // if(!empty($category_ids) && !is_array($category_ids))
+        // {
+        //     return redirect()->back();
+        // }
+
+        // $all_customFields = collect();
+
+        // if(count($category_ids) > 0)
+        // {
+        //     $all_customFields = new CustomField();
+        //     $all_customFields = $all_customFields->getDistinctCustomFieldsByCategories($category_ids);
+        // }
 
         /**
          * Start initial country selector
@@ -339,7 +352,7 @@ class ArticleController extends Controller
          * End initial time zone selector
          */
 
-        $setting_item_max_gallery_photos = $settings->settingItem->setting_item_max_gallery_photos;
+        $setting_article_max_gallery_photos = $settings->settingItem->setting_item_max_gallery_photos;
         $setting_site_location_lat = $settings->setting_site_location_lat;
         $setting_site_location_lng = $settings->setting_site_location_lng;
 
@@ -347,22 +360,21 @@ class ArticleController extends Controller
          * Start initial item_featured selector
          */
         $login_user = Auth::user();
-        $show_item_featured_selector = false;
+        $show_article_featured_selector = false;
         if($login_user->hasPaidSubscription())
         {
-            $show_item_featured_selector = true;
+            $show_article_featured_selector = true;
         }
         elseif(is_null($login_user->subscription->plan->plan_max_featured_listing) || $login_user->subscription->plan->plan_max_featured_listing > 0)
         {
-            $show_item_featured_selector = true;
+            $show_article_featured_selector = true;
         }
         /**
          * End initial item_featured selector
          */
 
         return response()->view('backend.user.article.create',
-            compact('all_categories', 'category_ids', 'all_customFields', 'setting_item_max_gallery_photos',
-                'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_item_featured_selector',
+            compact('all_categories', 'setting_article_max_gallery_photos', 'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_article_featured_selector',
                 'time_zone_identifiers'));
     }
 
@@ -382,11 +394,11 @@ class ArticleController extends Controller
          */
         $login_user = Auth::user();
 
-        if($request->item_featured == Item::ITEM_FEATURED)
+        if($request->article_featured == Item::ITEM_FEATURED)
         {
             if(!$login_user->canFeatureItem())
             {
-                \Session::flash('flash_message', __('alert.item-created-error-quota'));
+                \Session::flash('flash_message', __('alert.article-created-error-quota'));
                 \Session::flash('flash_type', 'danger');
                 return redirect()->back()->withInput($request->input());
             }
@@ -406,66 +418,36 @@ class ArticleController extends Controller
 
         // prepare rule for general information
         $validate_rule = [
-            'category' => 'required',
-            'category.*' => 'numeric',
-            'item_featured' => 'required|numeric',
-            'item_title' => 'required|max:255',
-            'item_description' => 'nullable',
+            'category' => 'required|array',
+            'category.*' => 'exists:categories,id', // check each item in the array
+            'article_featured' => 'required|numeric',
+            'article_title' => 'required|max:255',
+            'article_description' => 'nullable',
             'city_id' => 'nullable|numeric',
             'state_id' => 'nullable|numeric',
             'country_id' => 'nullable|numeric',
-            'item_postal_code' => 'nullable|max:255',
-            'item_phone' => 'nullable|max:255',
-            'item_website' => 'nullable|url|max:255',
-            'item_social_facebook' => 'nullable|url|max:255',
-            'item_social_twitter' => 'nullable|url|max:255',
-            'item_social_linkedin' => 'nullable|url|max:255',
-            'item_youtube_id' => 'nullable|max:255',
-            'item_type' => 'required|numeric|in:1,2',
-            'item_hour_time_zone' => 'required|max:255',
-            'item_hour_show_hours' => 'required|numeric|in:1,2',
-            'item_social_instagram' => 'nullable|max:255',
-            'item_social_whatsapp' => 'nullable|numeric',
+            'article_postal_code' => 'nullable|max:255',
+            'article_phone' => 'nullable|max:255',
+            'article_website' => 'nullable|url|max:255',
+            'article_social_facebook' => 'nullable|url|max:255',
+            'article_social_twitter' => 'nullable|url|max:255',
+            'article_social_linkedin' => 'nullable|url|max:255',
+            'article_youtube_id' => 'nullable|max:255',
+            'article_type' => 'required|numeric|in:1,2',
+            'article_hour_time_zone' => 'required|max:255',
+            'article_hour_show_hours' => 'required|numeric|in:1,2',
+            'article_social_instagram' => 'nullable|max:255',
+            'article_social_whatsapp' => 'nullable|numeric',
         ];
-
-        // validate category_ids
-        $select_categories = $request->category;
-
-        foreach($select_categories as $select_categories_key => $select_category)
-        {
-            $select_category = Category::find($select_category);
-            if(!$select_category)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'category' => __('prefer_country.category-not-found'),
-                    ]);
-            }
-
-            // prepare validate rule for custom fields
-            $custom_field_validation = array();
-            $custom_field_link = $select_category->allCustomFields()
-                ->where('custom_field_type', CustomField::TYPE_LINK)
-                ->get();
-
-            if($custom_field_link->count() > 0)
-            {
-                foreach($custom_field_link as $custom_field_link_key => $a_link)
-                {
-                    $custom_field_validation[str_slug($a_link->custom_field_name . $a_link->id)] = 'nullable|url';
-                }
-            }
-
-            $validate_rule = array_merge($validate_rule, $custom_field_validation);
-        }
 
         // validate request
         $request->validate($validate_rule);
+        $select_categories = $request->category;
 
         /**
          * Start validate location (city, state, country, lat, lng)
          */
-        $item_type = $request->item_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
+        $item_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
 
         $select_country_id = null;
         $select_state_id = null;
@@ -474,7 +456,7 @@ class ArticleController extends Controller
         $select_item_lng = null;
         $item_location_str = "";
 
-        $item_postal_code = $request->item_postal_code;
+        $item_postal_code = $request->article_postal_code;
 
         if($item_type == Item::ITEM_TYPE_REGULAR)
         {
@@ -511,15 +493,15 @@ class ArticleController extends Controller
             $select_state_id = $select_state->id;
             $select_city_id = $select_city->id;
 
-            if(empty($request->item_lat) || empty($request->item_lng))
+            if(empty($request->article_lat) || empty($request->article_lng))
             {
                 $select_item_lat = $select_city->city_lat;
                 $select_item_lng = $select_city->city_lng;
             }
             else
             {
-                $select_item_lat = $request->item_lat;
-                $select_item_lng = $request->item_lng;
+                $select_item_lat = $request->article_lat;
+                $select_item_lng = $request->article_lng;
             }
 
             $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
@@ -533,8 +515,8 @@ class ArticleController extends Controller
 
         $item_status = $settings->settingItem->setting_item_auto_approval_enable == SettingItem::SITE_ITEM_AUTO_APPROVAL_ENABLED ? Item::ITEM_PUBLISHED : Item::ITEM_SUBMITTED;
 
-        $item_featured = $request->item_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
-        $item_title = $request->item_title;
+        $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
+        $item_title = $request->article_title;
 
         // generate item slug based on combination of uniq id and item_title slug
         $item_slug = str_slug($item_title);
@@ -544,9 +526,9 @@ class ArticleController extends Controller
             $item_slug = $item_slug . '-' . uniqid();
         }
 
-        $item_description = empty($request->item_description) ? null : $request->item_description;
-        $item_address = $request->item_address;
-        $item_address_hide = $request->item_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
+        $item_description = empty($request->article_description) ? null : $request->article_description;
+        $item_address = $request->article_address;
+        $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
 
         $city_id = $select_city_id;
         $state_id = $select_state_id;
@@ -555,18 +537,18 @@ class ArticleController extends Controller
         $item_lat = $select_item_lat;
         $item_lng = $select_item_lng;
 
-        $item_youtube_id = $request->item_youtube_id;
+        $item_youtube_id = $request->article_youtube_id;
 
-        $item_phone = empty($request->item_phone) ? null : $request->item_phone;
-        $item_website = $request->item_website;
-        $item_social_facebook = $request->item_social_facebook;
-        $item_social_twitter = $request->item_social_twitter;
-        $item_social_linkedin = $request->item_social_linkedin;
-        $item_social_instagram = $request->item_social_instagram;
-        $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
+        $item_phone = empty($request->article_phone) ? null : $request->article_phone;
+        $item_website = $request->article_website;
+        $item_social_facebook = $request->article_social_facebook;
+        $item_social_twitter = $request->article_social_twitter;
+        $item_social_linkedin = $request->article_social_linkedin;
+        $item_social_instagram = $request->article_social_instagram;
+        $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
-        $item_hour_time_zone = $request->item_hour_time_zone;
-        $item_hour_show_hours = $request->item_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
+        $item_hour_time_zone = $request->article_hour_time_zone;
+        $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
         // start upload feature image
         $feature_image = $request->feature_image;
@@ -671,45 +653,6 @@ class ArticleController extends Controller
 
         $new_item->allCategories()->sync($select_categories);
 
-        // start to save custom fields data
-        $category_custom_fields = new CustomField();
-        $category_custom_fields = $category_custom_fields->getDistinctCustomFieldsByCategories($select_categories);
-
-        if($category_custom_fields->count() > 0)
-        {
-            foreach($category_custom_fields as $category_custom_fields_key => $custom_field)
-            {
-                if($custom_field->custom_field_type == CustomField::TYPE_MULTI_SELECT)
-                {
-                    $multi_select_values = $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), '');
-                    $multi_select_str = '';
-                    if(is_array($multi_select_values))
-                    {
-                        foreach($multi_select_values as $multi_select_values_key => $value)
-                        {
-                            $multi_select_str .= $value . ', ';
-                        }
-                    }
-                    $new_item_feature = new ItemFeature(array(
-                        'custom_field_id' => $custom_field->id,
-                        'item_feature_value' => empty($multi_select_str) ? '' : substr(trim($multi_select_str), 0, -1),
-                    ));
-                }
-                else
-                {
-                    $new_item_feature = new ItemFeature(array(
-                        'custom_field_id' => $custom_field->id,
-                        'item_feature_value' => $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), ''),
-                    ));
-                }
-
-                $created_item_feature = $new_item->features()->save($new_item_feature);
-
-                $new_item->item_features_string = $new_item->item_features_string . $created_item_feature->item_feature_value . " ";
-                $new_item->save();
-            }
-        }
-
         // start to upload image galleries
         $image_gallary = $request->image_gallery;
         if(is_array($image_gallary) && count($image_gallary) > 0)
@@ -749,7 +692,7 @@ class ArticleController extends Controller
         /**
          * Start save item hours
          */
-        $item_hours = empty($request->item_hours) ? array() : $request->item_hours;
+        $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
 
         foreach($item_hours as $item_hours_key => $item_hour)
         {
@@ -800,7 +743,7 @@ class ArticleController extends Controller
         /**
          * Start save item hour exceptions
          */
-        $item_hour_exceptions = empty($request->item_hour_exceptions) ? array() : $request->item_hour_exceptions;
+        $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
 
         foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
         {
@@ -854,7 +797,7 @@ class ArticleController extends Controller
         \Session::flash('flash_message', __('alert.item-created'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.items.edit', ['item' => $new_item]);
+        return redirect()->route('user.articles.edit', ['article' => $new_item]);
     }
 
     /**
@@ -863,9 +806,9 @@ class ArticleController extends Controller
      * @param  \App\Item  $item
      * @return RedirectResponse
      */
-    public function show(Item $item)
+    public function show(Item $article)
     {
-        return redirect()->route('page.item', ['item_slug' => $item->item_slug]);
+        return redirect()->route('page.item', ['item_slug' => $article->item_slug]);
     }
 
     /**
@@ -874,7 +817,7 @@ class ArticleController extends Controller
      * @param  \App\Item  $item
      * @return Response
      */
-    public function edit(Item $item)
+    public function edit(Item $article)
     {
         $settings = app('site_global_settings');
 
@@ -882,7 +825,7 @@ class ArticleController extends Controller
          * Start SEO
          */
         //SEOMeta::setTitle('Dashboard - Edit Listing - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
-        SEOMeta::setTitle(__('seo.backend.user.article.edit-item', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.backend.user.article.edit-article', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -890,7 +833,7 @@ class ArticleController extends Controller
          * End SEO
          */
 
-        Gate::authorize('edit-item', $item);
+        // Gate::authorize('edit-item', $article);
 
         $all_categories = new Category();
         $all_categories = $all_categories->getPrintableCategories();
@@ -903,17 +846,17 @@ class ArticleController extends Controller
         $all_states = collect([]);
         $all_cities = collect([]);
 
-        if($item->item_type == Item::ITEM_TYPE_REGULAR)
+        if($article->item_type == Item::ITEM_TYPE_REGULAR)
         {
-            $all_states = $item->country()->first()->states()->orderBy('state_name')->get();
-            $all_cities = $item->state()->first()->cities()->orderBy('city_name')->get();
+            $all_states = $article->country()->first()->states()->orderBy('state_name')->get();
+            $all_cities = $article->state()->first()->cities()->orderBy('city_name')->get();
         }
         /**
          * End initial country, state, city selector
          */
 
         // get all custom fields based on the categories of the item
-        $categories = $item->allCategories()->get();
+        $categories = $article->allCategories()->get();
         $category_ids = array();
         foreach($categories as $key => $category)
         {
@@ -940,20 +883,20 @@ class ArticleController extends Controller
          * Start initial item_featured selector
          */
         $login_user = Auth::user();
-        $show_item_featured_selector = false;
+        $show_article_featured_selector = false;
         if($login_user->hasPaidSubscription())
         {
-            $show_item_featured_selector = true;
+            $show_article_featured_selector = true;
         }
         elseif(is_null($login_user->subscription->plan->plan_max_featured_listing) || $login_user->subscription->plan->plan_max_featured_listing > 0)
         {
-            $show_item_featured_selector = true;
+            $show_article_featured_selector = true;
         }
         /**
-         * End initial item_featured selector
+         * End initial article_featured selector
          */
 
-        $setting_item_max_gallery_photos = $settings->settingItem->setting_item_max_gallery_photos;
+        $setting_article_max_gallery_photos = $settings->settingItem->setting_item_max_gallery_photos;
 
         /**
          * Start initial time zone selector
@@ -966,16 +909,16 @@ class ArticleController extends Controller
         /**
          * Start initial item hours and exceptions
          */
-        $item_hours = $item->itemHours()->orderBy('item_hour_day_of_week')->get();
-        $item_hour_exceptions = $item->itemHourExceptions()->orderBy('item_hour_exception_date')->get();
+        $article_hours = $article->itemHours()->orderBy('item_hour_day_of_week')->get();
+        $article_hour_exceptions = $article->itemHourExceptions()->orderBy('item_hour_exception_date')->get();
         /**
          * End initial item hours and exceptions
          */
 
         return response()->view('backend.user.article.edit',
-            compact('all_countries', 'all_states', 'all_cities', 'all_customFields', 'item', 'categories',
-            'all_categories', 'category_ids', 'show_item_featured_selector', 'setting_item_max_gallery_photos',
-            'time_zone_identifiers', 'item_hours', 'item_hour_exceptions'));
+            compact('all_countries', 'all_states', 'all_cities', 'all_customFields', 'article', 'categories',
+            'all_categories', 'category_ids', 'show_article_featured_selector', 'setting_article_max_gallery_photos',
+            'time_zone_identifiers', 'article_hours', 'article_hour_exceptions'));
     }
 
     /**
@@ -984,7 +927,7 @@ class ArticleController extends Controller
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function updateItemSlug(Request $request, Item $item)
+    public function updateItemSlug(Request $request, Item $article)
     {
         $request->validate([
             'item_slug' => 'required|regex:/^[\w-]*$/|max:255',
@@ -995,7 +938,7 @@ class ArticleController extends Controller
         $validate_error = array();
 
         $item_slug_exist = Item::where('item_slug', $item_slug)
-            ->where('id', '!=', $item->id)
+            ->where('id', '!=', $article->id)
             ->count();
 
         if($item_slug_exist > 0)
@@ -1008,13 +951,13 @@ class ArticleController extends Controller
             throw ValidationException::withMessages($validate_error);
         }
 
-        $item->item_slug = $item_slug;
-        $item->save();
+        $article->item_slug = $item_slug;
+        $article->save();
 
         \Session::flash('flash_message', __('item_slug.alert.item-slug-update-success'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.items.edit', $item);
+        return redirect()->route('user.articles.edit', $article);
     }
 
     /**
@@ -1023,7 +966,7 @@ class ArticleController extends Controller
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function updateItemCategory(Request $request, Item $item)
+    public function updateItemCategory(Request $request, Item $article)
     {
         $request->validate([
             'category' => 'required',
@@ -1052,23 +995,23 @@ class ArticleController extends Controller
         }
 
         // update item category
-        $item->allCategories()->sync($select_categories);
+        $article->allCategories()->sync($select_categories);
 
         // start saving item_categories_string
-        $item->item_categories_string = $item_categories_string;
+        $article->item_categories_string = $item_categories_string;
 
         if(!\Illuminate\Support\Facades\Auth::user()->isAdmin())
         {
             // if the user is regular user, then need approve this item category update
-            $item->item_status = Item::ITEM_SUBMITTED;
+            $article->item_status = Item::ITEM_SUBMITTED;
         }
-        $item->save();
+        $article->save();
 
         // success, flash message
         \Session::flash('flash_message', __('categories.item-category-update-alert'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.items.edit', $item);
+        return redirect()->route('user.articles.edit', $article);
     }
 
     /**
@@ -1079,9 +1022,9 @@ class ArticleController extends Controller
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Item $article)
     {
-        Gate::authorize('update-item', $item);
+        // Gate::authorize('update-item', $article);
 
         $settings = app('site_global_settings');
 
@@ -1090,18 +1033,18 @@ class ArticleController extends Controller
          */
         $login_user = Auth::user();
 
-        if($request->item_featured == Item::ITEM_FEATURED
-            && $item->item_featured_by_admin == Item::ITEM_NOT_FEATURED_BY_ADMIN
-            && $item->item_featured == Item::ITEM_NOT_FEATURED)
+        if($request->article_featured == Item::ITEM_FEATURED
+            && $article->item_featured_by_admin == Item::ITEM_NOT_FEATURED_BY_ADMIN
+            && $article->item_featured == Item::ITEM_NOT_FEATURED)
         {
             if(!$login_user->canFeatureItem())
             {
-                \Session::flash('flash_message', __('alert.item-created-error-quota'));
+                \Session::flash('flash_message', __('alert.article-created-error-quota'));
                 \Session::flash('flash_type', 'danger');
                 return redirect()->back()->withInput($request->input());
             }
         }
-        elseif($item->item_featured == Item::ITEM_FEATURED && $request->item_featured == Item::ITEM_NOT_FEATURED)
+        elseif($article->item_featured == Item::ITEM_FEATURED && $request->article_featured == Item::ITEM_NOT_FEATURED)
         {
             if(!$login_user->canFreeItem())
             {
@@ -1116,28 +1059,28 @@ class ArticleController extends Controller
 
         // prepare rule for general information
         $validate_rule = [
-            'item_featured' => 'required|numeric',
-            'item_title' => 'required|max:255',
-            'item_description' => 'nullable',
+            'article_featured' => 'required|numeric',
+            'article_title' => 'required|max:255',
+            'article_description' => 'nullable',
             'city_id' => 'nullable|numeric',
             'state_id' => 'nullable|numeric',
             'country_id' => 'nullable|numeric',
-            'item_postal_code' => 'nullable|max:255',
-            'item_phone' => 'nullable|max:255',
-            'item_website' => 'nullable|url|max:255',
-            'item_social_facebook' => 'nullable|url|max:255',
-            'item_social_twitter' => 'nullable|url|max:255',
-            'item_social_linkedin' => 'nullable|url|max:255',
-            'item_youtube_id' => 'nullable|max:255',
-            'item_type' => 'required|numeric|in:1,2',
-            'item_hour_time_zone' => 'required|max:255',
-            'item_hour_show_hours' => 'required|numeric|in:1,2',
-            'item_social_instagram' => 'nullable|max:255',
-            'item_social_whatsapp' => 'nullable|numeric',
+            'article_postal_code' => 'nullable|max:255',
+            'article_phone' => 'nullable|max:255',
+            'article_website' => 'nullable|url|max:255',
+            'article_social_facebook' => 'nullable|url|max:255',
+            'article_social_twitter' => 'nullable|url|max:255',
+            'article_social_linkedin' => 'nullable|url|max:255',
+            'article_youtube_id' => 'nullable|max:255',
+            'article_type' => 'required|numeric|in:1,2',
+            'article_hour_time_zone' => 'required|max:255',
+            'article_hour_show_hours' => 'required|numeric|in:1,2',
+            'article_social_instagram' => 'nullable|max:255',
+            'article_social_whatsapp' => 'nullable|numeric',
         ];
 
         // prepare validate rule for custom fields
-        $select_categories = $item->allCategories()->get();
+        $select_categories = $article->allCategories()->get();
 
         foreach($select_categories as $select_categories_key => $select_category)
         {
@@ -1163,7 +1106,7 @@ class ArticleController extends Controller
         /**
          * Start validate location (city, state, country, lat, lng)
          */
-        $item_type = $request->item_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
+        $article_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
 
         $select_country_id = null;
         $select_state_id = null;
@@ -1172,9 +1115,9 @@ class ArticleController extends Controller
         $select_item_lng = null;
         $item_location_str = "";
 
-        $item_postal_code = $request->item_postal_code;
+        $item_postal_code = $request->article_postal_code;
 
-        if($item_type == Item::ITEM_TYPE_REGULAR)
+        if($article_type == Item::ITEM_TYPE_REGULAR)
         {
             // validate country_id
             $select_country = Country::find($request->country_id);
@@ -1209,15 +1152,15 @@ class ArticleController extends Controller
             $select_state_id = $select_state->id;
             $select_city_id = $select_city->id;
 
-            if(empty($request->item_lat) || empty($request->item_lng))
+            if(empty($request->article_lat) || empty($request->article_lng))
             {
                 $select_item_lat = $select_city->city_lat;
                 $select_item_lng = $select_city->city_lng;
             }
             else
             {
-                $select_item_lat = $request->item_lat;
-                $select_item_lng = $request->item_lng;
+                $select_item_lat = $request->article_lat;
+                $select_item_lng = $request->article_lng;
             }
 
             $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
@@ -1227,12 +1170,12 @@ class ArticleController extends Controller
          */
 
         // prepare new item data
-        $item_featured = $request->item_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
-        $item_title = $request->item_title;
+        $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
+        $item_title = $request->article_title;
 
-        $item_description = empty($request->item_description) ? null : $request->item_description;
-        $item_address = $request->item_address;
-        $item_address_hide = $request->item_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
+        $item_description = empty($request->article_description) ? null : $request->article_description;
+        $item_address = $request->article_address;
+        $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
 
         $city_id = $select_city_id;
         $state_id = $select_state_id;
@@ -1241,49 +1184,49 @@ class ArticleController extends Controller
         $item_lat = $select_item_lat;
         $item_lng = $select_item_lng;
 
-        $item_youtube_id = $request->item_youtube_id;
+        $item_youtube_id = $request->article_youtube_id;
 
-        $item_phone = empty($request->item_phone) ? null : $request->item_phone;
-        $item_website = $request->item_website;
-        $item_social_facebook = $request->item_social_facebook;
-        $item_social_twitter = $request->item_social_twitter;
-        $item_social_linkedin = $request->item_social_linkedin;
-        $item_social_instagram = $request->item_social_instagram;
-        $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
+        $item_phone = empty($request->article_phone) ? null : $request->article_phone;
+        $item_website = $request->article_website;
+        $item_social_facebook = $request->article_social_facebook;
+        $item_social_twitter = $request->article_social_twitter;
+        $item_social_linkedin = $request->article_social_linkedin;
+        $item_social_instagram = $request->article_social_instagram;
+        $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
-        $item_hour_time_zone = $request->item_hour_time_zone;
-        $item_hour_show_hours = $request->item_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
+        $item_hour_time_zone = $request->article_hour_time_zone;
+        $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
         // start upload feature image
         $feature_image = $request->feature_image;
-        $item_feature_image_name = $item->item_image;
-        $item_feature_image_name_medium = $item->item_image_medium;
-        $item_feature_image_name_small = $item->item_image_small;
-        $item_feature_image_name_tiny = $item->item_image_tiny;
-        $item_feature_image_name_blur = $item->item_image_blur;
+        $item_feature_image_name = $article->item_image;
+        $item_feature_image_name_medium = $article->item_image_medium;
+        $item_feature_image_name_small = $article->item_image_small;
+        $item_feature_image_name_tiny = $article->item_image_tiny;
+        $item_feature_image_name_blur = $article->item_image_blur;
 
         if(!empty($feature_image)){
 
             $currentDate = Carbon::now()->toDateString();
 
-            $item_feature_image_name = $item->item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
-            $item_feature_image_name_medium = $item->item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
-            $item_feature_image_name_small = $item->item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
-            $item_feature_image_name_tiny = $item->item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
+            $item_feature_image_name = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
+            $item_feature_image_name_medium = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
+            $item_feature_image_name_small = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
+            $item_feature_image_name_tiny = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
 
             // blur feature image name
-            $item_feature_image_name_blur = $item->item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
+            $item_feature_image_name_blur = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
 
             if(!Storage::disk('public')->exists('item')){
                 Storage::disk('public')->makeDirectory('item');
             }
-            if(Storage::disk('public')->exists('item/' . $item->item_image)){
+            if(Storage::disk('public')->exists('item/' . $article->item_image)){
 
-                Storage::disk('public')->delete('item/' . $item->item_image);
-                Storage::disk('public')->delete('item/' . $item->item_image_medium);
-                Storage::disk('public')->delete('item/' . $item->item_image_small);
-                Storage::disk('public')->delete('item/' . $item->item_image_tiny);
-                Storage::disk('public')->delete('item/' . $item->item_image_blur);
+                Storage::disk('public')->delete('item/' . $article->item_image);
+                Storage::disk('public')->delete('item/' . $article->item_image_medium);
+                Storage::disk('public')->delete('item/' . $article->item_image_small);
+                Storage::disk('public')->delete('item/' . $article->item_image_tiny);
+                Storage::disk('public')->delete('item/' . $article->item_image_blur);
             }
 
             // original size
@@ -1329,52 +1272,52 @@ class ArticleController extends Controller
         }
 
         // do not change the item status for an update request
-        // $item->item_status = Item::ITEM_SUBMITTED;
+        // $article->item_status = Item::ITEM_SUBMITTED;
 
-        $item->item_featured = $item_featured;
-        $item->item_title = $item_title;
+        $article->item_featured = $item_featured;
+        $article->item_title = $item_title;
 
-        $item->item_description = $item_description;
+        $article->item_description = $item_description;
 
-        $item->item_image = $item_feature_image_name;
-        $item->item_image_medium = $item_feature_image_name_medium;
-        $item->item_image_small = $item_feature_image_name_small;
-        $item->item_image_tiny = $item_feature_image_name_tiny;
-        $item->item_image_blur = $item_feature_image_name_blur;
+        $article->item_image = $item_feature_image_name;
+        $article->item_image_medium = $item_feature_image_name_medium;
+        $article->item_image_small = $item_feature_image_name_small;
+        $article->item_image_tiny = $item_feature_image_name_tiny;
+        $article->item_image_blur = $item_feature_image_name_blur;
 
-        $item->item_address = $item_address;
-        $item->item_address_hide = $item_address_hide;
-        $item->city_id = $city_id;
-        $item->state_id = $state_id;
-        $item->country_id = $country_id;
-        $item->item_postal_code = $item_postal_code;
-        $item->item_lat = $item_lat;
-        $item->item_lng = $item_lng;
-        $item->item_youtube_id = $item_youtube_id;
+        $article->item_address = $item_address;
+        $article->item_address_hide = $item_address_hide;
+        $article->city_id = $city_id;
+        $article->state_id = $state_id;
+        $article->country_id = $country_id;
+        $article->item_postal_code = $item_postal_code;
+        $article->item_lat = $item_lat;
+        $article->item_lng = $item_lng;
+        $article->item_youtube_id = $item_youtube_id;
 
-        $item->item_phone = $item_phone;
-        $item->item_website = $item_website;
-        $item->item_social_facebook = $item_social_facebook;
-        $item->item_social_twitter = $item_social_twitter;
-        $item->item_social_linkedin = $item_social_linkedin;
-        $item->item_social_instagram = $item_social_instagram;
-        $item->item_social_whatsapp = $item_social_whatsapp;
+        $article->item_phone = $item_phone;
+        $article->item_website = $item_website;
+        $article->item_social_facebook = $item_social_facebook;
+        $article->item_social_twitter = $item_social_twitter;
+        $article->item_social_linkedin = $item_social_linkedin;
+        $article->item_social_instagram = $item_social_instagram;
+        $article->item_social_whatsapp = $item_social_whatsapp;
 
-        $item->item_features_string = null;
-        $item->item_categories_string = $item_categories_string;
-        $item->item_location_str = $item_location_str;
+        $article->item_features_string = null;
+        $article->item_categories_string = $item_categories_string;
+        $article->item_location_str = $item_location_str;
 
-        $item->item_type = $item_type;
+        $article->item_type = $article_type;
 
-        $item->item_hour_time_zone = $item_hour_time_zone;
-        $item->item_hour_show_hours = $item_hour_show_hours;
+        $article->item_hour_time_zone = $item_hour_time_zone;
+        $article->item_hour_show_hours = $item_hour_show_hours;
 
-        $item->save();
+        $article->save();
 
         // start to save custom fields data
-        $item->features()->delete();
+        $article->features()->delete();
 
-        $item_categories = $item->allCategories()->get();
+        $item_categories = $article->allCategories()->get();
         $select_categories = array();
         foreach($item_categories as $item_categories_key => $item_category)
         {
@@ -1412,10 +1355,10 @@ class ArticleController extends Controller
                     ));
                 }
 
-                $created_item_feature = $item->features()->save($new_item_feature);
+                $created_item_feature = $article->features()->save($new_item_feature);
 
-                $item->item_features_string = $item->item_features_string . $created_item_feature->item_feature_value . " ";
-                $item->save();
+                $article->item_features_string = $article->item_features_string . $created_item_feature->item_feature_value . " ";
+                $article->save();
             }
         }
 
@@ -1423,7 +1366,7 @@ class ArticleController extends Controller
         $image_gallery = $request->image_gallery;
         if(is_array($image_gallery) && count($image_gallery) > 0)
         {
-            $total_item_image_gallery = $item->galleries()->count();
+            $total_item_image_gallery = $article->galleries()->count();
             foreach($image_gallery as $image_gallery_key => $image)
             {
                 // check if the listing's gallery images reach the max number of gallery images
@@ -1451,7 +1394,7 @@ class ArticleController extends Controller
                     $one_gallery_image_thumb = $one_gallery_image_thumb->stream('jpg', 70);
                     Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_thumb_name'], $one_gallery_image_thumb);
 
-                    $created_item_image_gallery = $item->galleries()->create($item_image_gallery);
+                    $created_item_image_gallery = $article->galleries()->create($item_image_gallery);
                 }
             }
         }
@@ -1459,7 +1402,7 @@ class ArticleController extends Controller
         /**
          * Start save item hours
          */
-        $item_hours = empty($request->item_hours) ? array() : $request->item_hours;
+        $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
 
         foreach($item_hours as $item_hours_key => $item_hour)
         {
@@ -1492,7 +1435,7 @@ class ArticleController extends Controller
                         if($item_hour_open_time != $item_hour_close_time)
                         {
                             $create_item_hour = new ItemHour(array(
-                                'item_id' => $item->id,
+                                'item_id' => $article->id,
                                 'item_hour_day_of_week' => $item_hour_day_of_week,
                                 'item_hour_open_time' => $item_hour_open_time,
                                 'item_hour_close_time' => $item_hour_close_time,
@@ -1510,7 +1453,7 @@ class ArticleController extends Controller
         /**
          * Start save item hour exceptions
          */
-        $item_hour_exceptions = empty($request->item_hour_exceptions) ? array() : $request->item_hour_exceptions;
+        $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
 
         foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
         {
@@ -1548,7 +1491,7 @@ class ArticleController extends Controller
                 }
 
                 $create_item_hour_exception = new ItemHourException(array(
-                    'item_id' => $item->id,
+                    'item_id' => $article->id,
                     'item_hour_exception_date' => $item_hour_exception_date,
                     'item_hour_exception_open_time' => $item_hour_exception_open_time,
                     'item_hour_exception_close_time' => $item_hour_exception_close_time,
@@ -1564,7 +1507,7 @@ class ArticleController extends Controller
         \Session::flash('flash_message', __('alert.item-updated'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.items.edit', ['item' => $item]);
+        return redirect()->route('user.articles.edit', ['article' => $article]);
     }
 
     /**
@@ -1573,16 +1516,16 @@ class ArticleController extends Controller
      * @param  \App\Item  $item
      * @return RedirectResponse
      */
-    public function destroy(Item $item)
+    public function destroy(Item $article)
     {
-        Gate::authorize('delete-item', $item);
+        // Gate::authorize('delete-item', $item);
 
-        $item->deleteItem();
+        $article->deleteItem();
 
         \Session::flash('flash_message', __('alert.item-deleted'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.items.index');
+        return redirect()->route('user.articles.index');
     }
 
     public function savedItems()

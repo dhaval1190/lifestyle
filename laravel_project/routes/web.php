@@ -468,8 +468,6 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
      */
     Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user'],'as'=>'user.'], function(){
 
-        Route::resource('/articles', 'ArticleController');
-
         Route::get('/dashboard','PagesController@index')->name('index');
         Route::resource('/items', 'ItemController');
 
@@ -519,6 +517,60 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // user item hour exceptions routes
         Route::put('/items/hour-exceptions/update/{item_hour_exception}', 'ItemController@updateItemHourException')->name('items.hour-exceptions.update');
         Route::delete('/items/hour-exceptions/destroy/{item_hour_exception}', 'ItemController@destroyItemHourException')->name('items.hour-exceptions.destroy');
+
+
+
+
+        // Articles
+        Route::resource('/articles', 'ArticleController');
+        Route::post('/articles/bulk/delete', 'ArticleController@bulkDeleteItem')->name('articles.bulk.delete');
+
+        // Articles slug update route
+        Route::put('/articles/{article}/slug/update', 'ArticleController@updateItemSlug')->name('article.slug.update');
+
+        // Articles section & collection routes for admin
+        Route::get('/articles/{article}/sections/index', 'ArticleController@indexItemSections')->name('articles.sections.index');
+        Route::post('/articles/{article}/sections/store', 'ArticleController@storeItemSection')->name('articles.sections.store');
+        Route::get('/articles/{article}/sections/{article_section}/edit', 'ArticleController@editItemSection')->name('articles.sections.edit');
+        Route::put('/articles/{article}/sections/{article_section}/update', 'ArticleController@updateItemSection')->name('articles.sections.update');
+        Route::delete('/articles/{article}/sections/{article_section}/destroy', 'ArticleController@destroyItemSection')->name('articles.sections.destroy');
+
+        Route::put('/articles/{article}/sections/{article_section}/rank-up', 'ArticleController@rankUpItemSection')->name('articles.sections.rank.up');
+        Route::put('/articles/{article}/sections/{article_section}/rank-down', 'ArticleController@rankDownItemSection')->name('articles.sections.rank.down');
+
+        Route::post('/articles/{article}/sections/{article_section}/collections/store', 'ArticleController@storeItemSectionCollections')->name('articles.sections.collections.store');
+        Route::put('/articles/{article}/sections/{article_section}/collections/{article_section_collection}/rank-up', 'ArticleController@rankUpItemSectionCollection')->name('articles.sections.collections.rank.up');
+        Route::put('/articles/{article}/sections/{article_section}/collections/{article_section_collection}/rank-down', 'ArticleController@rankDownItemSectionCollection')->name('articles.sections.collections.rank.down');
+        Route::delete('/articles/{article}/sections/{article_section}/collections/{article_section_collection}/destroy', 'ArticleController@destroyItemSectionCollection')->name('articles.sections.collections.destroy');
+
+        // Articles claims routes for user
+        Route::resource('/article-claims', 'ItemClaimController');
+        Route::post('/article-claims/download/{item_claim}', 'ItemClaimController@downloadItemClaimDoc')->name('article-claims.download.do');
+
+        Route::put('/articles/{article}/category/update', 'ArticleController@updateItemCategory')->name('article.category.update');
+
+        Route::get('/articles/saved/index', 'ArticleController@savedItems')->name('articles.saved');
+        Route::post('/articles/{article_slug}/unsave', 'ArticleController@unSaveItem')->name('articles.unsave');
+
+        // Articles reviews routes
+        Route::get('/articles/{article_slug}/reviews/create', 'ArticleController@itemReviewsCreate')->name('articles.reviews.create');
+        Route::post('/articles/{article_slug}/reviews/store', 'ArticleController@itemReviewsStore')->name('articles.reviews.store');
+        Route::get('/articles/{article_slug}/reviews/{review}/edit', 'ArticleController@itemReviewsEdit')->name('articles.reviews.edit');
+        Route::put('/articles/{article_slug}/reviews/update/{review}', 'ArticleController@itemReviewsUpdate')->name('articles.reviews.update');
+        Route::delete('/articles/{article_slug}/reviews/destroy/{review}', 'ArticleController@itemReviewsDestroy')->name('articles.reviews.destroy');
+
+        // user manage reviews route
+        Route::get('/articles/reviews/index', 'ArticleController@itemReviewsIndex')->name('articles.reviews.index');
+
+        // user Articles hours routes
+        Route::put('/articles/hours/update/{article_hour}', 'ArticleController@updateItemHour')->name('articles.hours.update');
+        Route::delete('/articles/hours/destroy/{article_hour}', 'ArticleController@destroyItemHour')->name('articles.hours.destroy');
+
+        // user Articles hour exceptions routes
+        Route::put('/articles/hour-exceptions/update/{article_hour_exception}', 'ArticleController@updateItemHourException')->name('articles.hour-exceptions.update');
+        Route::delete('/articles/hour-exceptions/destroy/{article_hour_exception}', 'ArticleController@destroyItemHourException')->name('articles.hour-exceptions.destroy');
+
+
 
         // message routes
         Route::resource('/messages', 'MessageController');

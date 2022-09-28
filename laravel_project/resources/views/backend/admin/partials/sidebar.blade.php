@@ -31,6 +31,12 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.users.index') }}">
+            <i class="fas fa-user-cog"></i>
+            <span>{{ __('backend.sidebar.user') }}</span></a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_category" aria-expanded="true" aria-controls="collapse_category">
             <i class="fas fa-th-large"></i>
             <span>{{ __('backend.sidebar.category') }}</span>
@@ -306,12 +312,6 @@
     </li>
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.users.index') }}">
-            <i class="fas fa-user-cog"></i>
-            <span>{{ __('backend.sidebar.user') }}</span></a>
-    </li>
-
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.users.profile.edit') }}">
             <i class="fas fa-address-card"></i>

@@ -69,6 +69,10 @@ return array (
         'video' => "Video",
         'youtube-id' => "Youtube video id",
     ],
+    'article' => [
+        'video' => "Video",
+        'youtube-id' => "Youtube video id",
+    ],
 
     'homepage-header-title-color' => "Homepage Header Title Font Color",
     'homepage-header-paragraph-color' => "Homepage Header Paragraph Font Color",

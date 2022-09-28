@@ -53,6 +53,13 @@ return array (
         'items' => 'Dashboard - Listings - :site_name',
         'saved-items' => 'Dashboard - Saved Listings - :site_name',
       ),
+      'article' =>
+      array (
+        'create-article' => 'Dashboard - Create Article - :site_name',
+        'edit-article' => 'Dashboard - Edit Article - :site_name',
+        'article' => 'Dashboard - Articles - :site_name',
+        'saved-articles' => 'Dashboard - Saved Articles - :site_name',
+      ),
       'message' => 
       array (
         'create-message' => 'Dashboard - Create Message - :site_name',
@@ -115,6 +122,13 @@ return array (
         'edit-item' => 'Dashboard - Edit Listing - :site_name',
         'items' => 'Dashboard - Listings - :site_name',
         'saved-items' => 'Dashboard - Saved Listings - :site_name',
+      ),
+      'article' =>
+      array (
+        'create-article' => 'Dashboard - Create Article - :site_name',
+        'edit-article' => 'Dashboard - Edit Article - :site_name',
+        'articles' => 'Dashboard - Articles - :site_name',
+        'saved-articles' => 'Dashboard - Saved Articles - :site_name',
       ),
       'message' => 
       array (
