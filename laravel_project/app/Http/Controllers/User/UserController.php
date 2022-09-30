@@ -220,7 +220,7 @@ class UserController extends Controller
         }
 
         // change password
-        $login_user->password = bcrypt($request->new_password);
+        $login_user->password = Hash::make($request->new_password);
         $login_user->save();
 
         \Session::flash('flash_message', __('alert.user-profile-password-changed'));
