@@ -4842,4 +4842,86 @@ class PagesController extends Controller
         return $longitude;
     }
 
+    public function jsonDeleteArticleFeatureImage(int $article_id)
+    {
+        $article = Item::findOrFail($article_id);
+
+        // Gate::authorize('delete-article-image-feature', $article);
+
+        $article->deleteItemFeatureImage();
+
+        return response()->json(['success' => 'Article feature image deleted.']);
+    }
+
+
+    public function jsonDeleteArticleImageGallery(int $article_image_gallery_id)
+    {
+        $article_image_gallery = ItemImageGallery::findOrFail($article_image_gallery_id);
+
+        // Gate::authorize('delete-item-image-gallery', $article_image_gallery);
+
+        if(Storage::disk('public')->exists('item/gallery/' . $article_image_gallery->item_image_gallery_name)){
+            Storage::disk('public')->delete('item/gallery/' . $article_image_gallery->item_image_gallery_name);
+        }
+
+        if(!empty($article_image_gallery->item_image_gallery_thumb_name) && Storage::disk('public')->exists('item/gallery/' . $article_image_gallery->item_image_gallery_thumb_name)){
+            Storage::disk('public')->delete('item/gallery/' . $article_image_gallery->item_image_gallery_thumb_name);
+        }
+
+        $article_image_gallery->delete();
+
+        return response()->json(['success' => 'Article image gallery deleted.']);
+    }
+
+    public function jsonDeleteArticleReviewImageGallery(int $review_article_image_gallery_id)
+    {
+        if(!Auth::check())
+        {
+            return response()->json(['error' => 'user not login']);
+        }
+
+        $review_article_image_gallery = DB::table('review_image_galleries')
+        ->where('id', $review_article_image_gallery_id)
+        ->get();
+
+        if($review_article_image_gallery->count() == 0)
+        {
+            return response()->json(['error' => 'review image gallery not found.']);
+        }
+
+        $review_article_image_gallery = $review_article_image_gallery->first();
+
+        $review_id = $review_article_image_gallery->review_id;
+
+        $review = DB::table('reviews')
+        ->where('id', $review_id)
+        ->get();
+
+        if($review->count() == 0)
+        {
+            return response()->json(['error' => 'review not found.']);
+        }
+
+        $review = $review->first();
+
+        if(Auth::user()->id != $review->author_id)
+        {
+            return response()->json(['error' => 'you cannot delete review image gallery which does not belong to you.']);
+        }
+
+        if(Storage::disk('public')->exists('item/review/' . $review_article_image_gallery->review_image_gallery_name)){
+            Storage::disk('public')->delete('item/review/' . $review_article_image_gallery->review_image_gallery_name);
+        }
+
+        if(Storage::disk('public')->exists('item/review/' . $review_article_image_gallery->review_image_gallery_thumb_name)){
+            Storage::disk('public')->delete('item/review/' . $review_article_image_gallery->review_image_gallery_thumb_name);
+        }
+
+        DB::table('review_image_galleries')
+        ->where('id', $review_article_image_gallery_id)
+        ->delete();
+
+        return response()->json(['success' => 'Article review image gallery deleted.']);
+    }
+
 }

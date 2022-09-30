@@ -48,7 +48,7 @@ class ArticleController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.backend.user.article.items', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.backend.user.article.articles', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -794,7 +794,7 @@ class ArticleController extends Controller
          */
 
         // success, flash message
-        \Session::flash('flash_message', __('alert.item-created'));
+        \Session::flash('flash_message', __('alert.article-created'));
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.articles.edit', ['article' => $new_item]);
@@ -930,20 +930,20 @@ class ArticleController extends Controller
     public function updateItemSlug(Request $request, Item $article)
     {
         $request->validate([
-            'item_slug' => 'required|regex:/^[\w-]*$/|max:255',
+            'article_slug' => 'required|regex:/^[\w-]*$/|max:255',
         ]);
 
-        $item_slug = $request->item_slug;
+        $article_slug = $request->article_slug;
 
         $validate_error = array();
 
-        $item_slug_exist = Item::where('item_slug', $item_slug)
+        $article_slug_exist = Item::where('item_slug', $article_slug)
             ->where('id', '!=', $article->id)
             ->count();
 
-        if($item_slug_exist > 0)
+        if($article_slug_exist > 0)
         {
-            $validate_error['item_slug'] = __('item_slug.alert.item-slug-exist');
+            $validate_error['article_slug'] = __('article_slug.alert.article-slug-exist');
         }
 
         if(count($validate_error) > 0)
@@ -951,10 +951,10 @@ class ArticleController extends Controller
             throw ValidationException::withMessages($validate_error);
         }
 
-        $article->item_slug = $item_slug;
+        $article->item_slug = $article_slug;
         $article->save();
 
-        \Session::flash('flash_message', __('item_slug.alert.item-slug-update-success'));
+        \Session::flash('flash_message', __('article_slug.alert.article-slug-update-success'));
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.articles.edit', $article);
@@ -1008,7 +1008,7 @@ class ArticleController extends Controller
         $article->save();
 
         // success, flash message
-        \Session::flash('flash_message', __('categories.item-category-update-alert'));
+        \Session::flash('flash_message', __('categories.article-category-update-alert'));
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.articles.edit', $article);
@@ -1522,7 +1522,7 @@ class ArticleController extends Controller
 
         $article->deleteItem();
 
-        \Session::flash('flash_message', __('alert.item-deleted'));
+        \Session::flash('flash_message', __('alert.article-deleted'));
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.articles.index');

@@ -10,6 +10,7 @@ return array (
   'choose-parent-cat' => 'Choose a parent category',
   'create-cat-not-found' => 'Parent category not found.',
   'item-category-update-alert' => 'Category of this listing updated successfully.',
+  'article-category-update-alert' => 'Category of this article updated successfully.',
   'more' => 'more',
   'no-parent-cat' => 'No parent category (root category)',
   'parent-cat' => 'Parent Category',

@@ -170,6 +170,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/ajax/item/gallery/delete/{item_image_gallery_id}', 'PagesController@jsonDeleteItemImageGallery')->name('json.item.image.gallery');
     Route::post('/ajax/item/review/gallery/delete/{review_image_gallery_id}', 'PagesController@jsonDeleteReviewImageGallery')->name('json.review.image.gallery');
 
+    Route::post('/ajax/article/image/delete/{article_id}', 'PagesController@jsonDeleteArticleFeatureImage')->name('json.article.image.feature');
+    Route::post('/ajax/article/gallery/delete/{article_image_gallery_id}', 'PagesController@jsonDeleteArticleImageGallery')->name('json.article.image.gallery');
+    Route::post('/ajax/article/review/gallery/delete/{review_article_image_gallery_id}', 'PagesController@jsonDeleteArticleReviewImageGallery')->name('json.article.review.image.gallery');
+
     Route::post('/ajax/location/save/{lat}/{lng}', 'PagesController@ajaxLocationSave')->name('ajax.location.save');
 
     Route::post('/ajax/product/image/delete/{product_id}', 'PagesController@jsonDeleteProductFeatureImage')->name('json.product.image.feature');
