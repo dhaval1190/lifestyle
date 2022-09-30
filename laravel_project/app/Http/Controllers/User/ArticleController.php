@@ -836,6 +836,8 @@ class ArticleController extends Controller
 
         // Gate::authorize('edit-item', $article);
 
+        $item_owner = $article->user()->first();
+
         if($item_owner->isAdmin()) {
             $all_categories = new Category();
             $all_categories = $all_categories->getPrintableCategories();
