@@ -204,7 +204,7 @@
                                 <div class="modal-body" style="max-height: 600px; overflow: scroll;">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="is_coach" value="{{ \App\Role::COACH_ROLE_ID }}">
-                                    <input type="hidden" name="plan_id" id="plan_id">
+                                    <input type="hidden" name="plan_id" id="plan_id" value="{{ old('plan_id') }}">
 
                                     <div class="row mt-3">
                                         <div class="col-sm-2">
@@ -694,13 +694,12 @@
                             $.each(JSON.parse(result), function(key, value) {
                                 var state_id = value.id;
                                 var state_name = value.state_name;
-                                if(state_id === {{ old('state_id') }}) {
-                                    $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
-                                } else {
-                                    $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
-                                }
+                                $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
                             });
-                            $('#select_state_id').selectpicker('refresh');
+                            @if(old('state_id'))
+                                $('#select_state_id').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                                $('#select_state_id').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                            @endif
                         }
                     });
                 @endif
@@ -710,19 +709,18 @@
                     jQuery.ajax({
                         url: ajax_url_initial_cities,
                         method: 'get',
-                        success: function(result){
+                        success: function(result) {
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
                             $('#select_city_id').empty();
                             $.each(JSON.parse(result), function(key, value) {
                                 var city_id = value.id;
                                 var city_name = value.city_name;
-                                if(city_id === {{ old('city_id') }}) {
-                                    $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
-                                } else {
-                                    $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
-                                }
+                                $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
                             });
-                            $('#select_city_id').selectpicker('refresh');
+                            @if(old('city_id'))
+                                $('#select_city_id').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                                $('#select_city_id').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                            @endif
                         }
                     });
                 @endif

@@ -129,7 +129,7 @@
 
                                     <div class="col-md-4">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}</label>
-                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') }}">
+                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
                                         @error('article_address')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -224,7 +224,7 @@
 
                                     <div class="col-md-3">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') }}">
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -236,7 +236,18 @@
 
                                 <div class="form-row mb-3">
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
+                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                        <div class="input-group">
+                                            <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
+                                            <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-md-3">
                                         <label for="article_lat" class="text-black">{{ __('backend.article.lat') }}</label>
                                         <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
                                         <small id="latHelpBlock" class="form-text text-muted">
@@ -260,11 +271,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-md-3">
                                         <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
-                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') }}">
+                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}">
                                         @error('article_phone')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -274,7 +285,7 @@
 
                                     <div class="col-md-3">
                                         <label for="article_youtube_id" class="text-black">{{ __('customization.article.youtube-id') }}</label>
-                                        <input id="article_youtube_id" type="text" class="form-control @error('article_youtube_id') is-invalid @enderror" name="article_youtube_id" value="{{ old('article_youtube_id') }}">
+                                        <input id="article_youtube_id" type="text" class="form-control @error('article_youtube_id') is-invalid @enderror" name="article_youtube_id" value="{{ old('article_youtube_id', $login_user->youtube) }}">
                                         @error('article_youtube_id')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -303,7 +314,7 @@
                                             <i class="fa-solid fa-globe"></i>
                                             {{ __('backend.article.website') }}
                                         </label>
-                                        <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website') }}">
+                                        <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -319,7 +330,7 @@
                                             <i class="fa-brands fa-facebook-square"></i>
                                             {{ __('backend.article.facebook') }}
                                         </label>
-                                        <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook') }}">
+                                        <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -354,7 +365,7 @@
                                             <i class="fa-brands fa-linkedin"></i>
                                             {{ __('backend.article.linkedin') }}
                                         </label>
-                                        <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin') }}">
+                                        <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -370,7 +381,7 @@
                                             <i class="fa-brands fa-instagram-square"></i>
                                             {{ __('article_whatsapp_instagram.article-social-instagram') }}
                                         </label>
-                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') }}">
+                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram', $login_user->instagram) }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
                                         </small>
@@ -752,6 +763,12 @@
 
             "use strict";
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
             /**
              * Start map modal
@@ -801,24 +818,13 @@
              * Start country, state, city selector
              */
             $('#select_country_id').on('change', function() {
-
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
-
-                if(this.value > 0)
-                {
+                if(this.value > 0) {
                     var ajax_url = '/ajax/states/' + this.value;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
-                        data: {
-                        },
                         success: function(result){
                             $('#select_state_id').empty();
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
@@ -828,31 +834,20 @@
                                 $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
                             });
                             $('#select_state_id').selectpicker('refresh');
-                        }});
+                        }
+                    });
                 }
             });
 
             $('#select_state_id').on('change', function() {
-
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
-
-                if(this.value > 0)
-                {
+                if(this.value > 0) {
                     var ajax_url = '/ajax/cities/' + this.value;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
-                        data: {
-                        },
                         success: function(result){
-
                             $('#select_city_id').empty();
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
@@ -860,77 +855,47 @@
                                 var city_name = value.city_name;
                                 $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
                             });
-                            $('#select_city_id').selectpicker('refresh');
-                    }});
+                            $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                            $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                        }
+                    });
                 }
             });
 
-            @if(old('country_id'))
-                var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+            @if(old('country_id', $login_user->country_id))
+                var ajax_url_initial_states = '/ajax/states/{{ old('country_id', $login_user->country_id) }}';
                 jQuery.ajax({
                     url: ajax_url_initial_states,
                     method: 'get',
-                    data: {
-                    },
                     success: function(result){
-
                         $('#select_state_id').empty();
                         // $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var state_id = value.id;
                             var state_name = value.state_name;
-
-                            if(state_id === {{ old('state_id') }})
-                            {
-                                $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
-                            }
-                            else
-                            {
-                                $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
-                            }
-
+                            $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
                         });
-                        $('#select_state_id').selectpicker('refresh');
-                }});
-            @endif
-
-            @if(old('state_id'))
-                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                        $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
                     }
                 });
+            @endif
+
+            @if(old('state_id', $login_user->state_id))
+                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id', $login_user->state_id) }}';
                 jQuery.ajax({
                     url: ajax_url_initial_cities,
                     method: 'get',
-                    data: {
-                    },
                     success: function(result){
-
                         $('#select_city_id').empty();
                         // $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var city_id = value.id;
                             var city_name = value.city_name;
-
-                            if(city_id === {{ old('city_id') }})
-                            {
-                                $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
-                            }
-                            else
-                            {
-                                $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
-                            }
+                            $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
                         });
-                        $('#select_city_id').selectpicker('refresh');
+                        $('#select_city_id').val("{{ old('city_id', $login_user->city_id) }}").selectpicker('refresh');
+                        $('#select_city_id').val("{{ old('city_id', $login_user->city_id) }}").selectpicker('refresh');
                 }});
             @endif
 

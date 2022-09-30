@@ -266,9 +266,12 @@ class RegisterController extends Controller
             Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
         }
 
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        if(isset($user)) {
+            $this->guard()->login($user);
+            return $this->registered($request, $user)
+                ?: redirect($this->redirectPath());
+        } else {
+            return redirect()->route('login');
+        }
     }
 }

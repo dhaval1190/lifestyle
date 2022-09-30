@@ -375,7 +375,7 @@ class ArticleController extends Controller
          */
 
         return response()->view('backend.user.article.create',
-            compact('all_categories', 'setting_article_max_gallery_photos', 'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_article_featured_selector',
+            compact('login_user', 'all_categories', 'setting_article_max_gallery_photos', 'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_article_featured_selector',
                 'time_zone_identifiers'));
     }
 
