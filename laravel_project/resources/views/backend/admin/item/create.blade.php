@@ -15,6 +15,8 @@
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
 @endsection
 
 @section('content')
@@ -38,7 +40,18 @@
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
 
-            <div class="row border-left-info mb-4 pt-3 pb-3">
+            {{-- @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif --}}
+
+            {{-- <div class="row border-left-info mb-4 pt-3 pb-3">
                 <div class="col-12">
                     <div class="row mb-3">
                         <div class="col-12">
@@ -71,11 +84,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-12">
-                    @if(is_array($category_ids) && count($category_ids) > 0)
+                    {{-- @if(is_array($category_ids) && count($category_ids) > 0) --}}
                     <form method="POST" action="{{ route('admin.items.store') }}" id="item-create-form">
                         @csrf
 
@@ -121,22 +134,17 @@
                                         </small>
                                     </div>
                                 </div>
-                                <div class="form-row mb-3">
 
+                                <div class="form-row mb-3">
                                     <div class="col-md-6">
                                         <label for="item_title" class="text-black">{{ __('backend.item.title') }}</label>
                                         <input id="item_title" type="text" class="form-control @error('item_title') is-invalid @enderror" name="item_title" value="{{ old('item_title') }}">
                                         @error('item_title')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
-
-                                        @foreach($category_ids as $key => $category_id)
-                                            <input name="category[]" value="{{ $category_id }}" type="hidden" class="input_category_id">
-                                        @endforeach
                                     </div>
-
                                     <div class="col-md-6">
                                         <label for="user_id" class="text-black">{{ __('role_permission.item.listing-owner') }}</label>
                                         <select id="user_id" class="selectpicker form-control @error('user_id') is-invalid @enderror" name="user_id" data-live-search="true">
@@ -154,7 +162,25 @@
                                         </span>
                                         @enderror
                                     </div>
+                                </div>
 
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}</label>
+                                        <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id">
+                                            @foreach($all_categories as $key => $category)
+                                                <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', $category_ids)) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('category')
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    {{-- @foreach($category_ids as $key => $category_id)
+                                        <input name="category[]" value="{{ $category_id }}" type="hidden" class="input_category_id">
+                                    @endforeach --}}
                                 </div>
 
                                 <div class="form-row mb-3">
@@ -329,7 +355,7 @@
 
                                     <div class="col-md-12">
                                         <label for="item_description" class="text-black">{{ __('backend.item.description') }}</label>
-                                        <textarea class="form-control @error('item_description') is-invalid @enderror" id="item_description" rows="5" name="item_description">{{ old('item_description') }}</textarea>
+                                        <textarea class="form-control @error('item_description') is-invalid @enderror" id="item_description" name="item_description">{{ old('item_description') }}</textarea>
                                         @error('item_description')
                                         <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -767,7 +793,7 @@
                         </div>
 
                     </form>
-                    @endif
+                    {{-- @endif --}}
                 </div>
             </div>
         </div>
@@ -859,11 +885,24 @@
     @include('backend.admin.partials.bootstrap-select-locale')
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
+
     <script>
 
         $(document).ready(function() {
 
             "use strict";
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
             /**
@@ -899,7 +938,7 @@
 
                 $('#item_lat').val(current_lat);
                 $('#item_lng').val(current_lng);
-                $('#map-modal').modal('hide')
+                $('#map-modal').modal('hide');
             });
             $('.lat_lng_select_button').on('click', function(){
                 $('#map-modal').modal('show');
@@ -908,6 +947,61 @@
             /**
              * End map modal
              */
+            @endif
+
+
+            $('#user_id').on('change', function() {
+
+                $('#input_category_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#input_category_id').selectpicker('refresh');
+
+                if(this.value > 0)
+                {
+                    var ajax_url = '/admin/ajax/'+this.value+'/categories';
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        data: {
+                        },
+                        success: function(result){
+                            $('#input_category_id').empty();
+                            $.each(result, function(key, value) {
+                                var category_id = value.id;
+                                var category_name = value.category_name;
+                                $('#input_category_id').append('<option value="'+ category_id +'">' + category_name + '</option>');
+                            });
+                            $('#input_category_id').selectpicker('refresh');
+                        }
+                    });
+                }
+            });
+
+            @if(old('user_id'))
+                var ajax_url_initial_categories = '/admin/ajax/{{ old('user_id') }}/categories';
+                jQuery.ajax({
+                    url: ajax_url_initial_categories,
+                    method: 'get',
+                    success: function(result){
+                        $('#input_category_id').empty();
+                        // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
+                        $.each(result, function(key, value) {
+                            var category_id = value.id;
+                            var category_name = value.category_name;
+                            $('#input_category_id').append('<option value="'+ category_id +'">' + category_name + '</option>');
+                        });
+                        var old_categories = JSON.parse('<?php echo json_encode(old('category'), true); ?>');
+                        $.each(old_categories, function(okey, ovalue) {
+                            $("#input_category_id option[value='"+ovalue+"']").attr('selected','selected');
+                        });
+                        $('#input_category_id').selectpicker('refresh');
+                    }
+                });
             @endif
 
 
@@ -1000,8 +1094,7 @@
                         $.each(JSON.parse(result), function(key, value) {
                             var state_id = value.id;
                             var state_name = value.state_name;
-
-                            if(state_id === {{ old('state_id') }})
+                            if(state_id === "{{ old('state_id') }}")
                             {
                                 $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
                             }
@@ -1035,7 +1128,7 @@
                             var city_id = value.id;
                             var city_name = value.city_name;
 
-                            if(city_id === {{ old('city_id') }})
+                            if(city_id === "{{ old('city_id') }}")
                             {
                                 $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
                             }
@@ -1274,6 +1367,36 @@
             /**
              * End open hour exception add button
              */
+
+            $('#item_description').trumbowyg({
+                plugins: {
+                    resizimg: {
+                        minSize: 32,
+                        step: 16,
+                    }
+                },
+                btnsDef: {
+                    // Create a new dropdown
+                    image: {
+                        dropdown: ['insertImage', 'base64'],
+                        ico: 'insertImage'
+                    }
+                },
+                // Redefine the button pane
+                btns: [
+                    ['viewHTML'],
+                    ['formatting'],
+                    ['strong', 'em', 'del'],
+                    ['superscript', 'subscript'],
+                    ['link'],
+                    ['image'], // Our fresh created dropdown
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['unorderedList', 'orderedList'],
+                    ['horizontalRule'],
+                    ['removeformat'],
+                    ['fullscreen']
+                ]
+            });
 
         });
     </script>

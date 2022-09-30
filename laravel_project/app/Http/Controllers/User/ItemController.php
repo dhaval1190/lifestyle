@@ -16,6 +16,7 @@ use App\ItemSectionCollection;
 use App\Product;
 use App\SettingItem;
 use App\State;
+use App\Role;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;

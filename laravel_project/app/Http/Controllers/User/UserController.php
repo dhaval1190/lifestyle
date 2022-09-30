@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Country;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Role;
 use App\Category;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;

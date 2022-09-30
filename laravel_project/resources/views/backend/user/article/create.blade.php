@@ -100,7 +100,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
-                                        <label for="article_title" class="text-black">{{ __('backend.article.select-category') }}</label>
+                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}</label>
                                         <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id">
                                             @foreach($all_categories as $key => $category)
                                             <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>

@@ -223,6 +223,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/item-claims/{item_claim}/disapprove', 'ItemClaimController@disapproveItemClaim')->name('item-claims.disapprove.do');
 
         Route::put('/items/{item}/category/update', 'ItemController@updateItemCategory')->name('item.category.update');
+        Route::get('/ajax/{coach}/categories', 'ItemController@getCoachCategoriesList')->name('ajax.coach.category.list');
 
         Route::get('/items/saved/index', 'ItemController@savedItems')->name('items.saved');
         Route::post('/items/{item_slug}/unsave', 'ItemController@unSaveItem')->name('items.unsave');

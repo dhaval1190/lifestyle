@@ -17,6 +17,7 @@ use App\Product;
 use App\SettingLicense;
 use App\State;
 use App\User;
+use App\Role;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use DateTimeZone;
@@ -338,6 +339,9 @@ class ItemController extends Controller
         $other_users = User::where('email_verified_at', '!=', null)
             ->where('id', '!=', $login_user->id)
             ->where('user_suspended', User::USER_NOT_SUSPENDED)
+            ->whereHas('role', function($q){
+                $q->where('id', Role::COACH_ROLE_ID);
+            })
             ->orderBy('name')
             ->get();
         /**
@@ -375,8 +379,8 @@ class ItemController extends Controller
 
         // prepare rule for general information
         $validate_rule = [
-            'category' => 'required',
-            'category.*' => 'numeric',
+            'category' => 'required|array',
+            'category.*' => 'required|numeric|exists:categories,id',
             'item_status' => 'required|numeric',
             'item_featured' => 'required|numeric',
             'item_title' => 'required|max:255',
@@ -405,13 +409,13 @@ class ItemController extends Controller
         foreach($select_categories as $select_categories_key => $select_category)
         {
             $select_category = Category::find($select_category);
-            if(!$select_category)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'category' => __('prefer_country.category-not-found'),
-                    ]);
-            }
+            // if(!$select_category)
+            // {
+            //     throw ValidationException::withMessages(
+            //         [
+            //             'category' => __('prefer_country.category-not-found'),
+            //         ]);
+            // }
 
             // prepare validate rule for custom fields
             $custom_field_validation = array();
@@ -883,8 +887,16 @@ class ItemController extends Controller
 
         $item_owner = $item->user()->first();
 
-        $all_categories = new Category();
-        $all_categories = $all_categories->getPrintableCategories();
+        if($item_owner->isAdmin()) {
+            $all_categories = new Category();
+            $all_categories = $all_categories->getPrintableCategories();
+        } else {
+            $all_categories = [];
+            if($item_owner->categories->count() > 0) {
+                $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+            }
+        }
+
 
         /**
          * Start initial country, state, city selector
@@ -1067,6 +1079,20 @@ class ItemController extends Controller
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('admin.items.edit', $item);
+    }
+
+    public function getCoachCategoriesList(Request $request, User $coach)
+    {
+        if($coach->isAdmin()) {
+            $all_categories = new Category();
+            $all_categories = $all_categories->getPrintableCategories();
+        } else {
+            $all_categories = [];
+            if($coach->categories->count() > 0) {
+                $all_categories = $coach->categories()->select('categories.id','categories.category_name')->get()->map->only(['id', 'category_name'])->values()->toArray();
+            }
+        }
+        return response()->json($all_categories);
     }
 
     /**
