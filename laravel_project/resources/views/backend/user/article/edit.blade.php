@@ -236,7 +236,6 @@
                                     <div class="col-md-3">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
-                                            <option selected value="0">{{ __('prefer_country.select-country') }}</option>
                                             @foreach($all_countries as $all_countries_key => $country)
                                                 @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $article->country_id == $country->id))
                                                     <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $article->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
@@ -253,7 +252,6 @@
                                     <div class="col-md-3">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
-                                            <option selected value="0">{{ __('backend.article.select-state') }}</option>
                                             @foreach($all_states as $key => $state)
                                                 <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
                                             @endforeach
@@ -268,7 +266,6 @@
                                     <div class="col-md-3">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
-                                            <option selected value="0">{{ __('backend.article.select-city') }}</option>
                                             @foreach($all_cities as $key => $city)
                                                 <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
                                             @endforeach
@@ -1362,7 +1359,8 @@
                         },
                         success: function(result){
 
-                            $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
+                            $('#select_state_id').empty();
+                            // $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var state_id = value.id;
                                 var state_name = value.state_name;
@@ -1394,8 +1392,8 @@
                         data: {
                         },
                         success: function(result){
-
-                            $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
+                            $('#select_city_id').empty();
+                            // $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var city_id = value.id;
                                 var city_name = value.city_name;
@@ -1421,8 +1419,8 @@
                     data: {
                     },
                     success: function(result){
-
-                        $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
+                        $('#select_state_id').empty();
+                        // $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var state_id = value.id;
                             var state_name = value.state_name;
@@ -1455,8 +1453,8 @@
                     data: {
                     },
                     success: function(result){
-
-                        $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
+                        $('#select_city_id').empty();
+                        // $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
                         $.each(JSON.parse(result), function(key, value) {
                             var city_id = value.id;
                             var city_name = value.city_name;

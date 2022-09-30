@@ -50,7 +50,7 @@
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_listing" aria-expanded="true" aria-controls="collapse_listing">
             <i class="fas fa-sign"></i>
             <span>{{ __('backend.sidebar.listing') }}</span>
@@ -64,6 +64,13 @@
                 <a class="collapse-item" href="{{ route('admin.item-leads.index') }}">{{ __('role_permission.item-leads.item-leads') }}</a>
             </div>
         </div>
+    </li> --}}
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.items.index') }}">
+            <i class="fas fa-address-card"></i>
+            <span>{{ __('backend.sidebar.articles') }}</span>
+        </a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
