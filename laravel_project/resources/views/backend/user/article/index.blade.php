@@ -507,10 +507,12 @@
              * Start show more/less
              */
             //this will execute on page load(to be more specific when document ready event occurs)
-            if ($(".filter_category_div").length > 5)
+            if ($(".filter_category_div").length > 6)
             {
                 $(".filter_category_div:gt(5)").hide();
                 $(".show_more").show();
+            } else {
+                $(".show_more").hide();
             }
 
             $(".show_more").on('click', function() {
