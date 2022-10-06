@@ -46,7 +46,7 @@
                                 <div class="card-header">
                                     <h4 class="my-0 font-weight-normal">
                                         @if(!empty($login_user))
-                                            @if($login_user->isUser())
+                                            @if($login_user->isUser() || $login_user->isCoach())
 
                                                 @if($login_user->hasPaidSubscription())
                                                     @if($login_user->subscription->plan->id == $plan->id)
@@ -125,7 +125,7 @@
                                         @if($setting_site_bank_transfer_enable == \App\Setting::SITE_PAYMENT_BANK_TRANSFER_ENABLE)
                                             <div class="row pb-3">
                                                 <div class="col-12">
-                                                    <a class="btn btn-sm btn-success btn-block text-white{{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? ' disabled' : '' }}" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
+                                                    <a class="btn btn-sm btn-success btn-block text-white {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
                                                         {{ __('bank_transfer.pay-bank-transfer') }}
                                                     </a>
                                                 </div>

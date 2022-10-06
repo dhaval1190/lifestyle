@@ -170,14 +170,16 @@ class RegisterController extends Controller
             $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
         }
 
-        $subscription = new Subscription(array(
-            'user_id' => $new_user->id,
-            'plan_id' => $plan->id,
-            'subscription_start_date' => Carbon::now()->toDateString(),
-            // 'subscription_max_featured_listing' => is_null($plan->plan_max_featured_listing) ? null : $plan->plan_max_featured_listing,
-            // 'subscription_max_free_listing' => is_null($plan->plan_max_free_listing) ? null : $plan->plan_max_free_listing,
-        ));
-        $new_subscription = $new_user->subscription()->save($subscription);
+        if($plan) {
+            $subscription = new Subscription(array(
+                'user_id' => $new_user->id,
+                'plan_id' => $plan->id,
+                'subscription_start_date' => Carbon::now()->toDateString(),
+                // 'subscription_max_featured_listing' => is_null($plan->plan_max_featured_listing) ? null : $plan->plan_max_featured_listing,
+                // 'subscription_max_free_listing' => is_null($plan->plan_max_free_listing) ? null : $plan->plan_max_free_listing,
+            ));
+            $new_subscription = $new_user->subscription()->save($subscription);
+        }
 
         return $new_user;
     }
