@@ -109,10 +109,18 @@ class StripeController extends Controller
             ]);
 
             // #3 - create a customer record in Stripe
-            $stripe_customer = $stripe->customers->create([
-                'name' => $login_user->name,
-                'email' => $login_user->email,
-            ]);
+            try{
+                $stripe_customer = $stripe->customers->all(['limit' => 1, 'email' => $login_user->email]);
+                $stripe_customer = (isset($stripe_customer->data) && !empty($stripe_customer->data)) ? $stripe_customer->data[0] : '';
+            } catch(\Exception $e) {
+            }
+
+            if(empty($stripe_customer)) {
+                $stripe_customer = $stripe->customers->create([
+                    'name' => $login_user->name,
+                    'email' => $login_user->email,
+                ]);
+            }
 
             // #4 - create a session record in Stripe
             $stripe_session = $stripe->checkout->sessions->create([
