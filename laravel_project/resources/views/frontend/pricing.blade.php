@@ -461,8 +461,8 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="post_code" class="text-black">Post Code</label>
-                                            <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
+                                            <label for="zip" class="text-black">Post Code</label>
+                                            <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
                                             @error('post_code')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

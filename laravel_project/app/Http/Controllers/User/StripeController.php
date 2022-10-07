@@ -48,73 +48,94 @@ class StripeController extends Controller
             $this->initialStripe();
 
             $login_user = Auth::user();
+
             $current_subscription = new Subscription();
-            if(!$current_subscription->planSubscriptionValidation($plan_id, $subscription_id, $login_user->id))
-            {
+            if(!$current_subscription->planSubscriptionValidation($plan_id, $subscription_id, $login_user->id)) {
                 \Session::flash('flash_message', __('alert.paypal-plan-subscription-error'));
                 \Session::flash('flash_type', 'danger');
-
                 return redirect()->route('user.subscriptions.index');
             }
 
             $current_subscription = Subscription::find($subscription_id);
-
-            if($current_subscription->plan()->first()->plan_type != Plan::PLAN_TYPE_FREE)
-            {
+            if($current_subscription->plan()->first()->plan_type != Plan::PLAN_TYPE_FREE) {
                 \Session::flash('flash_message', __('alert.paypal-free-plan-upgrade'));
                 \Session::flash('flash_type', 'danger');
-
                 return redirect()->route('user.subscriptions.index');
+            }
+
+            $future_plan = Plan::find($plan_id);
+            $stripe_product_id = $future_plan->id;
+            $stripe_product_name = $future_plan->plan_name;
+            $stripe_product_slug = strtolower((str_replace(" ","-",$stripe_product_name))).'-'.$stripe_product_id;
+            $stripe_price_unit_amount = $future_plan->plan_price * 100;
+            $stripe_price_currency = $settings->setting_site_stripe_currency;
+            $stripe_interval_count = 1;
+            $stripe_product_description = "";
+            if($future_plan->plan_period == Plan::PLAN_MONTHLY) {
+                $stripe_interval_count = 1;
+                $stripe_product_description = 'Monthly Subscription';
+            }
+            if($future_plan->plan_period == Plan::PLAN_QUARTERLY) {
+                $stripe_interval_count = 3;
+                $stripe_product_description = 'Quarterly Subscription';
+            }
+            if($future_plan->plan_period == Plan::PLAN_YEARLY) {
+                $stripe_interval_count = 12;
+                $stripe_product_description = 'Yearly Subscription';
             }
 
             $stripe_published_key = $this->stripe_published_key;
             $stripe_secret_key = $this->stripe_secret_key;
 
-            $future_plan = Plan::find($plan_id);
-            $stripe_product_name = $future_plan->plan_name;
-            $stripe_price_unit_amount = $future_plan->plan_price * 100;
-            $stripe_price_currency = $this->stripe_currency;
-            $stripe_interval_count = 1;
-            $stripe_product_description = "";
-            if($future_plan->plan_period == Plan::PLAN_MONTHLY)
-            {
-                $stripe_product_description = 'Monthly Subscription';
-                $stripe_interval_count = 1;
-            }
-            if($future_plan->plan_period == Plan::PLAN_QUARTERLY)
-            {
-                $stripe_product_description = 'Quarterly Subscription';
-                $stripe_interval_count = 3;
-            }
-            if($future_plan->plan_period == Plan::PLAN_YEARLY)
-            {
-                $stripe_product_description = 'Yearly Subscription';
-                $stripe_interval_count = 12;
-            }
-
             $stripe = new \Stripe\StripeClient($stripe_secret_key);
 
+            // #1 - get exist product from Stripe
+            try {
+                $stripe_product = $stripe->products->search(['limit' => 1, 'query' => 'active:\'true\' AND metadata[\'plan_slug\']: \''.$stripe_product_slug.'\'']);
+                $stripe_product = (isset($stripe_product->data) && !empty($stripe_product->data)) ? $stripe_product->data[0] : '';
+            } catch(\Exception $e) {
+            }
             // #1 - create a product record in Stripe
-            $stripe_product = $stripe->products->create([
-                'name' => $stripe_product_name,
-                'description' => $stripe_product_description,
-            ]);
+            if(empty($stripe_product)) {
+                $stripe_product = $stripe->products->create([
+                    'name' => $stripe_product_name,
+                    'description' => $stripe_product_description,
+                    'metadata' => [
+                        "plan_id" => $stripe_product_id,
+                        "plan_name" => $stripe_product_name,
+                        "plan_slug" => $stripe_product_slug,
+                    ]
+                ]);
+            }
 
+            // #2 - get exist product price from Stripe
+            try {
+                $stripe_price = $stripe->prices->all(['limit' => 1, 'product' => $stripe_product['id']]);
+                $stripe_price = (isset($stripe_price->data) && !empty($stripe_price->data)) ? $stripe_price->data[0] : '';
+            } catch(\Exception $e) {
+            }
             // #2 - create a price record for the product in Stripe
-            $stripe_price = $stripe->prices->create([
-                'unit_amount' => $stripe_price_unit_amount,
-                'currency' => $stripe_price_currency,
-                'recurring' => ['interval' => 'month', 'interval_count' => $stripe_interval_count],
-                'product' => $stripe_product['id'],
-            ]);
+            if(empty($stripe_price)) {
+                $stripe_price = $stripe->prices->create([
+                    'unit_amount' => $stripe_price_unit_amount,
+                    'currency' => $stripe_price_currency,
+                    'recurring' => ['interval' => 'month', 'interval_count' => $stripe_interval_count],
+                    'product' => $stripe_product['id'],
+                    'metadata' => [
+                        "plan_id" => $stripe_product_id,
+                        "plan_name" => $stripe_product_name,
+                        "plan_slug" => $stripe_product_slug,
+                    ]
+                ]);
+            }
 
-            // #3 - create a customer record in Stripe
+            // #3 - get exist customer via email from Stripe
             try{
                 $stripe_customer = $stripe->customers->all(['limit' => 1, 'email' => $login_user->email]);
                 $stripe_customer = (isset($stripe_customer->data) && !empty($stripe_customer->data)) ? $stripe_customer->data[0] : '';
             } catch(\Exception $e) {
             }
-
+            // #3 - create a customer record in Stripe
             if(empty($stripe_customer)) {
                 $stripe_customer = $stripe->customers->create([
                     'name' => $login_user->name,
@@ -128,12 +149,10 @@ class StripeController extends Controller
                 'success_url' => route('user.stripe.checkout.success', ['plan_id' => $plan_id, 'subscription_id' => $subscription_id]),
                 'cancel_url' => route('user.stripe.checkout.cancel'),
                 'payment_method_types' => ['card'],
-                'line_items' => [
-                    [
-                        'price' => $stripe_price['id'],
-                        'quantity' => 1,
-                    ],
-                ],
+                'line_items' => [[
+                    'price' => $stripe_price['id'],
+                    'quantity' => 1,
+                ]],
                 'mode' => 'subscription',
             ]);
             $stripe_session_id = $stripe_session['id'];
@@ -147,15 +166,11 @@ class StripeController extends Controller
 
             return view('backend.user.subscription.payment.stripe.do-checkout',
                 compact('stripe_published_key', 'stripe_session_id'));
-
         }
         catch (Exception $e) {
-
             Log::error($e);
-
             \Session::flash('flash_message', $e->getMessage());
             \Session::flash('flash_type', 'danger');
-
             return redirect()->route('user.subscriptions.index');
         }
     }
