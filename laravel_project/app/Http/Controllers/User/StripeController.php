@@ -43,8 +43,7 @@ class StripeController extends Controller
 
     public function doCheckout(int $plan_id, int $subscription_id)
     {
-        try
-        {
+        try {
             $this->initialStripe();
 
             $login_user = Auth::user();
@@ -53,14 +52,22 @@ class StripeController extends Controller
             if(!$current_subscription->planSubscriptionValidation($plan_id, $subscription_id, $login_user->id)) {
                 \Session::flash('flash_message', __('alert.paypal-plan-subscription-error'));
                 \Session::flash('flash_type', 'danger');
-                return redirect()->route('user.subscriptions.index');
+                $current_subscription = Subscription::find($subscription_id);
+                if($current_subscription && $current_subscription->invoices->count() > 0) {
+                    return redirect()->route('user.subscriptions.index');
+                } else {
+                    return redirect()->route('user.subscription.verify', $current_subscription->id);
+                }
             }
 
             $current_subscription = Subscription::find($subscription_id);
             if($current_subscription->plan()->first()->plan_type != Plan::PLAN_TYPE_FREE) {
-                \Session::flash('flash_message', __('alert.paypal-free-plan-upgrade'));
-                \Session::flash('flash_type', 'danger');
-                return redirect()->route('user.subscriptions.index');
+                $current_subscription = Subscription::find($subscription_id);
+                if($current_subscription && $current_subscription->invoices->count() > 0) {
+                    \Session::flash('flash_message', __('alert.paypal-free-plan-upgrade'));
+                    \Session::flash('flash_type', 'danger');
+                    return redirect()->route('user.subscriptions.index');
+                }
             }
 
             $future_plan = Plan::find($plan_id);
@@ -68,7 +75,7 @@ class StripeController extends Controller
             $stripe_product_name = $future_plan->plan_name;
             $stripe_product_slug = strtolower((str_replace(" ","-",$stripe_product_name))).'-'.$stripe_product_id;
             $stripe_price_unit_amount = $future_plan->plan_price * 100;
-            $stripe_price_currency = $settings->setting_site_stripe_currency;
+            $stripe_price_currency = $this->stripe_currency;
             $stripe_interval_count = 1;
             $stripe_product_description = "";
             if($future_plan->plan_period == Plan::PLAN_MONTHLY) {
@@ -89,13 +96,13 @@ class StripeController extends Controller
 
             $stripe = new \Stripe\StripeClient($stripe_secret_key);
 
-            // #1 - get exist product from Stripe
+            // #1 - Get exist product from stripe
             try {
                 $stripe_product = $stripe->products->search(['limit' => 1, 'query' => 'active:\'true\' AND metadata[\'plan_slug\']: \''.$stripe_product_slug.'\'']);
                 $stripe_product = (isset($stripe_product->data) && !empty($stripe_product->data)) ? $stripe_product->data[0] : '';
             } catch(\Exception $e) {
             }
-            // #1 - create a product record in Stripe
+            // #1 - Create a new product if not exist
             if(empty($stripe_product)) {
                 $stripe_product = $stripe->products->create([
                     'name' => $stripe_product_name,
@@ -108,13 +115,13 @@ class StripeController extends Controller
                 ]);
             }
 
-            // #2 - get exist product price from Stripe
+            // #2 - Get exist product price
             try {
                 $stripe_price = $stripe->prices->all(['limit' => 1, 'product' => $stripe_product['id']]);
                 $stripe_price = (isset($stripe_price->data) && !empty($stripe_price->data)) ? $stripe_price->data[0] : '';
             } catch(\Exception $e) {
             }
-            // #2 - create a price record for the product in Stripe
+            // #2 - Create a new price for product if not exist
             if(empty($stripe_price)) {
                 $stripe_price = $stripe->prices->create([
                     'unit_amount' => $stripe_price_unit_amount,
@@ -129,13 +136,13 @@ class StripeController extends Controller
                 ]);
             }
 
-            // #3 - get exist customer via email from Stripe
+            // #3 - Get exist customer via email
             try{
                 $stripe_customer = $stripe->customers->all(['limit' => 1, 'email' => $login_user->email]);
                 $stripe_customer = (isset($stripe_customer->data) && !empty($stripe_customer->data)) ? $stripe_customer->data[0] : '';
             } catch(\Exception $e) {
             }
-            // #3 - create a customer record in Stripe
+            // #3 - Create a new customer if not exist
             if(empty($stripe_customer)) {
                 $stripe_customer = $stripe->customers->create([
                     'name' => $login_user->name,
@@ -158,10 +165,10 @@ class StripeController extends Controller
             $stripe_session_id = $stripe_session['id'];
 
             // #5 - insert the stripe customer_id and future plan_id to the subscription
-            $current_subscription->subscription_stripe_customer_id = $stripe_customer['id'];
-            $current_subscription->subscription_stripe_future_plan_id = $future_plan->id;
-            $current_subscription->subscription_stripe_subscription_id = $stripe_session['subscription'];
             $current_subscription->subscription_pay_method = Subscription::PAY_METHOD_STRIPE;
+            $current_subscription->subscription_stripe_customer_id = $stripe_customer['id'];
+            $current_subscription->subscription_stripe_subscription_id = $stripe_session['subscription'];
+            $current_subscription->subscription_stripe_future_plan_id = $future_plan->id;
             $current_subscription->save();
 
             return view('backend.user.subscription.payment.stripe.do-checkout',
@@ -171,7 +178,12 @@ class StripeController extends Controller
             Log::error($e);
             \Session::flash('flash_message', $e->getMessage());
             \Session::flash('flash_type', 'danger');
-            return redirect()->route('user.subscriptions.index');
+            $current_subscription = Subscription::find($subscription_id);
+            if($current_subscription && $current_subscription->invoices->count() > 0) {
+                return redirect()->route('user.subscriptions.index');
+            } else {
+                return redirect()->route('user.subscription.verify', $current_subscription->id);
+            }
         }
     }
 

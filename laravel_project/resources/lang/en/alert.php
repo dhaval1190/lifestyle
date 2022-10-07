@@ -92,4 +92,5 @@ return array (
   'user-suspended' => 'The user suspended successfully.',
   'user-unlocked' => 'User suspension removed successfully.',
   'user-updated' => 'The user updated successfully.',
+  'free-subscription-activate' => 'Free subscription activated successfully.',
 );

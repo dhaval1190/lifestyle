@@ -185,6 +185,17 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/ajax/setting/favicon/delete', 'PagesController@jsonDeleteSettingFaviconImage')->name('json.setting.favicon');
 
     Route::post('/ajax/category/image/delete/{category_id}', 'PagesController@jsonDeleteCategoryImage')->name('json.category.image.delete');
+
+
+
+    Route::get('/user/subscription/verify/{subscription}', 'User\SubscriptionController@verifySubscription')->name('user.subscription.verify');
+    Route::get('/user/subscription/free/{subscription}', 'User\SubscriptionController@freeSubscriptionActivate')->name('user.subscription.free');
+
+    Route::post('/user/stripe/checkout/plan/{plan_id}/subscription/{subscription_id}', 'User\StripeController@doCheckout')->name('user.stripe.checkout.do');
+    Route::get('/user/stripe/checkout/success/plan/{plan_id}/subscription/{subscription_id}', 'User\StripeController@showCheckoutSuccess')->name('user.stripe.checkout.success');
+    Route::get('/user/stripe/checkout/cancel', 'User\StripeController@cancelCheckout')->name('user.stripe.checkout.cancel');
+    Route::post('/user/stripe/recurring/cancel', 'User\StripeController@cancelRecurring')->name('user.stripe.recurring.cancel');
+
     /**
      * Back-end admin routes
      */
@@ -471,7 +482,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     /**
      * Back-end user routes
      */
-    Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user'],'as'=>'user.'], function(){
+    Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user','verify_subscription'],'as'=>'user.'], function(){
 
         Route::get('/dashboard','PagesController@index')->name('index');
         Route::resource('/items', 'ItemController');
@@ -620,10 +631,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/razorpay/recurring/cancel', 'RazorpayController@cancelRecurring')->name('razorpay.recurring.cancel');
 
         // Stripe payment gateway
-        Route::post('/stripe/checkout/plan/{plan_id}/subscription/{subscription_id}', 'StripeController@doCheckout')->name('stripe.checkout.do');
+        /*Route::post('/stripe/checkout/plan/{plan_id}/subscription/{subscription_id}', 'StripeController@doCheckout')->name('stripe.checkout.do');
         Route::get('/stripe/checkout/success/plan/{plan_id}/subscription/{subscription_id}', 'StripeController@showCheckoutSuccess')->name('stripe.checkout.success');
         Route::get('/stripe/checkout/cancel', 'StripeController@cancelCheckout')->name('stripe.checkout.cancel');
-        Route::post('/stripe/recurring/cancel', 'StripeController@cancelRecurring')->name('stripe.recurring.cancel');
+        Route::post('/stripe/recurring/cancel', 'StripeController@cancelRecurring')->name('stripe.recurring.cancel');*/
 
         // Payumoney payment gateway
         Route::post('/payumoney/checkout/plan/{plan_id}/subscription/{subscription_id}', 'PayumoneyController@doCheckout')->name('payumoney.checkout.do');

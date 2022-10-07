@@ -9,6 +9,7 @@ return array (
     'login' => 'Login - :site_name',
     'register' => 'Register - :site_name',
     'reset-password' => 'Reset Password - :site_name',
+    'verify-subscription' => 'Verify Subscription - :site_name',
   ),
   'backend' => 
   array (

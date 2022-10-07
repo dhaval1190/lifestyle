@@ -12,6 +12,8 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use App\Theme;
+use App\Customization;
 
 class SubscriptionController extends Controller
 {
@@ -203,6 +205,53 @@ class SubscriptionController extends Controller
      */
     public function destroy(Subscription $subscription)
     {
+        return redirect()->route('user.subscriptions.index');
+    }
+
+    public function verifySubscription(Subscription $subscription)
+    {
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.auth.verify-subscription', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        $all_plans = Plan::where('id', $subscription->plan_id)->get();
+
+        // get payment gateway enable status
+        $setting_site_paypal_enable = $settings->setting_site_paypal_enable;
+        $setting_site_razorpay_enable = $settings->setting_site_razorpay_enable;
+        $setting_site_stripe_enable = $settings->setting_site_stripe_enable;
+        $setting_site_payumoney_enable = $settings->setting_site_payumoney_enable;
+
+        $all_setting_bank_transfers = SettingBankTransfer::where('setting_bank_transfer_status', Setting::SITE_PAYMENT_BANK_TRANSFER_ENABLE)->get();
+        $setting_site_bank_transfer_enable = $all_setting_bank_transfers->count() > 0 ? true : false;
+
+        return response()->view('backend.user.subscription.verify',
+            compact('subscription', 'all_plans', 'setting_site_paypal_enable', 'setting_site_razorpay_enable',
+                    'setting_site_stripe_enable', 'all_setting_bank_transfers', 'setting_site_bank_transfer_enable',
+                    'setting_site_payumoney_enable'));
+    }
+
+    public function freeSubscriptionActivate(Subscription $subscription)
+    {
+        $subscription->plan_id = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first()->id;
+        // $subscription->subscription_pay_method = null;
+        // $subscription->subscription_stripe_customer_id = null;
+        // $subscription->subscription_stripe_subscription_id = null;
+        // $subscription->subscription_stripe_future_plan_id = null;
+        $subscription->save();
+
+        \Session::flash('flash_message', __('alert.free-subscription-activate'));
+        \Session::flash('flash_type', 'success');
+
         return redirect()->route('user.subscriptions.index');
     }
 }
