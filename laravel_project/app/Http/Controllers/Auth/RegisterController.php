@@ -83,14 +83,19 @@ class RegisterController extends Controller
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
             $rules['phone']                 = ['required','string','max:20'];
-            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
             $rules['gender']                = ['required','string','in:male,female','max:20'];
+            $rules['preferred_pronouns']    = ['required','string','in:both,she_her,he_his','max:100'];
+
+            $rules['website']               = ['nullable','string','url','max:100'];
             $rules['instagram']             = ['nullable','string','url','max:100'];
             $rules['linkedin']              = ['nullable','string','url','max:100'];
             $rules['facebook']              = ['nullable','string','url','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
+
+            $rules['hourly_rate_type']      = ['required','string','max:50'];
+            $rules['working_type']          = ['required','string','max:50'];
             $rules['experience_year']       = ['required','string','max:50'];
-            $rules['website']               = ['nullable','string','url','max:100'];
+
             $rules['address']               = ['required','string','max:160'];
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
@@ -125,23 +130,29 @@ class RegisterController extends Controller
 
         if(isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) {
 
-            $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
+            $new_user->company_name          = isset($data['company_name']) ? $data['company_name'] : null;
             $new_user->phone                 = isset($data['phone']) ? $data['phone'] : null;
+
+            $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
+            $new_user->preferred_pronouns    = isset($data['preferred_pronouns']) ? $data['preferred_pronouns'] : null;
+
             $new_user->hourly_rate           = isset($data['hourly_rate']) ? $data['hourly_rate'] : null;
+            $new_user->hourly_rate_type      = isset($data['hourly_rate_type']) ? $data['hourly_rate_type'] : null;
+            $new_user->working_type          = isset($data['working_type']) ? $data['working_type'] : null;
             $new_user->experience_year       = isset($data['experience_year']) ? $data['experience_year'] : null;
             $new_user->availability          = isset($data['availability']) ? $data['availability'] : null;
-            $new_user->company_name          = isset($data['company_name']) ? $data['company_name'] : null;
+
+            $new_user->website               = isset($data['website']) ? $data['website'] : null;
             $new_user->instagram             = isset($data['instagram']) ? $data['instagram'] : null;
             $new_user->linkedin              = isset($data['linkedin']) ? $data['linkedin'] : null;
             $new_user->facebook              = isset($data['facebook']) ? $data['facebook'] : null;
             $new_user->youtube               = isset($data['youtube']) ? $data['youtube'] : null;
-            $new_user->website               = isset($data['website']) ? $data['website'] : null;
-            $new_user->preferred_pronouns    = isset($data['preferred_pronouns']) ? $data['preferred_pronouns'] : null;
+
             $new_user->address               = isset($data['address']) ? $data['address'] : null;
+            $new_user->country_id            = isset($data['country_id']) ? $data['country_id'] : null;
+            $new_user->state_id              = isset($data['state_id']) ? $data['state_id'] : null;
             $new_user->city_id               = isset($data['city_id']) ? $data['city_id'] : null;
             $new_user->post_code             = isset($data['post_code']) ? $data['post_code'] : null;
-            $new_user->state_id              = isset($data['state_id']) ? $data['state_id'] : null;
-            $new_user->country_id            = isset($data['country_id']) ? $data['country_id'] : null;
 
             $user_image = $data['user_image'];
             if(!empty($user_image)){

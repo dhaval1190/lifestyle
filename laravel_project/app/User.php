@@ -52,6 +52,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'category_id',
         'hourly_rate',
+        'hourly_rate_type',
+        'working_type',
         'experience_year',
         'availability',
         'company_name',

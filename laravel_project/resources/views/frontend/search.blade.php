@@ -104,11 +104,37 @@
                         <hr>
 
                         <div class="row form-group align-items-center">
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-md-2">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div>
-
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-2 pl-0">
+                                <select class="selectpicker form-control @error('filter_working_type') is-invalid @enderror" name="filter_working_type" id="filter_working_type">
+                                    <option value="">All Working Type</option>
+                                    <option value="person-to-person" {{ $filter_working_type == "person-to-person" ? 'selected' : '' }}>Person-to-Person</option>
+                                    <option value="remotely" {{ $filter_working_type == "remotely" ? 'selected' : '' }}>Remotely</option>
+                                    <option value="hybrid" {{ $filter_working_type == "hybrid" ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
+                                </select>
+                                @error('filter_working_type')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-2 pl-0">
+                                <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
+                                    <option value="">All Price Range</option>
+                                    <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
+                                    <option value="$$" {{ $filter_hourly_rate == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
+                                    <option value="$$$" {{ $filter_hourly_rate == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
+                                    <option value="$$$$" {{ $filter_hourly_rate == '$$$$' ? 'selected' : '' }}>$$$$ (More than 325.00)</option>
+                                </select>
+                                @error('filter_hourly_rate')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-2 pl-0">
                                 <select class="selectpicker form-control @error('filter_state') is-invalid @enderror" name="filter_state" id="filter_state" data-live-search="true">
                                     <option value="0" {{ empty($filter_state) ? 'selected' : '' }}>{{ __('prefer_country.all-state') }}</option>
                                     @foreach($all_states as $all_states_key => $state)
@@ -121,7 +147,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-2 pl-0">
                                 <select class="selectpicker form-control @error('filter_city') is-invalid @enderror" name="filter_city" id="filter_city" data-live-search="true">
                                     <option value="0" {{ empty($filter_city) ? 'selected' : '' }}>{{ __('prefer_country.all-city') }}</option>
                                     @foreach($all_cities as $all_cities_key => $city)
@@ -134,7 +160,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-2 pl-0">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>

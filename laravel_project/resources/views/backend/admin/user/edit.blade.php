@@ -173,90 +173,134 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
-                                            <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
-                                            <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
-                                                <option value="she_her" {{ old('preferred_pronouns', $user->preferred_pronouns) == 'she_her' ? 'selected' : '' }} >She / Her</option>
-                                                <option value="he_his" {{ old('preferred_pronouns', $user->preferred_pronouns) == 'he_his' ? 'selected' : '' }} >He / His</option>
-                                            </select>
-                                            @error('preferred_pronouns')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                        <div class="col-sm-5">
+                                            <div class="row mt-3">
+                                                <div class="col-sm-6">
+                                                    <label for="gender" class="text-black">Gender</label>
+                                                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                                        <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }} >Male</option>
+                                                        <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }} >Female</option>
+                                                    </select>
+                                                    @error('gender')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
+                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
+                                                        <option value="both" {{ old('preferred_pronouns', $user->preferred_pronouns) == 'both' ? 'selected' : '' }} >No Preference</option>
+                                                        <option value="she_her" {{ old('preferred_pronouns', $user->preferred_pronouns) == 'she_her' ? 'selected' : '' }} >She/Her</option>
+                                                        <option value="he_his" {{ old('preferred_pronouns', $user->preferred_pronouns) == 'he_his' ? 'selected' : '' }} >He/His</option>
+                                                    </select>
+                                                    @error('preferred_pronouns')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <label for="gender" class="text-black">Gender</label>
-                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }} >Male</option>
-                                                <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }} >Female</option>
-                                            </select>
-                                            @error('gender')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="experience_year" class="text-black">Experience Year</label>
-                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
-                                                <option value="0-2" {{ old('experience_year', $user->experience_year) == '0-2' ? 'selected' : '' }}>0-2</option>
-                                                <option value="3-5" {{ old('experience_year', $user->experience_year) == '3-5' ? 'selected' : '' }}>3-5</option>
-                                                <option value="5-10" {{ old('experience_year', $user->experience_year) == '5-10' ? 'selected' : '' }}>5-10</option>
-                                                <option value="10+" {{ old('experience_year', $user->experience_year) == '10+' ? 'selected' : '' }}>10 or more</option>
-                                            </select>
-                                            @error('experience_year')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="website" class="text-black">Website</label>
-                                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $user->website) }}" required>
-                                            @error('website')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                        <div class="col-sm-7">
+                                            <div class="row mt-3">
+                                                 <div class="col-sm-4">
+                                                    <label for="hourly_rate_type" class="text-black">Hourly Rate</label>
+                                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
+                                                        <option value="$" {{ old('hourly_rate_type', $user->hourly_rate_type) == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
+                                                        <option value="$$" {{ old('hourly_rate_type', $user->hourly_rate_type) == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
+                                                        <option value="$$$" {{ old('hourly_rate_type', $user->hourly_rate_type) == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
+                                                        <option value="$$$$" {{ old('hourly_rate_type', $user->hourly_rate_type) == '$$$$' ? 'selected' : '' }}>$$$$ (More than 325.00)</option>
+                                                    </select>
+                                                    @error('hourly_rate_type')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label for="working_type" class="text-black">Working Method</label>
+                                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
+                                                        <option value="person-to-person" {{ old('working_type', $user->working_type) == 'person-to-person' ? 'selected' : '' }}>Person-to-Person</option>
+                                                        <option value="remotely" {{ old('working_type', $user->working_type) == 'remotely' ? 'selected' : '' }}>Remotely</option>
+                                                        <option value="hybrid" {{ old('working_type', $user->working_type) == 'hybrid' ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
+                                                    </select>
+                                                    @error('working_type')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label for="experience_year" class="text-black">Experience Year</label>
+                                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
+                                                        <option value="0-2" {{ old('experience_year', $user->experience_year) == '0-2' ? 'selected' : '' }}>0-2</option>
+                                                        <option value="3-5" {{ old('experience_year', $user->experience_year) == '3-5' ? 'selected' : '' }}>3-5</option>
+                                                        <option value="5-10" {{ old('experience_year', $user->experience_year) == '5-10' ? 'selected' : '' }}>5-10</option>
+                                                        <option value="10+" {{ old('experience_year', $user->experience_year) == '10+' ? 'selected' : '' }}>10 or more</option>
+                                                    </select>
+                                                    @error('experience_year')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
-                                            <label for="instagram" class="text-black">IG Handle</label>
-                                            <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}" required>
-                                            @error('instagram')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                        <div class="col-sm-5">
+                                            <div class="row mt-3">
+                                                <div class="col-sm-6">
+                                                    <label for="website" class="text-black">Website</label>
+                                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $user->website) }}" required>
+                                                    @error('website')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="instagram" class="text-black">IG Handle</label>
+                                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}" required>
+                                                    @error('instagram')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <label for="linkedin" class="text-black">LinkedIn</label>
-                                            <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" required>
-                                            @error('linkedin')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="facebook" class="text-black">Facebook</label>
-                                            <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}" required>
-                                            @error('facebook')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="youtube" class="text-black">Youtube</label>
-                                            <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}" required>
-                                            @error('youtube')
-                                            <span class="invalid-tooltip" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                        <div class="col-sm-7">
+                                            <div class="row mt-3">
+                                                <div class="col-sm-4">
+                                                    <label for="linkedin" class="text-black">LinkedIn</label>
+                                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" required>
+                                                    @error('linkedin')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label for="facebook" class="text-black">Facebook</label>
+                                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}" required>
+                                                    @error('facebook')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label for="youtube" class="text-black">Youtube</label>
+                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}" required>
+                                                    @error('youtube')
+                                                    <span class="invalid-tooltip" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

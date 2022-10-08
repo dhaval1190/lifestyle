@@ -18,6 +18,8 @@ class AddColumnsToUsersTable extends Migration
             $table->string('phone', 20)->after('gender')->nullable();
             $table->integer('category_id')->after('phone')->nullable();
             $table->decimal('hourly_rate', 8, 2)->after('category_id')->default(0)->nullable();
+            $table->string('hourly_rate_type', 50)->after('hourly_rate')->nullable();
+            $table->string('working_type', 50)->after('hourly_rate_type')->nullable();
             $table->string('experience_year',50)->after('hourly_rate')->nullable();
             $table->string('availability',50)->after('experience_year')->nullable();
             $table->string('company_name', 100)->after('availability')->nullable();

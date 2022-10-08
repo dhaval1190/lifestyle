@@ -192,7 +192,7 @@
 
             @if(empty($login_user))
                 <div class="modal fade" id="coachRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="coachRegistrationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="min-width: 1360px;">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="min-width: 1480px;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="coachRegistrationModalLabel">Coach Registration</h5>
@@ -226,7 +226,7 @@
                                         <div class="col-sm-10">
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
-                                                    <label for="category_ids" class="text-black">Category</label>
+                                                    <label for="category_ids" class="text-black">Category <span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
                                                         {{-- <option value="">Select Category</option> --}}
                                                         @foreach($printable_categories as $key => $printable_category)
@@ -245,7 +245,7 @@
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
-                                                    <label for="name" class="text-black">{{ __('auth.name') }}</label>
+                                                    <label for="name" class="text-black">{{ __('auth.name') }} <span class="text-danger">*</span></label>
                                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
                                                     @error('name')
                                                     <span class="invalid-feedback" role="alert">
@@ -255,7 +255,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="company_name" class="text-black">Company Name</label>
-                                                    <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}" required>
+                                                    <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}">
                                                     @error('company_name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -263,7 +263,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                                    <label class="text-black" for="email">{{ __('auth.email-addr') }} <span class="text-danger">*</span></label>
                                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
                                                     @error('email')
                                                     <span class="invalid-feedback" role="alert">
@@ -272,7 +272,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="phone" class="text-black">Phone</label>
+                                                    <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                                     <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
                                                     @error('phone')
                                                     <span class="invalid-feedback" role="alert">
@@ -283,7 +283,7 @@
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
-                                                    <label class="text-black" for="subject">{{ __('auth.password') }}</label>
+                                                    <label class="text-black" for="subject">{{ __('auth.password') }} <span class="text-danger">*</span></label>
                                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
                                                     @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -292,14 +292,27 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}</label>
+                                                    <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }} <span class="text-danger">*</span></label>
                                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                                                 </div>
                                                 <div class="col-sm-3">
+                                                    <label for="gender" class="text-black">Gender <span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                                        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }} >Male</option>
+                                                        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }} >Female</option>
+                                                    </select>
+                                                    @error('gender')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-3">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
-                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
-                                                        <option value="she_her" {{ old('preferred_pronouns') == 'she_her' ? 'selected' : '' }} >She / Her</option>
-                                                        <option value="he_his" {{ old('preferred_pronouns') == 'he_his' ? 'selected' : '' }} >He / His</option>
+                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
+                                                        <option value="both" {{ old('preferred_pronouns') == 'both' ? 'selected' : '' }} >No Preference</option>
+                                                        <option value="she_her" {{ old('preferred_pronouns') == 'she_her' ? 'selected' : '' }} >She/Her</option>
+                                                        <option value="he_his" {{ old('preferred_pronouns') == 'he_his' ? 'selected' : '' }} >He/His</option>
                                                     </select>
                                                     @error('preferred_pronouns')
                                                     <span class="invalid-feedback" role="alert">
@@ -307,13 +320,53 @@
                                                     </span>
                                                     @enderror
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-2">
+                                            <label for="website" class="text-black">Website</label>
+                                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}">
+                                            @error('website')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="row mb-3">
                                                 <div class="col-sm-3">
-                                                    <label for="gender" class="text-black">Gender</label>
-                                                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }} >Male</option>
-                                                        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }} >Female</option>
-                                                    </select>
-                                                    @error('gender')
+                                                    <label for="instagram" class="text-black">IG Handle</label>
+                                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
+                                                    @error('instagram')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="linkedin" class="text-black">LinkedIn</label>
+                                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
+                                                    @error('linkedin')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="facebook" class="text-black">Facebook</label>
+                                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
+                                                    @error('facebook')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label for="youtube" class="text-black">Youtube</label>
+                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube') }}">
+                                                    @error('youtube')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -325,47 +378,35 @@
 
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="instagram" class="text-black">IG Handle</label>
-                                            <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}" required>
-                                            @error('instagram')
+                                            <label for="hourly_rate_type" class="text-black">Hourly Rate <span class="text-danger">*</span></label>
+                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate" required>
+                                                <option value="$" {{ old('hourly_rate_type') == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
+                                                <option value="$$" {{ old('hourly_rate_type') == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
+                                                <option value="$$$" {{ old('hourly_rate_type') == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
+                                                <option value="$$$$" {{ old('hourly_rate_type') == '$$$$' ? 'selected' : '' }}>$$$$ (More than 325.00)</option>
+                                            </select>
+                                            @error('hourly_rate_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="linkedin" class="text-black">LinkedIn</label>
-                                            <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}" required>
-                                            @error('linkedin')
+                                            <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
+                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Wroking Method" required>
+                                                <option value="person-to-person" {{ old('working_type') == 'person-to-person' ? 'selected' : '' }}>Person-to-Person</option>
+                                                <option value="remotely" {{ old('working_type') == 'remotely' ? 'selected' : '' }}>Remotely</option>
+                                                <option value="hybrid" {{ old('working_type') == 'hybrid' ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
+                                            </select>
+                                            @error('working_type')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="facebook" class="text-black">Facebook</label>
-                                            <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}" required>
-                                            @error('facebook')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <label for="youtube" class="text-black">Youtube</label>
-                                            <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube') }}" required>
-                                            @error('youtube')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-sm-3">
-                                            <label for="experience_year" class="text-black">Experience Year</label>
-                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
+                                            <label for="experience_year" class="text-black">Experience Year <span class="text-danger">*</span></label>
+                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience" required>
                                                 <option value="0-2" {{ old('experience_year') == '0-2' ? 'selected' : '' }}>0-2</option>
                                                 <option value="3-5" {{ old('experience_year') == '3-5' ? 'selected' : '' }}>3-5</option>
                                                 <option value="5-10" {{ old('experience_year') == '5-10' ? 'selected' : '' }}>5-10</option>
@@ -378,16 +419,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="website" class="text-black">Website</label>
-                                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}" required>
-                                            @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label for="address" class="text-black">Address</label>
+                                            <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
                                             <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
                                             @error('address')
                                             <span class="invalid-feedback" role="alert">
@@ -426,7 +458,7 @@
 
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="country_id" class="text-black">Country</label>
+                                            <label for="country_id" class="text-black">Country <span class="text-danger">*</span></label>
                                             <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
                                                 @foreach($all_countries as $all_countries_key => $country)
                                                     @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
@@ -441,7 +473,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="state_id" class="text-black">State</label>
+                                            <label for="state_id" class="text-black">State <span class="text-danger">*</span></label>
                                             <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-state') }}">
                                             </select>
                                             @error('state_id')
@@ -451,7 +483,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="city_id" class="text-black">City</label>
+                                            <label for="city_id" class="text-black">City <span class="text-danger">*</span></label>
                                             <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-city') }}">
                                             </select>
                                             @error('city_id')
@@ -461,7 +493,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="zip" class="text-black">Post Code</label>
+                                            <label for="zip" class="text-black">Post Code <span class="text-danger">*</span></label>
                                             <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
                                             @error('post_code')
                                             <span class="invalid-feedback" role="alert">

@@ -305,6 +305,26 @@ class PagesController extends Controller
             $paid_items_query->where('items.city_id', $filter_city);
         }
 
+        /**
+         * Start filter working type
+         */
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_working_type || $filter_hourly_rate) {
+            $paid_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_working_type) {
+                $paid_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter working type
+         */
+
         $paid_items_query->orderBy('items.created_at', 'DESC')
             ->distinct('items.id')
             ->with('state')
@@ -366,6 +386,26 @@ class PagesController extends Controller
         }
 
         /**
+         * Start filter working type
+         */
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter working type
+         */
+
+        /**
          * Start filter sort by for free listing
          */
         $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
@@ -411,6 +451,8 @@ class PagesController extends Controller
             'filter_sort_by' => $filter_sort_by,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
         if($total_free_items == 0 || $total_paid_items == 0)
@@ -593,7 +635,9 @@ class PagesController extends Controller
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
                     'search_query', 'filter_categories', 'filter_state', 'filter_city', 'filter_sort_by', 'paid_items',
-                    'free_items', 'pagination', 'all_printable_categories', 'all_states', 'all_cities', 'total_results'));
+                    'free_items', 'pagination', 'all_printable_categories', 'all_states', 'all_cities', 'total_results',
+                    'filter_working_type','filter_hourly_rate'
+                ));
     }
 
 

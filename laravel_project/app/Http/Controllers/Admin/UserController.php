@@ -350,13 +350,18 @@ class UserController extends Controller
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
-            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
+            $rules['preferred_pronouns']    = ['required','string','in:both,she_her,he_his','max:100'];
+
+            $rules['website']               = ['nullable','string','url','max:100'];
             $rules['instagram']             = ['nullable','string','url','max:100'];
             $rules['linkedin']              = ['nullable','string','url','max:100'];
             $rules['facebook']              = ['nullable','string','url','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
+
+            $rules['hourly_rate_type']      = ['required','string','max:50'];
+            $rules['working_type']          = ['required','string','max:50'];
             $rules['experience_year']       = ['required','string','max:50'];
-            $rules['website']               = ['nullable','string','url','max:100'];
+
             $rules['address']               = ['required','string','max:160'];
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
@@ -414,6 +419,8 @@ class UserController extends Controller
         $user->gender               = isset($input['gender']) ? $input['gender'] : null;
         $user->phone                = isset($input['phone']) ? $input['phone'] : null;
         $user->hourly_rate          = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+        $user->hourly_rate_type     = isset($input['hourly_rate_type']) ? $input['hourly_rate_type'] : null;
+        $user->working_type         = isset($input['working_type']) ? $input['working_type'] : null;
         $user->experience_year      = isset($input['experience_year']) ? $input['experience_year'] : null;
         $user->availability         = isset($input['availability']) ? $input['availability'] : null;
         $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
