@@ -311,14 +311,7 @@ class PagesController extends Controller
                 $paid_items_query->where('users.gender', $filter_gender_type);
             }
             if($filter_working_type) {
-                if($filter_working_type == 'hybrid') {
-                    $paid_items_query->where(function($squery) {
-                        $squery->where('users.working_type', 'remotely');
-                        $squery->orWhere('users.working_type', 'person-to-person');
-                    });
-                } else {
-                    $paid_items_query->where('users.working_type', $filter_working_type);
-                }
+                $paid_items_query->where('users.working_type', $filter_working_type);
             }
             if($filter_hourly_rate) {
                 $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -392,14 +385,7 @@ class PagesController extends Controller
                 $free_items_query->where('users.gender', $filter_gender_type);
             }
             if($filter_working_type) {
-                if($filter_working_type == 'hybrid') {
-                    $free_items_query->where(function($squery) {
-                        $squery->where('users.working_type', 'remotely');
-                        $squery->orWhere('users.working_type', 'person-to-person');
-                    });
-                } else {
-                    $free_items_query->where('users.working_type', $filter_working_type);
-                }
+                $free_items_query->where('users.working_type', $filter_working_type);
             }
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -942,14 +928,7 @@ class PagesController extends Controller
                 $paid_items_query->where('users.gender', $filter_gender_type);
             }
             if($filter_working_type) {
-                if($filter_working_type == 'hybrid') {
-                    $paid_items_query->where(function($squery) {
-                        $squery->where('users.working_type', 'remotely');
-                        $squery->orWhere('users.working_type', 'person-to-person');
-                    });
-                } else {
-                    $paid_items_query->where('users.working_type', $filter_working_type);
-                }
+                $paid_items_query->where('users.working_type', $filter_working_type);
             }
             if($filter_hourly_rate) {
                 $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -1015,14 +994,7 @@ class PagesController extends Controller
                 $free_items_query->where('users.gender', $filter_gender_type);
             }
             if($filter_working_type) {
-                if($filter_working_type == 'hybrid') {
-                    $free_items_query->where(function($squery) {
-                        $squery->where('users.working_type', 'remotely');
-                        $squery->orWhere('users.working_type', 'person-to-person');
-                    });
-                } else {
-                    $free_items_query->where('users.working_type', $filter_working_type);
-                }
+                $free_items_query->where('users.working_type', $filter_working_type);
             }
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -1346,14 +1318,7 @@ class PagesController extends Controller
                     $paid_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $paid_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $paid_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $paid_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -1415,14 +1380,7 @@ class PagesController extends Controller
                     $free_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $free_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $free_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $free_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -1771,14 +1729,7 @@ class PagesController extends Controller
                     $paid_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $paid_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $paid_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $paid_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -1835,14 +1786,7 @@ class PagesController extends Controller
                     $free_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $free_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $free_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $free_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -2190,14 +2134,7 @@ class PagesController extends Controller
                             $paid_items_query->where('users.gender', $filter_gender_type);
                         }
                         if($filter_working_type) {
-                            if($filter_working_type == 'hybrid') {
-                                $paid_items_query->where(function($squery) {
-                                    $squery->where('users.working_type', 'remotely');
-                                    $squery->orWhere('users.working_type', 'person-to-person');
-                                });
-                            } else {
-                                $paid_items_query->where('users.working_type', $filter_working_type);
-                            }
+                            $paid_items_query->where('users.working_type', $filter_working_type);
                         }
                         if($filter_hourly_rate) {
                             $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -2249,14 +2186,7 @@ class PagesController extends Controller
                             $free_items_query->where('users.gender', $filter_gender_type);
                         }
                         if($filter_working_type) {
-                            if($filter_working_type == 'hybrid') {
-                                $free_items_query->where(function($squery) {
-                                    $squery->where('users.working_type', 'remotely');
-                                    $squery->orWhere('users.working_type', 'person-to-person');
-                                });
-                            } else {
-                                $free_items_query->where('users.working_type', $filter_working_type);
-                            }
+                            $free_items_query->where('users.working_type', $filter_working_type);
                         }
                         if($filter_hourly_rate) {
                             $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -2583,14 +2513,7 @@ class PagesController extends Controller
                     $paid_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $paid_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $paid_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $paid_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -2647,14 +2570,7 @@ class PagesController extends Controller
                     $free_items_query->where('users.gender', $filter_gender_type);
                 }
                 if($filter_working_type) {
-                    if($filter_working_type == 'hybrid') {
-                        $free_items_query->where(function($squery) {
-                            $squery->where('users.working_type', 'remotely');
-                            $squery->orWhere('users.working_type', 'person-to-person');
-                        });
-                    } else {
-                        $free_items_query->where('users.working_type', $filter_working_type);
-                    }
+                    $free_items_query->where('users.working_type', $filter_working_type);
                 }
                 if($filter_hourly_rate) {
                     $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -2943,14 +2859,7 @@ class PagesController extends Controller
                         $paid_items_query->where('users.gender', $filter_gender_type);
                     }
                     if($filter_working_type) {
-                        if($filter_working_type == 'hybrid') {
-                            $paid_items_query->where(function($squery) {
-                                $squery->where('users.working_type', 'remotely');
-                                $squery->orWhere('users.working_type', 'person-to-person');
-                            });
-                        } else {
-                            $paid_items_query->where('users.working_type', $filter_working_type);
-                        }
+                        $paid_items_query->where('users.working_type', $filter_working_type);
                     }
                     if($filter_hourly_rate) {
                         $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
@@ -3003,14 +2912,7 @@ class PagesController extends Controller
                         $free_items_query->where('users.gender', $filter_gender_type);
                     }
                     if($filter_working_type) {
-                        if($filter_working_type == 'hybrid') {
-                            $free_items_query->where(function($squery) {
-                                $squery->where('users.working_type', 'remotely');
-                                $squery->orWhere('users.working_type', 'person-to-person');
-                            });
-                        } else {
-                            $free_items_query->where('users.working_type', $filter_working_type);
-                        }
+                        $free_items_query->where('users.working_type', $filter_working_type);
                     }
                     if($filter_hourly_rate) {
                         $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
