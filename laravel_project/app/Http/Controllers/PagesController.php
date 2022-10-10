@@ -251,7 +251,7 @@ class PagesController extends Controller
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
          * End filter
-         */
+        */
 
         /**
          * Start paid search
@@ -262,74 +262,73 @@ class PagesController extends Controller
         $subscription_obj = new Subscription();
         $paid_user_ids = $subscription_obj->getPaidUserIds();
 
-        if(count($item_ids) > 0)
-        {
-            $paid_items_query->whereIn('id', $item_ids);
+        if(count($item_ids) > 0) {
+            $paid_items_query->whereIn('items.id', $item_ids);
         }
 
-        if(is_array($search_values) && count($search_values) > 0)
-        {
+        if(is_array($search_values) && count($search_values) > 0) {
             $paid_items_query->where(function ($query) use ($search_values) {
-                foreach($search_values as $search_values_key => $search_value)
-                {
+                foreach($search_values as $search_values_key => $search_value) {
                     $query->where('items.item_title', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_location_str', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_categories_string', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_description', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_features_string', 'LIKE', "%".$search_value."%");
+                    ->orWhere('items.item_location_str', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_categories_string', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_description', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_features_string', 'LIKE', "%".$search_value."%");
                 }
             });
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
-            ->where('items.item_featured', Item::ITEM_FEATURED)
-            ->where(function($query) use ($paid_user_ids) {
-
-                $query->whereIn('items.user_id', $paid_user_ids)
-                    ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
-            });
+        ->where(function ($query) use ($site_prefer_country_id) {
+            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        })
+        ->where('items.item_featured', Item::ITEM_FEATURED)
+        ->where(function($query) use ($paid_user_ids) {
+            $query->whereIn('items.user_id', $paid_user_ids)->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
+        });
 
         // filter paid listings state
-        if(!empty($filter_state))
-        {
+        if(!empty($filter_state)) {
             $paid_items_query->where('items.state_id', $filter_state);
         }
 
         // filter paid listings city
-        if(!empty($filter_city))
-        {
+        if(!empty($filter_city)) {
             $paid_items_query->where('items.city_id', $filter_city);
         }
 
         /**
-         * Start filter working type
+         * Start filter gender type, working type, price range
          */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
             $paid_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
+            if($filter_gender_type) {
+                $paid_items_query->where('users.gender', $filter_gender_type);
+            }
             if($filter_working_type) {
-                $paid_items_query->where('users.working_type', $filter_working_type);
+                if($filter_working_type == 'hybrid') {
+                    $paid_items_query->where(function($squery) {
+                        $squery->where('users.working_type', 'remotely');
+                        $squery->orWhere('users.working_type', 'person-to-person');
+                    });
+                } else {
+                    $paid_items_query->where('users.working_type', $filter_working_type);
+                }
             }
             if($filter_hourly_rate) {
                 $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
             }
         }
         /**
-         * End filter working type
-         */
+         * End filter gender type, working type, price range
+        */
 
-        $paid_items_query->orderBy('items.created_at', 'DESC')
-            ->distinct('items.id')
-            ->with('state')
-            ->with('city')
-            ->with('user');
+        $paid_items_query->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user');
 
         $total_paid_items = $paid_items_query->count();
         /**
@@ -345,91 +344,91 @@ class PagesController extends Controller
         //$free_user_ids = $subscription_obj->getFreeUserIds();
         $free_user_ids = $subscription_obj->getActiveUserIds();
 
-        if(count($item_ids) > 0)
-        {
-            $free_items_query->whereIn('id', $item_ids);
+        if(count($item_ids) > 0) {
+            $free_items_query->whereIn('items.id', $item_ids);
         }
 
-        if(is_array($search_values) && count($search_values) > 0)
-        {
+        if(is_array($search_values) && count($search_values) > 0) {
             $free_items_query->where(function ($query) use ($search_values) {
-                foreach($search_values as $search_values_key => $search_value)
-                {
+                foreach($search_values as $search_values_key => $search_value) {
                     $query->where('items.item_title', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_location_str', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_categories_string', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_description', 'LIKE', "%".$search_value."%")
-                        ->orWhere('items.item_features_string', 'LIKE', "%".$search_value."%");
+                    ->orWhere('items.item_location_str', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_categories_string', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_description', 'LIKE', "%".$search_value."%")
+                    ->orWhere('items.item_features_string', 'LIKE', "%".$search_value."%");
                 }
             });
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
-            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
-            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
-            ->whereIn('items.user_id', $free_user_ids);
+        ->where(function ($query) use ($site_prefer_country_id) {
+            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        })
+        ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+        ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+        ->whereIn('items.user_id', $free_user_ids);
 
         // filter free listings state
-        if(!empty($filter_state))
-        {
+        if(!empty($filter_state)) {
             $free_items_query->where('items.state_id', $filter_state);
         }
 
         // filter free listings city
-        if(!empty($filter_city))
-        {
+        if(!empty($filter_city)) {
             $free_items_query->where('items.city_id', $filter_city);
         }
 
         /**
-         * Start filter working type
+         * Start filter gender type, working type, price range
          */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
             if($filter_working_type) {
-                $free_items_query->where('users.working_type', $filter_working_type);
+                if($filter_working_type == 'hybrid') {
+                    $free_items_query->where(function($squery) {
+                        $squery->where('users.working_type', 'remotely');
+                        $squery->orWhere('users.working_type', 'person-to-person');
+                    });
+                } else {
+                    $free_items_query->where('users.working_type', $filter_working_type);
+                }
             }
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
             }
         }
         /**
-         * End filter working type
+         * End filter gender type, working type, price range
          */
 
         /**
          * Start filter sort by for free listing
          */
         $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
-        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
-        {
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED) {
             $free_items_query->orderBy('items.created_at', 'DESC');
         }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
-        {
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED) {
             $free_items_query->orderBy('items.created_at', 'ASC');
         }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
-        {
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING) {
             $free_items_query->orderBy('items.item_average_rating', 'DESC');
         }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
-        {
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING) {
             $free_items_query->orderBy('items.item_average_rating', 'ASC');
         }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
-        {
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST) {
             $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
-                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
-                ->orderBy('distance', 'ASC');
+            ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            ->orderBy('distance', 'ASC');
         }
         /**
          * End filter sort by for free listing
@@ -451,41 +450,29 @@ class PagesController extends Controller
             'filter_sort_by' => $filter_sort_by,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
-        if($total_free_items == 0 || $total_paid_items == 0)
-        {
+        if($total_free_items == 0 || $total_paid_items == 0) {
             $paid_items = $paid_items_query->paginate(10);
             $free_items = $free_items_query->paginate(10);
-
-            if($total_free_items == 0)
-            {
+            if($total_free_items == 0) {
                 $pagination = $paid_items->appends($querystringArray);
             }
-            if($total_paid_items == 0)
-            {
+            if($total_paid_items == 0) {
                 $pagination = $free_items->appends($querystringArray);
             }
-        }
-        else
-        {
+        } else {
             $num_of_pages = ceil(($total_paid_items + $total_free_items) / 10);
-
             $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 4 ? 4 : ceil($total_paid_items / $num_of_pages);
-
             $free_items_per_page = 10 - $paid_items_per_page;
-
             $paid_items = $paid_items_query->paginate($paid_items_per_page);
             $free_items = $free_items_query->paginate($free_items_per_page);
-
-            if(ceil($total_paid_items / $paid_items_per_page) > ceil($total_free_items / $free_items_per_page))
-            {
+            if(ceil($total_paid_items / $paid_items_per_page) > ceil($total_free_items / $free_items_per_page)) {
                 $pagination = $paid_items->appends($querystringArray);
-            }
-            else
-            {
+            } else {
                 $pagination = $free_items->appends($querystringArray);
             }
         }
@@ -502,40 +489,30 @@ class PagesController extends Controller
         ];
 
         $paid_items = $paid_items->sortByDesc(function($paid_collection, $paid_collection_key) use ($search_values, $props) {
-
             // The bigger the weight, the higher the record
             $weight = 0;
             // Iterate through search terms
-            foreach($search_values as $search_values_key => $search_value)
-            {
+            foreach($search_values as $search_values_key => $search_value) {
                 // Iterate through $props
-                foreach($props as $prop)
-                {
-                    if(stripos($paid_collection->$prop, $search_value) !== false)
-                    {
+                foreach($props as $prop) {
+                    if(stripos($paid_collection->$prop, $search_value) !== false) {
                         $weight += 1; // Increase weight if the search term is found
                     }
-
                 }
             }
             return $weight;
         });
 
         $free_items = $free_items->sortByDesc(function($free_collection, $free_collection_key) use ($search_values, $props) {
-
             // The bigger the weight, the higher the record
             $weight = 0;
             // Iterate through search terms
-            foreach($search_values as $search_values_key => $search_value)
-            {
+            foreach($search_values as $search_values_key => $search_value) {
                 // Iterate through $props
-                foreach($props as $prop)
-                {
-                    if(stripos($free_collection->$prop, $search_value) !== false)
-                    {
+                foreach($props as $prop) {
+                    if(stripos($free_collection->$prop, $search_value) !== false) {
                         $weight += 1; // Increase weight if the search term is found
                     }
-
                 }
             }
             return $weight;
@@ -581,12 +558,10 @@ class PagesController extends Controller
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
-        $all_states = Country::find($site_prefer_country_id)
-            ->states()->orderBy('state_name')->get();
+        $all_states = Country::find($site_prefer_country_id)->states()->orderBy('state_name')->get();
 
         $all_cities = collect([]);
-        if(!empty($filter_state))
-        {
+        if(!empty($filter_state)) {
             $state = State::find($filter_state);
             $all_cities = $state->cities()->orderBy('city_name')->get();
         }
@@ -636,7 +611,7 @@ class PagesController extends Controller
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
                     'search_query', 'filter_categories', 'filter_state', 'filter_city', 'filter_sort_by', 'paid_items',
                     'free_items', 'pagination', 'all_printable_categories', 'all_states', 'all_cities', 'total_results',
-                    'filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_working_type','filter_hourly_rate'
                 ));
     }
 
@@ -888,14 +863,14 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-                ->where('items.item_status', Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                });
+            ->where('items.item_status', Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                ->orWhereNull('items.country_id');
+            });
         }])
-            ->where('category_parent_id', null)
-            ->orderBy('all_items_count', 'desc')->get();
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
 
         /**
          * Do listing query
@@ -927,34 +902,62 @@ class PagesController extends Controller
         // get paid users id array
         $paid_user_ids = $subscription_obj->getPaidUserIds();
 
-        if(count($item_ids) > 0)
-        {
-            $paid_items_query->whereIn('id', $item_ids);
+        if(count($item_ids) > 0) {
+            $paid_items_query->whereIn('items.id', $item_ids);
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
-            ->where('items.item_featured', Item::ITEM_FEATURED)
-            ->where(function($query) use ($paid_user_ids) {
+        ->where(function ($query) use ($site_prefer_country_id) {
+            $query->where('items.country_id', $site_prefer_country_id)
+            ->orWhereNull('items.country_id');
+        })
+        ->where('items.item_featured', Item::ITEM_FEATURED)
+        ->where(function($query) use ($paid_user_ids) {
 
-                $query->whereIn('items.user_id', $paid_user_ids)
-                    ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
-            });
+            $query->whereIn('items.user_id', $paid_user_ids)
+            ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
+        });
 
         // filter paid listings state
-        if(!empty($filter_state))
-        {
+        if(!empty($filter_state)) {
             $paid_items_query->where('items.state_id', $filter_state);
         }
 
         // filter paid listings city
-        if(!empty($filter_city))
-        {
+        if(!empty($filter_city)) {
             $paid_items_query->where('items.city_id', $filter_city);
         }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $paid_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                if($filter_working_type == 'hybrid') {
+                    $paid_items_query->where(function($squery) {
+                        $squery->where('users.working_type', 'remotely');
+                        $squery->orWhere('users.working_type', 'person-to-person');
+                    });
+                } else {
+                    $paid_items_query->where('users.working_type', $filter_working_type);
+                }
+            }
+            if($filter_hourly_rate) {
+                $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
 
         $paid_items_query->orderBy('items.created_at', 'DESC')
             ->distinct('items.id')
@@ -974,7 +977,7 @@ class PagesController extends Controller
 
         if(count($item_ids) > 0)
         {
-            $free_items_query->whereIn('id', $item_ids);
+            $free_items_query->whereIn('items.id', $item_ids);
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -997,6 +1000,37 @@ class PagesController extends Controller
         {
             $free_items_query->where('items.city_id', $filter_city);
         }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                if($filter_working_type == 'hybrid') {
+                    $free_items_query->where(function($squery) {
+                        $squery->where('users.working_type', 'remotely');
+                        $squery->orWhere('users.working_type', 'person-to-person');
+                    });
+                } else {
+                    $free_items_query->where('users.working_type', $filter_working_type);
+                }
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
 
         /**
          * Start filter sort by for free listing
@@ -1040,6 +1074,9 @@ class PagesController extends Controller
             'filter_sort_by' => $filter_sort_by,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
         if($total_free_items == 0 || $total_paid_items == 0)
@@ -1187,7 +1224,8 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results'));
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+            ));
     }
 
     public function category(Request $request, string $category_slug)
@@ -1268,7 +1306,7 @@ class PagesController extends Controller
             $subscription_obj = new Subscription();
             $paid_user_ids = $subscription_obj->getPaidUserIds();
 
-            $paid_items_query->whereIn('id', $item_ids);
+            $paid_items_query->whereIn('items.id', $item_ids);
 
             $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
                 ->where(function ($query) use ($site_prefer_country_id) {
@@ -1294,6 +1332,37 @@ class PagesController extends Controller
                 $paid_items_query->where('items.city_id', $filter_city);
             }
 
+            /**
+             * Start filter gender type, working type, price range
+             */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $paid_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $paid_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $paid_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+            /**
+             * End filter gender type, working type, price range
+            */
+
             $paid_items_query->orderBy('items.created_at', 'DESC')
                 ->distinct('items.id')
                 ->with('state')
@@ -1309,7 +1378,7 @@ class PagesController extends Controller
             //$free_user_ids = $subscription_obj->getFreeUserIds();
             $free_user_ids = $subscription_obj->getActiveUserIds();
 
-            $free_items_query->whereIn('id', $item_ids);
+            $free_items_query->whereIn('items.id', $item_ids);
 
             $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
                 ->where(function ($query) use ($site_prefer_country_id) {
@@ -1331,6 +1400,37 @@ class PagesController extends Controller
             {
                 $free_items_query->where('items.city_id', $filter_city);
             }
+
+            /**
+         * Start filter gender type, working type, price range
+         */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $free_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $free_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $free_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+        /**
+         * End filter gender type, working type, price range
+        */
 
             /**
              * Start filter sort by for free listing
@@ -1374,6 +1474,9 @@ class PagesController extends Controller
                 'filter_sort_by' => $filter_sort_by,
                 'filter_state' => $filter_state,
                 'filter_city' => $filter_city,
+                'filter_gender_type' => $filter_gender_type,
+                'filter_working_type' => $filter_working_type,
+                'filter_hourly_rate' => $filter_hourly_rate,
             ];
 
             if($total_free_items == 0 || $total_paid_items == 0)
@@ -1543,7 +1646,9 @@ class PagesController extends Controller
                     'parent_category_id', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'filter_sort_by',
-                    'filter_categories', 'filter_state', 'filter_city', 'all_cities', 'total_results'));
+                    'filter_categories', 'filter_state', 'filter_city', 'all_cities', 'total_results',
+                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                ));
         }
         else
         {
@@ -1633,7 +1738,7 @@ class PagesController extends Controller
 
             if(count($item_ids) > 0)
             {
-                $paid_items_query->whereIn('id', $item_ids);
+                $paid_items_query->whereIn('items.id', $item_ids);
             }
 
             $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -1652,6 +1757,37 @@ class PagesController extends Controller
                 $paid_items_query->where('items.city_id', $filter_city);
             }
 
+            /**
+         * Start filter gender type, working type, price range
+         */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $paid_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $paid_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $paid_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+        /**
+         * End filter gender type, working type, price range
+        */
+
             $paid_items_query->orderBy('items.created_at', 'DESC')
                 ->distinct('items.id')
                 ->with('state')
@@ -1669,7 +1805,7 @@ class PagesController extends Controller
 
             if(count($item_ids) > 0)
             {
-                $free_items_query->whereIn('id', $item_ids);
+                $free_items_query->whereIn('items.id', $item_ids);
             }
 
             $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -1684,6 +1820,37 @@ class PagesController extends Controller
             {
                 $free_items_query->where('items.city_id', $filter_city);
             }
+
+            /**
+         * Start filter gender type, working type, price range
+         */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $free_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $free_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $free_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+        /**
+         * End filter gender type, working type, price range
+        */
 
             /**
              * Start filter sort by for free listing
@@ -1725,6 +1892,9 @@ class PagesController extends Controller
                 'filter_categories' => $filter_categories,
                 'filter_sort_by' => $filter_sort_by,
                 'filter_city' => $filter_city,
+                'filter_gender_type' => $filter_gender_type,
+                'filter_working_type' => $filter_working_type,
+                'filter_hourly_rate' => $filter_hourly_rate,
             ];
 
             if($total_free_items == 0 || $total_paid_items == 0)
@@ -1896,7 +2066,9 @@ class PagesController extends Controller
                     'parent_category_id', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
-                    'filter_sort_by', 'filter_categories', 'filter_city', 'filter_all_cities', 'total_results'));
+                    'filter_sort_by', 'filter_categories', 'filter_city', 'filter_all_cities', 'total_results',
+                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                ));
         }
         else
         {
@@ -1990,7 +2162,7 @@ class PagesController extends Controller
 
                     if(count($item_ids) > 0)
                     {
-                        $paid_items_query->whereIn('id', $item_ids);
+                        $paid_items_query->whereIn('items.id', $item_ids);
                     }
 
                     $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2003,6 +2175,37 @@ class PagesController extends Controller
                             $query->whereIn('items.user_id', $paid_user_ids)
                                 ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
                         });
+
+                    /**
+                     * Start filter gender type, working type, price range
+                     */
+                    $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                    $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+                    $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                        $paid_items_query->leftJoin('users', function($join) {
+                            $join->on('users.id', '=', 'items.user_id');
+                        });
+                        if($filter_gender_type) {
+                            $paid_items_query->where('users.gender', $filter_gender_type);
+                        }
+                        if($filter_working_type) {
+                            if($filter_working_type == 'hybrid') {
+                                $paid_items_query->where(function($squery) {
+                                    $squery->where('users.working_type', 'remotely');
+                                    $squery->orWhere('users.working_type', 'person-to-person');
+                                });
+                            } else {
+                                $paid_items_query->where('users.working_type', $filter_working_type);
+                            }
+                        }
+                        if($filter_hourly_rate) {
+                            $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                        }
+                    }
+                    /**
+                     * End filter gender type, working type, price range
+                    */
 
                     $paid_items_query->orderBy('items.created_at', 'DESC')
                         ->distinct('items.id')
@@ -2021,7 +2224,7 @@ class PagesController extends Controller
 
                     if(count($item_ids) > 0)
                     {
-                        $free_items_query->whereIn('id', $item_ids);
+                        $free_items_query->whereIn('items.id', $item_ids);
                     }
 
                     $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2031,6 +2234,37 @@ class PagesController extends Controller
                         ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
                         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
                         ->whereIn('items.user_id', $free_user_ids);
+
+                    /**
+                     * Start filter gender type, working type, price range
+                     */
+                    $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                    $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+                    $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                        $free_items_query->leftJoin('users', function($join) {
+                            $join->on('users.id', '=', 'items.user_id');
+                        });
+                        if($filter_gender_type) {
+                            $free_items_query->where('users.gender', $filter_gender_type);
+                        }
+                        if($filter_working_type) {
+                            if($filter_working_type == 'hybrid') {
+                                $free_items_query->where(function($squery) {
+                                    $squery->where('users.working_type', 'remotely');
+                                    $squery->orWhere('users.working_type', 'person-to-person');
+                                });
+                            } else {
+                                $free_items_query->where('users.working_type', $filter_working_type);
+                            }
+                        }
+                        if($filter_hourly_rate) {
+                            $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                        }
+                    }
+                    /**
+                     * End filter gender type, working type, price range
+                    */
 
                     /**
                      * Start filter sort by for free listing
@@ -2071,6 +2305,9 @@ class PagesController extends Controller
                     $querystringArray = [
                         'filter_categories' => $filter_categories,
                         'filter_sort_by' => $filter_sort_by,
+                        'filter_gender_type' => $filter_gender_type,
+                        'filter_working_type' => $filter_working_type,
+                        'filter_hourly_rate' => $filter_hourly_rate,
                     ];
 
                     if($total_free_items == 0 || $total_paid_items == 0)
@@ -2241,7 +2478,8 @@ class PagesController extends Controller
                             'parent_category_id', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                             'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                             'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
-                            'filter_sort_by', 'filter_categories', 'total_results'));
+                            'filter_sort_by', 'filter_categories', 'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+                        ));
                 }
                 else
                 {
@@ -2311,7 +2549,7 @@ class PagesController extends Controller
 
             if(count($item_ids) > 0)
             {
-                $paid_items_query->whereIn('id', $item_ids);
+                $paid_items_query->whereIn('items.id', $item_ids);
             }
 
             $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2331,6 +2569,37 @@ class PagesController extends Controller
                 $paid_items_query->where('items.city_id', $filter_city);
             }
 
+            /**
+             * Start filter gender type, working type, price range
+             */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $paid_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $paid_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $paid_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+            /**
+             * End filter gender type, working type, price range
+            */
+
             $paid_items_query->orderBy('items.created_at', 'DESC')
                 ->distinct('items.id')
                 ->with('state')
@@ -2348,7 +2617,7 @@ class PagesController extends Controller
 
             if(count($item_ids) > 0)
             {
-                $free_items_query->whereIn('id', $item_ids);
+                $free_items_query->whereIn('items.id', $item_ids);
             }
 
             $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2363,6 +2632,37 @@ class PagesController extends Controller
             {
                 $free_items_query->where('items.city_id', $filter_city);
             }
+
+            /**
+             * Start filter gender type, working type, price range
+             */
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                $free_items_query->leftJoin('users', function($join) {
+                    $join->on('users.id', '=', 'items.user_id');
+                });
+                if($filter_gender_type) {
+                    $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_working_type) {
+                    if($filter_working_type == 'hybrid') {
+                        $free_items_query->where(function($squery) {
+                            $squery->where('users.working_type', 'remotely');
+                            $squery->orWhere('users.working_type', 'person-to-person');
+                        });
+                    } else {
+                        $free_items_query->where('users.working_type', $filter_working_type);
+                    }
+                }
+                if($filter_hourly_rate) {
+                    $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+            }
+            /**
+             * End filter gender type, working type, price range
+            */
 
             /**
              * Start filter sort by for free listing
@@ -2404,6 +2704,9 @@ class PagesController extends Controller
                 'filter_categories' => $filter_categories,
                 'filter_sort_by' => $filter_sort_by,
                 'filter_city' => $filter_city,
+                'filter_gender_type' => $filter_gender_type,
+                'filter_working_type' => $filter_working_type,
+                'filter_hourly_rate' => $filter_hourly_rate,
             ];
 
             if($total_free_items == 0 || $total_paid_items == 0)
@@ -2551,7 +2854,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                     'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                     'site_innerpage_header_paragraph_font_color', 'filter_categories', 'filter_all_cities', 'filter_city',
-                    'filter_sort_by', 'total_results', 'all_printable_categories'));
+                    'filter_sort_by', 'total_results', 'all_printable_categories','filter_gender_type','filter_working_type','filter_hourly_rate'));
         }
         else
         {
@@ -2612,7 +2915,7 @@ class PagesController extends Controller
 
                 if(count($item_ids) > 0)
                 {
-                    $paid_items_query->whereIn('id', $item_ids);
+                    $paid_items_query->whereIn('items.id', $item_ids);
                 }
 
                 $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2625,6 +2928,37 @@ class PagesController extends Controller
                         $query->whereIn('items.user_id', $paid_user_ids)
                             ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
                     });
+
+                /**
+                 * Start filter gender type, working type, price range
+                 */
+                $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+                $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+                if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                    $paid_items_query->leftJoin('users', function($join) {
+                        $join->on('users.id', '=', 'items.user_id');
+                    });
+                    if($filter_gender_type) {
+                        $paid_items_query->where('users.gender', $filter_gender_type);
+                    }
+                    if($filter_working_type) {
+                        if($filter_working_type == 'hybrid') {
+                            $paid_items_query->where(function($squery) {
+                                $squery->where('users.working_type', 'remotely');
+                                $squery->orWhere('users.working_type', 'person-to-person');
+                            });
+                        } else {
+                            $paid_items_query->where('users.working_type', $filter_working_type);
+                        }
+                    }
+                    if($filter_hourly_rate) {
+                        $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                    }
+                }
+                /**
+                 * End filter gender type, working type, price range
+                */
 
                 $paid_items_query->orderBy('items.created_at', 'DESC')
                     ->distinct('items.id')
@@ -2643,7 +2977,7 @@ class PagesController extends Controller
 
                 if(count($item_ids) > 0)
                 {
-                    $free_items_query->whereIn('id', $item_ids);
+                    $free_items_query->whereIn('items.id', $item_ids);
                 }
 
                 $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
@@ -2653,6 +2987,38 @@ class PagesController extends Controller
                     ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
                     ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
                     ->whereIn('items.user_id', $free_user_ids);
+
+
+                /**
+                 * Start filter gender type, working type, price range
+                 */
+                $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+                $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+                if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                    $free_items_query->leftJoin('users', function($join) {
+                        $join->on('users.id', '=', 'items.user_id');
+                    });
+                    if($filter_gender_type) {
+                        $free_items_query->where('users.gender', $filter_gender_type);
+                    }
+                    if($filter_working_type) {
+                        if($filter_working_type == 'hybrid') {
+                            $free_items_query->where(function($squery) {
+                                $squery->where('users.working_type', 'remotely');
+                                $squery->orWhere('users.working_type', 'person-to-person');
+                            });
+                        } else {
+                            $free_items_query->where('users.working_type', $filter_working_type);
+                        }
+                    }
+                    if($filter_hourly_rate) {
+                        $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                    }
+                }
+                /**
+                 * End filter gender type, working type, price range
+                */
 
                 /**
                  * Start filter sort by for free listing
@@ -2693,6 +3059,9 @@ class PagesController extends Controller
                 $querystringArray = [
                     'filter_categories' => $filter_categories,
                     'filter_sort_by' => $filter_sort_by,
+                    'filter_gender_type' => $filter_gender_type,
+                    'filter_working_type' => $filter_working_type,
+                    'filter_hourly_rate' => $filter_hourly_rate,
                 ];
 
                 if($total_free_items == 0 || $total_paid_items == 0)
@@ -2838,7 +3207,7 @@ class PagesController extends Controller
                         'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                         'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                         'site_innerpage_header_paragraph_font_color', 'filter_categories', 'filter_sort_by', 'total_results',
-                        'all_printable_categories'));
+                        'all_printable_categories','filter_gender_type','filter_working_type','filter_hourly_rate'));
             }
             else
             {

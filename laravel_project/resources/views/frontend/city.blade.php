@@ -126,15 +126,53 @@
                         @endif
 
                         <div class="row form-group align-items-center">
-                            <div class="col-12 col-md-2">
+                            {{-- <div class="col-12 col-md-2">
                                 <strong>{{ number_format($total_results) }}</strong>
                                 {{ __('theme_directory_hub.filter-results') }}
                             </div>
 
                             <div class="col-12 col-md-7 text-right pl-0">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
+                            </div> --}}
+                            <div class="col-12 col-md-3">
+                                <select class="selectpicker form-control @error('filter_gender_type') is-invalid @enderror" name="filter_gender_type" id="filter_gender_type">
+                                    <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>All Gender</option>
+                                    <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{ $filter_gender_type == "female" ? 'selected' : '' }}>Female</option>
+                                </select>
+                                @error('filter_gender_type')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
-
+                            <div class="col-12 col-md-3 pl-0">
+                                <select class="selectpicker form-control @error('filter_working_type') is-invalid @enderror" name="filter_working_type" id="filter_working_type">
+                                    <option value="0" {{ empty($filter_working_type) ? 'selected' : '' }}>All Working Type</option>
+                                    <option value="person-to-person" {{ $filter_working_type == "person-to-person" ? 'selected' : '' }}>Person-to-Person</option>
+                                    <option value="remotely" {{ $filter_working_type == "remotely" ? 'selected' : '' }}>Remotely</option>
+                                    <option value="hybrid" {{ $filter_working_type == "hybrid" ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
+                                </select>
+                                @error('filter_working_type')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-3 pl-0">
+                                <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
+                                    <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>All Price Range</option>
+                                    <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
+                                    <option value="$$" {{ $filter_hourly_rate == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
+                                    <option value="$$$" {{ $filter_hourly_rate == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
+                                    <option value="$$$$" {{ $filter_hourly_rate == '$$$$' ? 'selected' : '' }}>$$$$ (More than 325.00)</option>
+                                </select>
+                                @error('filter_hourly_rate')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                             <div class="col-12 col-md-3 pl-0">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
@@ -200,6 +238,13 @@
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
                             <h2 class="font-weight-light text-primary">{{ $city->city_name }}, {{ $state->state_name }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-left">
+                            <strong>{{ number_format($total_results) }}</strong>
+                            {{ __('theme_directory_hub.filter-results') }}
                         </div>
                     </div>
 
