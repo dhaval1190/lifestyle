@@ -919,7 +919,7 @@
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
                         html += "<div class='col-3 mb-2' id='article_image_gallery_" + a + "'>" +
-                            "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +
+                            "<img style='width: 100%;' src='" + event.files[a].content + "'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";

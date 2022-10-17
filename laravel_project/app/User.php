@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Laravelista\Comments\Commenter;
 use Cmgmyr\Messenger\Traits\Messagable;
 use DateTime;
+use DateInterval;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -262,7 +263,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasPaidSubscription()
     {
         $today = new DateTime('now');
-        $today = $today->format("Y-m-d");
+        $today = $today->add(new DateInterval('P14D'))->format("Y-m-d");
 
         $subscription_exist = Subscription::where('user_id', $this->id)
             ->where('subscription_end_date', '>=', $today)->count();

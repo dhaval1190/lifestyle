@@ -84,21 +84,21 @@ return array (
         'alert' => [
             'plan-period' => "Plan period must in monthly, quarterly, or yearly.",
             'cannot-delete-free-plan' => "Cannot delete system default free plan",
-            'free-plan-quota-reached' => "You have reached max free business listing quota.",
+            'free-plan-quota-reached' => "You have reached max free articles quota. Please select paid plan from subscription page to get unlimited access.",
         ],
 
-        'max-free-listing' => "Maximum Free Listing",
-        'max-free-listing-help' => "Leave it empty for an unlimited free listing, enter 0 to prohibit free listing.",
-        'max-featured-listing-help' => "Leave it empty for an unlimited featured listing, enter 0 to prohibit featured listing.",
+        'max-free-listing' => "Maximum Free Articles",
+        'max-free-listing-help' => "Leave it empty for an unlimited free articles, enter 0 to prohibit free articles.",
+        'max-featured-listing-help' => "Leave it empty for an unlimited featured articles, enter 0 to prohibit featured articles.",
 
         'free-plan' => "Free Plan",
         'paid-plan' => "Paid Plan",
         'unlimited' => "Unlimited",
-        'free-listing' => "free listing",
-        'featured-listing' => "featured listing",
+        'free-listing' => "free articles",
+        'featured-listing' => "featured articles",
         'subscription-edn-date-help' => "For free plan, the subscription end date will automatically set to null",
 
-        'free-listing-cap' => "Free listing",
+        'free-listing-cap' => "Free articles",
 
         'edit-plan-warning' => "Changes to this plan will apply to all users' subscriptions that in this plan. Please edit with caution.",
     ],

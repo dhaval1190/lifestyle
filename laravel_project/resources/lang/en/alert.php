@@ -38,7 +38,7 @@ return array (
   'article-approved' => 'Article approved successfully.',
   'article-created' => 'Article created successfully.',
   'article-created-error-paid' => 'You must buy a subscription to feature a article.',
-  'article-created-error-quota' => 'You have reached max featured article quota.',
+  'article-created-error-quota' => 'You have reached max featured article quota, Please select paid plan from subscription page to get unlimited access.',
   'article-deleted' => 'Article deleted successfully.',
   'article-disapproved' => 'Article dis-approved successfully.',
   'article-suspended' => 'Article suspended successfully.',
