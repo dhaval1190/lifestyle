@@ -64,7 +64,7 @@
             <div class="row justify-content-center">
                 @foreach($plans as $plans_key => $plan)
                     <div class="col-10 col-md-6 col-lg-3">
-                        <div class="card mb-4 box-shadow text-center" style="min-height: 350px;">
+                        <div class="card mb-4 box-shadow text-center" style="min-height: 300px;">
                             <div class="card-header">
                                 <h4 class="my-0 font-weight-normal">
                                     @if(!empty($login_user))
@@ -108,11 +108,11 @@
                                         <li>{{ $plan->plan_max_free_listing . ' ' . __('theme_directory_hub.plan.free-listing') }}</li>
                                     @endif
 
-                                    @if(is_null($plan->plan_max_featured_listing))
+                                    {{-- @if(is_null($plan->plan_max_featured_listing))
                                         <li>{{ __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.featured-listing') }}</li>
                                     @else
                                         <li>{{ $plan->plan_max_featured_listing . ' ' . __('theme_directory_hub.plan.featured-listing') }}</li>
-                                    @endif
+                                    @endif --}}
 
                                     @if(!empty($plan->plan_features))
                                         @php

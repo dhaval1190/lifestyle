@@ -353,7 +353,7 @@ class User extends Authenticatable implements MustVerifyEmail
             else
             {
                 $total_free_items = $this->items()
-                    ->where('item_featured', Item::ITEM_NOT_FEATURED)
+                    // ->where('item_featured', Item::ITEM_NOT_FEATURED)
                     ->count();
 
                 return $plan_max_free_listing - $total_free_items >= 1 ? true : false;
@@ -373,7 +373,7 @@ class User extends Authenticatable implements MustVerifyEmail
             else
             {
                 $total_free_items = $this->items()
-                    ->where('item_featured', Item::ITEM_NOT_FEATURED)
+                    // ->where('item_featured', Item::ITEM_NOT_FEATURED)
                     ->count();
 
                 return $plan_max_free_listing - $total_free_items >= 1 ? true : false;

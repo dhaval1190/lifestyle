@@ -161,13 +161,16 @@ class SubscriptionController extends Controller
                 $plan_find = Plan::find($plan_id);
 
                 $plan_max_free_listing = $plan_find->plan_max_free_listing;
-                $plan_max_featured_listing = $plan_find->plan_max_featured_listing;
+                // $plan_max_featured_listing = $plan_find->plan_max_featured_listing;
+                $plan_max_featured_listing = null;
 
                 $subscription->plan_id = $plan_id;
                 $subscription->subscription_end_date = $plan_find->plan_type == Plan::PLAN_TYPE_FREE ? null : $subscription_end_date;
 
-//                $subscription->subscription_max_featured_listing = is_null($plan_max_featured_listing) ? null : $plan_max_featured_listing;
-//                $subscription->subscription_max_free_listing = is_null($plan_max_free_listing) ? null : $plan_max_free_listing;
+                /*
+                $subscription->subscription_max_featured_listing = is_null($plan_max_featured_listing) ? null : $plan_max_featured_listing;
+                $subscription->subscription_max_free_listing = is_null($plan_max_free_listing) ? null : $plan_max_free_listing;
+                */
 
                 $subscription->save();
 

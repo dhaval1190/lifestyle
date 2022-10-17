@@ -79,7 +79,7 @@
                                         </li>
                                     @endif
 
-                                    @if(is_null($plan->plan_max_featured_listing))
+                                    {{-- @if(is_null($plan->plan_max_featured_listing))
                                         <li>
                                             {{ __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.featured-listing') }}
                                         </li>
@@ -87,7 +87,7 @@
                                         <li>
                                             {{ $plan->plan_max_featured_listing . ' ' . __('theme_directory_hub.plan.featured-listing') }}
                                         </li>
-                                    @endif
+                                    @endif --}}
 
                                     @if(!empty($plan->plan_features))
                                         @php

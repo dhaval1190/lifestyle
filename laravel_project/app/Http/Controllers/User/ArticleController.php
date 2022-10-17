@@ -395,24 +395,24 @@ class ArticleController extends Controller
          */
         $login_user = Auth::user();
 
-        if($request->article_featured == Item::ITEM_FEATURED)
-        {
-            if(!$login_user->canFeatureItem())
-            {
-                \Session::flash('flash_message', __('alert.article-created-error-quota'));
-                \Session::flash('flash_type', 'danger');
-                return redirect()->back()->withInput($request->input());
-            }
-        }
-        else
-        {
+        // if($request->article_featured == Item::ITEM_FEATURED)
+        // {
+        //     if(!$login_user->canFeatureItem())
+        //     {
+        //         \Session::flash('flash_message', __('alert.article-created-error-quota'));
+        //         \Session::flash('flash_type', 'danger');
+        //         return redirect()->back()->withInput($request->input());
+        //     }
+        // }
+        // else
+        // {
             if(!$login_user->canFreeItem())
             {
                 \Session::flash('flash_message', __('theme_directory_hub.plan.alert.free-plan-quota-reached'));
                 \Session::flash('flash_type', 'danger');
                 return redirect()->back()->withInput($request->input());
             }
-        }
+        // }
         /**
          * End check plan quota
          */
@@ -1043,26 +1043,26 @@ class ArticleController extends Controller
          */
         $login_user = Auth::user();
 
-        if($request->article_featured == Item::ITEM_FEATURED
-            && $article->item_featured_by_admin == Item::ITEM_NOT_FEATURED_BY_ADMIN
-            && $article->item_featured == Item::ITEM_NOT_FEATURED)
-        {
-            if(!$login_user->canFeatureItem())
-            {
-                \Session::flash('flash_message', __('alert.article-created-error-quota'));
-                \Session::flash('flash_type', 'danger');
-                return redirect()->back()->withInput($request->input());
-            }
-        }
-        elseif($article->item_featured == Item::ITEM_FEATURED && $request->article_featured == Item::ITEM_NOT_FEATURED)
-        {
+        // if($request->article_featured == Item::ITEM_FEATURED
+        //     && $article->item_featured_by_admin == Item::ITEM_NOT_FEATURED_BY_ADMIN
+        //     && $article->item_featured == Item::ITEM_NOT_FEATURED)
+        // {
+        //     if(!$login_user->canFeatureItem())
+        //     {
+        //         \Session::flash('flash_message', __('alert.article-created-error-quota'));
+        //         \Session::flash('flash_type', 'danger');
+        //         return redirect()->back()->withInput($request->input());
+        //     }
+        // }
+        // elseif($article->item_featured == Item::ITEM_FEATURED && $request->article_featured == Item::ITEM_NOT_FEATURED)
+        // {
             if(!$login_user->canFreeItem())
             {
                 \Session::flash('flash_message', __('theme_directory_hub.plan.alert.free-plan-quota-reached'));
                 \Session::flash('flash_type', 'danger');
                 return redirect()->back()->withInput($request->input());
             }
-        }
+        // }
         /**
          * End check plan quota
          */

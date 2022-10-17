@@ -218,8 +218,10 @@ class PayumoneyController extends Controller
                 }
                 $current_subscription->plan_id = $future_plan->id;
 
-//                $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
-//                $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;
+                /*
+                $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
+                $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;
+                */
 
                 $current_subscription->subscription_pay_method = Subscription::PAY_METHOD_PAYUMONEY;
 

@@ -234,8 +234,10 @@ class RazorpayController extends Controller
             }
             $current_subscription->plan_id = $future_plan->id;
 
-//            $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
-//            $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;
+            /*
+            $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
+            $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;
+            */
 
             $current_subscription->subscription_razorpay_plan_id = $razorpay_plan_id;
             $current_subscription->subscription_razorpay_subscription_id = $razorpay_subscription_id;

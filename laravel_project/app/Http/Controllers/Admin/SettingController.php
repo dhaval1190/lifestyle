@@ -1011,8 +1011,10 @@ class SettingController extends Controller
                     }
                     $current_subscription->plan_id = $future_plan->id;
 
-//                    $current_subscription->subscription_max_featured_listing = intval($future_plan->plan_max_featured_listing) >= 0 ? $future_plan->plan_max_featured_listing : null;
-//                    $current_subscription->subscription_max_free_listing = intval($future_plan->plan_max_free_listing) >= 0 ? $future_plan->plan_max_free_listing : null;
+                    /*
+                    $current_subscription->subscription_max_featured_listing = intval($future_plan->plan_max_featured_listing) >= 0 ? $future_plan->plan_max_featured_listing : null;
+                    $current_subscription->subscription_max_free_listing = intval($future_plan->plan_max_free_listing) >= 0 ? $future_plan->plan_max_free_listing : null;
+                    */
 
                     $current_subscription->subscription_pay_method = Subscription::PAY_METHOD_BANK_TRANSFER;
                     $current_subscription->save();

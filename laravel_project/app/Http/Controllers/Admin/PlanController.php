@@ -86,7 +86,8 @@ class PlanController extends Controller
         $plan_features = $request->plan_features;
         $plan_price = $request->plan_price;
         $plan_status = $request->plan_status == Plan::PLAN_ENABLED ? Plan::PLAN_ENABLED : Plan::PLAN_DISABLED;
-        $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+        // $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+        $plan_max_featured_listing = null;
         $plan_max_free_listing = is_null($request->plan_max_free_listing) ? null : $request->plan_max_free_listing;
 
         $plan_period = $request->plan_period;
@@ -193,7 +194,8 @@ class PlanController extends Controller
                         'plan_period' => __('theme_directory_hub.plan.alert.plan-period'),
                     ]);
             }
-            $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+            // $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+            $plan_max_featured_listing = null;
             $plan_max_free_listing = is_null($request->plan_max_free_listing) ? null : $request->plan_max_free_listing;
 
             $plan->plan_name = $plan_name;
@@ -232,7 +234,8 @@ class PlanController extends Controller
             $plan_name = $request->plan_name;
             $plan_features = $request->plan_features;
 
-            $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+            // $plan_max_featured_listing = is_null($request->plan_max_featured_listing) ? null : $request->plan_max_featured_listing;
+            $plan_max_featured_listing = null;
             $plan_max_free_listing = is_null($request->plan_max_free_listing) ? null : $request->plan_max_free_listing;
 
             $plan->plan_name = $plan_name;

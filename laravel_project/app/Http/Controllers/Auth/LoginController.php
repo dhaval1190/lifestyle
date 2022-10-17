@@ -567,8 +567,8 @@ class LoginController extends Controller
                     'user_id' => $find_user->id,
                     'plan_id' => $free_plan->id,
                     'subscription_start_date' => Carbon::now()->toDateString(),
-//                    'subscription_max_featured_listing' => is_null($free_plan->plan_max_featured_listing) ? null : $free_plan->plan_max_featured_listing,
-//                    'subscription_max_free_listing' => is_null($free_plan->plan_max_free_listing) ? null : $free_plan->plan_max_free_listing,
+                    // 'subscription_max_featured_listing' => is_null($free_plan->plan_max_featured_listing) ? null : $free_plan->plan_max_featured_listing,
+                    // 'subscription_max_free_listing' => is_null($free_plan->plan_max_free_listing) ? null : $free_plan->plan_max_free_listing,
                 ));
                 $new_free_subscription = $find_user->subscription()->save($free_subscription);
             }

@@ -50,11 +50,11 @@
                     <span>{{ $plan->plan_name }}</span>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <span>{{ $plan->plan_max_featured_listing . ' ' . __('bank_transfer.max-featured-listing') }}</span>
                 </div>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-12">
                     <span>{{ __('backend.plan.price') . ': ' . strval($plan->plan_price) }}</span>

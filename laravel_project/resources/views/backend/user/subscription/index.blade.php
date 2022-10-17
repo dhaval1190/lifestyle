@@ -111,14 +111,14 @@
                             {{ is_null($subscription->plan->plan_max_free_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_free_listing }}
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-5">
                             {{ __('backend.plan.maximum-featured-listing') }}:
                         </div>
                         <div class="col-7">
                             {{ is_null($subscription->plan->plan_max_featured_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_featured_listing }}
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-5">
                             {{ __('backend.subscription.started-at') }}:

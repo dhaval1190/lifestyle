@@ -34,7 +34,7 @@
                                 <th>{{ __('backend.plan.type') }}</th>
                                 <th>{{ __('backend.plan.name') }}</th>
                                 <th>{{ __('theme_directory_hub.plan.free-listing-cap') }}</th>
-                                <th>{{ __('backend.plan.featured-listing') }}</th>
+                                {{-- <th>{{ __('backend.plan.featured-listing') }}</th> --}}
                                 <th>{{ __('backend.plan.features') }}</th>
                                 <th>{{ __('backend.plan.period') }}</th>
                                 <th>{{ __('backend.plan.price') }}</th>
@@ -47,7 +47,7 @@
                                 <th>{{ __('backend.plan.type') }}</th>
                                 <th>{{ __('backend.plan.name') }}</th>
                                 <th>{{ __('theme_directory_hub.plan.free-listing-cap') }}</th>
-                                <th>{{ __('backend.plan.featured-listing') }}</th>
+                                {{-- <th>{{ __('backend.plan.featured-listing') }}</th> --}}
                                 <th>{{ __('backend.plan.features') }}</th>
                                 <th>{{ __('backend.plan.period') }}</th>
                                 <th>{{ __('backend.plan.price') }}</th>
@@ -73,13 +73,13 @@
                                             {{ $plan->plan_max_free_listing }}
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if(is_null($plan->plan_max_featured_listing))
                                             {{ __('backend.plan.unlimited') }}
                                         @else
                                             {{ $plan->plan_max_featured_listing }}
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $plan->plan_features }}</td>
                                     <td>
                                         @if($plan->plan_period == \App\Plan::PLAN_LIFETIME)

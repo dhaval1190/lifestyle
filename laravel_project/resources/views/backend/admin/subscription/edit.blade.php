@@ -59,8 +59,8 @@
                                             @endif
                                             |
                                             {{ is_null($plan->plan_max_free_listing) ? __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.free-listing') : $plan->plan_max_free_listing . ' ' . __('theme_directory_hub.plan.free-listing') }}
-                                            |
-                                            {{ is_null($plan->plan_max_featured_listing) ? __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.featured-listing') : $plan->plan_max_featured_listing . ' ' . __('theme_directory_hub.plan.featured-listing') }}
+                                            {{-- |
+                                            {{ is_null($plan->plan_max_featured_listing) ? __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.featured-listing') : $plan->plan_max_featured_listing . ' ' . __('theme_directory_hub.plan.featured-listing') }} --}}
                                         </option>
                                     @endforeach
 

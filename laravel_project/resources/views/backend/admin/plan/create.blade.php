@@ -110,7 +110,7 @@
                             </div>
                         </div>
 
-                        <div class="row form-group">
+                        {{-- <div class="row form-group">
                             <div class="col-md-12">
                                 <label for="plan_max_featured_listing" class="text-black">{{ __('backend.plan.maximum-featured-listing') }}</label>
                                 <input id="plan_max_featured_listing" type="text" class="form-control @error('plan_max_featured_listing') is-invalid @enderror" name="plan_max_featured_listing" value="{{ old('plan_max_featured_listing') }}" aria-describedby="plan_max_featured_listingHelpBlock">
@@ -123,7 +123,7 @@
                                 </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row form-group">
                             <div class="col-md-12">
