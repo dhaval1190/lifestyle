@@ -104,7 +104,7 @@ class CoachRegisterController extends Controller
             'password'              => Hash::make($data['password']),
             'role_id'               => (isset($data['is_coach']) && $data['is_coach'] == 2) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
             'user_suspended'        => User::USER_NOT_SUSPENDED,
-            'gender'                => isset($data['gender']) ? $data['gender'] : null,
+            // 'gender'                => isset($data['gender']) ? $data['gender'] : null,
             'phone'                 => isset($data['phone']) ? $data['phone'] : null,
             'hourly_rate'           => isset($data['hourly_rate']) ? $data['hourly_rate'] : null,
             'experience_year'       => isset($data['experience_year']) ? $data['experience_year'] : null,

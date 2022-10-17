@@ -1507,67 +1507,50 @@
              * Start the croppie image plugin
              */
             var image_crop = null;
-
-            $('#upload_image').on('click', function(){
-
-                $('#image-crop-modal').modal('show');
-            });
-
             var window_height = $(window).height();
             var window_width = $(window).width();
             var viewport_height = 0;
             var viewport_width = 0;
-
-            if(window_width >= 800)
-            {
+            if(window_width >= 800) {
                 viewport_width = 800;
                 viewport_height = 687;
-            }
-            else
-            {
+            } else {
                 viewport_width = window_width * 0.8;
                 viewport_height = (viewport_width * 687) / 800;
             }
 
-            $('#upload_image_input').on('change', function(){
+            $('#upload_image').on('click', function(){
+                $('#image-crop-modal').modal('show');
+            });
 
-                if(!image_crop)
-                {
+            $('#upload_image_input').on('change', function() {
+                if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
                         enableExif: true,
                         mouseWheelZoom: false,
                         viewport: {
-                            width:viewport_width,
-                            height:viewport_height,
-                            type:'square',
+                            width: 600,
+                            height: 600,
+                            type: 'square'
                         },
-                        boundary:{
-                            width:viewport_width + 5,
-                            height:viewport_width + 5,
-                        }
-                    });
-
-                    $('#image-crop-modal .modal-dialog').css({
-                        'max-width':'100%'
+                        boundary: {
+                            width: 700,
+                            height: 700
+                        },
+                        enableOrientation: true
                     });
                 }
-
                 var reader = new FileReader();
-
                 reader.onload = function (event) {
-
                     image_crop.croppie('bind', {
                         url: event.target.result
                     }).then(function(){
-                        console.log('jQuery bind complete');
                     });
-
                 };
                 reader.readAsDataURL(this.files[0]);
             });
 
-            $('#crop_image').on("click", function(event){
-
+            $('#crop_image').on("click", function(event) {
                 image_crop.croppie('result', {
                     type: 'base64',
                     size: 'viewport'
@@ -1575,8 +1558,7 @@
                     $('#feature_image').val(response);
                     $('#image_preview').attr("src", response);
                 });
-
-                $('#image-crop-modal').modal('hide')
+                $('#image-crop-modal').modal('hide');
             });
             /**
              * End the croppie image plugin

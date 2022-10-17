@@ -64,7 +64,7 @@
             <div class="row justify-content-center">
                 @foreach($plans as $plans_key => $plan)
                     <div class="col-10 col-md-6 col-lg-3">
-                        <div class="card mb-4 box-shadow text-center">
+                        <div class="card mb-4 box-shadow text-center" style="min-height: 350px;">
                             <div class="card-header">
                                 <h4 class="my-0 font-weight-normal">
                                     @if(!empty($login_user))
@@ -126,6 +126,8 @@
                                         @endforeach
                                     @endif
                                 </ul>
+                            </div>
+                            <div class="card-footer" style="border: 0; background: #fff;">
                                 @if($plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
                                     @if(empty($login_user))
                                         {{-- <a class="btn btn-block btn-primary text-white rounded" href="{{ route('user.items.create') }}">
@@ -157,10 +159,10 @@
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('theme_directory_hub.pricing.get-started') }}
                                         </a> --}}
-                                        <a href="javascript:void" class="btn btn-block btn-primary text-white rounded coachRegistration" data-plan_id="{{$plan->id}}">
+                                        {{-- <a href="javascript:void" class="btn btn-block btn-primary text-white rounded coachRegistration" data-plan_id="{{$plan->id}}">
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('theme_directory_hub.pricing.get-started') }}
-                                        </a>
+                                        </a> --}}
                                     @else
                                         @if($login_user->isAdmin())
                                             <a class="btn btn-block btn-primary text-white rounded" href="{{ route('admin.plans.index') }}">
@@ -296,23 +298,11 @@
                                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="gender" class="text-black">Gender <span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }} >Male</option>
-                                                        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }} >Female</option>
-                                                    </select>
-                                                    @error('gender')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-3">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
                                                     <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
-                                                        <option value="both" {{ old('preferred_pronouns') == 'both' ? 'selected' : '' }} >No Preference</option>
-                                                        <option value="she_her" {{ old('preferred_pronouns') == 'she_her' ? 'selected' : '' }} >She/Her</option>
-                                                        <option value="he_his" {{ old('preferred_pronouns') == 'he_his' ? 'selected' : '' }} >He/His</option>
+                                                        @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
+                                                            <option value="{{ $prkey }}" {{ old('preferred_pronouns') == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
+                                                        @endforeach
                                                     </select>
                                                     @error('preferred_pronouns')
                                                     <span class="invalid-feedback" role="alert">
@@ -320,53 +310,10 @@
                                                     </span>
                                                     @enderror
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-sm-2">
-                                            <label for="website" class="text-black">Website</label>
-                                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}">
-                                            @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <div class="row mb-3">
                                                 <div class="col-sm-3">
-                                                    <label for="instagram" class="text-black">IG Handle</label>
-                                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
-                                                    @error('instagram')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <label for="linkedin" class="text-black">LinkedIn</label>
-                                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
-                                                    @error('linkedin')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <label for="facebook" class="text-black">Facebook</label>
-                                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
-                                                    @error('facebook')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <label for="youtube" class="text-black">Youtube</label>
-                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube') }}">
-                                                    @error('youtube')
+                                                    <label for="website" class="text-black">Website</label>
+                                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}">
+                                                    @error('website')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -378,12 +325,50 @@
 
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
+                                            <label for="instagram" class="text-black">IG Handle</label>
+                                            <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
+                                            @error('instagram')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="linkedin" class="text-black">LinkedIn</label>
+                                            <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
+                                            @error('linkedin')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="facebook" class="text-black">Facebook</label>
+                                            <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
+                                            @error('facebook')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="youtube" class="text-black">Youtube</label>
+                                            <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube') }}">
+                                            @error('youtube')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-3">
                                             <label for="hourly_rate_type" class="text-black">Hourly Rate <span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate" required>
-                                                <option value="$" {{ old('hourly_rate_type') == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
-                                                <option value="$$" {{ old('hourly_rate_type') == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
-                                                <option value="$$$" {{ old('hourly_rate_type') == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
-                                                <option value="$$$$" {{ old('hourly_rate_type') == '$$$$' ? 'selected' : '' }}>$$$$ (More than 325.00)</option>
+                                                @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
+                                                    <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
+                                                @endforeach
                                             </select>
                                             @error('hourly_rate_type')
                                             <span class="invalid-feedback" role="alert">
@@ -394,9 +379,9 @@
                                         <div class="col-sm-3">
                                             <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Wroking Method" required>
-                                                <option value="person-to-person" {{ old('working_type') == 'person-to-person' ? 'selected' : '' }}>Person-to-Person</option>
-                                                <option value="remotely" {{ old('working_type') == 'remotely' ? 'selected' : '' }}>Remotely</option>
-                                                <option value="hybrid" {{ old('working_type') == 'hybrid' ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
+                                                @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
+                                                    <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
+                                                @endforeach
                                             </select>
                                             @error('working_type')
                                             <span class="invalid-feedback" role="alert">
@@ -407,10 +392,9 @@
                                         <div class="col-sm-3">
                                             <label for="experience_year" class="text-black">Experience Year <span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience" required>
-                                                <option value="0-2" {{ old('experience_year') == '0-2' ? 'selected' : '' }}>0-2</option>
-                                                <option value="3-5" {{ old('experience_year') == '3-5' ? 'selected' : '' }}>3-5</option>
-                                                <option value="5-10" {{ old('experience_year') == '5-10' ? 'selected' : '' }}>5-10</option>
-                                                <option value="10+" {{ old('experience_year') == '10+' ? 'selected' : '' }}>10 or more</option>
+                                                @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
+                                                    <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
+                                                @endforeach
                                             </select>
                                             @error('experience_year')
                                             <span class="invalid-feedback" role="alert">
@@ -636,14 +620,15 @@
                     if(!image_crop) {
                         image_crop = $('#image_demo').croppie({
                             enableExif: true,
+                            mouseWheelZoom: false,
                             viewport: {
-                                width: 200,
-                                height: 200,
+                                width: 600,
+                                height: 600,
                                 type: 'square'
                             },
                             boundary: {
-                                width: 300,
-                                height: 300
+                                width: 700,
+                                height: 700
                             },
                             enableOrientation: true
                         });

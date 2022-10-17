@@ -156,23 +156,29 @@ class UserController extends Controller
         $rules['name']                      = ['required', 'string', 'max:255'];
         $rules['email']                     = ['required', 'string', 'email', 'max:255', 'unique:users'];
         $rules['phone']                     = ['required','string','max:20'];
-        $rules['gender']                    = ['required','string','in:male,female','max:20'];
         $rules['password']                  = ['required', 'string', 'min:8', 'confirmed'];
+        $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
-        $rules['user_about']             = ['nullable'];
+        $rules['user_about']                = ['nullable'];
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
-            $rules['preferred_pronouns']    = ['required','string','in:she_her,he_his','max:100'];
+
+            $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
+
+            $rules['hourly_rate_type']      = ['required','string','max:50'];
+            $rules['working_type']          = ['required','string','max:50'];
+            $rules['experience_year']       = ['required','string','max:50'];
+
+            $rules['website']               = ['nullable','string','url','max:100'];
             $rules['instagram']             = ['nullable','string','url','max:100'];
             $rules['linkedin']              = ['nullable','string','url','max:100'];
             $rules['facebook']              = ['nullable','string','url','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
-            $rules['experience_year']       = ['required','string','max:50'];
-            $rules['website']               = ['nullable','string','url','max:100'];
+
             $rules['address']               = ['required','string','max:160'];
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
@@ -180,8 +186,8 @@ class UserController extends Controller
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
 
-            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
-            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
+            $rulesMessage['is_coach.required']  = 'Invalid Coach Creation!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach Creation!';
         }
 
         $request->validate($rules, $rulesMessage);
@@ -230,18 +236,24 @@ class UserController extends Controller
         $user->password                 = $password;
         $user->role_id                  = $role_id;
 
-        $user->gender                   = isset($input['gender']) ? $input['gender'] : null;
+        $user->company_name             = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                    = isset($input['phone']) ? $input['phone'] : null;
+
+        $user->gender                   = isset($input['gender']) ? $input['gender'] : null;
+        $user->preferred_pronouns       = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+
         $user->hourly_rate              = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
+        $user->hourly_rate_type         = isset($input['hourly_rate_type']) ? $input['hourly_rate_type'] : null;
+        $user->working_type             = isset($input['working_type']) ? $input['working_type'] : null;
         $user->experience_year          = isset($input['experience_year']) ? $input['experience_year'] : null;
         $user->availability             = isset($input['availability']) ? $input['availability'] : null;
-        $user->company_name             = isset($input['company_name']) ? $input['company_name'] : null;
+
+        $user->website                  = isset($input['website']) ? $input['website'] : null;
         $user->instagram                = isset($input['instagram']) ? $input['instagram'] : null;
         $user->linkedin                 = isset($input['linkedin']) ? $input['linkedin'] : null;
         $user->facebook                 = isset($input['facebook']) ? $input['facebook'] : null;
         $user->youtube                  = isset($input['youtube']) ? $input['youtube'] : null;
-        $user->website                  = isset($input['website']) ? $input['website'] : null;
-        $user->preferred_pronouns       = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+
         $user->address                  = isset($input['address']) ? $input['address'] : null;
         $user->city_id                  = isset($input['city_id']) ? $input['city_id'] : null;
         $user->post_code                = isset($input['post_code']) ? $input['post_code'] : null;
@@ -341,7 +353,7 @@ class UserController extends Controller
         $rules['name']                      = ['required', 'string', 'max:255'];
         $rules['email']                     = ['required', 'string', 'email', 'max:255'];
         $rules['phone']                     = ['required','string','max:20'];
-        $rules['gender']                    = ['required','string','in:male,female','max:20'];
+        $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
         $rules['user_about']             = ['nullable'];
@@ -350,17 +362,18 @@ class UserController extends Controller
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
-            $rules['preferred_pronouns']    = ['required','string','in:both,she_her,he_his','max:100'];
+
+            $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
+
+            $rules['hourly_rate_type']      = ['required','string','max:50'];
+            $rules['working_type']          = ['required','string','max:50'];
+            $rules['experience_year']       = ['required','string','max:50'];
 
             $rules['website']               = ['nullable','string','url','max:100'];
             $rules['instagram']             = ['nullable','string','url','max:100'];
             $rules['linkedin']              = ['nullable','string','url','max:100'];
             $rules['facebook']              = ['nullable','string','url','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
-
-            $rules['hourly_rate_type']      = ['required','string','max:50'];
-            $rules['working_type']          = ['required','string','max:50'];
-            $rules['experience_year']       = ['required','string','max:50'];
 
             $rules['address']               = ['required','string','max:160'];
             $rules['country_id']            = ['required'];
@@ -369,8 +382,8 @@ class UserController extends Controller
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
 
-            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
-            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
+            $rulesMessage['is_coach.required']  = 'Invalid Coach!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach!';
         }
 
         $request->validate($rules, $rulesMessage);
@@ -416,20 +429,24 @@ class UserController extends Controller
         $user->name                 = $name;
         $user->email                = $email;
 
-        $user->gender               = isset($input['gender']) ? $input['gender'] : null;
+        $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                = isset($input['phone']) ? $input['phone'] : null;
+
+        $user->gender               = isset($input['gender']) ? $input['gender'] : null;
+        $user->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+
         $user->hourly_rate          = isset($input['hourly_rate']) ? $input['hourly_rate'] : null;
         $user->hourly_rate_type     = isset($input['hourly_rate_type']) ? $input['hourly_rate_type'] : null;
         $user->working_type         = isset($input['working_type']) ? $input['working_type'] : null;
         $user->experience_year      = isset($input['experience_year']) ? $input['experience_year'] : null;
         $user->availability         = isset($input['availability']) ? $input['availability'] : null;
-        $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
+
+        $user->website              = isset($input['website']) ? $input['website'] : null;
         $user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
         $user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
         $user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
         $user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
-        $user->website              = isset($input['website']) ? $input['website'] : null;
-        $user->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
+
         $user->address              = isset($input['address']) ? $input['address'] : null;
         $user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
         $user->post_code            = isset($input['post_code']) ? $input['post_code'] : null;

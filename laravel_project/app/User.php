@@ -37,6 +37,41 @@ class User extends Authenticatable implements MustVerifyEmail
     const COUNT_PER_PAGE_500 = 500;
     const COUNT_PER_PAGE_1000 = 1000;
 
+    const GENDER_TYPES = [
+        'male'    => 'Male',
+        'female'  => 'Female',
+        'other'   => 'Other',
+    ];
+
+    const PREFERRED_PRONOUNS = [
+        'all'                   => 'All',
+        'he_him'                => 'He / Him',
+        'she_her'               => 'She / Her',
+        'them_they'             => 'Them / They',
+        'zhe_zhem'              => 'Zhe / Zhem',
+        'prefer_not_to_answer'  => 'Prefer not to answer',
+    ];
+
+    const HOURLY_RATES = [
+        '$'       => "$ (Less than 125)",
+        '$$'      => "$$ (125-225)",
+        '$$$'     => "$$$ (225-325)",
+        '$$$$'    => "$$$$ (More than 325)"
+    ];
+
+    const WORKING_TYPES = [
+        "person-to-person"  => "Person-to-Person",
+        "remotely"          => "Remotely",
+        "hybrid"            => "Hybrid (Person-to-Person / Remotely)",
+    ];
+
+    const EXPERIENCE_YEARS = [
+        "0-2"       => "0-2",
+        "3-5"       => "3-5",
+        "5-10"      => "5-10",
+        "10-plus"   => "More than 10",
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

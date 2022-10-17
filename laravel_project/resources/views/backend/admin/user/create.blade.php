@@ -135,7 +135,6 @@
                                             </span>
                                             @enderror
                                         </div>
-
                                         <div class="col-md-3">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}</label>
                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
@@ -145,12 +144,25 @@
                                                 </span>
                                             @enderror
                                         </div>
-
+                                        {{-- <div class="col-sm-3">
+                                            <label for="gender" class="text-black">Gender</label>
+                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                                @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
+                                                    <option value="{{ $gkey }}" {{ old('gender') == $gkey ? 'selected' : '' }}>{{ $gender }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('gender')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div> --}}
                                         <div class="col-sm-3">
                                             <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
                                             <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
-                                                <option value="she_her" {{ old('preferred_pronouns') == 'she_her' ? 'selected' : '' }} >She / Her</option>
-                                                <option value="he_his" {{ old('preferred_pronouns') == 'he_his' ? 'selected' : '' }} >He / His</option>
+                                                @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
+                                                    <option value="{{ $prkey }}" {{ old('preferred_pronouns') == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
+                                                @endforeach
                                             </select>
                                             @error('preferred_pronouns')
                                             <span class="invalid-tooltip" role="alert">
@@ -159,12 +171,50 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="gender" class="text-black">Gender</label>
-                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }} >Male</option>
-                                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }} >Female</option>
+                                            <label for="hourly_rate_type" class="text-black">Hourly Rate</label>
+                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
+                                                @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
+                                                    <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
+                                                @endforeach
                                             </select>
-                                            @error('gender')
+                                            @error('hourly_rate_type')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-3">
+                                            <label for="working_type" class="text-black">Working Method</label>
+                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
+                                                @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
+                                                    <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('working_type')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label for="experience_year" class="text-black">Experience Year</label>
+                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
+                                                @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
+                                                    <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('experience_year')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="website" class="text-black">Website</label>
+                                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}" required>
+                                            @error('website')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -213,30 +263,7 @@
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-sm-3">
-                                    <label for="experience_year" class="text-black">Experience Year</label>
-                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
-                                        <option value="0-2" {{ old('experience_year') == '0-2' ? 'selected' : '' }}>0-2</option>
-                                        <option value="3-5" {{ old('experience_year') == '3-5' ? 'selected' : '' }}>3-5</option>
-                                        <option value="5-10" {{ old('experience_year') == '5-10' ? 'selected' : '' }}>5-10</option>
-                                        <option value="10+" {{ old('experience_year') == '10+' ? 'selected' : '' }}>10 or more</option>
-                                    </select>
-                                    @error('experience_year')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-3">
-                                    <label for="website" class="text-black">Website</label>
-                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') }}" required>
-                                    @error('website')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <label for="address" class="text-black">Address</label>
                                     <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
                                     @error('address')
@@ -245,10 +272,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <label for="country_id" class="text-black">Country</label>
                                     <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
@@ -263,7 +287,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <label for="state_id" class="text-black">State</label>
                                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" required title="{{ __('backend.item.select-state') }}">
                                     </select>
@@ -273,7 +297,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <label for="city_id" class="text-black">City</label>
                                     <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" required title="{{ __('backend.item.select-city') }}">
                                     </select>
@@ -283,9 +307,9 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-3">
-                                    <label for="post_code" class="text-black">Post Code</label>
-                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
+                                <div class="col-sm-2">
+                                    <label for="zip" class="text-black">Post Code</label>
+                                    <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -294,7 +318,6 @@
                                 </div>
                             </div>
                         @else
-
                             <div class="row">
                                 <div class="col-sm-2">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
@@ -376,8 +399,9 @@
                                         <div class="col-sm-4">
                                             <label for="gender" class="text-black">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }} >Male</option>
-                                                <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }} >Female</option>
+                                                @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
+                                                    <option value="{{ $gkey }}" {{ old('gender') == $gkey ? 'selected' : '' }}>{{ $gender }}</option>
+                                                @endforeach
                                             </select>
                                             @error('gender')
                                             <span class="invalid-tooltip" role="alert">
@@ -399,7 +423,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         @endif
 
                         <hr class="mt-5">

@@ -79,12 +79,12 @@ class RegisterController extends Controller
 
         if(isset($data['is_coach']) && !empty($data['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
-            $rules['plan_id']               = ['required','exists:plans,id'];
+            // $rules['plan_id']               = ['required','exists:plans,id'];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
             $rules['phone']                 = ['required','string','max:20'];
-            $rules['gender']                = ['required','string','in:male,female','max:20'];
-            $rules['preferred_pronouns']    = ['required','string','in:both,she_her,he_his','max:100'];
+            // $rules['gender']                = ['required','string','in:'.array_keys(\App\User::GENDER_TYPES).'','max:20'];
+            $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
 
             $rules['website']               = ['nullable','string','url','max:100'];
             $rules['instagram']             = ['nullable','string','url','max:100'];
@@ -103,10 +103,10 @@ class RegisterController extends Controller
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
 
-            $rulesMessage['is_coach.required']  = 'Invalid Coach Registraion!';
-            $rulesMessage['is_coach.in']        = 'Invalid Coach Registraion!';
-            $rulesMessage['plan_id.required']   = 'Invalid Plan Selected!';
-            $rulesMessage['plan_id.exists']     = 'Invalid Plan Selected!';
+            $rulesMessage['is_coach.required']  = 'Invalid Coach Registration!';
+            $rulesMessage['is_coach.in']        = 'Invalid Coach Registration!';
+            // $rulesMessage['plan_id.required']   = 'Invalid Plan Selected!';
+            // $rulesMessage['plan_id.exists']     = 'Invalid Plan Selected!';
         }
 
        return Validator::make($data, $rules, $rulesMessage);
@@ -133,7 +133,7 @@ class RegisterController extends Controller
             $new_user->company_name          = isset($data['company_name']) ? $data['company_name'] : null;
             $new_user->phone                 = isset($data['phone']) ? $data['phone'] : null;
 
-            $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
+            // $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
             $new_user->preferred_pronouns    = isset($data['preferred_pronouns']) ? $data['preferred_pronouns'] : null;
 
             $new_user->hourly_rate           = isset($data['hourly_rate']) ? $data['hourly_rate'] : null;
@@ -175,11 +175,13 @@ class RegisterController extends Controller
             $new_user->categories()->attach($data['category_ids']);
         }
 
-        if(isset($data['plan_id']) && !empty($data['plan_id'])) {
-            $plan = Plan::where('id', $data['plan_id'])->first();
-        } else {
-            $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
-        }
+        // if(isset($data['plan_id']) && !empty($data['plan_id'])) {
+        //     $plan = Plan::where('id', $data['plan_id'])->first();
+        // } else {
+        //     $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
+        // }
+
+        $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
 
         if($plan) {
             $subscription = new Subscription(array(
