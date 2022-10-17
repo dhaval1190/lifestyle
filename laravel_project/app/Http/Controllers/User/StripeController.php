@@ -71,11 +71,13 @@ class StripeController extends Controller
             }
 
             $future_plan = Plan::find($plan_id);
-            $stripe_product_id = $future_plan->id;
-            $stripe_product_name = $future_plan->plan_name;
-            $stripe_product_slug = strtolower((str_replace(" ","-",$stripe_product_name))).'-'.$stripe_product_id;
-            $stripe_price_unit_amount = $future_plan->plan_price * 100;
-            $stripe_price_currency = $this->stripe_currency;
+
+            $stripe_product_id          = $future_plan->id;
+            $stripe_product_name        = $future_plan->plan_name;
+            $stripe_product_slug        = strtolower((str_replace(" ","-",$stripe_product_name))).'-'.$stripe_product_id;
+            $stripe_price_unit_amount   = $future_plan->plan_price * 100;
+            $stripe_price_currency      = $this->stripe_currency;
+
             $stripe_interval_count = 1;
             $stripe_product_description = "";
             if($future_plan->plan_period == Plan::PLAN_MONTHLY) {
@@ -91,8 +93,8 @@ class StripeController extends Controller
                 $stripe_product_description = 'Yearly Subscription';
             }
 
-            $stripe_published_key = $this->stripe_published_key;
-            $stripe_secret_key = $this->stripe_secret_key;
+            $stripe_published_key   = $this->stripe_published_key;
+            $stripe_secret_key      = $this->stripe_secret_key;
 
             $stripe = new \Stripe\StripeClient($stripe_secret_key);
 
@@ -105,66 +107,91 @@ class StripeController extends Controller
             // #1 - Create a new product if not exist
             if(empty($stripe_product)) {
                 $stripe_product = $stripe->products->create([
-                    'name' => $stripe_product_name,
-                    'description' => $stripe_product_description,
-                    'metadata' => [
-                        "plan_id" => $stripe_product_id,
-                        "plan_name" => $stripe_product_name,
-                        "plan_slug" => $stripe_product_slug,
+                    'name'          => $stripe_product_name,
+                    'description'   => $stripe_product_description,
+                    'metadata'      => [
+                        "plan_id"           => $stripe_product_id,
+                        "plan_name"         => $stripe_product_name,
+                        "plan_slug"         => $stripe_product_slug,
+                        "plan_price"        => $stripe_price_unit_amount,
+                        "plan_currency"     => $stripe_price_currency
                     ]
                 ]);
             }
 
             // #2 - Get exist product price
+            $stripe_price = null;
             try {
-                $stripe_price = $stripe->prices->all(['limit' => 1, 'product' => $stripe_product['id']]);
-                $stripe_price = (isset($stripe_price->data) && !empty($stripe_price->data)) ? $stripe_price->data[0] : '';
+                $stripePriceObj = $stripe->prices->all(['limit' => 1, 'product' => $stripe_product['id']]);
+                if(isset($stripePriceObj->data) && !empty($stripePriceObj->data)) {
+                    foreach($stripePriceObj->data as $priceObj) {
+                        if($priceObj->unit_amount == $stripe_price_unit_amount) {
+                            $stripe_price = $priceObj;
+                            break;
+                        }
+                    }
+                }
             } catch(\Exception $e) {
             }
             // #2 - Create a new price for product if not exist
             if(empty($stripe_price)) {
                 $stripe_price = $stripe->prices->create([
-                    'unit_amount' => $stripe_price_unit_amount,
-                    'currency' => $stripe_price_currency,
-                    'recurring' => ['interval' => 'month', 'interval_count' => $stripe_interval_count],
-                    'product' => $stripe_product['id'],
-                    'metadata' => [
-                        "plan_id" => $stripe_product_id,
-                        "plan_name" => $stripe_product_name,
-                        "plan_slug" => $stripe_product_slug,
+                    'product'       => $stripe_product['id'],
+                    'unit_amount'   => $stripe_price_unit_amount,
+                    'currency'      => $stripe_price_currency,
+                    'recurring'     => [
+                        'interval'          => 'month',
+                        'interval_count'    => $stripe_interval_count
+                    ],
+                    'metadata'      => [
+                        "plan_id"           => $stripe_product_id,
+                        "plan_name"         => $stripe_product_name,
+                        "plan_slug"         => $stripe_product_slug,
+                        "plan_price"        => $stripe_price_unit_amount,
+                        "plan_currency"     => $stripe_price_currency
                     ]
                 ]);
             }
 
-            // #3 - Get exist customer via email
+            // #3 set default price to product
+            if($stripe_product->default_price != $stripe_price->id) {
+                try{
+                    $stripe->products->update($stripe_product['id'], ['default_price' => $stripe_price->id]);
+                } catch(\Exception $e) {
+                }
+            }
+
+            // #4 - Get exist customer via email
             try{
                 $stripe_customer = $stripe->customers->all(['limit' => 1, 'email' => $login_user->email]);
                 $stripe_customer = (isset($stripe_customer->data) && !empty($stripe_customer->data)) ? $stripe_customer->data[0] : '';
             } catch(\Exception $e) {
             }
-            // #3 - Create a new customer if not exist
+            // #4 - Create a new customer if not exist
             if(empty($stripe_customer)) {
                 $stripe_customer = $stripe->customers->create([
-                    'name' => $login_user->name,
-                    'email' => $login_user->email,
+                    'name'      => $login_user->name,
+                    'email'     => $login_user->email
                 ]);
             }
 
-            // #4 - create a session record in Stripe
+            // #5 - create a session record in Stripe
             $stripe_session = $stripe->checkout->sessions->create([
-                'customer' => $stripe_customer['id'],
-                'success_url' => route('user.stripe.checkout.success', ['plan_id' => $plan_id, 'subscription_id' => $subscription_id]),
-                'cancel_url' => route('user.stripe.checkout.cancel'),
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price' => $stripe_price['id'],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'subscription',
+                'mode'                  => 'subscription',
+                'customer'              => $stripe_customer['id'],
+                'success_url'           => route('user.stripe.checkout.success', ['plan_id' => $plan_id, 'subscription_id' => $subscription_id]),
+                'cancel_url'            => route('user.stripe.checkout.cancel'),
+                'payment_method_types'  => ['card'],
+                'line_items'            => [
+                    [
+                        'price'         => $stripe_price['id'],
+                        'quantity'      => 1
+                    ]
+                ]
             ]);
             $stripe_session_id = $stripe_session['id'];
 
-            // #5 - insert the stripe customer_id and future plan_id to the subscription
+            // #6 - insert the stripe customer_id and future plan_id to the subscription
             $current_subscription->subscription_pay_method = Subscription::PAY_METHOD_STRIPE;
             $current_subscription->subscription_stripe_customer_id = $stripe_customer['id'];
             $current_subscription->subscription_stripe_subscription_id = $stripe_session['subscription'];
@@ -291,35 +318,26 @@ class StripeController extends Controller
         $endpoint_secret = $this->stripe_webhook_signing_secret;
 
         $payload = @file_get_contents("php://input");
-        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $sig_header = isset($_SERVER['HTTP_STRIPE_SIGNATURE']) ? $_SERVER['HTTP_STRIPE_SIGNATURE'] : null;
+
         $event = null;
-
-        try
-        {
+        try {
             $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
-        }
-        catch(\UnexpectedValueException $e)
-        {
-            // Invalid payload
-            http_response_code(400);
+        } catch(\UnexpectedValueException $e) {
+            http_response_code(400); // Invalid payload
             exit();
-        }
-        catch(\Stripe\Exception\SignatureVerificationException $e)
-        {
-            // Invalid signature
-            http_response_code(400);
+        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+            http_response_code(400); // Invalid signature
             exit();
         }
 
-        if($event)
-        {
+        if($event) {
             // save raw webhook to database
             $stripe_webhook_log = new StripeWebhookLog();
             $stripe_webhook_log->stripe_webhook_log_value = $payload;
             $stripe_webhook_log->save();
 
-            if($event->type == 'checkout.session.completed')
-            {
+            if($event->type == 'checkout.session.completed') {
                 // Handle the checkout.session.completed event.
                 // This event is sent when a customer clicks the Pay button in Checkout, informing you of a new purchase.
 
@@ -340,8 +358,7 @@ class StripeController extends Controller
                 $subscription->save();
             }
 
-            if($event->type == 'invoice.paid')
-            {
+            if($event->type == 'invoice.paid') {
                 // The status of the invoice will show up as paid. Store the status in your
                 // database to reference when a user accesses your service to avoid hitting rate
                 // limits.
@@ -403,14 +420,14 @@ class StripeController extends Controller
                 }
                 $current_subscription->plan_id = $future_plan->id;
 
-//                $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
-//                $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;
+                /*
+                $current_subscription->subscription_max_free_listing = is_null($future_plan->plan_max_free_listing) ? null : $future_plan->plan_max_free_listing;
+                $current_subscription->subscription_max_featured_listing = is_null($future_plan->plan_max_featured_listing) ? null : $future_plan->plan_max_featured_listing;*/
 
                 $current_subscription->save();
             }
 
-            if($event->type == 'invoice.payment_failed')
-            {
+            if($event->type == 'invoice.payment_failed') {
                 // This event is sent each billing interval if there is an issue with your customer’s payment method.
 
                 $stripe_customer_id = $event->data->object->customer;

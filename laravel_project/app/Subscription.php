@@ -3,6 +3,7 @@
 namespace App;
 
 use DateTime;
+use DateInterval;
 use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
