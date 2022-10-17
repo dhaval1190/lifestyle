@@ -314,11 +314,11 @@ class StripeController extends Controller
         //$stripe_secret_key = "sk_test_51HUNfIGwHz6tXHDfGoIJCd6PK3WYA7VtZ77e3OqE8K9GQemk8LMa1LrZQe2glJ1J8PfRJAeFJ45skzXB8ZRfey7k00xJiT3ggz";
         //$stripe = new \Stripe\StripeClient($stripe_secret_key);
 
-        // You can find your endpoint's secret in your webhook settings
-        $endpoint_secret = $this->stripe_webhook_signing_secret;
-
         $payload = @file_get_contents("php://input");
         $sig_header = isset($_SERVER['HTTP_STRIPE_SIGNATURE']) ? $_SERVER['HTTP_STRIPE_SIGNATURE'] : null;
+
+        // You can find your endpoint's secret in your webhook settings
+        $endpoint_secret = $this->stripe_webhook_signing_secret;
 
         $event = null;
         try {
