@@ -263,6 +263,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasPaidSubscription()
     {
         $today = new DateTime('now');
+        // $today = $today->format("Y-m-d");
         $today = $today->add(new DateInterval('P14D'))->format("Y-m-d");
 
         $subscription_exist = Subscription::where('user_id', $this->id)

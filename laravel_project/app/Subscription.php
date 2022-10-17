@@ -79,7 +79,8 @@ class Subscription extends Model
     public function getPaidUserIds()
     {
         $today = new DateTime('now');
-        $today = $today->format("Y-m-d");
+        // $today = $today->format("Y-m-d");
+        $today = $today->add(new DateInterval('P14D'))->format("Y-m-d");
 
         // get paid users id array
         $paid_user_ids = array();
@@ -98,7 +99,8 @@ class Subscription extends Model
     public function getFreeUserIds()
     {
         $today = new DateTime('now');
-        $today = $today->format("Y-m-d");
+        // $today = $today->format("Y-m-d");
+        $today = $today->add(new DateInterval('P14D'))->format("Y-m-d");
 
         $free_user_ids = array();
 
