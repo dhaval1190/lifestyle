@@ -18,6 +18,7 @@ use App\SettingLicense;
 use App\State;
 use App\User;
 use App\Role;
+use App\ItemMedia;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use DateTimeZone;
@@ -396,6 +397,8 @@ class ItemController extends Controller
             'item_social_twitter' => 'nullable|url|max:255',
             'item_social_linkedin' => 'nullable|url|max:255',
             'item_youtube_id' => 'nullable|max:255',
+            'item_video_urls' => 'nullable|array',
+            'item_video_urls.*' => 'url|max:255',
             'item_type' => 'required|numeric|in:1,2',
             'item_hour_time_zone' => 'required|max:255',
             'item_hour_show_hours' => 'required|numeric|in:1,2',
@@ -661,6 +664,18 @@ class ItemController extends Controller
             'item_social_whatsapp' => $item_social_whatsapp,
         ));
         $new_item->save();
+
+        $item_video_urls = $request->item_video_urls;
+        if($item_video_urls && !empty($item_video_urls)) {
+            foreach($item_video_urls as $item_video_url) {
+                ItemMedia::updateOrCreate([
+                    'item_id' => $new_item->id,
+                    'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                ],[
+                    'media_url' => $item_video_url
+                ]);
+            }
+        }
 
         $new_item->allCategories()->sync($select_categories);
 
@@ -1123,6 +1138,8 @@ class ItemController extends Controller
             'item_social_twitter' => 'nullable|url|max:255',
             'item_social_linkedin' => 'nullable|url|max:255',
             'item_youtube_id' => 'nullable|max:255',
+            'item_video_urls' => 'nullable|array',
+            'item_video_urls.*' => 'url|max:255',
             'item_type' => 'required|numeric|in:1,2',
             'item_hour_time_zone' => 'required|max:255',
             'item_hour_show_hours' => 'required|numeric|in:1,2',
@@ -1367,6 +1384,24 @@ class ItemController extends Controller
         $item->item_hour_show_hours = $item_hour_show_hours;
 
         $item->save();
+
+        $item_video_urls = $request->item_video_urls;
+        if($item_video_urls && !empty($item_video_urls)) {
+            foreach($item_video_urls as $item_video_url) {
+                if(empty($item_video_url)) {
+                    ItemMedia::where('item_id', $item->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
+                } else {
+                    ItemMedia::updateOrCreate([
+                        'item_id' => $item->id,
+                        'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                    ],[
+                        'media_url' => $item_video_url
+                    ]);
+                }
+            }
+        } else {
+            ItemMedia::where('item_id', $item->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
+        }
 
         // start to save custom fields data
         $item->features()->delete();

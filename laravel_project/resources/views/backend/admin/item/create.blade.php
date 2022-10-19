@@ -17,6 +17,8 @@
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
 @endsection
 
 @section('content')
@@ -184,7 +186,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-5">
                                         <label for="item_status" class="text-black">{{ __('backend.item.status') }}</label>
                                         <select class="selectpicker form-control @error('item_status') is-invalid @enderror" name="item_status">
 
@@ -200,7 +202,9 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <input type="hidden" name="item_featured" value="{{ \App\Item::ITEM_NOT_FEATURED }}">
+
+                                    {{-- <div class="col-md-3">
                                         <label for="item_featured" class="text-black">{{ __('backend.item.featured') }}</label>
                                         <select class="selectpicker form-control @error('item_featured') is-invalid @enderror" name="item_featured">
 
@@ -210,12 +214,12 @@
                                         </select>
                                         @error('item_featured')
                                         <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <label for="item_address" class="text-black">{{ __('backend.item.address') }}</label>
                                         <input id="item_address" type="text" class="form-control @error('item_address') is-invalid @enderror" name="item_address" value="{{ old('item_address') }}">
                                         @error('item_address')
@@ -339,13 +343,26 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    {{-- <div class="col-md-3">
                                         <label for="item_youtube_id" class="text-black">{{ __('customization.item.youtube-id') }}</label>
                                         <input id="item_youtube_id" type="text" class="form-control @error('item_youtube_id') is-invalid @enderror" name="item_youtube_id" value="{{ old('item_youtube_id') }}">
                                         @error('item_youtube_id')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div> --}}
+
+                                    <div class="col-md-3">
+                                        <label for="item_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
+                                        <input id="item_video_urls" type="url" class="form-control @error('item_video_urls') is-invalid @enderror" name="item_video_urls[]">
+                                        <small id="videoHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('item_video_urls')
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
 
@@ -731,7 +748,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <span class="text-lg text-gray-800">{{ __('backend.item.feature-image') }}</span>
                                         <small class="form-text text-muted">
                                             {{ __('backend.item.feature-image-help') }}
@@ -742,7 +759,7 @@
                                         </span>
                                         @enderror
                                         <div class="row mt-3">
-                                            <div class="col-8">
+                                            <div class="col-12">
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-image') }}</button>
                                                 <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
                                                 <input id="feature_image" type="hidden" name="feature_image">
@@ -750,7 +767,7 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="col-8">
+                                            <div class="col-12">
                                                 <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
                                                     <i class="fas fa-trash-alt"></i>
                                                     {{ __('role_permission.item.delete-feature-image') }}
@@ -759,7 +776,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         <span class="text-lg text-gray-800">{{ __('backend.item.gallery-images') }}</span>
                                         <small class="form-text text-muted">
                                             {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_item_max_gallery_photos]) }}
@@ -891,6 +908,12 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
 
@@ -1160,8 +1183,8 @@
 
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
-                        html += "<div class='col-3 mb-2' id='item_image_gallery_" + a + "'>" +
-                            "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +
+                        html += "<div class='col-2 mb-2' id='item_image_gallery_" + a + "'>" +
+                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#item_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
@@ -1366,13 +1389,17 @@
                 },
                 // Redefine the button pane
                 btns: [
-                    ['viewHTML'],
+                    // ['viewHTML'],
                     ['formatting'],
+                    ['fontfamily'],
                     ['strong', 'em', 'del'],
                     ['superscript', 'subscript'],
-                    ['link'],
-                    ['image'], // Our fresh created dropdown
+                    ['foreColor', 'backColor'],
+                    ['link','image','noembed'],
+                    // ['table'],
                     ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['lineheight'],
+                    ['indent', 'outdent'],
                     ['unorderedList', 'orderedList'],
                     ['horizontalRule'],
                     ['removeformat'],

@@ -22,6 +22,13 @@ class ItemMedia extends Model
         'status',
     ];
 
+    const MEDIA_TYPE_VIDEO = 'video';
+    const MEDIA_TYPE_IMAGE = 'image';
+    const MEDIA_TYPE_CSV = 'csv';
+    const MEDIA_TYPE_XLS = 'xls';
+    const MEDIA_TYPE_DOC = 'doc';
+    const MEDIA_TYPE_PDF = 'pdf';
+
     /**
      * Get the item of this media.
     */

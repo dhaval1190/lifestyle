@@ -435,7 +435,8 @@ class ArticleController extends Controller
             'article_social_twitter' => 'nullable|url|max:255',
             'article_social_linkedin' => 'nullable|url|max:255',
             'article_youtube_id' => 'nullable|max:255',
-            'article_video_urls' => 'nullable|string|url|max:255',
+            'article_video_urls' => 'nullable|array',
+            'article_video_urls.*' => 'url|max:255',
             'article_type' => 'required|numeric|in:1,2',
             'article_hour_time_zone' => 'required|max:255',
             'article_hour_show_hours' => 'required|numeric|in:1,2',
@@ -656,11 +657,14 @@ class ArticleController extends Controller
 
         $article_video_urls = $request->article_video_urls;
         if($article_video_urls && !empty($article_video_urls)) {
-            ItemMedia::create([
-                'item_id' => $new_item->id,
-                'media_type' => 'video',
-                'media_url' => $article_video_urls
-            ]);
+            foreach($article_video_urls as $article_video_url) {
+                ItemMedia::updateOrCreate([
+                    'item_id' => $new_item->id,
+                    'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                ],[
+                    'media_url' => $article_video_url
+                ]);
+            }
         }
 
         $new_item->allCategories()->sync($select_categories);
@@ -1093,7 +1097,8 @@ class ArticleController extends Controller
             'article_social_twitter' => 'nullable|url|max:255',
             'article_social_linkedin' => 'nullable|url|max:255',
             'article_youtube_id' => 'nullable|max:255',
-            'article_video_urls' => 'nullable|string|url|max:255',
+            'article_video_urls' => 'nullable|array',
+            'article_video_urls.*' => 'nullable|url|max:255',
             'article_type' => 'required|numeric|in:1,2',
             'article_hour_time_zone' => 'required|max:255',
             'article_hour_show_hours' => 'required|numeric|in:1,2',
@@ -1338,11 +1343,20 @@ class ArticleController extends Controller
 
         $article_video_urls = $request->article_video_urls;
         if($article_video_urls && !empty($article_video_urls)) {
-            ItemMedia::firstOrCreate([
-                'item_id' => $article->id,
-                'media_type' => 'video',
-                'media_url' => $article_video_urls
-            ]);
+            foreach($article_video_urls as $article_video_url) {
+                if(empty($article_video_url)) {
+                    ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
+                } else {
+                    ItemMedia::updateOrCreate([
+                        'item_id' => $article->id,
+                        'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                    ],[
+                        'media_url' => $article_video_url
+                    ]);
+                }
+            }
+        } else {
+            ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
         }
 
         // start to save custom fields data

@@ -420,8 +420,19 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-3">
+                                        @php
+                                            $article_video_url = '';
+                                            if($article->medias && count($article->medias) > 0) {
+                                                foreach($article->medias()->orderBy('item_media.id','desc')->get() as $media) {
+                                                    if($media->media_type == \App\ItemMedia::MEDIA_TYPE_VIDEO && !empty($media->media_url)) {
+                                                        $article_video_url = $media->media_url;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
                                         <label for="article_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
-                                        <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]">
+                                        <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]" value="{{ $article_video_url }}">
                                         <small id="videoHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -1183,6 +1194,12 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
 
@@ -1471,7 +1488,7 @@
 
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
-                        html += "<div class='col-3 mb-2' id='article_image_gallery_" + a + "'>" +
+                        html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
                             "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
@@ -1681,13 +1698,17 @@
                 },
                 // Redefine the button pane
                 btns: [
-                    ['viewHTML'],
+                    // ['viewHTML'],
                     ['formatting'],
+                    ['fontfamily'],
                     ['strong', 'em', 'del'],
                     ['superscript', 'subscript'],
-                    ['link'],
-                    ['image'], // Our fresh created dropdown
+                    ['foreColor', 'backColor'],
+                    ['link','image','noembed'],
+                    // ['table'],
                     ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['lineheight'],
+                    ['indent', 'outdent'],
                     ['unorderedList', 'orderedList'],
                     ['horizontalRule'],
                     ['removeformat'],

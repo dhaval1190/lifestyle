@@ -554,10 +554,17 @@
                                             {{ __('products.edit-item-link') }}
                                         </a>
                                     @else
-                                        <a class="pl-1" target="_blank" href="{{ route('user.items.edit', $item->id) }}">
-                                            <i class="fas fa-external-link-alt"></i>
-                                            {{ __('products.edit-item-link') }}
-                                        </a>
+                                        @if(Auth::user()->isCoach())
+                                            <a class="pl-1" target="_blank" href="{{ route('user.articles.edit', $item->id) }}">
+                                                <i class="fas fa-external-link-alt"></i>
+                                                {{ __('products.edit-item-link') }}
+                                            </a>
+                                        @else
+                                            <a class="pl-1" target="_blank" href="{{ route('user.items.edit', $item->id) }}">
+                                                <i class="fas fa-external-link-alt"></i>
+                                                {{ __('products.edit-item-link') }}
+                                            </a>
+                                        @endif
                                     @endif
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -771,7 +778,7 @@
                     @endif
                     <!-- end item section after gallery -->
 
-                    @if(!empty($item->item_youtube_id))
+                    {{-- @if(!empty($item->item_youtube_id))
 
                         <div class="row mb-3">
                             <div class="col-12">
@@ -783,7 +790,43 @@
                             </div>
                         </div>
 
+                    @endif --}}
+
+                    @php
+                    $item_video_url = '';
+                    if($item->medias && count($item->medias) > 0) {
+                        foreach($item->medias()->orderBy('item_media.id','desc')->get() as $media) {
+                            if($media->media_type == \App\ItemMedia::MEDIA_TYPE_VIDEO && !empty($media->media_url)) {
+                                $item_video_url = $media->media_url;
+                                break;
+                            }
+                        }
+                    }
+                    @endphp
+
+                    @if(!empty($item_video_url))
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="h5 mb-4 text-black">{{ __('customization.item.video') }}</h4>
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="{{ $item_video_url }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
                     @endif
+
+                    {{-- @if(!empty($item->item_youtube_id))
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h4 class="h5 mb-4 text-black">{{ __('customization.item.video') }}</h4>
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/{{ $item->item_youtube_id }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    @endif --}}
 
                     @if($ads_before_description->count() > 0)
                         @foreach($ads_before_description as $ads_before_description_key => $ad_before_description)
