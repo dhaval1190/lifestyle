@@ -134,7 +134,7 @@
                                                                 {{ __('prefer_country.view-item') }}
                                                             </a>
                                                             @endif
-                                                            <a href="{{ route('admin.items.edit', $item->id) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                            <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
                                                                 <i class="far fa-edit"></i>
                                                                 {{ __('backend.shared.edit') }}
                                                             </a>

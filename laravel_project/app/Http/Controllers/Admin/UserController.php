@@ -783,6 +783,10 @@ class UserController extends Controller
         \Session::flash('flash_message', __('admin_users_table.alert.selected-verified'));
         \Session::flash('flash_type', 'success');
 
+        if(count($user_ids) == 1) {
+            return redirect()->route('admin.users.edit', $user);
+        }
+
         return redirect()->route('admin.users.index', $request->query());
     }
 

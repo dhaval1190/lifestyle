@@ -43,6 +43,9 @@
                         <form class="pb-2" action="{{ route('admin.users.suspend', $user) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            @if(empty($user->email_verified_at))
+                                <button type="button" class="btn btn-warning mr-1 verify_email_button" data-user_id="{{$user->id}}">{{ __('admin_users_table.verify-selected') }}</a>
+                            @endif
                             <button type="submit" class="btn btn-primary">{{ __('backend.user.suspend-account') }}</button>
                             <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#deleteModal">
                                 {{ __('backend.user.delete-user') }}
@@ -52,6 +55,9 @@
                         <form class="pb-2" action="{{ route('admin.users.unsuspend', $user) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            @if(empty($user->email_verified_at))
+                                <button type="button" class="btn btn-warning mr-1 verify_email_button" data-user_id="{{$user->id}}">{{ __('admin_users_table.verify-selected') }}</a>
+                            @endif
                             <button type="submit" class="btn btn-success">{{ __('backend.user.un-lock-account') }}</button>
                             <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#deleteModal">
                                 {{ __('backend.user.delete-user') }}
@@ -478,6 +484,12 @@
         </div>
     </div>
 
+    <!-- Email Verification Form -->
+    <form action="{{ route('admin.users.bulk.verify') }}" method="POST" id="form_verify_email">
+        @csrf
+        <input type="hidden" name="user_id[]">
+    </form>
+
     <!-- Modal Delete User -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -557,6 +569,17 @@
             });
 
             $('.selectpicker').selectpicker();
+
+            /**
+             * Start verify selected button action
+             */
+            $('.verify_email_button').on('click', function () {
+                $('#form_verify_email input[name="user_id[]"]').val($(this).attr('data-user_id'));
+                $("#form_verify_email").submit();
+            });
+            /**
+             * End verify selected button action
+             */
 
             /**
              * Start the croppie image plugin
