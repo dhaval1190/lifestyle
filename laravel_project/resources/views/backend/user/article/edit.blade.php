@@ -17,6 +17,8 @@
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
 @endsection
 
 @section('content')
@@ -122,7 +124,6 @@
                         @csrf
                         @method('PUT')
 
-
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
@@ -167,52 +168,92 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="article_title" class="text-black">{{ __('backend.article.title') }}</label>
                                         <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') ? old('article_title') : $article->item_title }}">
                                         @error('article_title')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}</label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') ? old('article_address') : $article->item_address }}">
                                         @error('article_address')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
-                                    </div>
-
-                                    <div class="col-md-4">
-
-                                        @if($show_article_featured_selector)
-
-                                            <label for="article_featured" class="text-black">{{ __('backend.article.featured') }}</label>
-                                            <select class="selectpicker form-control @error('article_featured') is-invalid @enderror" name="article_featured">
-
-                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_NOT_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_NOT_FEATURED }}">{{ __('backend.shared.no') }}</option>
-                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_FEATURED }}">{{ __('backend.shared.yes') }}</option>
-
-                                            </select>
-                                            @error('article_featured')
-                                            <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                            @enderror
-
-                                        @else
-                                            <input type="hidden" name="article_featured" value="{{ $article->item_featured }}">
-                                        @endif
-
                                     </div>
                                 </div>
 
                                 <div class="form-row mb-3">
+                                    <div class="col-md-2">
+                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
+                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
+                                            @foreach($all_countries as $all_countries_key => $country)
+                                            @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $article->country_id == $country->id))
+                                            <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $article->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                        @error('country_id')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
+                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
+                                            @foreach($all_states as $key => $state)
+                                            <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('state_id')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
+                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
+                                            @foreach($all_cities as $key => $city)
+                                            <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('city_id')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
+                                        @error('article_postal_code')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
 
+                                    <div class="col-md-4">
+                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                        <div class="input-group">
+                                            <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
+                                            <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') ? old('article_lng') : $article->item_lng }}"aria-describedby="lngHelpBlock">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline">
                                             <input {{ $article->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
@@ -225,216 +266,67 @@
                                         </div>
                                         @error('article_address_hide')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
-
-                                    <div class="col-md-3">
-                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
-                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
-                                            @foreach($all_countries as $all_countries_key => $country)
-                                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $article->country_id == $country->id))
-                                                    <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $article->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        @error('country_id')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
-                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
-                                            @foreach($all_states as $key => $state)
-                                                <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('state_id')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
-                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
-                                            @foreach($all_cities as $key => $city)
-                                                <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('city_id')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
-                                        @error('article_postal_code')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                </div>
-
-                                <div class="form-row mb-3">
-
-                                    <div class="col-md-3">
-                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }}</label>
-                                        <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
-                                        <small id="latHelpBlock" class="form-text text-muted">
-                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.article.select-map') }}</a>
-                                        </small>
-                                        @error('article_lat')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="article_lng" class="text-black">{{ __('backend.article.lng') }}</label>
-                                        <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') ? old('article_lng') : $article->item_lng }}" aria-describedby="lngHelpBlock">
-                                        <small id="lngHelpBlock" class="form-text text-muted">
-                                            <a class="lat_lng_select_button btn btn-sm btn-primary text-white">{{ __('backend.article.select-map') }}</a>
-                                        </small>
-                                        @error('article_lng')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
-                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock">
-                                        @error('article_phone')
-                                        <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-md-3">
                                         <label for="article_youtube_id" class="text-black">{{ __('customization.article.youtube-id') }}</label>
                                         <input id="article_youtube_id" type="text" class="form-control @error('article_youtube_id') is-invalid @enderror" name="article_youtube_id" value="{{ old('article_youtube_id') ? old('article_youtube_id') : $article->item_youtube_id }}">
                                         @error('article_youtube_id')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
-
-                                </div>
+                                </div> --}}
 
                                 <div class="form-row mb-3">
-
                                     <div class="col-md-12">
                                         <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
                                         <textarea class="form-control @error('article_description') is-invalid @enderror" id="article_description" rows="5" name="article_description">{{ old('article_description') ? old('article_description') : $article->item_description }}</textarea>
                                         @error('article_description')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                 </div>
 
                                 <!-- Start web & social media -->
                                 <div class="form-row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="article_website" class="text-black">
-                                            <i class="fa-solid fa-globe"></i>
-                                            {{ __('backend.article.website') }}
-                                        </label>
-                                        <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website') ? old('article_website') : $article->item_website }}">
-                                        <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('article_website')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
 
-                                    <div class="col-md-4">
-                                        <label for="article_social_facebook" class="text-black">
-                                            <i class="fa-brands fa-facebook-square"></i>
-                                            {{ __('backend.article.facebook') }}
-                                        </label>
-                                        <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook') ? old('article_social_facebook') : $article->item_social_facebook }}">
-                                        <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('article_social_facebook')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
+                                    <input type="hidden" name="article_featured" value="{{ $article->item_featured }}">
+                                    {{-- <div class="col-md-4">
+                                        @if($show_article_featured_selector)
+                                            <label for="article_featured" class="text-black">{{ __('backend.article.featured') }}</label>
+                                            <select class="selectpicker form-control @error('article_featured') is-invalid @enderror" name="article_featured">
+                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_NOT_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_NOT_FEATURED }}">{{ __('backend.shared.no') }}</option>
+                                                <option {{ (old('article_featured') ? old('article_featured') : $article->item_featured) == \App\Item::ITEM_FEATURED ? 'selected' : '' }} value="{{ \App\Item::ITEM_FEATURED }}">{{ __('backend.shared.yes') }}</option>
+                                            </select>
+                                            @error('article_featured')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        @else
+                                            <input type="hidden" name="article_featured" value="{{ $article->item_featured }}">
+                                        @endif
+                                    </div> --}}
 
-                                    <div class="col-md-4">
-                                        <label for="article_social_twitter" class="text-black">
-                                            <i class="fa-brands fa-twitter-square"></i>
-                                            {{ __('backend.article.twitter') }}
-                                        </label>
-                                        <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') ? old('article_social_twitter') : $article->item_social_twitter }}">
-                                        <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('article_social_twitter')
+                                    <div class="col-md-3">
+                                        <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
+                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock">
+                                        @error('article_phone')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
-
-                                <div class="form-row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="article_social_linkedin" class="text-black">
-                                            <i class="fa-brands fa-linkedin"></i>
-                                            {{ __('backend.article.linkedin') }}
-                                        </label>
-                                        <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin') ? old('article_social_linkedin') : $article->item_social_linkedin }}">
-                                        <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('article_social_linkedin')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="article_social_instagram" class="text-black">
-                                            <i class="fa-brands fa-instagram-square"></i>
-                                            {{ __('article_whatsapp_instagram.article-social-instagram') }}
-                                        </label>
-                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') ? old('article_social_instagram') : $article->item_social_instagram }}">
-                                        <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
-                                        </small>
-                                        @error('article_social_instagram')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="article_social_whatsapp" class="text-black">
                                             <i class="fa-brands fa-whatsapp-square"></i>
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
@@ -449,7 +341,96 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="article_website" class="text-black">
+                                            <i class="fa-solid fa-globe"></i>
+                                            {{ __('backend.article.website') }}
+                                        </label>
+                                        <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website') ? old('article_website') : $article->item_website }}">
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('article_website')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="article_social_facebook" class="text-black">
+                                            <i class="fa-brands fa-facebook-square"></i>
+                                            {{ __('backend.article.facebook') }}
+                                        </label>
+                                        <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook') ? old('article_social_facebook') : $article->item_social_facebook }}">
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('article_social_facebook')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
 
+                                <div class="form-row mb-3">
+                                    <div class="col-md-3">
+                                        <label for="article_social_twitter" class="text-black">
+                                            <i class="fa-brands fa-twitter-square"></i>
+                                            {{ __('backend.article.twitter') }}
+                                        </label>
+                                        <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') ? old('article_social_twitter') : $article->item_social_twitter }}">
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('article_social_twitter')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="article_social_linkedin" class="text-black">
+                                            <i class="fa-brands fa-linkedin"></i>
+                                            {{ __('backend.article.linkedin') }}
+                                        </label>
+                                        <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin') ? old('article_social_linkedin') : $article->item_social_linkedin }}">
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('article_social_linkedin')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="article_social_instagram" class="text-black">
+                                            <i class="fa-brands fa-instagram-square"></i>
+                                            {{ __('article_whatsapp_instagram.article-social-instagram') }}
+                                        </label>
+                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') ? old('article_social_instagram') : $article->item_social_instagram }}">
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                        </small>
+                                        @error('article_social_instagram')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="article_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
+                                        <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]">
+                                        <small id="videoHelpBlock" class="form-text text-muted">
+                                            {{ __('backend.shared.url-help') }}
+                                        </small>
+                                        @error('article_video_urls')
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <!-- End web & social media -->
                             </div>
@@ -687,30 +668,29 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
-                                        <small class="form-text text-muted">
-                                            {{ __('backend.article.feature-image-help') }}
-                                        </small>
+                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
                                         @error('feature_image')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                         <div class="row mt-3">
-                                            <div class="col-8">
+                                            <div class="col-12">
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
                                                 @if(empty($article->item_image))
-                                                    <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive">
+                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive">
                                                 @else
-                                                    <img id="image_preview" src="{{ Storage::disk('public')->url('item/'. $article->item_image) }}" class="img-responsive">
+                                                <img id="image_preview" src="{{ Storage::disk('public')->url('item/'. $article->item_image) }}" class="img-responsive">
                                                 @endif
                                                 <input id="feature_image" type="hidden" name="feature_image">
                                             </div>
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="col-8">
+                                            <div class="col-12">
                                                 <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
                                                     <i class="fas fa-trash-alt"></i>
                                                     {{ __('role_permission.article.delete-feature-image') }}
@@ -719,23 +699,25 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
-                                        <small class="form-text text-muted">
+                                        <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
+                                        <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
+                                        {{-- <small class="form-text text-muted">
                                             {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
-                                        </small>
+                                        </small> --}}
                                         @error('image_gallery')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
                                                 <div class="row" id="selected-images">
                                                     @foreach($article->galleries as $key => $gallery)
-                                                        <div class="col-3 mb-2" id="article_image_gallery_{{ $gallery->id }}">
-                                                            <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}" style="width: 100%">
+                                                        <div class="col-2 mb-2" id="article_image_gallery_{{ $gallery->id }}">
+                                                            <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}" style="width: 100%; border-radius: 5px; border: 1px solid #dadada;">
                                                             <br/><button class="btn btn-danger btn-sm text-white mt-1" onclick="$(this).attr('disabled', true); deleteGallery({{ $gallery->id }});">{{ __('backend.shared.delete') }}</button>
                                                         </div>
                                                     @endforeach
@@ -1490,7 +1472,7 @@
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
                         html += "<div class='col-3 mb-2' id='article_image_gallery_" + a + "'>" +
-                            "<img style='width: 100%' src='" + event.files[a].content + "'>" +
+                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";

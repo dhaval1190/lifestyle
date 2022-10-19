@@ -17,6 +17,7 @@ use App\Product;
 use App\SettingItem;
 use App\State;
 use App\Role;
+use App\ItemMedia;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -434,6 +435,7 @@ class ArticleController extends Controller
             'article_social_twitter' => 'nullable|url|max:255',
             'article_social_linkedin' => 'nullable|url|max:255',
             'article_youtube_id' => 'nullable|max:255',
+            'article_video_urls' => 'nullable|string|url|max:255',
             'article_type' => 'required|numeric|in:1,2',
             'article_hour_time_zone' => 'required|max:255',
             'article_hour_show_hours' => 'required|numeric|in:1,2',
@@ -651,6 +653,15 @@ class ArticleController extends Controller
             'item_social_whatsapp' => $item_social_whatsapp,
         ));
         $new_item->save();
+
+        $article_video_urls = $request->article_video_urls;
+        if($article_video_urls && !empty($article_video_urls)) {
+            ItemMedia::create([
+                'item_id' => $new_item->id,
+                'media_type' => 'video',
+                'media_url' => $article_video_urls
+            ]);
+        }
 
         $new_item->allCategories()->sync($select_categories);
 
@@ -1082,6 +1093,7 @@ class ArticleController extends Controller
             'article_social_twitter' => 'nullable|url|max:255',
             'article_social_linkedin' => 'nullable|url|max:255',
             'article_youtube_id' => 'nullable|max:255',
+            'article_video_urls' => 'nullable|string|url|max:255',
             'article_type' => 'required|numeric|in:1,2',
             'article_hour_time_zone' => 'required|max:255',
             'article_hour_show_hours' => 'required|numeric|in:1,2',
@@ -1323,6 +1335,15 @@ class ArticleController extends Controller
         $article->item_hour_show_hours = $item_hour_show_hours;
 
         $article->save();
+
+        $article_video_urls = $request->article_video_urls;
+        if($article_video_urls && !empty($article_video_urls)) {
+            ItemMedia::firstOrCreate([
+                'item_id' => $article->id,
+                'media_type' => 'video',
+                'media_url' => $article_video_urls
+            ]);
+        }
 
         // start to save custom fields data
         $article->features()->delete();

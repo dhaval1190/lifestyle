@@ -211,6 +211,14 @@ class Item extends Model implements ReviewRateable
     }
 
     /**
+     * Get the media for the item.
+     */
+    public function medias()
+    {
+        return $this->hasMany('App\ItemMedia', 'item_id');
+    }
+
+    /**
      * Get the item sections for the item
      * @return HasMany
      */
