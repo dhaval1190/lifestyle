@@ -134,6 +134,7 @@ return array (
     'users' => 'Users',
     'view-all-comment' => 'View All Comments',
     'view-all-message' => 'View All Messages',
+    'subscription' => 'Subscription'
   ),
   'item' =>
   array (
@@ -248,6 +249,7 @@ return array (
     'unsave-article-error-exist' => 'You had not saved the business articles.',
     'unsave-article-success' => 'Business article removed from your saved collection.',
     'website' => 'Website',
+    'keyword' => 'Keyword',
   ),
   'message' =>
   array (

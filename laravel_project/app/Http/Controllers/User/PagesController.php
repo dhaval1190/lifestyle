@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Item;
 use App\Setting;
+use App\Plan;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Cmgmyr\Messenger\Models\Message;
 use Cmgmyr\Messenger\Models\Thread;
@@ -34,6 +35,10 @@ class PagesController extends Controller
 
         $paid_subscription_days_left = $login_user->subscriptionDaysLeft();
 
+        $subscription_details = $login_user->subscription()->where('user_id', $login_user->id)->first();
+        $plan_details = Plan::where('id',$subscription_details->plan_id)->first();
+        $plan_name = $plan_details->plan_name;
+
         $pending_item_count = $login_user->items()->where('item_status', Item::ITEM_SUBMITTED)->count();
         $item_count = $login_user->items()->count();
         $message_count = Message::where('user_id', $login_user->id)->count();
@@ -44,6 +49,6 @@ class PagesController extends Controller
 
         return response()->view('backend.user.index',
             compact('pending_item_count', 'item_count', 'message_count', 'comment_count',
-            'recent_threads', 'recent_comments', 'paid_subscription_days_left'));
+            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name'));
     }
 }

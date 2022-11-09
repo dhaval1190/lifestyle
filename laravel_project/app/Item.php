@@ -120,6 +120,7 @@ class Item extends Model implements ReviewRateable
         'item_hour_show_hours',
         'item_social_whatsapp',
         'item_social_instagram',
+        'item_keywords'
     ];
 
     /**
