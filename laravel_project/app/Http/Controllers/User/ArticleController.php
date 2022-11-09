@@ -549,6 +549,7 @@ class ArticleController extends Controller
         $item_social_twitter = $request->article_social_twitter;
         $item_social_linkedin = $request->article_social_linkedin;
         $item_social_instagram = $request->article_social_instagram;
+        $item_keywords = $request->item_keywords;
         $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
         $item_hour_time_zone = $request->article_hour_time_zone;
@@ -651,6 +652,7 @@ class ArticleController extends Controller
             'item_hour_time_zone' => $item_hour_time_zone,
             'item_hour_show_hours' => $item_hour_show_hours,
             'item_social_instagram' => $item_social_instagram,
+            'item_keywords' => $item_keywords,
             'item_social_whatsapp' => $item_social_whatsapp,
         ));
         $new_item->save();
@@ -1219,6 +1221,7 @@ class ArticleController extends Controller
         $item_social_twitter = $request->article_social_twitter;
         $item_social_linkedin = $request->article_social_linkedin;
         $item_social_instagram = $request->article_social_instagram;
+        $item_keywords = $request->item_keywords;
         $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
         $item_hour_time_zone = $request->article_hour_time_zone;
@@ -1328,6 +1331,7 @@ class ArticleController extends Controller
         $article->item_social_twitter = $item_social_twitter;
         $article->item_social_linkedin = $item_social_linkedin;
         $article->item_social_instagram = $item_social_instagram;
+        $article->item_keywords = $item_keywords;
         $article->item_social_whatsapp = $item_social_whatsapp;
 
         $article->item_features_string = null;

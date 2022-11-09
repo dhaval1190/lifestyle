@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="row pt-2 mt-5 pb-2">
+        {{-- <div class="row pt-2 mt-5 pb-2">
             <div class="col-md-12">
                 <div class="btn-group dropup">
                     <button class="btn btn-sm rounded dropdown-toggle btn-footer-dropdown" type="button" id="table_option_dropdown_country" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,7 +88,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row text-center">
             <div class="col-md-12">
