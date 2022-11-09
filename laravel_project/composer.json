@@ -19,6 +19,7 @@
         "instamojo/instamojo-php": "^0.4.0",
         "intervention/image": "^2.5",
         "joedixon/laravel-translation": "^1.1",
+        "laravel/cashier": "*",
         "laravel/framework": "6.20.34",
         "laravel/helpers": "^1.2",
         "laravel/socialite": "^4.4",
@@ -29,11 +30,12 @@
         "mews/purifier": "^3.2",
         "nicolaslopezj/searchable": "1.*",
         "rachidlaasri/laravel-installer": "^4.0",
+        "razorpay/razorpay": "2.*",
+        "spatie/laravel-stripe-webhooks": "^2.2",
         "spatie/opening-hours": "^2.10",
         "srmklive/paypal": "^1.7",
         "stripe/stripe-php": "^7.53",
-        "sundarocs/laravel-review-rateable": "^1.2",
-        "razorpay/razorpay": "2.*"
+        "sundarocs/laravel-review-rateable": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
