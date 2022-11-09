@@ -28,7 +28,8 @@ class VerifyCsrfToken extends Middleware
         'stripe/notify',
         'user/payumoney/checkout/success',
         'user/payumoney/checkout/cancel',
-        'domain-verify'
+        'domain-verify',
+        'stripe/*'
         /**
          * End payment gateway webhooks
          */
