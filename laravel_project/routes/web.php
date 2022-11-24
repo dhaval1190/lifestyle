@@ -67,6 +67,14 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/contact', 'PagesController@contact')->name('page.contact');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
+    Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
+    Route::get('/profile-detail/{id}', 'PagesController@profileDetail')->name('page.profile.detail');
+    Route::put('/media/update/{media_detail}', 'PagesController@updateMedia')->name('media.update');
+    Route::delete('/media/destroy/{media_detail}', 'PagesController@destroyMedia')->name('media.destroy');
+    Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');
+    Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
+    Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
+
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');

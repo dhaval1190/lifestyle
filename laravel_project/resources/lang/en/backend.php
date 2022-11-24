@@ -607,6 +607,7 @@ return array (
     'profile-image-help' => 'minimum ratio suggestion: 70px * 70px, and maximum file size: 5mb',
     'role' => 'Role',
     'select-image' => 'Select Image',
+    'select-cover-image' => 'Select Cover Image',
     'select-user-status' => 'Select user status',
     'status' => 'Status',
     'suspend-account' => 'Suspend Account',

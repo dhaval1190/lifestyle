@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use App\Category;
+use App\MediaDetail;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -49,9 +50,13 @@ class UserController extends Controller
         $all_countries = Country::orderBy('country_name')->get();
         $all_states = $login_user->country ? $login_user->country()->first()->states()->orderBy('state_name')->get() : null;
         $all_cities = $login_user->state ? $login_user->state()->first()->cities()->orderBy('city_name')->get() : null;
+        $media_detail = MediaDetail::where('user_id', $login_user->id)->orderBy('media_type')->get();
+        $video_media_array = MediaDetail::where('user_id', $login_user->id)->where('media_type', 'video')->get();
+        $podcast_media_array = MediaDetail::where('user_id', $login_user->id)->where('media_type', 'podcast')->get();
+        $ebook_media_array = MediaDetail::where('user_id', $login_user->id)->where('media_type', 'ebook')->get();
 
         return response()->view('backend.user.profile.edit',
-            compact('login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities'));
+            compact('login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array'));
     }
 
     /**
@@ -143,6 +148,21 @@ class UserController extends Controller
                 Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
             }
 
+            $user_cover_image = $request->user_cover_image;
+            $user_cover_image_name = $login_user->user_cover_image;
+            if(!empty($user_cover_image)) {
+                $currentDate = Carbon::now()->toDateString();
+                $user_cover_image_name = 'user-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
+                if(!Storage::disk('public')->exists('user')){
+                    Storage::disk('public')->makeDirectory('user');
+                }
+                if(Storage::disk('public')->exists('user/' . $login_user->user_cover_image)){
+                    Storage::disk('public')->delete('user/' . $login_user->user_cover_image);
+                }
+                $new_user_cover_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_cover_image)))->stream('jpg', 70);
+                Storage::disk('public')->put('user/'.$user_cover_image_name, $new_user_cover_image);
+            }
+
             $login_user->name = $name;
             $login_user->email = $email;
 
@@ -172,12 +192,83 @@ class UserController extends Controller
 
             $login_user->user_about = $user_about;
             $login_user->user_image = $user_image_name;
+            $login_user->user_cover_image = $user_cover_image_name;
             // $login_user->user_prefer_language = $user_prefer_language;
             // $login_user->user_prefer_country_id = $user_prefer_country_id;
             $login_user->save();
 
             if(isset($input['category_ids']) && !empty($input['category_ids'])) {
                 $login_user->categories()->sync($input['category_ids']);
+            }
+
+            if(isset($input['media_details']) && !empty($input['media_details'])){
+                foreach($input['media_details'] as $media_detail) {
+                    $media = explode("||",$media_detail);
+                    MediaDetail::updateOrCreate([
+                        'user_id' => $login_user->id,
+                        'media_type' => $media[0],
+                        'media_url' => $media[1]
+                    ],[
+                        'media_type' => $media[0],
+                        'media_url' => $media[1]
+                    ]);
+                }
+            }
+
+            if(isset($input['media_image']) && !empty($input['media_image']) && $input['media_type']=='ebook'){
+                $ebook = $input['media_image'];
+                $ebook_cover = $input['media_cover'];
+                if(!Storage::disk('public')->exists('media_files')){
+                    Storage::disk('public')->makeDirectory('media_files');
+                }
+                if(!empty($ebook)) {
+                    $ebook_file_name = $request->file('media_image')->getClientOriginalName();
+                    $request->media_image->storeAs('public/media_files', $ebook_file_name);
+                }
+                if(!empty($ebook_cover)) {
+                    $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                    $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+                }
+
+                MediaDetail::updateOrCreate([
+                    'user_id' => $login_user->id,
+                    'media_name' => $request->media_name,
+                    'media_type' => $request->media_type,
+                    'media_cover' => $ebook_cover_file_name,
+                    'media_image' => $ebook_file_name
+                ],[
+                    'user_id' => $login_user->id,
+                    'media_type' => $request->media_type,
+                    'media_image' => $ebook_file_name
+                ]);
+            }
+
+            if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
+                $podcast = $input['podcast_image'];
+                $podcast_cover = $input['podcast_cover'];
+                if(!Storage::disk('public')->exists('media_files')){
+                    Storage::disk('public')->makeDirectory('media_files');
+                }
+                if(!empty($podcast)) {
+                    $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
+                    $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+                }
+                if(!empty($podcast_cover)) {
+                    $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                    $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+                }
+
+                MediaDetail::updateOrCreate([
+                    'user_id' => $login_user->id,
+                    'media_name' => $request->podcast_name,
+                    'media_type' => $request->podcast_type,
+                    'media_cover' => $podcast_cover_file_name,
+                    'media_image' => $podcast_file_name
+                ],[
+                    'user_id' => $login_user->id,
+                    'media_type' => $request->podcast_type,
+                    'media_image' => $podcast_file_name
+                ]);
             }
 
             \Session::flash('flash_message', __('alert.user-profile-updated'));

@@ -103,6 +103,12 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link" href="{{ route('canvas') }}" target="_blank">
+            <i class="fas fa-external-link-alt"></i>
+            <span>{{ __('backend.sidebar.blog') }}</span></a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link" href="{{ route('user.subscriptions.index') }}">
             <i class="far fa-credit-card"></i>
             <span>{{ __('backend.sidebar.subscription') }}</span></a>

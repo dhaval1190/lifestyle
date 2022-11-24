@@ -44,7 +44,7 @@ class PagesController extends Controller
         $warning_smtp = $settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED ? false : true;
 
         return response()->view('backend.admin.index',
-            compact('category_count', 'item_count', 'post_count', 'user_count',
+            compact('admin_user','category_count', 'item_count', 'post_count', 'user_count',
                 'recent_threads', 'recent_comments', 'warning_smtp'));
     }
 }

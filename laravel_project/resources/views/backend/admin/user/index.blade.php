@@ -6,11 +6,10 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
+        <div class="col-6">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.user') }}</h1>
-            <p class="mb-4">{{ __('backend.user.user-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-6 text-right">
             <a href="{{ route('admin.users.create') }}?is_coach=1" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
@@ -23,6 +22,9 @@
                 </span>
                 <span class="text">{{ __('backend.user.add-user') }}</span>
             </a>
+        </div>
+        <div class="col-12">
+            <p class="mb-4">{{ __('backend.user.user-desc') }}</p>
         </div>
     </div>
 
