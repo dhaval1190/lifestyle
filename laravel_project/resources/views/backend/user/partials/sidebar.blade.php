@@ -102,11 +102,13 @@
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('canvas') }}" target="_blank">
-            <i class="fas fa-external-link-alt"></i>
-            <span>{{ __('backend.sidebar.blog') }}</span></a>
-    </li>
+    @if(auth()->user()->isAdmin() || auth()->user()->isCoach())
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('canvas') }}" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                <span>{{ __('backend.sidebar.blog') }}</span></a>
+        </li>
+    @endif
 
     <li class="nav-item">
         <a class="nav-link" href="{{ route('user.subscriptions.index') }}">
