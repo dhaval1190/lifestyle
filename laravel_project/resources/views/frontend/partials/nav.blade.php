@@ -81,13 +81,13 @@
                             <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
                         @else
                             @if(Auth::user()->isAdmin())
-                                <a href="{{ route('admin.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
+                                <a href="{{ route('admin.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
                             @else
                                 @if(Auth::user()->hasPaidSubscription())
                                     @if(Auth::user()->isCoach())
-                                        <a href="{{ route('user.articles.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
+                                        <a href="{{ route('user.articles.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
                                     @else
-                                        <a href="{{ route('user.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
+                                        <a href="{{ route('user.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
                                     @endif
                                 @else
                                     <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>

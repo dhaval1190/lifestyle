@@ -93,4 +93,6 @@ return array (
   'user-unlocked' => 'User suspension removed successfully.',
   'user-updated' => 'The user updated successfully.',
   'free-subscription-activate' => 'Free subscription activated successfully.',
+  'media-deleted' => 'Media deleted successfully.',
+  'media-updated' => 'Media updated successfully.',
 );

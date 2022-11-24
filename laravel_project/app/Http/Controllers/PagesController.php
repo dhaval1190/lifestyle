@@ -24,6 +24,8 @@ use App\Subscription;
 use App\Testimonial;
 use App\Theme;
 use App\User;
+use App\Role;
+use App\MediaDetail;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use DateTime;
@@ -1198,6 +1200,619 @@ class PagesController extends Controller
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
                 'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
             ));
+    }
+
+    public function coaches(Request $request)
+    {
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+
+        $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+        $subscription_obj = new Subscription();
+
+        $active_user_ids = $subscription_obj->getActiveCoachUserIds();
+
+        
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                ->orWhereNull('items.country_id');
+            });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+
+        // paid listing
+        $paid_items_query = Item::query();
+
+        /**
+         * Start filter for paid listing
+         */
+        // categories
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+        /**
+         * End filter for paid listing
+         */
+
+        // free listing
+        $free_items_query = Item::query();
+
+        // get free users id array
+        //$free_user_ids = $subscription_obj->getFreeUserIds();
+        //$free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                    ->orWhereNull('items.country_id');
+            })
+            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->whereIn('items.user_id', $free_user_ids);
+
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
+
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+                ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+
+        $total_free_items = $free_items_query->count();
+
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+
+        $free_items = $free_items_query->paginate(10);
+        $pagination = $free_items->appends($querystringArray);
+
+        /**
+         * End do listing query
+         */
+
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+            );
+
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial filter
+         */
+        $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+
+        $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+
+        $all_cities = collect([]);
+        if(!empty($filter_state))
+        {
+            $state = State::find($filter_state);
+            $all_cities = $state->cities()->orderBy('city_name')->get();
+        }
+
+        //$total_results = $total_free_items;
+        
+        //if(!empty($querystringArray['filter_categories']) && !empty($querystringArray['filter_state']) && !empty($querystringArray['filter_city']) && !empty($querystringArray['filter_gender_type']) && !empty($querystringArray['filter_working_type']) && !empty($querystringArray['filter_hourly_rate'])){
+            $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
+            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
+        //}
+        $total_results = $all_coaches->count();
+        /**
+         * End initial filter
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'coaches',
+            compact('categories', 'free_items', 'pagination', 'all_states',
+                'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
+                'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches'
+            ));
+    }
+
+    public function profile(Request $request, $id)
+    {
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+
+        $user_detail = User::where('id', $id)->first();
+        $media_count = MediaDetail::where('user_id', $id)->count();
+        $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
+        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
+        $ebook_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'ebook')->get();
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+            );
+
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'profile',
+            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array',
+                'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+    }
+
+    public function profileDetail(Request $request, $id)
+    {
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+
+        $user_detail = User::where('id', $id)->first();
+        $media_count = MediaDetail::where('user_id', $id)->count();
+        $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
+        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
+        $ebook_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'ebook')->get();
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+            );
+
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'profile-detail',
+            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array',
+                'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+    }
+
+    public function destroyMedia(Request $request, MediaDetail $media_detail)
+    {
+        $login_user = Auth::user();
+
+        $media = MediaDetail::where('id', $media_detail->id)->first();
+
+        if($media && $media->user_id == $login_user->id)
+        {
+            $media_detail->delete();
+
+            \Session::flash('flash_message', __('alert.media-deleted'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+        else
+        {
+            return redirect()->route('user.profile.edit');
+        }
+    }
+
+    public function destroyEbookMedia(Request $request, MediaDetail $media_detail)
+    {
+        $login_user = Auth::user();
+
+        $media = MediaDetail::where('id', $media_detail->id)->first();
+
+        if($media && $media->user_id == $login_user->id)
+        {
+            $media_detail->delete();
+
+            \Session::flash('flash_message', __('alert.media-deleted'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+        else
+        {
+            return redirect()->route('user.profile.edit');
+        }
+    }
+
+    public function destroyPodcastMedia(Request $request, MediaDetail $media_detail)
+    {
+        $login_user = Auth::user();
+
+        $media = MediaDetail::where('id', $media_detail->id)->first();
+
+        if($media && $media->user_id == $login_user->id)
+        {
+            $media_detail->delete();
+
+            \Session::flash('flash_message', __('alert.media-deleted'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+        else
+        {
+            return redirect()->route('user.profile.edit');
+        }
+    }
+
+    public function updateMedia(Request $request, MediaDetail $media_detail)
+    {
+        $login_user = Auth::user();
+        
+        $media = MediaDetail::where('id', $media_detail->id)->first();
+
+        if($media && $media->user_id == $login_user->id)
+        {
+            $media->media_type = $request->media_type;
+            $media->media_url = $request->media_url;
+            $media->save();
+
+            \Session::flash('flash_message', __('alert.media-updated'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+        else
+        {
+            return redirect()->route('user.profile.edit');
+        }
+    }
+
+
+    public function storeEbookMedia(Request $request)
+    {
+        $login_user = Auth::user();
+        print_r($login_user);exit;
+        
+        $media = MediaDetail::where('id', $media_detail->id)->first();
+
+        if($media && $media->user_id == $login_user->id)
+        {
+            $media->media_type = $request->media_type;
+            $media->media_url = $request->media_url;
+            $media->save();
+
+            \Session::flash('flash_message', __('alert.media-updated'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+        else
+        {
+            return redirect()->route('user.profile.edit');
+        }
     }
 
     public function category(Request $request, string $category_slug)

@@ -44,11 +44,11 @@ class PagesController extends Controller
         $message_count = Message::where('user_id', $login_user->id)->count();
         $comment_count = Comment::where('commenter_id', $login_user->id)->count();
 
-        $recent_threads = Thread::forUser($login_user->id)->latest('updated_at')->take(5)->get();
+        $recent_threads = Thread::forUser($login_user->id)->latest('updated_at')->take(3)->get();
         $recent_comments = Comment::where('commenter_id', $login_user->id)->orderBy('created_at', 'DESC')->take(5)->get();
 
         return response()->view('backend.user.index',
-            compact('pending_item_count', 'item_count', 'message_count', 'comment_count',
+            compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count',
             'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name'));
     }
 }

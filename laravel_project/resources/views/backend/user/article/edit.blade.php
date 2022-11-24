@@ -296,6 +296,19 @@
                                     </div>
                                 </div>
 
+                                <div class="form-row mb-3">
+                                    <label class="text-black" for="item_keywords">{{ __('backend.article.keyword') }}</label>
+                                    <input id="item_keywords" type="text" class="form-control @error('item_keywords') is-invalid @enderror" name="item_keywords" value="{{ old('item_keywords') ? old('item_keywords') : $article->item_keywords }}">
+                                    <small class="form-text text-muted">
+                                        Separate by comma
+                                    </small>
+                                    @error('item_keywords')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
                                 <!-- Start web & social media -->
                                 <div class="form-row mb-3">
 

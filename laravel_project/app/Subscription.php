@@ -131,4 +131,18 @@ class Subscription extends Model
 
         return $active_user_ids;
     }
+
+    public function getActiveCoachUserIds()
+    {
+        $active_user_ids = array();
+
+        $active_user_ids = Subscription::join('users as u', 'subscriptions.user_id', '=', 'u.id')
+            ->where('u.email_verified_at', '!=', null)
+            ->where('u.role_id', Role::COACH_ROLE_ID)
+            ->where('u.user_suspended', User::USER_NOT_SUSPENDED)
+            ->pluck('u.id')
+            ->toArray();
+
+        return $active_user_ids;
+    }
 }

@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
-                    <form method="POST" action="{{ route('user.profile.update') }}" class="">
+                    <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
                         @csrf
 
                         @if($login_user->isCoach())
@@ -310,6 +310,174 @@
                                     @enderror
                                 </div>
                             </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-5">
+                                    @error('user_cover_image')
+                                    <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-cover-image') }}</button>
+                                    @if(empty($login_user->user_cover_image))
+                                        <img id="cover_image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}">
+                                    @else
+                                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}">
+                                    @endif
+                                    <input id="feature_cover_image" type="hidden" name="user_cover_image">
+                                    <div class="mt-1">
+                                        <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                                            <i class="fas fa-trash-alt"></i>
+                                            {{ __('role_permission.user.delete-profile-image') }}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="text-black">Youtube</label>
+                                            <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                                @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                                                    <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('media_type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-8">
+                                            <label for="media_url" class="text-black">Youtube Video URL</label>
+                                            <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
+                                            @error('media_url')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-sm btn-block btn-primary rounded text-white" id="media_type_create_button">
+                                                <i class="fas fa-plus"></i>
+                                                {{ __('Add') }}
+                                            </a>
+                                        </div>
+                                        <div class="col-12" id="media_details_added">
+                                            @foreach($video_media_array as $video_media_key => $video_media_value)
+                                                <div class="col-12">
+                                                    {{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }} : {{ $video_media_value->media_url }}
+                                                    <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
+                                                        <i class='far fa-trash-alt'></i>
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="text-black">Ebook</label>
+                                            <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                                @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
+                                                    <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('media_type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="text-black">Ebook PDF Title</label>
+                                            <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
+                                            @error('media_name')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="text-black">Ebook PDF</label>
+                                            <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="text-black">Ebook Cover</label>
+                                            <small class="form-text text-muted">
+                                                {{ __('backend.item.feature-image-help') }}
+                                            </small>
+                                            <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover">
+                                        </div>
+                                        <div class="col-12">
+                                            @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
+                                                <div class="col-12">
+                                                    {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} : {{ $ebook_media_value->media_name }}
+                                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
+                                                        <i class='far fa-trash-alt'></i>
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="text-black">Podcast</label>
+                                            <select id="podcast_type" class="form-control selectpicker @error('podcast_type') is-invalid @enderror" name="podcast_type" title="Select Type">
+                                                @foreach(\App\MediaDetail::PODCAST_MEDIA_TYPE as $mkey => $mvalue)
+                                                    <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('media_type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="text-black">Podcast Title</label>
+                                            <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
+                                            @error('podcast_name')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="text-black">Podcast MP3/MP4</label>
+                                            <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="text-black">Podcast Cover</label>
+                                            <small class="form-text text-muted">
+                                                {{ __('backend.item.feature-image-help') }}
+                                            </small>
+                                            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover">
+                                        </div>
+                                        <div class="col-12">
+                                            @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+                                                <div class="col-12">
+                                                    {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}
+                                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
+                                                        <i class='far fa-trash-alt'></i>
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @else
                             <div class="row">
                                 <div class="col-sm-2">
@@ -452,6 +620,164 @@
         </div>
     </div>
 
+    <div class="modal fade" id="cover-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="cover-image-crop-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div id="cover_image_demo"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="custom-file">
+                                <input id="upload_cover_image_input" type="file" class="custom-file-input">
+                                <label class="custom-file-label" for="upload_cover_image_input">{{ __('backend.user.choose-image') }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <button id="crop_cover_image" type="button" class="btn btn-primary">{{ __('backend.user.crop-image') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach($video_media_array as $video_media_key => $video_media_value)
+        <div class="modal fade" id="editMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Media') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="update-article-slug-form" action="{{ route('media.update', ['media_detail' => $video_media_value]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="media_type" class="text-black">Type</label>
+                                    <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                        @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                                            <option value="{{ $mkey }}" {{ $video_media_value->media_type == $mkey ? 'selected' : '' }} >{{ $mvalue }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('media_type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-9">
+                                    <label for="media_url" class="text-black">URL</label>
+                                    <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ $video_media_value->media_url }}">
+                                    @error('media_url')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                            <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] . ' : ' . $video_media_value->media_url }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <form action="{{ route('media.destroy', ['media_detail' => $video_media_value]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
+        <div class="modal fade" id="deleteEbookMediaModal_{{ $ebook_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteEbookMediaModal_{{ $ebook_media_value->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] . ' : ' . $ebook_media_value->media_name }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <form action="{{ route('ebookmedia.destroy', ['media_detail' => $ebook_media_value]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+        <div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] . ' : ' . $podcast_media_value->media_name }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <form action="{{ route('podcastmedia.destroy', ['media_detail' => $podcast_media_value]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection
 
 @section('scripts')
@@ -514,6 +840,49 @@
                     $('#image_preview').attr("src", response);
                 });
                 $('#image-crop-modal').modal('hide')
+            });
+
+            var cover_image_crop = null;
+            $('#upload_cover_image').on('click', function() {
+                $('#cover-image-crop-modal').modal('show');
+            });
+
+            $('#upload_cover_image_input').on('change', function() {
+                if(!cover_image_crop) {
+                    cover_image_crop = $('#cover_image_demo').croppie({
+                        enableExif: true,
+                        viewport: {
+                            width: 650,
+                            height: 150,
+                        },
+                        boundary: {
+                            width: 700,
+                            height: 350
+                        },
+                        showZoomer: false,
+                        enableOrientation: true
+                    });
+                }
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    cover_image_crop.croppie('bind', {
+                        url: event.target.result
+                    }).then(function(){
+                        console.log('jQuery bind complete');
+                    });
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            $('#crop_cover_image').on("click", function(event) {
+                cover_image_crop.croppie('result', {
+                    type: 'base64',
+                    size: 'viewport'
+                }).then(function(response){
+                    $('#feature_cover_image').val(response);
+                    $('#cover_image_preview').attr("src", response);
+                });
+                $('#cover-image-crop-modal').modal('hide')
             });
             /* End the croppie image plugin */
 
@@ -626,6 +995,17 @@
             @endif
             /* End country, state, city selector */
 
+        });
+
+        $('#media_type_create_button').on('click', function(){
+            var media_type_text = $("#media_type option:selected").text();
+            var media_type_value = $("#media_type").val();
+            var media_url = $("#media_url").val();
+
+            var media_detail_value = media_type_value + '||' + media_url;
+            var media_detail_text = media_type_text + ' : ' + media_url;
+
+            $( "#media_details_added" ).append("<div class='col-12'><input type='hidden' name='media_details[]' value='" + media_detail_value + "'>"+media_detail_text+"<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
         });
     </script>
 
