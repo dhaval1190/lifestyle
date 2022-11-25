@@ -43,7 +43,7 @@ return [
         'installed',
         'web',
         'auth',
-        'admin',
+        // 'admin',
         'demo',
         'global_variables',
         'blog'
