@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'global_variables' => \App\Http\Middleware\GlobalVariablesMiddleware::class,
         'maintenance' => \App\Http\Middleware\Maintenance::class,
         'verify_subscription' => \App\Http\Middleware\VerifySubscription::class,
+        'blog' => \App\Http\Middleware\BlogMiddleware::class,
     ];
 
     /**

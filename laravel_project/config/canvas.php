@@ -46,6 +46,7 @@ return [
         'admin',
         'demo',
         'global_variables',
+        'blog'
     ],
 
     /*

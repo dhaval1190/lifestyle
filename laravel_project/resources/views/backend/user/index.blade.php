@@ -50,8 +50,8 @@
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
                                     <div class="coaches_detail">
-                                        <h3>{{ __('backend.homepage.pending-listings') }}</h3>
-                                        <p class="c-one">{{ number_format($pending_item_count) }}</p>
+                                        <h3>{{ __('backend.homepage.subscription') }}</h3>
+                                        <p class="c-one">{{ $plan_name }}</p>
                                     </div>
                                 </div>
                             </div>
