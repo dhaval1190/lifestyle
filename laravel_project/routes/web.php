@@ -68,7 +68,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
-    Route::get('/profile-detail/{id}', 'PagesController@profileDetail')->name('page.profile.detail');
+    Route::get('/youtube-detail/{id}', 'PagesController@profileYoutubeDetail')->name('page.profile.youtube');
+    Route::get('/podcast-detail/{id}', 'PagesController@profilePodcaseDetail')->name('page.profile.podcast');
+    Route::get('/ebook-detail/{id}', 'PagesController@profileEbookDetail')->name('page.profile.ebook');
     Route::put('/media/update/{media_detail}', 'PagesController@updateMedia')->name('media.update');
     Route::delete('/media/destroy/{media_detail}', 'PagesController@destroyMedia')->name('media.destroy');
     Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');

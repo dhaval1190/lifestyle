@@ -55,8 +55,8 @@
                 <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
                     <div class="row justify-content-center mt-5">
                         <div class="col-md-8 text-center">
-                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Profile Detail') }}</h1>
-                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
+                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Podcast') }}</h1>
+                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('Profile Detail') }}</p>
                         </div>
                     </div>
                 </div>
@@ -69,77 +69,24 @@
             <div class="container">
                 <div class="below_bg">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="below_info">
-                                <h3>Youtube</h3>
-                            </div>
-                        </div>
-                    <div class="col-lg-12 plr-45">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="video">
-                                    <!-- <iframe src="{{ $user_detail['youtube'] }}" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe> -->
-                                    <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
-                                </div>
-                            </div>
-                            <!-- <div class="col-lg-6">
-                                <div class="video_info">
-                                    <h3>Intro to Bunny Young, Business Therapist and BLOOPERS!</h3>
-                                    <p>
-                                        Who is Bunny Young? What does Bunny Young do? How can Bunny
-                                        Young help you? What is a Business Therapist? All of these
-                                        questions and more answered in this video about Bunny Young.
-                                        Stuntwoman turned serial entrepreneur and melorist, Bunny Young
-                                        doesn't hold any punches. This video is about who Bunny Young is
-                                        and what this channel is about.
-                                    </p>
-                                    <a href="#">Read More</a>
-                                </div>
-                            </div>  -->
-                        </div>
-                    
-                    </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-12">
                             <div class="below_info">
-                                <h3>Keep Learning</h3>
+                                <h3>Our Podcast</h3>
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
-                            <div id="news-slider" class="owl-carousel">
-                                @if(isset($video_media_array) && !empty($video_media_array))
-                                    @foreach($video_media_array as $video_key => $video)
+                            <div class="row">
+                                @foreach($podcast_media_array as $podcast_key => $podcast)
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
                                         <div class="post-slide">
                                             <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $video['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
+                                                <iframe width="560" height="315" src="https://www.youtube.com/embed/NUmdoFDtpQg"
+                                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
-
-                                @if(isset($podcast_media_array) && !empty($podcast_media_array))
-                                    @foreach($podcast_media_array as $podcast_key => $podcast)
-                                        <div class="post-slide">
-                                            <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $podcast['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                                @if(isset($ebook_media_array) && !empty($ebook_media_array))
-                                    @foreach($ebook_media_array as $ebook_key => $ebook)
-                                        <div class="post-slide">
-                                            <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $ebook['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
