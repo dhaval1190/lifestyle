@@ -320,9 +320,9 @@
                                     @enderror
                                     <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-cover-image') }}</button>
                                     @if(empty($login_user->user_cover_image))
-                                        <img id="cover_image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}">
+                                        <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%;">
                                     @else
-                                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}">
+                                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
                                     @endif
                                     <input id="feature_cover_image" type="hidden" name="user_cover_image">
                                     <div class="mt-1">
@@ -410,10 +410,10 @@
                                         </div>
                                         <div class="col-4">
                                             <label class="text-black">Ebook Cover</label>
+                                            <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover">
                                             <small class="form-text text-muted">
                                                 {{ __('backend.item.feature-image-help') }}
                                             </small>
-                                            <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover">
                                         </div>
                                         <div class="col-12">
                                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
@@ -460,10 +460,10 @@
                                         </div>
                                         <div class="col-4">
                                             <label class="text-black">Podcast Cover</label>
+                                            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover">
                                             <small class="form-text text-muted">
                                                 {{ __('backend.item.feature-image-help') }}
                                             </small>
-                                            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover">
                                         </div>
                                         <div class="col-12">
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
@@ -852,12 +852,12 @@
                     cover_image_crop = $('#cover_image_demo').croppie({
                         enableExif: true,
                         viewport: {
-                            width: 650,
-                            height: 150,
+                            width: 1050,
+                            height: 194,
                         },
                         boundary: {
-                            width: 700,
-                            height: 350
+                            width: 1200,
+                            height: 300
                         },
                         showZoomer: false,
                         enableOrientation: true

@@ -6,6 +6,9 @@
     <link href="{{ asset('frontend/vendor/leaflet/leaflet.css') }}" rel="stylesheet" />
     @endif
 
+    <link href="{{ asset('frontend/css/mp3style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('frontend/css/demo.css') }}" rel="stylesheet" />
+
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 @endsection
 
@@ -160,47 +163,48 @@
                                 <h3>Youtube</h3>
                             </div>
                         </div>
-                    <div class="col-lg-12 plr-45">
+                        <div class="col-lg-12 plr-45">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="video">
+                                        <!-- <iframe src="{{ $user_detail['youtube'] }}" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe> -->
+                                        <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
+                                            title="YouTube video player" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="video_info">
+                                        <h3>Intro to Bunny Young, Business Therapist and BLOOPERS!</h3>
+                                        <p>
+                                            Who is Bunny Young? What does Bunny Young do? How can Bunny
+                                            Young help you? What is a Business Therapist? All of these
+                                            questions and more answered in this video about Bunny Young.
+                                            Stuntwoman turned serial entrepreneur and melorist, Bunny Young
+                                            doesn't hold any punches. This video is about who Bunny Young is
+                                            and what this channel is about.
+                                        </p>
+                                        <a href="#">Read More</a>
+                                    </div>
+                                </div> 
+                            </div>
+                        
+                        </div>
+                    </div>
+
+                    @if(isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() > 0)
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="video">
-                                    <!-- <iframe src="{{ $user_detail['youtube'] }}" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe> -->
-                                    <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
+                            <div class="col-md-12">
+                                <div class="below_info">
+                                    <h3>Keep Learning</h3>
+                                    @if(isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() >= 5)
+                                        <a href="{{ route('page.profile.youtube', $user_detail['id']) }}">View all</a>
+                                    @endif
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-6">
-                                <div class="video_info">
-                                    <h3>Intro to Bunny Young, Business Therapist and BLOOPERS!</h3>
-                                    <p>
-                                        Who is Bunny Young? What does Bunny Young do? How can Bunny
-                                        Young help you? What is a Business Therapist? All of these
-                                        questions and more answered in this video about Bunny Young.
-                                        Stuntwoman turned serial entrepreneur and melorist, Bunny Young
-                                        doesn't hold any punches. This video is about who Bunny Young is
-                                        and what this channel is about.
-                                    </p>
-                                    <a href="#">Read More</a>
-                                </div>
-                            </div>  -->
-                        </div>
-                    
-                    </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="below_info">
-                                <h3>Keep Learning</h3>
-                                @if(isset($media_count) && $media_count > 5)
-                                <a href="{{ route('page.profile.detail', $user_detail['id']) }}">View all</a>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-12 plr-45">
-                            <div id="news-slider" class="owl-carousel">
-                                @if(isset($video_media_array) && !empty($video_media_array))
+                            <div class="col-md-12 plr-45">
+                                <div id="news-slider" class="owl-carousel">
                                     @foreach($video_media_array as $video_key => $video)
                                         <div class="post-slide">
                                             <div class="post-img">
@@ -208,10 +212,72 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
+
+                    @if(isset($ebook_media_array) && !empty($ebook_media_array) && $ebook_media_array->count() > 0)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="below_info">
+                                    <h3>Our E-books</h3>
+                                    @if(isset($ebook_media_array) && !empty($ebook_media_array) && $ebook_media_array->count() >= 5)
+                                        <a href="{{ route('page.profile.ebook', $user_detail['id']) }}">View all</a>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-12 plr-45">
+                                <div class="post-slide">
+                                    <div class="row">
+                                        @foreach($ebook_media_array as $ebook_key => $ebook)
+                                            <div class="col-md-3 col-6">
+                                                <div class="post-img">
+                                                    <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="w-100"></a>
+                                                </div>
+                                                <div>
+                                                    <h4>{{ $ebook->media_name }}</h4>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(isset($podcast_media_array) && !empty($podcast_media_array) && $podcast_media_array->count() > 0)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="below_info">
+                                    <h3>Our Podcast</h3>
+                                    @if(isset($podcast_media_array) && !empty($podcast_media_array) && $podcast_media_array->count() >= 5)
+                                        <a href="{{ route('page.profile.podcast', $user_detail['id']) }}">View all</a>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 plr-45">
+                                <div class="row">
+                                    <div class="simple-audio-player" id="simp" data-config='{"shide_top":false,"shide_btm":false,"auto_load":false}'>
+                                        <div class="simp-playlist">
+                                            <ul>
+                                                @foreach($podcast_media_array as $podcast_key => $podcast)
+                                                    <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+                                                        <div class="post-slide">
+                                                            <div class="post-img">
+                                                                <li class="simp-active"><span class="simp-source" data-src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}">{{ $podcast->media_name }}</span></li>
+                                                            </div>
+                                                        </div>
+                                                    <!-- </div> -->
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
@@ -232,6 +298,8 @@
     @endif
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+
+    <script src="{{ asset('frontend/js/script.js') }}"></script>
     @include('frontend.partials.bootstrap-select-locale')
     <script>
 
