@@ -39,7 +39,7 @@
         <div class="col-12 col-md-9 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
 
-                <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block pl-4">
+                <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
                     <li><a href="{{ route('page.home') }}">{{ __('frontend.header.home') }}</a></li>
                     <li><a href="{{ route('page.coaches') }}">{{ __('frontend.header.listings') }}</a></li>
                     <li><a href="{{ route('page.categories') }}">{{ __('Article') }}</a></li>
@@ -50,7 +50,7 @@
                     <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li>
 
                     @guest
-                        <li class="ml-xl-3 login"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
+                        <li class="login"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
                         @if (Route::has('register'))
                             <li><a href="{{ route('register') }}">{{ __('frontend.header.register') }}</a></li>
                         @endif
