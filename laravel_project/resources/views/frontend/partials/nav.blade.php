@@ -41,7 +41,8 @@
 
                 <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block pl-4">
                     <li><a href="{{ route('page.home') }}">{{ __('frontend.header.home') }}</a></li>
-                    <li><a href="{{ route('page.categories') }}">{{ __('frontend.header.listings') }}</a></li>
+                    <li><a href="{{ route('page.coaches') }}">{{ __('frontend.header.listings') }}</a></li>
+                    <li><a href="{{ route('page.categories') }}">{{ __('Article') }}</a></li>
                     @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
                     <li><a href="{{ route('page.about') }}">{{ __('frontend.header.about') }}</a></li>
                     @endif
