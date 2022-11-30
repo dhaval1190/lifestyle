@@ -8,6 +8,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ asset('frontend/css/custom_style.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/css/custom_media.css') }}">
+    <link href="{{ asset('frontend/css/mp3style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('frontend/css/demo.css') }}" rel="stylesheet" />
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
@@ -75,18 +77,47 @@
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
-                            <div class="row">
-                                @foreach($podcast_media_array as $podcast_key => $podcast)
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <div class="post-slide">
-                                            <div class="post-img">
-                                                <iframe width="560" height="315" src="https://www.youtube.com/embed/NUmdoFDtpQg"
-                                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <div class="post-slide">
+                                <div class="row audio-players">
+                                    @foreach($podcast_media_array as $podcast_key => $podcast)
+                                        <div class="col-md-3 col-6">
+                                            <div class="audio-player js-audio-player">
+                                                <button class="audio-player__control js-control">
+                                                    <div class="audio-player__control-icon"></div>
+                                                </button>
+                                                <h4 class="audio-player__title">{{ $podcast->media_name }}</h4>
+                                                <audio preload="auto">
+                                                    <source src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}"/>
+                                                </audio>
+                                                <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
+                                                <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_cover) }}">
+                                                <video preload="auto" loop="loop">
+                                                    <source src="" type="video/mp4"/>
+                                                </video>
                                             </div>
                                         </div>
+                                        @if($podcast_key==3)
+                                            </div></div><div class="post-slide"><div class="row audio-players">
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 plr-45">
+                            <div class="row">
+                                <div class="simple-audio-player" id="simp" data-config='{"shide_top":false,"shide_btm":false,"auto_load":false}'>
+                                    <div class="simp-playlist">
+                                        <ul>
+                                            @foreach($podcast_media_array as $podcast_key => $podcast)
+                                                <div class="post-slide">
+                                                    <div class="post-img">
+                                                        <li class="simp-active"><span class="simp-source" data-src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}">{{ $podcast->media_name }}</span></li>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </ul>
                                     </div>
-                                @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -110,33 +141,55 @@
     @endif
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/script.js') }}"></script>
     @include('frontend.partials.bootstrap-select-locale')
     <script>
+        var $player = $('.js-audio-player'), $playbackClass = 'is-playing', $fadeDuration = 500
 
-        $(document).ready(function(){
-            $("#news-slider").owlCarousel({
-                items : 4,
-                itemsDesktop:[1199,4],
-                itemsDesktopSmall:[980,2],
-                itemsMobile : [600,1],
-                navigation:true,
-                navigationText:["",""],
-                pagination:true,
-                autoPlay:true
-            });
+        $player.each(function(index) {
+            var $this = $(this), id = 'audio-player-' + index
 
-            "use strict";
+            $this.attr('id', id)
 
-            @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
-            /**
-             * Start Initial Youtube Background
-             */
-            $("[data-youtube]").youtube_background();
-            /**
-             * End Initial Youtube Background
-             */
-            @endif
-        });
+            $this.find('.js-control')[0].addEventListener('click', function() {
+                resetPlayback(id)
+                playback($this, $this.find('audio'), $this.find('video'))
+            })
+            
+            // Reset state once audio has finished playing
+            $this.find('audio')[0].addEventListener('ended', function() {
+                resetPlayback()
+            })
+        })
+
+        function playback($player, $audio, $video) {
+            if ($audio[0].paused) {
+                $audio[0].play()
+                $video[0].play()
+                $audio.animate({ volume: 1 }, $fadeDuration)
+                $player.addClass($playbackClass)
+            } else {
+                $audio.animate({ volume: 0 }, $fadeDuration, function() {
+                    $audio[0].pause()
+                    $video[0].pause()
+                })
+                $player.removeClass($playbackClass)
+            }
+        }
+
+        function resetPlayback(id) {
+            $player.each(function() {
+                var $this = $(this)
+
+                if ($this.attr('id') !== id) {
+                    $this.find('audio').animate({ volume: 0 }, $fadeDuration, function() {
+                        $(this)[0].pause()
+                        $this.find('video')[0].pause()
+                    })
+                    $this.removeClass($playbackClass)
+                }
+            })
+        }
 
     </script>
 
