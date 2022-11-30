@@ -79,13 +79,16 @@
                                 <div class="row">
                                     @foreach($ebook_media_array as $ebook_key => $ebook)
                                         <div class="col-md-3 col-6">
-                                        <div class="post-img">
-                                            <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="w-100"></a>
+                                            <div class="post-img">
+                                                <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="w-100"></a>
+                                            </div>
+                                            <div class="post-information">
+                                                <h4 class="content">{{ $ebook->media_name }}</h4>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4>{{ $ebook->media_name }}</h4>
-                                        </div>
-                                        </div>
+                                        @if($ebook_key==3)
+                                            </div></div><div class="post-slide"><div class="row">
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -112,34 +115,6 @@
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     @include('frontend.partials.bootstrap-select-locale')
-    <script>
-
-        $(document).ready(function(){
-            $("#news-slider").owlCarousel({
-                items : 4,
-                itemsDesktop:[1199,4],
-                itemsDesktopSmall:[980,2],
-                itemsMobile : [600,1],
-                navigation:true,
-                navigationText:["",""],
-                pagination:true,
-                autoPlay:true
-            });
-
-            "use strict";
-
-            @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
-            /**
-             * Start Initial Youtube Background
-             */
-            $("[data-youtube]").youtube_background();
-            /**
-             * End Initial Youtube Background
-             */
-            @endif
-        });
-
-    </script>
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_GOOGLE_MAP)
         <script>

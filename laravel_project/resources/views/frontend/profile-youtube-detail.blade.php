@@ -120,26 +120,6 @@
                                         </div>
                                     @endforeach
                                 @endif
-
-                                @if(isset($podcast_media_array) && !empty($podcast_media_array))
-                                    @foreach($podcast_media_array as $podcast_key => $podcast)
-                                        <div class="post-slide">
-                                            <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $podcast['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                                @if(isset($ebook_media_array) && !empty($ebook_media_array))
-                                    @foreach($ebook_media_array as $ebook_key => $ebook)
-                                        <div class="post-slide">
-                                            <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $ebook['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
                             </div>
                         </div>
                     </div>
