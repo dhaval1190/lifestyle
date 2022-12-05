@@ -84,8 +84,8 @@ class LoginController extends Controller
                 Auth::logout();
             }
 
-            //$this->redirectTo = route('user.index');
-            $this->redirectTo = route('page.home');
+            $this->redirectTo = route('user.index');
+            //$this->redirectTo = route('page.home');
         }
     }
 

@@ -11,6 +11,7 @@
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
             <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
+            <p class="mb-4">{{ __('How do points work? ') }}<a href="{{ route('page.earn.points') }}">{{ __('Learn Here') }}</a></p>
         </div>
         <div class="col-3 text-right">
         </div>
@@ -305,6 +306,27 @@
                                     <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" required>
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="text-black" for="certifications">{{ __('Certifications') }}</label>
+                                    <textarea id="certifications" class="form-control @error('certifications') is-invalid @enderror" name="certifications" rows="8">{{ old('certifications', $login_user->certifications) }}</textarea>
+                                    @error('certifications')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-black" for="awards">{{ __('Awards') }}</label>
+                                    <textarea id="awards" class="form-control @error('awards') is-invalid @enderror" name="awards" rows="8">{{ old('awards', $login_user->awards) }}</textarea>
+                                    @error('awards')
+                                    <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
@@ -622,7 +644,7 @@
 
     <div class="modal fade" id="cover-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="cover-image-crop-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 1000px !important;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -852,12 +874,12 @@
                     cover_image_crop = $('#cover_image_demo').croppie({
                         enableExif: true,
                         viewport: {
-                            width: 1050,
-                            height: 194,
+                            width: 768,
+                            height: 512,
                         },
                         boundary: {
-                            width: 1200,
-                            height: 300
+                            width: 950,
+                            height: 650
                         },
                         showZoomer: false,
                         enableOrientation: true

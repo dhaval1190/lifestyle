@@ -10,50 +10,20 @@
 @endsection
 
 @section('content')
-
-    @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
-        <div class="site-blocks-cover inner-page-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/header-inner.webp') }});">
-
-    @elseif($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_COLOR)
-        <div class="site-blocks-cover inner-page-cover overlay" style="background-color: {{ $site_innerpage_header_background_color }};">
-
-    @elseif($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_IMAGE)
-        <div class="site-blocks-cover inner-page-cover overlay" style="background-image: url( {{ Storage::disk('public')->url('customization/' . $site_innerpage_header_background_image) }});">
-
-    @elseif($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
-        <div class="site-blocks-cover inner-page-cover overlay" style="background-color: #333333;">
-    @endif
-
-        @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
-            <div data-youtube="{{ $site_innerpage_header_background_youtube_video }}"></div>
-        @endif
-
-        <div class="container">
-            <div class="row align-items-center justify-content-center text-center">
-                <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
-                    <div class="row justify-content-center mt-5">
-                        <div class="col-md-8 text-center">
-                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Profile') }}</h1>
-                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="site-section">
-        <div class="container">
+    <!-- <div class="site-section"> -->
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12 col-12">
+                <div class="col-md-12 col-12 p-0">
                     <div class="upper_white_bg">
                         <div class="upper_middle_img">
                             @if(empty($user_detail['user_cover_image']))
-                                <img src="{{ asset('frontend/images/main_upper_logo.png') }}" alt="" class="main_logo"/>
+                                <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});">
+                                </div>
                             @else
-                                <img src="{{ Storage::disk('public')->url('user/'. $user_detail['user_cover_image']) }}" class="main_logo">
+                                <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::disk('public')->url('user/'. $user_detail['user_cover_image']) }});">
+                                </div>
                             @endif
-                            <!-- <img src="{{ asset('frontend/images/main_upper_logo.png') }}" alt="" class="main_logo" /> -->
+
                             <div class="upper_main_section">
                                 <div class="upper_logo">
                                     @if(empty($user_detail['user_image']))
@@ -87,7 +57,7 @@
                                             <h3>Address</h3>
                                             <div class="upper_address_detail">
                                                 <div class="upper_address">
-                                                    <img src="{{ asset('frontend/images/seven.png') }}" alt="" class="address_logo"/>
+                                                    <img src="{{ asset('frontend/images/map_icon.svg') }}" alt="" class="address_logo"/>
                                                     <p>{{ !empty($user_detail['address']) ? $user_detail['address'].',' : '' }} {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name.',' : '' }} {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name.',' : '' }} {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }} {{ $user_detail['post_code'] }}</p>
                                                 </div>
                                             </div>
@@ -117,13 +87,13 @@
                                 <h3>Contact Details</h3>
                             </div>
                             <div class="middle_detail">
-                                <div class="middle_main"><img src="{{ asset('frontend/images/five.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/email.svg') }}" alt="" />
                                     <p>{{ $user_detail['email'] }}</p>
                                 </div>
-                                <div class="middle_main"><img src="{{ asset('frontend/images/six.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/call.svg') }}" alt="" />
                                     <p>{{ $user_detail['phone'] }}</p>
                                 </div>
-                                <div class="middle_main"><img src="{{ asset('frontend/images/eight.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/web.svg') }}" alt="" />
                                     <p>{{ $user_detail['website'] }}</p>
                                 </div>
                             </div>
@@ -135,13 +105,13 @@
                                 <h3>Social Links</h3>
                             </div>
                             <div class="middle_detail">
-                                <div class="middle_main"><img src="{{ asset('frontend/images/two.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/linkedin.svg') }}" alt="" />
                                     <a href="{{ $user_detail['linkedin'] }}"><p>{{ $user_detail['linkedin'] }}</p></a>
                                 </div>
-                                <div class="middle_main"><img src="{{ asset('frontend/images/four.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/instagram.svg') }}" alt="" />
                                     <a href="{{ $user_detail['instagram'] }}"><p>{{ $user_detail['instagram'] }}</p></a>
                                 </div>
-                                <div class="middle_main"><img src="{{ asset('frontend/images/one.png') }}" alt="" />
+                                <div class="middle_main"><img src="{{ asset('frontend/images/facebook.svg') }}" alt="" />
                                     <a href="{{ $user_detail['facebook'] }}"><p>{{ $user_detail['facebook'] }}</p></a>
                                 </div>
                             </div>
@@ -287,32 +257,12 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-md-12 plr-45">
-                                <div class="row">
-                                    @foreach($podcast_media_array as $podcast_key => $podcast)
-                                        <div class="col-lg-3 col-md-6 col-sm-6">
-                                            <div class="post-slide">
-                                                <div class="post-img">
-                                                <div class="post-information">
-                                                    <h4 class="content">{{ $podcast->media_name }}</h4>
-                                                </div>
-                                                <img src="{{ asset('frontend/images/Rectangle 6.png') }}" id="myImage_{{ $podcast_key }}">
-                                                <audio src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}" controls 
-                                                onplay="playAnimation('myImage_{{ $podcast_key }}')" onpause="pauseAnimation('myImage_{{ $podcast_key }}')" >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div> -->
                         </div>
                     @endif
                 </div>
             </div>
         </section>
-    </div>
-
+    <!-- </div> -->
 @endsection
 
 @section('scripts')
