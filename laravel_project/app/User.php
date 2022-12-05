@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Laravelista\Comments\Commenter;
 use Cmgmyr\Messenger\Traits\Messagable;
@@ -554,5 +556,62 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // #14 - delete the user
         $this->delete();
+    }
+
+    public function profileProgressData(Request $request,$user)
+    {
+        $data               = array();
+        $data['profile']    = '';
+        $data['percentage'] = 0;
+
+        if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['awards']) && !empty($user['certifications']) && !empty($user['experience_year'])){
+            $data['basic_profile']  = true;
+            $data['profile']        = 'Basic';
+            $data['percentage']     = 20;
+            if(!empty($user['website']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube'])){
+                $data['social_profile'] = true;
+                $data['profile']        = 'Social';
+                $data['percentage']     = 30;
+                $article_count          = Item::where('user_id', $user->id)->count();
+                $video_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'video')->count();
+                $podcast_media_count    = MediaDetail::where('user_id', $user->id)->where('media_type', 'podcast')->count();
+                $ebook_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'ebook')->count();
+                $blog_count             = \Canvas\Post::where('user_id', $user->id)->count();
+                if($article_count >= 10){
+                    $data['bronze_profile'] = true;
+                    $data['profile']        = 'Bronze';
+                    $data['percentage']     = 50;
+                    if($article_count >= 20 && $video_media_count >= 1 && $podcast_media_count >= 1 && $ebook_media_count >= 1 && $blog_count >= 1){
+                        $data['silver_profile'] = true;
+                        $data['profile']        = 'Silver';
+                        $data['percentage']     = 60;
+                        $review_count = DB::table('reviews')->where('author_id', $user->id)->count();
+                        if($review_count >= 3){
+                            $data['gold_profile']   = true;
+                            $data['profile']        = 'Gold';
+                            $data['percentage']     = 70;
+                            if($article_count >= 30 && $review_count >= 7){
+                                $data['platinum_profile']   = true;
+                                $data['profile']            = 'Platinum';
+                                $data['percentage']         = 90;
+                            }else{
+                                $data['platinum_profile'] = false;
+                            }
+                        }else{
+                            $data['gold_profile'] = false;
+                        }
+                    }else{
+                        $data['silver_profile'] = false;
+                    }
+                }else{
+                    $data['bronze_profile'] = false;
+                }
+            }else{
+                $data['Social_profile'] = false;
+            }
+        }else{
+            $data['basic_profile'] = false;
+        }
+        return $data;
     }
 }
