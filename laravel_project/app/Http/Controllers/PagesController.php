@@ -1500,6 +1500,9 @@ class PagesController extends Controller
         $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
         $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
         $ebook_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'ebook')->get();
+
+        $user_obj = new User();
+        $progress_data = $user_obj->profileProgressData($request,$user_detail);
         /**
          * Start SEO
          */
@@ -1588,7 +1591,7 @@ class PagesController extends Controller
          * End initial blade view file path
          */
         return response()->view($theme_view_path . 'profile',
-            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array',
+            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
