@@ -167,6 +167,7 @@
 
                             <div class="level">
                                 <h5>{{ $progress_data['profile'] }}</h5>
+                                <h4>{{ $progress_data['percentage'] }}% Completed</h4>
                                 <div id="chartContainer" style="height: 200px; width: 100%;"></div>
                             </div>
                             <div class="main_progress_section">
@@ -398,7 +399,7 @@
                 explodeOnClick: false,
                 innerRadius: "75%",
                 legendMarkerType: "square",
-                radius: "50%",
+                radius: "70%",
                 startAngle: 280,
                 type: "doughnut",
                 indexLabelLineThickness: 4,
