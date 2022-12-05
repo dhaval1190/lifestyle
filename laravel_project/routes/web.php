@@ -76,6 +76,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
+    Route::get('/earn-points', 'PagesController@earnPointsDetail')->name('page.earn.points');
 
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
@@ -495,6 +496,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user','verify_subscription'],'as'=>'user.'], function(){
 
         Route::get('/dashboard','PagesController@index')->name('index');
+        Route::get('/profile-progress','PagesController@profileProgressData')->name('profile.progress');
         Route::resource('/items', 'ItemController');
 
         Route::post('/items/bulk/delete', 'ItemController@bulkDeleteItem')->name('items.bulk.delete');

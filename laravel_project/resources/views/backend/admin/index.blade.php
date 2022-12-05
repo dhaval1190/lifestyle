@@ -33,7 +33,7 @@
 
     <!-- Content Row -->
     <div class="row">
-        <div class="col-lg-8 order-lg-0 order-1">
+        <div class="col-lg-12 order-lg-0 order-1">
             <div class="row">
                 <div class="col-md-6">
                     <div class="first_coach coach">
@@ -87,7 +87,7 @@
                     <div class="coach_messages">
                         <div class="coach_message_info">
                             <h2>All Messages</h2>
-                            <a href="{{ route('user.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
+                            <a href="{{ route('admin.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
                         </div>
                         
                         @foreach($recent_threads as $recent_threads_key => $thread) 
@@ -113,7 +113,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 order-lg-1 order-0">
+        <!-- <div class="col-lg-4 order-lg-1 order-0">
             <div class="coach_sidebar">
                 <div class="setting_icon">
                     <a href="{{ route('user.profile.edit') }}"><img src="{{ asset('frontend/images/Svg/setting.svg') }}" alt="" /></a>
@@ -209,7 +209,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <!-- <div class="row">
 

@@ -2029,6 +2029,106 @@ class PagesController extends Controller
         }
     }
 
+    public function earnPointsDetail(){
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+            );
+
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'earn-points-detail',
+            compact('ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+
+    }
+
     public function category(Request $request, string $category_slug)
     {
         $category = Category::where('category_slug', $category_slug)->first();

@@ -16,12 +16,12 @@
 
                 @if(empty($site_global_settings->setting_site_logo))
                 <h1 class="mb-0 site-logo">
-                    <a href="{{ route('page.home') }}" class="text-black mb-0 customization-header-font-color">
+                    <a href="{{ route('page.home') }}" class="text-black mb-0 customization-header-font-color decoration-none">
                         @foreach(explode(' ', empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name) as $key => $word)
                             @if($key/2 == 0)
                                 {{ $word }}
                             @else
-                                <span class="text-primary">{{ $word }}</span>
+                                <span class="text-primary one-primary">{{ $word }}</span>
                             @endif
                         @endforeach
                     </a>
@@ -79,20 +79,14 @@
                     @endguest
                     <li>
                         @guest
-                            <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
+                            <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
                         @else
                             @if(Auth::user()->isAdmin())
-                                <a href="{{ route('admin.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
-                            @else
-                                @if(Auth::user()->hasPaidSubscription())
-                                    @if(Auth::user()->isCoach())
-                                        <a href="{{ route('user.articles.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
-                                    @else
-                                        <a href="{{ route('user.items.create') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
-                                    @endif
-                                @else
-                                    <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
-                                @endif
+                                <a href="{{ route('admin.items.create') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
+                            @endif
+
+                            @if(Auth::user()->isCoach())
+                                <a href="{{ route('user.articles.create') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>
                             @endif
                         @endguest
                     </li>

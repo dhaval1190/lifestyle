@@ -77,7 +77,9 @@ class UserController extends Controller
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
-        $rules['user_about']             = ['nullable'];
+        $rules['user_about']                = ['nullable'];
+        $rules['certifications']            = ['nullable'];
+        $rules['awards']                    = ['nullable'];
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
@@ -112,6 +114,8 @@ class UserController extends Controller
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
+        $certifications = $request->certifications;
+        $awards = $request->awards;
         // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
         // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
@@ -191,6 +195,8 @@ class UserController extends Controller
             $login_user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
 
             $login_user->user_about = $user_about;
+            $login_user->awards = $awards;
+            $login_user->certifications = $certifications;
             $login_user->user_image = $user_image_name;
             $login_user->user_cover_image = $user_cover_image_name;
             // $login_user->user_prefer_language = $user_prefer_language;

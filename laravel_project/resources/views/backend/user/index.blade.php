@@ -1,6 +1,14 @@
 @extends('backend.user.layouts.app')
 
 @section('styles')
+<style>
+    .invisible {
+        display: none;
+    }
+    .canvasjs-chart-credit{
+        display: none;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -158,56 +166,70 @@
                             </div>
 
                             <div class="level">
-                                <div class="percentage_card">
-                                    <h5>Level 9</h5>
-                                    <div class="percent">
-                                        <svg>
-                                            <circle cx="105" cy="105" r="80"></circle>
-                                            <circle cx="105" cy="105" r="80" style="--percent: 70"></circle>
-                                        </svg>
-                                        <div class="number">
-                                            <h3>
-                                                70<span>%</span>
-                                                <span class="completed">Completed</span>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h5>{{ $progress_data['profile'] }}</h5>
+                                <div id="chartContainer" style="height: 200px; width: 100%;"></div>
                             </div>
                             <div class="main_progress_section">
                                 <div class="prggress_level">
-                                    <p>Text 1</p>
+                                    <p>Basic</p>
                                     <div class="progress p-200">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            25%
+                                        <div class="progress-bar" role="progressbar" style="width: 20%"
+                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            20%
                                         </div>
                                     </div>
                                 </div>
                                 <div class="prggress_level">
-                                    <p>Text 2</p>
+                                    <p>Social</p>
                                     <div class="progress p-200">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            25%
+                                        <div class="progress-bar" role="progressbar" style="width: 30%"
+                                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                            30%
                                         </div>
                                     </div>
                                 </div>
                                 <div class="prggress_level">
-                                    <p>Text 3</p>
+                                    <p>Bronze</p>
                                     <div class="progress p-200">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            25%
+                                        <div class="progress-bar" role="progressbar" style="width: 50%"
+                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                            50%
                                         </div>
                                     </div>
                                 </div>
                                 <div class="prggress_level">
-                                    <p>Text 4</p>
+                                    <p>Silver</p>
                                     <div class="progress p-200">
-                                        <div class="progress-bar" role="progressbar" style="width: 25%"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            25%
+                                        <div class="progress-bar" role="progressbar" style="width: 60%"
+                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                            60%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="prggress_level">
+                                    <p>Gold</p>
+                                    <div class="progress p-200">
+                                        <div class="progress-bar" role="progressbar" style="width: 70%"
+                                            aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                                            70%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="prggress_level">
+                                    <p>Platinum</p>
+                                    <div class="progress p-200">
+                                        <div class="progress-bar" role="progressbar" style="width: 90%"
+                                            aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                                            90%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="prggress_level">
+                                    <p>Rhodium</p>
+                                    <div class="progress p-200">
+                                        <div class="progress-bar" role="progressbar" style="width: 100%"
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                            100%
                                         </div>
                                     </div>
                                 </div>
@@ -368,5 +390,32 @@
 @endsection
 
 @section('scripts')
+<script>
+    window.onload = function () {
+        var chartData = {
+            "Profile Progress": [{
+                cursor: "pointer",
+                explodeOnClick: false,
+                innerRadius: "75%",
+                legendMarkerType: "square",
+                radius: "50%",
+                startAngle: 280,
+                type: "doughnut",
+                indexLabelLineThickness: 4,
+                dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
+            }],
+        };
+        
+        var dataOptions = {
+            backgroundColor: "#FFEEF9",
+            animationEnabled: true,
+            theme: "light2",
+        };
+        
+        var chart = new CanvasJS.Chart("chartContainer", dataOptions);
+        chart.options.data = chartData["Profile Progress"];
+        chart.render();    
+    }
+</script>
 
 @endsection
