@@ -87,16 +87,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="video_info">
-                                    <h3>Intro to Bunny Young, Business Therapist and BLOOPERS!</h3>
+                                    <h3>{{ $user_detail['youtube_intro_title'] }}</h3>
                                     <p>
-                                        Who is Bunny Young? What does Bunny Young do? How can Bunny
-                                        Young help you? What is a Business Therapist? All of these
-                                        questions and more answered in this video about Bunny Young.
-                                        Stuntwoman turned serial entrepreneur and melorist, Bunny Young
-                                        doesn't hold any punches. This video is about who Bunny Young is
-                                        and what this channel is about.
+                                        {{ $user_detail['youtube_intro_description'] }}
                                     </p>
-                                    <a href="#">Read More</a>
                                 </div>
                             </div> 
                         </div>
