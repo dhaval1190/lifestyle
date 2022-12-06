@@ -104,6 +104,7 @@ class UserController extends Controller
             $rules['city_id']               = ['required'];
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
+            $rules['podcast_image']         = ['mimes:mp3,mp4 | max:30000'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';

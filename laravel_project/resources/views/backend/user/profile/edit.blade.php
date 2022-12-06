@@ -11,7 +11,7 @@
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
             <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
-            <p class="mb-4">{{ __('How do points work? ') }}<a href="{{ route('page.earn.points') }}">{{ __('Learn Here') }}</a></p>
+            <p class="mb-4">{{ __('How do points work? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
         </div>
         <div class="col-3 text-right">
         </div>
@@ -361,7 +361,7 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
-                                            <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}" required>
+                                            <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
                                             @error('youtube_intro_title')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
