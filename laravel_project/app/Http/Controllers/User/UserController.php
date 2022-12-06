@@ -114,6 +114,8 @@ class UserController extends Controller
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
+        $youtube_intro_title = $request->youtube_intro_title;
+        $youtube_intro_description = $request->youtube_intro_description;
         $certifications = $request->certifications;
         $awards = $request->awards;
         // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
@@ -197,6 +199,8 @@ class UserController extends Controller
             $login_user->user_about = $user_about;
             $login_user->awards = $awards;
             $login_user->certifications = $certifications;
+            $login_user->youtube_intro_title = $youtube_intro_title;
+            $login_user->youtube_intro_description = $youtube_intro_description;
             $login_user->user_image = $user_image_name;
             $login_user->user_cover_image = $user_cover_image_name;
             // $login_user->user_prefer_language = $user_prefer_language;

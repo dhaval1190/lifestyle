@@ -189,63 +189,66 @@
                                         </div> --}}
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-5">
-                                            <div class="row mt-3">
-                                                <div class="col-sm-6">
-                                                    <label for="website" class="text-black">Website</label>
-                                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}" required>
-                                                    @error('website')
-                                                    <span class="invalid-tooltip" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label for="instagram" class="text-black">IG Handle</label>
-                                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}" required>
-                                                    @error('instagram')
-                                                    <span class="invalid-tooltip" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <div class="row mt-3">
-                                                <div class="col-sm-4">
-                                                    <label for="linkedin" class="text-black">LinkedIn</label>
-                                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}" required>
-                                                    @error('linkedin')
-                                                    <span class="invalid-tooltip" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <label for="facebook" class="text-black">Facebook</label>
-                                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}" required>
-                                                    @error('facebook')
-                                                    <span class="invalid-tooltip" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <label for="youtube" class="text-black">Youtube</label>
-                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}" required>
-                                                    @error('youtube')
-                                                    <span class="invalid-tooltip" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                        <div class="col-md-12">
+                                            <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
+                                            <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="3">{{ old('user_about', $login_user->user_about) }}</textarea>
+                                            @error('user_about')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="row mt-3">
+                                <div class="col-sm-4">
+                                    <label for="website" class="text-black">Website</label>
+                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}" required>
+                                    @error('website')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="instagram" class="text-black">IG Handle</label>
+                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}" required>
+                                    @error('instagram')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="linkedin" class="text-black">LinkedIn</label>
+                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}" required>
+                                    @error('linkedin')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="facebook" class="text-black">Facebook</label>
+                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}" required>
+                                    @error('facebook')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="youtube" class="text-black">Youtube</label>
+                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}" required>
+                                    @error('youtube')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                    
+                            </div>
                             <div class="row mt-3">
                                 <div class="col-sm-4">
                                     <label for="address" class="text-black">Address</label>
@@ -315,7 +318,7 @@
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <label class="text-black" for="certifications">{{ __('Certifications') }}</label>
-                                    <textarea id="certifications" class="form-control @error('certifications') is-invalid @enderror" name="certifications" rows="8">{{ old('certifications', $login_user->certifications) }}</textarea>
+                                    <textarea id="certifications" class="form-control @error('certifications') is-invalid @enderror" name="certifications" rows="4">{{ old('certifications', $login_user->certifications) }}</textarea>
                                     @error('certifications')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -324,7 +327,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="text-black" for="awards">{{ __('Awards') }}</label>
-                                    <textarea id="awards" class="form-control @error('awards') is-invalid @enderror" name="awards" rows="8">{{ old('awards', $login_user->awards) }}</textarea>
+                                    <textarea id="awards" class="form-control @error('awards') is-invalid @enderror" name="awards" rows="4">{{ old('awards', $login_user->awards) }}</textarea>
                                     @error('awards')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -356,7 +359,25 @@
                                 </div>
                                 <div class="col-7">
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-sm-12">
+                                            <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
+                                            <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}" required>
+                                            @error('youtube_intro_title')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-12 mt-3">
+                                            <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
+                                            <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
+                                            @error('youtube_intro_description')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-2 mt-3">
                                             <label class="text-black">Youtube</label>
                                             <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
                                                 @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
@@ -369,16 +390,19 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-8">
+                                        <div class="col-8 mt-3">
                                             <label for="media_url" class="text-black">Youtube Video URL</label>
+                                            <span class="err_media_url" style="color:red"></span>
                                             <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
+                                            
                                             @error('media_url')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-2 mt-3">
+                                            <label for="media_url" class="text-black">&nbsp;</label>
                                             <a class="btn btn-sm btn-block btn-primary rounded text-white" id="media_type_create_button">
                                                 <i class="fas fa-plus"></i>
                                                 {{ __('Add') }}
@@ -1020,6 +1044,11 @@
         });
 
         $('#media_type_create_button').on('click', function(){
+            $('.err_media_url').html("");
+            if($("#media_url").val()==''){
+                $('.err_media_url').html("Please enter Youtube Video URL");
+                return false;
+            }
             var media_type_text = $("#media_type option:selected").text();
             var media_type_value = $("#media_type").val();
             var media_url = $("#media_url").val();
@@ -1028,6 +1057,7 @@
             var media_detail_text = media_type_text + ' : ' + media_url;
 
             $( "#media_details_added" ).append("<div class='col-12'><input type='hidden' name='media_details[]' value='" + media_detail_value + "'>"+media_detail_text+"<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
+            $("#media_url").val('');
         });
     </script>
 

@@ -167,7 +167,7 @@
 
                             <div class="level">
                                 <h5>{{ $progress_data['profile'] }}</h5>
-                                <h4>{{ $progress_data['percentage'] }}% Completed</h4>
+                                <h6>{{ $progress_data['percentage'] }}% Completed</h6>
                                 <div id="chartContainer" style="height: 200px; width: 100%;"></div>
                             </div>
                             <div class="main_progress_section">
