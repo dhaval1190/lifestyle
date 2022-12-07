@@ -114,16 +114,16 @@ return array (
   array (
     'all-categories' => 'All Categories',
     'all-posts' => 'View All Posts',
-    'description' => 'Browse our top coaches and locations.',
-    'featured-ads' => 'Featured Coaches',
-    'nearby-listings' => 'Nearby Coaches',
+    'description' => 'Browse our top articles and locations.',
+    'featured-ads' => 'Featured Articles',
+    'nearby-listings' => 'Nearby Articles',
     'no-categories' => 'No categories',
     'our-blog' => 'Our Blog',
     'our-blog-decr' => 'See Our Daily News & Updates',
-    'popular-listings' => 'Popular coaches around you',
-    'recent-listings' => 'Recent Coaches',
+    'popular-listings' => 'Popular articles around you',
+    'recent-listings' => 'Recent Articles',
     'testimonials' => 'Testimonials',
-    'title' => 'Find the Best Coaches in Town',
+    'title' => 'Find the Best Articles in Town',
   ),
   'item' =>
   array (
