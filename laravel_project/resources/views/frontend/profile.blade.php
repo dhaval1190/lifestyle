@@ -175,9 +175,7 @@
                                                 <iframe width="250" height="215" src="{{ $video['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
                                             </div>
                                         </div>
-                                        @if($video_key==3)
-                                            @php break; @endphp
-                                        @endif
+                                        
                                     @endforeach
                                 </div>
                             </div>
@@ -275,6 +273,8 @@
     @endif
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 
     @include('frontend.partials.bootstrap-select-locale')
     <script>
