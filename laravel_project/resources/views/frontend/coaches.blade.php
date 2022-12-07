@@ -36,7 +36,7 @@
 
                     <div class="row justify-content-center mt-5">
                         <div class="col-md-8 text-center">
-                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('frontend.categories.title') }}</h1>
+                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
                             <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
                         </div>
                     </div>
@@ -303,7 +303,7 @@
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-1') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('Latest Coaches') }}</h2>
                         </div>
                     </div>
 
@@ -441,7 +441,7 @@
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-2') }}</h2>
+                        <h2 class="font-weight-light text-primary">{{ __('All Coaches by states') }}</h2>
                     </div>
                 </div>
                 <div class="row mt-5">
