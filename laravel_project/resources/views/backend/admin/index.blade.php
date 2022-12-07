@@ -76,7 +76,7 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3>{{ __('backend.homepage.all-listings') }}</h3>
+                                <h3>{{ __('backend.homepage.all-articles') }}</h3>
                                 <p class="c-four">{{ number_format($item_count) }}</p>
                             </div>
                         </div>
