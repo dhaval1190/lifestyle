@@ -32,9 +32,9 @@
             <div class="row align-items-center justify-content-center text-center">
                 <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
                     <div class="row justify-content-center mt-5">
-                        <div class="col-md-8 text-center">
-                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Earn Points Detail') }}</h1>
-                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('How do points work') }}</p>
+                        <div class="col-md-9 text-center">
+                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Profile Completeness Detail') }}</h1>
+                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('How it works?') }}</p>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                                 <div class="col-lg-3 col-md-6 order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic Profile complete includes</span>
+                                            <span class="bold">Basic</span>
                                             <i id="basic" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -68,7 +68,7 @@
                                 <div class="col-lg-3 col-md-6 order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social Profile complete includes</span>
+                                            <span class="bold">Social</span>
                                             <i id="social" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -90,7 +90,7 @@
                                 <div class="col-lg-3 col-md-6">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social + Bronze Level complete includes</span>
+                                            <span class="bold">Bronze</span>
                                             <i id="bronze" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -100,7 +100,7 @@
                                 <div class="col-lg-3 col-md-6  order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social + Bronze + Silver Level complete includes</span>
+                                            <span class="bold">Silver</span>
                                             <i id="silver" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -122,7 +122,7 @@
                                 <div class="col-lg-3 col-md-6 order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social + Bronze + Silver + Gold Level complete</span>
+                                            <span class="bold">Gold</span>
                                             <i id="gold" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -132,7 +132,7 @@
                                 <div class="col-lg-3 col-md-6 order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
+                                            <span class="bold">Platinum</span>
                                             <i id="platinum" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -154,7 +154,7 @@
                                 <div class="col-lg-3 col-md-6 order_second">
                                     <div class="step_info">
                                         <p class="content">
-                                            <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
+                                            <span class="bold">Rhodium</span>
                                             <i id="rhodium" class="icon-info-sign fa fa-info-circle" aria-hidden="true" title="info" data-toggle="modal" data-target="#earn_points_detail"></i>
                                         </p>
                                     </div>
@@ -172,7 +172,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">How do points work?</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">How it works?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
