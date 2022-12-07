@@ -11,7 +11,7 @@
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
             <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
-            <p class="mb-4">{{ __('How do points work? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
+            <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
         </div>
         <div class="col-3 text-right">
         </div>

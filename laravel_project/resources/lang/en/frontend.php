@@ -16,7 +16,7 @@ return array (
     'by' => 'By',
     'comment' => '{0} Comment|{1} Comments',
     'description' => 'Read the latest blog articles',
-    'popular-posts' => 'Popular Articles',
+    'popular-posts' => 'Popular Blogs',
     'tag' => '{0} Tag|{1} Tags',
     'tag-description' => 'Read the latest blog articles on :tag_name tag.',
     'title' => 'Blog',
@@ -27,9 +27,9 @@ return array (
   'categories' =>
   array (
     'description' => 'Choose category you want',
-    'sub-title-1' => 'Latest coaches',
-    'sub-title-2' => 'All coaches by states',
-    'title' => 'All Coaches',
+    'sub-title-1' => 'Latest Articles',
+    'sub-title-2' => 'All Articles by states',
+    'title' => 'All Articles',
   ),
   'category' =>
   array (

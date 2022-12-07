@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45">
+                        <!-- <div class="col-md-12 plr-45">
                             <div class="row">
                                 <div class="simple-audio-player" id="simp" data-config='{"shide_top":false,"shide_btm":false,"auto_load":false}'>
                                     <div class="simp-playlist">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

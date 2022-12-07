@@ -242,7 +242,7 @@
                                     </div>
                                 </div>
                                 <div class="progress_info">
-                                    <p class="mb-4">{{ __('How do points work? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
+                                    <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
                                     <p>
                                         {{ $login_user['user_about']}}
                                     </p>

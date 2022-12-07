@@ -614,7 +614,7 @@ return array (
     'suspended' => 'Suspended',
     'un-lock-account' => 'Un-lock Account',
     'user' => 'User',
-    'user-about' => 'User about',
+    'user-about' => 'About Me',
     'user-desc' => 'This page lists all user records that saved in the database. The user records are users who have registered on the website.',
     'user-email' => 'User email',
     'user-name' => 'User name',
