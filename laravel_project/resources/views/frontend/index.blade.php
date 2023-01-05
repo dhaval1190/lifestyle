@@ -818,7 +818,7 @@
 
         $('#i_agree').click(function () {
             jQuery.ajax({
-                url: 'http://localhost/coach_directory/ajax/terms/save',
+                url: '/ajax/terms/save',
                 method: 'post',
                 data: {
                 },

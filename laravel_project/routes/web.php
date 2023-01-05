@@ -104,6 +104,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/pricing', 'PagesController@pricing')->name('page.pricing');
     Route::get('/terms-of-service', 'PagesController@termsOfService')->name('page.terms-of-service');
     Route::get('/privacy-policy', 'PagesController@privacyPolicy')->name('page.privacy-policy');
+    Route::get('/agreement', 'PagesController@agreement')->name('page.agreement');
 
     /**
      * Blog routes

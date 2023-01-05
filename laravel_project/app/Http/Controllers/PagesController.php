@@ -6063,6 +6063,69 @@ class PagesController extends Controller
         }
     }
 
+    public function agreement(Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.terms-service', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        if($settings->setting_page_terms_of_service_enable == Setting::TERM_PAGE_ENABLED)
+        {
+            $terms_of_service = $settings->setting_page_terms_of_service;
+
+            /**
+             * Start inner page header customization
+             */
+            $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            /**
+             * End inner page header customization
+             */
+
+            /**
+             * Start initial blade view file path
+             */
+            $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+            $theme_view_path = $theme_view_path->getViewPath();
+            /**
+             * End initial blade view file path
+             */
+
+            return response()->view($theme_view_path . 'agreement',
+                compact('terms_of_service', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
+                        'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
+                        'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color'));
+        }
+        else
+        {
+            return redirect()->route('page.home');
+        }
+    }
+
     public function privacyPolicy(Request $request)
     {
         $settings = app('site_global_settings');

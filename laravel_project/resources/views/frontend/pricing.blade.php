@@ -542,6 +542,17 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="is_terms_read" id="is_terms_read" value="1" required>
+
+                                                <label class="form-check-label" for="i_agree">
+                                                    I Agree <a href="agreement" target="_blank">BETA CONTENT CREATOR AGREEMENT</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     @if($site_global_settings->setting_site_recaptcha_sign_up_enable == \App\Setting::SITE_RECAPTCHA_SIGN_UP_ENABLE)
                                         <div class="row">
