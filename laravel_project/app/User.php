@@ -14,6 +14,8 @@ use Laravelista\Comments\Commenter;
 use Cmgmyr\Messenger\Traits\Messagable;
 use DateTime;
 use DateInterval;
+use App\Mail\Notification;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -81,6 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'referrer_id',
         'name',
         'email',
         'email_verified_at',
@@ -129,6 +132,43 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['referral_link'];
+
+    /**
+     * Get the user's referral link.
+     *
+     * @return string
+     */
+    public function getReferralLinkAttribute()
+    {
+        return $this->referral_link = route('register', ['ref' => $this->id]);
+    }
+
+    /**
+     * A user has a referrer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function referrer()
+    {
+        return $this->belongsTo(User::class, 'referrer_id', 'id');
+    }
+
+    /**
+     * A user has many referrals.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'referrer_id', 'id');
+    }
 
     public function role()
     {
@@ -561,6 +601,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profileProgressData(Request $request,$user)
     {
         $data               = array();
+        $remaining_detail   = array();
         $data['profile']    = '';
         $data['percentage'] = 0;
 
@@ -577,6 +618,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 $podcast_media_count    = MediaDetail::where('user_id', $user->id)->where('media_type', 'podcast')->count();
                 $ebook_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'ebook')->count();
                 $blog_count             = \Canvas\Post::where('user_id', $user->id)->count();
+                $referral_count         = count($user->referrals);
                 if($article_count >= 10){
                     $data['bronze_profile'] = true;
                     $data['profile']        = 'Bronze';
@@ -590,28 +632,144 @@ class User extends Authenticatable implements MustVerifyEmail
                             $data['gold_profile']   = true;
                             $data['profile']        = 'Gold';
                             $data['percentage']     = 70;
-                            if($article_count >= 30 && $review_count >= 7){
+                            if($article_count >= 30 && $review_count >= 7 && $referral_count >= 1){
                                 $data['platinum_profile']   = true;
                                 $data['profile']            = 'Platinum';
                                 $data['percentage']         = 90;
+                                if($referral_count >= 5){
+                                    $data['rhodiumm_profile']   = true;
+                                    $data['profile']            = 'Rhodium';
+                                    $data['percentage']         = 100;
+                                }else{
+                                    $data['rhodiumm_profile'] = false;
+                                    $remaining_detail['referral_count'] = (5 - $referral_count).' Client Referrals';
+                                }
                             }else{
                                 $data['platinum_profile'] = false;
+                                $remaining_detail['article_count'] = (30 - $review_count).' Pieces of content';
+                                $remaining_detail['review_count'] = (3 - $review_count).' Client Reviews';
+                                if(empty($user->referrals)) $remaining_detail['referral_count'] = $referral_count.' Client Referrals';
                             }
                         }else{
                             $data['gold_profile'] = false;
+                            $remaining_detail['review_count'] = (3 - $review_count).' Client Reviews';
                         }
                     }else{
                         $data['silver_profile'] = false;
+                        $remaining_detail['article_count'] = (20 - $article_count).' Pieces of content';
+                        if(empty($video_media_count)) $remaining_detail['video_media_count'] = '1 Youtube Video Detail';
+                        if(empty($podcast_media_count)) $remaining_detail['podcast_media_count'] = '1 Podcast Detail';
+                        if(empty($ebook_media_count)) $remaining_detail['ebook_media_count'] = '1 Ebook Detail';
+                        if(empty($blog_count)) $remaining_detail['blog_count'] = '1 Blog Detail';
                     }
                 }else{
                     $data['bronze_profile'] = false;
+                    $remaining_detail['article_count'] = (10 - $article_count).' Pieces of content';
                 }
             }else{
                 $data['Social_profile'] = false;
+                if(empty($user['website'])) $remaining_detail['website'] = 'Website Detail';
+                if(empty($user['instagram'])) $remaining_detail['instagram'] = 'IG Handle Detail';
+                if(empty($user['facebook'])) $remaining_detail['facebook'] = 'Facebook Detail';
+                if(empty($user['linkedin'])) $remaining_detail['linkedin'] = 'LinkedIn Detail';
+                if(empty($user['youtube'])) $remaining_detail['youtube'] = 'Youtube Detail';
             }
         }else{
             $data['basic_profile'] = false;
+            if(empty($user['user_image'])) $remaining_detail['user_image'] = 'Upload Image';
+            if(empty($user['name'])) $remaining_detail['name'] = 'Name';
+            if(empty($user['company_name'])) $remaining_detail['company_name'] = 'Company Name';
+            if(empty($user['phone'])) $remaining_detail['phone'] = 'Phone';
+            if(empty($user['email'])) $remaining_detail['email'] = 'E-Mail Address';
+            if(empty($user['hourly_rate_type'])) $remaining_detail['hourly_rate_type'] = 'Hourly Rate';
+            if(empty($user['preferred_pronouns'])) $remaining_detail['preferred_pronouns'] = 'Preferred Pronouns';
+            if(empty($user['working_type'])) $remaining_detail['working_type'] = 'Working Method';
+            if(empty($user['state_id'])) $remaining_detail['state_id'] = 'State';
+            if(empty($user['post_code'])) $remaining_detail['post_code'] = 'Post Code';
+            if(empty($user['country_id'])) $remaining_detail['country_id'] = 'Country';
+            if(empty($user['city_id'])) $remaining_detail['city_id'] = 'City';
+            if(empty($user['address'])) $remaining_detail['address'] = 'Address';
+            if(empty($user['awards'])) $remaining_detail['awards'] = 'Awards';
+            if(empty($user['certifications'])) $remaining_detail['certifications'] = 'Certifications';
+            if(empty($user['experience_year'])) $remaining_detail['experience_year'] = 'Experience Year';
         }
+        $data['remaining_detail'] = $remaining_detail;
         return $data;
+    }
+    
+    public function emailReminderForProfileCompletion(Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        if(Auth::check())
+        {
+            $login_user = Auth::user();
+            $email_to = $login_user->email;
+            $email_from_name = $login_user->name;
+            $email_subject = __('Profile Completion Reminder');
+
+            $progress_data = $this->profileProgressData($request,$login_user);
+            $html_content = array();
+            if(isset($progress_data['remaining_detail']) && !empty($progress_data['remaining_detail'])){
+                foreach($progress_data['remaining_detail'] as $detail){
+                    $html_content[] .= ' - '.$detail;
+                }
+            }
+
+            $email_notify_message = [
+                __('You have reached :level level.', ['level' => $progress_data['profile']]),
+                __(':percentage % completed out of 100.', ['percentage' => $progress_data['percentage']]),
+                __('For achieve your next level you have to do following things.')
+            ];
+
+            /**
+             * Start initial SMTP settings
+             */
+            if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+            {
+                // config SMTP
+                config_smtp(
+                    $settings->settings_site_smtp_sender_name,
+                    $settings->settings_site_smtp_sender_email,
+                    $settings->settings_site_smtp_host,
+                    $settings->settings_site_smtp_port,
+                    $settings->settings_site_smtp_encryption,
+                    $settings->settings_site_smtp_username,
+                    $settings->settings_site_smtp_password
+                );
+            }
+            /**
+             * End initial SMTP settings
+             */
+
+            if(!empty($settings->setting_site_name))
+            {
+                // set up APP_NAME
+                config([
+                    'app.name' => $settings->setting_site_name,
+                ]);
+            }
+
+            try
+            {
+                Mail::to($email_to)->send(
+                    new Notification(
+                        $email_subject,
+                        $email_from_name,
+                        null,
+                        $email_notify_message,
+                        null,
+                        'success',
+                        null,
+                        $html_content
+                    )
+                );
+            }
+            catch (\Exception $e)
+            {
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            }
+        }      
+
     }
 }

@@ -84,6 +84,9 @@ class LoginController extends Controller
                 Auth::logout();
             }
 
+            //$user_obj = new User();
+            //$user_obj->emailReminderForProfileCompletion($request);
+
             $this->redirectTo = route('user.index');
             //$this->redirectTo = route('page.home');
         }

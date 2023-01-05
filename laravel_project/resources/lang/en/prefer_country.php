@@ -22,9 +22,9 @@ return array (
     'city-not-found' => "City not found",
     'category-not-found' => "Category not found",
 
-    'all-country' => "All countries",
-    'all-state' => "All states",
-    'all-city' => "All cities",
+    'all-country' => "Any countries",
+    'all-state' => "Any states",
+    'all-city' => "Any cities",
 
     'featured' => "Featured",
     'not-featured' => "Not Featured",

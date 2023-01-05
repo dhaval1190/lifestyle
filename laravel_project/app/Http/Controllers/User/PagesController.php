@@ -63,4 +63,14 @@ class PagesController extends Controller
             compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
             'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name'));
     }
+
+    public function profileProgressData(Request $request,$user_id){
+        $user_data = User::find($user_id);
+        $user_obj = new User();
+        $progress_data = $user_obj->profileProgressData($request,$user_data);
+
+        echo "<pre>";
+        print_r($progress_data);exit;
+        
+    }
 }

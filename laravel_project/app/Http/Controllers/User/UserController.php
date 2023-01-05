@@ -80,6 +80,23 @@ class UserController extends Controller
         $rules['user_about']                = ['nullable'];
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
+        $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3,mp4', 'max:30720'];
+        $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
+        $rules['media_image']               = ['nullable', 'file', 'mimes:pdf', 'max:30720'];
+        $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
+        $rules['media_cover']               = ['required_with:media_image'];
+        $rules['podcast_cover']             = ['required_with:podcast_image'];
+        $rulesMessage['media_image.mimes']  = 'Ebook must be a file of type: pdf.';
+        $rulesMessage['media_image.max']    = 'Ebook may not be greater than 30720 kilobytes.';
+        $rulesMessage['podcast_image.mimes']= 'Podcast MP3/MP4 Audio must be a file of type: mp3, mp4.';
+        $rulesMessage['podcast_image.max']  = 'Podcast MP3/MP4 Audio may not be greater than 30720 kilobytes.';
+        $rulesMessage['media_cover.mimes']  = 'Ebook Cover must be a file of type: jpg, jpeg, png.';
+        $rulesMessage['media_cover.max']    = 'Ebook Cover may not be greater than 5120 kilobytes.';
+        $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
+        $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
+        $rulesMessage['media_cover.required_with'] = 'Ebook Cover field is required when Ebook PDF is present.';
+        $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3/MP4 is present.';
+
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
@@ -104,7 +121,6 @@ class UserController extends Controller
             $rules['city_id']               = ['required'];
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
-            $rules['podcast_image']         = ['mimes:mp3,mp4 | max:30000'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
@@ -227,16 +243,14 @@ class UserController extends Controller
             }
 
             if(isset($input['media_image']) && !empty($input['media_image']) && $input['media_type']=='ebook'){
-                $ebook = $input['media_image'];
-                $ebook_cover = $input['media_cover'];
                 if(!Storage::disk('public')->exists('media_files')){
                     Storage::disk('public')->makeDirectory('media_files');
                 }
-                if(!empty($ebook)) {
+                if(!empty($input['media_image'])) {
                     $ebook_file_name = $request->file('media_image')->getClientOriginalName();
                     $request->media_image->storeAs('public/media_files', $ebook_file_name);
                 }
-                if(!empty($ebook_cover)) {
+                if(!empty($input['media_cover'])) {
                     $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
                     $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
                 }
@@ -245,8 +259,8 @@ class UserController extends Controller
                     'user_id' => $login_user->id,
                     'media_name' => $request->media_name,
                     'media_type' => $request->media_type,
-                    'media_cover' => $ebook_cover_file_name,
-                    'media_image' => $ebook_file_name
+                    'media_cover' => !empty($ebook_cover_file_name) ? $ebook_cover_file_name : null,
+                    'media_image' => !empty($ebook_file_name) ? $ebook_file_name : null,
                 ],[
                     'user_id' => $login_user->id,
                     'media_type' => $request->media_type,
@@ -255,16 +269,14 @@ class UserController extends Controller
             }
 
             if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
-                $podcast = $input['podcast_image'];
-                $podcast_cover = $input['podcast_cover'];
                 if(!Storage::disk('public')->exists('media_files')){
                     Storage::disk('public')->makeDirectory('media_files');
                 }
-                if(!empty($podcast)) {
+                if(!empty($input['podcast_image'])) {
                     $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
                     $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
                 }
-                if(!empty($podcast_cover)) {
+                if(!empty($input['podcast_cover'])) {
                     $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
                     $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
                 }
@@ -273,8 +285,8 @@ class UserController extends Controller
                     'user_id' => $login_user->id,
                     'media_name' => $request->podcast_name,
                     'media_type' => $request->podcast_type,
-                    'media_cover' => $podcast_cover_file_name,
-                    'media_image' => $podcast_file_name
+                    'media_cover' => !empty($podcast_cover_file_name) ? $podcast_cover_file_name : null,
+                    'media_image' => !empty($podcast_file_name) ? $podcast_file_name : null,
                 ],[
                     'user_id' => $login_user->id,
                     'media_type' => $request->podcast_type,

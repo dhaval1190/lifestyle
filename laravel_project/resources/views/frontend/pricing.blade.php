@@ -4,9 +4,65 @@
     {{-- <link href="{{ asset('frontend/vendor/smart-wizard/smart_wizard.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('frontend/vendor/smart-wizard/smart_wizard_theme_dots.min.css') }}" rel="stylesheet"/> --}}
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
-    <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
     <style type="text/css">
         .bootstrap-select.form-control { border: 1px solid #ced4da; }
+        .dropdown-toggle.btn-default {
+            color: #292b2c;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+
+        .bootstrap-select.show>.dropdown-menu>.dropdown-menu {
+            display: block;
+        }
+
+        div.dropdown-menu.open{
+            max-height: 314px !important;
+            overflow: hidden;
+        }
+        ul.dropdown-menu.inner{
+            max-height: 260px !important;
+            overflow-y: auto;
+        }
+
+        .bootstrap-select > .dropdown-menu > .dropdown-menu li.hidden{
+            display:none;
+        }
+
+        .bootstrap-select > .dropdown-menu > .dropdown-menu li a{
+            display: block;
+            width: 100%;
+            padding: 3px 1.5rem;
+            clear: both;
+            font-weight: 400;
+            color: #292b2c;
+            text-align: inherit;
+            white-space: nowrap;
+            background: 0 0;
+            border: 0;
+        }
+
+        .dropdown-menu > li.active > a {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+        }
+
+        .bootstrap-select .check-mark::after {
+            content: "✓";
+        }
+
+        .bootstrap-select button {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        /* Make filled out selects be the same size as empty selects */
+        .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+        display: inline !important;
+        }
     </style>
 @endsection
 
@@ -229,7 +285,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <label for="category_ids" class="text-black">Category <span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
+                                                    <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
                                                         {{-- <option value="">Select Category</option> --}}
                                                         @foreach($printable_categories as $key => $printable_category)
                                                             @php
@@ -552,7 +608,8 @@
 
     @if(empty($login_user))
         {{-- <script src="{{ asset('frontend/vendor/smart-wizard/jquery.smartWizard.min.js') }}"></script> --}}
-        <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+        <!-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
         @include('backend.user.partials.bootstrap-select-locale')
         <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     @endif
@@ -595,6 +652,12 @@
                 $("#smartwizard").on("leaveStep", function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
                     return confirm("Do you want to leave the step " + currentStepIndex + "?");
                 });*/
+
+                $('.selectpicker-category').selectpicker({
+                    maxOptions: 3,
+                    size: 'auto',
+                    
+                });
 
                 $('.selectpicker').selectpicker();
 

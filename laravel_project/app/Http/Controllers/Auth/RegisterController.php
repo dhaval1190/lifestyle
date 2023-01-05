@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use App\Notifications\ReferrerBonus;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
@@ -120,12 +122,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $referrer = User::find(session()->pull('referrer'));
+
         $new_user =  User::create([
             'name'                  => $data['name'],
             'email'                 => $data['email'],
             'password'              => Hash::make($data['password']),
             'role_id'               => (isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
-            'user_suspended'        => User::USER_NOT_SUSPENDED
+            'user_suspended'        => User::USER_NOT_SUSPENDED,
+            'referrer_id'           => $referrer ? $referrer->id : null,
         ]);
 
         if(isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) {
@@ -197,7 +202,7 @@ class RegisterController extends Controller
         return $new_user;
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $settings = app('site_global_settings');
 
@@ -237,6 +242,10 @@ class RegisterController extends Controller
         if($settings->setting_site_recaptcha_sign_up_enable == Setting::SITE_RECAPTCHA_SIGN_UP_ENABLE)
         {
             config_re_captcha($settings->setting_site_recaptcha_site_key, $settings->setting_site_recaptcha_secret_key);
+        }
+
+        if ($request->has('ref')) {
+            session(['referrer' => $request->query('ref')]);
         }
 
         return view($theme_view_path . 'auth.register',
@@ -288,5 +297,20 @@ class RegisterController extends Controller
         } else {
             return redirect()->route('login');
         }
+    }
+     /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        if ($user->referrer !== null) {
+            //Notification::send($user->referrer, new ReferrerBonus($user));
+        }
+
+        return redirect($this->redirectPath());
     }
 }

@@ -44,14 +44,19 @@
                                                     <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="">
                                                     <p>{{ !empty($user_detail['preferred_pronouns']) ? \App\User::PREFERRED_PRONOUNS[$user_detail['preferred_pronouns']] : '' }}</p>
                                                 </div>
+                                                @if($user_detail['id'] == Auth::user()->id)
+                                                    <div class="detail two">
+                                                        <i class="fas fa-share-alt item-share-refferal-button"></i>
+                                                    </div>
+                                                @endif
                                             </div>
-                                            <div class="progress">
+                                            <!-- <div class="progress">
                                                 <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage']}}%"
                                                     aria-valuenow="{{ $progress_data['percentage']}}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
                                                     &nbsp;{{ $progress_data['percentage']}}%
                                                 </div>
                                             
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="upper_address_info">
                                             <h3>Address</h3>
@@ -258,6 +263,88 @@
             </div>
         </section>
     <!-- </div> -->
+
+    <div class="modal fade" id="share-refferal-modal" tabindex="-1" role="dialog" aria-labelledby="share-refferal-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Share a Referral Link') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{{ __('frontend.item.share-listing-email') }}</p>
+                            @if(!Auth::check())
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ __('frontend.item.login-require') }}
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                            <form action="{{ route('page.referral.email', ['referral_link' => Auth::user()->id]) }}" method="POST">
+                                @csrf
+                                <div class="form-row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                        <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ old('item_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                        @error('item_share_email_name')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <!-- <div class="col-md-4">
+                                        <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                        <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                        @error('item_share_email_from_email')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div> -->
+                                    <div class="col-md-4">
+                                        <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                        <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                        @error('item_share_email_to_email')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                        <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
+                                        @error('item_share_email_note')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                            {{ __('frontend.item.send-email') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -273,7 +360,6 @@
     @endif
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 
     @include('frontend.partials.bootstrap-select-locale')
@@ -302,6 +388,10 @@
              * End Initial Youtube Background
              */
             @endif
+        });
+
+        $('.item-share-refferal-button').on('click', function(){
+            $('#share-refferal-modal').modal('show');
         });
 
         var $player = $('.js-audio-player'), $playbackClass = 'is-playing', $fadeDuration = 500

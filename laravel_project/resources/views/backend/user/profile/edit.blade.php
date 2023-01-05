@@ -3,6 +3,65 @@
 @section('styles')
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <style type="text/css">
+        .bootstrap-select.form-control { border: 1px solid #ced4da; }
+        .dropdown-toggle.btn-default {
+            color: #292b2c;
+            background-color: #fff;
+            border-color: #ccc;
+        }
+
+        .bootstrap-select.show>.dropdown-menu>.dropdown-menu {
+            display: block;
+        }
+
+        div.dropdown-menu.open{
+            max-height: 314px !important;
+            overflow: hidden;
+        }
+        ul.dropdown-menu.inner{
+            max-height: 260px !important;
+            overflow-y: auto;
+        }
+
+        .bootstrap-select > .dropdown-menu > .dropdown-menu li.hidden{
+            display:none;
+        }
+
+        .bootstrap-select > .dropdown-menu > .dropdown-menu li a{
+            display: block;
+            width: 100%;
+            padding: 3px 1.5rem;
+            clear: both;
+            font-weight: 400;
+            color: #292b2c;
+            text-align: inherit;
+            white-space: nowrap;
+            background: 0 0;
+            border: 0;
+        }
+
+        .dropdown-menu > li.active > a {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+        }
+
+        .bootstrap-select .check-mark::after {
+            content: "✓";
+        }
+
+        .bootstrap-select button {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        /* Make filled out selects be the same size as empty selects */
+        .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+        display: inline !important;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -59,7 +118,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="category_ids" class="text-black">Category</label>
-                                            <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
+                                            <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
                                                 {{-- <option value="">Select Category</option> --}}
                                                 @foreach($printable_categories as $key => $printable_category)
                                                 @php
@@ -160,8 +219,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="working_type" class="text-black">Working Method</label>
-                                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
+                                                    <label for="working_type" class="text-black">Session Method</label>
+                                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Session Method">
                                                         @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                             <option value="{{ $wtkey }}" {{ old('working_type', $login_user->working_type) == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                         @endforeach
@@ -453,6 +512,11 @@
                                         <div class="col-2">
                                             <label class="text-black">Ebook PDF</label>
                                             <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image">
+                                            @error('media_image')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-4">
                                             <label class="text-black">Ebook Cover</label>
@@ -460,6 +524,11 @@
                                             <small class="form-text text-muted">
                                                 {{ __('backend.item.feature-image-help') }}
                                             </small>
+                                            @error('media_cover')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
@@ -503,6 +572,11 @@
                                         <div class="col-2">
                                             <label class="text-black">Podcast MP3/MP4</label>
                                             <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image">
+                                            @error('podcast_image')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-4">
                                             <label class="text-black">Podcast Cover</label>
@@ -510,6 +584,11 @@
                                             <small class="form-text text-muted">
                                                 {{ __('backend.item.feature-image-help') }}
                                             </small>
+                                            @error('podcast_cover')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                         <div class="col-12">
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
@@ -827,7 +906,8 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
     @include('backend.user.partials.bootstrap-select-locale')
     <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     <script>
@@ -840,6 +920,10 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+
+            $('.selectpicker-category').selectpicker({
+                maxOptions: 3
             });
 
             $('.selectpicker').selectpicker();
