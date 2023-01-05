@@ -79,6 +79,7 @@
 
                 @php
                     $categories_count = $categories->count();
+                    $is_login = isset(Auth::user()->id) && !empty(Auth::user()->id) ? 1 : 0;
                     $is_terms_read = isset(Auth::user()->is_terms_read) && !empty(Auth::user()->is_terms_read) ? 1 : 0;
                 @endphp
 
@@ -794,7 +795,8 @@
 
         });
         var is_terms_read = {{$is_terms_read}};
-        if(is_terms_read != 1){
+        var is_login = {{$is_login}};
+        if(is_login && is_terms_read != 1){
             //$(window).on("scroll", function() {
                 const expDate = new Date();
                 expDate.setTime(expDate.getTime() + (5*60*1000));
