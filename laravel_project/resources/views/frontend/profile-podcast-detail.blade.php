@@ -214,7 +214,7 @@
                 var type = $(this).attr('data-type')
                 if (type == 'pause') {
                     start_loader();
-                    var ajax_url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
+                    var ajax_url = '/ajax/profile/podcast/' + id;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',

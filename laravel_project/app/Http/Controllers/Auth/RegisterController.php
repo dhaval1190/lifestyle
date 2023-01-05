@@ -104,6 +104,7 @@ class RegisterController extends Controller
             $rules['city_id']               = ['required'];
             $rules['post_code']             = ['required','string','max:10'];
             $rules['user_image']            = ['nullable'];
+            $rules['is_terms_read']         = ['required'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach Registration!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach Registration!';
@@ -158,6 +159,7 @@ class RegisterController extends Controller
             $new_user->state_id              = isset($data['state_id']) ? $data['state_id'] : null;
             $new_user->city_id               = isset($data['city_id']) ? $data['city_id'] : null;
             $new_user->post_code             = isset($data['post_code']) ? $data['post_code'] : null;
+            $new_user->is_terms_read         = isset($data['is_terms_read']) && !empty($data['is_terms_read']) ? $data['is_terms_read'] : 0;
 
             $user_image = $data['user_image'];
             if(!empty($user_image)){
