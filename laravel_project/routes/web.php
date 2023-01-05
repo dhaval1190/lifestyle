@@ -68,10 +68,12 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
+    Route::get('/ajax/profile/podcast/{id}', 'PagesController@jsonProfilePodcastDetail')->name('json.profile.podcast');
     Route::get('/youtube-detail/{id}', 'PagesController@profileYoutubeDetail')->name('page.profile.youtube');
     Route::get('/podcast-detail/{id}', 'PagesController@profilePodcaseDetail')->name('page.profile.podcast');
     Route::get('/ebook-detail/{id}', 'PagesController@profileEbookDetail')->name('page.profile.ebook');
     Route::put('/media/update/{media_detail}', 'PagesController@updateMedia')->name('media.update');
+    Route::post('/media/add', 'PagesController@addMedia')->name('media.add');
     Route::delete('/media/destroy/{media_detail}', 'PagesController@destroyMedia')->name('media.destroy');
     Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
@@ -94,6 +96,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
+        Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
     });
 
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
@@ -196,6 +199,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/ajax/setting/favicon/delete', 'PagesController@jsonDeleteSettingFaviconImage')->name('json.setting.favicon');
 
     Route::post('/ajax/category/image/delete/{category_id}', 'PagesController@jsonDeleteCategoryImage')->name('json.category.image.delete');
+    Route::post('/ajax/terms/save', 'PagesController@ajaxTermsSave')->name('ajax.terms.save');
 
 
 
@@ -496,7 +500,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user','verify_subscription'],'as'=>'user.'], function(){
 
         Route::get('/dashboard','PagesController@index')->name('index');
-        Route::get('/profile-progress','PagesController@profileProgressData')->name('profile.progress');
+        Route::get('/profile-progress/{user_id}','PagesController@profileProgressData')->name('profile.progress');
         Route::resource('/items', 'ItemController');
 
         Route::post('/items/bulk/delete', 'ItemController@bulkDeleteItem')->name('items.bulk.delete');

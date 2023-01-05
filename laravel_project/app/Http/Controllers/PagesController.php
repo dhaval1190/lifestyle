@@ -1236,17 +1236,6 @@ class PagesController extends Controller
         ->orderBy('all_items_count', 'desc')->get();
 
         /**
-         * Do listing query
-         * 1. get paid listings and free listings.
-         * 2. decide how many paid and free listings per page and total pages.
-         * 3. decide the pagination to paid or free listings
-         * 4. run query and render
-         */
-
-        // paid listing
-        $paid_items_query = Item::query();
-
-        /**
          * Start filter for paid listing
          */
         // categories
@@ -1284,25 +1273,13 @@ class PagesController extends Controller
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
 
-        // filter free listings state
-        if(!empty($filter_state))
-        {
-            $free_items_query->where('items.state_id', $filter_state);
-        }
-
-        // filter free listings city
-        if(!empty($filter_city))
-        {
-            $free_items_query->where('items.city_id', $filter_city);
-        }
-
         /**
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_state || $filter_city) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
@@ -1315,6 +1292,17 @@ class PagesController extends Controller
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
             }
+            // filter free listings state
+            if(!empty($filter_state))
+            {
+                $free_items_query->where('users.state_id', $filter_state);
+            }
+
+            // filter free listings city
+            if(!empty($filter_city))
+            {
+                $free_items_query->where('users.city_id', $filter_city);
+            }
         }
         /**
          * End filter gender type, working type, price range
@@ -1324,15 +1312,7 @@ class PagesController extends Controller
          * Start filter sort by for free listing
          */
         $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
-        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
-        {
-            $free_items_query->orderBy('items.created_at', 'DESC');
-        }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
-        {
-            $free_items_query->orderBy('items.created_at', 'ASC');
-        }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        if($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
         {
             $free_items_query->orderBy('items.item_average_rating', 'DESC');
         }
@@ -1354,8 +1334,6 @@ class PagesController extends Controller
             ->with('state')
             ->with('city')
             ->with('user');
-
-        $total_free_items = $free_items_query->count();
 
         $querystringArray = [
             'filter_categories' => $filter_categories,
@@ -1458,13 +1436,16 @@ class PagesController extends Controller
             $state = State::find($filter_state);
             $all_cities = $state->cities()->orderBy('city_name')->get();
         }
-
-        //$total_results = $total_free_items;
         
-        //if(!empty($querystringArray['filter_categories']) && !empty($querystringArray['filter_state']) && !empty($querystringArray['filter_city']) && !empty($querystringArray['filter_gender_type']) && !empty($querystringArray['filter_working_type']) && !empty($querystringArray['filter_hourly_rate'])){
-            $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
+        $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
+        
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
+            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->get();
+        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
+            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->get();
+        }else{
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
-        //}
+        }
         $total_results = $all_coaches->count();
         /**
          * End initial filter
@@ -1814,6 +1795,42 @@ class PagesController extends Controller
             ));
     }
 
+    public function jsonProfilePodcastDetail(int $podcast_id)
+    {
+        $podcast_detail = MediaDetail::findOrFail($podcast_id);
+        if(isset($podcast_detail) && !empty($podcast_detail)){
+            $resp['status'] = 'success';
+            $res = $podcast_detail;
+            $res['media_image'] = Storage::disk('public')->url('media_files/'. $podcast_detail['media_image']);
+            if(isset($podcast_detail['media_cover']) && !empty($podcast_detail['media_cover'])){
+                $res['media_cover'] = Storage::disk('public')->url('media_files/'. $podcast_detail['media_cover']);
+            }else{
+                $res['media_cover'] = Storage::disk('public')->url('media_files/logo2.jpg');
+            }
+            $resp['data'] = $res;
+        }else{
+            $resp['status'] = 'failed';
+            $resp['error'] = 'Unknown Audio ID';
+        }
+        return response()->json($resp);
+    }
+
+    public function profilePodcastDetail(Request $request, $id)
+    {
+
+        $user_detail = User::where('id', $id)->first();
+        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
+        
+        return response()->view($theme_view_path . 'profile-podcast-detail',
+            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array',
+                'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+    }
+
     public function profileEbookDetail(Request $request, $id)
     {
         $settings = app('site_global_settings');
@@ -1987,26 +2004,148 @@ class PagesController extends Controller
     public function updateMedia(Request $request, MediaDetail $media_detail)
     {
         $login_user = Auth::user();
-        
+
         $media = MediaDetail::where('id', $media_detail->id)->first();
 
-        if($media && $media->user_id == $login_user->id)
-        {
-            $media->media_type = $request->media_type;
-            $media->media_url = $request->media_url;
-            $media->save();
+        if ($media && $media->user_id == $login_user->id) {
+            if ($request['podcast_type'] == 'podcast') {
+                
+                $podcast = $request['podcast_image'];
+                $podcast_cover = $request['podcast_cover'];
+                if (!Storage::disk('public')->exists('media_files')) {
+                    Storage::disk('public')->makeDirectory('media_files');
+                }
+                if (!empty($podcast)) {
+                    $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();                    
+                    $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+                    $media->media_image = !empty($podcast_file_name) ? $podcast_file_name : '';
+                }
+
+                if (!empty($podcast_cover)) {
+                    $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                    $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+                    $media->media_cover = !empty($podcast_cover_file_name) ? $podcast_cover_file_name : '';
+                }
+                $media->media_name = $request->podcast_name;
+                $media->media_type = $request->podcast_type;
+                $media->save();
+                
+            } elseif ($request['media_type'] == 'ebook') {
+
+                $ebook = $request['media_image'];
+                $ebook_cover = $request['media_cover'];
+                if (!Storage::disk('public')->exists('media_files')) {
+                    Storage::disk('public')->makeDirectory('media_files');
+                }
+                if (!empty($ebook)) {
+                    $ebook_file_name = $request->file('media_image')->getClientOriginalName();
+
+                    $request->media_image->storeAs('public/media_files', $ebook_file_name);
+                    $media->media_image = !empty($ebook_file_name) ? $ebook_file_name : '';
+                }
+
+                if (!empty($ebook_cover)) {
+                    $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                    $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+                    $media->media_cover = !empty($ebook_cover_file_name) ? $ebook_cover_file_name : '';
+                }
+                
+                $media->media_name = $request->media_name;
+                $media->media_type = $request->media_type;
+                $media->save();
+            } else {
+                $media->media_type = $request->media_type;
+                $media->media_url = $request->media_url;
+                $media->save();
+            }
+
 
             \Session::flash('flash_message', __('alert.media-updated'));
             \Session::flash('flash_type', 'success');
 
             return redirect()->route('user.profile.edit');
-        }
-        else
-        {
+        } else {
             return redirect()->route('user.profile.edit');
         }
     }
+    public function addMedia(Request $request){
+       
+        $login_user = Auth::user();
+        
+        if(isset($request['media_image']) && !empty($request['media_image']) && $request['media_type']=='ebook'){
+            $ebook = $request['media_image'];
+            $ebook_cover = $request['media_cover'];
+            if(!Storage::disk('public')->exists('media_files')){
+                Storage::disk('public')->makeDirectory('media_files');
+            }
+            if(!empty($ebook)) {
+                $ebook_file_name = $request->file('media_image')->getClientOriginalName();
+                $request->media_image->storeAs('public/media_files', $ebook_file_name);
+            }
+            if(!empty($ebook_cover)) {
+                $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+            }
+            
+            MediaDetail::updateOrCreate([
+                'user_id' => $login_user->id,
+                'media_name' => $request->media_name,
+                'media_type' => $request->media_type,
+                'media_cover' => $ebook_cover_file_name,
+                'media_image' => $ebook_file_name
+            ],[
+                'user_id' => $login_user->id,
+                'media_type' => $request->media_type,
+                'media_image' => $ebook_file_name
+            ]);
+        }
+        if ($request['media_type'] == 'video') {
 
+            MediaDetail::updateOrCreate([
+                'user_id' => $login_user->id,                   
+                'media_type' => $request->media_type,                   
+                'media_url' => $request->media_url                   
+            ],[
+                'user_id' => $login_user->id,
+                'media_type' => $request->media_type,
+            ]);
+        }
+        
+        if(isset($request['podcast_image']) && !empty($request['podcast_image']) && $request['podcast_type']=='podcast'){
+            $podcast = $request['podcast_image'];
+            $podcast_cover = $request['podcast_cover'];
+            if(!Storage::disk('public')->exists('media_files')){
+                Storage::disk('public')->makeDirectory('media_files');
+            }
+            if(!empty($podcast)) {
+                $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
+                $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+            }
+            if(!empty($podcast_cover)) {
+                $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+            }
+            
+            MediaDetail::updateOrCreate([
+                'user_id' => $login_user->id,
+                'media_name' => $request->podcast_name,
+                'media_type' => $request->podcast_type,
+                'media_cover' => $podcast_cover_file_name,
+                'media_image' => $podcast_file_name
+               
+            ],[
+                'user_id' => $login_user->id,
+                'media_type' => $request->podcast_type,
+                'media_image' => $podcast_file_name
+            ]);
+          
+        }
+        
+        \Session::flash('flash_message', __('alert.user-profile-updated'));
+        \Session::flash('flash_type', 'success');
+
+        return redirect()->route('user.profile.edit');
+    }
 
     public function storeEbookMedia(Request $request)
     {
@@ -6169,6 +6308,105 @@ class PagesController extends Controller
         ->delete();
 
         return response()->json(['success' => 'Article review image gallery deleted.']);
+    }
+
+    public function emailReferral(string $referral_link, Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        if(Auth::check())
+        {
+            $request->validate([
+                'item_share_email_name' => 'required|max:255',
+                'item_share_email_to_email' => 'required|email|max:255',
+            ]);
+
+            // send an email notification to admin
+            $email_to = $request->item_share_email_to_email;
+            $email_from_name = $request->item_share_email_name;
+            $email_note = $request->item_share_email_note;
+            $email_subject = __('frontend.item.send-referral-email-subject', ['name' => $email_from_name]);
+
+            $email_notify_message = [
+                __('frontend.item.send-referral-email-body', ['from_name' => $email_from_name, 'url' => route('register', 'ref='.$referral_link)]),
+                __('frontend.item.send-email-note'),
+                $email_note,
+            ];
+
+            /**
+             * Start initial SMTP settings
+             */
+            if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+            {
+                // config SMTP
+                config_smtp(
+                    $settings->settings_site_smtp_sender_name,
+                    $settings->settings_site_smtp_sender_email,
+                    $settings->settings_site_smtp_host,
+                    $settings->settings_site_smtp_port,
+                    $settings->settings_site_smtp_encryption,
+                    $settings->settings_site_smtp_username,
+                    $settings->settings_site_smtp_password
+                );
+            }
+            /**
+             * End initial SMTP settings
+             */
+
+            if(!empty($settings->setting_site_name))
+            {
+                // set up APP_NAME
+                config([
+                    'app.name' => $settings->setting_site_name,
+                ]);
+            }
+
+            try
+            {
+                // to admin
+                Mail::to($email_to)->send(
+                    new Notification(
+                        $email_subject,
+                        $email_to,
+                        null,
+                        $email_notify_message,
+                        __('frontend.header.register'),
+                        'success',
+                        route('register', 'ref='.$referral_link)
+                    )
+                );
+
+                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                \Session::flash('flash_type', 'success');
+
+            }
+            catch (\Exception $e)
+            {
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                \Session::flash('flash_type', 'danger');
+            }
+
+            return redirect()->route('page.coaches');
+        }
+        else
+        {
+            \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+            \Session::flash('flash_type', 'danger');
+
+            return redirect()->route('page.coaches');
+        }
+        
+
+    }
+
+    public function ajaxTermsSave()
+    {
+        $login_user = Auth::user();
+        User::where('id', $login_user->id)->update(['is_terms_read' => 1]);
+
+        return 1;
     }
 
 }

@@ -24,7 +24,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
     <link href="{{ asset('frontend/vendor/leaflet/leaflet.css') }}" rel="stylesheet" />
@@ -76,7 +75,7 @@
                                 <h3>Our Podcast</h3>
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45">
+                        <!-- <div class="col-md-12 plr-45">
                             <div class="post-slide">
                                 <div class="row audio-players">
                                     @foreach($podcast_media_array as $podcast_key => $podcast)
@@ -89,7 +88,6 @@
                                                 <audio preload="auto">
                                                     <source src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}"/>
                                                 </audio>
-                                                <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
                                                 <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_cover) }}">
                                                 <video preload="auto" loop="loop">
                                                     <source src="" type="video/mp4"/>
@@ -102,24 +100,69 @@
                                     @endforeach
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="col-md-12 plr-45">
+                        </div> -->
+                        
+                        <div class="col-md-12 plr-45">
                             <div class="row">
-                                <div class="simple-audio-player" id="simp" data-config='{"shide_top":false,"shide_btm":false,"auto_load":false}'>
-                                    <div class="simp-playlist">
-                                        <ul>
-                                            @foreach($podcast_media_array as $podcast_key => $podcast)
-                                                <div class="post-slide">
-                                                    <div class="post-img">
-                                                        <li class="simp-active"><span class="simp-source" data-src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_image) }}">{{ $podcast->media_name }}</span></li>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </ul>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="card rounded-0 shadow">
+                                        <div class="card-body">
+                                            <ul class="list-group" id="music-list">
+                                                @foreach($podcast_media_array as $podcast_key => $podcast)
+                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $podcast->id ?>">
+                                                        <div class="d-flex w-100 align-items-center">
+                                                            <div class="col-auto pe-2">
+                                                                <img src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_cover) }}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
+                                                            </div>
+                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                                <p class="m-0 text-truncate" title="<?= $podcast->media_name ?>"><?= $podcast->media_name ?></p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                                <button class="btn btn-outline-secondary btn-sm rounded-circle play" data-id="<?= $podcast->id ?>" data-type="pause"><i class="fa fa-play"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="col-md-12 text-center">
+                                        <img src="{{ Storage::disk('public')->url('media_files/logo2.jpg') }}" alt="" id="display-img" class="img-fluid border bg-gradient bg-dark" style="width:50% !important;height:50% !important;">
+                                    </div>
+                                    <h4><b id="inplay-title">---</b></h4>
+                                    <small class="text-muted" id="inplay-duration">--:--</small>
+                                    <!-- <hr>
+                                    <p id="inplay-description">---</p> -->
+                                    <div class="d-flex w-100 justify-content-center">
+                                        <div class="mx-1">
+                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="prev-btn"><i class="fa fa-step-backward"></i></button>
+                                        </div>
+                                        <div class="mx-1">
+                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="play-btn" data-value="play"><i class="fa fa-play"></i></button>
+                                        </div>
+                                        <div class="mx-1">
+                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="stop-btn"><i class="fa fa-stop"></i></button>
+                                        </div>
+                                        <div class="mx-1">
+                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="next-btn"><i class="fa fa-step-forward"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="mx-1">
+                                            <span id="currentTime">--:--</span>
+                                        </div>
+                                        <div id="range-holder" class="mx-1">
+                                            <input type="range" id="playBackSlider" value="0">
+                                        </div>
+                                        <div class="mx-1">
+                                            <span id="vol-icon"><i class="fa fa-volume-up"></i></span> <input type="range" value="100" id="volume">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,6 +187,183 @@
     <script src="{{ asset('frontend/js/script.js') }}"></script>
     @include('frontend.partials.bootstrap-select-locale')
     <script>
+        const loaderHTML = document.createElement('div');
+        loaderHTML.setAttribute('id', 'pre-loader');
+        loaderHTML.innerHTML = "<div id='loader-container'><div></div><div></div><div></div></div>";
+        window.start_loader = function() {
+            if (!document.getElementById('pre-loader') || (!!document.getElementById('pre-loader') && document.getElementById('pre-loader').length <= 0)) {
+                document.querySelector('body').appendChild(loaderHTML);
+            }
+        }
+        window.end_loader = function() {
+            if (!!document.getElementById('pre-loader')) {
+                document.getElementById('pre-loader').remove();
+            }
+        }
+
+        var audio = new Audio();
+        var slider;
+        var currentPlayID;
+        $(function() {
+            setTimeout(() => {
+                end_loader()
+            }, 500)
+            $('.play').click(function() {
+                var _this = $(this)
+                var id = $(this).attr('data-id')
+                var type = $(this).attr('data-type')
+                if (type == 'pause') {
+                    start_loader();
+                    var ajax_url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        error: err => {
+                            console.error(err)
+                            alert("An error occurred");
+                            end_loader()
+                        },
+                        success: function(resp) {
+                            var _modal = $('#update_music_modal')
+                            if (resp.status == 'success') {
+                                var data = resp.data
+                                currentPlayID = data.id
+                                $('#display-img').attr('src', data.media_cover);
+                                $('#inplay-title').text(data.media_name);
+                                // $('#inplay-description').text(data.media_description);
+                                audio.setAttribute('src', data.media_image)
+                                audio.currentTime = 0;
+                                audio.play();
+                                $('.play').attr('data-type', 'pause')
+                                _this.attr('data-type', 'play')
+                                $('.play').removeClass('btn-outline-success btn-outline-secondary').addClass('btn-outline-secondary')
+                                _this.removeClass('btn-outline-success btn-outline-secondary').addClass('btn-outline-success')
+                                $('#play-btn').attr('data-value', 'pause')
+                                $('#play-btn').html('<i class="fa fa-pause"></i>').focus()
+                                $('#inplay-duration').text("--:--")
+                                setTimeout(() => {
+                                    var duration = String(Math.floor(audio.duration / 60)).padStart(2, '0') + ":" + String(Math.floor(60 * Math.abs((audio.duration / 60) - Math.floor(audio.duration / 60)))).padStart(2, '0')
+                                    $('#inplay-duration').text(duration)
+                                }, 500)
+
+                                slider = setInterval(() => {
+                                    var current_slide = (audio.currentTime / audio.duration) * 100;
+                                    $('#playBackSlider').val(current_slide)
+                                    $('#currentTime').text(String(Math.floor(audio.currentTime / 60)).padStart(2, '0') + ":" + String(Math.floor(60 * Math.abs((audio.currentTime / 60) - Math.floor(audio.currentTime / 60)))).padStart(2, '0'))
+                                }, 500)
+                            } else {
+                                console.error(err)
+                                alert("An error occurred");
+                            }
+                            setTimeout(() => {
+                                end_loader()
+                            }, 500)
+
+                        }
+                    });
+                }
+            })
+            $('#play-btn').click(function() {
+                if (audio.src != '') {
+                    var action = $(this).attr('data-value')
+                    if (action == "pause") {
+                        $(this).attr('data-value', 'play')
+                        $('#play-btn').html('<i class="fa fa-play"></i>')
+                        audio.pause();
+                    } else {
+                        $(this).attr('data-value', 'pause')
+                        $('#play-btn').html('<i class="fa fa-pause"></i>')
+                        audio.play();
+                    }
+                }
+            })
+            $('#stop-btn').click(function() {
+                if (audio.src != '') {
+                    $('#play-btn').html('<i class="fa fa-play"></i>')
+                    $('#play-btn').attr('data-value', 'play')
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            })
+
+            // Playback Slider Moved Function 
+            $('#playBackSlider').on('mousedown', function() {
+                if (audio.src != '') {
+                    clearInterval(slider)
+                    $(this).on('mousemove', function() {
+                        audio.pause()
+                        audio.currentTime = (audio.duration * ($(this).val() / 100));
+                        $('#currentTime').text(String(Math.floor(audio.currentTime / 60)).padStart(2, '0') + ":" + String(Math.floor(60 * Math.abs((audio.currentTime / 60) - Math.floor(audio.currentTime / 60)))).padStart(2, '0'))
+                    })
+                }
+            })
+            $('#playBackSlider').on('mouseup', function() {
+                if (audio.src != '') {
+                    $(this).off('mousemove')
+                    audio.currentTime = (audio.duration * ($(this).val() / 100));
+                    $('#currentTime').text(String(Math.floor(audio.currentTime / 60)).padStart(2, '0') + ":" + String(Math.floor(60 * Math.abs((audio.currentTime / 60) - Math.floor(audio.currentTime / 60)))).padStart(2, '0'))
+                    if ($('#play-btn').attr('data-value') == 'pause') {
+                        audio.play()
+                        slider = setInterval(() => {
+                            var current_slide = (audio.currentTime / audio.duration) * 100;
+                            $('#playBackSlider').val(current_slide)
+                            $('#currentTime').text(String(Math.floor(audio.currentTime / 60)).padStart(2, '0') + ":" + String(Math.floor(60 * Math.abs((audio.currentTime / 60) - Math.floor(audio.currentTime / 60)))).padStart(2, '0'))
+                        }, 500)
+                    }
+                }
+            })
+
+            // volume slider
+            $('#volume').on('mousedown', function(e) {
+                $(this).on('mousemove', function() {
+                    var vol = $(this).val() / 100
+                    audio.volume = vol
+                    if (vol == 0) {
+                        $('#vol-icon').html('<i class="fa fa-volume-off"></i>')
+                    } else if (vol < .5) {
+                        $('#vol-icon').html('<i class="fa fa-volume-down"></i>')
+                    } else {
+                        $('#vol-icon').html('<i class="fa fa-volume-up"></i>')
+                    }
+                })
+            })
+            $('#volume').on('mouseup', function(e) {
+                $(this).off('mousemove')
+            })
+
+            // Next Btn
+            $('#next-btn').click(function() {
+                    if (currentPlayID > 0) {
+                        var currentIndex = $('#music-list .item[data-id="' + currentPlayID + '"]').index();
+                        if (!!$('#music-list .item').eq(currentIndex + 1)) {
+                            $('#music-list .item').eq(currentIndex + 1).find('.play').trigger('click')
+                        }
+                    }
+                })
+                // Previous Btn
+            $('#prev-btn').click(function() {
+                if (currentPlayID > 0) {
+                    var currentIndex = $('#music-list .item[data-id="' + currentPlayID + '"]').index();
+                    if ((currentIndex - 1) == -1) {
+                        audio.currentTime = 0
+                    } else {
+                        if (!!$('#music-list .item').eq(currentIndex - 1)) {
+                            $('#music-list .item').eq(currentIndex - 1).find('.play').trigger('click')
+                        }
+                    }
+                }
+            })
+            audio.onended = function() {
+                console.log('Next Track')
+                $('#next-btn').trigger('click')
+                if (audio.src != '') {
+                    $('#play-btn').html('<i class="fa fa-play"></i>')
+                    $('#play-btn').attr('data-value', 'play')
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            }
+        })
         var $player = $('.js-audio-player'), $playbackClass = 'is-playing', $fadeDuration = 500
 
         $player.each(function(index) {
