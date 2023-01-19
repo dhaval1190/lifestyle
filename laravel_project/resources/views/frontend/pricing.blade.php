@@ -6,6 +6,7 @@
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style type="text/css">
         .bootstrap-select.form-control { border: 1px solid #ced4da; }
         .dropdown-toggle.btn-default {
@@ -285,7 +286,8 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-12">
                                                     <label for="category_ids" class="text-black">Category <span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
+                                                    <!-- <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> -->
+                                                    <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple style="width:100%">
                                                         {{-- <option value="">Select Category</option> --}}
                                                         @foreach($printable_categories as $key => $printable_category)
                                                             @php
@@ -621,6 +623,7 @@
         {{-- <script src="{{ asset('frontend/vendor/smart-wizard/jquery.smartWizard.min.js') }}"></script> --}}
         <!-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         @include('backend.user.partials.bootstrap-select-locale')
         <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     @endif
@@ -663,6 +666,10 @@
                 $("#smartwizard").on("leaveStep", function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
                     return confirm("Do you want to leave the step " + currentStepIndex + "?");
                 });*/
+
+                $('.category_ids').select2({
+                    maximumSelectionLength: 3
+                });
 
                 $('.selectpicker-category').selectpicker({
                     maxOptions: 3,

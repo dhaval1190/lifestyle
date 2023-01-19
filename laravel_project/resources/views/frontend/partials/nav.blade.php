@@ -12,11 +12,11 @@
     <!-- <div class="container"> -->
     <div class="row align-items-center">
 
-        <div class="col-8 col-xl-3 pr-0">
+        <div class="col-8 col-xl-2 pr-0">
 
                 @if(empty($site_global_settings->setting_site_logo))
                 <h1 class="mb-0 site-logo">
-                    <a href="{{ route('page.home') }}" class="text-black mb-0 customization-header-font-color decoration-none">
+                    <a href="{{ route('page.home') }}" class="text-black mb-0 customization-header-font-color decoration-none" style="font-size: 17px;">
                         @foreach(explode(' ', empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name) as $key => $word)
                             @if($key/2 == 0)
                                 {{ $word }}
@@ -36,7 +36,7 @@
 
 
         </div>
-        <div class="col-12 col-md-9 d-none d-xl-block">
+        <div class="col-12 col-md-9 col-xl-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
 
                 <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
@@ -47,6 +47,7 @@
                     <li><a href="{{ route('page.about') }}">{{ __('frontend.header.about') }}</a></li>
                     @endif
                     <li><a href="{{ route('page.blog') }}">{{ __('frontend.header.blog') }}</a></li>
+                    <li><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
                     <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li>
 
                     @guest

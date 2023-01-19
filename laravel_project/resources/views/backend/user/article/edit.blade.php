@@ -124,7 +124,7 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="row border-left-primary mb-4">
+                        <!-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -151,8 +151,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
+                        </div> -->
+                        <input type="hidden" name="article_type" value="2">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">

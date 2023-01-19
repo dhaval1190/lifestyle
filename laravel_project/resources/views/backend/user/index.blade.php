@@ -74,7 +74,7 @@
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
                                     <div class="coaches_detail">
-                                        <h3>{{ __('backend.homepage.all-messages') }}</h3>
+                                        <h3><a class="decoration-none" href="{{ route('user.messages.index') }}">{{ __('backend.homepage.all-messages') }}</a></h3>
                                         <p class="c-two">{{ number_format($message_count) }}</p>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                     <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
                                     <div class="coaches_detail">
                                         <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
-                                        <h3>{{ __('backend.homepage.all-comments') }}</h3>
+                                        <h3><a class="decoration-none" href="{{ route('user.comments.index') }}">{{ __('backend.homepage.all-comments') }}</a></h3>
                                         <p class="c-three">{{ number_format($comment_count) }}</p>
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
                                     <div class="coaches_detail">
-                                        <h3>{{ __('backend.homepage.all-articles') }}</h3>
+                                        <h3><a class="decoration-none" href="{{ route('user.articles.index') }}">{{ __('backend.homepage.all-articles') }}</a></h3>
                                         <p class="c-four">{{ number_format($item_count) }}</p>
                                     </div>
                                 </div>

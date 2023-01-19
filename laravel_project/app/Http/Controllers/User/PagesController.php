@@ -65,9 +65,13 @@ class PagesController extends Controller
     }
 
     public function profileProgressData(Request $request,$user_id){
-        $user_data = User::find($user_id);
+        //$user_data = User::find($user_id);
         $user_obj = new User();
-        $progress_data = $user_obj->profileProgressData($request,$user_data);
+        $all_coaches = User::where('role_id', 2)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
+        foreach($all_coaches as $user){
+            $user_data = User::find($user->id);
+            $progress_data[] = $user_obj->profileProgressData($request,$user_data);
+        }
 
         echo "<pre>";
         print_r($progress_data);exit;

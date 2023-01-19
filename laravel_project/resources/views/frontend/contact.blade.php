@@ -209,7 +209,7 @@
 
                     @foreach($all_faq as $key => $faq)
                         <div class="border p-3 rounded mb-2">
-                            <a data-toggle="collapse" href="#collapse-{{ $faq->id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ $faq->id }}" class="accordion-item h5 d-block mb-0">{{ $faq->faqs_question }}</a>
+                            <a data-toggle="collapse" href="#collapse-{{ $faq->id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ $faq->id }}" class="decoration-none accordion-item h5 d-block mb-0">{{ $faq->faqs_question }}</a>
 
                             <div class="collapse" id="collapse-{{ $faq->id }}">
                                 <div class="pt-2">

@@ -65,6 +65,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
     Route::get('/about', 'PagesController@about')->name('page.about');
     Route::get('/contact', 'PagesController@contact')->name('page.contact');
+    Route::get('/faq', 'PagesController@faq')->name('page.faq');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');

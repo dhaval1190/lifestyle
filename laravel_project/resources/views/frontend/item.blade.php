@@ -1987,7 +1987,7 @@
                     <!-- end item section after share -->
 
                     @if(!$item_has_claimed)
-                    <div class="row pt-3 pb-3 pl-2 pr-2 border border-dark rounded bg-light align-items-center">
+                    <!-- <div class="row pt-3 pb-3 pl-2 pr-2 border border-dark rounded bg-light align-items-center">
                         <div class="col-sm-12 col-md-9 pr-0">
                             <h4 class="h5 text-black">{{ __('item_claim.claim-business') }}</h4>
                             <span>{{ __('item_claim.unclaimed-desc') }}</span>
@@ -1999,7 +1999,7 @@
                                 <a class="btn btn-primary rounded text-white" href="{{ route('user.item-claims.create', ['item_slug' => $item->item_slug]) }}" target="_blank">{{ __('item_claim.claim-business-button') }}</a>
                             @endif
                         </div>
-                    </div>
+                    </div> -->
                     @endif
 
                 </div>
@@ -2499,7 +2499,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span>
+                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">
@@ -2601,7 +2601,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <span class="font-size-13">{{ str_limit($nearby_item->user->name, 14, '.') }}</span>
+                                                    <a class="decoration-none" href="{{ route('page.profile', $nearby_item->user->id) }}"><span class="font-size-13">{{ str_limit($nearby_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">
