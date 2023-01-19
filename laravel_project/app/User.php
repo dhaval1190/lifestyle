@@ -602,6 +602,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $data               = array();
         $remaining_detail   = array();
+        $data['id']         = $user['id'];
+        $data['name']       = $user['name'];
+        $data['email']      = $user['email'];
         $data['profile']    = '';
         $data['percentage'] = 0;
 

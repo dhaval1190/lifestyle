@@ -58,7 +58,7 @@
                 <div class="col-12">
                     <form method="POST" action="{{ route('user.articles.store') }}" id="article-create-form">
                         @csrf
-                        <div class="row border-left-primary mb-4">
+                        <!-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -85,7 +85,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <input type="hidden" name="article_type" value="2">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -488,20 +489,26 @@
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
                                         <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}">{{ __('article_hour.monday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}">{{ __('article_hour.tuesday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}">{{ __('article_hour.wednesday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}">{{ __('article_hour.thursday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}">{{ __('article_hour.friday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}">{{ __('article_hour.saturday') }}</option>
-                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}">{{ __('article_hour.sunday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('article_hour.monday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('article_hour.tuesday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('article_hour.wednesday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('article_hour.thursday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('article_hour.friday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('article_hour.saturday') }}</option>
+                                            <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
                                         </select>
                                     </div>
+                                    @php
+                                    $item_hour_open_time = isset($items_hours->item_hour_open_time) && !empty($items_hours->item_hour_open_time) ? explode(':',$items_hours->item_hour_open_time) : [0=>0,1=>0];
+                                    $item_hour_close_time = isset($items_hours->item_hour_close_time) && !empty($items_hours->item_hour_close_time) ? explode(':',$items_hours->item_hour_close_time) : [0=>0,1=>0];
+                                    $item_hour_exception_open_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_open_time) : [0=>0,1=>0];
+                                    $item_hour_exception_close_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_close_time) : [0=>0,1=>0];
+                                    @endphp
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                         <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -509,7 +516,7 @@
                                         <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                         <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -517,7 +524,7 @@
                                         <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                         <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -525,7 +532,7 @@
                                         <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                         <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }} {{ $full_minute == $item_hour_close_time[0] ? 'selected' :'' }}">{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -550,14 +557,14 @@
                                 <div class="form-row mb-3 align-articles-end">
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
-                                        <input id="article_hour_exception_date" type="text" class="form-control" name="article_hour_exception_date" value="" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
+                                        <input id="article_hour_exception_date" type="text" class="form-control" name="article_hour_exception_date" value="{{!empty($items_hours_exceptions->item_hour_exception_date) ? $items_hours_exceptions->item_hour_exception_date : ''}}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                         <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -566,7 +573,7 @@
                                         <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -575,7 +582,7 @@
                                         <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -584,7 +591,7 @@
                                         <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_close_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
                                             @endfor
                                         </select>
                                     </div>
@@ -836,7 +843,7 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/states/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -858,7 +865,7 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/cities/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -878,7 +885,7 @@
             });
 
             @if(old('country_id', $login_user->country_id))
-                var ajax_url_initial_states = '/ajax/states/{{ old('country_id', $login_user->country_id) }}';
+                var ajax_url_initial_states = 'http://localhost/coach_directory/ajax/states/{{ old('country_id', $login_user->country_id) }}';
                 jQuery.ajax({
                     url: ajax_url_initial_states,
                     method: 'get',
@@ -897,7 +904,7 @@
             @endif
 
             @if(old('state_id', $login_user->state_id))
-                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id', $login_user->state_id) }}';
+                var ajax_url_initial_cities = 'http://localhost/coach_directory/ajax/cities/{{ old('state_id', $login_user->state_id) }}';
                 jQuery.ajax({
                     url: ajax_url_initial_cities,
                     method: 'get',

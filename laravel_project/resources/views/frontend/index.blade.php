@@ -264,7 +264,7 @@
                                                 <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                     <div class="row pb-1">
                                                         <div class="col-12">
-                                                            <span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span>
+                                                            <a class="decoration-none" href="{{ route('page.profile', $item->user->id) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a>
                                                         </div>
                                                     </div>
                                                     <div class="row line-height-1-0">
@@ -389,7 +389,7 @@
                                             <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                 <div class="row pb-1">
                                                     <div class="col-12">
-                                                        <span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span>
+                                                        <a class="decoration-none" href="{{ route('page.profile', $item->user->id) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a>
                                                     </div>
                                                 </div>
                                                 <div class="row line-height-1-0">
@@ -507,7 +507,7 @@
                                             <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                 <div class="row pb-1">
                                                     <div class="col-12">
-                                                        <span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span>
+                                                        <a class="decoration-none" href="{{ route('page.profile', $item->user->id) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a>
                                                     </div>
                                                 </div>
                                                 <div class="row line-height-1-0">
