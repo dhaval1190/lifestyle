@@ -414,7 +414,7 @@
     </div>
 
     @if($all_states->count() > 0)
-    <div class="site-section bg-light">
+    <!-- <div class="site-section bg-light">
         <div class="container">
             <div class="row mb-5">
                 <div class="col-md-7 text-left border-primary">
@@ -430,7 +430,7 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    </div> -->
     @endif
 
 

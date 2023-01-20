@@ -1236,7 +1236,7 @@
     @endif
 
     @if($nearby_items->count() > 0)
-    <div class="site-section bg-light">
+    <!-- <div class="site-section bg-light">
         <div class="container">
             <div class="row mb-5">
                 <div class="col-md-7 text-left border-primary">
@@ -1338,7 +1338,7 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
     @endif
 
 <!-- Modal - share -->
