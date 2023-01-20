@@ -138,7 +138,7 @@
                     @if(!empty($item->item_phone))
                     <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a>
                     @endif
-                    <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a>
+                    <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a> -->
 
                 </div>
                 <div class="col-lg-3 col-md-5 pl-0 pr-0 item-cover-contact-section" data-aos="fade-up" data-aos-delay="400">
@@ -313,7 +313,7 @@
                     @if(!empty($item->item_phone))
                     <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a>
                     @endif
-                    <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a>
+                    <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
                 </div>
             </div>
         </div>
@@ -452,7 +452,7 @@
                             </form>
                         @endif
                     @endguest
-                    <a class="btn btn-primary btn-sm rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a>
+                    <!-- <a class="btn btn-primary btn-sm rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
                 </div>
             </div>
         </div>
@@ -2531,7 +2531,7 @@
         @endif
 
         @if($nearby_items->count() > 0)
-        <div class="row mb-4 mt-4">
+        <!-- <div class="row mb-4 mt-4">
             <div class="col-md-7 text-left border-primary">
                 <h2 class="font-weight-light text-primary">{{ __('frontend.item.nearby-listings') }}</h2>
             </div>
@@ -2629,7 +2629,7 @@
                 </div>
             @endforeach
 
-        </div>
+        </div> -->
         @endif
 
     </div>
