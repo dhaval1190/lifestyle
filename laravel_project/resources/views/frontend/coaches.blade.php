@@ -299,7 +299,7 @@
 
             <div class="row">
 
-                <div class="col-lg-6">
+                <div class="col-lg-12">
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
@@ -345,7 +345,7 @@
 
                         @if($all_coaches->count() > 0)
                             @foreach($all_coaches as $all_coaches_key => $coach)
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
                                         <div class="lh-content">        
                                             <div class="row align-items-center">
@@ -427,9 +427,9 @@
 
                 </div>
 
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                     <div class="sticky-top" id="mapid-box"></div>
-                </div>
+                </div> -->
 
             </div>
 
