@@ -138,7 +138,7 @@
                 </div>
                 <div class="col-lg-3 col-md-5 pl-0 pr-0 item-cover-contact-section" data-aos="fade-up" data-aos-delay="400">
                     @if(!empty($item->item_phone))
-                        <h3><i class="fas fa-phone-alt"></i> {{ $item->item_phone }}</h3>
+                        <!-- <h3><i class="fas fa-phone-alt"></i> {{ $item->item_phone }}</h3> -->
                     @endif
                     <p>
                         @if(!empty($item->item_website))
@@ -237,7 +237,7 @@
                     </p>
 
                     @if(!empty($item->item_phone))
-                        <p class="item-cover-address-section"><i class="fas fa-phone-alt"></i> {{ $item->item_phone }}</p>
+                        <!-- <p class="item-cover-address-section"><i class="fas fa-phone-alt"></i> {{ $item->item_phone }}</p> -->
                     @endif
                     <p class="item-cover-address-section">
                         @if(!empty($item->item_website))
@@ -374,10 +374,10 @@
                     </p>
 
                     @if(!empty($item->item_phone))
-                        <p class="item-cover-address-section item-cover-address-section-sm-xs">
+                        <!-- <p class="item-cover-address-section item-cover-address-section-sm-xs">
                             <i class="fas fa-phone-alt"></i> {{ $item->item_phone }}
                             <a class="btn btn-outline-primary btn-sm rounded" href="tel:{{ $item->item_phone }}">{{ __('frontend.item.call') }}</a>
-                        </p>
+                        </p> -->
                     @endif
                     <p class="item-cover-address-section item-cover-address-section-sm-xs">
                         @if(!empty($item->item_website))

@@ -44,7 +44,7 @@
                                                     <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="">
                                                     <p>{{ !empty($user_detail['preferred_pronouns']) ? \App\User::PREFERRED_PRONOUNS[$user_detail['preferred_pronouns']] : '' }}</p>
                                                 </div>
-                                                @if($user_detail['id'] == Auth::user()->id)
+                                                @if(isset(Auth::user()->id) && !empty(Auth::user()->id) && $user_detail['id'] == Auth::user()->id)
                                                     <div class="detail two">
                                                         <i class="fas fa-share-alt item-share-refferal-button"></i>
                                                     </div>
@@ -286,56 +286,58 @@
                                 </div>
                             </div>
                             @endif
-                            <form action="{{ route('page.referral.email', ['referral_link' => Auth::user()->id]) }}" method="POST">
-                                @csrf
-                                <div class="form-row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
-                                        <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ old('item_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
-                                        @error('item_share_email_name')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                            @if(isset(Auth::user()->id) && !empty(Auth::user()->id) && $user_detail['id'] == Auth::user()->id)
+                                <form action="{{ route('page.referral.email', ['referral_link' => Auth::user()->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                            <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ old('item_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_share_email_name')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <!-- <div class="col-md-4">
+                                            <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                            <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_share_email_from_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                            <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_share_email_to_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <!-- <div class="col-md-4">
-                                        <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                        <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
-                                        @error('item_share_email_from_email')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div> -->
-                                    <div class="col-md-4">
-                                        <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
-                                        <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
-                                        @error('item_share_email_to_email')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                            <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
+                                            @error('item_share_email_note')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-row mb-3">
-                                    <div class="col-md-12">
-                                        <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
-                                        <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
-                                        @error('item_share_email_note')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                                {{ __('frontend.item.send-email') }}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
-                                            {{ __('frontend.item.send-email') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

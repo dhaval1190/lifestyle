@@ -114,7 +114,7 @@ return array (
   array (
     'all-categories' => 'All Categories',
     'all-posts' => 'View All Posts',
-    'description' => 'Browse our top articles and locations.',
+    'description' => "Explore our coaches' videos, blogs, podcasts, e-books and yes—it's all FREE!",
     'featured-ads' => 'Featured Articles',
     'nearby-listings' => 'Nearby Articles',
     'no-categories' => 'No categories',
@@ -123,7 +123,7 @@ return array (
     'popular-listings' => 'Popular articles around you',
     'recent-listings' => 'Recent Articles',
     'testimonials' => 'Testimonials',
-    'title' => 'Find the Best Articles in Town',
+    'title' => 'Need some free advice? Search a topic!',
   ),
   'item' =>
   array (

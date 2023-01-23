@@ -294,7 +294,7 @@
 
 
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
@@ -340,7 +340,7 @@
 
                         @if($paid_items->count() > 0)
                             @foreach($paid_items as $paid_items_key => $item)
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     @include('frontend.partials.paid-item-block')
                                 </div>
                             @endforeach
@@ -348,7 +348,7 @@
 
                         @if($free_items->count() > 0)
                             @foreach($free_items as $free_items_key => $item)
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     @include('frontend.partials.free-item-block')
                                 </div>
                             @endforeach
@@ -393,9 +393,9 @@
 
                 </div>
 
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                     <div class="sticky-top" id="mapid-box"></div>
-                </div>
+                </div> -->
 
             </div>
         </div>
