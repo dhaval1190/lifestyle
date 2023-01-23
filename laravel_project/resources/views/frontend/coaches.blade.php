@@ -37,7 +37,7 @@
                     <div class="row justify-content-center mt-5">
                         <div class="col-md-8 text-center">
                             <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
-                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
+                            <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p> -->
                         </div>
                     </div>
 
@@ -54,7 +54,9 @@
 
             @if($categories->count() > 0)
                 <div class="overlap-category mb-5">
-
+                    <div class="text-center">
+                        <h2 class="font-weight-light text-primary">Im looking for information that will help me with...</h2>
+                    </div>
                     <div class="row align-items-stretch no-gutters">
                     @foreach( $categories as $categories_key => $category )
                             <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
@@ -437,7 +439,7 @@
     </div>
 
     @if($all_states->count() > 0)
-        <div class="site-section bg-light">
+        <!-- <div class="site-section bg-light">
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-md-7 text-left border-primary">
@@ -454,7 +456,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
     @endif
 
 @endsection

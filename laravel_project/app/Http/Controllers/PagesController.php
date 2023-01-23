@@ -4455,6 +4455,16 @@ class PagesController extends Controller
 
                     $similar_items = Item::whereIn('items.id', $similar_item_ids)
                         ->where('items.id', '!=', $item->id)
+                        ->where('items.user_id', '!=', $item->user_id)
+                        ->where('items.item_status', Item::ITEM_PUBLISHED)
+                        ->distinct('items.id')
+                        ->inRandomOrder()
+                        ->limit(Item::ITEM_SIMILAR_SHOW_MAX)
+                        ->get();
+
+                    $similar_items_of_coaches = Item::whereIn('items.id', $similar_item_ids)
+                        ->where('items.id', '!=', $item->id)
+                        ->where('items.user_id', $item->user_id)
                         ->where('items.item_status', Item::ITEM_PUBLISHED)
                         ->distinct('items.id')
                         ->inRandomOrder()
@@ -4511,7 +4521,7 @@ class PagesController extends Controller
                      */
 
                     return response()->view($theme_view_path . 'product',
-                        compact('product', 'item', 'product_features', 'nearby_items', 'similar_items',
+                        compact('product', 'item', 'product_features', 'nearby_items', 'similar_items','similar_items_of_coaches',
                             'ads_before_sidebar_content', 'ads_after_sidebar_content', 'item_display_categories',
                             'item_total_categories', 'item_all_categories', 'item_count_rating', 'item_average_rating',
                             'item_has_claimed', 'opening_hours_obj', 'datetime_now', 'current_open_range', 'item_hours_monday',
@@ -4733,6 +4743,16 @@ class PagesController extends Controller
 
                     $similar_items = Item::whereIn('items.id', $similar_item_ids)
                         ->where('items.id', '!=', $item->id)
+                        ->where('items.user_id', '!=', $item->user_id)
+                        ->where('items.item_status', Item::ITEM_PUBLISHED)
+                        ->distinct('items.id')
+                        ->inRandomOrder()
+                        ->limit(Item::ITEM_SIMILAR_SHOW_MAX)
+                        ->get();
+                    
+                    $similar_items_of_coaches = Item::whereIn('items.id', $similar_item_ids)
+                        ->where('items.id', '!=', $item->id)
+                        ->where('items.user_id', $item->user_id)
                         ->where('items.item_status', Item::ITEM_PUBLISHED)
                         ->distinct('items.id')
                         ->inRandomOrder()
@@ -4938,7 +4958,7 @@ class PagesController extends Controller
                      */
 
                     return response()->view($theme_view_path . 'item',
-                        compact('item', 'nearby_items', 'similar_items',
+                        compact('item', 'nearby_items', 'similar_items','similar_items_of_coaches',
                             'reviews', 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_gallery', 'ads_before_description',
                             'ads_before_location', 'ads_before_features', 'ads_before_reviews', 'ads_before_comments',
                             'ads_before_share', 'ads_after_share', 'ads_before_sidebar_content', 'ads_after_sidebar_content',

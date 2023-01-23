@@ -44,6 +44,13 @@
                 <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
                     @include('frontend.partials.search.head')
                 </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-12 text-center">
+                        <a href="{{ route('page.coaches') }}" class="btn btn-primary rounded text-white">
+                            {{ __('I want to find a great fit coach!') }}
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -75,6 +82,9 @@
 
         <!-- Start categories section desktop view-->
         <div class="overlap-category mb-4 d-none d-md-block">
+            <div class="text-center">
+                <h2 class="font-weight-light text-primary">Im looking for information that will help me with...</h2>
+            </div>
             <div class="row align-items-stretch no-gutters">
 
                 @php

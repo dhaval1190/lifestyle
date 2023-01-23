@@ -159,6 +159,7 @@ return array (
     'share-listing-email' => 'Share via email',
     'share-listing-social-media' => 'Share via social media',
     'similar-listings' => 'Similar',
+    'similar-listings-coach' => 'More From This Coach',
     'unsave' => 'Remove',
     'unsave-item-error-exist' => 'You had not saved the coach.',
     'unsave-item-error-login' => 'You must log in to remove a saved coach.',

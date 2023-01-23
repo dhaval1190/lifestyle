@@ -53,7 +53,9 @@
 
             @if($children_categories->count() > 0)
             <div class="overlap-category mb-5">
-
+                <div class="text-center">
+                    <h2 class="font-weight-light text-primary">What category would you find helpful?</h2>
+                </div>
                 <div class="row align-items-stretch no-gutters">
                     @foreach( $children_categories as $key => $children_category )
                         <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
