@@ -2424,9 +2424,111 @@
         </div>
     </div>
 
-    @if($similar_items->count() > 0 || $nearby_items->count() > 0)
+    @if($similar_items->count() > 0 || $nearby_items->count() > 0 || $similar_items_of_coaches->count() > 0)
     <div class="site-section bg-light">
         <div class="container">
+
+        @if($similar_items_of_coaches->count() > 0)
+        <div class="row mb-4">
+            <div class="col-md-7 text-left border-primary">
+                <h2 class="font-weight-light text-primary">{{ __('frontend.item.similar-listings-coach') }}</h2>
+            </div>
+        </div>
+        <div class="row">
+
+            @foreach($similar_items_of_coaches as $similar_coaches_items_key => $similar_coach_item)
+                <div class="col-lg-6">
+                    <div class="d-block d-md-flex listing">
+                        <a href="{{ route('page.item', $similar_coach_item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($similar_coach_item->item_image_small) ? Storage::disk('public')->url('item/' . $similar_coach_item->item_image_small) : (!empty($similar_coach_item->item_image) ? Storage::disk('public')->url('item/' . $similar_coach_item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_small.webp')) }})"></a>
+                        <div class="lh-content">
+
+                            @foreach($similar_coach_item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY) as $similar_item_all_categories_key => $category)
+                                <a href="{{ route('page.category', $category->category_slug) }}">
+                                    <span class="category">
+                                        @if(!empty($category->category_icon))
+                                            <i class="{{ $category->category_icon }}"></i>
+                                        @else
+                                            <i class="fa-solid fa-heart"></i>
+                                        @endif
+                                        {{ $category->category_name }}
+                                    </span>
+                                </a>
+                            @endforeach
+
+                            @if($similar_coach_item->allCategories()->count() > \App\Item::ITEM_TOTAL_SHOW_CATEGORY)
+                                <span class="category">{{ __('categories.and') . " " . strval($similar_coach_item->allCategories()->count() - \App\Item::ITEM_TOTAL_SHOW_CATEGORY) . " " . __('categories.more') }}</span>
+                            @endif
+
+                            <h3 class="pt-2"><a href="{{ route('page.item', $similar_coach_item->item_slug) }}">{{ $similar_coach_item->item_title }}</a></h3>
+
+                            @if($similar_coach_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                            <address>
+                                <a href="{{ route('page.city', ['state_slug'=>$similar_coach_item->state->state_slug, 'city_slug'=>$similar_coach_item->city->city_slug]) }}">{{ $similar_coach_item->city->city_name }}</a>,
+                                <a href="{{ route('page.state', ['state_slug'=>$similar_coach_item->state->state_slug]) }}">{{ $similar_coach_item->state->state_name }}</a>
+                            </address>
+                            @endif
+
+                            @if($similar_coach_item->getCountRating() > 0)
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="pl-0 rating_stars rating_stars_{{ $similar_coach_item->item_slug }}" data-id="rating_stars_{{ $similar_coach_item->item_slug }}" data-rating="{{ $similar_coach_item->item_average_rating }}"></div>
+                                        <address class="mt-1">
+                                            @if($similar_coach_item->getCountRating() == 1)
+                                                {{ '(' . $similar_coach_item->getCountRating() . ' ' . __('review.frontend.review') . ')' }}
+                                            @else
+                                                {{ '(' . $similar_coach_item->getCountRating() . ' ' . __('review.frontend.reviews') . ')' }}
+                                            @endif
+                                        </address>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <hr class="item-box-hr">
+
+                            <div class="row align-items-center">
+
+                                <div class="col-5 col-md-7 pr-0">
+                                    <div class="row align-items-center item-box-user-div">
+                                        <div class="col-3 item-box-user-img-div">
+                                            @if(empty($similar_coach_item->user->user_image))
+                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_coach_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                            @else
+                                                <img src="{{ Storage::disk('public')->url('user/' . $similar_coach_item->user->user_image) }}" alt="{{ $similar_coach_item->user->name }}" class="img-fluid rounded-circle">
+                                            @endif
+                                        </div>
+                                        <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                            <div class="row pb-1">
+                                                <div class="col-12">
+                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_coach_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
+                                                </div>
+                                            </div>
+                                            <div class="row line-height-1-0">
+                                                <div class="col-12">
+                                                    <span class="review">{{ $similar_coach_item->created_at->diffForHumans() }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- <div class="col-7 col-md-5 pl-0 text-right">
+                                    @if($similar_coach_item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
+                                        @if($similar_coach_item->hasOpened())
+                                            <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
+                                        @else
+                                            <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
+                                        @endif
+                                    @endif
+                                </div> --}}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+        @endif
 
         @if($similar_items->count() > 0)
         <div class="row mb-4">
