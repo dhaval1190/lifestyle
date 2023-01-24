@@ -136,7 +136,8 @@
                     @endguest
 
                     @if(!empty($item->item_phone))
-                    <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a>
+                    {{-- <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a> --}}
+                    <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
                     @endif
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a> -->
 
@@ -2897,6 +2898,95 @@
     </div>
 </div>
 
+
+<!--Start call modal -->
+<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>{{ __('frontend.item.share-listing-email') }}</p>
+                        @if(!Auth::check())
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ __('frontend.item.login-require') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST">
+                            @csrf
+                            <div class="form-row mb-3">
+                                <div class="col-md-6">
+                                    <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('item_conntact_email_name')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('item_contact_email_from_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                {{-- <div class="col-md-4">
+                                    <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                    <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('item_share_email_to_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div> --}}
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-12">
+                                    <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                    <textarea class="form-control @error('item_contact_email_note') is-invalid @enderror" id="item_contact_email_note" rows="3" name="item_contact_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_contact_email_note') }}</textarea>
+                                    @error('item_contact_email_note')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                        {{ __('frontend.item.send-email') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End call modal
+
 @if($item_total_categories > \App\Item::ITEM_TOTAL_SHOW_CATEGORY)
 <!-- Modal show categories -->
 <div class="modal fade" id="showCategoriesModal" tabindex="-1" role="dialog" aria-labelledby="showCategoriesModal" aria-hidden="true">
@@ -3214,6 +3304,9 @@
              */
             $('.item-share-button').on('click', function(){
                 $('#share-modal').modal('show');
+            });
+            $('.item-contact-button').on('click', function(){
+                $('#contact-modal').modal('show');
             });
 
             @error('item_share_email_name')

@@ -5224,6 +5224,107 @@ class PagesController extends Controller
 
     }
 
+    public function contactEmail(string $item_slug, Request $request)
+    {
+        dd($request->input());
+        $settings = app('site_global_settings');
+
+        $item = Item::where('item_slug', $item_slug)
+            ->where('item_status', Item::ITEM_PUBLISHED)
+            ->first();
+
+        if($item)
+        {
+            if(Auth::check())
+            {
+                $request->validate([
+                    'item_share_email_name' => 'required|max:255',
+                    'item_share_email_from_email' => 'required|email|max:255',
+                ]);
+
+                // send an email notification to admin
+                $email_from_name = $request->item_share_email_name;
+                $email_note = $request->item_share_email_note;
+                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+
+                $email_notify_message = [
+                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                    __('frontend.item.send-email-note'),
+                    $email_note,
+                ];
+
+                /**
+                 * Start initial SMTP settings
+                 */
+                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                {
+                    // config SMTP
+                    config_smtp(
+                        $settings->settings_site_smtp_sender_name,
+                        $settings->settings_site_smtp_sender_email,
+                        $settings->settings_site_smtp_host,
+                        $settings->settings_site_smtp_port,
+                        $settings->settings_site_smtp_encryption,
+                        $settings->settings_site_smtp_username,
+                        $settings->settings_site_smtp_password
+                    );
+                }
+                /**
+                 * End initial SMTP settings
+                 */
+
+                if(!empty($settings->setting_site_name))
+                {
+                    // set up APP_NAME
+                    config([
+                        'app.name' => $settings->setting_site_name,
+                    ]);
+                }
+
+                try
+                {
+                    // to admin
+                    Mail::to($email_to)->send(
+                        new Notification(
+                            $email_subject,
+                            $email_to,
+                            null,
+                            $email_notify_message,
+                            __('frontend.item.view-listing'),
+                            'success',
+                            route('page.item', $item->item_slug)
+                        )
+                    );
+
+                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                    \Session::flash('flash_type', 'success');
+
+                }
+                catch (\Exception $e)
+                {
+                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                    \Session::flash('flash_type', 'danger');
+                }
+
+                return redirect()->route('page.item', $item->item_slug);
+            }
+            else
+            {
+                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+                \Session::flash('flash_type', 'danger');
+
+                return redirect()->route('page.item', $item->item_slug);
+            }
+        }
+        else
+        {
+            abort(404);
+        }
+
+    }
+
     public function saveItem(Request $request, string $item_slug)
     {
         $item = Item::where('item_slug', $item_slug)

@@ -95,6 +95,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::middleware(['auth'])->group(function () {
 
         Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
+        Route::post('/items/{item_slug}/contact', 'PagesController@contactEmail')->name('page.item.contact');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
