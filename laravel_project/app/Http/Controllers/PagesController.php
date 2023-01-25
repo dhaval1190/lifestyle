@@ -4970,7 +4970,7 @@ class PagesController extends Controller
                             'item_sections_after_comments', 'item_sections_after_share', 'item_features', 'opening_hours_obj', 'datetime_now',
                             'current_open_range', 'item_hours_monday', 'item_hours_tuesday', 'item_hours_wednesday', 'item_hours_thursday',
                             'item_hours_friday', 'item_hours_saturday', 'item_hours_sunday', 'item_hour_exceptions_obj', 'item_hours',
-                            'item_hour_exceptions'));
+                            'item_hour_exceptions','item_user'));
                 }
                 else
                 {

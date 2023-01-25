@@ -861,7 +861,7 @@
                     @if(!empty($item->item_description))
                     <div class="row mb-3">
                         <div class="col-12">
-                            <h4 class="h5 mb-4 text-black">{{ __('frontend.item.description') }}</h4>
+                            <h4 class="h5 mb-4 text-black">{{ $item->item_title }}</h4>
                             <p>{!! clean(nl2br($item->item_description), array('HTML.Allowed' => 'b,strong,i,em,u,ul,ol,li,p,br')) !!}</p>
                             <hr>
                         </div>
@@ -1692,7 +1692,8 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            <h4 class="h5 mb-4 text-black">{{ __('frontend.item.comments') }}</h4>
+                            <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                            <h4 class="h5 mb-4 text-black mt-2">{{ __('frontend.item.comments') }}</h4>
 
                             @comments([
                             'model' => $item,
@@ -1882,6 +1883,7 @@
 
                                 </div>
                             </div>
+                            
                             <hr>
                         </div>
                     </div>
@@ -2354,6 +2356,26 @@
                                         </form>
                                     @endif
                                     </div>
+                                </div>
+
+                                <div class="row">
+                                    <?php 
+                                        // $user_details = Item::where('item_slug',$item->id)->first();
+                                        // print_r($user_details);
+                                    ?>
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body" style="background: #dbdbdb">
+                                          <h5 class="card-title">Author Details</h5>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Author name: {{ $item_user->name }}</li>
+                                            <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', $item_user->id) }}">Read more</a></li>
+                                            {{-- <li class="list-group-item">Vestibulum at eros</li> --}}
+                                        </ul>
+                                        <div class="card-body" style="margin-left: 26px;">
+                                            <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                                        </div>
+                                      </div>
                                 </div>
                             @endif
                         @endif
