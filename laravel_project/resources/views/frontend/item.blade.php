@@ -2926,10 +2926,12 @@
                         @endif
                         <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST">
                             @csrf
+                            <input type="hidden" name="userId" value = "{{ $item->user_id }}">
+                            <input type="hidden" name="articleTitle" value = "{{ $item->item_title }}">
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
-                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ auth()->user()->name ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
                                     @error('item_conntact_email_name')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2938,7 +2940,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ auth()->user()->email ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
                                     @error('item_contact_email_from_email')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -3324,6 +3326,20 @@
             @error('item_share_email_note')
             $('#share-modal').modal('show');
             @enderror
+
+            @error('item_conntact_email_name')
+            $('#contact-modal').modal('show');
+            @enderror
+
+            @error('item_contact_email_from_email')
+            $('#contact-modal').modal('show');
+            @enderror
+
+            @error('item_contact_email_note')
+            $('#contact-modal').modal('show');
+            @enderror
+
+            
             /**
              * End initial share button and share modal
              */

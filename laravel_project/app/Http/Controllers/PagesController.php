@@ -5226,7 +5226,8 @@ class PagesController extends Controller
 
     public function contactEmail(string $item_slug, Request $request)
     {
-        dd($request->input());
+        // dd($request->input());
+        $user = User::where('id',$request->userId)->first();
         $settings = app('site_global_settings');
 
         $item = Item::where('item_slug', $item_slug)
@@ -5238,18 +5239,26 @@ class PagesController extends Controller
             if(Auth::check())
             {
                 $request->validate([
-                    'item_share_email_name' => 'required|max:255',
-                    'item_share_email_from_email' => 'required|email|max:255',
+                    'item_conntact_email_name' => 'required|max:255',
+                    'item_contact_email_from_email' => 'required|email|max:255',
+                    'item_contact_email_note' => 'required|max:255',
                 ]);
 
                 // send an email notification to admin
-                $email_from_name = $request->item_share_email_name;
-                $email_note = $request->item_share_email_note;
-                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+                // $email_to = $user->email;
+                $email_to = "shubham@pranshtech.com";
+                $email_from_name = $request->item_conntact_email_name;
+                $item_contact_email = $request->item_contact_email_from_email;
+                $articleTitle = $request->articleTitle;
+                $email_note = $request->item_contact_email_note;
+                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
 
                 $email_notify_message = [
-                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                    __('frontend.item.send-email-note'),
+                    __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
+                    __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
+                    __('frontend.item.send-email-contact-note'),
                     $email_note,
                 ];
 
@@ -5290,9 +5299,9 @@ class PagesController extends Controller
                             $email_to,
                             null,
                             $email_notify_message,
-                            __('frontend.item.view-listing'),
-                            'success',
-                            route('page.item', $item->item_slug)
+                            // route('page.item', $item->item_slug),
+                            // null,
+                            // null,
                         )
                     );
 
