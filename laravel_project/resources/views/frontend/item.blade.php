@@ -134,12 +134,20 @@
                             </form>
                         @endif
                     @endguest
+                            <?php
+                            $userId = '';
+                              if(isset(Auth::user()->id)){
+                                  $userId = Auth::user()->id ? Auth::user()->id : '';
+                                }
+                            ?>
 
-                    @if(!empty($item->item_phone))
-                    {{-- <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a> --}}
-                    <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
-                    @endif
+                    {{-- @if(isset(Auth::user()->id)) --}}
+                        @if($item->user_id != $userId)
+                        {{-- <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a> --}}
+                        <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                        {{-- @endif --}}
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a> -->
+                    @endif
 
                 </div>
                 <div class="col-lg-3 col-md-5 pl-0 pr-0 item-cover-contact-section" data-aos="fade-up" data-aos-delay="400">
@@ -1692,7 +1700,9 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
-                            <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                                @if(isset(Auth::user()->id) && $item->user_id != Auth::user()->id)
+                                    <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                                @endif
                             <h4 class="h5 mb-4 text-black mt-2">{{ __('frontend.item.comments') }}</h4>
 
                             @comments([
@@ -2953,7 +2963,7 @@
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
-                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ auth()->user()->name ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
                                     @error('item_conntact_email_name')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2962,7 +2972,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ auth()->user()->email ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
                                     @error('item_contact_email_from_email')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
