@@ -436,7 +436,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Wroking Method" required>
+                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method" required>
                                                 @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                     <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                 @endforeach
