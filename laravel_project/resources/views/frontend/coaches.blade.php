@@ -57,7 +57,7 @@
                     <div class="text-center">
                         <h2 class="font-weight-light text-primary">Im looking for information that will help me with...</h2>
                     </div>
-                    <div class="row align-items-stretch no-gutters">
+                    <div class="row align-items-stretch no-gutters justify-content-center">
                     @foreach( $categories as $categories_key => $category )
                             <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
                                 @if($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
