@@ -277,4 +277,47 @@ class StateController extends Controller
 
         return redirect()->route('admin.states.index');
     }
+
+    public function add_mexico_state(Request $request)
+    {
+            
+        $i = 1;
+        $str = file_get_contents("D:/wamp64/www/coach_directory/laravel_project/public/states.json");
+        $json = json_decode($str, true);
+        echo "<pre>";
+        print_r($json);
+        echo "</pre>";
+        exit;
+        foreach($json as $key=>$val){
+            if($val['country_code'] == 'MX'){
+
+                $countryId = '397';
+                $state_name = $val['name'];
+                $stateAbbr = $val['state_code'];
+                $state_slug = $city_slug =  preg_replace("/[^a-zA-Z0-9\s!?.,\"]/", "", strtolower($state_name));
+                $state_slug = str_replace(" ","-",$state_slug);
+                $state_count_abbr = 'MX';
+                
+                echo $countryId." ".$state_name." ".$stateAbbr." ".$state_slug." ".$state_count_abbr;
+                echo "<br>";
+
+                   
+                            
+                            $new_state = new State(array(
+                                    'country_id' => $countryId,
+                                    'state_name' => $state_name,
+                                    'state_abbr' => $stateAbbr,
+                                    'state_slug' => $state_slug,
+                                    'state_country_abbr' => $state_count_abbr,
+                                    
+                                ));
+    
+                                $new_state->save();
+                   
+                        $i++;
+                }
+
+            }
+
+        }
 }

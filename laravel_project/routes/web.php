@@ -217,6 +217,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     /**
      * Back-end admin routes
      */
+    Route::get('add_canada_city','Admin\CityController@add_canada_city');
+    Route::get('add_mexico_state','Admin\StateController@add_mexico_state');
+    Route::get('add_mexico_city','Admin\CityController@add_mexico_city');
     Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['verified','auth','admin'],'as'=>'admin.'], function(){
 
         Route::get('/dashboard','PagesController@index')->name('index');
