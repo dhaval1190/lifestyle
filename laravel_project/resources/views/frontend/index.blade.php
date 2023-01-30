@@ -85,7 +85,7 @@
             <div class="text-center">
                 <h2 class="font-weight-light text-primary">Im looking for information that will help me with...</h2>
             </div>
-            <div class="row align-items-stretch no-gutters">
+            <div class="row align-items-stretch no-gutters justify-content-center">
 
                 @php
                     $categories_count = $categories->count();
@@ -139,7 +139,7 @@
 
         <!-- Start categories section mobile view-->
         <div class="overlap-category-sm mb-4 d-md-none">
-            <div class="row align-items-stretch no-gutters">
+            <div class="row align-items-stretch no-gutters justify-content-center">
 
                 @if($categories_count > 0)
                     @foreach($categories as $categories_key => $category)

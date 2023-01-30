@@ -53,7 +53,7 @@
             @if($children_categories->count() > 0)
                 <div class="overlap-category mb-5">
 
-                    <div class="row align-items-stretch no-gutters">
+                    <div class="row align-items-stretch no-gutters justify-content-center">
                         @foreach( $children_categories as $key => $children_category )
                             <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
 
