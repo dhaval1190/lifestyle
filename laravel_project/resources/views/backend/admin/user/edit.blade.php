@@ -267,7 +267,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="instagram" class="text-black">IG Handle</label>
-                                                    <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}" required>
+                                                    <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}" required>
                                                     @error('instagram')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -280,7 +280,7 @@
                                             <div class="row mt-3">
                                                 <div class="col-sm-4">
                                                     <label for="linkedin" class="text-black">LinkedIn</label>
-                                                    <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" required>
+                                                    <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" required>
                                                     @error('linkedin')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -289,7 +289,7 @@
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="facebook" class="text-black">Facebook</label>
-                                                    <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}" required>
+                                                    <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}" required>
                                                     @error('facebook')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
