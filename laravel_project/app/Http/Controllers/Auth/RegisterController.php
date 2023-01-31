@@ -89,9 +89,9 @@ class RegisterController extends Controller
             $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
 
             $rules['website']               = ['nullable','string','url','max:100'];
-            $rules['instagram']             = ['nullable','string','url','max:100'];
-            $rules['linkedin']              = ['nullable','string','url','max:100'];
-            $rules['facebook']              = ['nullable','string','url','max:100'];
+            $rules['instagram']             = ['nullable','string','max:100'];
+            $rules['linkedin']              = ['nullable','string','max:100'];
+            $rules['facebook']              = ['nullable','string','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
 
             $rules['hourly_rate_type']      = ['required','string','max:50'];
