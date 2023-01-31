@@ -384,7 +384,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="instagram" class="text-black">IG Handle</label>
-                                            <input id="instagram" type="url" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
+                                            <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
                                             @error('instagram')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -393,7 +393,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="linkedin" class="text-black">LinkedIn</label>
-                                            <input id="linkedin" type="url" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
+                                            <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
                                             @error('linkedin')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -402,7 +402,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="facebook" class="text-black">Facebook</label>
-                                            <input id="facebook" type="url" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
+                                            <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
                                             @error('facebook')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
