@@ -25,8 +25,8 @@
 
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.item.add-item') }}</h1>
-            <p class="mb-4">{{ __('backend.item.add-item-desc') }}</p>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.add-article') }}</h1>
+            <p class="mb-4">{{ __('backend.article.add-article-desc-user') }}</p>
         </div>
         <div class="col-3 text-right">
             <a href="{{ route('admin.items.index') }}" class="btn btn-info btn-icon-split">
@@ -94,7 +94,7 @@
                     <form method="POST" action="{{ route('admin.items.store') }}" id="item-create-form">
                         @csrf
 
-                        <div class="row border-left-primary mb-4">
+                        <!-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -121,7 +121,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
+                        <input type="hidden" name="article_type" value="1">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -258,7 +259,7 @@
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
                                                 @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
-                                                    <option value="{{ $country->id }}" {{ $country->id == old('country_id') ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                                    <option value="{{ $country->id }}" {{ $country->id == \App\Country::COUNTRY_DEFAULT_SELECTED ? 'selected' : '' }}>{{ $country->country_name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -271,7 +272,7 @@
 
                                     <div class="col-md-3">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
-                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
+                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-state') }}</option> --}}
                                         </select>
                                         @error('state_id')
@@ -283,7 +284,7 @@
 
                                     <div class="col-md-3">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
-                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
+                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-city') }}</option> --}}
                                         </select>
                                         @error('city_id')

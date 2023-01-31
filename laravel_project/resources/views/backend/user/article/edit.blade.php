@@ -152,7 +152,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <input type="hidden" name="article_type" value="2">
+                        <input type="hidden" name="article_type" value="1">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -207,7 +207,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
-                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
+                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             @foreach($all_states as $key => $state)
                                             <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
                                             @endforeach
@@ -220,7 +220,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
-                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
+                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             @foreach($all_cities as $key => $city)
                                             <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
                                             @endforeach

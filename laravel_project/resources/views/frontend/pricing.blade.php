@@ -423,7 +423,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="hourly_rate_type" class="text-black">Hourly Rate <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate" required>
+                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
                                                 @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
                                                     <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
                                                 @endforeach
@@ -436,7 +436,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method" required>
+                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method">
                                                 @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                     <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                 @endforeach
@@ -449,7 +449,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="experience_year" class="text-black">Experience Year <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience" required>
+                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
                                                 @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
                                                     <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
                                                 @endforeach
@@ -501,7 +501,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="country_id" class="text-black">Country <span class="text-danger">*</span></label>
-                                            <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
+                                            <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" title="{{ __('prefer_country.select-country') }}">
                                                 @foreach($all_countries as $all_countries_key => $country)
                                                     @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
                                                         <option value="{{ $country->id }}" {{ $country->id == old('country_id') ? 'selected' : '' }}>{{ $country->country_name }}</option>
@@ -516,7 +516,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="state_id" class="text-black">State <span class="text-danger">*</span></label>
-                                            <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-state') }}">
+                                            <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                             </select>
                                             @error('state_id')
                                             <span class="invalid-feedback" role="alert">
@@ -526,7 +526,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="city_id" class="text-black">City <span class="text-danger">*</span></label>
-                                            <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-city') }}">
+                                            <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                             </select>
                                             @error('city_id')
                                             <span class="invalid-feedback" role="alert">
