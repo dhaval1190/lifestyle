@@ -108,6 +108,12 @@ class RegisterController extends Controller
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach Registration!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach Registration!';
+            $rulesMessage['hourly_rate_type.required']  = 'The hourly rate field is required.';
+            $rulesMessage['category_ids.required']      = 'The category field is required.';
+            $rulesMessage['working_type.required']      = 'The working method field is required.';
+            $rulesMessage['country_id.required']        = 'The country field is required.';
+            $rulesMessage['state_id.required']          = 'The state field is required.';
+            $rulesMessage['city_id.required']           = 'The city field is required.';
             // $rulesMessage['plan_id.required']   = 'Invalid Plan Selected!';
             // $rulesMessage['plan_id.exists']     = 'Invalid Plan Selected!';
         }

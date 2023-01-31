@@ -11,15 +11,15 @@
 
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.item.item') }}</h1>
-            <p class="mb-4">{{ __('backend.item.item-desc') }}</p>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.article') }}</h1>
+            <p class="mb-4">{{ __('backend.article.article-desc-user') }}</p>
         </div>
         <div class="col-3 text-right">
             <a href="{{ route('admin.items.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
                 </span>
-                <span class="text">{{ __('backend.item.add-item') }}</span>
+                <span class="text">{{ __('backend.article.add-article') }}</span>
             </a>
         </div>
     </div>

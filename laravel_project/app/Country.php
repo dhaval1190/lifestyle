@@ -8,6 +8,7 @@ class Country extends Model
 {
     const COUNTRY_STATUS_ENABLE = 1;
     const COUNTRY_STATUS_DISABLE = 0;
+    const COUNTRY_DEFAULT_SELECTED = 395;
 
     /**
      * The attributes that are mass assignable.

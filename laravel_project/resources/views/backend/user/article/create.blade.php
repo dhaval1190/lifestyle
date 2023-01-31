@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <input type="hidden" name="article_type" value="2">
+                        <input type="hidden" name="article_type" value="1">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -147,7 +147,7 @@
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
-                                            <option value="{{ $country->id }}" {{ $country->id == old('country_id') ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                            <option value="{{ $country->id }}" {{ $country->id == \App\Country::COUNTRY_DEFAULT_SELECTED ? 'selected' : '' }}>{{ $country->country_name }}</option>
                                             @endif
                                             @endforeach
                                         </select>
@@ -160,7 +160,7 @@
 
                                     <div class="col-md-2">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
-                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true">
+                                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
                                         </select>
                                         @error('state_id')
@@ -172,7 +172,7 @@
 
                                     <div class="col-md-2">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
-                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true">
+                                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
                                         </select>
                                         @error('city_id')
@@ -877,15 +877,16 @@
                                 var city_name = value.city_name;
                                 $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
                             });
-                            $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
-                            $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                            // $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                            // $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                            $('#select_city_id').selectpicker('refresh');
                         }
                     });
                 }
             });
 
-            @if(old('country_id', $login_user->country_id))
-                var ajax_url_initial_states = '/ajax/states/{{ old('country_id', $login_user->country_id) }}';
+            @if(old('country_id'))
+                var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
                 jQuery.ajax({
                     url: ajax_url_initial_states,
                     method: 'get',
@@ -897,14 +898,16 @@
                             var state_name = value.state_name;
                             $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
                         });
-                        $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
-                        $('#select_state_id').val("{{ old('state_id', $login_user->state_id) }} ").selectpicker('refresh');
+                        @if(old('state_id'))
+                            $('#select_state_id').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                            $('#select_state_id').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                        @endif
                     }
                 });
             @endif
 
-            @if(old('state_id', $login_user->state_id))
-                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id', $login_user->state_id) }}';
+            @if(old('state_id'))
+                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
                 jQuery.ajax({
                     url: ajax_url_initial_cities,
                     method: 'get',
@@ -916,8 +919,10 @@
                             var city_name = value.city_name;
                             $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
                         });
-                        $('#select_city_id').val("{{ old('city_id', $login_user->city_id) }}").selectpicker('refresh');
-                        $('#select_city_id').val("{{ old('city_id', $login_user->city_id) }}").selectpicker('refresh');
+                        @if(old('city_id'))
+                            $('#select_city_id').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                            $('#select_city_id').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                        @endif
                 }});
             @endif
 
