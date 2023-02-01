@@ -412,7 +412,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <!-- <div class="col-md-3">
                                         <label for="article_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
                                         <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]">
                                         <small id="videoHelpBlock" class="form-text text-muted">
@@ -423,7 +423,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>

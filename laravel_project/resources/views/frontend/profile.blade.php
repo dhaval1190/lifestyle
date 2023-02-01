@@ -74,7 +74,7 @@
                             <div class="upper_logo_info">
                                 <div class="upper_logo_padding_25">
                                     <h3>About</h3>
-                                    <p>{{ $user_detail['user_about']}}</p>
+                                    <p style="white-space:pre-line;">{{ $user_detail['user_about']}}</p>
                                 </div>
                             </div>
                         </div>

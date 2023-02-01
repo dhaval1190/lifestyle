@@ -462,7 +462,7 @@ return array (
     'pages' => 'Pages',
     'plan' => 'Plan',
     'privacy-policy' => 'Privacy Policy',
-    'profile' => 'Profile',
+    'profile' => 'Edit Profile',
     'saved-listings' => 'Saved coaches',
     'saved-articles' => 'Saved articles',
     'sections' => 'Sections',

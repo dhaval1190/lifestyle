@@ -432,7 +432,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-3">
+                                    <!-- <div class="col-md-3">
                                         @php
                                             $article_video_url = '';
                                             if($article->medias && count($article->medias) > 0) {
@@ -454,7 +454,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <!-- End web & social media -->
                             </div>

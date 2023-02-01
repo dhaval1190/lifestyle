@@ -417,7 +417,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <!-- <div class="col-md-3">
                                         @php
                                             $item_video_url = '';
                                             if($item->medias && count($item->medias) > 0) {
@@ -439,7 +439,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div> -->
 
 
                                     {{-- <div class="col-md-3">

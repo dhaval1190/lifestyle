@@ -817,12 +817,12 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <h4 class="h5 mb-4 text-black">{{ __('customization.item.video') }}</h4>
-                                <!-- <div class="embed-responsive embed-responsive-16by9">
+                                <div class="embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item" src="{{ $item_video_url }}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div> -->
-                                <div style="max-width:854px"><div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://embed.ted.com/talks/bunny_young_what_you_don_t_understand_about_the_power_of_purpose" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe></div></div>
+                                </div>
+                                <!-- <div style="max-width:854px"><div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://embed.ted.com/talks/bunny_young_what_you_don_t_understand_about_the_power_of_purpose" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe></div></div>
                                 <div style="max-width:854px"><div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://embed.ted.com/talks/taryn_simon_the_stories_behind_the_bloodlines" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe></div></div>
-                                <hr>
+                                <hr> -->
                             </div>
                         </div>
                     @endif
