@@ -102,7 +102,8 @@
         </div>
     </li>
 
-    @if(auth()->user()->isAdmin() || auth()->user()->isCoach())
+    {{-- @if(auth()->user()->isAdmin() || auth()->user()->isCoach()) --}}
+    @if(auth()->user()->isAdmin())
         <li class="nav-item">
             <a class="nav-link" href="{{ route('canvas') }}" target="_blank">
                 <i class="fas fa-external-link-alt"></i>

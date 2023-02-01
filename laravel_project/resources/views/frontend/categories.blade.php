@@ -55,7 +55,7 @@
             @if($categories->count() > 0)
                 <div class="overlap-category mb-5">
                     <div class="text-center">
-                        <h2 class="font-weight-light text-primary">Im looking for information that will help me with...</h2>
+                        <h2 class="font-weight-light text-primary">I'm looking for information that will help me with...</h2>
                     </div>
                     <div class="row align-items-stretch no-gutters justify-content-center">
                     @foreach( $categories as $categories_key => $category )
