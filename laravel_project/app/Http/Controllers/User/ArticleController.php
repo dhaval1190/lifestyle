@@ -375,8 +375,10 @@ class ArticleController extends Controller
          * End initial item_featured selector
          */
         $items = Item::where('user_id',$login_user->id)->orderBy('id','desc')->first();
-        $items_hours = count($items->itemHours) > 0 ? $items->itemHours[count($items->itemHours)-1] : [];
-        $items_hours_exceptions = count($items->itemHourExceptions) > 0 ? $items->itemHourExceptions[count($items->itemHourExceptions)-1] : [];
+        // echo "<pre>";
+        // print_r($items->itemHours);exit;
+        $items_hours = isset($items) && count($items->itemHours) > 0 ? $items->itemHours[count($items->itemHours)-1] : [];
+        $items_hours_exceptions = isset($items) && count($items->itemHourExceptions) > 0 ? $items->itemHourExceptions[count($items->itemHourExceptions)-1] : [];
 
         return response()->view('backend.user.article.create',
             compact('login_user', 'all_categories', 'setting_article_max_gallery_photos', 'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_article_featured_selector',
