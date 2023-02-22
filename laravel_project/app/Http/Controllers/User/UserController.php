@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
+use App\Subscription;
+use App\Item;
+
 
 class UserController extends Controller
 {
@@ -29,6 +32,8 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        
 
         /**
          * Start SEO
@@ -43,6 +48,7 @@ class UserController extends Controller
          */
 
         $login_user = Auth::user();
+        $user_detail = User::where('id', $login_user->id)->first();
 
         $printable_categories = new Category();
         $printable_categories = $printable_categories->getPrintableCategoriesNoDash();
@@ -55,8 +61,169 @@ class UserController extends Controller
         $podcast_media_array = MediaDetail::where('user_id', $login_user->id)->where('media_type', 'podcast')->get();
         $ebook_media_array = MediaDetail::where('user_id', $login_user->id)->where('media_type', 'ebook')->get();
 
+        $subscription_obj = new Subscription();
+
+        $active_user_ids = $subscription_obj->getActiveUserIds();
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                ->orWhereNull('items.country_id');
+            });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+
+        // paid listing
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+
+        // free listing
+        $free_items_query = Item::query();
+
+        // get free users id array
+        //$free_user_ids = $subscription_obj->getFreeUserIds();
+        //$free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                    ->orWhereNull('items.country_id');
+            })
+            // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->where('items.user_id',$login_user->id);
+
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
+
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+                ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+
+        $total_free_items = $free_items_query->count();
+
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+
+       
+           
+            $free_items = $free_items_query->paginate(4);
+
+           
+            
+      
+        
+        $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+
+        $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+
+        $all_cities = collect([]);
+        if(!empty($filter_state))
+        {
+            $state = State::find($filter_state);
+            $all_cities = $state->cities()->orderBy('city_name')->get();
+        }
+
+        $total_results = $total_free_items;
+
         return response()->view('backend.user.profile.edit',
-            compact('login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array'));
+            compact('user_detail','free_items','all_cities','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array'));
     }
 
     /**

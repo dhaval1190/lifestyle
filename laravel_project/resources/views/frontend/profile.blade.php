@@ -9,6 +9,11 @@
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 @endsection
 
+<style>
+    .listing .lh-content {
+    text-align:left !important;
+}
+</style>
 @section('content')
     <!-- <div class="site-section"> -->
         <div class="container-fluid">
@@ -259,6 +264,31 @@
                             </div>
                         </div>
                     @endif
+                    <div class="row">
+                            <div class="col-md-12">
+                                        <div class="below_info">
+                                            <h3>Topics</h3>
+                                            @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
+                                                <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
+                                            @endif
+                                        </div>
+                            </div>
+                                <div class="col-lg-12 plr-45">
+                                
+                                <div class="row">
+                                    @if($free_items->count() > 0)
+                                        @foreach($free_items as $free_items_key => $item)
+                                            <div class="col-md-3">               
+                                                @include('frontend.partials.free-item-block')
+                                            </div>
+                                    
+                                        @endforeach
+                                    @endif
+                                </div>
+                              
+                              
+                            </div>
+                    </div>
                 </div>
             </div>
         </section>

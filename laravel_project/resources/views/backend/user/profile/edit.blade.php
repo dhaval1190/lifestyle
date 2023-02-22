@@ -692,6 +692,120 @@
                                 </div>
                             </div>
                         @endif
+                        <div class="row">
+                                <div class="col-md-12">
+                                    <div class="below_info">
+                                        <h3>Topics</h3>
+                                        @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
+                                            <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 plr-45">
+                               
+                                <div class="row">
+                        <div class="col-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr class="bg-info text-white">
+                                        <!-- <th>{{ __('importer_csv.select') }}</th> -->
+                                        <th>{{ __('backend.article.article') }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($free_items as $items_key => $item)
+                                        <tr>
+                                            <!-- <td>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input items_table_index_checkbox" type="checkbox" id="item_index_data_checkbox_{{ $item->id }}" value="{{ $item->id }}">
+                                                </div>
+                                            </td> -->
+                                            <td>
+
+                                                <div class="row">
+                                                    <div class="col-12 col-md-3">
+                                                        @if(!empty($item->item_image_tiny))
+                                                            <img src="{{ Storage::disk('public')->url('item/' . $item->item_image_tiny) }}" alt="Image" class="img-fluid rounded">
+                                                        @elseif(!empty($item->item_image))
+                                                            <img src="{{ Storage::disk('public')->url('item/' . $item->item_image) }}" alt="Image" class="img-fluid rounded">
+                                                        @else
+                                                            <img src="{{ asset('backend/images/placeholder/full_item_feature_image_tiny.webp') }}" alt="Image" class="img-fluid rounded">
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        @if($item->item_status == \App\Item::ITEM_SUBMITTED)
+                                                            <span class="text-warning"><i class="fas fa-exclamation-circle"></i></span>
+                                                        @elseif($item->item_status == \App\Item::ITEM_PUBLISHED)
+                                                            <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                                                        @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
+                                                            <span class="text-danger"><i class="fas fa-ban"></i></span>
+                                                        @endif
+                                                        <span class="text-gray-800">{{ $item->item_title }}</span>
+                                                        @if($item->item_featured == \App\Item::ITEM_FEATURED)
+                                                            <span class="text-white bg-info pl-1 pr-1 rounded">{{ __('prefer_country.featured') }}</span>
+                                                        @endif
+                                                        <div class="pt-1 pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ empty($item->item_average_rating) ? 0 : $item->item_average_rating }}"></div>
+                                                        <span>
+                                                            {{ '(' . $item->getCountRating() . ' ' . __('review.frontend.reviews') . ')' }}
+                                                        </span>
+
+                                                        <br>
+                                                        @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                            <i class="fas fa-map-marker-alt"></i>
+                                                            {{ $item->item_address }},
+                                                            {{ $item->city->city_name }},
+                                                            {{ $item->state->state_name }},
+                                                            {{ $item->country->country_name }}
+                                                            {{ $item->item_postal_code }}
+                                                        @else
+                                                            <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
+                                                        @endif
+
+                                                        <div class="pt-2">
+                                                            @foreach($item->allCategories()->get() as $categories_key => $category)
+                                                                <span class="border border-info text-info pl-1 pr-1 rounded">{{ $category->category_name }}</span>
+                                                            @endforeach
+                                                        </div>
+                                                        <hr class="mt-3 mb-2">
+                                                        @if($item->item_status == \App\Item::ITEM_PUBLISHED)
+                                                        <a href="{{ route('page.item', $item->item_slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-external-link-alt"></i>
+                                                            {{ __('prefer_country.view-item') }}
+                                                        </a>
+                                                        @endif
+                                                        <a href="{{ route('user.articles.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
+                                                            <i class="far fa-edit"></i>
+                                                            {{ __('backend.shared.edit') }}
+                                                        </a>
+                                                        <hr class="mt-2 mb-2">
+                                                        <span class="text-info">
+                                                            <i class="far fa-plus-square"></i>
+                                                            {{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                                        </span>
+                                                        @if($item->created_at != $item->updated_at)
+                                                            <span class="text-info">
+                                                                |
+                                                                <i class="far fa-edit"></i>
+                                                                {{ __('review.backend.updated-at') . ' ' . \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
+                                                            </span>
+                                                        @endif
+
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                
+            </div>
 
                         <hr class="mt-5">
 
@@ -705,6 +819,7 @@
                                 </a>
                             </div>
                         </div>
+                        
 
                     </form>
                 </div>
