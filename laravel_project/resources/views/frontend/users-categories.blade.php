@@ -36,8 +36,8 @@
 
                     <div class="row justify-content-center mt-5">
                         <div class="col-md-8 text-center">
-                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
-                            <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p> -->
+                            <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('frontend.categories.title') }}</h1>
+                            <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@
             @endif
 
             <!-- Start Filter -->
-            <form method="GET" action="{{ route('page.coaches') }}" id="filter_form">
+            <form method="GET" action="{{ route('page.user.categories', $user_detail['id']) }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
 
@@ -285,7 +285,7 @@
 
                         <div class="row">
                             <div class="col-12 text-right">
-                                <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.coaches') }}">
+                                <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.categories') }}">
                                     {{ __('theme_directory_hub.filter-link-reset-all') }}
                                 </a>
                                 <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit">
@@ -305,7 +305,7 @@
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('Latest Coaches') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-1') }}</h2>
                         </div>
                     </div>
 
@@ -345,48 +345,18 @@
 
                     <div class="row">
 
-                        @if($all_coaches->count() > 0)
-                            @foreach($all_coaches as $all_coaches_key => $coach)
+                        <!-- @if($paid_items->count() > 0)
+                            @foreach($paid_items as $paid_items_key => $item)
                                 <div class="col-lg-4">
-                                    <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
-                                        <div class="lh-content">        
-                                            <div class="row align-items-center">
-                                                <div class="col-5 col-md-7 pr-0">
-                                                    <div class="row align-items-center item-box-user-div">
-                                                        <div class="col-3 item-box-user-img-div">
-                                                            @if(empty($coach->user_image))
-                                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-                                                            @else
-                                                                <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
-                                                            @endif
-                                                        </div>
-                                                        <div class="col-9 line-height-1-2 item-box-user-name-div">
-                                                            <div class="row pb-1">
-                                                                <div class="col-12">
-                                                                    <a href="{{ route('page.profile', $coach->id) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row align-items-center item-box-user-div">
-                                                        <div class="col-12">
-                                                            <span class="font-size-13">{{ $coach->email }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row align-items-center item-box-user-div">
-                                                        <div class="col-12">
-                                                            <span class="font-size-13">{{ $coach->phone }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row align-items-center item-box-user-div">
-                                                        <div class="col-12">
-                                                            <span class="font-size-13">{{ $coach->company_name }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @include('frontend.partials.paid-item-block')
+                                </div>
+                            @endforeach
+                        @endif -->
+
+                        @if($free_items->count() > 0)
+                            @foreach($free_items as $free_items_key => $item)
+                                <div class="col-lg-4">
+                                    @include('frontend.partials.free-item-block')
                                 </div>
                             @endforeach
                         @endif
@@ -439,11 +409,11 @@
     </div>
 
     @if($all_states->count() > 0)
-        <!-- <div class="site-section bg-light">
+        <div class="site-section bg-light">
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary">{{ __('All Coaches by states') }}</h2>
+                        <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-2') }}</h2>
                     </div>
                 </div>
                 <div class="row mt-5">
@@ -456,7 +426,7 @@
 
                 </div>
             </div>
-        </div> -->
+        </div>
     @endif
 
 @endsection
@@ -496,7 +466,7 @@
              */
             @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
 
-                @if(count($free_items))
+                @if(count($paid_items) || count($free_items))
 
                 var window_height = $(window).height();
                 $('#mapid-box').css('height', window_height + 'px');
@@ -511,6 +481,39 @@
                 }).addTo(map);
 
                 var bounds = [];
+                @foreach($paid_items as $paid_items_key => $paid_item)
+                    @if($paid_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+
+                        bounds.push([ {{ $paid_item->item_lat }}, {{ $paid_item->item_lng }} ]);
+                        var marker = L.marker([{{ $paid_item->item_lat }}, {{ $paid_item->item_lng }}]).addTo(map);
+
+                        var popup_item_title = '{{ $paid_item->item_title }}';
+
+                        @if($paid_item->item_address_hide)
+                            var popup_item_address = '{{ $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                        @else
+                            var popup_item_address = '{{ $paid_item->item_address . ', ' . $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                        @endif
+                        var popup_item_get_direction = '<a target="_blank" href="'+ '{{ 'https://www.google.com/maps/dir/?api=1&destination=' . $paid_item->item_lat . ',' . $paid_item->item_lng }}' +'"><i class="fas fa-directions"></i> '+ '{{ __('google_map.get-directions') }}' +'</a>';
+
+                        @if($paid_item->getCountRating() > 0)
+                            var popup_item_rating = '{{ $paid_item->item_average_rating }}' + '/5';
+                            var popup_item_reviews = ' - {{ $paid_item->getCountRating() }}' + ' ' + '{{ __('category_image_option.map.review') }}';
+                        @else
+                            var popup_item_rating = '';
+                            var popup_item_reviews = '';
+                        @endif
+
+                        var popup_item_feature_image_link = '<img src="'+ '{{ !empty($paid_item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $paid_item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}' +'">';
+                        var popup_item_link = '<a href="' + '{{ route('page.item', $paid_item->item_slug) }}' + '" target="_blank">' + popup_item_title + '</a>';
+
+                        marker.bindPopup(popup_item_feature_image_link + "<br><br>" + popup_item_link + "<br>" + popup_item_rating + popup_item_reviews + "<br>" + popup_item_address + '<br>' + popup_item_get_direction, {
+                            minWidth:226,
+                            maxWidth:226
+                        });
+
+                    @endif
+                @endforeach
 
                 @foreach($free_items as $free_items_key => $free_item)
                     @if($free_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
@@ -709,12 +712,40 @@
             // Initial the google map
             function initMap() {
 
-                @if(count($free_items))
+                @if(count($paid_items) || count($free_items))
 
                 var window_height = $(window).height();
                 $('#mapid-box').css('height', window_height + 'px');
 
                 var locations = [];
+
+                @foreach($paid_items as $paid_items_key => $paid_item)
+                    @if($paid_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+
+                        var popup_item_title = '{{ $paid_item->item_title }}';
+
+                        @if($paid_item->item_address_hide)
+                            var popup_item_address = '{{ $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                        @else
+                            var popup_item_address = '{{ $paid_item->item_address . ', ' . $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                        @endif
+                        var popup_item_get_direction = '<a target="_blank" href="'+ '{{ 'https://www.google.com/maps/dir/?api=1&destination=' . $paid_item->item_lat . ',' . $paid_item->item_lng }}' +'"><i class="fas fa-directions"></i> '+ '{{ __('google_map.get-directions') }}' +'</a>';
+
+                        @if($paid_item->getCountRating() > 0)
+                            var popup_item_rating = '{{ $paid_item->item_average_rating }}' + '/5';
+                            var popup_item_reviews = ' - {{ $paid_item->getCountRating() }}' + ' ' + '{{ __('category_image_option.map.review') }}';
+                        @else
+                            var popup_item_rating = '';
+                            var popup_item_reviews = '';
+                        @endif
+
+                        var popup_item_feature_image_link = '<img src="'+ '{{ !empty($paid_item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $paid_item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}' +'">';
+                        var popup_item_link = '<a href="' + '{{ route('page.item', $paid_item->item_slug) }}' + '" target="_blank">' + popup_item_title + '</a>';
+
+                        locations.push(["<div class='google_map_scrollFix'>" + popup_item_feature_image_link + "<br><br>" + popup_item_link + "<br>" + popup_item_rating + popup_item_reviews + "<br>" + popup_item_address + '<br>' + popup_item_get_direction + "</div>", {{ $paid_item->item_lat }}, {{ $paid_item->item_lng }} ]);
+
+                    @endif
+                @endforeach
 
                 @foreach($free_items as $free_items_key => $free_item)
                     @if($free_item->item_type == \App\Item::ITEM_TYPE_REGULAR)

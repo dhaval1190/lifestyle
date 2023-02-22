@@ -1634,7 +1634,8 @@ h1, h2, h3, h4, h5,
   .listing .lh-content {
     padding: 20px;
     position: relative;
-    width: 100%; }
+    width: 100%;
+  text-align: left !important; }
     .listing .lh-content .bookmark {
       position: absolute;
       right: 20px;
@@ -1754,3 +1755,12 @@ h1, h2, h3, h4, h5,
   .newsletter .btn:hover {
     color: #fff;
     background: #000; }
+   
+.eitem-featured-label {
+    border-top-left-radius: 5px;
+    font-size: 13px;
+    position: relative;
+    top: -2%;
+    background-color: #30e3ca;
+    float: left !important;
+  }

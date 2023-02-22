@@ -1269,12 +1269,388 @@ class PagesController extends Controller
                 'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
             ));
     }
+    public function usersCategories(Request $request,$id)
+    {
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+        $user_detail = User::where('id', $id)->first();
+        $subscription_obj = new Subscription();
+        
+        $active_user_ids = $subscription_obj->getActiveUserIds();
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                ->orWhereNull('items.country_id');
+            });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+        
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+        
+        // paid listing
+        $paid_items_query = Item::query();
+        
+        /**
+         * Start filter for paid listing
+         */
+        // categories
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+        
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+        
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+        /**
+         * End filter for paid listing
+         */
+        
+        // get paid users id array
+        $paid_user_ids = $subscription_obj->getPaidUserIds();
+        
+        if(count($item_ids) > 0) {
+            $paid_items_query->whereIn('items.id', $item_ids);
+        }
+        
+        $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        ->where(function ($query) use ($site_prefer_country_id) {
+            $query->where('items.country_id', $site_prefer_country_id)
+            ->orWhereNull('items.country_id');
+        })
+        // ->where('items.item_featured', Item::ITEM_FEATURED)
+        ->where(function($query) use ($id) {
+            
+            $query->where('items.user_id', $id);
+            // ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
+        });
+        
+        // filter paid listings state
+        if(!empty($filter_state)) {
+            $paid_items_query->where('items.state_id', $filter_state);
+        }
+        
+        // filter paid listings city
+        if(!empty($filter_city)) {
+            $paid_items_query->where('items.city_id', $filter_city);
+        }
+        
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $paid_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $paid_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+         */
+        
+        $paid_items_query->orderBy('items.created_at', 'DESC')
+        ->distinct('items.id')
+        ->with('state')
+        ->with('city')
+        ->with('user');
+        
+        $total_paid_items = $paid_items_query->count();
+        //print_r($paid_items_query->dd());
 
+        
+        // free listing
+        $free_items_query = Item::query();
+        
+        // get free users id array
+        // $free_user_ids = $subscription_obj->getFreeUserIds();
+        // $free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+        
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+        
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        ->where(function ($query) use ($site_prefer_country_id) {
+            $query->where('items.country_id', $site_prefer_country_id)
+            ->orWhereNull('items.country_id');
+        })
+        // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+        // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+        ->where('items.user_id', $id);
+        
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+        
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+        
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+         */
+        
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+            ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+        ->with('state')
+        ->with('city')
+        ->with('user');
+        
+        $total_free_items = $free_items_query->count();
+        // echo "-----";
+        // print_r($free_items_query->dd());
+        // exit;
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+        
+        if($total_free_items == 0 || $total_paid_items == 0)
+        {
+            $paid_items = $paid_items_query->paginate(10);
+            $free_items = $free_items_query->paginate(10);
+            
+            if($total_free_items == 0)
+            {
+                $pagination = $paid_items->appends($querystringArray);
+            }
+            if($total_paid_items == 0)
+            {
+                $pagination = $free_items->appends($querystringArray);
+            }
+        }
+        else
+        {
+            $num_of_pages = ceil(($total_paid_items + $total_free_items) / 10);
+            
+            $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 10 ? 10 : ceil($total_paid_items / $num_of_pages);
+            
+            $free_items_per_page = 10 - $paid_items_per_page;
+            
+            $paid_items = $paid_items_query->paginate($paid_items_per_page);
+            $free_items = $free_items_query->paginate($free_items_per_page);
+            
+            if(ceil($total_paid_items / $paid_items_per_page) > ceil($total_free_items / $free_items_per_page))
+            {
+                $pagination = $paid_items->appends($querystringArray);
+            }
+            else
+            {
+                $pagination = $free_items->appends($querystringArray);
+            }
+        }
+        /**
+         * End do listing query
+         */
+        
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+        
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+        
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+        ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            /**
+             * End inner page header customization
+             */
+            
+            /**
+             * Start initial filter
+             */
+            $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+            
+            $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+            
+            $all_cities = collect([]);
+            if(!empty($filter_state))
+            {
+                $state = State::find($filter_state);
+                $all_cities = $state->cities()->orderBy('city_name')->get();
+            }
+            
+            $total_results =  $total_free_items;
+            /**
+             * End initial filter
+             */
+            
+            /**
+             * Start initial blade view file path
+             */
+            $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+            $theme_view_path = $theme_view_path->getViewPath();
+            /**
+             * End initial blade view file path
+             */
+            
+            //echo "hi";exit;
+            return response()->view($theme_view_path . 'users-categories',
+            compact('user_detail','categories', 'paid_items', 'free_items', 'pagination', 'all_states',
+            'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+            'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+            'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+            'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+            'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
+            'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
+            'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+        ));
+    }
+    
     public function coaches(Request $request)
     {
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
-
+        
         $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
 
         /**
@@ -1562,7 +1938,160 @@ class PagesController extends Controller
         /**
          * End SEO
          */
+        // $category = Category::all()->pluck('category_slug');
+        $subscription_obj = new Subscription();
 
+        $active_user_ids = $subscription_obj->getActiveUserIds();
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                ->orWhereNull('items.country_id');
+            });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+
+        // paid listing
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+
+        // free listing
+        $free_items_query = Item::query();
+
+        // get free users id array
+        //$free_user_ids = $subscription_obj->getFreeUserIds();
+        //$free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where(function ($query) use ($site_prefer_country_id) {
+                $query->where('items.country_id', $site_prefer_country_id)
+                    ->orWhereNull('items.country_id');
+            })
+            // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->where('items.user_id', $id);
+
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
+
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+                ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+
+        $total_free_items = $free_items_query->count();
+
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+        
+        $free_items = $free_items_query->paginate(4);
+        $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+
+        $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+
+        $all_cities = collect([]);
+        if(!empty($filter_state))
+        {
+            $state = State::find($filter_state);
+            $all_cities = $state->cities()->orderBy('city_name')->get();
+        }
+
+        $total_results = $total_free_items;
         /**
          * Start fetch ads blocks
          */
@@ -1645,7 +2174,7 @@ class PagesController extends Controller
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results'
             ));
     }
 
