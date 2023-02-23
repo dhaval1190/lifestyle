@@ -9,6 +9,8 @@ use App\Country;
 use App\Customization;
 use App\Faq;
 use App\Item;
+use App\ItemVisit;
+use App\ItemView;
 use App\ItemHour;
 use App\ItemImageGallery;
 use App\ItemLead;
@@ -44,9 +46,16 @@ use Illuminate\Support\Facades\URL;
 use Artesaos\SEOTools\Facades\SEOMeta;
 
 use Spatie\OpeningHours\OpeningHours;
+use Illuminate\Support\Collection;
+use Carbon\CarbonInterval;
+use DateInterval;
+use DatePeriod;
+use DateTimeInterface;
 
 class PagesController extends Controller
 {
+    private const DAYS = 30;
+    
     public function index(Request $request)
     {
         $settings = app('site_global_settings');
@@ -5075,6 +5084,123 @@ class PagesController extends Controller
     }
 
     /**
+     * Check if a given post exists in the session.
+     *
+     * @param Post $post
+     * @return bool
+     */
+    private function wasRecentlyViewedItem(Item $item): bool
+    {
+        $viewed = session()->get('viewed_items', []);
+
+        return array_key_exists($item->id, $viewed);
+    }
+
+    /**
+     * Add a given post to the session.
+     *
+     * @param Post $post
+     * @return void
+     */
+    private function storeInSessionItem(Item $item)
+    {
+        session()->put("viewed_items.{$item->id}", now()->timestamp);
+    }
+
+    /**
+     * Check if a given post and IP are unique to the session.
+     *
+     * @param Post $post
+     * @param string $ip
+     * @return bool
+     */
+    private function visitIsUniqueItem(Item $item, string $ip): bool
+    {
+        $visits = session()->get('visited_items', []);
+
+        if (array_key_exists($item->id, $visits)) {
+            $visit = $visits[$item->id];
+
+            return $visit['ip'] != $ip;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Add a given post and IP to the session.
+     *
+     * @param Item $item
+     * @param string $ip
+     * @return void
+     */
+    private function storeInSessionVisitItem(Item $item, string $ip)
+    {
+        session()->put("visited_items.{$item->id}", [
+            'timestamp' => now()->timestamp,
+            'ip' => $ip,
+        ]);
+    }
+
+    public function compareMonthToMonthItem(Collection $current, Collection $previous): array
+    {
+        $dataCountThisMonth = $current->count();
+        $dataCountLastMonth = $previous->count();
+
+        if ($dataCountLastMonth != 0) {
+            $difference = (int) $dataCountThisMonth - (int) $dataCountLastMonth;
+            $growth = ($difference / $dataCountLastMonth) * 100;
+        } else {
+            $growth = $dataCountThisMonth * 100;
+        }
+
+        return [
+            'direction' => $dataCountThisMonth > $dataCountLastMonth ? 'up' : 'down',
+            'percentage' => number_format(abs($growth)),
+        ];
+    }
+
+    public function countTrackedDataItem(Collection $data, int $days = 1): array
+    {
+        // Filter the data to only include created_at date strings
+        $filtered = collect();
+        $data->sortBy('created_at')->each(function ($item, $key) use ($filtered) {
+            $filtered->push($item->created_at->toDateString());
+        });
+
+        // Count the unique values and assign to their respective keys
+        $unique = array_count_values($filtered->toArray());
+
+        // Create a day range to hold the default date values
+        $period = $this->generateDateRangeItem(today()->subDays($days), CarbonInterval::day(), $days);
+
+        // Compare the data and date range arrays, assigning counts where applicable
+        $total = collect();
+
+        foreach ($period as $date) {
+            if (array_key_exists($date, $unique)) {
+                $total->put($date, $unique[$date]);
+            } else {
+                $total->put($date, 0);
+            }
+        }
+
+        return $total->toArray();
+    }
+
+    private function generateDateRangeItem(DateTimeInterface $start_date, DateInterval $interval, int $recurrences, int $exclusive = 1): array
+    {
+        $period = new DatePeriod($start_date, $interval, $recurrences, $exclusive);
+        $dates = collect();
+
+        foreach ($period as $date) {
+            $dates->push($date->format('Y-m-d'));
+        }
+
+        return $dates->toArray();
+    }
+
+    /**
      * @param Request $request
      * @param string $item_slug
      * @return Response
@@ -5089,6 +5215,31 @@ class PagesController extends Controller
 
         if($item)
         {
+            if (! $this->wasRecentlyViewedItem($item)) {
+                $view_data = [
+                    'item_id' => $item->id,
+                    'ip' => request()->getClientIp(),
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+                
+                $item->views()->create($view_data);
+    
+                $this->storeInSessionItem($item);
+            }
+            $ip = request()->getClientIp();
+            if ($this->visitIsUniqueItem($item, $ip)) {
+                $visit_data = [
+                    'item_id' => $item->id,
+                    'ip' => $ip,
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+    
+                $item->visits()->create($visit_data);
+    
+                $this->storeInSessionVisitItem($item, $ip);
+            }
             $item_user = $item->user()->first();
 
             if($item_user)
@@ -5486,6 +5637,38 @@ class PagesController extends Controller
                      * End initial Google reCAPTCHA version 2
                      */
 
+                    $views = ItemView::where('item_id', $item->id)->get();
+                    $previousMonthlyViews = $views->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyViews = $views->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $lastThirtyDays = $views->whereBetween('created_at', [
+                        today()->subDays(self::DAYS)->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ]);
+        
+                    $visits = ItemVisit::where('item_id', $item->id)->get();
+                    $previousMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+
+                    $view_count = $currentMonthlyViews->count();
+                    $view_trend = json_encode($this->countTrackedDataItem($lastThirtyDays, self::DAYS));
+                    $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
+                    $view_count_lifetime = $views->count();
+                    $visit_count = $currentMonthlyVisits->count();
+                    $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);
+
                     return response()->view($theme_view_path . 'item',
                         compact('item', 'nearby_items', 'similar_items','similar_items_of_coaches',
                             'reviews', 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_gallery', 'ads_before_description',
@@ -5499,7 +5682,8 @@ class PagesController extends Controller
                             'item_sections_after_comments', 'item_sections_after_share', 'item_features', 'opening_hours_obj', 'datetime_now',
                             'current_open_range', 'item_hours_monday', 'item_hours_tuesday', 'item_hours_wednesday', 'item_hours_thursday',
                             'item_hours_friday', 'item_hours_saturday', 'item_hours_sunday', 'item_hour_exceptions_obj', 'item_hours',
-                            'item_hour_exceptions','item_user'));
+                            'item_hour_exceptions','item_user','view_count','view_trend','view_month_over_month','view_count_lifetime','visit_count',
+                            'visit_trend','visit_month_over_month'));
                 }
                 else
                 {
