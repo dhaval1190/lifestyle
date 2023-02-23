@@ -819,35 +819,40 @@ class ArticleController extends Controller
                 $create_item_hour_exception->save();
               
             }
-                $data["article_by"] = Auth::user()->name;
-                $data["date"] = date('Y-m-d');                   
-                $data["subject"] = 'New Article Create At: ' .$data["date"].' ('.$data["article_by"].')';
+        }
+        
+           
+                    $data["article_by"] = Auth::user()->name;
+                    $data["date"] = date('Y-m-d');                   
+                    $data["subject"] = 'New Article Create At: ' .$data["date"].' ('.$data["article_by"].')';
                     /**
          * Start initial SMTP settings
          */
         if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
         {
             // config SMTP
-                config_smtp(
-                    $settings->settings_site_smtp_sender_name,
-                    $settings->settings_site_smtp_sender_email,
-                    $settings->settings_site_smtp_host,
-                    $settings->settings_site_smtp_port,
-                    $settings->settings_site_smtp_encryption,
-                    $settings->settings_site_smtp_username,
-                    $settings->settings_site_smtp_password
-                );
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
         }
         /**
          * End initial SMTP settings
          */
-            Mail::send('backend.user.article.mail', $data, function($message)use($data) {
-                $message->to('harsh.modi@pranshtech.com')
-                // ->cc('rohit@pranshtech.com')
-                // ->bcc($bccArr)
-                ->subject($data["subject"]);
-                        
-            });
+                     
+          
+                Mail::send('backend.user.article.mail', $data, function($message)use($data) {
+                    $message->to('harsh.modi@pranshtech.com')
+                    // ->cc('rohit@pranshtech.com')
+                    // ->bcc($bccArr)
+                    ->subject($data["subject"]);
+                         
+                });
         /**
          * End save item hour exceptions
          */
@@ -858,7 +863,6 @@ class ArticleController extends Controller
 
         return redirect()->route('user.articles.edit', ['article' => $new_item]);
     }
-}
 
     /**
      * Display the specified resource.
