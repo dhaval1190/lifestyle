@@ -95,7 +95,7 @@ return array (
         'paid-plan' => "Paid Plan",
         'unlimited' => "Unlimited",
         'free-listing' => "free articles",
-        'featured-listing' => "featured articles",
+        'featured-listing' => "featured topics",
         'subscription-edn-date-help' => "For free plan, the subscription end date will automatically set to null",
 
         'free-listing-cap' => "Free articles",
