@@ -93,7 +93,7 @@ return array (
     'copyright' => 'Copyright',
     'follow-us' => 'Follow Us',
     'navigations' => 'Navigations',
-    'posts' => 'Posts',
+    'posts' => 'News',
     'privacy-policy' => 'Privacy Policy',
     'rights-reserved' => 'All rights reserved',
     'terms-of-service' => 'Terms of Service',
@@ -113,12 +113,12 @@ return array (
   'homepage' =>
   array (
     'all-categories' => 'All Categories',
-    'all-posts' => 'View All Posts',
+    'all-posts' => 'View All News',
     'description' => "Explore our coaches' videos, blogs, podcasts, e-books and yes—it's all FREE!",
     'featured-ads' => 'Featured Topics',
     'nearby-listings' => 'Nearby Topics',
     'no-categories' => 'No categories',
-    'our-blog' => 'Our Blog',
+    'our-blog' => 'Our News',
     'our-blog-decr' => 'See Our Daily News & Updates',
     'popular-listings' => 'Popular topics around you',
     'recent-listings' => 'Recent Topics',
