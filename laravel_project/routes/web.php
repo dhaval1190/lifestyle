@@ -677,6 +677,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');
+        
     });
 
 });
