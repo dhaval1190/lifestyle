@@ -124,6 +124,26 @@ class Item extends Model implements ReviewRateable
     ];
 
     /**
+     * Get the views relationship.
+     *
+     * @return HasMany
+     */
+    public function views()
+    {
+        return $this->hasMany(ItemView::class);
+    }
+
+    /**
+     * Get the visits relationship.
+     *
+     * @return HasMany
+     */
+    public function visits()
+    {
+        return $this->hasMany(ItemVisit::class);
+    }
+
+    /**
      * Searchable rules.
      *
      * @var array

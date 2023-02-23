@@ -686,6 +686,49 @@
 
                     <div class="row mb-3">
                         <div class="col-12">
+                            <div class="card-deck mt-3">
+                                <div class="card shadow border-0">
+                                    <div class="card-body p-3">
+                                        <p class="lead border-bottom">Lifetime Summary</p> 
+                                        <div class="d-flex">
+                                            <div class="mr-5">
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold"><b>Total Views</b></p> 
+                                                <h3 class="mt-1">{{ $visit_count }}</h3>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="card shadow border-0">
+                                    <div class="card-body p-3">
+                                        <p class="lead border-bottom">Monthly Summary</p> 
+                                        <div class="d-flex">
+                                            <div class="mr-5">
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold">
+                                                    <b>View(s)</b> <i class="fa-solid fa-circle-question" title="A view is counted when a visitor loads or reloads a page."></i>
+                                                </p> 
+                                                <h3 class="mt-1 mb-2">{{ $view_count }}</h3> 
+                                                @php
+                                                $view_arrow = ($view_month_over_month['direction']=='up') ? 'fa fa-arrow-up' : 'fa fa-arrow-down';
+                                                $visit_arrow = ($visit_month_over_month['direction']=='up') ? 'fa fa-arrow-up' : 'fa fa-arrow-down';
+                                                @endphp
+                                                <p class="small text-muted"><i class="{{ $view_arrow }}"></i> {{ $view_month_over_month['percentage'] }}% from last month</p>
+                                            </div> 
+                                            <div>
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold">
+                                                    <b>Visitor(s)</b> <i class="fa-solid fa-circle-question" title="A visitor is counted when we see a user or browser for the first time in a given 24-hour period."></i>
+                                                </p> 
+                                                <h3 class="mt-1 mb-2">{{ $visit_count }}</h3> 
+                                                <p class="small text-muted"><i class="{{ $visit_arrow }}"></i> {{ $visit_month_over_month['percentage'] }}% from last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
                             @if($item->galleries()->count() > 0)
                                 <div id="item-image-gallery">
                                     @php
