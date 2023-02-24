@@ -96,11 +96,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-                ->where('items.item_status', Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                });
+                ->where('items.item_status', Item::ITEM_PUBLISHED);
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // });
             }])
             ->where('category_parent_id', null)
             ->orderBy('all_items_count', 'desc')->take(6)->get();
@@ -115,10 +115,10 @@ class PagesController extends Controller
         $paid_user_ids = $subscription_obj->getPaidUserIds();
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_FEATURED)
             ->where(function($query) use ($paid_user_ids) {
 
@@ -166,10 +166,10 @@ class PagesController extends Controller
          * get first 6 latest items
          */
         $latest_items = Item::latest('created_at')
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->with('state')
             ->with('city')
@@ -290,9 +290,9 @@ class PagesController extends Controller
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_FEATURED)
         ->where(function($query) use ($paid_user_ids) {
             $query->whereIn('items.user_id', $paid_user_ids)->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
@@ -365,9 +365,9 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
         ->whereIn('items.user_id', $free_user_ids);
@@ -928,11 +928,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -972,10 +972,10 @@ class PagesController extends Controller
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)
-            ->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_FEATURED)
         ->where(function($query) use ($paid_user_ids) {
 
@@ -1039,10 +1039,10 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
@@ -1299,11 +1299,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -1343,10 +1343,10 @@ class PagesController extends Controller
         }
         
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)
-            ->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
         // ->where('items.item_featured', Item::ITEM_FEATURED)
         ->where(function($query) use ($id) {
             
@@ -1412,10 +1412,10 @@ class PagesController extends Controller
         }
         
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)
-            ->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
         // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
         // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
         ->where('items.user_id', $id);
@@ -1679,11 +1679,11 @@ class PagesController extends Controller
         
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -1718,10 +1718,10 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
@@ -1953,11 +1953,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -1994,10 +1994,10 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->where('items.user_id', $id);
@@ -2958,10 +2958,10 @@ class PagesController extends Controller
             $paid_items_query->whereIn('items.id', $item_ids);
 
             $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                })
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // })
                 ->where('items.item_featured', Item::ITEM_FEATURED)
                 ->where(function($query) use ($paid_user_ids) {
 
@@ -3023,10 +3023,10 @@ class PagesController extends Controller
             $free_items_query->whereIn('items.id', $item_ids);
 
             $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                })
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // })
                 ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
                 ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
                 ->whereIn('items.user_id', $free_user_ids);

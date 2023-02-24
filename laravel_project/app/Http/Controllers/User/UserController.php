@@ -66,11 +66,11 @@ class UserController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -107,10 +107,10 @@ class UserController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->where('items.user_id',$login_user->id);
@@ -208,17 +208,17 @@ class UserController extends Controller
         
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
-        $all_states = Country::find($site_prefer_country_id)
-            ->states()
-            ->orderBy('state_name')
-            ->get();
+        // $all_states = Country::find($site_prefer_country_id)
+        //     ->states()
+        //     ->orderBy('state_name')
+        //     ->get();
 
-        $all_cities = collect([]);
-        if(!empty($filter_state))
-        {
-            $state = State::find($filter_state);
-            $all_cities = $state->cities()->orderBy('city_name')->get();
-        }
+        // $all_cities = collect([]);
+        // if(!empty($filter_state))
+        // {
+        //     $state = State::find($filter_state);
+        //     $all_cities = $state->cities()->orderBy('city_name')->get();
+        // }
 
         $total_results = $total_free_items;
 
