@@ -18,11 +18,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    
-    <title>Laravel Chart Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
@@ -284,25 +281,22 @@ a {
                         </div>
                     </div> -->
                 </div>
-                <div class="chart">                
-                        <input type="button" value="Month" id="mon" onClick="showHideDiv('month')"/>                         
-                        <input type="button" value="Weekly" id="wee"onClick="showHideDiv('weekly')"/> 
-                        <div id="month">
+                <div class="chart">   
+                    <div class="details"> 
+                        <input class="btn btn-secondary" type="button" value="Month" id="mon" onClick="showHideDiv('month')"/>                         
+                        <input class="btn btn-secondary" style="margin-right:20px" type="button" value="Weekly" id="wee"onClick="showHideDiv('weekly')"/> 
+                   </div>
+                    <div id="month">
                         <canvas id="ROIchart"></canvas>
                         </div>
                         <div id="weekly" style="display:none">
                         <canvas id="ROIchartt"></canvas>
-                        </div>
+                    </div>
                 </div>    
          </div>
         </div>
     </div>
-    <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
-
-<div id="container" style="height: 400px; width: 500px"></div> -->
-    
-
-
+  
     <script type="text/javascript">
             function showHideDiv(ele) {
                 var srcElement = document.getElementById(ele);
@@ -328,16 +322,12 @@ a {
             $("#weekly").hide();
             });
             
-
-           
          });
          $(document).ready(function () {
             $("#wee").click(function () {
                 
             $("#month").hide();
             });
-
-           
          });
     
         var ctx = document.getElementById('ROIchart').getContext('2d');
@@ -412,23 +402,7 @@ a {
             }
         }
         });
-    
-//         Highcharts.chart('container', {
-//     xAxis: {
-//         type: 'datetime',
-//         dateTimeLabelFormats: {
-//             week: '%e of %b'
-//         }
-//     },
 
-//     series: [{
-//         data: <?php// echo json_encode($weekdata['week'])  ?>,
-//         pointStart: Date.UTC(2023, 0, 7),
-//         pointInterval: 24 * 3600 * 1000 * 7// one week
-//     }]
-// });
-   
-    
     </script>
 </body>
 
