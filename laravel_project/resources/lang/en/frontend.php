@@ -6,6 +6,11 @@ return array (
     'description' => 'A World Class Classified Company',
     'title' => 'About Us',
   ),
+  'stats' =>
+  array (
+    // 'description' => 'A World Class Classified Company',
+    'title' => 'Stats Of Visitors',
+  ),
   'auth' =>
   array (
     'have-an-account' => 'Have an account',
