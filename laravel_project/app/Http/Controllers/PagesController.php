@@ -11,6 +11,8 @@ use App\Faq;
 use App\Item;
 use App\ItemVisit;
 use App\ItemView;
+use App\ProfileVisit;
+use App\ProfileView;
 use App\ItemHour;
 use App\ItemImageGallery;
 use App\ItemLead;
@@ -51,6 +53,8 @@ use Carbon\CarbonInterval;
 use DateInterval;
 use DatePeriod;
 use DateTimeInterface;
+use Carbon\Carbon;
+
 
 class PagesController extends Controller
 {
@@ -958,6 +962,7 @@ class PagesController extends Controller
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
 
         // state & city
+        $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
@@ -982,6 +987,10 @@ class PagesController extends Controller
             $query->whereIn('items.user_id', $paid_user_ids)
             ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
         });
+         // filter paid listings country
+         if(!empty($filter_country)) {
+            $paid_items_query->where('items.country_id', $filter_country);
+        }
 
         // filter paid listings state
         if(!empty($filter_state)) {
@@ -1046,7 +1055,10 @@ class PagesController extends Controller
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
-
+        // filter paid listings country
+        if(!empty($filter_country)) {
+            $free_items_query->where('items.country_id', $filter_country);
+        }
         // filter free listings state
         if(!empty($filter_state))
         {
@@ -1123,7 +1135,8 @@ class PagesController extends Controller
         $querystringArray = [
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
-            'filter_state' => $filter_state,
+            'filter_country' => $filter_country,
+            'filter_state' => $filter_state,            
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
             'filter_working_type' => $filter_working_type,
@@ -1241,6 +1254,14 @@ class PagesController extends Controller
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
+        $all_countries = Country::orderBy('country_name')->get();
+        $all_states = collect([]);        
+       
+        if(!empty($filter_country))
+        {
+            $country = Country::find($filter_country);
+            $all_states = $country->states()->orderBy('state_name')->get();
+        }
         $all_states = Country::find($site_prefer_country_id)
             ->states()
             ->orderBy('state_name')
@@ -1275,7 +1296,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
             ));
     }
     public function usersCategories(Request $request,$id)
@@ -1698,6 +1719,7 @@ class PagesController extends Controller
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
 
         // state & city
+        $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
@@ -1745,6 +1767,10 @@ class PagesController extends Controller
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
             }
+            // filter paid listings country
+            if(!empty($filter_country)) {
+                $free_items_query->where('items.country_id', $filter_country);
+            }
             // filter free listings state
             if(!empty($filter_state))
             {
@@ -1791,6 +1817,7 @@ class PagesController extends Controller
         $querystringArray = [
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
+            'filter_country' => $filter_country,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
@@ -1878,6 +1905,15 @@ class PagesController extends Controller
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
+        $all_countries = Country::orderBy('country_name')->get();
+        $all_states = collect([]);        
+       
+        if(!empty($filter_country))
+        {
+            $country = Country::find($filter_country);
+            $all_states = $country->states()->orderBy('state_name')->get();
+        }
+
         $all_states = Country::find($site_prefer_country_id)
             ->states()
             ->orderBy('state_name')
@@ -1920,7 +1956,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches'
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
             ));
     }
 
@@ -2177,13 +2213,77 @@ class PagesController extends Controller
         /**
          * End initial blade view file path
          */
+        /**
+                 * User Profile Visit && View 
+                 */
+          $user_detail = User::where('id', $id)->first();
+          
+          if (! $this->wasRecentlyViewedProfile($user_detail)) {
+              $view_data = [
+                  'user_id' => $id,
+                  'ip' => request()->getClientIp(),
+                  'agent' => request()->header('user_agent'),
+                  'referer' => request()->header('referer'),
+                ];
+                
+                $user_detail->views()->create($view_data);
+               
+    
+                $this->storeInSessionProfile($user_detail);
+            }
+            $ip = request()->getClientIp();
+            if ($this->visitIsUniqueProfile($user_detail, $ip)) {
+                $visit_data = [
+                    'user_id' => $id,
+                    'ip' => $ip,
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+    
+                $user_detail->visits()->create($visit_data);
+    
+                $this->storeInSessionVisitProfile($user_detail, $ip);
+            }
+        $views = ProfileView::where('user_id', $id)->get();
+                    $previousMonthlyViews = $views->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyViews = $views->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $lastThirtyDays = $views->whereBetween('created_at', [
+                        today()->subDays(self::DAYS)->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ]);
+        
+                    $visits = ProfileVisit::where('user_id', $id)->get();
+                    $previousMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    
+                    $currentMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+
+                    $view_count = $currentMonthlyViews->count();
+                    $view_trend = json_encode($this->countTrackedDataItem($lastThirtyDays, self::DAYS));
+                    $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
+                    $view_count_lifetime = $views->count();
+                    $visit_count = $currentMonthlyVisits->count();
+                    $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);                    
+                    
         return response()->view($theme_view_path . 'profile',
             compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count'
             ));
     }
 
@@ -5095,6 +5195,12 @@ class PagesController extends Controller
 
         return array_key_exists($item->id, $viewed);
     }
+    private function wasRecentlyViewedProfile(User $user_detail): bool
+    {
+        $viewed = session()->get('viewed_items', []);
+
+        return array_key_exists($user_detail->id, $viewed);
+    }
 
     /**
      * Add a given post to the session.
@@ -5106,6 +5212,11 @@ class PagesController extends Controller
     {
         session()->put("viewed_items.{$item->id}", now()->timestamp);
     }
+    private function storeInSessionProfile(User $user_detail)
+    {
+        session()->put("viewed_items.{$user_detail->id}", now()->timestamp);
+    }
+
 
     /**
      * Check if a given post and IP are unique to the session.
@@ -5120,6 +5231,18 @@ class PagesController extends Controller
 
         if (array_key_exists($item->id, $visits)) {
             $visit = $visits[$item->id];
+
+            return $visit['ip'] != $ip;
+        } else {
+            return true;
+        }
+    }
+    private function visitIsUniqueProfile(User $user_detail, string $ip): bool
+    {
+        $visits = session()->get('visited_items', []);
+
+        if (array_key_exists($user_detail->id, $visits)) {
+            $visit = $visits[$user_detail->id];
 
             return $visit['ip'] != $ip;
         } else {
@@ -5141,7 +5264,13 @@ class PagesController extends Controller
             'ip' => $ip,
         ]);
     }
-
+    private function storeInSessionVisitProfile(User $user_detail, string $ip)
+    {
+        session()->put("visited_items.{$user_detail->id}", [
+            'timestamp' => now()->timestamp,
+            'ip' => $ip,
+        ]);
+    }
     public function compareMonthToMonthItem(Collection $current, Collection $previous): array
     {
         $dataCountThisMonth = $current->count();
@@ -5212,7 +5341,6 @@ class PagesController extends Controller
         $item = Item::where('item_slug', $item_slug)
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();
-
         if($item)
         {
             if (! $this->wasRecentlyViewedItem($item)) {
@@ -7382,5 +7510,69 @@ class PagesController extends Controller
 
         return 1;
     }
+    public function barchart(Request $request,$id)
+    {  
+        $profile_view = ProfileView::where('user_id',$id)->get();
 
+        $profile_visit = ProfileVisit::where('user_id',$id)->get();
+        
+        $month = ['1','2','3','4','5','6', '7', '8', '9', '10', '11','12'];
+       
+
+        $date = date('Y-m');
+        
+        //current year
+        $year = Carbon::now()->year;
+        //variable to store each order coubnt as array.
+        $new_orders_count = [];
+        //Looping through the month array to get count for each month in the provided year
+        foreach ($month as $key => $value) {
+            $month_number= $value;
+            $month_name = date("F", mktime(0, 0, 0, $month_number, 10));
+                $new_orders_count[$value] = ProfileVisit::whereYear('created_at', $year)
+                ->whereMonth('created_at',$value)->where('user_id',$id)
+                ->count();                
+                }  
+                
+        foreach($new_orders_count as $key =>$profile){
+                       
+        $data['month'][] = date('Y-m-d', strtotime($key));
+        $data['value'][] = $profile;   
+        
+       
+        }
+            $month = date('m');                       
+            $week = date("W", strtotime($year . "-" . $month ."-01"));
+
+            $str='';
+            $str .= date("d-m-Y", strtotime($year . "-" . $month ."-01")) ."to";
+            $unix = strtotime($year."W".$week ."+1 week");
+            while(date("m", $unix) == $month){
+            $str .= date("d-m-Y", $unix-86400) . "|";
+            $str .= date("d-m-Y", $unix) ."to"; 
+            $unix = $unix + (86400*7);
+            }
+            $str .= date("d-m-Y", strtotime("last day of ".$year . "-" . $month));
+
+            $weeks_ar = explode('|',$str);
+             //echo '<pre>';  print_r($weeks_ar); exit;
+            foreach($weeks_ar as $key =>$week){        
+                $weekcount =explode('to',$week);
+
+                $weekday[] = ProfileVisit::whereBetween('created_at',array(date('Y-m-d 00:00:00', strtotime($weekcount[0])),date('Y-m-d 23:59:00', strtotime($weekcount[1]))))->where('user_id',$id)->count();
+                $weekdata['weeks_ar'][] = date('Y-m-d', strtotime($weekcount[1]));
+            }
+            // print_r($weekday); 
+            //   exit;
+            foreach($weekday as $key =>$wee){
+                       
+                $weekdata['week'][] = $wee;                   
+        
+                }
+                 //print_r($weekdata);exit;
+        $view = (count($profile_view));        
+        $visit = (count($profile_visit));           
+       
+        return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata'));
+    }
 }

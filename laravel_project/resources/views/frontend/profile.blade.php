@@ -54,7 +54,13 @@
                                                         <i class="fas fa-share-alt item-share-refferal-button"></i>
                                                     </div>
                                                 @endif
+                                                <div class="detail one">
+                                                <i class="fas fa-eye-slash" onclick="window.location='{{ url("bar-chart/$user_detail->id") }}'" id="eye"></i>
+                                                    <p><b>Visitor(s)</b> : {{ $visit_count }}</p>
+                                                </div>
                                             </div>
+                                           
+                                           
                                             <!-- <div class="progress">
                                                 <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage']}}%"
                                                     aria-valuenow="{{ $progress_data['percentage']}}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
@@ -265,31 +271,30 @@
                         </div>
                     @endif
                     <div class="row">
-                            <div class="col-md-12">
-                                        <div class="below_info">
-                                            <h3>Topics</h3>
-                                            @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
-                                                <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
-                                            @endif
-                                        </div>
-                            </div>
-                                <div class="col-lg-12 plr-45">
-                                
-                                <div class="row">
-                                    @if($free_items->count() > 0)
-                                        @foreach($free_items as $free_items_key => $item)
-                                            <div class="col-md-3">               
-                                                @include('frontend.partials.free-item-block')
-                                            </div>
-                                    
-                                        @endforeach
-                                    @endif
+                                <div class="col-md-12">
+                                    <div class="below_info">
+                                        <h3>Topics</h3>
+                                        @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
+                                            <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
+                                        @endif
+                                    </div>
                                 </div>
-                              
-                              
-                            </div>
+                                <div class="col-lg-12 plr-45">
+                                    
+                                    <div class="row">
+                                        @if($free_items->count() > 0)
+                                            @foreach($free_items as $free_items_key => $item)
+                                                <div class="col-md-3">               
+                                                    @include('frontend.partials.free-item-block')
+                                                </div>
+                                        
+                                            @endforeach
+                                        @endif
+                                       
+                                    </div>                             
+                        </div>                               
                     </div>
-                </div>
+                    </div>                    
             </div>
         </section>
     <!-- </div> -->
@@ -376,7 +381,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 @endsection
 
 @section('scripts')
@@ -393,10 +398,36 @@
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+   
 
     @include('frontend.partials.bootstrap-select-locale')
     <script>
-
+        //  $('#eye').on('click', function(){
+        //     $('#share-refferal-modal2').modal('show');
+        // });
+        $(function(){
+  
+  $('#eye').click(function(){
+       
+        if($(this).hasClass('fa-eye-slash')){
+           
+          $(this).removeClass('fa-eye-slash');
+          
+          $(this).addClass('fa-eye');
+          
+          
+          
+            
+        }else{
+         
+          $(this).removeClass('fa-eye');
+          
+          $(this).addClass('fa-eye-slash');  
+          
+         
+        }
+    });
+});
         $(document).ready(function(){
             $("#news-slider").owlCarousel({
                 items : 4,

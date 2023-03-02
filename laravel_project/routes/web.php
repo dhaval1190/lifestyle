@@ -83,6 +83,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
+    Route::get('/bar-chart/{id}', 'PagesController@barchart');
 
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');
