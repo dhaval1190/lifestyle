@@ -279,6 +279,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\ItemClaim');
     }
+    public function views()
+    {
+        return $this->hasMany(ProfileView::class);
+    }
+
+    /**
+     * Get the visits relationship.
+     *
+     * @return HasMany
+     */
+    public function visits()
+    {
+        return $this->hasMany(ProfileVisit::class);
+    }
+
 
     /**
      * Get the items saved by this user
