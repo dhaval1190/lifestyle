@@ -197,7 +197,7 @@
     <div class="site-section">
         <div class="container">
             <div class="row justify-content-center mb-5">
-                <div class="col-md-7 text-center border-primary">
+                <div class="col-md-9 text-center border-primary">
                     <h2 class="font-weight-light text-primary">{{ __('frontend.contact.faq') }}</h2>
                     <p class="color-black-opacity-5"></p>
                 </div>

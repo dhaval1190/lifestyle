@@ -75,7 +75,7 @@ return array (
     'description' => 'Get In Touch',
     'email' => 'Email',
     'email-address' => 'Email Address',
-    'faq' => 'Frequently Asked Question',
+    'faq' => 'Frequently Asked Questions',
     'first-name' => 'First Name',
     'last-name' => 'Last Name',
     'learn-more' => 'Learn More',
