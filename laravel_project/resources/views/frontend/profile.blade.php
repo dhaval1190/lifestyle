@@ -55,7 +55,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
-                                                <i class="fas fa-eye" onclick="window.location='{{ url("bar-chart/$user_detail->id") }}'" id="eye"></i>
+                                                <i class="fas fa-eye" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye"></i>
                                                     <p><b>Visitor(s)</b> : {{ $visit_count }}</p>
                                                 </div>
                                             </div>
@@ -401,33 +401,33 @@
    
 
     @include('frontend.partials.bootstrap-select-locale')
-    <script>
-        //  $('#eye').on('click', function(){
-        //     $('#share-refferal-modal2').modal('show');
-        // });
-        $(function(){
-  
-  $('#eye').click(function(){
-       
-        if($(this).hasClass('fa-eye')){
-           
-          $(this).removeClass('fa-eye');
-          
-          $(this).addClass('fa-eye');
-          
-          
-          
+            <script>
+                //  $('#eye').on('click', function(){
+                //     $('#share-refferal-modal2').modal('show');
+                // });
+                $(function(){
+        
+        $('#eye').click(function(){
             
-        }else{
-         
-          $(this).removeClass('fa-eye');
-          
-          $(this).addClass('fa-eye');  
-          
-         
-        }
-    });
-});
+                if($(this).hasClass('fa-eye')){
+                
+                $(this).removeClass('fa-eye');
+                
+                $(this).addClass('fa-eye');
+                
+                
+                
+                    
+                }else{
+                
+                $(this).removeClass('fa-eye');
+                
+                $(this).addClass('fa-eye');  
+                
+                
+                }
+            });
+        });
         $(document).ready(function(){
             $("#news-slider").owlCarousel({
                 items : 4,
