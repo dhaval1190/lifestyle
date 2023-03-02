@@ -1,3 +1,15 @@
+
+@extends('frontend.layouts.app')
+
+@section('styles')   
+
+    @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
+    <link href="{{ asset('frontend/vendor/leaflet/leaflet.css') }}" rel="stylesheet" />
+    @endif
+
+    <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+@endsection
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -272,16 +284,7 @@ a {
                         </div>
                     </div> -->
                 </div>
-                <div class="chart">   
-                <!-- <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="mon" onClick="showHideDiv('month')">
-                    <label class="custom-control-label" for="mon">Month</label>
-                    </div>
-                    <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="wee" onClick="showHideDiv('weekly')">
-                    <label class="custom-control-label" for="wee">Week</label>
-                    </div> -->
-                    
+                <div class="chart">                
                         <input type="button" value="Month" id="mon" onClick="showHideDiv('month')"/>                         
                         <input type="button" value="Weekly" id="wee"onClick="showHideDiv('weekly')"/> 
                         <div id="month">

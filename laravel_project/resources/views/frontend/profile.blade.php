@@ -55,7 +55,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
-                                                <i class="fas fa-eye-slash" onclick="window.location='{{ url("bar-chart/$user_detail->id") }}'" id="eye"></i>
+                                                <i class="fas fa-eye" onclick="window.location='{{ url("bar-chart/$user_detail->id") }}'" id="eye"></i>
                                                     <p><b>Visitor(s)</b> : {{ $visit_count }}</p>
                                                 </div>
                                             </div>
@@ -409,9 +409,9 @@
   
   $('#eye').click(function(){
        
-        if($(this).hasClass('fa-eye-slash')){
+        if($(this).hasClass('fa-eye')){
            
-          $(this).removeClass('fa-eye-slash');
+          $(this).removeClass('fa-eye');
           
           $(this).addClass('fa-eye');
           
@@ -422,7 +422,7 @@
          
           $(this).removeClass('fa-eye');
           
-          $(this).addClass('fa-eye-slash');  
+          $(this).addClass('fa-eye');  
           
          
         }
