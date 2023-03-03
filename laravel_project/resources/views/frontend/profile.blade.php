@@ -55,8 +55,8 @@
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
-                                                <i class="fas fa-eye" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye"></i>
-                                                    <p><b>Visitor(s)</b> : {{ $visit_count }}</p>
+                                                <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye">                                               
+                                                    <b>Total Visitor(s)</b> : {{ $visit_count }}</i> </p>                                                    
                                                 </div>
                                             </div>
                                            

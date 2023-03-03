@@ -1686,7 +1686,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('frontend.header.listings', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -2268,14 +2268,13 @@ class PagesController extends Controller
                         today()->startOfMonth()->startOfDay()->toDateTimeString(),
                         today()->endOfMonth()->endOfDay()->toDateTimeString(),
                     ]);
-
                     $view_count = $currentMonthlyViews->count();
                     $view_trend = json_encode($this->countTrackedDataItem($lastThirtyDays, self::DAYS));
                     $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
                     $view_count_lifetime = $views->count();
                     $visit_count = $currentMonthlyVisits->count();
                     $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
-                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);                    
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);                  
                     
         return response()->view($theme_view_path . 'profile',
             compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
@@ -7512,10 +7511,29 @@ class PagesController extends Controller
     }
     public function barchart(Request $request,$id)
     {  
+        $settings = app('site_global_settings');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('frontend.stats.title', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+      
         $profile_view = ProfileView::where('user_id',$id)->get();
 
         $profile_visit = ProfileVisit::where('user_id',$id)->get();
-        
+
+        $TodayVisits = $profile_visit->whereBetween('created_at', [
+            today()->startOfDay()->toDateTimeString(),
+            today()->endOfDay()->toDateTimeString(),
+        ]);  
+
+        $Today_Visits_count = $TodayVisits->count();
+                
         $month = ['1','2','3','4','5','6', '7', '8', '9', '10', '11','12'];
        
 
@@ -7573,6 +7591,6 @@ class PagesController extends Controller
         $view = (count($profile_view));        
         $visit = (count($profile_visit));           
        
-        return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata'));
+        return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata','Today_Visits_count'));
     }
 }

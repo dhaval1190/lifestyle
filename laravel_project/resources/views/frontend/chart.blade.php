@@ -23,12 +23,42 @@
 </style>
 
 @section('content')
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-12 p-0">
+                    <div class="upper_white_bg">
+                        <div class="upper_middle_img">
+                            @if(empty($user_detail['user_cover_image']))                            
+                                <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ asset('frontend/images/placeholder/header-inner.webp') }});">
+                                    <div class="container">
+                                        <div class="row align-items-center justify-content-center text-center">
+                                          <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
+                                            <div class="row justify-content-center mt-5">
+                                                <div class="col-md-8 text-center">
+                                                    <h1>{{ __('frontend.stats.title') }}</h1>                                        
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>                  
+                            
+                            @else
+                                <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::disk('public')->url('user/'. $user_detail['header-inner.webp']) }});">
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="wrapper">
-                <div data-v-937e0192="" class="my-3"><h1 data-v-937e0192="">Stats Of Visitors</h1> </div>
+                
                     <div data-v-937e0192="" class="card-deck mt-5">                        
-                            <div data-v-937e0192=""
-                                class="card-header pb-0 bg-transparent d-flex justify-content-between align-middle border-0">
-                                <h2><p data-v-937e0192="" class="font-weight-bold text-muted small text-uppercase">Total Visitor(s) : {{$visit}} </p>                                                    </h2>
+                            <div data-v-937e0192="" class="card-header pb-0 bg-transparent d-flex justify-content-between align-middle border-0">
+                                <h4><p data-v-937e0192="" class="font-weight-bold text-muted small text-uppercase">Total Visitor(s) : {{$visit}} </p></h4>                               
+                            </div>
+                            <div data-v-937e0192="" class="card-header pb-0 bg-transparent d-flex justify-content-between align-middle border-0">
+                                <h4><p data-v-937e0192="" class="font-weight-bold text-muted small text-uppercase">Today Visitor(s) : {{$Today_Visits_count}}</p></h4>
                             </div>
                         
                             <!-- <div data-v-937e0192="" class="card shadow border-0">
