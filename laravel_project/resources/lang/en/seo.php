@@ -163,5 +163,8 @@ return array (
     'privacy-policy' => 'Privacy Policy - :site_name',
     'search' => 'Search Listings - :site_name',
     'terms-service' => 'Terms of Service - :site_name',
+    'visitor-states' => 'Stats of Visitors - :site_name',
+    'coaches' => 'Coaches - :site_name',
+
   ),
 );
