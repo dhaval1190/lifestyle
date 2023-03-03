@@ -1826,7 +1826,7 @@ class PagesController extends Controller
         ];
 
         $free_items = $free_items_query->paginate(10);
-        $pagination = $free_items->appends($querystringArray);
+        //$pagination = $free_items->appends($querystringArray);
 
         /**
          * End do listing query
@@ -1929,10 +1929,13 @@ class PagesController extends Controller
         $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
         
         if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->get();
         }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->get();
         }else{
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
         }
         $total_results = $all_coaches->count();
