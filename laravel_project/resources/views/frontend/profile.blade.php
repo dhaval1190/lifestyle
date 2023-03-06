@@ -103,12 +103,12 @@
                                 <h3>Contact Details</h3>
                             </div>
                             <div class="middle_detail">
-                                <div class="middle_main"><img src="{{ asset('frontend/images/email.svg') }}" alt="" />
+                                <!-- <div class="middle_main"><img src="{{ asset('frontend/images/email.svg') }}" alt="" />
                                     <p>{{ $user_detail['email'] }}</p>
                                 </div>
                                 <div class="middle_main"><img src="{{ asset('frontend/images/call.svg') }}" alt="" />
                                     <p>{{ $user_detail['phone'] }}</p>
-                                </div>
+                                </div> -->
                                 <div class="middle_main"><img src="{{ asset('frontend/images/web.svg') }}" alt="" />
                                     <p>{{ $user_detail['website'] }}</p>
                                 </div>
