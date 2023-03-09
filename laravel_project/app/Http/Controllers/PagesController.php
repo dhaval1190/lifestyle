@@ -1965,6 +1965,7 @@ class PagesController extends Controller
 
     public function profile(Request $request, $id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
