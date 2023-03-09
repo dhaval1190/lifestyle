@@ -2422,7 +2422,7 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Author name: {{ $item_user->name }}</li>
-                                            <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', $item_user->id) }}">Read more</a></li>
+                                            <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', encrypt($item->user->id)) }}">Read more</a></li>
                                             {{-- <li class="list-group-item">Vestibulum at eros</li> --}}
                                         </ul>
                                         <div class="card-body" style="margin-left: 26px;">
@@ -2575,7 +2575,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_coach_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
+                                                    <a class="decoration-none" href="{{ route('page.profile',encrypt($similar_coach_item->user->id)) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">
@@ -2677,7 +2677,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span></a>
+                                                    <a class="decoration-none" href="{{ route('page.profile', encrypt($similar_item->user->id)) }}"><span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">

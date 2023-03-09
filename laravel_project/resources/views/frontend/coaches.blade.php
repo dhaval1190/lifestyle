@@ -376,7 +376,7 @@
                                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                             <div class="row pb-1">
                                                                 <div class="col-12">
-                                                                    <a href="{{ route('page.profile', $coach->id) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a>
+                                                                    <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -69,7 +69,7 @@
                     <div class="col-9 line-height-1-2 item-box-user-name-div">
                         <div class="row pb-1">
                             <div class="col-12">
-                                <a href="{{ route('page.profile', $item->user->id) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a>
+                                <a href="{{ route('page.profile',encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a>
                             </div>
                         </div>
                         <div class="row line-height-1-0">

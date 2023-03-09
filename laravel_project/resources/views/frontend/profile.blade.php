@@ -140,6 +140,7 @@
         <section class="below">
             <div class="container">
                 <div class="below_bg">
+                @if(isset($user_detail['youtube']) && !empty($user_detail['youtube']) )
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="below_info">
@@ -172,6 +173,7 @@
                         
                         </div>
                     </div>
+                    @endif
 
                     @if(isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() > 0)
                         <div class="row">
@@ -270,30 +272,31 @@
                             </div>
                         </div>
                     @endif
+                    @if(isset($free_items) && !empty($free_items) && $free_items->count() > 0)
                     <div class="row">
-                                <div class="col-md-12">
-                                    <div class="below_info">
-                                        <h3>Topics</h3>
-                                        @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
-                                            <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 plr-45">
+                        <div class="col-md-12">
+                            <div class="below_info">
+                                <h3>Topics</h3>
+                                @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
+                                    <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-lg-12 plr-45">
+                            <div class="row">
+                                @if($free_items->count() > 0)
+                                    @foreach($free_items as $free_items_key => $item)
+                                        <div class="col-md-3">               
+                                            @include('frontend.partials.free-item-block')
+                                        </div>
+                                
+                                    @endforeach
+                                @endif
                                     
-                                    <div class="row">
-                                        @if($free_items->count() > 0)
-                                            @foreach($free_items as $free_items_key => $item)
-                                                <div class="col-md-3">               
-                                                    @include('frontend.partials.free-item-block')
-                                                </div>
-                                        
-                                            @endforeach
-                                        @endif
-                                       
-                                    </div>                             
+                        </div>                             
                         </div>                               
                     </div>
+                    @endif
                     </div>                    
             </div>
         </section>
