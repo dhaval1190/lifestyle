@@ -112,14 +112,6 @@
                         @endforeach                        
                     </div>
                 </div>
-                <!-- <div class="col-md-6">
-                    <h3><a class="decoration-none" href="{{ route('user.messages.index') }}">All Visitor</a></h3>
-                    <p class="c-two">{{ number_format($visit_count) }}</p>
-                </div>
-                <div class="col-md-6">
-                    <h3><a class="decoration-none" href="{{ route('user.messages.index') }}">Today Visitor</a></h3>
-                    <p class="c-two">{{ number_format($Today_Visits_count) }}</p>
-                </div> -->
             </div>
         </div>
     </div>
