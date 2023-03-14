@@ -198,7 +198,7 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-md-9 text-center border-primary">
-                    <h2 class="font-weight-light text-primary">{{ __('frontend.contact.faq') }}</h2>
+                    <h2 class="font-weight-light text-primary">{{ __("FAQ's for Coaches") }}</h2>
                     <p class="color-black-opacity-5"></p>
                 </div>
             </div>
@@ -208,6 +208,14 @@
                 <div class="col-8">
 
                     @foreach($all_faq as $key => $faq)
+                        @if($key==5)
+                            <div class="row justify-content-center mb-5 mt-5">
+                                <div class="col-md-7 text-center border-primary">
+                                    <h2 class="font-weight-light text-primary">{{ __("FAQ's for Site Visitors") }}</h2>
+                                    <p class="color-black-opacity-5"></p>
+                                </div>
+                            </div>
+                        @endif
                         <div class="border p-3 rounded mb-2">
                             <a data-toggle="collapse" href="#collapse-{{ $faq->id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ $faq->id }}" class="decoration-none accordion-item h5 d-block mb-0">{{ $faq->faqs_question }}</a>
 
