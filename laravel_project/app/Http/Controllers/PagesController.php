@@ -755,7 +755,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.contact', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.faq', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);

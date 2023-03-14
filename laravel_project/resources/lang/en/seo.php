@@ -165,6 +165,7 @@ return array (
     'terms-service' => 'Terms of Service - :site_name',
     'visitor-states' => 'Stats of Visitors - :site_name',
     'coaches' => 'Coaches - :site_name',
+    'faq' => 'FAQ - :site_name',
 
   ),
 );
