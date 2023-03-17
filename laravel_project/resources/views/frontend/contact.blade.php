@@ -140,7 +140,7 @@
                 <div class="col-md-5">
 
                     @if(!empty($site_global_settings->setting_site_address) || !empty($site_global_settings->setting_site_city) || !empty($site_global_settings->setting_site_state) || !empty($site_global_settings->setting_site_postal_code) || !empty($site_global_settings->setting_site_country) || !empty($site_global_settings->setting_site_phone) || !empty($site_global_settings->setting_site_email))
-                    <div class="p-4 mb-3 bg-white">
+                    <!-- <div class="p-4 mb-3 bg-white">
 
                         @if(!empty($site_global_settings->setting_site_address) || !empty($site_global_settings->setting_site_city) || !empty($site_global_settings->setting_site_state) || !empty($site_global_settings->setting_site_postal_code) || !empty($site_global_settings->setting_site_country))
                         <p class="mb-0 font-weight-bold">{{ __('frontend.contact.address') }}</p>
@@ -177,12 +177,12 @@
                         <p class="mb-0"><a href="#">{{ $site_global_settings->setting_site_email }}</a></p>
                         @endif
 
-                    </div>
+                    </div> -->
                     @endif
 
                     <div class="p-4 mb-3 bg-white">
                         <h3 class="h5 text-black mb-3">{{ __('frontend.contact.more-info') }}</h3>
-                        <p>{{ $site_global_settings->setting_site_about }}</p>
+                        <p style="white-space: pre-line;">{{ $site_global_settings->setting_site_about }}</p>
                         @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
                         <p><a href="{{ route('page.about') }}" class="btn btn-primary px-4 py-2 text-white">{{ __('frontend.contact.learn-more') }}</a></p>
                         @endif
