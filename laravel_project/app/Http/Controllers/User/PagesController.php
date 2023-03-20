@@ -79,6 +79,7 @@ class PagesController extends Controller
         $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
         $PodcastImage= array();
         $media= array();
+        $Articledetail= array();
 
         if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
         foreach($media_deatils_visit as $mediadetail){
@@ -138,7 +139,7 @@ class PagesController extends Controller
 
         $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
         ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
-        
+       
         if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
             foreach($Ariclevisit_deatils_visit as $articledetail){
                 $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
