@@ -6111,8 +6111,7 @@ class PagesController extends Controller
                 ]);
 
                 // send an email notification to admin
-                 //$email_to = $user->email;
-                $email_to = "shubham@pranshtech.com";
+                $email_to = $user->email;
                 $email_from_name = $request->item_conntact_email_name;
                 $item_contact_email = $request->item_contact_email_from_email;
                 $articleTitle = $request->articleTitle;
@@ -6180,8 +6179,8 @@ class PagesController extends Controller
                     $data = [
                         "registration_ids" => $FcmToken,
                         "notification" => [
-                            "title" =>'One New Notification Frome'.$request['item_conntact_email_name'],
-                            //"body" => $request['item_conntact_email_name'],  
+                            "title" =>'One New Notification Frome Your Articel: '.$request->articleTitle,
+                            "body" =>'From : '.$request['item_conntact_email_name'],  
                         ]
                     ];
                     $encodedData = json_encode($data);    
