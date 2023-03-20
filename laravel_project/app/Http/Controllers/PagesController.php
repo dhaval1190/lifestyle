@@ -54,6 +54,7 @@ use DateInterval;
 use DatePeriod;
 use DateTimeInterface;
 use Carbon\Carbon;
+use App\MediaDetailsVisits;
 
 
 class PagesController extends Controller
@@ -3048,6 +3049,7 @@ class PagesController extends Controller
             }
 
             // state & city
+            $filter_country = empty($request->filter_country) ? null : $request->filter_country;
             $filter_state = empty($request->filter_state) ? null : $request->filter_state;
             $filter_city = empty($request->filter_city) ? null : $request->filter_city;
             /**
@@ -3210,6 +3212,7 @@ class PagesController extends Controller
             $querystringArray = [
                 'filter_categories' => $filter_categories,
                 'filter_sort_by' => $filter_sort_by,
+                'filter_country' => $filter_country,
                 'filter_state' => $filter_state,
                 'filter_city' => $filter_city,
                 'filter_gender_type' => $filter_gender_type,
@@ -3301,16 +3304,26 @@ class PagesController extends Controller
             /**
              * Start initial filter
              */
+            $all_countries = Country::orderBy('country_name')->get();
+            $all_states = collect([]);        
+        
+            if(!empty($filter_country))
+            {
+                $country = Country::find($filter_country);
+                $all_states = $country->states()->orderBy('state_name')->get();
+            }
+
             $all_states = Country::find($site_prefer_country_id)
                 ->states()
-                ->orderBy('state_name')->get();
+                ->orderBy('state_name')
+                ->get();
 
             $all_cities = collect([]);
             if(!empty($filter_state))
             {
                 $state = State::find($filter_state);
                 $all_cities = $state->cities()->orderBy('city_name')->get();
-            }
+            }                   
 
             $total_results = $total_paid_items + $total_free_items;
             /**
@@ -3385,7 +3398,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'filter_sort_by',
                     'filter_categories', 'filter_state', 'filter_city', 'all_cities', 'total_results',
-                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
                 ));
         }
         else
@@ -5204,6 +5217,12 @@ class PagesController extends Controller
 
         return array_key_exists($user_detail->id, $viewed);
     }
+    private function wasRecentlyViewedYoutube(MediaDetail $media_detail): bool
+    {
+        $viewed = session()->get('viewed_items', []);
+
+        return array_key_exists($media_detail->id, $viewed);
+    }
 
     /**
      * Add a given post to the session.
@@ -5218,6 +5237,10 @@ class PagesController extends Controller
     private function storeInSessionProfile(User $user_detail)
     {
         session()->put("viewed_items.{$user_detail->id}", now()->timestamp);
+    }
+    private function storeInSessionYoutube(MediaDetail $media_detail)
+    {
+        session()->put("viewed_items.{$media_detail->id}", now()->timestamp);
     }
 
 
@@ -5242,7 +5265,7 @@ class PagesController extends Controller
     }
     private function visitIsUniqueProfile(User $user_detail, string $ip): bool
     {
-        $visits = session()->get('visited_items', []);
+        $visits = session()->get('visited_profile', []);
 
         if (array_key_exists($user_detail->id, $visits)) {
             $visit = $visits[$user_detail->id];
@@ -5269,7 +5292,7 @@ class PagesController extends Controller
     }
     private function storeInSessionVisitProfile(User $user_detail, string $ip)
     {
-        session()->put("visited_items.{$user_detail->id}", [
+        session()->put("visited_profile.{$user_detail->id}", [
             'timestamp' => now()->timestamp,
             'ip' => $ip,
         ]);
@@ -6069,8 +6092,7 @@ class PagesController extends Controller
     }
 
     public function contactEmail(string $item_slug, Request $request)
-    {
-        // dd($request->input());
+    {       
         $user = User::where('id',$request->userId)->first();
         $settings = app('site_global_settings');
 
@@ -6089,7 +6111,7 @@ class PagesController extends Controller
                 ]);
 
                 // send an email notification to admin
-                // $email_to = $user->email;
+                 //$email_to = $user->email;
                 $email_to = "shubham@pranshtech.com";
                 $email_from_name = $request->item_conntact_email_name;
                 $item_contact_email = $request->item_contact_email_from_email;
@@ -6151,6 +6173,38 @@ class PagesController extends Controller
 
                     \Session::flash('flash_message', __('frontend.item.send-email-success'));
                     \Session::flash('flash_type', 'success');
+
+                    $url = 'https://fcm.googleapis.com/fcm/send';
+                    $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();            
+                    $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
+                    $data = [
+                        "registration_ids" => $FcmToken,
+                        "notification" => [
+                            "title" =>'One New Notification Frome'.$request['item_conntact_email_name'],
+                            //"body" => $request['item_conntact_email_name'],  
+                        ]
+                    ];
+                    $encodedData = json_encode($data);    
+                    $headers = [
+                        'Authorization:key=' . $serverKey,
+                        'Content-Type: application/json',
+                    ];    
+                    $ch = curl_init();        
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                    // Disabling SSL Certificate support temporarly
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+                    // Execute post
+                    $result = curl_exec($ch); 
+                    // Close connection
+                    curl_close($ch);
+                    // FCM response  
+                    print_r($result);
 
                 }
                 catch (\Exception $e)
@@ -7539,10 +7593,7 @@ class PagesController extends Controller
         $Today_Visits_count = $TodayVisits->count();
                 
         $month = ['1','2','3','4','5','6', '7', '8', '9', '10', '11','12'];
-       
-
         $date = date('Y-m');
-        
         //current year
         $year = Carbon::now()->year;
         //variable to store each order coubnt as array.
@@ -7551,21 +7602,17 @@ class PagesController extends Controller
         foreach ($month as $key => $value) {
             $month_number= $value;
             $month_name = date("F", mktime(0, 0, 0, $month_number, 10));
-                $new_orders_count[$value] = ProfileVisit::whereYear('created_at', $year)
-                ->whereMonth('created_at',$value)->where('user_id',$id)
-                ->count();                
-                }  
+            $new_orders_count[$value] = ProfileVisit::whereYear('created_at', $year)
+            ->whereMonth('created_at',$value)->where('user_id',$id)
+            ->count();                
+            }  
                 
-        foreach($new_orders_count as $key =>$profile){
-                       
-        $data['month'][] = date('Y-m-d', strtotime($key));
-        $data['value'][] = $profile;   
-        
-       
+        foreach($new_orders_count as $key =>$profile){             
+            $data['month'][] = date('Y-m-d', strtotime($key));
+            $data['value'][] = $profile;   
         }
             $month = date('m');                       
             $week = date("W", strtotime($year . "-" . $month ."-01"));
-
             $str='';
             $str .= date("d-m-Y", strtotime($year . "-" . $month ."-01")) ."to";
             $unix = strtotime($year."W".$week ."+1 week");
@@ -7586,15 +7633,35 @@ class PagesController extends Controller
             }
             // print_r($weekday); 
             //   exit;
-            foreach($weekday as $key =>$wee){
-                       
+            foreach($weekday as $key =>$wee){      
                 $weekdata['week'][] = $wee;                   
-        
                 }
-                 //print_r($weekdata);exit;
-        $view = (count($profile_view));        
-        $visit = (count($profile_visit));           
+            $view = (count($profile_view));        
+            $visit = (count($profile_visit));           
        
         return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata','Today_Visits_count'));
+    }
+    public function mediavisitors(Request $request){
+            $media_detail = MediaDetail::where('id', $request['id'])->first();        
+        if (! $this->wasRecentlyViewedYoutube($media_detail)) {
+            $view_data = [
+                'user_id' => $media_detail->user_id,
+                'media_type'=>$media_detail->media_type,
+                'media_url'=>(isset($media_detail->media_url) && !empty($media_detail->media_url) ? $media_detail->media_url : $media_detail->media_image),
+                'ip' => request()->getClientIp(),
+                'agent' => request()->header('user_agent'),
+                'referer' => request()->header('referer'),
+            ];                
+                $media_detail->mediadetailsvisits()->create($view_data);
+                 $this->storeInSessionYoutube($media_detail);
+            }
+    }
+    public function saveToken(Request $request)
+    {
+        Auth::user()->device_token =  $request->token;
+
+        Auth::user()->save();
+
+        return response()->json(['Token successfully stored.']);
     }
 }
