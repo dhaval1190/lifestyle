@@ -12,7 +12,170 @@
 <style>
     .listing .lh-content {
     text-align:left !important;
+
 }
+.box-video {
+  position: relative;
+  width: 100%;
+  margin: 0 auto 20px auto;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Set Cover aka Background-Image */
+.box-video .bg-video {
+  position: absolute;
+  background-color: #000f24;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 2;
+  opacity: 1;
+}
+
+/* Add light shade to make play button visible*/
+.bg-video::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+/* The Play-Button using CSS-Only */
+.bt-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px 0 0 -30px;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  text-indent: -999em;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+/* The Play-Triangle */
+.bt-play:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 0;
+  width: 0;
+  margin: -12px 0 0 -6px;
+  border: solid transparent;
+  border-left-color: #000;
+  border-width: 12px 20px;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+.c-video__image-container:hover .bt-play {
+  transform: scale(1.1);
+}
+
+/* When Class added the Cover gets hidden... */
+.box-video.open .bg-video {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all .6s .8s;
+  transition: all .6s .8s;
+}
+
+/* and iframe shows up */
+.box-video.open .video-container {
+  opacity: 1;
+  -webkit-transition: all .6s .8s;
+  transition: all .6s .8s;
+}
+
+/* Giving the div ratio of 16:9 with padding */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  z-index: 1;
+  padding-bottom: 56.27198%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+.c-header-in {
+  position: absolute;
+  left: 42vw;
+  right: 0;
+  top: 50px;
+  color: white;
+}
+.vid-fit-reveal {
+  height: 215;
+  background-color: #000f24;
+  position: relative;
+}
+.vid-fit-reveal.red {
+  background: red;
+}
+.vid-fit-reveal.reveal-video {
+  background: none;
+}
+.vid-fit-reveal.reveal-video .c-header-in {
+  display: none;
+}
+.vid-fit-reveal.reveal-video #vid-reveal {
+  display: block;
+  visibility: visible;
+}
+.vid-fit-reveal.reveal-video .c-video__play-btn {
+  visibility: hidden;
+}
+.vid-fit-reveal #vid-reveal {
+  visibility: hidden;
+}
+.c-video__play-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.table > :not(:last-child) > :last-child > * {
+  border-bottom-color: inherit;
+  border-right: 1px solid #fff;
+  border-right-width: thin;
+}
+
+table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:not(.sorting_disabled) {
+  border-bottom-color: inherit;
+  border-right: 1px solid #fff;
+  border-right-width: thin;
+}
+
+.w-30{
+  width: 30px !important;
+}
+
 </style>
 @section('content')
     <!-- <div class="site-section"> -->
@@ -150,14 +313,22 @@
                         <div class="col-lg-12 plr-45">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="video">
-                                        <!-- <iframe src="{{ $user_detail['youtube'] }}" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe> -->
-                                        <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
+                                     <div class="video">
+                                        
+                                        <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
                                             title="YouTube video player" frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen></iframe>
-                                    </div>
-                                </div>
+                                            allowfullscreen></iframe> -->
+                                        @php
+                                        //print_r($user_detail);exit;
+                                        @endphp
+                                        <!-- <div class='c-video__image-container vid-fit-reveal' id="js-fitvideo">
+                                          <div class="bt-play"></div> -->
+                                           <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe>
+                                        <!-- </div> -->
+                                      </div> 
+                                 </div>
+                                
                                 <div class="col-lg-6">
                                     <div class="video_info">
                                         <h3>{{ $user_detail['youtube_intro_title'] }}</h3>
@@ -187,10 +358,13 @@
                             </div>
                             <div class="col-md-12 plr-45">
                                 <div id="news-slider" class="owl-carousel">
-                                    @foreach($video_media_array as $video_key => $video)
+                                    @foreach($video_media_array as $video_key => $video)                                                                   
                                         <div class="post-slide">
                                             <div class="post-img">
-                                                <iframe width="250" height="215" src="{{ $video['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
+                                                <div class='c-video__image-container vid-fit-reveal' data-id="{{$video->id}}" id="#js-fitvideo_{{$video->id}}">
+                                                <div class="bt-play" id="bt-play_{{$video->id}}"></div>
+                                                    <iframe width="250" height="215" src="{{ $video['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal_{{$video->id}}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                            
+                                                </div>
                                             </div>
                                         </div>
                                         
@@ -248,7 +422,7 @@
                                     <div class="row audio-players">
                                         @foreach($podcast_media_array as $podcast_key => $podcast)
                                             <div class="col-md-3 col-6">
-                                                <div class="audio-player js-audio-player">
+                                                <div class="audio-player js-audio-player" data-id="{{$podcast->id}}" id="#js-fitvideo_{{$podcast->id}}">
                                                     <button class="audio-player__control js-control">
                                                         <div class="audio-player__control-icon"></div>
                                                     </button>
@@ -405,6 +579,43 @@
 
     @include('frontend.partials.bootstrap-select-locale')
             <script>
+                $(document).ready(function(){
+                $(".vid-fit-reveal").on('click', function() {
+                    var id = $(this).attr('data-id'); 
+                    var main_id = $(this).attr('id');
+                    
+                    $(main_id).addClass("reveal-video");
+                    $('#bt-play_'+id).hide();
+                    var myFrame = $(main_id).find('#vid-reveal_'+id);
+                    var url = $(myFrame).attr('src') + '?autoplay=1';
+                    $(myFrame).attr('src', url);                   
+                    
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/media-visitor"); ?>',
+                    data: {'id':id},
+                    success:function(data){
+                    },
+                });
+                });
+            
+                $(".js-audio-player").on('click', function() {
+                    var id = $(this).attr('data-id');                                      
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/media-visitor"); ?>',
+                    data: {'id':id},
+                    success:function(data){
+                    },
+                });
+                });
+            });
                 //  $('#eye').on('click', function(){
                 //     $('#share-refferal-modal2').modal('show');
                 // });

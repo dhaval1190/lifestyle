@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,10 +15,12 @@ use DateTime;
 use DateInterval;
 use App\Mail\Notification;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, Commenter, Messagable;
+    use HasRoles;
 
     const USER_NOT_SUSPENDED = 0;
     const USER_SUSPENDED = 1;
@@ -83,6 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'device_token',
         'referrer_id',
         'name',
         'email',

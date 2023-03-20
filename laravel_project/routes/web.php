@@ -84,6 +84,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
     Route::get('/visitor-view/{id}', 'PagesController@barchart');
+    Route::POST('/media-visitor', 'PagesController@mediavisitors');
 
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');
@@ -95,10 +96,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/listing/{item_slug}', 'PagesController@item')->name('page.item');
     Route::get('/listing/{item_slug}/product/{product_slug}', 'PagesController@product')->name('page.product');
 
-    Route::middleware(['auth'])->group(function () {
-
-        Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
         Route::post('/items/{item_slug}/contact', 'PagesController@contactEmail')->name('page.item.contact');
+        Route::post('/save-token',  'PagesController@saveToken')->name('save-token');
+        Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
@@ -677,10 +677,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
 
         // item leads routes
-        Route::resource('/item-leads', 'ItemLeadController');
-        
-    });
-
+        Route::resource('/item-leads', 'ItemLeadController');      
 });
 /**
  * End website routes
