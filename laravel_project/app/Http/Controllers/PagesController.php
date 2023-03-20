@@ -6179,7 +6179,7 @@ class PagesController extends Controller
                     $data = [
                         "registration_ids" => $FcmToken,
                         "notification" => [
-                            "title" =>'One New Notification Frome Your Articel: '.$request->articleTitle,
+                            "title" =>'New Notification From Your Article: '.$request->articleTitle,
                             "body" =>'From : '.$request['item_conntact_email_name'],  
                         ]
                     ];
