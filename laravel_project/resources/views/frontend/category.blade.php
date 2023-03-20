@@ -219,6 +219,19 @@
                                 </span>
                                 @enderror
                             </div>
+                            <div class="col-12 col-md-2 pl-0">                                    
+                                    <select class="selectpicker form-control @error('filter_country') is-invalid @enderror" name="filter_country" id="filter_country" data-live-search="true">
+                                            <option value="0" {{ empty($filter_country) ? 'selected' : '' }}>{{ __('prefer_country.all-country') }}</option>
+                                            @foreach($all_countries as $all_countries_key => $country)
+                                                <option value="{{ $country->id }}" {{ $filter_country == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('filter_country')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div>
                             <div class="col-12 col-md-2 pl-0">
                                 <select class="selectpicker form-control @error('filter_state') is-invalid @enderror" name="filter_state" id="filter_state" data-live-search="true">
                                     <option value="0" {{ empty($filter_state) ? 'selected' : '' }}>{{ __('prefer_country.all-state') }}</option>
@@ -245,7 +258,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-2 mt-2">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
@@ -652,8 +665,30 @@
 
 
             /**
-             * Start state selector in filter
+             * Start Country state city selector in filter
              */
+            $('#filter_country').on('change', function() {
+                $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#filter_state').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/states/' + this.value;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        success: function(result){
+                            $('#filter_state').empty();
+                            $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.all-state')}}</option>");
+                            $.each(JSON.parse(result), function(key, value) {
+                                var state_id = value.id;
+                                var state_name = value.state_name;
+                                $('#filter_state').append('<option value="'+ state_id +'">' + state_name + '</option>');
+                            });
+                            $('#filter_state').selectpicker('refresh');
+                        }
+                    });
+                }
+                
+            });
             $('#filter_state').on('change', function() {
 
                 if(this.value > 0)

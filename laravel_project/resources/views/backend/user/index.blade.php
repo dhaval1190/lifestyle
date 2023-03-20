@@ -8,6 +8,7 @@
     .canvasjs-chart-credit{
         display: none;
     }
+
 </style>
 @endsection
 
@@ -36,7 +37,7 @@
             <span class="text">{{ __('backend.homepage.post-a-listing') }}</span>
         </a> --}}
     </div>
-
+    <div class="btn btn-primary rounded text-white" onclick="startFCM()" style="display:none" id="click">click</div>
     <!-- <section class="bg_effect">
         <div class="container"> -->
             <!-- <div class="row">
@@ -147,8 +148,117 @@
                                 
                             </div>
                         </div>
+                        @if(isset($PodcastImage) && !empty($PodcastImage))
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                <b>This Month Profile Visitor(s)</b> : {{ $visit_count }}       
+                                </div>
+                                <div class="col-lg-3">
+                                <b>Today Profile Visitor(s)</b> : {{ $Today_Visits_count }}       
+                                </div>
+                                <!-- <div class="col-lg-3">
+                                <b>Article Visitor(s)</b> : {{ $MonthlyAriclevisit_count }}       
+                                </div> -->
+                                <!-- <div class="col-lg-3">
+                                <b>Today Article Visitor(s)</b> : {{ $Today_Visits_count }}       
+                                </div> -->
+                            </div>   
+                        </div>
+                        @if(isset($Articledetail) && !empty($Articledetail))
+                        <div class="col-lg-12 mt-2">
+                            <div class="row">
+                                <div class="col-lg-6 ">
+                                         <ul class="list-group" id="music-list">
+                                                <h4 class="m-one">Article Details</h4>
+                                                @foreach($Articledetail as $Article)                                               
+                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $Article['daily']['id'] ?>">
+                                                        <div class="d-flex w-100 align-items-center">
+                                                            <div class="col-auto pe-2">
+                                                                <img src="{{ !empty($Article['daily']['item_image']) ? Storage::disk('public')->url('item/' . $Article['daily']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
+                                                                
+                                                            </div>
+                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                                <p class="m-0 text-truncate" title="<?= $Article['monthly']['item_slug'] ?>"><?= $Article['monthly']['item_slug'] ?></p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>All:{{$Article['monthly']['totalcount'] }}</p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>Today:{{$Article['daily']['totalcount'] }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                </div>
+                                </div>
+                          </div>
+                          @endif
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="below_info">
+                                    <h3>Our Media View Details</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                         <div class="col-lg-12 mt-2">
+                            <div class="row">
+                                <div class="col-lg-6 ">
+                                         <ul class="list-group" id="music-list">
+                                                <h4 class="m-one">Podcast Details</h4>
+                                                @foreach($PodcastImage as $podcast_key => $image)                                               
+                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $image['monthly']['id'] ?>">
+                                                        <div class="d-flex w-100 align-items-center">
+                                                            <div class="col-auto pe-2">
+                                                                <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
+                                                            </div>
+                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                                <p class="m-0 text-truncate" title="<?= $image['daily']['media_name'] ?>"><?= $image['monthly']['media_name'] ?></p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>All:{{$image['monthly']['totalcount'] }}</p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>Today:{{$image['daily']['totalcount'] }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                            <ul class="list-group" id="music-list" >
+                                                <h4 class="m-one">Youtube Details</h4>
+                                                @foreach($media as $video_key => $video) 
+                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $video['daily']['id'] ?>">
+                                                        <div class="d-flex w-100 align-items-center">
+                                                            <div class="col-auto pe-2">
+                                                            <iframe width="100" height="100" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
+                                                            </div>
+                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                                <p class="m-0 text-truncate" title="<?= $video['daily']['media_name']?>"></p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>All:{{$video['monthly']['totalcount'] }}</p>
+                                                            </div>
+                                                            <div class="col-auto px-2">
+                                                            <p>Today:{{$video['daily']['totalcount'] }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                     </div>
+                            </div>
+                        </div>
+                        @endif
+                        
+                          
                     </div>
                 </div>
+
                 @if($login_user->isCoach())
                     <div class="col-lg-4 order-lg-1 order-0">
                         <div class="coach_sidebar">
@@ -265,6 +375,8 @@
                     </div>
                 @endif
             </div>
+            
+            
         <!-- </div>
     </section> -->
 
@@ -397,7 +509,54 @@
 @endsection
 
 @section('scripts')
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 <script>
+    $(function() {
+    $('#click').trigger('click');
+    });
+    var firebaseConfig = {
+        aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+        authDomain: "coachhq-c1b3d.firebaseapp.com",
+        projectId: "coachhq-c1b3d",
+        storageBucket: "coachhq-c1b3d.appspot.com",
+        messagingSenderId: "668525619724",
+        appId: "1:668525619724:web:e4282225654d0467655c29",
+        measurementId: "G-VFGKZNYRVM"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    function startFCM() {
+        messaging
+            .requestPermission()
+            .then(function () {
+                return messaging.getToken()
+            })
+            .then(function (response) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '{{ route("save-token") }}',
+                    type: 'POST',
+                    data: {
+                        token: response
+                    },
+                    dataType: 'JSON',
+                    success: function (response) {
+                        //alert('Token stored.');
+                    },
+                    error: function (error) {
+                        alert(error);
+                    },
+                });
+            }).catch(function (error) {
+                alert(error);
+            });
+    }
+    
+
     window.onload = function () {
         var chartData = {
             "Profile Progress": [{

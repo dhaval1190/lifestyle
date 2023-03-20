@@ -17,6 +17,9 @@ use Cmgmyr\Messenger\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Laravelista\Comments\Comment;
+use App\ProfileVisit;
+use App\MediaDetailsVisits;
+use App\ItemVisit;
 
 class PagesController extends Controller
 {
@@ -58,10 +61,120 @@ class PagesController extends Controller
             array("y"=> ($progress_data['percentage']), "name"=> "Completed", "color"=> "#4D72DE"),
             array("y"=> (100- $progress_data['percentage']), "name"=> "Remaining", "color"=> "#D3D3D3")
         );
+        $profile_visit = ProfileVisit::where('user_id', $login_user->id)->get();
+        
+        $currentMonthlyVisits = $profile_visit->whereBetween('created_at', [
+            today()->startOfMonth()->startOfDay()->toDateTimeString(),
+            today()->endOfMonth()->endOfDay()->toDateTimeString(),
+        ]);
+
+        $TodayVisits = $profile_visit->whereBetween('created_at', [
+            today()->startOfDay()->toDateTimeString(),
+            today()->endOfDay()->toDateTimeString(),
+        ]); 
+        $visit_count = $currentMonthlyVisits->count();
+        $Today_Visits_count = $TodayVisits->count();
+        // print_r($visit_count);exit;
+
+        $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $PodcastImage= array();
+        $media= array();
+
+        if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
+        foreach($media_deatils_visit as $mediadetail){
+            $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+            ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+              ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        $MediacurrentMonthlyVisits = $media_deatils_visit->whereBetween('created_at', [
+            today()->startOfMonth()->startOfDay()->toDateTimeString(),
+            today()->endOfMonth()->endOfDay()->toDateTimeString(),
+        ]);
+        
+        $TodayMediaVisits = $media_deatils_visit->whereBetween('created_at', [
+            today()->startOfDay()->toDateTimeString(),
+            today()->endOfDay()->toDateTimeString(),
+        ]); 
+        $Mediavisit_count = $MediacurrentMonthlyVisits->count();
+        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();
+        
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        
+        if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
+        foreach($podcast_deatils_visit as $detail){
+            $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+            ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+              ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        $PodcastcurrentMonthlyVisits = $podcast_deatils_visit->whereBetween('created_at', [
+            today()->startOfMonth()->startOfDay()->toDateTimeString(),
+            today()->endOfMonth()->endOfDay()->toDateTimeString(),
+        ])->unique('media_details_visits.media_detail_id');
+
+        $PodcastTodayVisits = $podcast_deatils_visit->whereBetween('created_at', [
+            today()->startOfDay()->toDateTimeString(),
+            today()->endOfDay()->toDateTimeString(),
+        ]);
+        $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();
+
+        $MonthlyPodcastvisit_Count = $PodcastcurrentMonthlyVisits->count();
+        $Today_Podcastvisits_Count = $PodcastTodayVisits->count();   
+
+        $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+        ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
+        
+        if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+            foreach($Ariclevisit_deatils_visit as $articledetail){
+                $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        $visits = ItemVisit::where('item_id', $item->id)->get();                    
+                    $ArticlecurrentMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $ArticlecurrentTodayVisits = $visits->whereBetween('created_at', [
+                        today()->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ]);
+        $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
+        $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
+
+
+        //print_r($Articledetail);exit;
+        
+        // $media_detail_id = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+        // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
+
 
         return response()->view('backend.user.index',
             compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
-            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name'));
+            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail'));
     }
 
     public function profileProgressData(Request $request,$user_id){

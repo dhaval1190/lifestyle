@@ -148,7 +148,6 @@
                         {{-- @endif --}}
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a> -->
                     @endif
-
                 </div>
                 <div class="col-lg-3 col-md-5 pl-0 pr-0 item-cover-contact-section" data-aos="fade-up" data-aos-delay="400">
                     @if(!empty($item->item_phone))
@@ -2956,7 +2955,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                         {{ __('frontend.item.send-email') }}
                                     </button>
                                 </div>
@@ -3299,8 +3298,29 @@
     <script src="{{ asset('frontend/vendor/goodshare/goodshare.min.js') }}"></script>
 
     <script src="{{ asset('frontend/vendor/jquery-qrcode/jquery-qrcode-0.18.0.min.js') }}"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    
+  <script>
+    var firebaseConfig = {
+        aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+        authDomain: "coachhq-c1b3d.firebaseapp.com",
+        projectId: "coachhq-c1b3d",
+        storageBucket: "coachhq-c1b3d.appspot.com",
+        messagingSenderId: "668525619724",
+        appId: "1:668525619724:web:e4282225654d0467655c29",
+        measurementId: "G-VFGKZNYRVM"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    messaging.onMessage(function (payload) {
+        const title = payload.notification.title;
+        const options = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(title, options);
+    });
 
-    <script>
         $(document).ready(function(){
 
             "use strict";
