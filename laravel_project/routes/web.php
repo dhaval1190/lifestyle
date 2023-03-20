@@ -97,12 +97,13 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/listing/{item_slug}/product/{product_slug}', 'PagesController@product')->name('page.product');
 
         Route::post('/items/{item_slug}/contact', 'PagesController@contactEmail')->name('page.item.contact');
+        Route::post('/send-notification', 'PagesController@sendNotification')->name('send.notification');
         Route::post('/save-token',  'PagesController@saveToken')->name('save-token');
         Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
-    });
+      
 
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
 
@@ -503,6 +504,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::resource('/item-leads', 'ItemLeadController');
     });
 
+
     /**
      * Back-end user routes
      */
@@ -610,12 +612,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // user Articles hour exceptions routes
         Route::put('/articles/hour-exceptions/update/{article_hour_exception}', 'ArticleController@updateItemHourException')->name('articles.hour-exceptions.update');
         Route::delete('/articles/hour-exceptions/destroy/{article_hour_exception}', 'ArticleController@destroyItemHourException')->name('articles.hour-exceptions.destroy');
-
-
-
+ 
         // message routes
-        Route::resource('/messages', 'MessageController');
-
+        Route::resource('/messages', 'MessageController');             
         // subscription routes
         Route::resource('/subscriptions', 'SubscriptionController');
 
@@ -677,7 +676,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
 
         // item leads routes
-        Route::resource('/item-leads', 'ItemLeadController');      
+        Route::resource('/item-leads', 'ItemLeadController');
+        
+    });
 });
 /**
  * End website routes
