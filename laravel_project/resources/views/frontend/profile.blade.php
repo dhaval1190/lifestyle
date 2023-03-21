@@ -180,6 +180,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 @section('content')
     <!-- <div class="site-section"> -->
         <div class="container-fluid">
+            
             <div class="row">
                 <div class="col-md-12 col-12 p-0">
                     <div class="upper_white_bg">
@@ -220,10 +221,18 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                 <div class="detail one">
                                                 <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye">                                               
                                                     <b>Total Visitor(s)</b> : {{ $visit_count }}</i> </p>                                                    
-                                                </div>
+                                                </div> 
+                                                <?php
+                                                    $userId = '';
+                                                    if(isset(Auth::user()->id)){
+                                                        $userId = Auth::user()->id ? Auth::user()->id : '';
+                                                        }
+                                                    ?>    
+                                                    @if($user_detail->id != $userId)                                           
+                                                <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                                           @endif
                                             </div>
-                                           
-                                           
+                                    </div>
                                             <!-- <div class="progress">
                                                 <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage']}}%"
                                                     aria-valuenow="{{ $progress_data['percentage']}}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
@@ -256,7 +265,93 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                 </div>
             </div>
         </div>
+        
+        <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>{{ __('frontend.item.share-listing-email') }}</p>
+                                @if(!Auth::check())
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ __('frontend.item.login-require') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="hexId" value = "{{ $hexId}}">
+                                    <input type="hidden" name="contact_profile" value = "contact_profile">
+                                    <input type="hidden" name="userId" value = "{{ $user_detail->id}}">                                  
 
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                            <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_conntact_email_name')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                            <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_contact_email_from_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        {{-- <div class="col-md-4">
+                                            <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                            <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_share_email_to_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div> --}}
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                            <textarea class="form-control @error('item_contact_email_note') is-invalid @enderror" id="item_contact_email_note" rows="3" name="item_contact_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_contact_email_note') }}</textarea>
+                                            @error('item_contact_email_note')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                                {{ __('frontend.item.send-email') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <section class="middle">
             <div class="container">
                 <div class="row">
@@ -575,10 +670,46 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
    
 
     @include('frontend.partials.bootstrap-select-locale')
             <script>
+            var firebaseConfig = {
+                aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                authDomain: "coachhq-c1b3d.firebaseapp.com",
+                projectId: "coachhq-c1b3d",
+                storageBucket: "coachhq-c1b3d.appspot.com",
+                messagingSenderId: "668525619724",
+                appId: "1:668525619724:web:e4282225654d0467655c29",
+                measurementId: "G-VFGKZNYRVM"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+            messaging.onMessage(function (payload) {
+                const title = payload.notification.title;
+                const options = {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon,
+                };
+                new Notification(title, options);
+            });
+            $(document).ready(function(){
+                 $('.item-contact-button').on('click', function(){
+                $('#contact-modal').modal('show');
+                });
+                @error('item_conntact_email_name')
+                $('#contact-modal').modal('show');
+                @enderror
+
+                @error('item_contact_email_from_email')
+                $('#contact-modal').modal('show');
+                @enderror
+
+                @error('item_contact_email_note')
+                $('#contact-modal').modal('show');
+                @enderror
+            });
                 $(document).ready(function(){
                 $(".vid-fit-reveal").on('click', function() {
                     var id = $(this).attr('data-id'); 
@@ -731,6 +862,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_GOOGLE_MAP)
         <script>
+              
             // Initial the google map
             function initMap() {
 

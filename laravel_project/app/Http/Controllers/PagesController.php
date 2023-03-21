@@ -1966,6 +1966,7 @@ class PagesController extends Controller
 
     public function profile(Request $request, $id)
     {
+        $hexId = $id;
         $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
@@ -2279,7 +2280,8 @@ class PagesController extends Controller
                     $view_count_lifetime = $views->count();
                     $visit_count = $currentMonthlyVisits->count();
                     $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
-                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);                  
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);      
+                    $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();            
                     
         return response()->view($theme_view_path . 'profile',
             compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
@@ -2287,7 +2289,7 @@ class PagesController extends Controller
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId'
             ));
     }
 
@@ -6111,21 +6113,38 @@ class PagesController extends Controller
                 ]);
 
                 // send an email notification to admin
-                $email_to = $user->email;
-                $email_from_name = $request->item_conntact_email_name;
-                $item_contact_email = $request->item_contact_email_from_email;
-                $articleTitle = $request->articleTitle;
-                $email_note = $request->item_contact_email_note;
-                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                if($request->contact_profile){
+                    $email_to = $user->email;                   
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;                    
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                    
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
 
-                $email_notify_message = [
-                    __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
-                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
-                    __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
-                    __('frontend.item.send-email-contact-note'),
-                    $email_note,
-                ];
+                }else{
+                    $email_to = $user->email;
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;
+                    $articleTitle = $request->articleTitle;
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
+                        __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
+                }
 
                 /**
                  * Start initial SMTP settings
@@ -6176,13 +6195,27 @@ class PagesController extends Controller
                     $url = 'https://fcm.googleapis.com/fcm/send';
                     $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();            
                     $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
-                    $data = [
-                        "registration_ids" => $FcmToken,
-                        "notification" => [
-                            "title" =>'New Notification From Your Article: '.$request->articleTitle,
-                            "body" =>'From : '.$request['item_conntact_email_name'],  
-                        ]
-                    ];
+                    
+                    if($request->contact_profile){
+
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Profile',
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }else{
+   
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }
+                    
                     $encodedData = json_encode($data);    
                     $headers = [
                         'Authorization:key=' . $serverKey,
@@ -6203,7 +6236,6 @@ class PagesController extends Controller
                     // Close connection
                     curl_close($ch);
                     // FCM response  
-                    print_r($result);
 
                 }
                 catch (\Exception $e)
@@ -6213,15 +6245,27 @@ class PagesController extends Controller
                     \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
                     \Session::flash('flash_type', 'danger');
                 }
+                 if($request->contact_profile){
 
-                return redirect()->route('page.item', $item->item_slug);
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
             else
             {
                 \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
                 \Session::flash('flash_type', 'danger');
 
-                return redirect()->route('page.item', $item->item_slug);
+
+               if($request->contact_profile){
+
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
         }
         else
