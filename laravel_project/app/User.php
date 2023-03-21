@@ -16,12 +16,10 @@ use DateTime;
 use DateInterval;
 use App\Mail\Notification;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, Commenter, Messagable;
-    use HasRoles;
 
     const USER_NOT_SUSPENDED = 0;
     const USER_SUSPENDED = 1;
