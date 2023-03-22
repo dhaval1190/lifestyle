@@ -5215,13 +5215,13 @@ class PagesController extends Controller
     }
     private function wasRecentlyViewedProfile(User $user_detail): bool
     {
-        $viewed = session()->get('viewed_items', []);
+        $viewed = session()->get('viewed_profile', []);
 
         return array_key_exists($user_detail->id, $viewed);
     }
     private function wasRecentlyViewedYoutube(MediaDetail $media_detail): bool
     {
-        $viewed = session()->get('viewed_items', []);
+        $viewed = session()->get('viewed_youtube', []);
 
         return array_key_exists($media_detail->id, $viewed);
     }
@@ -5238,11 +5238,11 @@ class PagesController extends Controller
     }
     private function storeInSessionProfile(User $user_detail)
     {
-        session()->put("viewed_items.{$user_detail->id}", now()->timestamp);
+        session()->put("viewed_profile.{$user_detail->id}", now()->timestamp);
     }
     private function storeInSessionYoutube(MediaDetail $media_detail)
     {
-        session()->put("viewed_items.{$media_detail->id}", now()->timestamp);
+        session()->put("viewed_youtube.{$media_detail->id}", now()->timestamp);
     }
 
 

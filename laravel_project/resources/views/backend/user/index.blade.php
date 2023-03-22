@@ -148,114 +148,117 @@
                                 
                             </div>
                         </div>
-                        @if(isset($PodcastImage) && !empty($PodcastImage))
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                <b>This Month Profile Visitor(s)</b> : {{ $visit_count }}       
-                                </div>
-                                <div class="col-lg-3">
-                                <b>Today Profile Visitor(s)</b> : {{ $Today_Visits_count }}       
-                                </div>
-                                <!-- <div class="col-lg-3">
-                                <b>Article Visitor(s)</b> : {{ $MonthlyAriclevisit_count }}       
-                                </div> -->
-                                <!-- <div class="col-lg-3">
-                                <b>Today Article Visitor(s)</b> : {{ $Today_Visits_count }}       
-                                </div> -->
-                            </div>   
-                        </div>
+                        @if(isset($visit_count) && !empty($visit_count) && isset($Today_Visits_count) && !empty($Today_Visits_count))
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                    <b>This Month Profile Visitor(s)</b> : {{ $visit_count }}       
+                                    </div>
+                                    <div class="col-lg-3">
+                                    <b>Today Profile Visitor(s)</b> : {{ $Today_Visits_count }}       
+                                    </div>
+                                    <!-- <div class="col-lg-3">
+                                    <b>Article Visitor(s)</b> : {{ $MonthlyAriclevisit_count }}       
+                                    </div> -->
+                                    <!-- <div class="col-lg-3">
+                                    <b>Today Article Visitor(s)</b> : {{ $Today_Visits_count }}       
+                                    </div> -->
+                                </div>   
+                            </div>
+                        @endif
                         @if(isset($Articledetail) && !empty($Articledetail))
-                        <div class="col-lg-12 mt-2">
-                            <div class="row">
-                                <div class="col-lg-6 ">
+                            <div class="col-lg-12 mt-2">
+                                <div class="row">
+                                    <div class="col-lg-6 ">
                                          <ul class="list-group" id="music-list">
                                                 <h4 class="m-one">Article Details</h4>
-                                                @foreach($Articledetail as $Article)                                               
-                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $Article['daily']['id'] ?>">
-                                                        <div class="d-flex w-100 align-items-center">
-                                                            <div class="col-auto pe-2">
-                                                                <img src="{{ !empty($Article['daily']['item_image']) ? Storage::disk('public')->url('item/' . $Article['daily']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
-                                                                
-                                                            </div>
-                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
-                                                                <p class="m-0 text-truncate" title="<?= $Article['monthly']['item_slug'] ?>"><?= $Article['monthly']['item_slug'] ?></p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>All:{{$Article['monthly']['totalcount'] }}</p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>Today:{{$Article['daily']['totalcount'] }}</p>
-                                                            </div>
+                                            @foreach($Articledetail as $Article)                                               
+                                                <li class="list-group-item list-group-item-action item" data-id="<?= $Article['monthly']['id'] ?>">
+                                                    <div class="d-flex w-100 align-items-center">
+                                                        <div class="col-auto pe-2">
+                                                            <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
+                                                            
                                                         </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                </div>
-                                </div>
-                          </div>
-                          @endif
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="below_info">
-                                    <h3>Our Media View Details</h3>
+                                                        <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                            <p class="m-0 text-truncate" title="<?= $Article['monthly']['item_slug'] ?>"><?= $Article['monthly']['item_slug'] ?></p>
+                                                        </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>All:{{$Article['monthly']['totalcount'] }}</p>
+                                                        </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>Today:{{$Article['daily']['totalcount'] }}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                          @endif
+                         @if(isset($PodcastImage) && !empty($PodcastImage) || isset($media) && !empty($media))
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="below_info">
+                                        <h3>Our Media View Details</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                          <div class="col-lg-12 mt-2">
                             <div class="row">
-                                <div class="col-lg-6 ">
-                                         <ul class="list-group" id="music-list">
-                                                <h4 class="m-one">Podcast Details</h4>
-                                                @foreach($PodcastImage as $podcast_key => $image)                                               
-                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $image['monthly']['id'] ?>">
-                                                        <div class="d-flex w-100 align-items-center">
-                                                            <div class="col-auto pe-2">
-                                                                <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
-                                                            </div>
-                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
-                                                                <p class="m-0 text-truncate" title="<?= $image['daily']['media_name'] ?>"><?= $image['monthly']['media_name'] ?></p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>All:{{$image['monthly']['totalcount'] }}</p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>Today:{{$image['daily']['totalcount'] }}</p>
-                                                            </div>
+                            @if(isset($PodcastImage) && !empty($PodcastImage))
+                                    <div class="col-lg-6 ">
+                                        <ul class="list-group" id="music-list">
+                                            <h4 class="m-one">Podcast Details</h4>
+                                            @foreach($PodcastImage as $podcast_key => $image)                                               
+                                                <li class="list-group-item list-group-item-action item" data-id="<?= $image['monthly']['id'] ?>">
+                                                    <div class="d-flex w-100 align-items-center">
+                                                        <div class="col-auto pe-2">
+                                                            <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
                                                         </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                </div>
-                                <div class="col-lg-6">
-                                            <ul class="list-group" id="music-list" >
-                                                <h4 class="m-one">Youtube Details</h4>
-                                                @foreach($media as $video_key => $video) 
-                                                    <li class="list-group-item list-group-item-action item" data-id="<?= $video['daily']['id'] ?>">
-                                                        <div class="d-flex w-100 align-items-center">
-                                                            <div class="col-auto pe-2">
-                                                            <iframe width="100" height="100" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
-                                                            </div>
-                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
-                                                                <p class="m-0 text-truncate" title="<?= $video['daily']['media_name']?>"></p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>All:{{$video['monthly']['totalcount'] }}</p>
-                                                            </div>
-                                                            <div class="col-auto px-2">
-                                                            <p>Today:{{$video['daily']['totalcount'] }}</p>
-                                                            </div>
+                                                        <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                            <p class="m-0 text-truncate" title="<?= $image['daily']['media_name'] ?>"><?= $image['monthly']['media_name'] ?></p>
                                                         </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                     </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>All:{{$image['monthly']['totalcount'] }}</p>
+                                                        </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>Today:{{$image['daily']['totalcount'] }}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                @if(isset($media) && !empty($media))
+                                    <div class="col-lg-6">
+                                        <ul class="list-group" id="music-list" >
+                                            <h4 class="m-one">Youtube Details</h4>
+                                            @foreach($media as $video_key => $video) 
+                                                <li class="list-group-item list-group-item-action item" data-id="<?= $video['daily']['id'] ?>">
+                                                    <div class="d-flex w-100 align-items-center">
+                                                        <div class="col-auto pe-2">
+                                                        <iframe width="100" height="100" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
+                                                        </div>
+                                                        <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                            <p class="m-0 text-truncate" title="<?= $video['daily']['media_name']?>"></p>
+                                                        </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>All:{{$video['monthly']['totalcount'] }}</p>
+                                                        </div>
+                                                        <div class="col-auto px-2">
+                                                        <p>Today:{{$video['daily']['totalcount'] }}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        @endif
-                        
-                          
                     </div>
                 </div>
 
