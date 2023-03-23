@@ -693,6 +693,18 @@
                                 </div>
                             </div>
                         @endif
+                        <hr class="mt-5">
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success m-2 text-white">
+                                    {{ __('backend.shared.update') }}
+                                </button>
+                                <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
+                                    {{ __('backend.user.change-password') }}
+                                </a>
+                            </div>
+                        </div>
                         <div class="row">
                                 <div class="col-md-12">
                                     <div class="below_info">
@@ -808,7 +820,7 @@
                                 
             </div>
 
-                        <hr class="mt-5">
+                        {{-- <hr class="mt-5">
 
                         <div class="row mt-3">
                             <div class="col-md-12">
@@ -819,7 +831,7 @@
                                     {{ __('backend.user.change-password') }}
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                         
 
                     </form>
