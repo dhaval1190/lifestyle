@@ -408,7 +408,8 @@
                                     @if(empty($login_user->user_cover_image))
                                         <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%;">
                                     @else
-                                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
+                                        {{-- <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;"> --}}
+                                        <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
                                     @endif
                                     <input id="feature_cover_image" type="hidden" name="user_cover_image">
                                     <div class="mt-1">
@@ -692,6 +693,18 @@
                                 </div>
                             </div>
                         @endif
+                        <hr class="mt-5">
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success m-2 text-white">
+                                    {{ __('backend.shared.update') }}
+                                </button>
+                                <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
+                                    {{ __('backend.user.change-password') }}
+                                </a>
+                            </div>
+                        </div>
                         <div class="row">
                                 <div class="col-md-12">
                                     <div class="below_info">
@@ -807,7 +820,7 @@
                                 
             </div>
 
-                        <hr class="mt-5">
+                        {{-- <hr class="mt-5">
 
                         <div class="row mt-3">
                             <div class="col-md-12">
@@ -818,7 +831,7 @@
                                     {{ __('backend.user.change-password') }}
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                         
 
                     </form>
@@ -1105,8 +1118,8 @@
                     cover_image_crop = $('#cover_image_demo').croppie({
                         enableExif: true,
                         viewport: {
-                            width: 768,
-                            height: 512,
+                            width: 999,
+                            height: 312,
                         },
                         boundary: {
                             width: 950,
@@ -1130,7 +1143,9 @@
             $('#crop_cover_image').on("click", function(event) {
                 cover_image_crop.croppie('result', {
                     type: 'base64',
-                    size: 'viewport'
+                    size: 'original',
+                    format: 'png',
+                    quality: 1
                 }).then(function(response){
                     $('#feature_cover_image').val(response);
                     $('#cover_image_preview').attr("src", response);
@@ -1255,10 +1270,23 @@
             if($("#media_url").val()==''){
                 $('.err_media_url').html("Please enter Youtube Video URL");
                 return false;
+            }            
+
+            var youtubeUrl = $("#media_url").val();
+            var matchUrl = ".youtube";
+            if(youtubeUrl.indexOf(matchUrl) == -1){
+                $('.err_media_url').html("Please enter Youtube URL Only");
+                return false;
             }
+
+            var id = youtubeUrl.split("?v=")[1];
+
+            var media_url = "http://www.youtube.com/embed/" + id;
+
             var media_type_text = $("#media_type option:selected").text();
             var media_type_value = $("#media_type").val();
-            var media_url = $("#media_url").val();
+            // var media_type_value = media_url;
+            // var media_url = $("#media_url").val();
 
             var media_detail_value = media_type_value + '||' + media_url;
             var media_detail_text = media_type_text + ' : ' + media_url;

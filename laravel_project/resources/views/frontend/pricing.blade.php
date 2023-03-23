@@ -64,6 +64,9 @@
         .bootstrap-select.btn-group .dropdown-toggle .filter-option {
         display: inline !important;
         }
+        .error_color{
+            color: red;
+        }
     </style>
 @endsection
 
@@ -191,7 +194,7 @@
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('frontend.header.list-business') }}
                                         </a> --}}
-                                        <a href="javascript:void" class="btn btn-block btn-primary text-white rounded coachRegistration" data-plan_id="{{$plan->id}}">
+                                        <a href="javascript:void(0)" class="btn btn-block btn-primary text-white rounded coachRegistration" data-plan_id="{{$plan->id}}">
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('theme_directory_hub.pricing.get-started') }}
                                         </a>
@@ -259,7 +262,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="POST" action="{{ route('register') }}" class="bg-white" id="coachRegistrationForm" enctype="multipart/form-data">
+                            <form method="POST" class="bg-white" id="coachRegistrationForm" name="coachRegistrationForm" enctype="multipart/form-data">
                                 <div class="modal-body" style="max-height: 600px; overflow: scroll;">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="is_coach" value="{{ \App\Role::COACH_ROLE_ID }}">
@@ -296,64 +299,70 @@
                                                             <option value="{{ $printable_category["category_id"] }}" {{ in_array($printable_category["category_id"] ,old('category_ids', [])) ? 'selected' : '' }}>{{ $printable_category["category_name"] }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('category_ids')
+                                                    <p class="category_error error_color" role="alert"></p>
+                                                    {{-- @error('category_ids')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
                                                     <label for="name" class="text-black">{{ __('auth.name') }} <span class="text-danger">*</span></label>
-                                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
-                                                    @error('name')
-                                                    <span class="invalid-feedback" role="alert">
+                                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                                    <p class="name_error error_color" role="alert"></p>
+                                                    {{-- @error('name')
+                                                    <span class="invalid-feedback name_error" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="company_name" class="text-black">Company Name</label>
                                                     <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}">
-                                                    @error('company_name')
+                                                    <p class="company_error error_color" role="alert"></p>
+                                                    {{-- @error('company_name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="text-black" for="email">{{ __('auth.email-addr') }} <span class="text-danger">*</span></label>
-                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
-                                                    @error('email')
+                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
+                                                    <p class="email_error error_color" role="alert"></p>
+                                                    {{-- @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
-                                                    @error('phone')
+                                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
+                                                    <p class="phone_error error_color" role="alert"></p>
+                                                    {{-- @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
                                                     <label class="text-black" for="subject">{{ __('auth.password') }} <span class="text-danger">*</span></label>
-                                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
-                                                    @error('password')
+                                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password">
+                                                    <p class="password_error error_color" role="alert"></p>
+                                                    {{-- @error('password')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }} <span class="text-danger">*</span></label>
-                                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
@@ -362,11 +371,12 @@
                                                             <option value="{{ $prkey }}" {{ old('preferred_pronouns') == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('preferred_pronouns')
+                                                    <p class="preferred_pronouns_error error_color" role="alert"></p>
+                                                    {{-- @error('preferred_pronouns')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="website" class="text-black">Website</label>
@@ -428,11 +438,12 @@
                                                     <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('hourly_rate_type')
+                                            <p class="hourly_rate_type_error error_color" role="alert"></p>
+                                            {{-- @error('hourly_rate_type')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
@@ -441,11 +452,12 @@
                                                     <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('working_type')
+                                            <p class="working_type_error error_color" role="alert"></p>
+                                            {{-- @error('working_type')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="experience_year" class="text-black">Experience Year <span class="text-danger">*</span></label>
@@ -454,20 +466,22 @@
                                                     <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('experience_year')
+                                            <p class="experience_year_error error_color" role="alert"></p>
+                                            {{-- @error('experience_year')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
-                                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
-                                            @error('address')
+                                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}">
+                                            <p class="address_error error_color" role="alert"></p>
+                                            {{-- @error('address')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                     </div>
 
@@ -508,40 +522,44 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            @error('country_id')
+                                            <p class="country_error error_color" role="alert"></p>
+                                            {{-- @error('country_id')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="state_id" class="text-black">State <span class="text-danger">*</span></label>
                                             <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                             </select>
-                                            @error('state_id')
+                                            <p class="state_error error_color" role="alert"></p>
+                                            {{-- @error('state_id')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="city_id" class="text-black">City <span class="text-danger">*</span></label>
                                             <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                             </select>
-                                            @error('city_id')
+                                            <p class="city_error error_color" role="alert"></p>
+                                            {{-- @error('city_id')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="zip" class="text-black">Post Code <span class="text-danger">*</span></label>
-                                            <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
-                                            @error('post_code')
+                                            <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code') }}">
+                                            <p class="zip_error error_color" role="alert"></p>
+                                            {{-- @error('post_code')
                                             <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
-                                            @enderror
+                                            @enderror --}}
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -741,7 +759,7 @@
                     $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                     $('#select_state_id').selectpicker('refresh');
                     if(this.value > 0) {
-                        var ajax_url = '/ajax/states/' + this.value;
+                        var ajax_url = 'ajax/states/' + this.value;
                         jQuery.ajax({
                             url: ajax_url,
                             method: 'get',
@@ -763,7 +781,7 @@
                     $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                     $('#select_city_id').selectpicker('refresh');
                     if(this.value > 0) {
-                        var ajax_url = '/ajax/cities/' + this.value;
+                        var ajax_url = 'ajax/cities/' + this.value;
                         jQuery.ajax({
                             url: ajax_url,
                             method: 'get',
@@ -830,12 +848,98 @@
                     $('#coachRegistrationForm select').val('').selectpicker('refresh');
                     $('#coachRegistrationForm input#plan_id').val($(this).attr('data-plan_id'));
                     $('#coachRegistrationModal').modal('show');
+                    $(".error_color").text("");
                 });
 
-                @if (count($errors) > 0)
-                    $('#coachRegistrationModal').modal('show');
-                @endif
+                $('#coachRegistrationForm').on('submit',function(e){
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: "{{ route('register') }}",
+                        data: formData,
+                        dataType: 'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                        },
+
+                        success: function(response){
+                            //console.log(response);
+                            if(response.status == 'success'){
+                                // console.log(response)
+                                $("#coachRegistrationModal").trigger("reset");
+                                $('#coachRegistrationModal').modal('hide'); 
+                                $('.error_color').text('');                               
+
+                            }
+
+                            if(response.status == 'error'){
+                                // console.log(response)
+                                $.each(response.msg,function(key,val){
+                                    if(response.msg.category_ids){
+                                        $('.category_error').text(response.msg.category_ids)
+                                    }
+                                    if(response.msg.name){
+                                        $('.name_error').text(response.msg.name)
+                                    }
+                                    if(response.msg.email){
+                                        $('.email_error').text(response.msg.email)
+                                    }
+                                    if(response.msg.phone){
+                                        $('.phone_error').text(response.msg.phone)
+                                    }
+                                    if(response.msg.password){
+                                        $('.password_error').text(response.msg.password)
+                                    }
+                                    if(response.msg.preferred_pronouns){
+                                        $('.preferred_pronouns_error').text(response.msg.preferred_pronouns)
+                                    }
+                                    if(response.msg.hourly_rate_type){
+                                        $('.hourly_rate_type_error').text(response.msg.hourly_rate_type)
+                                    }
+                                    if(response.msg.working_type){
+                                        $('.working_type_error').text(response.msg.working_type)
+                                    }
+                                    if(response.msg.experience_year){
+                                        $('.experience_year_error').text(response.msg.experience_year)
+                                    }
+                                    if(response.msg.address){
+                                        $('.address_error').text(response.msg.address)
+                                    }
+                                    if(response.msg.country_id){
+                                        $('.country_error').text(response.msg.country_id)
+                                    }
+                                    if(response.msg.state_id){
+                                        $('.state_error').text(response.msg.state_id)
+                                    }
+                                    if(response.msg.city_id){
+                                        $('.city_error').text(response.msg.city_id)
+                                    }
+                                    if(response.msg.post_code){
+                                        $('.zip_error').text(response.msg.post_code)
+                                    }
+                                    $(':input[type="submit"]').prop('disabled', false);
+                                    
+                                });
+                            }
+                        }
+                    });
+
+
+
+                });
+
+                // @if (count($errors) > 0)
+                //     $('#coachRegistrationModal').modal('show');
+                // @endif
             @endif
+
+            
 
         });
 

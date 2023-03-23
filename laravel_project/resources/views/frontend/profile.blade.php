@@ -190,6 +190,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                 </div>
                             @else
                                 <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::disk('public')->url('user/'. $user_detail['user_cover_image']) }});">
+                                    {{-- <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::url('user/'. $user_detail['user_cover_image']) }});"> --}}
                                 </div>
                             @endif
 
