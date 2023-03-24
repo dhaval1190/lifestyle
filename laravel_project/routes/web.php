@@ -85,6 +85,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
     Route::get('/visitor-view/{id}', 'PagesController@barchart');
     Route::POST('/media-visitor', 'PagesController@mediavisitors');
+    Route::POST('/youtube-visitor', 'PagesController@youtubevisitors');
+    Route::get('/notification/{id}', 'PagesController@notificationData')->name('page.user.notification');
 
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');

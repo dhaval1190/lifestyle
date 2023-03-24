@@ -293,7 +293,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ProfileVisit::class);
     }
-
+    public function mediadetailsvisits()
+    {
+        return $this->hasMany(MediaDetailsVisits::class);
+    }
+    public function notification()
+    {
+        return $this->hasMany(UserNotification::class);
+    }
 
     /**
      * Get the items saved by this user
