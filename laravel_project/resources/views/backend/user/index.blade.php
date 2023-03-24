@@ -37,7 +37,7 @@
             float: right;
             box-shadow: 0px 0px 10px 3px black;   
             border-left: 1px solid black;
-            height: 900px;
+            height: 100%;
             top: 0px;
             right: -500px;
             z-index: 99;
@@ -333,7 +333,7 @@
                     </div>
                 </div>
                 @endif
-                @if(isset($PodcastImage) && !empty($PodcastImage) || isset($media) && !empty($media))
+                @if(isset($PodcastImage) && !empty($PodcastImage) || isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="below_info">
@@ -373,18 +373,18 @@
                             </ul>
                         </div>
                         @endif
-                        @if(isset($media) && !empty($media))
+                        @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
                         <div class="col-lg-6">
                             <ul class="list-group" id="music-list">
                                 <h4 class="m-one">Youtube Details</h4>
                                 @foreach($media as $video_key => $video)
-                                <li class="list-group-item list-group-item-action item" data-id="<?= $video['daily']['id'] ?>">
+                                <li class="list-group-item list-group-item-action item" data-id="<?= $video['monthly']['id'] ?>">
                                     <div class="d-flex w-100 align-items-center">
                                         <div class="col-auto pe-2">
                                             <iframe width="100" height="100" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
                                         </div>
                                         <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate" title="<?= $video['daily']['media_name']?>">
+                                            <p class="m-0 text-truncate" title="<?= $video['monthly']['media_name']?>">
                                             </p>
                                         </div>
                                         <div class="col-auto px-2">
