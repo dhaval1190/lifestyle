@@ -128,6 +128,12 @@
   top: 50px;
   color: white;
 }
+.vid-fit-user {
+    height: 380;
+    background-color: #000f24;
+    position: relative;
+}
+
 .vid-fit-reveal {
   height: 215;
   background-color: #000f24;
@@ -152,6 +158,7 @@
 .vid-fit-reveal #vid-reveal {
   visibility: hidden;
 }
+
 .c-video__play-btn {
   position: absolute;
   top: 0;
@@ -410,6 +417,10 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                             <div class="row">
                                 <div class="col-lg-6">
                                      <div class="video">
+                                     <div class='c-video__image-container vid-fit-user' data-id="{{$user_detail->id}}" id="#js-fitvideouser_{{$user_detail->id}}">
+                                                <div class="bt-play" id="bt-playuser_{{$user_detail->id}}"></div>
+                                                <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe>                            
+                                                </div>
                                         
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
                                             title="YouTube video player" frameborder="0"
@@ -420,7 +431,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                         @endphp
                                         <!-- <div class='c-video__image-container vid-fit-reveal' id="js-fitvideo">
                                           <div class="bt-play"></div> -->
-                                           <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe>
+                                           <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe> -->
                                         <!-- </div> -->
                                       </div> 
                                  </div>
@@ -711,6 +722,28 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                 $('#contact-modal').modal('show');
                 @enderror
             });
+            $(document).ready(function(){
+                $(".vid-fit-user").on('click', function() {
+                    var userid = $(this).attr('data-id'); 
+                    var main_id = $(this).attr('id');
+                    $(main_id).addClass("reveal-video");
+                    $('#bt-playuser_'+userid).hide();
+                    var myFrame = $(main_id).find('#vid-revealuser_'+userid);
+                    var url = $(myFrame).attr('src') + '?autoplay=1';                   
+                    $(myFrame).attr('src', url);                  
+                    
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/youtube-visitor"); ?>',
+                    data: {'userid':userid},
+                    success:function(data){
+                    },
+                });
+                });
+            });
                 $(document).ready(function(){
                 $(".vid-fit-reveal").on('click', function() {
                     var id = $(this).attr('data-id'); 
@@ -719,7 +752,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                     $(main_id).addClass("reveal-video");
                     $('#bt-play_'+id).hide();
                     var myFrame = $(main_id).find('#vid-reveal_'+id);
-                    var url = $(myFrame).attr('src') + '?autoplay=1';
+                    var url = $(myFrame).attr('src') + '?autoplay=1';                    
                     $(myFrame).attr('src', url);                   
                     
                     $.ajax({

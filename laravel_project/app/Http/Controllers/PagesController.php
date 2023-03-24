@@ -55,7 +55,7 @@ use DatePeriod;
 use DateTimeInterface;
 use Carbon\Carbon;
 use App\MediaDetailsVisits;
-
+use App\UserNotification;
 
 class PagesController extends Controller
 {
@@ -5225,6 +5225,12 @@ class PagesController extends Controller
 
         return array_key_exists($media_detail->id, $viewed);
     }
+    private function wasRecentlyViewedUserYoutube(User $youtube_detail): bool
+    {
+        $viewed = session()->get('viewed_user_youtube', []);
+       
+        return array_key_exists($youtube_detail->id, $viewed);
+    }
 
     /**
      * Add a given post to the session.
@@ -5243,6 +5249,10 @@ class PagesController extends Controller
     private function storeInSessionYoutube(MediaDetail $media_detail)
     {
         session()->put("viewed_youtube.{$media_detail->id}", now()->timestamp);
+    }
+    private function storeInSessionUserYoutube(User $youtube_detail)
+    {
+        session()->put("viewed_user_youtube.{$youtube_detail->id}", now()->timestamp);
     }
 
 
@@ -6114,7 +6124,7 @@ class PagesController extends Controller
 
                 // send an email notification to admin
                 if($request->contact_profile){
-                    $email_to = $user->email;                   
+                    $email_to = $user->email;                                   
                     $email_from_name = $request->item_conntact_email_name;
                     $item_contact_email = $request->item_contact_email_from_email;                    
                     $email_note = $request->item_contact_email_note;
@@ -6214,8 +6224,7 @@ class PagesController extends Controller
                                 "body" =>'From : '.$request['item_conntact_email_name'],  
                             ]
                         ];
-                    }
-                    
+                    }                   
                     $encodedData = json_encode($data);    
                     $headers = [
                         'Authorization:key=' . $serverKey,
@@ -6244,9 +6253,16 @@ class PagesController extends Controller
 
                     \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
                     \Session::flash('flash_type', 'danger');
-                }
-                 if($request->contact_profile){
+                }                               
+                $notification = [
+                    'user_id' => $user->id,
+                    'notification'=>$data['notification']['title'],
+                    'is_read'=>'0',                    
+                ];           
+                 //print_r($user->notification());exit;          
+                 $user->notification()->create($notification);
 
+                 if($request->contact_profile){
                      return redirect()->route('page.profile', $request->hexId);
                  }else{
 
@@ -7685,7 +7701,9 @@ class PagesController extends Controller
         return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata','Today_Visits_count'));
     }
     public function mediavisitors(Request $request){
-            $media_detail = MediaDetail::where('id', $request['id'])->first();        
+
+        $media_detail = MediaDetail::where('id', $request['id'])->first(); 
+
         if (! $this->wasRecentlyViewedYoutube($media_detail)) {
             $view_data = [
                 'user_id' => $media_detail->user_id,
@@ -7699,6 +7717,23 @@ class PagesController extends Controller
                  $this->storeInSessionYoutube($media_detail);
             }
     }
+    public function youtubevisitors(Request $request){
+
+        $youtube_detail = User::where('id', $request['userid'])->first();
+            
+        if (! $this->wasRecentlyViewedUserYoutube($youtube_detail)) {
+            $view_data = [
+                'user_id' => $youtube_detail->id,
+                'media_type'=>'youtube',
+                'media_url'=>(isset($youtube_detail->youtube) && !empty($youtube_detail->youtube) ? $youtube_detail->youtube : ''),
+                'ip' => request()->getClientIp(),
+                'agent' => request()->header('user_agent'),
+                'referer' => request()->header('referer'),
+            ];      
+                $youtube_detail->mediadetailsvisits()->create($view_data);
+                 $this->storeInSessionUserYoutube($youtube_detail);
+            }
+    }
     public function saveToken(Request $request)
     {
         Auth::user()->device_token =  $request->token;
@@ -7706,5 +7741,19 @@ class PagesController extends Controller
         Auth::user()->save();
 
         return response()->json(['Token successfully stored.']);
+    }
+    public function notificationData(Request $request,$id)
+    {
+        $settings = app('site_global_settings');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.notification', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        $notification = UserNotification::where('user_id',$id)->get();
+       
+        return view('frontend.user-notification',compact('notification'));
     }
 }

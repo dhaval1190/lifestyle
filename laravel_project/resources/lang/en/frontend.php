@@ -11,6 +11,11 @@ return array (
     // 'description' => 'A World Class Classified Company',
     'title' => 'Stats of Visitors',
   ),
+  'notification' =>
+  array (
+    // 'description' => 'A World Class Classified Company',
+    'title' => 'Notifications',
+  ),
   'auth' =>
   array (
     'have-an-account' => 'Have an account',
