@@ -230,8 +230,9 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                         }
                                                     ?>    
                                                     @if($user_detail->id != $userId)                                           
-                                                <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
-                                           @endif
+                                                <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>&nbsp;
+                                                <a class="btn btn-primary rounded text-white item-share-button"><i class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
+                                                @endif
                                             </div>
                                     </div>
                                             <!-- <div class="progress">
@@ -353,6 +354,164 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                 </div>
             </div>
         </div>
+        <!-- Modal - share -->
+<div class="modal fade" id="share-modal" tabindex="-1" role="dialog" aria-labelledby="share-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <p>{{ __('frontend.item.share-listing-social-media') }}</p>
+
+                        <!-- Create link with share to Facebook -->
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-facebook" href="" data-social="facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            {{ __('social_share.facebook') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-twitter" href="" data-social="twitter">
+                            <i class="fab fa-twitter"></i>
+                            {{ __('social_share.twitter') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-linkedin" href="" data-social="linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                            {{ __('social_share.linkedin') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-blogger" href="" data-social="blogger">
+                            <i class="fab fa-blogger-b"></i>
+                            {{ __('social_share.blogger') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                            <i class="fab fa-pinterest-p"></i>
+                            {{ __('social_share.pinterest') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
+                            <i class="fab fa-evernote"></i>
+                            {{ __('social_share.evernote') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-reddit" href="" data-social="reddit">
+                            <i class="fab fa-reddit-alien"></i>
+                            {{ __('social_share.reddit') }}
+                        </a>
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                            <i class="fab fa-buffer"></i>
+                            {{ __('social_share.buffer') }}
+                        </a> --}}
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
+                            <i class="fab fa-wordpress-simple"></i>
+                            {{ __('social_share.wordpress') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
+                            <i class="fab fa-weibo"></i>
+                            {{ __('social_share.weibo') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-skype" href="" data-social="skype">
+                            <i class="fab fa-skype"></i>
+                            {{ __('social_share.skype') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-telegram" href="" data-social="telegram">
+                            <i class="fab fa-telegram-plane"></i>
+                            {{ __('social_share.telegram') }}
+                        </a>
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                            <i class="fab fa-viber"></i>
+                            {{ __('social_share.viber') }}
+                        </a> --}}
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            {{ __('social_share.whatsapp') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wechat" href="" data-social="wechat">
+                            <i class="fab fa-weixin"></i>
+                            {{ __('social_share.wechat') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
+                            <i class="fab fa-line"></i>
+                            {{ __('social_share.line') }}
+                        </a>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>{{ __('frontend.item.share-listing-email') }}</p>
+                        @if(!Auth::check())
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ __('frontend.item.login-require') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <form action="{{ route('page.emailProfile.email', ['profile_slug' => $hexId]) }}" method="POST">
+                            @csrf
+                            <div class="form-row mb-3">
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                    <input id="profile_share_email_name" type="text" class="form-control @error('profile_share_email_name') is-invalid @enderror" name="profile_share_email_name" value="{{ old('profile_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_name')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                    <input id="profile_share_email_from_email" type="email" class="form-control @error('profile_share_email_from_email') is-invalid @enderror" name="profile_share_email_from_email" value="{{ old('profile_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_from_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                    <input id="profile_share_email_to_email" type="email" class="form-control @error('profile_share_email_to_email') is-invalid @enderror" name="profile_share_email_to_email" value="{{ old('profile_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_to_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-12">
+                                    <label for="profile_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                    <textarea class="form-control @error('profile_share_email_note') is-invalid @enderror" id="profile_share_email_note" rows="3" name="profile_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('profile_share_email_note') }}</textarea>
+                                    @error('profile_share_email_note')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                        {{ __('frontend.item.send-email') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
         <section class="middle">
             <div class="container">
                 <div class="row">
@@ -658,6 +817,10 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 @endsection
 
 @section('scripts')
+
+    {{-- <script src="{{ asset('frontend/vendor/justified-gallery/jquery.justifiedGallery.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('frontend/vendor/colorbox/jquery.colorbox-min.js') }}"></script> --}}
+    <script src="{{ asset('frontend/vendor/goodshare/goodshare.min.js') }}"></script>
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
     <!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -1015,5 +1178,32 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js??v=quarterly&key={{ $site_global_settings->setting_site_map_google_api_key }}&callback=initMap"></script>
     @endif
+
+    <script>
+        $(document).ready(function(){
+
+            $('.item-share-button').on('click', function(){
+                $('#share-modal').modal('show');
+            });
+        });
+
+        @error('profile_share_email_name')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_from_email')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_to_email')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_note')
+            $('#share-modal').modal('show');
+            @enderror
+        
+    </script>
+    
 
 @endsection
