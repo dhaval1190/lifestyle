@@ -81,11 +81,29 @@ class PagesController extends Controller
         // print_r($visit_count);exit;
 
         $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
         $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
         $PodcastImage= array();
         $media= array();
         $Articledetail= array();
         $Youtube= array();
+        $Ebooks= array();
+
+        if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
+            foreach($ebook_deatils_visit as $ebookdetail){
+                $Ebooks[$ebookdetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
         
         if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
             foreach($youtube_deatils_visit as $youtubedetail){
@@ -139,9 +157,7 @@ class PagesController extends Controller
             today()->endOfDay()->toDateTimeString(),
         ]); 
         $Mediavisit_count = $MediacurrentMonthlyVisits->count();
-        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();
-        
-        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();        
         
         if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
         foreach($podcast_deatils_visit as $detail){
@@ -207,7 +223,7 @@ class PagesController extends Controller
         // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
         return response()->view('backend.user.index',
             compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
-            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count'));
+            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
     }
 
     public function profileProgressData(Request $request,$user_id){

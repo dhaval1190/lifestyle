@@ -227,7 +227,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
-                                                <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye">                                               
+                                                <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/".encrypt($user_detail->id)) }}'" id="eye">                                               
                                                     <b>Total Visitor(s)</b> : {{ $visit_count }}</i> </p>                                                    
                                                 </div> 
                                                 <?php
@@ -655,8 +655,8 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     <div class="row">
                                         @foreach($ebook_media_array as $ebook_key => $ebook)
                                             <div class="col-md-3 col-6">
-                                                <div class="post-img">
-                                                    <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="w-100"></a>
+                                                <div class="post-img">                                                    
+                                                    <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}" target="_blank"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="ebook" data-id="{{$ebook->id}}" id="#ebook_{{$ebook->id}}"></a>
                                                 </div>
                                                 <div class="post-information">
                                                     <h4 class="content">{{ $ebook->media_name }}</h4>
@@ -850,6 +850,20 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
     @include('frontend.partials.bootstrap-select-locale')
             <script>
+                $(".ebook").on('click', function() {
+                    var id = $(this).attr('data-id');                                      
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/media-visitor"); ?>',
+                    data: {'id':id},
+                    success:function(data){
+                        console.log(data)
+                    },
+                });
+                });
             var firebaseConfig = {
                 aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
                 authDomain: "coachhq-c1b3d.firebaseapp.com",

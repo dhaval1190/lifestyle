@@ -298,9 +298,9 @@
                     </div>
                 </div>
                 @endif
-                @if(isset($Articledetail) && !empty($Articledetail))
                 <div class="col-lg-12 mt-2">
                     <div class="row">
+                        @if(isset($Articledetail) && !empty($Articledetail))
                         <div class="col-lg-6 ">
                             <ul class="list-group" id="music-list">
                                 <h4 class="m-one">Article Details</h4>
@@ -330,9 +330,39 @@
                                 @endforeach
                             </ul>
                         </div>
+                        @endif
+                        @if(isset($Ebooks) && !empty($Ebooks))
+                        <div class="col-lg-6 ">
+                            <ul class="list-group" id="music-list">
+                                <h4 class="m-one">Ebook Details</h4>
+                                @foreach($Ebooks as $Ebook)
+                                <li class="list-group-item list-group-item-action item"
+                                    data-id="<?= $Ebook['monthly']['id'] ?>">
+                                    <div class="d-flex w-100 align-items-center">
+                                        <div class="col-auto pe-2">
+                                            <img src="{{ !empty($Ebook['monthly']['media_cover']) ? Storage::disk('public')->url('media_files/' . $Ebook['monthly']['media_cover']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
+                                                height="100px" width="100px" alt=""
+                                                class="img-thumbnail bg-gradient bg-dark mini-display-img">
+
+                                        </div>
+                                        <div class="col-auto flex-grow-1 flex-shrink-1">
+                                            <p class="m-0 text-truncate" title="<?= $Ebook['daily']['media_name'] ?>">{{$Ebook['daily']['media_name']}}</p>
+                                        </div>
+                                        <div class="col-auto px-2">
+                                            <p>All:{{$Ebook['monthly']['totalcount'] }}</p>
+                                        </div>
+                                        <div class="col-auto px-2">
+                                            <p>Today:{{$Ebook['daily']['totalcount'] }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                     </div>
                 </div>
-                @endif
+               
                 @if(isset($PodcastImage) && !empty($PodcastImage) || isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
                 <div class="col-lg-12">
                     <div class="row">
@@ -406,7 +436,7 @@
                                         </div>
                                         <div class="col-auto flex-grow-1 flex-shrink-1">
                                             <p class="m-0 text-truncate"
-                                                title="<?= $youtubevideo['monthly']['media_name']?>"></p>
+                                                title="<?= $youtubevideo['monthly']['media_url']?>"></p>
                                         </div>
                                         <div class="col-auto px-2">
                                             <p>All:{{$youtubevideo['monthly']['totalcount'] }}</p>

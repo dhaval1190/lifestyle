@@ -5219,9 +5219,9 @@ class PagesController extends Controller
 
         return array_key_exists($user_detail->id, $viewed);
     }
-    private function wasRecentlyViewedYoutube(MediaDetail $media_detail): bool
+    private function wasRecentlyViewedMedia(MediaDetail $media_detail): bool
     {
-        $viewed = session()->get('viewed_youtube', []);
+        $viewed = session()->get('viewed_media', []);
 
         return array_key_exists($media_detail->id, $viewed);
     }
@@ -5246,9 +5246,9 @@ class PagesController extends Controller
     {
         session()->put("viewed_profile.{$user_detail->id}", now()->timestamp);
     }
-    private function storeInSessionYoutube(MediaDetail $media_detail)
+    private function storeInSessionMedia(MediaDetail $media_detail)
     {
-        session()->put("viewed_youtube.{$media_detail->id}", now()->timestamp);
+        session()->put("viewed_media.{$media_detail->id}", now()->timestamp);
     }
     private function storeInSessionUserYoutube(User $youtube_detail)
     {
@@ -7742,6 +7742,7 @@ class PagesController extends Controller
     }
     public function barchart(Request $request,$id)
     {  
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         /**
          * Start SEO
@@ -7818,7 +7819,7 @@ class PagesController extends Controller
 
         $media_detail = MediaDetail::where('id', $request['id'])->first(); 
 
-        if (! $this->wasRecentlyViewedYoutube($media_detail)) {
+        if (! $this->wasRecentlyViewedMedia($media_detail)) {
             $view_data = [
                 'user_id' => $media_detail->user_id,
                 'media_type'=>$media_detail->media_type,
@@ -7828,7 +7829,7 @@ class PagesController extends Controller
                 'referer' => request()->header('referer'),
             ];                
                 $media_detail->mediadetailsvisits()->create($view_data);
-                 $this->storeInSessionYoutube($media_detail);
+                 $this->storeInSessionMedia($media_detail);
             }
     }
     public function youtubevisitors(Request $request){

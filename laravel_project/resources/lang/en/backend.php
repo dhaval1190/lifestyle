@@ -128,7 +128,7 @@ return array (
     'message' => 'Message',
     'pending-listings' => 'Pending Coaches',
     'pending-articles' => 'Pending Articles',
-    'post-a-listing' => 'Post A Coach',
+    'post-a-listing' => 'Post A Topic',
     'post-a-article' => 'Post A Article',
     'posts' => 'Posts',
     'users' => 'Users',
