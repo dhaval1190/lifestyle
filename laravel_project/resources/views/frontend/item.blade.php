@@ -1896,10 +1896,10 @@
                                         <i class="fab fa-reddit-alien"></i>
                                         {{ __('social_share.reddit') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
                                         <i class="fab fa-buffer"></i>
                                         {{ __('social_share.buffer') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                                         <i class="fab fa-wordpress-simple"></i>
                                         {{ __('social_share.wordpress') }}
@@ -1916,10 +1916,10 @@
                                         <i class="fab fa-telegram-plane"></i>
                                         {{ __('social_share.telegram') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
                                         <i class="fab fa-viber"></i>
                                         {{ __('social_share.viber') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
                                         <i class="fab fa-whatsapp"></i>
                                         {{ __('social_share.whatsapp') }}
@@ -2859,10 +2859,10 @@
                             <i class="fab fa-reddit-alien"></i>
                             {{ __('social_share.reddit') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
                             <i class="fab fa-buffer"></i>
                             {{ __('social_share.buffer') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                             <i class="fab fa-wordpress-simple"></i>
                             {{ __('social_share.wordpress') }}
@@ -2879,10 +2879,10 @@
                             <i class="fab fa-telegram-plane"></i>
                             {{ __('social_share.telegram') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
                             <i class="fab fa-viber"></i>
                             {{ __('social_share.viber') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             {{ __('social_share.whatsapp') }}

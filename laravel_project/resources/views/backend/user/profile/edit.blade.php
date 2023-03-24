@@ -1281,7 +1281,7 @@
 
             var id = youtubeUrl.split("?v=")[1];
 
-            var media_url = "http://www.youtube.com/embed/" + id;
+            var media_url = "https://www.youtube.com/embed/" + id;
 
             var media_type_text = $("#media_type option:selected").text();
             var media_type_value = $("#media_type").val();
