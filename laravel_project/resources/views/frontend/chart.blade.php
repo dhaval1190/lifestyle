@@ -127,8 +127,8 @@
             labels: months,
             datasets: [{
             label: 'Visitors',
-            backgroundColor: 'aqua',
-            borderColor: 'green',
+            backgroundColor: '#F05127',
+            borderColor: '#F05127',
             fill: true,
             data: array1,
             }]
@@ -164,8 +164,8 @@
             labels:months,
             datasets: [{
             label: 'Visitors',
-            backgroundColor: 'aqua',
-            borderColor: 'green',
+            backgroundColor: '#F05127',
+            borderColor: '#F05127',
             fill: true,
             data: array1,
             }]
