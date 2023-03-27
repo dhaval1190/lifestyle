@@ -165,7 +165,10 @@ return array (
     'terms-service' => 'Terms of Service - :site_name',
     'visitor-states' => 'Stats of Visitors - :site_name',
     'notification' => 'Notifications - :site_name',
-
+    'view-podcast' => 'View All Podcast - :site_name',
+    'view-article' => 'View All Article - :site_name',
+    'view-youtube' => 'View All Youtube - :site_name',
+    'view-e-book' => 'View All E-book - :site_name',
     'coaches' => 'Coaches - :site_name',
 
   ),

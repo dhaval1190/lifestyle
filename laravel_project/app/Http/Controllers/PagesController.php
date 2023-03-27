@@ -2506,6 +2506,217 @@ class PagesController extends Controller
                 'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
             ));
     }
+    public function ViewAllPodcastDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get(); 
+        $PodcastImage= array();
+        $media= array();
+        $Articledetail= array();        
+        $Ebooks= array();
+
+        if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
+            foreach($podcast_deatils_visit as $detail){
+                $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-podcast', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-podcast',
+            compact('user_detail','notifications','PodcastImage','login_user'
+            ));
+    }
+    public function ViewAllArticleDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $Articledetail= array();        
+
+        $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+        ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
+       
+        if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+            foreach($Ariclevisit_deatils_visit as $articledetail){
+                $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-article', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-article',
+            compact('user_detail','notifications','Articledetail','login_user'
+            ));
+    }
+    public function ViewAllEBookDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
+        $Ebooks= array();
+
+        if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
+            foreach($ebook_deatils_visit as $ebookdetail){
+                $Ebooks[$ebookdetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-e-book', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-e-book',
+            compact('user_detail','notifications','Ebooks','login_user'
+            ));
+    }
+    public function ViewAllYoutubeDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
+       
+        $media= array();
+        $Youtube= array();
+        if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
+            foreach($media_deatils_visit as $mediadetail){
+                $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
+            foreach($youtube_deatils_visit as $youtubedetail){
+            //print_r($youtube_deatils_visit);exit;
+            $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-youtube', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-youtube',
+            compact('user_detail','notifications','media','Youtube','login_user'
+            ));
+    }
 
     public function jsonProfilePodcastDetail(int $podcast_id)
     {

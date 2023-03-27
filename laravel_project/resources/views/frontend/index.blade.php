@@ -192,7 +192,7 @@
                 </a>
             </div>
         </div>
-
+        @if($paid_items->count() > 0)
         <div class="row mb-4">
             <div class="col-md-7 text-left border-primary">
                 <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.featured-ads') }}</h2>
@@ -201,8 +201,6 @@
         <div class="row">
             <div class="col-12  block-13">
                 <div class="owl-carousel nonloop-block-13">
-
-                    @if($paid_items->count() > 0)
                         @foreach($paid_items as $paid_items_key => $item)
                             <div class="d-block d-md-flex listing vertical">
                                 <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
