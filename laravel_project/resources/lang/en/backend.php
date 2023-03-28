@@ -136,7 +136,7 @@ return array (
     'view-all-comment' => 'View All Comments',
     'view-all-message' => 'View All Messages',
     'subscription' => 'Subscription',
-    'article-details' => 'Our Article',
+    'article-details' => 'Articles',
     'podcast-details' => 'Our Podcast',
     'youtube-details' => 'Our Youtube',
     'ebook-details' => 'Our Ebook',

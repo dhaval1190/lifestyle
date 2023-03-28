@@ -259,7 +259,7 @@
                         <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
                             <div class="coaches_detail">
                             <h3><a class="decoration-none"
-                                    href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitor') }}</a></h3>
+                                    href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitors') }}</a></h3>
                             
                                 <div class="view_eye_post">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
