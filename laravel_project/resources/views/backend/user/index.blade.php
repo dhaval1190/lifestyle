@@ -2,117 +2,110 @@
 
 @section('styles')
 <style>
-    .invisible {
-        display: none;
-    }
+.invisible {
+    display: none;
+}
 
-    .canvasjs-chart-credit {
-        display: none;
-    }
+.canvasjs-chart-credit {
+    display: none;
+}
 
-    @import url(https://fonts.googleapis.com/css?family=Muli);
+@import url(https://fonts.googleapis.com/css?family=Muli);
 
-    * {
-        transition: all 0.5s;
-        -webkit-transition: all 0.5s;
-    }
+* {
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
 
-    .view a {
-        color: red;
-    }
+.view a {
+    color: red;
+}
 
-    .toggle {
-        cursor: pointer;
-    }
+.toggle {
+    cursor: pointer;
+}
 
-    .toggle_two {
-        cursor: pointer;
-        float: right;
-        margin-top: 81px;
-        margin-left: 10px;
-
-
-    }
-
-    .sidebar_two {
-        position: fixed;
-        width: 500px;
-        float: right;
-        box-shadow: 0px 0px 10px 3px black;
-        border-left: 1px solid black;
-        height: 100%;
-        top: 0px;
-        right: -500px;
-        z-index: 99;
-
-        background-color: #5a5c69;
-        opacity: 1.2;
-        /* background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%); */
-        background-size: cover;
-    }
-
-    .sidebar_two h2 {
-        color: white;
-        text-align: left;
-        margin-top: 5rem;
-        padding-left: 15px;
-        font-family: 'Muli', sans-serif;
-    }
-
-    .sidebar_two.active {
-        right: 0px;
-    }
-
-    .notibox {
-        color: white;
-        font-family: 'Muli', sans-serif;
-        background-color: #5a5c69;
-        width: calc(100% - 60px);
-        padding: 15px;
-        margin: 15px;
-        border-radius: 4px;
-        position: relative;
-    }
-
-    .cancel {
-        position: absolute;
-        right: 7px;
-        top: 10px;
-        cursor: pointer;
-        padding: 3px;
-        padding-left: 8px;
-        padding-right: 8px;
-        border-radius: 20px;
-    }
+.toggle_two {
+    cursor: pointer;
+    float: right;
+    margin-top: 81px;
+    margin-left: 10px;
 
 
-        /* .cancel_two {
-                    position: absolute;
-                    right: 7px;
-                    top: 10px;
-                    cursor: pointer;
-                    padding: 3px;
-                    padding-left: 8px;
-                    padding-right: 8px;
-                    border-radius: 20px;
-                } */
+}
 
-        .cancel:hover {
-            color: black;
-            background-color: white;
-        }
+.sidebar_two {
+    position: fixed;
+    width: 500px;
+    float: right;
+    box-shadow: 0px 0px 10px 3px black;
+    border-left: 1px solid black;
+    height: 100%;
+    top: 0px;
+    right: -500px;
+    z-index: 99;
 
-        .gone {
-            display: none;
-        }
+    background-color: #5a5c69;
+    opacity: 1.2;
+    /* background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%); */
+    background-size: cover;
+}
 
-        .none {
-            opacity: 0;
-        }
+.sidebar_two h2 {
+    color: white;
+    text-align: left;
+    margin-top: 5rem;
+    padding-left: 15px;
+    font-family: 'Muli', sans-serif;
+}
 
-        .cancel_two {
-            color: #fff;
-        }
+.sidebar_two.active {
+    right: 0px;
+}
+
+.notibox {
+    color: white;
+    font-family: 'Muli', sans-serif;
+    background-color: #5a5c69;
+    width: calc(100% - 60px);
+    padding: 15px;
+    margin: 15px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.cancel {
+    position: absolute;
+    right: 7px;
+    top: 10px;
+    cursor: pointer;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 20px;
+}
+
+.cancel:hover {
+    color: black;
+    background-color: white;
+}
+
+.gone {
+    display: none;
+}
+
+.none {
+    opacity: 0;
+}
+
+.cancel_two {
+    color: #fff;
+}
+
+.listing .lh-content {
+    text-align: left !important;
+
+}
 </style>
 @endsection
 
@@ -187,11 +180,11 @@
                 </div>
             </div> -->
     <div class="row">
-            @if($login_user->isCoach())
-            @php $main_div_class = 'col-lg-9 order-lg-0 order-1'; @endphp
-            @else
-            @php $main_div_class = 'col-lg-12 order-lg-0 order-1'; @endphp
-            @endif
+        @if($login_user->isCoach())
+        @php $main_div_class = 'col-lg-9 order-lg-0 order-1'; @endphp
+        @else
+        @php $main_div_class = 'col-lg-12 order-lg-0 order-1'; @endphp
+        @endif
         <div class="{{ $main_div_class }}">
             <div class="row">
                 <div class="col-md-6">
@@ -305,15 +298,15 @@
                     </div>
                 </div>
                 @endif
-          </div>
-          <div>
+            </div>
+            <div>
                 @if(isset($Articledetail) && !empty($Articledetail))
                 <section class="article_section col-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>Our Article</h3>
-                                @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 4)
+                                @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
                                 <a href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
@@ -325,28 +318,33 @@
                                     @foreach($Articledetail as $article_key => $Article)
                                     <div class="col-md-3 col-6">
                                         <div class="post-img">
-                                        <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
-                                                alt="" class="w-100" /></a>
+                                            <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img
+                                                    src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
+                                                    alt="" class="w-100" /></a>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"><a href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a></h4>
+                                            <h4 class="content"><a
+                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a>
+                                            </h4>
                                         </div>
                                         <div class="view_eye_post">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                             <p class="views">All</p>
-                                            <span class="article_section_number">: {{$Article['monthly']['totalcount'] }} </span>
+                                            <span class="article_section_number">:
+                                                {{$Article['monthly']['totalcount'] }} </span>
                                         </div>
                                         <div class="view_calander_post">
                                             <i class="fa fa-calendar"></i>
                                             <p class="calander">Today</p>
-                                            <span class="article_section_number">:  {{$Article['daily']['totalcount'] }} </span>
+                                            <span class="article_section_number">: {{$Article['daily']['totalcount'] }}
+                                            </span>
                                         </div>
                                     </div>
                                     @if($i==4)
                                     @php
-                                     break; @endphp                                     
+                                    break; @endphp
                                     @endif
-                                     @php $i++; @endphp
+                                    @php $i++; @endphp
                                     @endforeach
                                 </div>
                             </div>
@@ -355,57 +353,68 @@
                 </section>
                 @endif
             </div>
-          <div>
+            <div>
                 @if(isset($PodcastImage) && !empty($PodcastImage))
                 <section class="podcast_section col-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>Our Podcast</h3>
-                                @if(isset($PodcastImage) && !empty($PodcastImage) && count($PodcastImage) >= 4)
+                                @if(isset($PodcastImage) && !empty($PodcastImage) && count($PodcastImage) >= 5)
                                 <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
-                        </div>
-                        <div class="col-md-12 plr-45">
+                            </div>
+                            <div class="col-md-12 plr-45">
                             <div class="post-slide">
-                                <div class="row">
-                                @php $i=1; @endphp
+                                <div class="row audio-players">
+                                    @php $i=1; @endphp
                                     @foreach($PodcastImage as $podcast_key => $image)
-                                    <div class="col-md-3 col-6">
-                                        <div class="post-img">
-                                            <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}"
-                                                alt="" class="w-100" />
-                                        </div>
-                                        <div class="post-information">
-                                            <h4 class="content">{{$image['monthly']['media_name']}}</h4>
-                                        </div>
-                                        <div class="view_eye_post">
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                            <p class="views">All</p>
-                                            <span class="podcast_section_number">: {{$image['monthly']['totalcount'] }} </span>
-                                        </div>
-                                        <div class="view_calander_post">
-                                            <i class="fa fa-calendar"></i>
-                                            <p class="calander">Today</p>
-                                            <span class="podcast_section_number">: {{$image['daily']['totalcount'] }} </span>
-                                        </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="audio-player js-audio-player">
+                                        <button class="audio-player__control js-control">
+                                            <div class="audio-player__control-icon"></div>
+                                        </button>
+                                        <h4 class="audio-player__title">{{ $image['monthly']['media_name'] }}</h4>
+                                        <audio preload="auto">
+                                            <source src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_image']) }}"/>
+                                        </audio>
+                                        <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
+                                        <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}">
+                                        <video preload="auto" loop="loop">
+                                            <source src="" type="video/mp4"/>
+                                        </video>
                                     </div>
-                                   
+                                    <div class="post-information">
+                                    <h4 class="content">{{$image['monthly']['media_name']}}</h4>
+                                    </div>
+                                    <div class="view_eye_post">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <p class="views">All</p>
+                                    <span class="podcast_section_number">:
+                                        {{$image['monthly']['totalcount'] }} </span>
+                                    </div>
+                                    <div class="view_calander_post">
+                                        <i class="fa fa-calendar"></i>
+                                        <p class="calander">Today</p>
+                                        <span class="podcast_section_number">:
+                                            {{$image['daily']['totalcount'] }} </span>
+                                    </div>
+                                </div>
                                     @if($i==4)
                                     @php
-                                     break; @endphp                                     
+                                    break; @endphp
                                     @endif
-                                     @php $i++; @endphp
-                                    @endforeach                                    
-                                </div>
+                                    @php $i++; @endphp
+                                    @endforeach
+                            </div>
                             </div>
                         </div>
                     </div>
                 </section>
                 @endif
             </div>
-            
+
             <div>
                 @if(isset($Ebooks) && !empty($Ebooks))
                 <section class="ebook_section col-12">
@@ -413,20 +422,21 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>Our E-Book</h3>
-                                @if(isset($Ebooks) && !empty($Ebooks)&& count($Ebooks) >= 4 )
+                                @if(isset($Ebooks) && !empty($Ebooks)&& count($Ebooks) >= 5 )
                                 <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
                             <div class="row">
-                            @php $i=1; @endphp
+                                @php $i=1; @endphp
                                 @foreach($Ebooks as $ebook_key => $Ebook)
                                 <div class="col-md-3 col-6 pb-3">
                                     <div class="post-img">
-                                    <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}" target="_blank">
-                                        <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}"
-                                            alt="" class="w-100" /></a>
+                                        <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}"
+                                            target="_blank">
+                                            <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}"
+                                                alt="" class="w-100" /></a>
                                     </div>
                                     <div class="post-information">
                                         <h4 class="content">{{$Ebook['monthly']['media_name']}}</h4>
@@ -434,7 +444,8 @@
                                     <div class="view_eye_post">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                         <p class="views">All</p>
-                                        <span class="ebook_section_number">: {{$Ebook['monthly']['totalcount'] }} </span>
+                                        <span class="ebook_section_number">: {{$Ebook['monthly']['totalcount'] }}
+                                        </span>
                                     </div>
                                     <div class="view_calander_post">
                                         <i class="fa fa-calendar"></i>
@@ -443,11 +454,11 @@
                                     </div>
                                 </div>
                                 @if($i==4)
-                                    @php
-                                     break; @endphp                                     
-                                    @endif
-                                     @php $i++; @endphp
-                                    @endforeach  
+                                @php
+                                break; @endphp
+                                @endif
+                                @php $i++; @endphp
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -461,43 +472,45 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>Our Youtube</h3>
-                                @if(isset($media) && !empty($media) && (count($media) + count($Youtube)) >= 4)
+                                @if(isset($media) && !empty($media) && (count($media) + count($Youtube)) >= 5)
                                 <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
                             <div class="row">
-                            @php $i=1; @endphp
+                                @php $i=1; @endphp
                                 @foreach($media as $video_key => $video)
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
-                                            <iframe width="560" height="315" src="{{ $video['monthly']['media_url']}}"
+                                            <iframe width="560" height="215" src="{{ $video['monthly']['media_url']}}"
                                                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
                                                 encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen></iframe>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"></h4>
+                                        <!-- <a href="{{ $video['monthly']['media_url']}}" class="content">{{ $video['monthly']['media_url']}}</a> -->
                                         </div>
                                         <div class="view_eye_post">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                             <p class="views">All</p>
-                                            <span class="number">: {{$video['monthly']['totalcount'] }} </span>
+                                            <span class="youtube_section_number">: {{$video['monthly']['totalcount'] }}
+                                            </span>
                                         </div>
                                         <div class="view_calander_post">
                                             <i class="fa fa-calendar"></i>
                                             <p class="calander">Today</p>
-                                            <span class="number">: {{$video['daily']['totalcount'] }} </span>
+                                            <span class="youtube_section_number">: {{$video['daily']['totalcount'] }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                                 @if($i==3)
-                                    @php
-                                     break; @endphp                                     
-                                    @endif
-                                    @php $i++; @endphp
+                                @php
+                                break; @endphp
+                                @endif
+                                @php $i++; @endphp
                                 @endforeach
                                 @if(isset($Youtube) && !empty($Youtube))
                                 @php $i=1; @endphp
@@ -505,33 +518,35 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
-                                        <a href="{{ $youtubevideo['monthly']['media_url'] }}">
-                                            <iframe width="560" height="315"
-                                                src="{{ $youtubevideo['monthly']['media_url']}}"
-                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                            <a href="{{ $youtubevideo['monthly']['media_url'] }}">
+                                                <iframe width="560" height="215"
+                                                    src="{{ $youtubevideo['monthly']['media_url']}}"
+                                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
                                                 encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe></a>
+                                                    allowfullscreen></iframe></a>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"></h4>
+                                            <!-- <a href="{{ $youtubevideo['monthly']['media_url']}}" class="content">{{ $youtubevideo['monthly']['media_url']}}</a> -->
                                         </div>
                                         <div class="view_eye_post">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                             <p class="views">All</p>
-                                            <span class="number">: {{$youtubevideo['monthly']['totalcount'] }} </span>
+                                            <span class="youtube_section_number">:
+                                                {{$youtubevideo['monthly']['totalcount'] }} </span>
                                         </div>
                                         <div class="view_calander_post">
                                             <i class="fa fa-calendar"></i>
                                             <p class="calander">Today</p>
-                                            <span class="number">: {{$youtubevideo['daily']['totalcount'] }} </span>
+                                            <span class="youtube_section_number">:
+                                                {{$youtubevideo['daily']['totalcount'] }} </span>
                                         </div>
                                     </div>
                                 </div>
                                 @if($i==1)
-                                    @php
-                                     break; @endphp                                     
-                                    @endif
-                                    @php $i++; @endphp
+                                @php
+                                break; @endphp
+                                @endif
+                                @php $i++; @endphp
                                 @endforeach
                                 @endif
                             </div>
@@ -800,6 +815,61 @@
     @section('scripts')
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <script>
+    var $player = $('.js-audio-player'),
+        $playbackClass = 'is-playing',
+        $fadeDuration = 500
+
+    $player.each(function(index) {
+        var $this = $(this),
+            id = 'audio-player-' + index
+
+        $this.attr('id', id)
+
+        $this.find('.js-control')[0].addEventListener('click', function() {
+            resetPlayback(id)
+            playback($this, $this.find('audio'), $this.find('video'))
+        })
+
+        // Reset state once audio has finished playing
+        $this.find('audio')[0].addEventListener('ended', function() {
+            resetPlayback()
+        })
+    })
+
+    function playback($player, $audio, $video) {
+        if ($audio[0].paused) {
+            $audio[0].play()
+            $video[0].play()
+            $audio.animate({
+                volume: 1
+            }, $fadeDuration)
+            $player.addClass($playbackClass)
+        } else {
+            $audio.animate({
+                volume: 0
+            }, $fadeDuration, function() {
+                $audio[0].pause()
+                $video[0].pause()
+            })
+            $player.removeClass($playbackClass)
+        }
+    }
+
+    function resetPlayback(id) {
+        $player.each(function() {
+            var $this = $(this)
+
+            if ($this.attr('id') !== id) {
+                $this.find('audio').animate({
+                    volume: 0
+                }, $fadeDuration, function() {
+                    $(this)[0].pause()
+                    $this.find('video')[0].pause()
+                })
+                $this.removeClass($playbackClass)
+            }
+        })
+    }
     $(".toggle").click(function() {
         console.log("toggling sidebar");
         $(".sidebar_two").toggleClass('active');

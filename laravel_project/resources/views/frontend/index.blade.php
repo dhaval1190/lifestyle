@@ -192,7 +192,7 @@
                 </a>
             </div>
         </div>
-        @if($paid_items->count() > 0)
+    @if($paid_items->count() > 0)
         <div class="row mb-4">
             <div class="col-md-7 text-left border-primary">
                 <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.featured-ads') }}</h2>
@@ -302,13 +302,10 @@
                     @else
                         <div class="d-block d-md-flex listing vertical">
                         </div>
-                    @endif
-
                 </div>
             </div>
-
-
         </div>
+    @endif
     </div>
 </div>
 
