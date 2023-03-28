@@ -195,6 +195,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role_id == Role::USER_ROLE_ID;
     }
 
+    public function isEditor()
+    {
+        return $this->role_id == Role::EDITOR_ROLE_ID;
+    }
+
     public function hasSuspended()
     {
         return $this->user_suspended == User::USER_SUSPENDED;

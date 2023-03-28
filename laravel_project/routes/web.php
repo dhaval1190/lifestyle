@@ -105,6 +105,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/send-notification', 'PagesController@sendNotification')->name('send.notification');
         Route::post('/save-token',  'PagesController@saveToken')->name('save-token');
         Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
+        Route::post('/profile/{profile_slug}/email', 'PagesController@emailProfile')->name('page.emailProfile.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
