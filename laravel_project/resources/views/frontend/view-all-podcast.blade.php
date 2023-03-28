@@ -19,7 +19,7 @@
                             <div class="post-slide">
                                 <div class="row audio-players">
                                     @foreach($PodcastImage as $podcast_key => $image)
-                                <div class="col-md-3 col-6">
+                                <div class="col-md-3 col-6 mb-5">
                                     <div class="audio-player js-audio-player">
                                         <button class="audio-player__control js-control">
                                             <div class="audio-player__control-icon"></div>
