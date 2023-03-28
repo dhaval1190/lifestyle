@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our Podcast</h3>
+                            <h3>{{ __('backend.homepage.podcast-details') }}</h3>
                             </div>
                             </div>
                             <div class="col-md-12 plr-45">

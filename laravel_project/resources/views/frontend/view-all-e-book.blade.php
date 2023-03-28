@@ -7,18 +7,18 @@
     <div class="container">
     <div class="row">
         <div class="col-lg-12 order-lg-0">          
-        @if(isset($Ebooks) && !empty($Ebooks))
-        <section class="ebook_section col-12">
+            @if(isset($Ebooks) && !empty($Ebooks))
+            <section class="ebook_section col-12">
                     <div class="row ">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our E-Book</h3>
+                                <h3>{{ __('backend.homepage.ebook-details') }}</h3>
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
                             <div class="row">
                                 @foreach($Ebooks as $ebook_key => $Ebook)
-                                <div class="col-md-3 col-6 pb-3 mb-5">
+                                <div class="col-md-3 col-6 mb-3">
                                     <div class="post-img">
                                         <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}"
                                             target="_blank">

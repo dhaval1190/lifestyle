@@ -22,7 +22,7 @@
                                     @foreach($Articledetail as $article_key => $Article)
                                     <div class="col-md-3 col-6 mb-5">
                                         <div class="post-img">
-                                            <a href="{{ route('page.item', $Article['monthly']['item_title']) }}"> <img
+                                            <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img
                                                     src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
                                                     alt="" class="w-100" /></a>
                                         </div>
