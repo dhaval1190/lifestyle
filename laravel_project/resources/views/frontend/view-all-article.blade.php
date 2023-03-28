@@ -13,22 +13,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our Article</h3>
+                                <h3>{{ __('backend.homepage.article-details') }}</h3>                               
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
                             <div class="post-slide">
                                 <div class="row">
                                     @foreach($Articledetail as $article_key => $Article)
-                                    <div class="col-md-3 col-6">
+                                    <div class="col-md-3 col-6 mb-5">
                                         <div class="post-img">
-                                            <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img
+                                            <a href="{{ route('page.item', $Article['monthly']['item_title']) }}"> <img
                                                     src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
                                                     alt="" class="w-100" /></a>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"><a
-                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a>
+                                            <h4 class="content"><a class="decoration-none"
+                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_title']}}</a>
                                             </h4>
                                         </div>
                                         <div class="view_eye_post">
@@ -54,4 +54,4 @@
         </div>
     </div>
 </div>
-    @endsection
+@endsection

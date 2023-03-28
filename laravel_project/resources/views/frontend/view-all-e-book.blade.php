@@ -18,7 +18,7 @@
                         <div class="col-md-12 plr-45">
                             <div class="row">
                                 @foreach($Ebooks as $ebook_key => $Ebook)
-                                <div class="col-md-3 col-6 pb-3">
+                                <div class="col-md-3 col-6 pb-3 mb-5">
                                     <div class="post-img">
                                         <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}"
                                             target="_blank">

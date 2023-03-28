@@ -313,7 +313,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 mb-4">
                   <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
                 </div>
             </div>
@@ -342,7 +342,7 @@
                                         </div>
                                         <div class="post-information">
                                             <h4 class="content"><a class="decoration-none"
-                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a>
+                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_title']}}</a>
                                             </h4>
                                         </div>
                                         <div class="view_eye_post">
