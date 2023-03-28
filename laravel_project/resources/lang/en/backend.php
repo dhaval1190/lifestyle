@@ -134,7 +134,13 @@ return array (
     'users' => 'Users',
     'view-all-comment' => 'View All Comments',
     'view-all-message' => 'View All Messages',
-    'subscription' => 'Subscription'
+    'subscription' => 'Subscription',
+    'article-details' => 'Article Details',
+    'podcast-details' => 'Podcast Details',
+    'youtube-details' => 'Youtube Details',
+    'ebook-details' => 'Ebook Details',
+
+
   ),
   'item' =>
   array (

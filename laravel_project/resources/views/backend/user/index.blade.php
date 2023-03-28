@@ -2,97 +2,100 @@
 
 @section('styles')
 <style>
-        .invisible {
-            display: none;
-        }
+    .invisible {
+        display: none;
+    }
 
-        .canvasjs-chart-credit {
-            display: none;
-        }
+    .canvasjs-chart-credit {
+        display: none;
+    }
 
-        @import url(https://fonts.googleapis.com/css?family=Muli);
+    @import url(https://fonts.googleapis.com/css?family=Muli);
 
-        * {
-            transition: all 0.5s;
-            -webkit-transition: all 0.5s;
-        }
-        .view a{
-            color: red;
-        }
-        .toggle {
-            cursor: pointer;
-        }
-        .toggle_two{
-            cursor: pointer;
-            float: right;
-            margin-top: 81px;
-            margin-left: 10px;
-            
+    * {
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+    }
 
-        }
+    .view a {
+        color: red;
+    }
 
-        .sidebar_two {
-            position: fixed;
-            width: 500px;
-            float: right;
-            box-shadow: 0px 0px 10px 3px black;   
-            border-left: 1px solid black;
-            height: 100%;
-            top: 0px;
-            right: -500px;
-            z-index: 99;
+    .toggle {
+        cursor: pointer;
+    }
 
-            background-color: #5a5c69;
-            opacity: 1.2;
-            /* background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%); */
-            background-size: cover;
-        }
+    .toggle_two {
+        cursor: pointer;
+        float: right;
+        margin-top: 81px;
+        margin-left: 10px;
 
-        .sidebar_two h2 {
-            color: white;
-            text-align: left;
-            margin-top: 5rem;
-            padding-left: 15px;
-            font-family: 'Muli', sans-serif;
-        }
 
-        .sidebar_two.active {
-            right: 0px;
-        }
+    }
 
-        .notibox {
-            color: white;
-            font-family: 'Muli', sans-serif;
-            background-color: #5a5c69;
-            width: calc(100% - 60px);
-            padding: 15px;
-            margin: 15px;
-            border-radius: 4px;
-            position: relative;
-        }
+    .sidebar_two {
+        position: fixed;
+        width: 500px;
+        float: right;
+        box-shadow: 0px 0px 10px 3px black;
+        border-left: 1px solid black;
+        height: 100%;
+        top: 0px;
+        right: -500px;
+        z-index: 99;
 
-        .cancel {
-            position: absolute;
-            right: 7px;
-            top: 10px;
-            cursor: pointer;
-            padding: 3px;
-            padding-left: 8px;
-            padding-right: 8px;
-            border-radius: 20px;
-        }
+        background-color: #5a5c69;
+        opacity: 1.2;
+        /* background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%); */
+        background-size: cover;
+    }
+
+    .sidebar_two h2 {
+        color: white;
+        text-align: left;
+        margin-top: 5rem;
+        padding-left: 15px;
+        font-family: 'Muli', sans-serif;
+    }
+
+    .sidebar_two.active {
+        right: 0px;
+    }
+
+    .notibox {
+        color: white;
+        font-family: 'Muli', sans-serif;
+        background-color: #5a5c69;
+        width: calc(100% - 60px);
+        padding: 15px;
+        margin: 15px;
+        border-radius: 4px;
+        position: relative;
+    }
+
+    .cancel {
+        position: absolute;
+        right: 7px;
+        top: 10px;
+        cursor: pointer;
+        padding: 3px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 20px;
+    }
 
 
         /* .cancel_two {
-            position: absolute;
-            right: 7px;
-            top: 10px;
-            cursor: pointer;
-            padding: 3px;
-            padding-left: 8px;
-            padding-right: 8px;
-            border-radius: 20px;
-        } */
+                    position: absolute;
+                    right: 7px;
+                    top: 10px;
+                    cursor: pointer;
+                    padding: 3px;
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    border-radius: 20px;
+                } */
 
         .cancel:hover {
             color: black;
@@ -132,8 +135,10 @@
                                 class="notification_icon" /></a> -->
         <!-- <a href="#" id="action" class="toggle"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}"
                 alt="" class="notification_alert" /></a> -->
-                <div class="toggle"><div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}"
-                alt="" class="notification_alert" /></div></div>
+        <div class="toggle">
+            <div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}" alt=""
+                    class="notification_alert" /></div>
+        </div>
         {{-- <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
         <span class="icon text-white-50">
             <i class="fas fa-plus"></i>
@@ -143,15 +148,17 @@
     </div>
     <div class="sidebar_two" id="main">
         <div class="d-flex">
-        <h2>Notifications</h2>
-        <div class="toggle_two" style="color:red;"><button type="button" class="btn btn-primary">Close</button></div>
+            <h2>Notifications</h2>
+            <div class="toggle_two" style="color:red;"><button type="button" class="btn btn-primary">Close</button>
+            </div>
         </div>
 
-        <div class="notibox" >
+        <div class="notibox">
             <div class="container">
                 <div class="row">
                     @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
-                    <div class="view"><a href="{{ route('page.user.notification', $login_user['id']) }}">View all</a></div>
+                    <div class="view"><a href="{{ route('page.user.notification', $login_user['id']) }}">View all</a>
+                    </div>
                     @endif
                     @foreach($notifications as $notification)
                     <div class="col-md-12">
@@ -167,7 +174,7 @@
     </div>
     <div class="btn btn-primary rounded text-white" onclick="startFCM()" style="display:none" id="click">click</div>
     <!-- <section class="bg_effect">
-        <div class="container"> -->
+                <div class="container"> -->
     <!-- <div class="row">
                 <div class="col-md-12">
                     <div class="dashboard">
@@ -180,11 +187,11 @@
                 </div>
             </div> -->
     <div class="row">
-        @if($login_user->isCoach())
-        @php $main_div_class = 'col-lg-8 order-lg-0 order-1'; @endphp
-        @else
-        @php $main_div_class = 'col-lg-12 order-lg-0 order-1'; @endphp
-        @endif
+            @if($login_user->isCoach())
+            @php $main_div_class = 'col-lg-9 order-lg-0 order-1'; @endphp
+            @else
+            @php $main_div_class = 'col-lg-12 order-lg-0 order-1'; @endphp
+            @endif
         <div class="{{ $main_div_class }}">
             <div class="row">
                 <div class="col-md-6">
@@ -256,7 +263,7 @@
                 <div class="col-lg-12">
                     <div class="coach_messages">
                         <div class="coach_message_info">
-                            <h2>All Messages</h2>
+                            <h2>{{ __('backend.homepage.all-messages') }}</h2>
                             <a
                                 href="{{ route('user.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
                         </div>
@@ -288,7 +295,7 @@
                 </div>
                 @if(isset($All_visit_count) && !empty($All_visit_count))
                 <div class="col-lg-12">
-                    <div class="row">
+                    <div class="row m-3">
                         <div class="col-lg-3">
                             <b>All Profile Visitor(s)</b> : {{ $All_visit_count }}
                         </div>
@@ -298,168 +305,244 @@
                     </div>
                 </div>
                 @endif
-                <div class="col-lg-12 mt-2">
+          </div>
+          <div>
+                @if(isset($Articledetail) && !empty($Articledetail))
+                <section class="article_section col-12">
                     <div class="row">
-                        @if(isset($Articledetail) && !empty($Articledetail))
-                        <div class="col-lg-6 ">
-                            <ul class="list-group" id="music-list">
-                                <h4 class="m-one">Article Details</h4>
-                                @foreach($Articledetail as $Article)
-                                <li class="list-group-item list-group-item-action item"
-                                    data-id="<?= $Article['monthly']['id'] ?>">
-                                    <div class="d-flex w-100 align-items-center">
-                                        <div class="col-auto pe-2">
-                                            <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
-                                                height="100px" width="100px" alt=""
-                                                class="img-thumbnail bg-gradient bg-dark mini-display-img">
-
+                        <div class="col-md-12">
+                            <div class="below_info padding-tb-30-lr-45">
+                                <h3>Our Article</h3>
+                                @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 4)
+                                <a href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View all</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-12 plr-45">
+                            <div class="post-slide">
+                                <div class="row">
+                                    @php $i=1; @endphp
+                                    @foreach($Articledetail as $article_key => $Article)
+                                    <div class="col-md-3 col-6">
+                                        <div class="post-img">
+                                        <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
+                                                alt="" class="w-100" /></a>
                                         </div>
-                                        <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate"
-                                                title="<?= $Article['monthly']['item_slug'] ?>">
-                                                <?= $Article['monthly']['item_slug'] ?></p>
+                                        <div class="post-information">
+                                            <h4 class="content"><a href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a></h4>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>All:{{$Article['monthly']['totalcount'] }}</p>
+                                        <div class="view_eye_post">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="article_section_number">: {{$Article['monthly']['totalcount'] }} </span>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>Today:{{$Article['daily']['totalcount'] }}</p>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="article_section_number">:  {{$Article['daily']['totalcount'] }} </span>
                                         </div>
                                     </div>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                        @if(isset($Ebooks) && !empty($Ebooks))
-                        <div class="col-lg-6 ">
-                            <ul class="list-group" id="music-list">
-                                <h4 class="m-one">Ebook Details</h4>
-                                @foreach($Ebooks as $Ebook)
-                                <li class="list-group-item list-group-item-action item"
-                                    data-id="<?= $Ebook['monthly']['id'] ?>">
-                                    <div class="d-flex w-100 align-items-center">
-                                        <div class="col-auto pe-2">
-                                            <img src="{{ !empty($Ebook['monthly']['media_cover']) ? Storage::disk('public')->url('media_files/' . $Ebook['monthly']['media_cover']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
-                                                height="100px" width="100px" alt=""
-                                                class="img-thumbnail bg-gradient bg-dark mini-display-img">
-
-                                        </div>
-                                        <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate" title="<?= $Ebook['daily']['media_name'] ?>">{{$Ebook['daily']['media_name']}}</p>
-                                        </div>
-                                        <div class="col-auto px-2">
-                                            <p>All:{{$Ebook['monthly']['totalcount'] }}</p>
-                                        </div>
-                                        <div class="col-auto px-2">
-                                            <p>Today:{{$Ebook['daily']['totalcount'] }}</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-               
-                @if(isset($PodcastImage) && !empty($PodcastImage) || isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="below_info">
-                            <h3>Our Media View Details</h3>
+                                    @if($i==4)
+                                    @php
+                                     break; @endphp                                     
+                                    @endif
+                                     @php $i++; @endphp
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
                 @endif
-                <div class="col-lg-12 mt-2">
+            </div>
+          <div>
+                @if(isset($PodcastImage) && !empty($PodcastImage))
+                <section class="podcast_section col-12">
                     <div class="row">
-                        @if(isset($PodcastImage) && !empty($PodcastImage))
-                        <div class="col-lg-6 ">
-                            <ul class="list-group" id="music-list">
-                                <h4 class="m-one">Podcast Details</h4>
-                                @foreach($PodcastImage as $podcast_key => $image)
-                                <li class="list-group-item list-group-item-action item"
-                                    data-id="<?= $image['monthly']['id'] ?>">
-                                    <div class="d-flex w-100 align-items-center">
-                                        <div class="col-auto pe-2">
-                                            <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}"
-                                                height="100px" width="100px" alt=""
-                                                class="img-thumbnail bg-gradient bg-dark mini-display-img">
-                                        </div>
-                                        <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate" title="<?= $image['daily']['media_name'] ?>">
-                                                <?= $image['monthly']['media_name'] ?></p>
-                                        </div>
-                                        <div class="col-auto px-2">
-                                            <p>All:{{$image['monthly']['totalcount'] }}</p>
-                                        </div>
-                                        <div class="col-auto px-2">
-                                            <p>Today:{{$image['daily']['totalcount'] }}</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
+                        <div class="col-md-12">
+                            <div class="below_info padding-tb-30-lr-45">
+                                <h3>Our Podcast</h3>
+                                @if(isset($PodcastImage) && !empty($PodcastImage) && count($PodcastImage) >= 4)
+                                <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
+                                @endif
+                            </div>
                         </div>
-                        @endif
-                        @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
-                        <div class="col-lg-6">
-                            <ul class="list-group" id="music-list">
-                                <h4 class="m-one">Youtube Details</h4>
-                                @foreach($media as $video_key => $video)
-                                <li class="list-group-item list-group-item-action item" data-id="<?= $video['monthly']['id'] ?>">
-                                    <div class="d-flex w-100 align-items-center">
-                                        <div class="col-auto pe-2">
-                                            <iframe width="100" height="100" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
+                        <div class="col-md-12 plr-45">
+                            <div class="post-slide">
+                                <div class="row">
+                                @php $i=1; @endphp
+                                    @foreach($PodcastImage as $podcast_key => $image)
+                                    <div class="col-md-3 col-6">
+                                        <div class="post-img">
+                                            <img src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}"
+                                                alt="" class="w-100" />
                                         </div>
-                                        <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate" title="<?= $video['monthly']['media_name']?>">
-                                            </p>
+                                        <div class="post-information">
+                                            <h4 class="content">{{$image['monthly']['media_name']}}</h4>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>All:{{$video['monthly']['totalcount'] }}</p>
+                                        <div class="view_eye_post">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="podcast_section_number">: {{$image['monthly']['totalcount'] }} </span>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>Today:{{$video['daily']['totalcount'] }}</p>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="podcast_section_number">: {{$image['daily']['totalcount'] }} </span>
                                         </div>
                                     </div>
-                                </li>
+                                   
+                                    @if($i==4)
+                                    @php
+                                     break; @endphp                                     
+                                    @endif
+                                     @php $i++; @endphp
+                                    @endforeach                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                @endif
+            </div>
+            
+            <div>
+                @if(isset($Ebooks) && !empty($Ebooks))
+                <section class="ebook_section col-12">
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <div class="below_info padding-tb-30-lr-45">
+                                <h3>Our E-Book</h3>
+                                @if(isset($Ebooks) && !empty($Ebooks)&& count($Ebooks) >= 4 )
+                                <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-12 plr-45">
+                            <div class="row">
+                            @php $i=1; @endphp
+                                @foreach($Ebooks as $ebook_key => $Ebook)
+                                <div class="col-md-3 col-6 pb-3">
+                                    <div class="post-img">
+                                    <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}" target="_blank">
+                                        <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}"
+                                            alt="" class="w-100" /></a>
+                                    </div>
+                                    <div class="post-information">
+                                        <h4 class="content">{{$Ebook['monthly']['media_name']}}</h4>
+                                    </div>
+                                    <div class="view_eye_post">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <p class="views">All</p>
+                                        <span class="ebook_section_number">: {{$Ebook['monthly']['totalcount'] }} </span>
+                                    </div>
+                                    <div class="view_calander_post">
+                                        <i class="fa fa-calendar"></i>
+                                        <p class="calander">Today</p>
+                                        <span class="ebook_section_number">: {{$Ebook['daily']['totalcount'] }} </span>
+                                    </div>
+                                </div>
+                                @if($i==4)
+                                    @php
+                                     break; @endphp                                     
+                                    @endif
+                                     @php $i++; @endphp
+                                    @endforeach  
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                @endif
+            </div>
+            <div>
+                @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
+                <section class="youtube_section col-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="below_info padding-tb-30-lr-45">
+                                <h3>Our Youtube</h3>
+                                @if(isset($media) && !empty($media) && (count($media) + count($Youtube)) >= 4)
+                                <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-12 plr-45">
+                            <div class="row">
+                            @php $i=1; @endphp
+                                @foreach($media as $video_key => $video)
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <iframe width="560" height="315" src="{{ $video['monthly']['media_url']}}"
+                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                        </div>
+                                        <div class="post-information">
+                                            <h4 class="content"></h4>
+                                        </div>
+                                        <div class="view_eye_post">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="number">: {{$video['monthly']['totalcount'] }} </span>
+                                        </div>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="number">: {{$video['daily']['totalcount'] }} </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if($i==3)
+                                    @php
+                                     break; @endphp                                     
+                                    @endif
+                                    @php $i++; @endphp
                                 @endforeach
                                 @if(isset($Youtube) && !empty($Youtube))
-                       
+                                @php $i=1; @endphp
                                 @foreach($Youtube as $youtube_key => $youtubevideo)
-                                <li class="list-group-item list-group-item-action item" data-id="<?= $youtubevideo['monthly']['id'] ?>">
-                                    <div class="d-flex w-100 align-items-center">
-                                        <div class="col-auto pe-2">
-                                            <iframe width="100" height="100" src="{{ $youtubevideo['monthly']['media_url']}}" title="YouTube video player" frameborder="0" id="vid-reveal"></iframe>
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                        <a href="{{ $youtubevideo['monthly']['media_url'] }}">
+                                            <iframe width="560" height="315"
+                                                src="{{ $youtubevideo['monthly']['media_url']}}"
+                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe></a>
                                         </div>
-                                        <div class="col-auto flex-grow-1 flex-shrink-1">
-                                            <p class="m-0 text-truncate"
-                                                title="<?= $youtubevideo['monthly']['media_url']?>"></p>
+                                        <div class="post-information">
+                                            <h4 class="content"></h4>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>All:{{$youtubevideo['monthly']['totalcount'] }}</p>
+                                        <div class="view_eye_post">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="number">: {{$youtubevideo['monthly']['totalcount'] }} </span>
                                         </div>
-                                        <div class="col-auto px-2">
-                                            <p>Today:{{$youtubevideo['daily']['totalcount'] }}</p>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="number">: {{$youtubevideo['daily']['totalcount'] }} </span>
                                         </div>
                                     </div>
-                                </li>
+                                </div>
+                                @if($i==1)
+                                    @php
+                                     break; @endphp                                     
+                                    @endif
+                                    @php $i++; @endphp
                                 @endforeach
-                            
-                        @endif
-                            </ul>
+                                @endif
+                            </div>
                         </div>
-                        @endif
-                        
                     </div>
-                </div>
+                </section>
+                @endif
             </div>
         </div>
-
         @if($login_user->isCoach())
-        <div class="col-lg-4 order-lg-1 order-0">
+        <div class="col-lg-3 order-lg-1 order-0">
             <div class="coach_sidebar">
                 <div class="setting_icon">
                     <a href="{{ route('user.profile.edit') }}"><img src="{{ asset('frontend/images/Svg/setting.svg') }}"
