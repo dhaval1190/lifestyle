@@ -123,6 +123,7 @@ return array (
     'categories' => 'Categories',
     'comment' => 'Comment',
     'dashboard' => 'Dashboard',
+    'traffic' => 'Traffic',
     'listings' => 'Coaches',
     'articles' => 'Topics',
     'message' => 'Message',
@@ -135,11 +136,10 @@ return array (
     'view-all-comment' => 'View All Comments',
     'view-all-message' => 'View All Messages',
     'subscription' => 'Subscription',
-    'article-details' => 'Article Details',
-    'podcast-details' => 'Podcast Details',
-    'youtube-details' => 'Youtube Details',
-    'ebook-details' => 'Ebook Details',
-
+    'article-details' => 'Our Article',
+    'podcast-details' => 'Our Podcast',
+    'youtube-details' => 'Our Youtube',
+    'ebook-details' => 'Our Ebook',
 
   ),
   'item' =>

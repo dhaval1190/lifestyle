@@ -5,6 +5,7 @@
 
 @section('content')
     <!-- Page Heading -->
+  <div class="container">
     <div class="row">
         <div class="col-lg-12 order-lg-0">          
         @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
@@ -21,7 +22,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
-                                            <iframe width="560" height="315" src="{{ $video['monthly']['media_url']}}"
+                                            <iframe width="560" height="215" src="{{ $video['monthly']['media_url']}}"
                                                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
                                                 encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen></iframe>
@@ -47,7 +48,7 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
-                                            <iframe width="560" height="315"
+                                            <iframe width="560" height="215"
                                                 src="{{ $youtubevideo['monthly']['media_url']}}"
                                                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
                                                 encrypted-media; gyroscope; picture-in-picture"
@@ -77,4 +78,5 @@
                 @endif
         </div>
     </div>
+ </div>
     @endsection

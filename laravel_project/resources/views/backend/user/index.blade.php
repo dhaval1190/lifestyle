@@ -252,7 +252,35 @@
                         </div>
                     </div>
                 </div>
+                @if(isset($All_visit_count) && !empty($All_visit_count))
+                <div class="col-md-6">
+                    <div class="first_coach coach">
+                        <div class="coaches">
+                        <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                            <div class="coaches_detail">
+                            <h3><a class="decoration-none"
+                                    href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitor') }}</a></h3>
+                            
+                                <div class="view_eye_post">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <p class="views">All</p>
+                                    <span class="article_section_number">:
+                                    {{ $All_visit_count }} </span>
+                                </div>
+                                <div class="view_calander_post">
+                                    <i class="fa fa-calendar"></i>
+                                    <p class="calander">Today</p>
+                                    <span class="article_section_number">: {{ $Today_Visits_count }}
+                                    </span>
+                                </div>
+                                <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 @endif
+            @endif
                 <div class="col-lg-12">
                     <div class="coach_messages">
                         <div class="coach_message_info">
@@ -283,21 +311,11 @@
                             </div>
                         </div>
                         @endforeach
-
                     </div>
                 </div>
-                @if(isset($All_visit_count) && !empty($All_visit_count))
                 <div class="col-lg-12">
-                    <div class="row m-3">
-                        <div class="col-lg-3">
-                            <b>All Profile Visitor(s)</b> : {{ $All_visit_count }}
-                        </div>
-                        <div class="col-lg-3">
-                            <b>Today Profile Visitor(s)</b> : {{ $Today_Visits_count }}
-                        </div>
-                    </div>
+                  <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
                 </div>
-                @endif
             </div>
             <div>
                 @if(isset($Articledetail) && !empty($Articledetail))
@@ -305,9 +323,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our Article</h3>
+                                <h3>{{ __('backend.homepage.article-details') }}</h3>
                                 @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
-                                <a href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View all</a>
+                                <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
                         </div>
@@ -323,7 +341,7 @@
                                                     alt="" class="w-100" /></a>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"><a
+                                            <h4 class="content"><a class="decoration-none"
                                                     href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_slug']}}</a>
                                             </h4>
                                         </div>
@@ -359,7 +377,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our Podcast</h3>
+                                <h3>{{ __('backend.homepage.podcast-details') }}</h3>
                                 @if(isset($PodcastImage) && !empty($PodcastImage) && count($PodcastImage) >= 5)
                                 <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
@@ -370,44 +388,44 @@
                                 <div class="row audio-players">
                                     @php $i=1; @endphp
                                     @foreach($PodcastImage as $podcast_key => $image)
-                                <div class="col-md-3 col-6">
-                                    <div class="audio-player js-audio-player">
-                                        <button class="audio-player__control js-control">
-                                            <div class="audio-player__control-icon"></div>
-                                        </button>
-                                        <h4 class="audio-player__title">{{ $image['monthly']['media_name'] }}</h4>
-                                        <audio preload="auto">
-                                            <source src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_image']) }}"/>
-                                        </audio>
-                                        <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
-                                        <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}">
-                                        <video preload="auto" loop="loop">
-                                            <source src="" type="video/mp4"/>
-                                        </video>
-                                    </div>
-                                    <div class="post-information">
-                                    <h4 class="content">{{$image['monthly']['media_name']}}</h4>
-                                    </div>
-                                    <div class="view_eye_post">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                    <p class="views">All</p>
-                                    <span class="podcast_section_number">:
-                                        {{$image['monthly']['totalcount'] }} </span>
-                                    </div>
-                                    <div class="view_calander_post">
-                                        <i class="fa fa-calendar"></i>
-                                        <p class="calander">Today</p>
+                                    <div class="col-md-3 col-6">
+                                        <div class="audio-player js-audio-player">
+                                            <button class="audio-player__control js-control">
+                                                <div class="audio-player__control-icon"></div>
+                                            </button>
+                                            <h4 class="audio-player__title">{{ $image['monthly']['media_name'] }}</h4>
+                                            <audio preload="auto">
+                                                <source src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_image']) }}"/>
+                                            </audio>
+                                            <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
+                                            <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}">
+                                            <video preload="auto" loop="loop">
+                                                <source src="" type="video/mp4"/>
+                                            </video>
+                                        </div>
+                                        <div class="post-information">
+                                        <h4 class="content">{{$image['monthly']['media_name']}}</h4>
+                                        </div>
+                                        <div class="view_eye_post">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <p class="views">All</p>
                                         <span class="podcast_section_number">:
-                                            {{$image['daily']['totalcount'] }} </span>
+                                            {{$image['monthly']['totalcount'] }} </span>
+                                        </div>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="podcast_section_number">:
+                                                {{$image['daily']['totalcount'] }} </span>
+                                        </div>
                                     </div>
-                                </div>
                                     @if($i==4)
                                     @php
                                     break; @endphp
                                     @endif
                                     @php $i++; @endphp
                                     @endforeach
-                            </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -421,7 +439,7 @@
                     <div class="row ">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our E-Book</h3>
+                                <h3>{{ __('backend.homepage.ebook-details') }}</h3>
                                 @if(isset($Ebooks) && !empty($Ebooks)&& count($Ebooks) >= 5 )
                                 <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
@@ -471,7 +489,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
-                                <h3>Our Youtube</h3>
+                                <h3>{{ __('backend.homepage.youtube-details') }}</h3>
                                 @if(isset($media) && !empty($media) && (count($media) + count($Youtube)) >= 5)
                                 <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
@@ -516,31 +534,31 @@
                                 @php $i=1; @endphp
                                 @foreach($Youtube as $youtube_key => $youtubevideo)
                                 <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="post-slide">
-                                        <div class="post-img">
-                                            <a href="{{ $youtubevideo['monthly']['media_url'] }}">
-                                                <iframe width="560" height="215"
-                                                    src="{{ $youtubevideo['monthly']['media_url']}}"
-                                                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                                encrypted-media; gyroscope; picture-in-picture"
-                                                    allowfullscreen></iframe></a>
-                                        </div>
-                                        <div class="post-information">
-                                            <!-- <a href="{{ $youtubevideo['monthly']['media_url']}}" class="content">{{ $youtubevideo['monthly']['media_url']}}</a> -->
-                                        </div>
-                                        <div class="view_eye_post">
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                            <p class="views">All</p>
-                                            <span class="youtube_section_number">:
-                                                {{$youtubevideo['monthly']['totalcount'] }} </span>
-                                        </div>
-                                        <div class="view_calander_post">
-                                            <i class="fa fa-calendar"></i>
-                                            <p class="calander">Today</p>
-                                            <span class="youtube_section_number">:
-                                                {{$youtubevideo['daily']['totalcount'] }} </span>
-                                        </div>
+                                <div class="post-slide">
+                                    <div class="post-img">
+                                        <a href="{{ $youtubevideo['monthly']['media_url'] }}">
+                                            <iframe width="560" height="215"
+                                                src="{{ $youtubevideo['monthly']['media_url']}}"
+                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                            encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe></a>
                                     </div>
+                                    <div class="post-information">
+                                        <!-- <a href="{{ $youtubevideo['monthly']['media_url']}}" class="content">{{ $youtubevideo['monthly']['media_url']}}</a> -->
+                                    </div>
+                                    <div class="view_eye_post">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <p class="views">All</p>
+                                        <span class="youtube_section_number">:
+                                            {{$youtubevideo['monthly']['totalcount'] }} </span>
+                                    </div>
+                                    <div class="view_calander_post">
+                                        <i class="fa fa-calendar"></i>
+                                        <p class="calander">Today</p>
+                                        <span class="youtube_section_number">:
+                                            {{$youtubevideo['daily']['totalcount'] }} </span>
+                                    </div>
+                                </div>
                                 </div>
                                 @if($i==1)
                                 @php
