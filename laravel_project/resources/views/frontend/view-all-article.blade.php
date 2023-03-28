@@ -5,10 +5,11 @@
 
 @section('content')
     <!-- Page Heading -->
+    <div class="container">
     <div class="row">
         <div class="col-lg-12 order-lg-0">          
-        @if(isset($Articledetail) && !empty($Articledetail))
-        <section class="article_section col-12">
+            @if(isset($Articledetail) && !empty($Articledetail))
+            <section class="article_section col-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
@@ -52,4 +53,5 @@
                 @endif
         </div>
     </div>
+</div>
     @endsection

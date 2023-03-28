@@ -192,120 +192,117 @@
                 </a>
             </div>
         </div>
-    @if($paid_items->count() > 0)
-        <div class="row mb-4">
-            <div class="col-md-7 text-left border-primary">
-                <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.featured-ads') }}</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12  block-13">
-                <div class="owl-carousel nonloop-block-13">
-                        @foreach($paid_items as $paid_items_key => $item)
-                            <div class="d-block d-md-flex listing vertical">
-                                <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
-                                <div class="lh-content">
-
-                                    @php
-                                    $paid_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
-                                    @endphp
-                                    @foreach($paid_item_getAllCategories as $item_all_categories_key => $category)
-                                        <a href="{{ route('page.category', $category->category_slug) }}">
-                                            <span class="category">
-                                                @if(!empty($category->category_icon))
-                                                    <i class="{{ $category->category_icon }}"></i>
-                                                @else
-                                                    <i class="fa-solid fa-heart"></i>
-                                                @endif
-                                                {{ $category->category_name }}
-                                            </span>
-                                        </a>
-                                    @endforeach
-
-                                    @php
-                                    $paid_item_allCategories_count = $item->allCategories()->count();
-                                    @endphp
-                                    @if($paid_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
-                                        <span class="category">{{ __('categories.and') . " " . strval($paid_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . " " . __('categories.more') }}</span>
-                                    @endif
-
-                                    <h3 class="pt-2"><a href="{{ route('page.item', $item->item_slug) }}">{{ str_limit($item->item_title, 44, '...') }}</a></h3>
-
-                                    @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                    <address>
-                                        <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                                        <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                    </address>
-                                    @endif
-
-                                    @php
-                                    $paid_item_getCountRating = $item->getCountRating();
-                                    @endphp
-                                    @if($paid_item_getCountRating > 0)
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ $item->item_average_rating }}"></div>
-                                                <address class="mt-1">
-                                                    @if($paid_item_getCountRating == 1)
-                                                        {{ '(' . $paid_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
-                                                    @else
-                                                        {{ '(' . $paid_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
-                                                    @endif
-                                                </address>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <hr class="item-box-hr">
-
-                                    <div class="row align-items-center">
-
-                                        <div class="col-5 col-md-7 pr-0">
-                                            <div class="row align-items-center item-box-user-div">
-                                                <div class="col-3 item-box-user-img-div">
-                                                    @if(empty($item->user->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-                                                    @else
-                                                        <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}" alt="{{ $item->user->name }}" class="img-fluid rounded-circle">
-                                                    @endif
-                                                </div>
-                                                <div class="col-9 line-height-1-2 item-box-user-name-div">
-                                                    <div class="row pb-1">
-                                                        <div class="col-12">
-                                                            <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row line-height-1-0">
-                                                        <div class="col-12">
-                                                            <span class="review">{{ $item->created_at->diffForHumans() }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {{-- <div class="col-7 col-md-5 pl-0 text-right">
-                                            @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
-                                                @if($item->hasOpened())
-                                                    <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
-                                                @else
-                                                    <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
-                                                @endif
-                                            @endif
-                                        </div> --}}
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="d-block d-md-flex listing vertical">
-                        </div>
+        @if($paid_items->count() > 0)
+            <div class="row mb-4">
+                <div class="col-md-7 text-left border-primary">
+                    <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.featured-ads') }}</h2>
                 </div>
             </div>
-        </div>
-    @endif
+            <div class="row">
+                <div class="col-12  block-13">
+                    <div class="owl-carousel nonloop-block-13">
+                            @foreach($paid_items as $paid_items_key => $item)
+                                <div class="d-block d-md-flex listing vertical">
+                                    <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
+                                    <div class="lh-content">
+
+                                        @php
+                                        $paid_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
+                                        @endphp
+                                        @foreach($paid_item_getAllCategories as $item_all_categories_key => $category)
+                                            <a href="{{ route('page.category', $category->category_slug) }}">
+                                                <span class="category">
+                                                    @if(!empty($category->category_icon))
+                                                        <i class="{{ $category->category_icon }}"></i>
+                                                    @else
+                                                        <i class="fa-solid fa-heart"></i>
+                                                    @endif
+                                                    {{ $category->category_name }}
+                                                </span>
+                                            </a>
+                                        @endforeach
+
+                                        @php
+                                        $paid_item_allCategories_count = $item->allCategories()->count();
+                                        @endphp
+                                        @if($paid_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
+                                            <span class="category">{{ __('categories.and') . " " . strval($paid_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . " " . __('categories.more') }}</span>
+                                        @endif
+
+                                        <h3 class="pt-2"><a href="{{ route('page.item', $item->item_slug) }}">{{ str_limit($item->item_title, 44, '...') }}</a></h3>
+
+                                        @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                        <address>
+                                            <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                            <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                        </address>
+                                        @endif
+
+                                        @php
+                                        $paid_item_getCountRating = $item->getCountRating();
+                                        @endphp
+                                        @if($paid_item_getCountRating > 0)
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ $item->item_average_rating }}"></div>
+                                                    <address class="mt-1">
+                                                        @if($paid_item_getCountRating == 1)
+                                                            {{ '(' . $paid_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
+                                                        @else
+                                                            {{ '(' . $paid_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
+                                                        @endif
+                                                    </address>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        <hr class="item-box-hr">
+
+                                        <div class="row align-items-center">
+
+                                            <div class="col-5 col-md-7 pr-0">
+                                                <div class="row align-items-center item-box-user-div">
+                                                    <div class="col-3 item-box-user-img-div">
+                                                        @if(empty($item->user->user_image))
+                                                            <img src="{{ asset('frontend/images/placeholder/profile-'. intval($item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                        @else
+                                                            <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}" alt="{{ $item->user->name }}" class="img-fluid rounded-circle">
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                                        <div class="row pb-1">
+                                                            <div class="col-12">
+                                                                <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row line-height-1-0">
+                                                            <div class="col-12">
+                                                                <span class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- <div class="col-7 col-md-5 pl-0 text-right">
+                                                @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
+                                                    @if($item->hasOpened())
+                                                        <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
+                                                    @else
+                                                        <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
+                                                    @endif
+                                                @endif
+                                            </div> --}}
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 
