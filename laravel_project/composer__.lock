@@ -6088,6 +6088,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
@@ -6243,6 +6244,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
@@ -6946,6 +6948,7 @@
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
+
                 "doctrine/coding-standard": "^9 || ^11",
                 "ext-pdo": "*",
                 "ext-phar": "*",
@@ -6953,7 +6956,9 @@
                 "phpstan/phpstan": "^1.4",
                 "phpstan/phpstan-phpunit": "^1",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+
                 "vimeo/psalm": "^4.30 || ^5.4"
+
             },
             "type": "library",
             "autoload": {
@@ -9200,6 +9205,7 @@
                     "type": "github"
                 }
             ],
+
             "time": "2023-02-03T06:13:03+00:00"
         },
         {
@@ -9295,7 +9301,7 @@
                 }
             ],
             "description": "Free Google Translate API PHP Package",
-            "homepage": "https://github.com/Stichoza/google-translate-php",
+            "homepage": "http://github.com/Stichoza/google-translate-php",
             "keywords": [
                 "google",
                 "php",
