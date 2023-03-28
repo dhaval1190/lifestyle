@@ -36,7 +36,7 @@
                                             <div class="row justify-content-center mt-5">
                                                 <div class="col-md-8 text-center">
                                                     <h1>{{ __('frontend.stats.title') }}</h1>
-                                                    <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">View performance stats of your content below.</p>                                
+                                                    <p class="mb-0">View performance stats of your content below.</p>                                
                                                 </div>
                                             </div>
                                           </div>
