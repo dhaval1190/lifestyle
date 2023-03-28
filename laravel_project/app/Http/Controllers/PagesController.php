@@ -756,7 +756,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.contact', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.faq', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -6220,6 +6220,7 @@ class PagesController extends Controller
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();
 
+            
         if($item)
         {
             if(Auth::check())
@@ -6311,6 +6312,119 @@ class PagesController extends Controller
         {
             abort(404);
         }
+
+    }
+
+    public function emailProfile(string $profileId, Request $request)
+    {
+
+        // print_r($profileId);
+        //     echo "<br>";
+        //     print_r($request->all());
+        //     exit;
+
+        $settings = app('site_global_settings');
+
+        // $item = Item::where('item_slug', $item_slug)
+        //     ->where('item_status', Item::ITEM_PUBLISHED)
+        //     ->first();
+
+            // print_r($item);
+            // echo "<br>";
+            // print_r($request->all());
+            // exit;
+
+        // if($item)
+        // {
+            if(Auth::check())
+            {
+                $request->validate([
+                    'profile_share_email_name' => 'required|max:255',
+                    'profile_share_email_from_email' => 'required|email|max:255',
+                    'profile_share_email_to_email' => 'required|email|max:255',
+                ]);
+
+                // send an email notification to admin
+                $email_to = $request->profile_share_email_to_email;
+                $email_from_name = $request->profile_share_email_name;
+                $email_note = $request->profile_share_email_note;
+                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+
+                $email_notify_message = [
+                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
+                    __('frontend.item.send-email-note'),
+                    $email_note,
+                ];
+
+                /**
+                 * Start initial SMTP settings
+                 */
+                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                {
+                    // config SMTP
+                    config_smtp(
+                        $settings->settings_site_smtp_sender_name,
+                        $settings->settings_site_smtp_sender_email,
+                        $settings->settings_site_smtp_host,
+                        $settings->settings_site_smtp_port,
+                        $settings->settings_site_smtp_encryption,
+                        $settings->settings_site_smtp_username,
+                        $settings->settings_site_smtp_password
+                    );
+                }
+                /**
+                 * End initial SMTP settings
+                 */
+
+                if(!empty($settings->setting_site_name))
+                {
+                    // set up APP_NAME
+                    config([
+                        'app.name' => $settings->setting_site_name,
+                    ]);
+                }
+
+                try
+                {
+                    // to admin
+                    Mail::to($email_to)->send(
+                        new Notification(
+                            $email_subject,
+                            $email_to,
+                            null,
+                            $email_notify_message,
+                            __('frontend.item.view-listing'),
+                            'success',
+                            route('page.profile', $profileId)
+                        )
+                    );
+
+                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                    \Session::flash('flash_type', 'success');
+
+                }
+                catch (\Exception $e)
+                {
+                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                    \Session::flash('flash_type', 'danger');
+                }
+
+                return redirect()->route('page.profile', $profileId);
+            }
+            else
+            {
+                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+                \Session::flash('flash_type', 'danger');
+
+                return redirect()->route('page.profile', $profileId);
+            }
+        // }
+        // else
+        // {
+        //     abort(404);
+        // }
 
     }
 

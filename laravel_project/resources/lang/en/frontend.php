@@ -9,7 +9,7 @@ return array (
   'stats' =>
   array (
     // 'description' => 'A World Class Classified Company',
-    'title' => 'Stats of Visitors',
+    'title' => 'Profile Visitors',
   ),
   'notification' =>
   array (
