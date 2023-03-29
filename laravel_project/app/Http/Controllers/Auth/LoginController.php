@@ -58,6 +58,7 @@ class LoginController extends Controller
     {
         if ($user->isAdmin() || $user->isEditor())
         {
+            app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());
             $this->redirectTo = route('admin.index');
             //$this->redirectTo = route('page.home');
         }
@@ -103,7 +104,7 @@ class LoginController extends Controller
     {
 
         //login user to canvas dashboard 
-        app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());
+        // app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());
         
         $settings = app('site_global_settings');
 
