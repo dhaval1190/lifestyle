@@ -4,11 +4,11 @@
 @endsection
 @section('content')
     <!-- Page Heading -->
- <div class="container">
+ <div class="podcast_section">
     <div class="row">
         <div class="col-lg-12 order-lg-0">
         @if(isset($PodcastImage) && !empty($PodcastImage))
-                <section class="podcast_section col-12">
+                <section class="col-lg-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
@@ -16,10 +16,10 @@
                             </div>
                             </div>
                             <div class="col-md-12 plr-45">
-                            <div class="post-slide">
+                            <div class="">
                                 <div class="row audio-players">
                                     @foreach($PodcastImage as $podcast_key => $image)
-                                <div class="col-md-3 col-6 mb-5">
+                                <div class="col-md-4 col-lg-3 col-xl-2 col-sm-6 col-12 mb-5">
                                     <div class="audio-player js-audio-player">
                                         <button class="audio-player__control js-control">
                                             <div class="audio-player__control-icon"></div>
@@ -56,7 +56,8 @@
                         </div>
                     </div>
                 </section>
-            @endif          
+            @endif  
+                  
         </div>
     </div>
  </div>

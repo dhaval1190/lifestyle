@@ -8070,6 +8070,7 @@ class PagesController extends Controller
     }
     public function notificationData(Request $request,$id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         /**
          * Start SEO
@@ -8078,8 +8079,8 @@ class PagesController extends Controller
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
-        $notification = UserNotification::where('user_id',$id)->get();
+        $notifications = UserNotification::where('user_id',$id)->get();
        
-        return view('frontend.user-notification',compact('notification'));
+        return view('frontend.user-notification',compact('notifications'));
     }
 }

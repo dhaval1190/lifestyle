@@ -5,11 +5,11 @@
 
 @section('content')
     <!-- Page Heading -->
-    <div class="container">
+    <div class="article_section">
     <div class="row">
         <div class="col-lg-12 order-lg-0">          
             @if(isset($Articledetail) && !empty($Articledetail))
-            <section class="article_section col-12">
+            <section class="col-lg-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
@@ -17,10 +17,10 @@
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
-                            <div class="post-slide">
-                                <div class="row">
+                            <div class="">
+                                <div class="row audio-players">
                                     @foreach($Articledetail as $article_key => $Article)
-                                    <div class="col-md-3 col-6 mb-5">
+                                    <div class="col-md-4 col-lg-3 col-xl-2 col-sm-6 col-12 mb-5">
                                         <div class="post-img">
                                             <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img
                                                     src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
