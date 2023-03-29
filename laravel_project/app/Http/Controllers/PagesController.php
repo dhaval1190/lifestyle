@@ -55,7 +55,7 @@ use DatePeriod;
 use DateTimeInterface;
 use Carbon\Carbon;
 use App\MediaDetailsVisits;
-
+use App\UserNotification;
 
 class PagesController extends Controller
 {
@@ -190,7 +190,7 @@ class PagesController extends Controller
         /**
          * get latest 3 blog posts
          */
-        $recent_blog = \Canvas\Post::published()->orderByDesc('published_at')->take(3)->get();
+        $recent_blog = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(3)->get();
 
         /**
          * Start homepage header customization
@@ -1966,6 +1966,7 @@ class PagesController extends Controller
 
     public function profile(Request $request, $id)
     {
+        $hexId = $id;
         $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
@@ -2279,7 +2280,8 @@ class PagesController extends Controller
                     $view_count_lifetime = $views->count();
                     $visit_count = $currentMonthlyVisits->count();
                     $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
-                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);                  
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);      
+                    $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();            
                     
         return response()->view($theme_view_path . 'profile',
             compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
@@ -2287,7 +2289,7 @@ class PagesController extends Controller
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId'
             ));
     }
 
@@ -2502,6 +2504,217 @@ class PagesController extends Controller
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+    }
+    public function ViewAllPodcastDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get(); 
+        $PodcastImage= array();
+        $media= array();
+        $Articledetail= array();        
+        $Ebooks= array();
+
+        if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
+            foreach($podcast_deatils_visit as $detail){
+                $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-podcast', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-podcast',
+            compact('user_detail','notifications','PodcastImage','login_user'
+            ));
+    }
+    public function ViewAllArticleDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $Articledetail= array();        
+
+        $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+        ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
+       
+        if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+            foreach($Ariclevisit_deatils_visit as $articledetail){
+                $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-article', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-article',
+            compact('user_detail','notifications','Articledetail','login_user'
+            ));
+    }
+    public function ViewAllEBookDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
+        $Ebooks= array();
+
+        if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
+            foreach($ebook_deatils_visit as $ebookdetail){
+                $Ebooks[$ebookdetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-e-book', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-e-book',
+            compact('user_detail','notifications','Ebooks','login_user'
+            ));
+    }
+    public function ViewAllYoutubeDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
+       
+        $media= array();
+        $Youtube= array();
+        if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
+            foreach($media_deatils_visit as $mediadetail){
+                $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
+            foreach($youtube_deatils_visit as $youtubedetail){
+            //print_r($youtube_deatils_visit);exit;
+            $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-youtube', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-youtube',
+            compact('user_detail','notifications','media','Youtube','login_user'
             ));
     }
 
@@ -5213,15 +5426,21 @@ class PagesController extends Controller
     }
     private function wasRecentlyViewedProfile(User $user_detail): bool
     {
-        $viewed = session()->get('viewed_items', []);
+        $viewed = session()->get('viewed_profile', []);
 
         return array_key_exists($user_detail->id, $viewed);
     }
-    private function wasRecentlyViewedYoutube(MediaDetail $media_detail): bool
+    private function wasRecentlyViewedMedia(MediaDetail $media_detail): bool
     {
-        $viewed = session()->get('viewed_items', []);
+        $viewed = session()->get('viewed_media', []);
 
         return array_key_exists($media_detail->id, $viewed);
+    }
+    private function wasRecentlyViewedUserYoutube(User $youtube_detail): bool
+    {
+        $viewed = session()->get('viewed_user_youtube', []);
+       
+        return array_key_exists($youtube_detail->id, $viewed);
     }
 
     /**
@@ -5236,11 +5455,15 @@ class PagesController extends Controller
     }
     private function storeInSessionProfile(User $user_detail)
     {
-        session()->put("viewed_items.{$user_detail->id}", now()->timestamp);
+        session()->put("viewed_profile.{$user_detail->id}", now()->timestamp);
     }
-    private function storeInSessionYoutube(MediaDetail $media_detail)
+    private function storeInSessionMedia(MediaDetail $media_detail)
     {
-        session()->put("viewed_items.{$media_detail->id}", now()->timestamp);
+        session()->put("viewed_media.{$media_detail->id}", now()->timestamp);
+    }
+    private function storeInSessionUserYoutube(User $youtube_detail)
+    {
+        session()->put("viewed_user_youtube.{$youtube_detail->id}", now()->timestamp);
     }
 
 
@@ -5997,6 +6220,7 @@ class PagesController extends Controller
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();
 
+            
         if($item)
         {
             if(Auth::check())
@@ -6091,6 +6315,119 @@ class PagesController extends Controller
 
     }
 
+    public function emailProfile(string $profileId, Request $request)
+    {
+
+        // print_r($profileId);
+        //     echo "<br>";
+        //     print_r($request->all());
+        //     exit;
+
+        $settings = app('site_global_settings');
+
+        // $item = Item::where('item_slug', $item_slug)
+        //     ->where('item_status', Item::ITEM_PUBLISHED)
+        //     ->first();
+
+            // print_r($item);
+            // echo "<br>";
+            // print_r($request->all());
+            // exit;
+
+        // if($item)
+        // {
+            if(Auth::check())
+            {
+                $request->validate([
+                    'profile_share_email_name' => 'required|max:255',
+                    'profile_share_email_from_email' => 'required|email|max:255',
+                    'profile_share_email_to_email' => 'required|email|max:255',
+                ]);
+
+                // send an email notification to admin
+                $email_to = $request->profile_share_email_to_email;
+                $email_from_name = $request->profile_share_email_name;
+                $email_note = $request->profile_share_email_note;
+                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+
+                $email_notify_message = [
+                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
+                    __('frontend.item.send-email-note'),
+                    $email_note,
+                ];
+
+                /**
+                 * Start initial SMTP settings
+                 */
+                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                {
+                    // config SMTP
+                    config_smtp(
+                        $settings->settings_site_smtp_sender_name,
+                        $settings->settings_site_smtp_sender_email,
+                        $settings->settings_site_smtp_host,
+                        $settings->settings_site_smtp_port,
+                        $settings->settings_site_smtp_encryption,
+                        $settings->settings_site_smtp_username,
+                        $settings->settings_site_smtp_password
+                    );
+                }
+                /**
+                 * End initial SMTP settings
+                 */
+
+                if(!empty($settings->setting_site_name))
+                {
+                    // set up APP_NAME
+                    config([
+                        'app.name' => $settings->setting_site_name,
+                    ]);
+                }
+
+                try
+                {
+                    // to admin
+                    Mail::to($email_to)->send(
+                        new Notification(
+                            $email_subject,
+                            $email_to,
+                            null,
+                            $email_notify_message,
+                            __('frontend.item.view-listing'),
+                            'success',
+                            route('page.profile', $profileId)
+                        )
+                    );
+
+                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                    \Session::flash('flash_type', 'success');
+
+                }
+                catch (\Exception $e)
+                {
+                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                    \Session::flash('flash_type', 'danger');
+                }
+
+                return redirect()->route('page.profile', $profileId);
+            }
+            else
+            {
+                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+                \Session::flash('flash_type', 'danger');
+
+                return redirect()->route('page.profile', $profileId);
+            }
+        // }
+        // else
+        // {
+        //     abort(404);
+        // }
+
+    }
+
     public function contactEmail(string $item_slug, Request $request)
     {       
         $user = User::where('id',$request->userId)->first();
@@ -6111,22 +6448,38 @@ class PagesController extends Controller
                 ]);
 
                 // send an email notification to admin
-                 //$email_to = $user->email;
-                $email_to = "shubham@pranshtech.com";
-                $email_from_name = $request->item_conntact_email_name;
-                $item_contact_email = $request->item_contact_email_from_email;
-                $articleTitle = $request->articleTitle;
-                $email_note = $request->item_contact_email_note;
-                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                if($request->contact_profile){
+                    $email_to = $user->email;                                   
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;                    
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                    
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
 
-                $email_notify_message = [
-                    __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
-                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
-                    __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
-                    __('frontend.item.send-email-contact-note'),
-                    $email_note,
-                ];
+                }else{
+                    $email_to = $user->email;
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;
+                    $articleTitle = $request->articleTitle;
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
+                        __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
+                }
 
                 /**
                  * Start initial SMTP settings
@@ -6177,13 +6530,26 @@ class PagesController extends Controller
                     $url = 'https://fcm.googleapis.com/fcm/send';
                     $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();            
                     $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
-                    $data = [
-                        "registration_ids" => $FcmToken,
-                        "notification" => [
-                            "title" =>'One New Notification Frome'.$request['item_conntact_email_name'],
-                            //"body" => $request['item_conntact_email_name'],  
-                        ]
-                    ];
+                    
+                    if($request->contact_profile){
+
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Profile',
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }else{
+   
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }                   
                     $encodedData = json_encode($data);    
                     $headers = [
                         'Authorization:key=' . $serverKey,
@@ -6204,7 +6570,6 @@ class PagesController extends Controller
                     // Close connection
                     curl_close($ch);
                     // FCM response  
-                    print_r($result);
 
                 }
                 catch (\Exception $e)
@@ -6213,16 +6578,35 @@ class PagesController extends Controller
 
                     \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
                     \Session::flash('flash_type', 'danger');
-                }
+                }                               
+                $notification = [
+                    'user_id' => $user->id,
+                    'notification'=>$data['notification']['title'],
+                    'is_read'=>'0',                    
+                ];           
+                 //print_r($user->notification());exit;          
+                 $user->notification()->create($notification);
 
-                return redirect()->route('page.item', $item->item_slug);
+                 if($request->contact_profile){
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
             else
             {
                 \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
                 \Session::flash('flash_type', 'danger');
 
-                return redirect()->route('page.item', $item->item_slug);
+
+               if($request->contact_profile){
+
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
         }
         else
@@ -6380,13 +6764,13 @@ class PagesController extends Controller
          */
 
         $data = [
-            'posts' => \Canvas\Post::published()->orderByDesc('published_at')->paginate(10),
+            'posts' => \Canvas\Models\Post::published()->orderByDesc('published_at')->paginate(10),
         ];
 
-        $all_topics = \Canvas\Topic::orderBy('name')->get();
-        $all_tags = \Canvas\Tag::orderBy('name')->get();
+        $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+        $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-        $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+        $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
         /**
          * Start inner page header customization
@@ -6432,7 +6816,7 @@ class PagesController extends Controller
 
     public function blogByTag(string $tag_slug)
     {
-        $tag = \Canvas\Tag::where('slug', $tag_slug)->first();
+        $tag = \Canvas\Models\Tag::where('slug', $tag_slug)->first();
 
         if ($tag) {
 
@@ -6494,15 +6878,15 @@ class PagesController extends Controller
              */
 
             $data = [
-                'posts' => \Canvas\Post::whereHas('tags', function ($query) use ($tag_slug) {
+                'posts' => \Canvas\Models\Post::whereHas('tags', function ($query) use ($tag_slug) {
                     $query->where('slug', $tag_slug);
                 })->published()->orderByDesc('published_at')->paginate(10),
             ];
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             /**
              * Start inner page header customization
@@ -6552,7 +6936,7 @@ class PagesController extends Controller
 
     public function blogByTopic(string $topic_slug)
     {
-        $topic = \Canvas\Topic::where('slug', $topic_slug)->first();
+        $topic = \Canvas\Models\Topic::where('slug', $topic_slug)->first();
 
         if ($topic) {
 
@@ -6614,15 +6998,15 @@ class PagesController extends Controller
              */
 
             $data = [
-                'posts' => \Canvas\Post::whereHas('topic', function ($query) use ($topic_slug) {
+                'posts' => \Canvas\Models\Post::whereHas('topic', function ($query) use ($topic_slug) {
                     $query->where('slug', $topic_slug);
                 })->published()->orderByDesc('published_at')->paginate(10),
             ];
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             /**
              * Start inner page header customization
@@ -6672,7 +7056,7 @@ class PagesController extends Controller
 
     public function blogPost(string $blog_slug)
     {
-        $posts = \Canvas\Post::with('tags', 'topic')->published()->get();
+        $posts = \Canvas\Models\Post::with('tags', 'topic')->published()->get();
         $post = $posts->firstWhere('slug', $blog_slug);
 
         if (optional($post)->published) {
@@ -6775,10 +7159,10 @@ class PagesController extends Controller
             // IMPORTANT: This event must be called for tracking visitor/view traffic
             event(new \Canvas\Events\PostViewed($post));
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             // used for comment
             $blog_post = BlogPost::published()->get()->firstWhere('slug', $blog_slug);
@@ -7569,6 +7953,7 @@ class PagesController extends Controller
     }
     public function barchart(Request $request,$id)
     {  
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         /**
          * Start SEO
@@ -7642,8 +8027,10 @@ class PagesController extends Controller
         return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata','Today_Visits_count'));
     }
     public function mediavisitors(Request $request){
-            $media_detail = MediaDetail::where('id', $request['id'])->first();        
-        if (! $this->wasRecentlyViewedYoutube($media_detail)) {
+
+        $media_detail = MediaDetail::where('id', $request['id'])->first(); 
+
+        if (! $this->wasRecentlyViewedMedia($media_detail)) {
             $view_data = [
                 'user_id' => $media_detail->user_id,
                 'media_type'=>$media_detail->media_type,
@@ -7653,7 +8040,24 @@ class PagesController extends Controller
                 'referer' => request()->header('referer'),
             ];                
                 $media_detail->mediadetailsvisits()->create($view_data);
-                 $this->storeInSessionYoutube($media_detail);
+                 $this->storeInSessionMedia($media_detail);
+            }
+    }
+    public function youtubevisitors(Request $request){
+
+        $youtube_detail = User::where('id', $request['userid'])->first();
+            
+        if (! $this->wasRecentlyViewedUserYoutube($youtube_detail)) {
+            $view_data = [
+                'user_id' => $youtube_detail->id,
+                'media_type'=>'youtube',
+                'media_url'=>(isset($youtube_detail->youtube) && !empty($youtube_detail->youtube) ? $youtube_detail->youtube : ''),
+                'ip' => request()->getClientIp(),
+                'agent' => request()->header('user_agent'),
+                'referer' => request()->header('referer'),
+            ];      
+                $youtube_detail->mediadetailsvisits()->create($view_data);
+                 $this->storeInSessionUserYoutube($youtube_detail);
             }
     }
     public function saveToken(Request $request)
@@ -7663,5 +8067,19 @@ class PagesController extends Controller
         Auth::user()->save();
 
         return response()->json(['Token successfully stored.']);
+    }
+    public function notificationData(Request $request,$id)
+    {
+        $settings = app('site_global_settings');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.notification', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        $notification = UserNotification::where('user_id',$id)->get();
+       
+        return view('frontend.user-notification',compact('notification'));
     }
 }

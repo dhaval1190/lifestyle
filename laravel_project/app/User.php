@@ -195,6 +195,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role_id == Role::USER_ROLE_ID;
     }
 
+    public function isEditor()
+    {
+        return $this->role_id == Role::EDITOR_ROLE_ID;
+    }
+
     public function hasSuspended()
     {
         return $this->user_suspended == User::USER_SUSPENDED;
@@ -293,7 +298,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ProfileVisit::class);
     }
-
+    public function mediadetailsvisits()
+    {
+        return $this->hasMany(MediaDetailsVisits::class);
+    }
+    public function notification()
+    {
+        return $this->hasMany(UserNotification::class);
+    }
 
     /**
      * Get the items saved by this user
@@ -635,7 +647,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 $video_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'video')->count();
                 $podcast_media_count    = MediaDetail::where('user_id', $user->id)->where('media_type', 'podcast')->count();
                 $ebook_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'ebook')->count();
-                $blog_count             = \Canvas\Post::where('user_id', $user->id)->count();
+                $blog_count             = \Canvas\Models\Post::where('user_id', $user->id)->count();
                 $referral_count         = count($user->referrals);
                 if($article_count >= 10){
                     $data['bronze_profile'] = true;

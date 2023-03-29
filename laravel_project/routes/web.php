@@ -80,11 +80,16 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
     Route::get('/earn-points', 'PagesController@earnPointsDetail')->name('page.earn.points');
-
+    Route::get('/all-podcast-detail/{id}', 'PagesController@ViewAllPodcastDetail')->name('page.profile.allpodcast');
+    Route::get('/all-article-detail/{id}', 'PagesController@ViewAllArticleDetail')->name('page.profile.allarticle');
+    Route::get('/all-ebook-detail/{id}', 'PagesController@ViewAllEBookDetail')->name('page.profile.allebook');
+    Route::get('/all-youtube-detail/{id}', 'PagesController@ViewAllYoutubeDetail')->name('page.profile.allyoutube');
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
     Route::get('/visitor-view/{id}', 'PagesController@barchart');
     Route::POST('/media-visitor', 'PagesController@mediavisitors');
+    Route::POST('/youtube-visitor', 'PagesController@youtubevisitors');
+    Route::get('/notification/{id}', 'PagesController@notificationData')->name('page.user.notification');
 
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');
@@ -100,6 +105,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/send-notification', 'PagesController@sendNotification')->name('send.notification');
         Route::post('/save-token',  'PagesController@saveToken')->name('save-token');
         Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
+        Route::post('/profile/{profile_slug}/email', 'PagesController@emailProfile')->name('page.emailProfile.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
@@ -685,3 +691,72 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
  */
 
 
+
+// Route::prefix('canvas-ui')->group(function () {
+//     Route::prefix('api')->group(function () {
+//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
+//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
+//              ->middleware('Canvas\Http\Middleware\Session');
+
+//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
+//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
+//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
+
+//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
+//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
+//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
+
+//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
+//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
+//     });
+
+//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
+//          ->where('view', '(.*)')
+//          ->name('canvas-ui');
+// });
+
+// Route::prefix('canvas-ui')->group(function () {
+//     Route::prefix('api')->group(function () {
+//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
+//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
+//              ->middleware('Canvas\Http\Middleware\Session');
+
+//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
+//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
+//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
+
+//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
+//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
+//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
+
+//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
+//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
+//     });
+
+//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
+//          ->where('view', '(.*)')
+//          ->name('canvas-ui');
+// });
+
+// Route::prefix('canvas-ui')->group(function () {
+//     Route::prefix('api')->group(function () {
+//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
+//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
+//              ->middleware('Canvas\Http\Middleware\Session');
+
+//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
+//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
+//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
+
+//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
+//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
+//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
+
+//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
+//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
+//     });
+
+//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
+//          ->where('view', '(.*)')
+//          ->name('canvas-ui');
+// });

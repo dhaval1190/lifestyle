@@ -44,7 +44,7 @@
             <div class="col-md-3">
                 <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.posts') }}</strong></h2>
                 <ul class="list-unstyled">
-                    @foreach(\Canvas\Post::published()->orderByDesc('published_at')->take(5)->get() as $key => $post)
+                    @foreach(\Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get() as $key => $post)
                         <li><a href="{{ route('page.blog.show', $post->slug) }}">{{ $post->title }}</a></li>
                     @endforeach
                 </ul>

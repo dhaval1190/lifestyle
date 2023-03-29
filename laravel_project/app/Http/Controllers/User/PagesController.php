@@ -20,6 +20,8 @@ use Laravelista\Comments\Comment;
 use App\ProfileVisit;
 use App\MediaDetailsVisits;
 use App\ItemVisit;
+use App\UserNotification;
+
 
 class PagesController extends Controller
 {
@@ -72,14 +74,64 @@ class PagesController extends Controller
             today()->startOfDay()->toDateTimeString(),
             today()->endOfDay()->toDateTimeString(),
         ]); 
+
+        $All_visit_count = $profile_visit->count();
         $visit_count = $currentMonthlyVisits->count();
         $Today_Visits_count = $TodayVisits->count();
         // print_r($visit_count);exit;
 
         $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
+        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
         $PodcastImage= array();
         $media= array();
         $Articledetail= array();
+        $Youtube= array();
+        $Ebooks= array();
+
+        if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
+            foreach($ebook_deatils_visit as $ebookdetail){
+                $Ebooks[$ebookdetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        
+        if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
+            foreach($youtube_deatils_visit as $youtubedetail){
+            //print_r($youtube_deatils_visit);exit;
+            $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        
+            $YoutubecurrentMonthlyVisits = $youtube_deatils_visit->whereBetween('created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+            ]);
+            
+            $TodayYoutubeVisits = $youtube_deatils_visit->whereBetween('created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ]); 
+            $Youtubevisit_count = $YoutubecurrentMonthlyVisits->count();
+            $Today_YoutubeVisits_count = $TodayYoutubeVisits->count();
 
         if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
         foreach($media_deatils_visit as $mediadetail){
@@ -105,9 +157,7 @@ class PagesController extends Controller
             today()->endOfDay()->toDateTimeString(),
         ]); 
         $Mediavisit_count = $MediacurrentMonthlyVisits->count();
-        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();
-        
-        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();        
         
         if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
         foreach($podcast_deatils_visit as $detail){
@@ -166,16 +216,14 @@ class PagesController extends Controller
         $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
         $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
 
-
-        //print_r($Articledetail);exit;
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();      
+       
         
         // $media_detail_id = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
         // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
-
-
         return response()->view('backend.user.index',
             compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
-            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail'));
+            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
     }
 
     public function profileProgressData(Request $request,$user_id){

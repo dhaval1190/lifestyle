@@ -128,6 +128,12 @@
   top: 50px;
   color: white;
 }
+.vid-fit-user {
+    height: 380;
+    background-color: #000f24;
+    position: relative;
+}
+
 .vid-fit-reveal {
   height: 215;
   background-color: #000f24;
@@ -152,6 +158,7 @@
 .vid-fit-reveal #vid-reveal {
   visibility: hidden;
 }
+
 .c-video__play-btn {
   position: absolute;
   top: 0;
@@ -180,6 +187,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 @section('content')
     <!-- <div class="site-section"> -->
         <div class="container-fluid">
+            
             <div class="row">
                 <div class="col-md-12 col-12 p-0">
                     <div class="upper_white_bg">
@@ -189,6 +197,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                 </div>
                             @else
                                 <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::disk('public')->url('user/'. $user_detail['user_cover_image']) }});">
+                                    {{-- <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::url('user/'. $user_detail['user_cover_image']) }});"> --}}
                                 </div>
                             @endif
 
@@ -218,12 +227,21 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
-                                                <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/$user_detail->id") }}'" id="eye">                                               
+                                                <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/".encrypt($user_detail->id)) }}'" id="eye">                                               
                                                     <b>Total Visitor(s)</b> : {{ $visit_count }}</i> </p>                                                    
-                                                </div>
+                                                </div> 
+                                                <?php
+                                                    $userId = '';
+                                                    if(isset(Auth::user()->id)){
+                                                        $userId = Auth::user()->id ? Auth::user()->id : '';
+                                                        }
+                                                    ?>    
+                                                    @if($user_detail->id != $userId)                                           
+                                                <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>&nbsp;
+                                                @endif
+                                                <a class="btn btn-primary rounded text-white item-share-button"><i class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
                                             </div>
-                                           
-                                           
+                                    </div>
                                             <!-- <div class="progress">
                                                 <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage']}}%"
                                                     aria-valuenow="{{ $progress_data['percentage']}}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
@@ -256,7 +274,251 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                 </div>
             </div>
         </div>
+        
+        <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>{{ __('frontend.item.share-listing-email') }}</p>
+                                @if(!Auth::check())
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ __('frontend.item.login-require') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="hexId" value = "{{ $hexId}}">
+                                    <input type="hidden" name="contact_profile" value = "contact_profile">
+                                    <input type="hidden" name="userId" value = "{{ $user_detail->id}}">                                  
 
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                            <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_conntact_email_name')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                            <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_contact_email_from_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        {{-- <div class="col-md-4">
+                                            <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                            <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                            @error('item_share_email_to_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div> --}}
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                            <textarea class="form-control @error('item_contact_email_note') is-invalid @enderror" id="item_contact_email_note" rows="3" name="item_contact_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_contact_email_note') }}</textarea>
+                                            @error('item_contact_email_note')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                                {{ __('frontend.item.send-email') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal - share -->
+<div class="modal fade" id="share-modal" tabindex="-1" role="dialog" aria-labelledby="share-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <p>{{ __('frontend.item.share-listing-social-media') }}</p>
+
+                        <!-- Create link with share to Facebook -->
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-facebook" href="" data-social="facebook">
+                            <i class="fab fa-facebook-f"></i>
+                            {{ __('social_share.facebook') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-twitter" href="" data-social="twitter">
+                            <i class="fab fa-twitter"></i>
+                            {{ __('social_share.twitter') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-linkedin" href="" data-social="linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                            {{ __('social_share.linkedin') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-blogger" href="" data-social="blogger">
+                            <i class="fab fa-blogger-b"></i>
+                            {{ __('social_share.blogger') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                            <i class="fab fa-pinterest-p"></i>
+                            {{ __('social_share.pinterest') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
+                            <i class="fab fa-evernote"></i>
+                            {{ __('social_share.evernote') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-reddit" href="" data-social="reddit">
+                            <i class="fab fa-reddit-alien"></i>
+                            {{ __('social_share.reddit') }}
+                        </a>
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                            <i class="fab fa-buffer"></i>
+                            {{ __('social_share.buffer') }}
+                        </a> --}}
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
+                            <i class="fab fa-wordpress-simple"></i>
+                            {{ __('social_share.wordpress') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
+                            <i class="fab fa-weibo"></i>
+                            {{ __('social_share.weibo') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-skype" href="" data-social="skype">
+                            <i class="fab fa-skype"></i>
+                            {{ __('social_share.skype') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-telegram" href="" data-social="telegram">
+                            <i class="fab fa-telegram-plane"></i>
+                            {{ __('social_share.telegram') }}
+                        </a>
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                            <i class="fab fa-viber"></i>
+                            {{ __('social_share.viber') }}
+                        </a> --}}
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            {{ __('social_share.whatsapp') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wechat" href="" data-social="wechat">
+                            <i class="fab fa-weixin"></i>
+                            {{ __('social_share.wechat') }}
+                        </a>
+                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
+                            <i class="fab fa-line"></i>
+                            {{ __('social_share.line') }}
+                        </a>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>{{ __('frontend.item.share-listing-email') }}</p>
+                        @if(!Auth::check())
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ __('frontend.item.login-require') }}
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        <form action="{{ route('page.emailProfile.email', ['profile_slug' => $hexId]) }}" method="POST">
+                            @csrf
+                            <div class="form-row mb-3">
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
+                                    <input id="profile_share_email_name" type="text" class="form-control @error('profile_share_email_name') is-invalid @enderror" name="profile_share_email_name" value="{{ old('profile_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_name')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                    <input id="profile_share_email_from_email" type="email" class="form-control @error('profile_share_email_from_email') is-invalid @enderror" name="profile_share_email_from_email" value="{{ old('profile_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_from_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="profile_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                    <input id="profile_share_email_to_email" type="email" class="form-control @error('profile_share_email_to_email') is-invalid @enderror" name="profile_share_email_to_email" value="{{ old('profile_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    @error('profile_share_email_to_email')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-12">
+                                    <label for="profile_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                    <textarea class="form-control @error('profile_share_email_note') is-invalid @enderror" id="profile_share_email_note" rows="3" name="profile_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('profile_share_email_note') }}</textarea>
+                                    @error('profile_share_email_note')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                        {{ __('frontend.item.send-email') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
         <section class="middle">
             <div class="container">
                 <div class="row">
@@ -314,6 +576,10 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                             <div class="row">
                                 <div class="col-lg-6">
                                      <div class="video">
+                                     <div class='c-video__image-container vid-fit-user' data-id="{{$user_detail->id}}" id="#js-fitvideouser_{{$user_detail->id}}">
+                                                <div class="bt-play" id="bt-playuser_{{$user_detail->id}}"></div>
+                                                <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe>                            
+                                                </div>
                                         
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
                                             title="YouTube video player" frameborder="0"
@@ -324,7 +590,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                         @endphp
                                         <!-- <div class='c-video__image-container vid-fit-reveal' id="js-fitvideo">
                                           <div class="bt-play"></div> -->
-                                           <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe>
+                                           <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe> -->
                                         <!-- </div> -->
                                       </div> 
                                  </div>
@@ -389,8 +655,8 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     <div class="row">
                                         @foreach($ebook_media_array as $ebook_key => $ebook)
                                             <div class="col-md-3 col-6">
-                                                <div class="post-img">
-                                                    <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="w-100"></a>
+                                                <div class="post-img">                                                    
+                                                    <a href="{{ Storage::disk('public')->url('media_files/'. $ebook->media_image) }}" target="_blank"><img src="{{ Storage::disk('public')->url('media_files/'. $ebook->media_cover) }}" alt="" class="ebook" data-id="{{$ebook->id}}" id="#ebook_{{$ebook->id}}"></a>
                                                 </div>
                                                 <div class="post-information">
                                                     <h4 class="content">{{ $ebook->media_name }}</h4>
@@ -563,6 +829,10 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
 @section('scripts')
 
+    {{-- <script src="{{ asset('frontend/vendor/justified-gallery/jquery.justifiedGallery.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('frontend/vendor/colorbox/jquery.colorbox-min.js') }}"></script> --}}
+    <script src="{{ asset('frontend/vendor/goodshare/goodshare.min.js') }}"></script>
+
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="{{ asset('frontend/vendor/leaflet/leaflet.js') }}"></script>
@@ -575,10 +845,82 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
     <script src="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
    
 
     @include('frontend.partials.bootstrap-select-locale')
             <script>
+                $(".ebook").on('click', function() {
+                    var id = $(this).attr('data-id');                                      
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/media-visitor"); ?>',
+                    data: {'id':id},
+                    success:function(data){
+                        console.log(data)
+                    },
+                });
+                });
+            var firebaseConfig = {
+                aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                authDomain: "coachhq-c1b3d.firebaseapp.com",
+                projectId: "coachhq-c1b3d",
+                storageBucket: "coachhq-c1b3d.appspot.com",
+                messagingSenderId: "668525619724",
+                appId: "1:668525619724:web:e4282225654d0467655c29",
+                measurementId: "G-VFGKZNYRVM"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+            messaging.onMessage(function (payload) {
+                const title = payload.notification.title;
+                const options = {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon,
+                };
+                new Notification(title, options);
+            });
+            $(document).ready(function(){
+                 $('.item-contact-button').on('click', function(){
+                $('#contact-modal').modal('show');
+                });
+                @error('item_conntact_email_name')
+                $('#contact-modal').modal('show');
+                @enderror
+
+                @error('item_contact_email_from_email')
+                $('#contact-modal').modal('show');
+                @enderror
+
+                @error('item_contact_email_note')
+                $('#contact-modal').modal('show');
+                @enderror
+            });
+            $(document).ready(function(){
+                $(".vid-fit-user").on('click', function() {
+                    var userid = $(this).attr('data-id'); 
+                    var main_id = $(this).attr('id');
+                    $(main_id).addClass("reveal-video");
+                    $('#bt-playuser_'+userid).hide();
+                    var myFrame = $(main_id).find('#vid-revealuser_'+userid);
+                    var url = $(myFrame).attr('src') + '?autoplay=1';                   
+                    $(myFrame).attr('src', url);                  
+                    
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/youtube-visitor"); ?>',
+                    data: {'userid':userid},
+                    success:function(data){
+                    },
+                });
+                });
+            });
                 $(document).ready(function(){
                 $(".vid-fit-reveal").on('click', function() {
                     var id = $(this).attr('data-id'); 
@@ -587,7 +929,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                     $(main_id).addClass("reveal-video");
                     $('#bt-play_'+id).hide();
                     var myFrame = $(main_id).find('#vid-reveal_'+id);
-                    var url = $(myFrame).attr('src') + '?autoplay=1';
+                    var url = $(myFrame).attr('src') + '?autoplay=1';                    
                     $(myFrame).attr('src', url);                   
                     
                     $.ajax({
@@ -731,6 +1073,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_GOOGLE_MAP)
         <script>
+              
             // Initial the google map
             function initMap() {
 
@@ -882,5 +1225,32 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js??v=quarterly&key={{ $site_global_settings->setting_site_map_google_api_key }}&callback=initMap"></script>
     @endif
+
+    <script>
+        $(document).ready(function(){
+
+            $('.item-share-button').on('click', function(){
+                $('#share-modal').modal('show');
+            });
+        });
+
+        @error('profile_share_email_name')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_from_email')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_to_email')
+            $('#share-modal').modal('show');
+            @enderror
+
+            @error('profile_share_email_note')
+            $('#share-modal').modal('show');
+            @enderror
+        
+    </script>
+    
 
 @endsection

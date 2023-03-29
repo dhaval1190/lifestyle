@@ -2,6 +2,20 @@
 
 return [
 
+
+    /*
+|--------------------------------------------------------------------------
+| Base Domain
+|--------------------------------------------------------------------------
+|
+| This is the subdomain where Canvas will be accessible from. If the
+| domain is set to null, Canvas will reside under the defined base
+| path below. Otherwise, this will be used as the subdomain.
+|
+*/
+
+    'domain' => env('CANVAS_DOMAIN', null),
+
     /*
     |--------------------------------------------------------------------------
     | Base Route

@@ -35,7 +35,8 @@
                                           <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
                                             <div class="row justify-content-center mt-5">
                                                 <div class="col-md-8 text-center">
-                                                    <h1>{{ __('frontend.stats.title') }}</h1>                                        
+                                                    <h1>{{ __('frontend.stats.title') }}</h1>
+                                                    <p class="mb-0">View performance stats of your content below.</p>                                
                                                 </div>
                                             </div>
                                           </div>
@@ -127,8 +128,8 @@
             labels: months,
             datasets: [{
             label: 'Visitors',
-            backgroundColor: 'aqua',
-            borderColor: 'green',
+            backgroundColor: '#F05127',
+            borderColor: '#F05127',
             fill: true,
             data: array1,
             }]
@@ -164,8 +165,8 @@
             labels:months,
             datasets: [{
             label: 'Visitors',
-            backgroundColor: 'aqua',
-            borderColor: 'green',
+            backgroundColor: '#F05127',
+            borderColor: '#F05127',
             fill: true,
             data: array1,
             }]

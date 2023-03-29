@@ -123,18 +123,24 @@ return array (
     'categories' => 'Categories',
     'comment' => 'Comment',
     'dashboard' => 'Dashboard',
+    'traffic' => 'Traffic',
     'listings' => 'Coaches',
     'articles' => 'Topics',
     'message' => 'Message',
     'pending-listings' => 'Pending Coaches',
     'pending-articles' => 'Pending Articles',
-    'post-a-listing' => 'Post A Coach',
+    'post-a-listing' => 'Post A Topic',
     'post-a-article' => 'Post A Article',
     'posts' => 'Posts',
     'users' => 'Users',
     'view-all-comment' => 'View All Comments',
     'view-all-message' => 'View All Messages',
-    'subscription' => 'Subscription'
+    'subscription' => 'Subscription',
+    'article-details' => 'Articles',
+    'podcast-details' => 'Our Podcast',
+    'youtube-details' => 'Our Youtube',
+    'ebook-details' => 'Our Ebook',
+
   ),
   'item' =>
   array (
