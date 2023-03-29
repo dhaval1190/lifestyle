@@ -35,7 +35,7 @@ class PagesController extends Controller
 
         $category_count = Category::count();
         $item_count = Item::count();
-        $post_count = \Canvas\Post::published()->count();
+        $post_count = \Canvas\Models\Post::published()->count();
         $user_count = User::where('role_id', Role::USER_ROLE_ID)->count();
 
         $recent_threads = Thread::forUser($admin_user->id)->latest('updated_at')->take(5)->get();

@@ -45,4 +45,13 @@ class MediaDetail extends Model
         'media_cover',
         'media_url',
     ];
+     /**
+     * Get the visits relationship.
+     *
+     * @return HasMany
+     */
+    public function mediadetailsvisits()
+    {
+        return $this->hasMany(MediaDetailsVisits::class);
+    }
 }

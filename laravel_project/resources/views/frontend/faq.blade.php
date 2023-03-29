@@ -33,7 +33,7 @@
                 <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
 
                     <div class="row justify-content-center mt-5">
-                        <div class="col-md-8 text-center">
+                        <div class="col-md-9 text-center">
                             <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('frontend.contact.faq') }}</h1>
                             <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.contact.description') }}</p> -->
                         </div>
@@ -47,24 +47,32 @@
     @if($all_faq->count() > 0)
     <div class="site-section">
         <div class="container">
-            <!-- <div class="row justify-content-center mb-5">
+            <div class="row justify-content-center mb-5">
                 <div class="col-md-7 text-center border-primary">
-                    <h2 class="font-weight-light text-primary">{{ __('frontend.contact.faq') }}</h2>
+                    <h2 class="font-weight-light text-primary">{{ __("FAQ's for Coaches") }}</h2>
                     <p class="color-black-opacity-5"></p>
                 </div>
-            </div> -->
+            </div>
 
 
             <div class="row justify-content-center">
                 <div class="col-8">
 
                     @foreach($all_faq as $key => $faq)
+                        @if($key==5)
+                            <div class="row justify-content-center mb-5 mt-5">
+                                <div class="col-md-7 text-center border-primary">
+                                    <h2 class="font-weight-light text-primary">{{ __("FAQ's for Site Visitors") }}</h2>
+                                    <p class="color-black-opacity-5"></p>
+                                </div>
+                            </div>
+                        @endif
                         <div class="border p-3 rounded mb-2">
                             <a data-toggle="collapse" href="#collapse-{{ $faq->id }}" role="button" aria-expanded="false" aria-controls="collapse-{{ $faq->id }}" class="decoration-none accordion-item h5 d-block mb-0">{{ $faq->faqs_question }}</a>
 
                             <div class="collapse" id="collapse-{{ $faq->id }}">
                                 <div class="pt-2">
-                                    <p class="mb-0">{{ $faq->faqs_answer }}</p>
+                                    <p class="mb-0" style="white-space: pre-line;">{{ $faq->faqs_answer }}</p>
                                 </div>
                             </div>
                         </div>

@@ -272,6 +272,42 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        
+        $validator = Validator::make($request->all(),[
+            'category_ids' => 'required',
+            'name' => 'required|max:80',
+            'email' => 'required',
+            'phone' => 'required|numeric',
+            'password' => 'required|confirmed',
+            'preferred_pronouns' => 'required',
+            'hourly_rate_type' => 'required',
+            'working_type' => 'required',
+            'experience_year' => 'required',
+            'address'=> 'required',
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'city_id' => 'required',
+            'post_code' => 'required'
+        ],[
+            'category_ids.required' => 'Category is required',
+            'name.required' => 'Name is required',
+            'email.required'=> 'Email is required',
+            'phone.required'=> 'Phone is required',
+            'password.required'=> 'Password is required',
+            'preferred_pronouns.required' => 'Preferred pronouns is required',
+            'hourly_rate_type.required' => 'Hourly rate type is required',
+            'working_type.required' => 'Working type is required',
+            'experience_year.required' => 'Experience year is required',
+            'address.required' => 'Address is required',
+            'country_id.required' => 'Country is required',
+            'state_id.required' => 'State is required',
+            'city_id.required' => 'City is required',
+            'post_code.required' => 'Post code is required'
+
+        ]);
+
+        // return response()->json(['data'=>$request->input()]);
+        
         $settings = app('site_global_settings');
         if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
         {
@@ -290,13 +326,21 @@ class RegisterController extends Controller
             config(['app.name' => $settings->setting_site_name]);
         }
 
-        $this->validator($request->all())->validate();
+        //$this->validator($request->all())->validate();
+        if($validator->passes()){
+            try {
+                event(new Registered($user = $this->create($request->all())));
+            } catch (\Exception $e) {
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            }
 
-        try {
-            event(new Registered($user = $this->create($request->all())));
-        } catch (\Exception $e) {
-            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            return response()->json(['status'=>"success",'data'=>$request->input()]);
+
+        }else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
         }
+
+
 
         if(isset($user)) {
             $this->guard()->login($user);

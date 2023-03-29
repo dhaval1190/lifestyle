@@ -3,5 +3,5 @@
  * all latest listings translation
  */
 return array (
-    'view-all-latest' => "View All Articles",
+    'view-all-latest' => "View All Topics",
 );

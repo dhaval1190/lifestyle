@@ -56,7 +56,7 @@ class LoginController extends Controller
 
     protected function authenticated($request, $user)
     {
-        if ($user->isAdmin())
+        if ($user->isAdmin() || $user->isEditor())
         {
             $this->redirectTo = route('admin.index');
             //$this->redirectTo = route('page.home');

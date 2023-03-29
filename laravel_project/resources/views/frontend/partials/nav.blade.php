@@ -48,7 +48,7 @@
                     @endif
                     <li><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li>
                     <li><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
-                    <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li>
+                    <!-- <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li> -->
 
                     @guest
                         @if (Route::has('register'))

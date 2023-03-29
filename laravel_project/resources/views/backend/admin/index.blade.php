@@ -107,8 +107,9 @@
                                         Created by <span class="{{$info_class}}">{{ $thread->creator()->name }}</span>
                                     </p>
                                 </div>
+
                             </div>
-                        @endforeach
+                        @endforeach                        
                     </div>
                 </div>
             </div>

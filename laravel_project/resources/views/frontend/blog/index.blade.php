@@ -146,9 +146,14 @@
                     @endif
 
                     <div class="row mb-3 align-items-stretch">
-
+                            <?php
+                                // print_r($data['posts']);exit;
+                            ?>
                         @foreach($data['posts'] as $post)
                         <div class="col-md-6 col-lg-6 mb-4 mb-lg-4">
+                            <?php
+                            // echo "ssssssssssssssssssss";print_r($post->user()->name);echo "kkkkkkkkkkk";
+                            ?>
                             <div class="h-entry">
                                 @if(empty($post->featured_image))
                                     <div class="mb-3" style="min-height:300px;border-radius: 0.25rem;background-image:url({{ asset('frontend/images/placeholder/full_item_feature_image.webp') }});background-size:cover;background-repeat:no-repeat;background-position: center center;"></div>
@@ -157,7 +162,9 @@
                                 @endif
                                 <h2 class="font-size-regular"><a href="{{ route('page.blog.show', $post->slug) }}" class="text-black">{{ $post->title }}</a></h2>
                                 <div class="meta mb-3">
-                                    {{ __('frontend.blog.by') }} {{ $post->user()->first()->name }}<span class="mx-1">&bullet;</span>
+                                    {{ __('frontend.blog.by') }} 
+                                    {{ $post->user()->first()->name }}
+                                    <span class="mx-1">&bullet;</span>
                                     {{ $post->updated_at->diffForHumans() }} <span class="mx-1">&bullet;</span>
                                     @if($post->topic()->count() != 0)
                                         <a href="{{ route('page.blog.topic', $post->topic()->first()->slug) }}">{{ $post->topic()->first()->name }}</a>

@@ -393,9 +393,9 @@
 
                 </div>
 
-                <!-- <div class="col-lg-6">
+                <div class="col-lg-6" style="display:none;">
                     <div class="sticky-top" id="mapid-box"></div>
-                </div> -->
+                </div>
 
             </div>
         </div>

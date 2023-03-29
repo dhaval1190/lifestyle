@@ -176,7 +176,7 @@
                             <div class="col-12 col-md-1 text-right pl-0">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-2 ">
                                 <select class="selectpicker form-control @error('filter_gender_type') is-invalid @enderror" name="filter_gender_type" id="filter_gender_type">
                                     <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>Any Gender</option>
                                     <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
@@ -215,6 +215,19 @@
                                 </span>
                                 @enderror
                             </div>
+                            <div class="col-12 col-md-2 pl-0">                                    
+                                    <select class="selectpicker form-control @error('filter_country') is-invalid @enderror" name="filter_country" id="filter_country" data-live-search="true">
+                                            <option value="0" {{ empty($filter_country) ? 'selected' : '' }}>{{ __('prefer_country.all-country') }}</option>
+                                            @foreach($all_countries as $all_countries_key => $country)
+                                                <option value="{{ $country->id }}" {{ $filter_country == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('filter_country')
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div>
                             <div class="col-12 col-md-2 pl-0">
                                 <select class="selectpicker form-control @error('filter_state') is-invalid @enderror" name="filter_state" id="filter_state" data-live-search="true">
                                     <option value="0" {{ empty($filter_state) ? 'selected' : '' }}>{{ __('prefer_country.all-state') }}</option>
@@ -241,7 +254,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-2 mt-2">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
@@ -399,9 +412,9 @@
 
                 </div>
 
-                <!-- <div class="col-lg-6">
+                <div class="col-lg-6" style="display:none;">
                     <div class="sticky-top" id="mapid-box"></div>
-                </div> -->
+                </div>
 
             </div>
 
@@ -409,7 +422,7 @@
     </div>
 
     @if($all_states->count() > 0)
-        <div class="site-section bg-light">
+        <!-- <div class="site-section bg-light">
             <div class="container">
                 <div class="row mb-5">
                     <div class="col-md-7 text-left border-primary">
@@ -426,7 +439,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
     @endif
 
 @endsection
@@ -649,50 +662,96 @@
              */
 
 
-            /**
-             * Start state selector in filter
+             /**
+             * Start country, state, city selector
              */
-            $('#filter_state').on('change', function() {
-
-                if(this.value > 0)
-                {
-                    $('#filter_city').html("<option selected>{{ __('prefer_country.loading-wait') }}</option>");
-                    $('#filter_city').selectpicker('refresh');
-
-                    var ajax_url = '/ajax/cities/' + this.value;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
+            $('#filter_country').on('change', function() {
+                $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#filter_state').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/states/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
-                        data: {
-                        },
                         success: function(result){
-                            console.log(result);
-                            $('#filter_city').html("<option value='0'>{{ __('prefer_country.all-city') }}</option>");
-                            $('#filter_city').selectpicker('refresh');
+                            $('#filter_state').empty();
+                            $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.all-state')}}</option>");
+                            $.each(JSON.parse(result), function(key, value) {
+                                var state_id = value.id;
+                                var state_name = value.state_name;
+                                $('#filter_state').append('<option value="'+ state_id +'">' + state_name + '</option>');
+                            });
+                            $('#filter_state').selectpicker('refresh');
+                        }
+                    });
+                }
+            });
+
+            $('#filter_state').on('change', function() {
+                 $('#filter_city').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");                
+                $('#filter_city').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/cities/' + this.value;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        success: function(result){
+                            $('#filter_city').empty();
+                            $('#filter_city').html("<option selected value='0'>{{ __('prefer_country.all-city') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var city_id = value.id;
                                 var city_name = value.city_name;
                                 $('#filter_city').append('<option value="'+ city_id +'">' + city_name + '</option>');
                             });
+                           
                             $('#filter_city').selectpicker('refresh');
-                        }});
+                        }
+                    });
                 }
-                else
-                {
-                    $('#filter_city').html("<option value='0'>{{ __('prefer_country.all-city') }}</option>");
-                    $('#filter_city').selectpicker('refresh');
-                }
-
             });
-            /**
-             * End state selector in filter
-             */
+
+            @if(old('country_id'))
+                var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
+                jQuery.ajax({
+                    url: ajax_url_initial_states,
+                    method: 'get',
+                    success: function(result){
+                        $('#filter_state').empty();
+                        // $('#select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
+                        $.each(JSON.parse(result), function(key, value) {
+                            var state_id = value.id;
+                            var state_name = value.state_name;
+                            $('#filter_state').append('<option value="'+ state_id +'">' + state_name + '</option>');
+                        });
+                        @if(old('state_id'))
+                            $('#filter_state').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                            $('#filter_state').val("{{ old('state_id', '') }}").selectpicker('refresh');
+                        @endif
+                    }
+                });
+            @endif
+
+            @if(old('state_id'))
+                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
+                jQuery.ajax({
+                    url: ajax_url_initial_cities,
+                    method: 'get',
+                    success: function(result){
+                        $('#filter_city').empty();
+                        // $('#select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
+                        $.each(JSON.parse(result), function(key, value) {
+                            var city_id = value.id;
+                            var city_name = value.city_name;
+                            $('#filter_city').append('<option value="'+ city_id +'">' + city_name + '</option>');
+                        });
+                        @if(old('city_id'))
+                            $('#filter_city').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                            $('#filter_city').val("{{ old('city_id', '') }}").selectpicker('refresh');
+                        @endif
+                }});
+            @endif
+
+            // $('#filter_country').trigger('change');
 
             /**
              * Start filter form submit

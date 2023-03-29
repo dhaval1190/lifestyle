@@ -80,8 +80,17 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
     Route::get('/earn-points', 'PagesController@earnPointsDetail')->name('page.earn.points');
-
+    Route::get('/all-podcast-detail/{id}', 'PagesController@ViewAllPodcastDetail')->name('page.profile.allpodcast');
+    Route::get('/all-article-detail/{id}', 'PagesController@ViewAllArticleDetail')->name('page.profile.allarticle');
+    Route::get('/all-ebook-detail/{id}', 'PagesController@ViewAllEBookDetail')->name('page.profile.allebook');
+    Route::get('/all-youtube-detail/{id}', 'PagesController@ViewAllYoutubeDetail')->name('page.profile.allyoutube');
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
+    Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
+    Route::get('/visitor-view/{id}', 'PagesController@barchart');
+    Route::POST('/media-visitor', 'PagesController@mediavisitors');
+    Route::POST('/youtube-visitor', 'PagesController@youtubevisitors');
+    Route::get('/notification/{id}', 'PagesController@notificationData')->name('page.user.notification');
+
     Route::get('/category/{category_slug}', 'PagesController@category')->name('page.category');
     Route::get('/category/{category_slug}/state/{state_slug}', 'PagesController@categoryByState')->name('page.category.state');
     Route::get('/category/{category_slug}/state/{state_slug}/city/{city_slug}', 'PagesController@categoryByStateCity')->name('page.category.state.city');
@@ -92,14 +101,15 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/listing/{item_slug}', 'PagesController@item')->name('page.item');
     Route::get('/listing/{item_slug}/product/{product_slug}', 'PagesController@product')->name('page.product');
 
-    Route::middleware(['auth'])->group(function () {
-
-        Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
         Route::post('/items/{item_slug}/contact', 'PagesController@contactEmail')->name('page.item.contact');
+        Route::post('/send-notification', 'PagesController@sendNotification')->name('send.notification');
+        Route::post('/save-token',  'PagesController@saveToken')->name('save-token');
+        Route::post('/items/{item_slug}/email', 'PagesController@emailItem')->name('page.item.email');
+        Route::post('/profile/{profile_slug}/email', 'PagesController@emailProfile')->name('page.emailProfile.email');
         Route::post('/items/{item_slug}/save', 'PagesController@saveItem')->name('page.item.save');
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
-    });
+      
 
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
 
@@ -500,6 +510,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::resource('/item-leads', 'ItemLeadController');
     });
 
+
     /**
      * Back-end user routes
      */
@@ -607,12 +618,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // user Articles hour exceptions routes
         Route::put('/articles/hour-exceptions/update/{article_hour_exception}', 'ArticleController@updateItemHourException')->name('articles.hour-exceptions.update');
         Route::delete('/articles/hour-exceptions/destroy/{article_hour_exception}', 'ArticleController@destroyItemHourException')->name('articles.hour-exceptions.destroy');
-
-
-
+ 
         // message routes
-        Route::resource('/messages', 'MessageController');
-
+        Route::resource('/messages', 'MessageController');             
         // subscription routes
         Route::resource('/subscriptions', 'SubscriptionController');
 
@@ -675,8 +683,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');
+        
     });
-
 });
 /**
  * End website routes

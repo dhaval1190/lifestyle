@@ -32,6 +32,10 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
 use DateTimeZone;
 use DateTime;
+use Mail;
+use App\Mail\Notification;
+use App\Setting;
+
 
 class ArticleController extends Controller
 {
@@ -813,8 +817,42 @@ class ArticleController extends Controller
                     'item_hour_exception_close_time' => $item_hour_exception_close_time,
                 ));
                 $create_item_hour_exception->save();
+              
             }
         }
+        
+           
+                    $data["article_by"] = Auth::user()->name;
+                    $data["date"] = date('Y-m-d');                   
+                    $data["subject"] = 'New Article Create At: ' .$data["date"].' ('.$data["article_by"].')';
+                    /**
+         * Start initial SMTP settings
+         */
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            // config SMTP
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+        /**
+         * End initial SMTP settings
+         */
+                     
+          
+                Mail::send('backend.user.article.mail', $data, function($message)use($data) {
+                    $message->to('harsh.modi@pranshtech.com')
+                    // ->cc('rohit@pranshtech.com')
+                    // ->bcc($bccArr)
+                    ->subject($data["subject"]);
+                         
+                });
         /**
          * End save item hour exceptions
          */

@@ -9,6 +9,10 @@ use App\Country;
 use App\Customization;
 use App\Faq;
 use App\Item;
+use App\ItemVisit;
+use App\ItemView;
+use App\ProfileVisit;
+use App\ProfileView;
 use App\ItemHour;
 use App\ItemImageGallery;
 use App\ItemLead;
@@ -44,9 +48,19 @@ use Illuminate\Support\Facades\URL;
 use Artesaos\SEOTools\Facades\SEOMeta;
 
 use Spatie\OpeningHours\OpeningHours;
+use Illuminate\Support\Collection;
+use Carbon\CarbonInterval;
+use DateInterval;
+use DatePeriod;
+use DateTimeInterface;
+use Carbon\Carbon;
+use App\MediaDetailsVisits;
+use App\UserNotification;
 
 class PagesController extends Controller
 {
+    private const DAYS = 30;
+    
     public function index(Request $request)
     {
         $settings = app('site_global_settings');
@@ -87,11 +101,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-                ->where('items.item_status', Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                });
+                ->where('items.item_status', Item::ITEM_PUBLISHED);
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // });
             }])
             ->where('category_parent_id', null)
             ->orderBy('all_items_count', 'desc')->take(6)->get();
@@ -106,10 +120,10 @@ class PagesController extends Controller
         $paid_user_ids = $subscription_obj->getPaidUserIds();
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_FEATURED)
             ->where(function($query) use ($paid_user_ids) {
 
@@ -157,10 +171,10 @@ class PagesController extends Controller
          * get first 6 latest items
          */
         $latest_items = Item::latest('created_at')
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->with('state')
             ->with('city')
@@ -281,9 +295,9 @@ class PagesController extends Controller
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_FEATURED)
         ->where(function($query) use ($paid_user_ids) {
             $query->whereIn('items.user_id', $paid_user_ids)->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
@@ -356,9 +370,9 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
         ->whereIn('items.user_id', $free_user_ids);
@@ -742,7 +756,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.contact', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.faq', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -919,11 +933,11 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveUserIds();
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -949,6 +963,7 @@ class PagesController extends Controller
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
 
         // state & city
+        $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
@@ -963,16 +978,20 @@ class PagesController extends Controller
         }
 
         $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-        ->where(function ($query) use ($site_prefer_country_id) {
-            $query->where('items.country_id', $site_prefer_country_id)
-            ->orWhereNull('items.country_id');
-        })
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
         ->where('items.item_featured', Item::ITEM_FEATURED)
         ->where(function($query) use ($paid_user_ids) {
 
             $query->whereIn('items.user_id', $paid_user_ids)
             ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
         });
+         // filter paid listings country
+         if(!empty($filter_country)) {
+            $paid_items_query->where('items.country_id', $filter_country);
+        }
 
         // filter paid listings state
         if(!empty($filter_state)) {
@@ -1030,14 +1049,17 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
-
+        // filter paid listings country
+        if(!empty($filter_country)) {
+            $free_items_query->where('items.country_id', $filter_country);
+        }
         // filter free listings state
         if(!empty($filter_state))
         {
@@ -1114,7 +1136,8 @@ class PagesController extends Controller
         $querystringArray = [
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
-            'filter_state' => $filter_state,
+            'filter_country' => $filter_country,
+            'filter_state' => $filter_state,            
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
             'filter_working_type' => $filter_working_type,
@@ -1138,7 +1161,7 @@ class PagesController extends Controller
         else
         {
             $num_of_pages = ceil(($total_paid_items + $total_free_items) / 10);
-
+            
             $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 4 ? 4 : ceil($total_paid_items / $num_of_pages);
 
             $free_items_per_page = 10 - $paid_items_per_page;
@@ -1232,6 +1255,14 @@ class PagesController extends Controller
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
+        $all_countries = Country::orderBy('country_name')->get();
+        $all_states = collect([]);        
+       
+        if(!empty($filter_country))
+        {
+            $country = Country::find($filter_country);
+            $all_states = $country->states()->orderBy('state_name')->get();
+        }
         $all_states = Country::find($site_prefer_country_id)
             ->states()
             ->orderBy('state_name')
@@ -1266,21 +1297,397 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
             ));
     }
+    public function usersCategories(Request $request,$id)
+    {
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+        $user_detail = User::where('id', $id)->first();
+        $subscription_obj = new Subscription();
+        
+        $active_user_ids = $subscription_obj->getActiveUserIds();
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+        
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+        
+        // paid listing
+        $paid_items_query = Item::query();
+        
+        /**
+         * Start filter for paid listing
+         */
+        // categories
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+        
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+        
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+        /**
+         * End filter for paid listing
+         */
+        
+        // get paid users id array
+        $paid_user_ids = $subscription_obj->getPaidUserIds();
+        
+        if(count($item_ids) > 0) {
+            $paid_items_query->whereIn('items.id', $item_ids);
+        }
+        
+        $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
+        // ->where('items.item_featured', Item::ITEM_FEATURED)
+        ->where(function($query) use ($id) {
+            
+            $query->where('items.user_id', $id);
+            // ->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
+        });
+        
+        // filter paid listings state
+        if(!empty($filter_state)) {
+            $paid_items_query->where('items.state_id', $filter_state);
+        }
+        
+        // filter paid listings city
+        if(!empty($filter_city)) {
+            $paid_items_query->where('items.city_id', $filter_city);
+        }
+        
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $paid_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $paid_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+         */
+        
+        $paid_items_query->orderBy('items.created_at', 'DESC')
+        ->distinct('items.id')
+        ->with('state')
+        ->with('city')
+        ->with('user');
+        
+        $total_paid_items = $paid_items_query->count();
+        //print_r($paid_items_query->dd());
 
+        
+        // free listing
+        $free_items_query = Item::query();
+        
+        // get free users id array
+        // $free_user_ids = $subscription_obj->getFreeUserIds();
+        // $free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+        
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+        
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        // ->where(function ($query) use ($site_prefer_country_id) {
+        //     $query->where('items.country_id', $site_prefer_country_id)
+        //     ->orWhereNull('items.country_id');
+        // })
+        // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+        // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+        ->where('items.user_id', $id);
+        
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+        
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+        
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+         */
+        
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+            ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+        ->with('state')
+        ->with('city')
+        ->with('user');
+        
+        $total_free_items = $free_items_query->count();
+        // echo "-----";
+        // print_r($free_items_query->dd());
+        // exit;
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+        
+        if($total_free_items == 0 || $total_paid_items == 0)
+        {
+            $paid_items = $paid_items_query->paginate(10);
+            $free_items = $free_items_query->paginate(10);
+            
+            if($total_free_items == 0)
+            {
+                $pagination = $paid_items->appends($querystringArray);
+            }
+            if($total_paid_items == 0)
+            {
+                $pagination = $free_items->appends($querystringArray);
+            }
+        }
+        else
+        {
+            $num_of_pages = ceil(($total_paid_items + $total_free_items) / 10);
+            
+            $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 10 ? 10 : ceil($total_paid_items / $num_of_pages);
+            
+            $free_items_per_page = 10 - $paid_items_per_page;
+            
+            $paid_items = $paid_items_query->paginate($paid_items_per_page);
+            $free_items = $free_items_query->paginate($free_items_per_page);
+            
+            if(ceil($total_paid_items / $paid_items_per_page) > ceil($total_free_items / $free_items_per_page))
+            {
+                $pagination = $paid_items->appends($querystringArray);
+            }
+            else
+            {
+                $pagination = $free_items->appends($querystringArray);
+            }
+        }
+        /**
+         * End do listing query
+         */
+        
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+        
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+        
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+        ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            
+            $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            /**
+             * End inner page header customization
+             */
+            
+            /**
+             * Start initial filter
+             */
+            $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+            
+            $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+            
+            $all_cities = collect([]);
+            if(!empty($filter_state))
+            {
+                $state = State::find($filter_state);
+                $all_cities = $state->cities()->orderBy('city_name')->get();
+            }
+            
+            $total_results =  $total_free_items;
+            /**
+             * End initial filter
+             */
+            
+            /**
+             * Start initial blade view file path
+             */
+            $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+            $theme_view_path = $theme_view_path->getViewPath();
+            /**
+             * End initial blade view file path
+             */
+            
+            //echo "hi";exit;
+            return response()->view($theme_view_path . 'users-categories',
+            compact('user_detail','categories', 'paid_items', 'free_items', 'pagination', 'all_states',
+            'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+            'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+            'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+            'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+            'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
+            'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
+            'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+        ));
+    }
+    
     public function coaches(Request $request)
     {
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
-
+        
         $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
 
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.coaches', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -1294,11 +1701,11 @@ class PagesController extends Controller
         
         $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
             $query->whereIn('items.user_id', $active_user_ids)
-            ->where('items.item_status', Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                ->orWhereNull('items.country_id');
-            });
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
@@ -1313,6 +1720,7 @@ class PagesController extends Controller
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
 
         // state & city
+        $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
@@ -1333,10 +1741,10 @@ class PagesController extends Controller
         }
 
         $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where(function ($query) use ($site_prefer_country_id) {
-                $query->where('items.country_id', $site_prefer_country_id)
-                    ->orWhereNull('items.country_id');
-            })
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
@@ -1359,6 +1767,10 @@ class PagesController extends Controller
             }
             if($filter_hourly_rate) {
                 $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+            // filter paid listings country
+            if(!empty($filter_country)) {
+                $free_items_query->where('items.country_id', $filter_country);
             }
             // filter free listings state
             if(!empty($filter_state))
@@ -1406,6 +1818,7 @@ class PagesController extends Controller
         $querystringArray = [
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
+            'filter_country' => $filter_country,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
@@ -1414,7 +1827,7 @@ class PagesController extends Controller
         ];
 
         $free_items = $free_items_query->paginate(10);
-        $pagination = $free_items->appends($querystringArray);
+        //$pagination = $free_items->appends($querystringArray);
 
         /**
          * End do listing query
@@ -1493,6 +1906,15 @@ class PagesController extends Controller
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
 
+        $all_countries = Country::orderBy('country_name')->get();
+        $all_states = collect([]);        
+       
+        if(!empty($filter_country))
+        {
+            $country = Country::find($filter_country);
+            $all_states = $country->states()->orderBy('state_name')->get();
+        }
+
         $all_states = Country::find($site_prefer_country_id)
             ->states()
             ->orderBy('state_name')
@@ -1508,10 +1930,13 @@ class PagesController extends Controller
         $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
         
         if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->get();
         }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->get();
         }else{
+            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
         }
         $total_results = $all_coaches->count();
@@ -1535,12 +1960,14 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches'
+                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
             ));
     }
 
     public function profile(Request $request, $id)
     {
+        $hexId = $id;
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
@@ -1562,7 +1989,160 @@ class PagesController extends Controller
         /**
          * End SEO
          */
+        // $category = Category::all()->pluck('category_slug');
+        $subscription_obj = new Subscription();
 
+        $active_user_ids = $subscription_obj->getActiveUserIds();
+        $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+            $query->whereIn('items.user_id', $active_user_ids)
+            ->where('items.item_status', Item::ITEM_PUBLISHED);
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //     ->orWhereNull('items.country_id');
+            // });
+        }])
+        ->where('category_parent_id', null)
+        ->orderBy('all_items_count', 'desc')->get();
+
+        /**
+         * Do listing query
+         * 1. get paid listings and free listings.
+         * 2. decide how many paid and free listings per page and total pages.
+         * 3. decide the pagination to paid or free listings
+         * 4. run query and render
+         */
+
+        // paid listing
+        $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+
+        $category_obj = new Category();
+        $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+
+        // state & city
+        $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+        $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+
+        // free listing
+        $free_items_query = Item::query();
+
+        // get free users id array
+        //$free_user_ids = $subscription_obj->getFreeUserIds();
+        //$free_user_ids = $subscription_obj->getActiveUserIds();
+        $free_user_ids = $active_user_ids;
+
+        if(count($item_ids) > 0)
+        {
+            $free_items_query->whereIn('items.id', $item_ids);
+        }
+
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+            // ->where(function ($query) use ($site_prefer_country_id) {
+            //     $query->where('items.country_id', $site_prefer_country_id)
+            //         ->orWhereNull('items.country_id');
+            // })
+            // ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            // ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->where('items.user_id', $id);
+
+        // filter free listings state
+        if(!empty($filter_state))
+        {
+            $free_items_query->where('items.state_id', $filter_state);
+        }
+
+        // filter free listings city
+        if(!empty($filter_city))
+        {
+            $free_items_query->where('items.city_id', $filter_city);
+        }
+
+        /**
+         * Start filter gender type, working type, price range
+         */
+        $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            $free_items_query->leftJoin('users', function($join) {
+                $join->on('users.id', '=', 'items.user_id');
+            });
+            if($filter_gender_type) {
+                $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_working_type) {
+                $free_items_query->where('users.working_type', $filter_working_type);
+            }
+            if($filter_hourly_rate) {
+                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+            }
+        }
+        /**
+         * End filter gender type, working type, price range
+        */
+
+        /**
+         * Start filter sort by for free listing
+         */
+        $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+        {
+            $free_items_query->orderBy('items.created_at', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'DESC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+        {
+            $free_items_query->orderBy('items.item_average_rating', 'ASC');
+        }
+        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+        {
+            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+                ->orderBy('distance', 'ASC');
+        }
+        /**
+         * End filter sort by for free listing
+         */
+
+        $free_items_query->distinct('items.id')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+
+        $total_free_items = $free_items_query->count();
+
+        $querystringArray = [
+            'filter_categories' => $filter_categories,
+            'filter_sort_by' => $filter_sort_by,
+            'filter_state' => $filter_state,
+            'filter_city' => $filter_city,
+            'filter_gender_type' => $filter_gender_type,
+            'filter_working_type' => $filter_working_type,
+            'filter_hourly_rate' => $filter_hourly_rate,
+        ];
+        
+        $free_items = $free_items_query->paginate(4);
+        $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+
+        $all_states = Country::find($site_prefer_country_id)
+            ->states()
+            ->orderBy('state_name')
+            ->get();
+
+        $all_cities = collect([]);
+        if(!empty($filter_state))
+        {
+            $state = State::find($filter_state);
+            $all_cities = $state->cities()->orderBy('city_name')->get();
+        }
+
+        $total_results = $total_free_items;
         /**
          * Start fetch ads blocks
          */
@@ -1639,13 +2219,77 @@ class PagesController extends Controller
         /**
          * End initial blade view file path
          */
+        /**
+                 * User Profile Visit && View 
+                 */
+          $user_detail = User::where('id', $id)->first();
+          
+          if (! $this->wasRecentlyViewedProfile($user_detail)) {
+              $view_data = [
+                  'user_id' => $id,
+                  'ip' => request()->getClientIp(),
+                  'agent' => request()->header('user_agent'),
+                  'referer' => request()->header('referer'),
+                ];
+                
+                $user_detail->views()->create($view_data);
+               
+    
+                $this->storeInSessionProfile($user_detail);
+            }
+            $ip = request()->getClientIp();
+            if ($this->visitIsUniqueProfile($user_detail, $ip)) {
+                $visit_data = [
+                    'user_id' => $id,
+                    'ip' => $ip,
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+    
+                $user_detail->visits()->create($visit_data);
+    
+                $this->storeInSessionVisitProfile($user_detail, $ip);
+            }
+        $views = ProfileView::where('user_id', $id)->get();
+                    $previousMonthlyViews = $views->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyViews = $views->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $lastThirtyDays = $views->whereBetween('created_at', [
+                        today()->subDays(self::DAYS)->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ]);
+        
+                    $visits = ProfileVisit::where('user_id', $id)->get();
+                    $previousMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    
+                    $currentMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $view_count = $currentMonthlyViews->count();
+                    $view_trend = json_encode($this->countTrackedDataItem($lastThirtyDays, self::DAYS));
+                    $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
+                    $view_count_lifetime = $views->count();
+                    $visit_count = $currentMonthlyVisits->count();
+                    $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);      
+                    $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();            
+                    
         return response()->view($theme_view_path . 'profile',
             compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId'
             ));
     }
 
@@ -1860,6 +2504,217 @@ class PagesController extends Controller
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));
+    }
+    public function ViewAllPodcastDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+        $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get(); 
+        $PodcastImage= array();
+        $media= array();
+        $Articledetail= array();        
+        $Ebooks= array();
+
+        if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
+            foreach($podcast_deatils_visit as $detail){
+                $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-podcast', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-podcast',
+            compact('user_detail','notifications','PodcastImage','login_user'
+            ));
+    }
+    public function ViewAllArticleDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $Articledetail= array();        
+
+        $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+        ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
+       
+        if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+            foreach($Ariclevisit_deatils_visit as $articledetail){
+                $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-article', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-article',
+            compact('user_detail','notifications','Articledetail','login_user'
+            ));
+    }
+    public function ViewAllEBookDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
+        $Ebooks= array();
+
+        if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
+            foreach($ebook_deatils_visit as $ebookdetail){
+                $Ebooks[$ebookdetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-e-book', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-e-book',
+            compact('user_detail','notifications','Ebooks','login_user'
+            ));
+    }
+    public function ViewAllYoutubeDetail(Request $request, $id)
+    {
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');               
+        $user_detail = User::where('id', $id)->first();
+        $login_user = Auth::user();
+        $notifications = UserNotification::where('user_id',$login_user->id)->get();
+        $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
+        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
+       
+        $media= array();
+        $Youtube= array();
+        if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
+            foreach($media_deatils_visit as $mediadetail){
+                $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                }
+            }
+        if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
+            foreach($youtube_deatils_visit as $youtubedetail){
+            //print_r($youtube_deatils_visit);exit;
+            $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ])->first();
+            $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ])->first();
+            }
+        }
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-youtube', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */   
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+        return response()->view($theme_view_path . 'view-all-youtube',
+            compact('user_detail','notifications','media','Youtube','login_user'
             ));
     }
 
@@ -2407,6 +3262,7 @@ class PagesController extends Controller
             }
 
             // state & city
+            $filter_country = empty($request->filter_country) ? null : $request->filter_country;
             $filter_state = empty($request->filter_state) ? null : $request->filter_state;
             $filter_city = empty($request->filter_city) ? null : $request->filter_city;
             /**
@@ -2420,10 +3276,10 @@ class PagesController extends Controller
             $paid_items_query->whereIn('items.id', $item_ids);
 
             $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                })
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // })
                 ->where('items.item_featured', Item::ITEM_FEATURED)
                 ->where(function($query) use ($paid_user_ids) {
 
@@ -2485,10 +3341,10 @@ class PagesController extends Controller
             $free_items_query->whereIn('items.id', $item_ids);
 
             $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-                ->where(function ($query) use ($site_prefer_country_id) {
-                    $query->where('items.country_id', $site_prefer_country_id)
-                        ->orWhereNull('items.country_id');
-                })
+                // ->where(function ($query) use ($site_prefer_country_id) {
+                //     $query->where('items.country_id', $site_prefer_country_id)
+                //         ->orWhereNull('items.country_id');
+                // })
                 ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
                 ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
                 ->whereIn('items.user_id', $free_user_ids);
@@ -2569,6 +3425,7 @@ class PagesController extends Controller
             $querystringArray = [
                 'filter_categories' => $filter_categories,
                 'filter_sort_by' => $filter_sort_by,
+                'filter_country' => $filter_country,
                 'filter_state' => $filter_state,
                 'filter_city' => $filter_city,
                 'filter_gender_type' => $filter_gender_type,
@@ -2660,16 +3517,26 @@ class PagesController extends Controller
             /**
              * Start initial filter
              */
+            $all_countries = Country::orderBy('country_name')->get();
+            $all_states = collect([]);        
+        
+            if(!empty($filter_country))
+            {
+                $country = Country::find($filter_country);
+                $all_states = $country->states()->orderBy('state_name')->get();
+            }
+
             $all_states = Country::find($site_prefer_country_id)
                 ->states()
-                ->orderBy('state_name')->get();
+                ->orderBy('state_name')
+                ->get();
 
             $all_cities = collect([]);
             if(!empty($filter_state))
             {
                 $state = State::find($filter_state);
                 $all_cities = $state->cities()->orderBy('city_name')->get();
-            }
+            }                   
 
             $total_results = $total_paid_items + $total_free_items;
             /**
@@ -2744,7 +3611,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'filter_sort_by',
                     'filter_categories', 'filter_state', 'filter_city', 'all_cities', 'total_results',
-                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
                 ));
         }
         else
@@ -4546,6 +5413,172 @@ class PagesController extends Controller
     }
 
     /**
+     * Check if a given post exists in the session.
+     *
+     * @param Post $post
+     * @return bool
+     */
+    private function wasRecentlyViewedItem(Item $item): bool
+    {
+        $viewed = session()->get('viewed_items', []);
+
+        return array_key_exists($item->id, $viewed);
+    }
+    private function wasRecentlyViewedProfile(User $user_detail): bool
+    {
+        $viewed = session()->get('viewed_profile', []);
+
+        return array_key_exists($user_detail->id, $viewed);
+    }
+    private function wasRecentlyViewedMedia(MediaDetail $media_detail): bool
+    {
+        $viewed = session()->get('viewed_media', []);
+
+        return array_key_exists($media_detail->id, $viewed);
+    }
+    private function wasRecentlyViewedUserYoutube(User $youtube_detail): bool
+    {
+        $viewed = session()->get('viewed_user_youtube', []);
+       
+        return array_key_exists($youtube_detail->id, $viewed);
+    }
+
+    /**
+     * Add a given post to the session.
+     *
+     * @param Post $post
+     * @return void
+     */
+    private function storeInSessionItem(Item $item)
+    {
+        session()->put("viewed_items.{$item->id}", now()->timestamp);
+    }
+    private function storeInSessionProfile(User $user_detail)
+    {
+        session()->put("viewed_profile.{$user_detail->id}", now()->timestamp);
+    }
+    private function storeInSessionMedia(MediaDetail $media_detail)
+    {
+        session()->put("viewed_media.{$media_detail->id}", now()->timestamp);
+    }
+    private function storeInSessionUserYoutube(User $youtube_detail)
+    {
+        session()->put("viewed_user_youtube.{$youtube_detail->id}", now()->timestamp);
+    }
+
+
+    /**
+     * Check if a given post and IP are unique to the session.
+     *
+     * @param Post $post
+     * @param string $ip
+     * @return bool
+     */
+    private function visitIsUniqueItem(Item $item, string $ip): bool
+    {
+        $visits = session()->get('visited_items', []);
+
+        if (array_key_exists($item->id, $visits)) {
+            $visit = $visits[$item->id];
+
+            return $visit['ip'] != $ip;
+        } else {
+            return true;
+        }
+    }
+    private function visitIsUniqueProfile(User $user_detail, string $ip): bool
+    {
+        $visits = session()->get('visited_profile', []);
+
+        if (array_key_exists($user_detail->id, $visits)) {
+            $visit = $visits[$user_detail->id];
+
+            return $visit['ip'] != $ip;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Add a given post and IP to the session.
+     *
+     * @param Item $item
+     * @param string $ip
+     * @return void
+     */
+    private function storeInSessionVisitItem(Item $item, string $ip)
+    {
+        session()->put("visited_items.{$item->id}", [
+            'timestamp' => now()->timestamp,
+            'ip' => $ip,
+        ]);
+    }
+    private function storeInSessionVisitProfile(User $user_detail, string $ip)
+    {
+        session()->put("visited_profile.{$user_detail->id}", [
+            'timestamp' => now()->timestamp,
+            'ip' => $ip,
+        ]);
+    }
+    public function compareMonthToMonthItem(Collection $current, Collection $previous): array
+    {
+        $dataCountThisMonth = $current->count();
+        $dataCountLastMonth = $previous->count();
+
+        if ($dataCountLastMonth != 0) {
+            $difference = (int) $dataCountThisMonth - (int) $dataCountLastMonth;
+            $growth = ($difference / $dataCountLastMonth) * 100;
+        } else {
+            $growth = $dataCountThisMonth * 100;
+        }
+
+        return [
+            'direction' => $dataCountThisMonth > $dataCountLastMonth ? 'up' : 'down',
+            'percentage' => number_format(abs($growth)),
+        ];
+    }
+
+    public function countTrackedDataItem(Collection $data, int $days = 1): array
+    {
+        // Filter the data to only include created_at date strings
+        $filtered = collect();
+        $data->sortBy('created_at')->each(function ($item, $key) use ($filtered) {
+            $filtered->push($item->created_at->toDateString());
+        });
+
+        // Count the unique values and assign to their respective keys
+        $unique = array_count_values($filtered->toArray());
+
+        // Create a day range to hold the default date values
+        $period = $this->generateDateRangeItem(today()->subDays($days), CarbonInterval::day(), $days);
+
+        // Compare the data and date range arrays, assigning counts where applicable
+        $total = collect();
+
+        foreach ($period as $date) {
+            if (array_key_exists($date, $unique)) {
+                $total->put($date, $unique[$date]);
+            } else {
+                $total->put($date, 0);
+            }
+        }
+
+        return $total->toArray();
+    }
+
+    private function generateDateRangeItem(DateTimeInterface $start_date, DateInterval $interval, int $recurrences, int $exclusive = 1): array
+    {
+        $period = new DatePeriod($start_date, $interval, $recurrences, $exclusive);
+        $dates = collect();
+
+        foreach ($period as $date) {
+            $dates->push($date->format('Y-m-d'));
+        }
+
+        return $dates->toArray();
+    }
+
+    /**
      * @param Request $request
      * @param string $item_slug
      * @return Response
@@ -4557,9 +5590,33 @@ class PagesController extends Controller
         $item = Item::where('item_slug', $item_slug)
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();
-
         if($item)
         {
+            if (! $this->wasRecentlyViewedItem($item)) {
+                $view_data = [
+                    'item_id' => $item->id,
+                    'ip' => request()->getClientIp(),
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+                
+                $item->views()->create($view_data);
+    
+                $this->storeInSessionItem($item);
+            }
+            $ip = request()->getClientIp();
+            if ($this->visitIsUniqueItem($item, $ip)) {
+                $visit_data = [
+                    'item_id' => $item->id,
+                    'ip' => $ip,
+                    'agent' => request()->header('user_agent'),
+                    'referer' => request()->header('referer'),
+                ];
+    
+                $item->visits()->create($visit_data);
+    
+                $this->storeInSessionVisitItem($item, $ip);
+            }
             $item_user = $item->user()->first();
 
             if($item_user)
@@ -4957,6 +6014,38 @@ class PagesController extends Controller
                      * End initial Google reCAPTCHA version 2
                      */
 
+                    $views = ItemView::where('item_id', $item->id)->get();
+                    $previousMonthlyViews = $views->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyViews = $views->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $lastThirtyDays = $views->whereBetween('created_at', [
+                        today()->subDays(self::DAYS)->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ]);
+        
+                    $visits = ItemVisit::where('item_id', $item->id)->get();
+                    $previousMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->subMonth()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->subMonth()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+                    $currentMonthlyVisits = $visits->whereBetween('created_at', [
+                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    ]);
+
+                    $view_count = $currentMonthlyViews->count();
+                    $view_trend = json_encode($this->countTrackedDataItem($lastThirtyDays, self::DAYS));
+                    $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
+                    $view_count_lifetime = $views->count();
+                    $visit_count = $currentMonthlyVisits->count();
+                    $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
+                    $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);
+
                     return response()->view($theme_view_path . 'item',
                         compact('item', 'nearby_items', 'similar_items','similar_items_of_coaches',
                             'reviews', 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_gallery', 'ads_before_description',
@@ -4970,7 +6059,8 @@ class PagesController extends Controller
                             'item_sections_after_comments', 'item_sections_after_share', 'item_features', 'opening_hours_obj', 'datetime_now',
                             'current_open_range', 'item_hours_monday', 'item_hours_tuesday', 'item_hours_wednesday', 'item_hours_thursday',
                             'item_hours_friday', 'item_hours_saturday', 'item_hours_sunday', 'item_hour_exceptions_obj', 'item_hours',
-                            'item_hour_exceptions','item_user'));
+                            'item_hour_exceptions','item_user','view_count','view_trend','view_month_over_month','view_count_lifetime','visit_count',
+                            'visit_trend','visit_month_over_month'));
                 }
                 else
                 {
@@ -5130,6 +6220,7 @@ class PagesController extends Controller
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();
 
+            
         if($item)
         {
             if(Auth::check())
@@ -5224,9 +6315,121 @@ class PagesController extends Controller
 
     }
 
-    public function contactEmail(string $item_slug, Request $request)
+    public function emailProfile(string $profileId, Request $request)
     {
-        // dd($request->input());
+
+        // print_r($profileId);
+        //     echo "<br>";
+        //     print_r($request->all());
+        //     exit;
+
+        $settings = app('site_global_settings');
+
+        // $item = Item::where('item_slug', $item_slug)
+        //     ->where('item_status', Item::ITEM_PUBLISHED)
+        //     ->first();
+
+            // print_r($item);
+            // echo "<br>";
+            // print_r($request->all());
+            // exit;
+
+        // if($item)
+        // {
+            if(Auth::check())
+            {
+                $request->validate([
+                    'profile_share_email_name' => 'required|max:255',
+                    'profile_share_email_from_email' => 'required|email|max:255',
+                    'profile_share_email_to_email' => 'required|email|max:255',
+                ]);
+
+                // send an email notification to admin
+                $email_to = $request->profile_share_email_to_email;
+                $email_from_name = $request->profile_share_email_name;
+                $email_note = $request->profile_share_email_note;
+                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+
+                $email_notify_message = [
+                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
+                    __('frontend.item.send-email-note'),
+                    $email_note,
+                ];
+
+                /**
+                 * Start initial SMTP settings
+                 */
+                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                {
+                    // config SMTP
+                    config_smtp(
+                        $settings->settings_site_smtp_sender_name,
+                        $settings->settings_site_smtp_sender_email,
+                        $settings->settings_site_smtp_host,
+                        $settings->settings_site_smtp_port,
+                        $settings->settings_site_smtp_encryption,
+                        $settings->settings_site_smtp_username,
+                        $settings->settings_site_smtp_password
+                    );
+                }
+                /**
+                 * End initial SMTP settings
+                 */
+
+                if(!empty($settings->setting_site_name))
+                {
+                    // set up APP_NAME
+                    config([
+                        'app.name' => $settings->setting_site_name,
+                    ]);
+                }
+
+                try
+                {
+                    // to admin
+                    Mail::to($email_to)->send(
+                        new Notification(
+                            $email_subject,
+                            $email_to,
+                            null,
+                            $email_notify_message,
+                            __('frontend.item.view-listing'),
+                            'success',
+                            route('page.profile', $profileId)
+                        )
+                    );
+
+                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                    \Session::flash('flash_type', 'success');
+
+                }
+                catch (\Exception $e)
+                {
+                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                    \Session::flash('flash_type', 'danger');
+                }
+
+                return redirect()->route('page.profile', $profileId);
+            }
+            else
+            {
+                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+                \Session::flash('flash_type', 'danger');
+
+                return redirect()->route('page.profile', $profileId);
+            }
+        // }
+        // else
+        // {
+        //     abort(404);
+        // }
+
+    }
+
+    public function contactEmail(string $item_slug, Request $request)
+    {       
         $user = User::where('id',$request->userId)->first();
         $settings = app('site_global_settings');
 
@@ -5245,22 +6448,38 @@ class PagesController extends Controller
                 ]);
 
                 // send an email notification to admin
-                // $email_to = $user->email;
-                $email_to = "shubham@pranshtech.com";
-                $email_from_name = $request->item_conntact_email_name;
-                $item_contact_email = $request->item_contact_email_from_email;
-                $articleTitle = $request->articleTitle;
-                $email_note = $request->item_contact_email_note;
-                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                if($request->contact_profile){
+                    $email_to = $user->email;                                   
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;                    
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+                    
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
 
-                $email_notify_message = [
-                    __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
-                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
-                    __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
-                    __('frontend.item.send-email-contact-note'),
-                    $email_note,
-                ];
+                }else{
+                    $email_to = $user->email;
+                    $email_from_name = $request->item_conntact_email_name;
+                    $item_contact_email = $request->item_contact_email_from_email;
+                    $articleTitle = $request->articleTitle;
+                    $email_note = $request->item_contact_email_note;
+                    $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+
+                    $email_notify_message = [
+                        __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                        __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                        __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
+                        __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
+                        __('frontend.item.send-email-contact-note'),
+                        $email_note,
+                    ];
+                }
 
                 /**
                  * Start initial SMTP settings
@@ -5308,6 +6527,50 @@ class PagesController extends Controller
                     \Session::flash('flash_message', __('frontend.item.send-email-success'));
                     \Session::flash('flash_type', 'success');
 
+                    $url = 'https://fcm.googleapis.com/fcm/send';
+                    $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();            
+                    $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
+                    
+                    if($request->contact_profile){
+
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Profile',
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }else{
+   
+                        $data = [
+                            "registration_ids" => $FcmToken,
+                            "notification" => [
+                                "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                            ]
+                        ];
+                    }                   
+                    $encodedData = json_encode($data);    
+                    $headers = [
+                        'Authorization:key=' . $serverKey,
+                        'Content-Type: application/json',
+                    ];    
+                    $ch = curl_init();        
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                    // Disabling SSL Certificate support temporarly
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+                    // Execute post
+                    $result = curl_exec($ch); 
+                    // Close connection
+                    curl_close($ch);
+                    // FCM response  
+
                 }
                 catch (\Exception $e)
                 {
@@ -5315,16 +6578,35 @@ class PagesController extends Controller
 
                     \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
                     \Session::flash('flash_type', 'danger');
-                }
+                }                               
+                $notification = [
+                    'user_id' => $user->id,
+                    'notification'=>$data['notification']['title'],
+                    'is_read'=>'0',                    
+                ];           
+                 //print_r($user->notification());exit;          
+                 $user->notification()->create($notification);
 
-                return redirect()->route('page.item', $item->item_slug);
+                 if($request->contact_profile){
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
             else
             {
                 \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
                 \Session::flash('flash_type', 'danger');
 
-                return redirect()->route('page.item', $item->item_slug);
+
+               if($request->contact_profile){
+
+                     return redirect()->route('page.profile', $request->hexId);
+                 }else{
+
+                     return redirect()->route('page.item', $item->item_slug);
+                 }
             }
         }
         else
@@ -6669,5 +7951,135 @@ class PagesController extends Controller
 
         return 1;
     }
+    public function barchart(Request $request,$id)
+    {  
+        $id = decrypt($id);
+        $settings = app('site_global_settings');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.visitor-states', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+      
+        $profile_view = ProfileView::where('user_id',$id)->get();
 
+        $profile_visit = ProfileVisit::where('user_id',$id)->get();
+
+        $TodayVisits = $profile_visit->whereBetween('created_at', [
+            today()->startOfDay()->toDateTimeString(),
+            today()->endOfDay()->toDateTimeString(),
+        ]);  
+
+        $Today_Visits_count = $TodayVisits->count();
+                
+        $month = ['1','2','3','4','5','6', '7', '8', '9', '10', '11','12'];
+        $date = date('Y-m');
+        //current year
+        $year = Carbon::now()->year;
+        //variable to store each order coubnt as array.
+        $new_orders_count = [];
+        //Looping through the month array to get count for each month in the provided year
+        foreach ($month as $key => $value) {
+            $month_number= $value;
+            $month_name = date("F", mktime(0, 0, 0, $month_number, 10));
+            $new_orders_count[$value] = ProfileVisit::whereYear('created_at', $year)
+            ->whereMonth('created_at',$value)->where('user_id',$id)
+            ->count();                
+            }  
+                
+        foreach($new_orders_count as $key =>$profile){             
+            $data['month'][] = date('Y-m-d', strtotime($key));
+            $data['value'][] = $profile;   
+        }
+            $month = date('m');                       
+            $week = date("W", strtotime($year . "-" . $month ."-01"));
+            $str='';
+            $str .= date("d-m-Y", strtotime($year . "-" . $month ."-01")) ."to";
+            $unix = strtotime($year."W".$week ."+1 week");
+            while(date("m", $unix) == $month){
+            $str .= date("d-m-Y", $unix-86400) . "|";
+            $str .= date("d-m-Y", $unix) ."to"; 
+            $unix = $unix + (86400*7);
+            }
+            $str .= date("d-m-Y", strtotime("last day of ".$year . "-" . $month));
+
+            $weeks_ar = explode('|',$str);
+             //echo '<pre>';  print_r($weeks_ar); exit;
+            foreach($weeks_ar as $key =>$week){        
+                $weekcount =explode('to',$week);
+
+                $weekday[] = ProfileVisit::whereBetween('created_at',array(date('Y-m-d 00:00:00', strtotime($weekcount[0])),date('Y-m-d 23:59:00', strtotime($weekcount[1]))))->where('user_id',$id)->count();
+                $weekdata['weeks_ar'][] = date('Y-m-d', strtotime($weekcount[1]));
+            }
+            // print_r($weekday); 
+            //   exit;
+            foreach($weekday as $key =>$wee){      
+                $weekdata['week'][] = $wee;                   
+                }
+            $view = (count($profile_view));        
+            $visit = (count($profile_visit));           
+       
+        return view('frontend.chart',compact('profile_view','profile_visit','view','visit','new_orders_count','data','weekdata','Today_Visits_count'));
+    }
+    public function mediavisitors(Request $request){
+
+        $media_detail = MediaDetail::where('id', $request['id'])->first(); 
+
+        if (! $this->wasRecentlyViewedMedia($media_detail)) {
+            $view_data = [
+                'user_id' => $media_detail->user_id,
+                'media_type'=>$media_detail->media_type,
+                'media_url'=>(isset($media_detail->media_url) && !empty($media_detail->media_url) ? $media_detail->media_url : $media_detail->media_image),
+                'ip' => request()->getClientIp(),
+                'agent' => request()->header('user_agent'),
+                'referer' => request()->header('referer'),
+            ];                
+                $media_detail->mediadetailsvisits()->create($view_data);
+                 $this->storeInSessionMedia($media_detail);
+            }
+    }
+    public function youtubevisitors(Request $request){
+
+        $youtube_detail = User::where('id', $request['userid'])->first();
+            
+        if (! $this->wasRecentlyViewedUserYoutube($youtube_detail)) {
+            $view_data = [
+                'user_id' => $youtube_detail->id,
+                'media_type'=>'youtube',
+                'media_url'=>(isset($youtube_detail->youtube) && !empty($youtube_detail->youtube) ? $youtube_detail->youtube : ''),
+                'ip' => request()->getClientIp(),
+                'agent' => request()->header('user_agent'),
+                'referer' => request()->header('referer'),
+            ];      
+                $youtube_detail->mediadetailsvisits()->create($view_data);
+                 $this->storeInSessionUserYoutube($youtube_detail);
+            }
+    }
+    public function saveToken(Request $request)
+    {
+        Auth::user()->device_token =  $request->token;
+
+        Auth::user()->save();
+
+        return response()->json(['Token successfully stored.']);
+    }
+    public function notificationData(Request $request,$id)
+    {
+        $settings = app('site_global_settings');
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.notification', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        $notification = UserNotification::where('user_id',$id)->get();
+       
+        return view('frontend.user-notification',compact('notification'));
+    }
 }

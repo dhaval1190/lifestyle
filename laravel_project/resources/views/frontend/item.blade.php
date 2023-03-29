@@ -148,7 +148,6 @@
                         {{-- @endif --}}
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i> {{ __('theme_directory_hub.listing.qr-code') }}</a> -->
                     @endif
-
                 </div>
                 <div class="col-lg-3 col-md-5 pl-0 pr-0 item-cover-contact-section" data-aos="fade-up" data-aos-delay="400">
                     @if(!empty($item->item_phone))
@@ -683,6 +682,49 @@
                             </div>
                         @endforeach
                     @endif
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="card-deck mt-3">
+                                <div class="card shadow border-0">
+                                    <div class="card-body p-3">
+                                        <p class="lead border-bottom">Lifetime Summary</p> 
+                                        <div class="d-flex">
+                                            <div class="mr-5">
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold"><b>Total Views</b></p> 
+                                                <h3 class="mt-1">{{ $visit_count }}</h3>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="card shadow border-0">
+                                    <div class="card-body p-3">
+                                        <p class="lead border-bottom">Monthly Summary</p> 
+                                        <div class="d-flex">
+                                            <div class="mr-5">
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold">
+                                                    <b>View(s)</b> <i class="fa-solid fa-circle-question" title="A view is counted when a visitor loads or reloads a page."></i>
+                                                </p> 
+                                                <h3 class="mt-1 mb-2">{{ $view_count }}</h3> 
+                                                @php
+                                                $view_arrow = ($view_month_over_month['direction']=='up') ? 'fa fa-arrow-up' : 'fa fa-arrow-down';
+                                                $visit_arrow = ($visit_month_over_month['direction']=='up') ? 'fa fa-arrow-up' : 'fa fa-arrow-down';
+                                                @endphp
+                                                <p class="small text-muted"><i class="{{ $view_arrow }}"></i> {{ $view_month_over_month['percentage'] }}% from last month</p>
+                                            </div> 
+                                            <div>
+                                                <p class="mb-0 small text-muted text-uppercase font-weight-bold">
+                                                    <b>Visitor(s)</b> <i class="fa-solid fa-circle-question" title="A visitor is counted when we see a user or browser for the first time in a given 24-hour period."></i>
+                                                </p> 
+                                                <h3 class="mt-1 mb-2">{{ $visit_count }}</h3> 
+                                                <p class="small text-muted"><i class="{{ $visit_arrow }}"></i> {{ $visit_month_over_month['percentage'] }}% from last month</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row mb-3">
                         <div class="col-12">
@@ -1854,10 +1896,10 @@
                                         <i class="fab fa-reddit-alien"></i>
                                         {{ __('social_share.reddit') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
                                         <i class="fab fa-buffer"></i>
                                         {{ __('social_share.buffer') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                                         <i class="fab fa-wordpress-simple"></i>
                                         {{ __('social_share.wordpress') }}
@@ -1874,10 +1916,10 @@
                                         <i class="fab fa-telegram-plane"></i>
                                         {{ __('social_share.telegram') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
                                         <i class="fab fa-viber"></i>
                                         {{ __('social_share.viber') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
                                         <i class="fab fa-whatsapp"></i>
                                         {{ __('social_share.whatsapp') }}
@@ -2379,7 +2421,7 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Author name: {{ $item_user->name }}</li>
-                                            <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', $item_user->id) }}">Read more</a></li>
+                                            <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', encrypt($item->user->id)) }}">Read more</a></li>
                                             {{-- <li class="list-group-item">Vestibulum at eros</li> --}}
                                         </ul>
                                         <div class="card-body" style="margin-left: 26px;">
@@ -2532,7 +2574,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_coach_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
+                                                    <a class="decoration-none" href="{{ route('page.profile',encrypt($similar_coach_item->user->id)) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">
@@ -2634,7 +2676,7 @@
                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
-                                                    <a class="decoration-none" href="{{ route('page.profile', $similar_item->user->id) }}"><span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span></a>
+                                                    <a class="decoration-none" href="{{ route('page.profile', encrypt($similar_item->user->id)) }}"><span class="font-size-13">{{ str_limit($similar_item->user->name, 14, '.') }}</span></a>
                                                 </div>
                                             </div>
                                             <div class="row line-height-1-0">
@@ -2817,10 +2859,10 @@
                             <i class="fab fa-reddit-alien"></i>
                             {{ __('social_share.reddit') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
                             <i class="fab fa-buffer"></i>
                             {{ __('social_share.buffer') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                             <i class="fab fa-wordpress-simple"></i>
                             {{ __('social_share.wordpress') }}
@@ -2837,10 +2879,10 @@
                             <i class="fab fa-telegram-plane"></i>
                             {{ __('social_share.telegram') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
                             <i class="fab fa-viber"></i>
                             {{ __('social_share.viber') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             {{ __('social_share.whatsapp') }}
@@ -2913,7 +2955,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                         {{ __('frontend.item.send-email') }}
                                     </button>
                                 </div>
@@ -3256,8 +3298,29 @@
     <script src="{{ asset('frontend/vendor/goodshare/goodshare.min.js') }}"></script>
 
     <script src="{{ asset('frontend/vendor/jquery-qrcode/jquery-qrcode-0.18.0.min.js') }}"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    
+  <script>
+    var firebaseConfig = {
+        aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+        authDomain: "coachhq-c1b3d.firebaseapp.com",
+        projectId: "coachhq-c1b3d",
+        storageBucket: "coachhq-c1b3d.appspot.com",
+        messagingSenderId: "668525619724",
+        appId: "1:668525619724:web:e4282225654d0467655c29",
+        measurementId: "G-VFGKZNYRVM"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+    messaging.onMessage(function (payload) {
+        const title = payload.notification.title;
+        const options = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(title, options);
+    });
 
-    <script>
         $(document).ready(function(){
 
             "use strict";

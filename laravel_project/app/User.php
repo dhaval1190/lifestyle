@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,6 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'device_token',
         'referrer_id',
         'name',
         'email',
@@ -195,6 +195,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role_id == Role::USER_ROLE_ID;
     }
 
+    public function isEditor()
+    {
+        return $this->role_id == Role::EDITOR_ROLE_ID;
+    }
+
     public function hasSuspended()
     {
         return $this->user_suspended == User::USER_SUSPENDED;
@@ -278,6 +283,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function claims()
     {
         return $this->hasMany('App\ItemClaim');
+    }
+    public function views()
+    {
+        return $this->hasMany(ProfileView::class);
+    }
+
+    /**
+     * Get the visits relationship.
+     *
+     * @return HasMany
+     */
+    public function visits()
+    {
+        return $this->hasMany(ProfileVisit::class);
+    }
+    public function mediadetailsvisits()
+    {
+        return $this->hasMany(MediaDetailsVisits::class);
+    }
+    public function notification()
+    {
+        return $this->hasMany(UserNotification::class);
     }
 
     /**

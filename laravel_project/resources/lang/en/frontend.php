@@ -6,6 +6,16 @@ return array (
     'description' => 'A World Class Classified Company',
     'title' => 'About Us',
   ),
+  'stats' =>
+  array (
+    // 'description' => 'A World Class Classified Company',
+    'title' => 'Profile Visitors',
+  ),
+  'notification' =>
+  array (
+    // 'description' => 'A World Class Classified Company',
+    'title' => 'Notifications',
+  ),
   'auth' =>
   array (
     'have-an-account' => 'Have an account',
@@ -15,21 +25,21 @@ return array (
   array (
     'by' => 'By',
     'comment' => '{0} Comment|{1} Comments',
-    'description' => 'Read the latest blog articles',
-    'popular-posts' => 'Popular Blogs',
+    'description' => 'Read the latest news',
+    'popular-posts' => 'Popular News',
     'tag' => '{0} Tag|{1} Tags',
-    'tag-description' => 'Read the latest blog articles on :tag_name tag.',
-    'title' => 'Blog',
+    'tag-description' => 'Read the latest news on :tag_name tag.',
+    'title' => 'News',
     'topic' => '{0} Topic|{1} Topics',
-    'topic-description' => 'Read the latest blog articles on :topic_name topic.',
+    'topic-description' => 'Read the latest news on :topic_name topic.',
     'uncategorized' => 'Uncategorized',
   ),
   'categories' =>
   array (
     'description' => 'Choose category you want',
-    'sub-title-1' => 'Latest Articles',
-    'sub-title-2' => 'All Articles by states',
-    'title' => 'All Articles',
+    'sub-title-1' => 'Latest Topics',
+    'sub-title-2' => 'All Topics by states',
+    'title' => 'All Topics',
   ),
   'category' =>
   array (
@@ -75,7 +85,7 @@ return array (
     'description' => 'Get In Touch',
     'email' => 'Email',
     'email-address' => 'Email Address',
-    'faq' => 'Frequently Asked Question',
+    'faq' => 'Frequently Asked Questions',
     'first-name' => 'First Name',
     'last-name' => 'Last Name',
     'learn-more' => 'Learn More',
@@ -93,7 +103,7 @@ return array (
     'copyright' => 'Copyright',
     'follow-us' => 'Follow Us',
     'navigations' => 'Navigations',
-    'posts' => 'Posts',
+    'posts' => 'News',
     'privacy-policy' => 'Privacy Policy',
     'rights-reserved' => 'All rights reserved',
     'terms-of-service' => 'Terms of Service',
@@ -113,15 +123,15 @@ return array (
   'homepage' =>
   array (
     'all-categories' => 'All Categories',
-    'all-posts' => 'View All Posts',
+    'all-posts' => 'View All News',
     'description' => "Explore our coaches' videos, blogs, podcasts, e-books and yes—it's all FREE!",
-    'featured-ads' => 'Featured Articles',
-    'nearby-listings' => 'Nearby Articles',
+    'featured-ads' => 'Featured Topics',
+    'nearby-listings' => 'Nearby Topics',
     'no-categories' => 'No categories',
-    'our-blog' => 'Our Blog',
+    'our-blog' => 'Our News',
     'our-blog-decr' => 'See Our Daily News & Updates',
-    'popular-listings' => 'Popular articles around you',
-    'recent-listings' => 'Recent Articles',
+    'popular-listings' => 'Popular topics around you',
+    'recent-listings' => 'Recent Topics',
     'testimonials' => 'Testimonials',
     'title' => 'Need some free advice? Search a topic!',
   ),
