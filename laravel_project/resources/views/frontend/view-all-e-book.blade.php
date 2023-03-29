@@ -4,11 +4,11 @@
 @endsection
 @section('content')
     <!-- Page Heading -->
-    <div class="container">
+    <div class="ebook_section">
     <div class="row">
         <div class="col-lg-12 order-lg-0">          
             @if(isset($Ebooks) && !empty($Ebooks))
-            <section class="ebook_section col-12">
+            <section class="col-lg-12">
                     <div class="row ">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
@@ -16,9 +16,9 @@
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
-                            <div class="row">
+                            <div class="row audio-players">
                                 @foreach($Ebooks as $ebook_key => $Ebook)
-                                <div class="col-md-3 col-6 mb-3">
+                                <div class="col-md-4 col-lg-3 col-xl-2 col-sm-6 col-12 mb-5">
                                     <div class="post-img">
                                         <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}"
                                             target="_blank">

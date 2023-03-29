@@ -149,8 +149,8 @@
         <div class="notibox">
             <div class="container">
                 <div class="row">
-                    @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
-                    <div class="view"><a href="{{ route('page.user.notification', $login_user['id']) }}">View all</a>
+                    @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 1)
+                    <div class="view"><a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View all</a>
                     </div>
                     @endif
                     @foreach($notifications as $notification)
@@ -313,9 +313,11 @@
                         @endforeach
                     </div>
                 </div>
+                @if(isset($Articledetail) && !empty($Articledetail) || isset($PodcastImage) && !empty($PodcastImage)|| isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
                 <div class="col-lg-12 mb-4">
                   <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
                 </div>
+                @endif
             </div>
             <div>
                 @if(isset($Articledetail) && !empty($Articledetail))
