@@ -2,7 +2,7 @@
 @section('content')
 <!-- Page Heading -->
 <div class="youtube_section">
-    <div class="row">
+    <div class="row"> 
         <div class="col-lg-12 order-lg-0">
             @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
             <section class="col-lg-12">
