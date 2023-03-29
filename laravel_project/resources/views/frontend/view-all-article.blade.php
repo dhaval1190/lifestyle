@@ -1,8 +1,4 @@
 @extends('backend.user.layouts.app')
-
-@section('styles')
-@endsection
-
 @section('content')
     <!-- Page Heading -->
     <div class="article_section">

@@ -1,7 +1,4 @@
 @extends('backend.user.layouts.app')
-
-@section('styles')
-@endsection
 @section('content')
     <!-- Page Heading -->
  <div class="podcast_section">
