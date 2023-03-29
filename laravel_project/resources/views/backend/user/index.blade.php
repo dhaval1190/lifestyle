@@ -17,9 +17,7 @@
     -webkit-transition: all 0.5s;
 }
 
-.view a {
-    color: red;
-}
+
 
 .toggle {
     cursor: pointer;
@@ -149,7 +147,7 @@
         <div class="notibox">
             <div class="container">
                 <div class="row">
-                    @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 1)
+                    @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
                     <div class="view"><a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View all</a>
                     </div>
                     @endif
