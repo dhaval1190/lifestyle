@@ -101,8 +101,13 @@ class LoginController extends Controller
      */
     protected function validateLogin(Request $request)
     {
+
+        //login user to canvas dashboard 
+        app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());
+        
         $settings = app('site_global_settings');
 
+        
         if($settings->setting_site_recaptcha_login_enable == Setting::SITE_RECAPTCHA_LOGIN_ENABLE)
         {
             config_re_captcha($settings->setting_site_recaptcha_site_key, $settings->setting_site_recaptcha_secret_key);
@@ -120,6 +125,9 @@ class LoginController extends Controller
                 'password' => 'required|string',
             ]);
         }
+
+            
+
     }
 
     public function showLoginForm()
