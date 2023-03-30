@@ -190,7 +190,7 @@ class PagesController extends Controller
         /**
          * get latest 3 blog posts
          */
-        $recent_blog = \Canvas\Post::published()->orderByDesc('published_at')->take(3)->get();
+        $recent_blog = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(3)->get();
 
         /**
          * Start homepage header customization
@@ -6764,13 +6764,13 @@ class PagesController extends Controller
          */
 
         $data = [
-            'posts' => \Canvas\Post::published()->orderByDesc('published_at')->paginate(10),
+            'posts' => \Canvas\Models\Post::published()->orderByDesc('published_at')->paginate(10),
         ];
 
-        $all_topics = \Canvas\Topic::orderBy('name')->get();
-        $all_tags = \Canvas\Tag::orderBy('name')->get();
+        $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+        $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-        $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+        $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
         /**
          * Start inner page header customization
@@ -6816,7 +6816,7 @@ class PagesController extends Controller
 
     public function blogByTag(string $tag_slug)
     {
-        $tag = \Canvas\Tag::where('slug', $tag_slug)->first();
+        $tag = \Canvas\Models\Tag::where('slug', $tag_slug)->first();
 
         if ($tag) {
 
@@ -6878,15 +6878,15 @@ class PagesController extends Controller
              */
 
             $data = [
-                'posts' => \Canvas\Post::whereHas('tags', function ($query) use ($tag_slug) {
+                'posts' => \Canvas\Models\Post::whereHas('tags', function ($query) use ($tag_slug) {
                     $query->where('slug', $tag_slug);
                 })->published()->orderByDesc('published_at')->paginate(10),
             ];
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             /**
              * Start inner page header customization
@@ -6936,7 +6936,7 @@ class PagesController extends Controller
 
     public function blogByTopic(string $topic_slug)
     {
-        $topic = \Canvas\Topic::where('slug', $topic_slug)->first();
+        $topic = \Canvas\Models\Topic::where('slug', $topic_slug)->first();
 
         if ($topic) {
 
@@ -6998,15 +6998,15 @@ class PagesController extends Controller
              */
 
             $data = [
-                'posts' => \Canvas\Post::whereHas('topic', function ($query) use ($topic_slug) {
+                'posts' => \Canvas\Models\Post::whereHas('topic', function ($query) use ($topic_slug) {
                     $query->where('slug', $topic_slug);
                 })->published()->orderByDesc('published_at')->paginate(10),
             ];
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             /**
              * Start inner page header customization
@@ -7056,7 +7056,7 @@ class PagesController extends Controller
 
     public function blogPost(string $blog_slug)
     {
-        $posts = \Canvas\Post::with('tags', 'topic')->published()->get();
+        $posts = \Canvas\Models\Post::with('tags', 'topic')->published()->get();
         $post = $posts->firstWhere('slug', $blog_slug);
 
         if (optional($post)->published) {
@@ -7159,10 +7159,10 @@ class PagesController extends Controller
             // IMPORTANT: This event must be called for tracking visitor/view traffic
             event(new \Canvas\Events\PostViewed($post));
 
-            $all_topics = \Canvas\Topic::orderBy('name')->get();
-            $all_tags = \Canvas\Tag::orderBy('name')->get();
+            $all_topics = \Canvas\Models\Topic::orderBy('name')->get();
+            $all_tags = \Canvas\Models\Tag::orderBy('name')->get();
 
-            $recent_posts = \Canvas\Post::published()->orderByDesc('published_at')->take(5)->get();
+            $recent_posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get();
 
             // used for comment
             $blog_post = BlogPost::published()->get()->firstWhere('slug', $blog_slug);

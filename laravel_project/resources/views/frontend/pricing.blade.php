@@ -253,9 +253,9 @@
             </div>
 
             @if(empty($login_user))
-                <div class="modal fade" id="coachRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="coachRegistrationModalLabel" aria-hidden="true">
+                <div class="modal fade" id="coachRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="coachRegistrationModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="min-width: 1480px;">
-                        <div class="modal-content">
+                        <div class="modal-content" style="border-color: #f05127;border-width: medium;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="coachRegistrationModalLabel">Coach Registration</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -589,17 +589,18 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Signup</button>
-                                    <button type="reset" class="btn btn-default">Reset</button>
+                                    <button type="reset" class="btn btn-default" style="border-color: black;">Reset</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
+                <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
+                        <div class="modal-content" style="border-color: #f05127;border-width: medium;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
+                                {{-- <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5> --}}
+                                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Upload profile image') }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

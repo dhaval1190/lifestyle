@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('coach_active', 'active')
 
 @section('styles')
 

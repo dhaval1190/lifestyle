@@ -41,20 +41,20 @@
 
                 <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
                     <!-- <li><a href="{{ route('page.home') }}">{{ __('frontend.header.home') }}</a></li> -->
-                    <li><a href="{{ route('page.coaches') }}">{{ __('Find A Coach') }}</a></li>
-                    <li><a href="{{ route('page.categories') }}">{{ __('Topics') }}</a></li>
+                    <li class="@yield('coach_active')"><a  href="{{ route('page.coaches') }}">{{ __('Find A Coach') }}</a></li>
+                    <li class="@yield('category_active')"><a href="{{ route('page.categories') }}">{{ __('Topics') }}</a></li>
                     @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
-                    <li><a href="{{ route('page.about') }}">{{ __('frontend.header.about') }}</a></li>
+                    <li class="@yield('about_active')"><a href="{{ route('page.about') }}">{{ __('frontend.header.about') }}</a></li>
                     @endif
-                    <li><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li>
-                    <li><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
+                    <li class="@yield('blog_active')"><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li>
+                    <li class="@yield('faq_active')"><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
                     <!-- <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li> -->
 
                     @guest
                         @if (Route::has('register'))
-                        <li><a href="{{ route('register') }}">{{ __('frontend.header.register') }}</a></li>
+                        <li class="@yield('register_active')"><a href="{{ route('register') }}">{{ __('frontend.header.register') }}</a></li>
                         @endif
-                        <li class="login"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
+                        <li class="login @yield('login_active')"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
                     @else
                         <li class="has-children">
                             <a href="#">{{ Auth::user()->name }}</a>

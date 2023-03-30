@@ -216,7 +216,7 @@ class SitemapController extends Controller
         {
             $sitemap_post = App::make('sitemap');
 
-            $posts = \Canvas\Post::published()->orderByDesc('published_at')->get();
+            $posts = \Canvas\Models\Post::published()->orderByDesc('published_at')->get();
 
             foreach($posts as $key => $post)
             {
@@ -239,7 +239,7 @@ class SitemapController extends Controller
         {
             $sitemap_tag = App::make('sitemap');
 
-            $tags = \Canvas\Tag::orderBy('name')->get();
+            $tags = \Canvas\Models\Tag::orderBy('name')->get();
 
             foreach($tags as $key => $tag)
             {
@@ -262,7 +262,7 @@ class SitemapController extends Controller
         {
             $sitemap_topic = App::make('sitemap');
 
-            $topics = \Canvas\Topic::orderBy('name')->get();
+            $topics = \Canvas\Models\Topic::orderBy('name')->get();
 
             foreach($topics as $key => $topic)
             {
