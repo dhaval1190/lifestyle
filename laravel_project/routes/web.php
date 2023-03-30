@@ -19,6 +19,9 @@ Route::get('/utils/cache', 'UtilsController@makeCache')->name('utils.cache');
 /**
  * End utils routes
  */
+// Route::get('{any}', function() {
+//     return redirect('https://coacheshq.com');
+// })->where('any', '.*');
 
 /**
  * Start website routes
@@ -685,6 +688,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::resource('/item-leads', 'ItemLeadController');
         
     });
+
+    Route::post('/signUp-user', 'Auth\RegisterController@userSignUp')->name('userSignUp');
 });
 /**
  * End website routes

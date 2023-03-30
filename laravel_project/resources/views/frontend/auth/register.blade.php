@@ -1,4 +1,6 @@
 @extends('frontend.layouts.app')
+@section('register_active', 'active')
+
 
 @section('styles')
     <!-- Start Google reCAPTCHA version 2 -->
@@ -26,6 +28,11 @@
         @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
             <div data-youtube="{{ $site_innerpage_header_background_youtube_video }}"></div>
         @endif
+        <style>
+            .error_color{
+            color: red;
+        }
+        </style>
 
         <div class="container">
             <div class="row align-items-center justify-content-center text-center">
@@ -53,19 +60,20 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 mb-5">
 
-                    <form method="POST" action="{{ route('register') }}" class="p-5 bg-white">
+                    <form method="POST" class="p-5 bg-white" name="signUpForm" id="signUpForm">
                         @csrf
 
                         <div class="form-group row">
 
                             <div class="col-md-12">
                                 <label for="name" class="text-black">{{ __('auth.name') }}</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                @error('name')
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
+                                <p class="name_error error_color" role="alert"></p>
+                                <!-- @error('name')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                @enderror -->
                             </div>
                         </div>
 
@@ -73,33 +81,35 @@
 
                             <div class="col-md-12">
                                 <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
+                                <p class="email_error error_color" role="alert"></p>
 
-                                @error('email')
+                                <!-- @error('email')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                @enderror -->
                             </div>
                         </div>
 
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="subject">{{ __('auth.password') }}</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                <p class="password_error error_color" role="alert"></p>
 
-                                @error('password')
+                                <!-- @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                                @enderror -->
                             </div>
                         </div>
 
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}</label>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                             </div>
                         </div>
 
@@ -123,13 +133,14 @@
                                 <p>{{ __('auth.have-an-account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p>
                             </div>
                         </div>
-
+                        
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded">
                                     {{ __('auth.register') }}
-                                </button>
+                                </button><span class="please_wait">Please Wait..</span>
                             </div>
+                            
                         </div>
 
                         @if($social_login_facebook || $social_login_google || $social_login_twitter || $social_login_linkedin || $social_login_github)
@@ -223,10 +234,19 @@
         <script src="{{ asset('frontend/vendor/jquery-youtube-background/jquery.youtube-background.js') }}"></script>
     @endif
     <script>
+        function validateInput(event) {
+        var value = String.fromCharCode(event.which);
+        var pattern = new RegExp(/[a-zåäö ][0-9]/i);
+        return pattern.test(value);
+        }
+    </script>
+    <script>
 
         $(document).ready(function(){
 
             "use strict";
+            $('.val_field').bind('keypress', validateInput);
+            $('.please_wait').text('');
 
             @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
             /**
@@ -238,7 +258,60 @@
              */
             @endif
 
+            $('#signUpForm').on('submit',function(e){
+                e.preventDefault();
+                $('.please_wait').text('Please Wait..');
+                // console.log("kdjksjdklsl");
+
+                var formData = new FormData(this);
+
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: "{{ route('userSignUp') }}",
+                        data: formData,
+                        dataType: 'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                        },
+
+                        success: function(response){
+                            // console.log(response);
+                            if(response.status == 'success'){
+                                // console.log(response)
+                                $(".error_color").text("");
+                                $('.please_wait').text('');
+                                location.reload();                                                       
+
+                            }
+
+                            if(response.status == 'error'){
+                                // console.log(response)
+                                $('.please_wait').text('');
+                                $.each(response.msg,function(key,val){                                    
+                                    if(response.msg.name){
+                                        $('.name_error').text(response.msg.name)
+                                    }
+                                    if(response.msg.email){
+                                        $('.email_error').text(response.msg.email)
+                                    }                                    
+                                    if(response.msg.password){
+                                        $('.password_error').text(response.msg.password)
+                                    }                                    
+                                    $(':input[type="submit"]').prop('disabled', false);
+                                    
+                                });
+                                
+                            }
+                        }
+                    });
+
+            });
+
         });
+        
 
     </script>
 

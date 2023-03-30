@@ -1,4 +1,6 @@
 @extends('frontend.layouts.app')
+@section('login_active', 'active')
+
 
 @section('styles')
     <!-- Start Google reCAPTCHA version 2 -->
