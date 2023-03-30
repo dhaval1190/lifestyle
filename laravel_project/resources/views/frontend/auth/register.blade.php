@@ -247,6 +247,16 @@
             "use strict";
             $('.val_field').bind('keypress', validateInput);
             $('.please_wait').text('');
+            $('.error_color').text('');
+            $('#name').on('input', function(e) {
+                $('.name_error').text('')
+            });
+            $('#email').on('input', function(e) {
+                $('.email_error').text('');
+            });
+            $('#password').on('input', function(e) {
+                $('.password_error').text('');
+            });
 
             @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
             /**
@@ -278,7 +288,7 @@
                         },
 
                         success: function(response){
-                            // console.log(response);
+                            console.log(response);
                             if(response.status == 'success'){
                                 // console.log(response)
                                 $(".error_color").text("");
@@ -286,7 +296,13 @@
                                 location.reload();                                                       
 
                             }
+                            if(response.status == 'email_reg'){
+                                // console.log(response)                       
+                                $('.email_error').text(response.msg); 
+                                $('.please_wait').text('');
+                                $(':input[type="submit"]').prop('disabled', false);                             
 
+                            }
                             if(response.status == 'error'){
                                 // console.log(response)
                                 $('.please_wait').text('');

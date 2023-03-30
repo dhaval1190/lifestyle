@@ -535,7 +535,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     <p>{{ $user_detail['phone'] }}</p>
                                 </div> -->
                                 <div class="middle_main"><img src="{{ asset('frontend/images/web.svg') }}" alt="" />
-                                    <p>{{ $user_detail['website'] }}</p>
+                                    <a href="{{ $user_detail['website'] }}" target="_blank"><p>{{ $user_detail['website'] }}</p></a>
                                 </div>
                             </div>
                         </div>
