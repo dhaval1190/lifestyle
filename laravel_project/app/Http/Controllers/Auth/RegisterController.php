@@ -272,13 +272,20 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        if($request->email){
+            $sel_user = User::where('email',$request->email)->first();
+            if($sel_user){
+                return response()->json(['status'=>"email_reg",'msg'=>"Email Id already registered"]);
+
+            }
+        }
         
         $validator = Validator::make($request->all(),[
             'category_ids' => 'required',
-            'name' => 'required|regex:/^[\pL\s]+$/u|max:50',
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
-            'phone' => 'required|numeric',
-            'password' => 'required|confirmed',
+            'phone' => 'required|numeric|digits_between:10,12',
+            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'preferred_pronouns' => 'required',
             'hourly_rate_type' => 'required',
             'working_type' => 'required',
@@ -287,13 +294,15 @@ class RegisterController extends Controller
             'country_id' => 'required',
             'state_id' => 'required',
             'city_id' => 'required',
-            'post_code' => 'required|numeric|max:15'
+            'post_code' => 'required|numeric|digits_between:1,15'
         ],[
             'category_ids.required' => 'Category is required',
             'name.required' => 'Name is required',
             'email.required'=> 'Email is required',
             'phone.required'=> 'Phone is required',
             'password.required'=> 'Password is required',
+            'password.min'=> 'Password must at least 8 chars',
+            'password.regex'=> 'Password must contains letter,number,special chars',
             'preferred_pronouns.required' => 'Preferred pronouns is required',
             'hourly_rate_type.required' => 'Hourly rate type is required',
             'working_type.required' => 'Working type is required',
@@ -360,11 +369,19 @@ class RegisterController extends Controller
     public function userSignUp(Request $request)
     {
 
+        if($request->email){
+            $sel_user = User::where('email',$request->email)->first();
+            if($sel_user){
+                return response()->json(['status'=>"email_reg",'msg'=>"Email Id already registered"]);
+
+            }
+        }
+
         $validator = Validator::make($request->all(),[
             
-            'name'      =>'required|regex:/^[\pL\s]+$/u|max:50',
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',            
-            'password' => 'required|confirmed',
+            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             
         ],[            
             'name.required' => 'Name is required',
@@ -373,7 +390,9 @@ class RegisterController extends Controller
             'email.required'=> 'Email is required',            
             'email.regex'         =>  "Invalid email format", 
             'email.email'       => "Invalid email format",           
-            'password.required'=> 'Password is required',            
+            'password.required'=> 'Password is required',
+            'password.min'=> 'Password must at least 8 chars',
+            'password.regex'=> 'Password must contains letter,number,special chars',            
 
         ]);
 

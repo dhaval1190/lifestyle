@@ -155,7 +155,7 @@
                     <div class="col-md-12">
                         <p>
                         <h5>{{$notification->notification}}</h5>
-                        <div class="cancel">✕</div>
+                        <div class="cancel notificationReadBtn" id="{{ $notification->id }}">✕</div>
                         </p>
                     </div>
                     @endforeach
@@ -975,6 +975,23 @@
         var chart = new CanvasJS.Chart("chartContainer", dataOptions);
         chart.options.data = chartData["Profile Progress"];
         chart.render();
+
+        $('.notificationReadBtn').on('click',function(){
+            let id = $(this).attr('id');
+            console.log(id)
+
+            $.ajax({
+                    url: "{{ route('notification.read') }}",
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        console.log(response);
+                    }
+                });
+        })
     }
     </script>
 

@@ -233,6 +233,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('add_canada_city','Admin\CityController@add_canada_city');
     Route::get('add_mexico_state','Admin\StateController@add_mexico_state');
     Route::get('add_mexico_city','Admin\CityController@add_mexico_city');
+    Route::post('/notification-read', 'PagesController@readNotification')->name('notification.read');
     Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>['verified','auth','admin'],'as'=>'admin.'], function(){
 
         Route::get('/dashboard','PagesController@index')->name('index');
@@ -522,6 +523,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::get('/dashboard','PagesController@index')->name('index');
         Route::get('/profile-progress/{user_id}','PagesController@profileProgressData')->name('profile.progress');
         Route::resource('/items', 'ItemController');
+        Route::post('/notification-read', 'PagesController@readNotification')->name('notification.read');
 
         Route::post('/items/bulk/delete', 'ItemController@bulkDeleteItem')->name('items.bulk.delete');
 

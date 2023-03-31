@@ -226,6 +226,10 @@ class PagesController extends Controller
             'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
     }
 
+    public function readNotification(Request $request){
+        return response()->json(['data'=>$request->all()]);
+    }
+
     public function profileProgressData(Request $request,$user_id){
         //$user_data = User::find($user_id);
         $user_obj = new User();
