@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use App\Notifications\ReferrerBonus;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -285,7 +286,7 @@ class RegisterController extends Controller
             'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
             'phone' => 'required|numeric|digits_between:10,12',
-            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'preferred_pronouns' => 'required',
             'hourly_rate_type' => 'required',
             'working_type' => 'required',
@@ -381,12 +382,13 @@ class RegisterController extends Controller
             
             'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',            
-            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
+            // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?=]*[!@?]).{10,}$/',
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             
         ],[            
             'name.required' => 'Name is required',
             'name.regex'         =>  "Invalid name",
-            'name.max'           =>  "Name is too long!",
+            'name.max'           =>  "Name must not more than 30 characters",
             'email.required'=> 'Email is required',            
             'email.regex'         =>  "Invalid email format", 
             'email.email'       => "Invalid email format",           
