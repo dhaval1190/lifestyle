@@ -942,11 +942,13 @@
                         //alert('Token stored.');
                     },
                     error: function(error) {
-                        alert(error);
+                        // alert(error);
+                        console.log(error);
                     },
                 });
             }).catch(function(error) {
-                alert(error);
+                // alert(error);
+                console.log(error);
             });
     }
 

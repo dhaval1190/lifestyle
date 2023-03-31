@@ -170,7 +170,7 @@
                         </div>
 
                         @if($social_login_facebook || $social_login_google || $social_login_twitter || $social_login_linkedin || $social_login_github)
-                            <div class="row mt-4 align-items-center">
+                            {{-- <div class="row mt-4 align-items-center">
                                 <div class="col-md-5">
                                     <hr>
                                 </div>
@@ -185,18 +185,18 @@
                                 <div class="col-md-12 text-center">
                                     <span>{{ __('social_login.frontend.sign-in-with') }}</span>
                                 </div>
-                            </div>
+                            </div> --}}
                         @endif
 
                         @if($social_login_facebook)
-                        <div class="row form-group">
+                        {{-- <div class="row form-group">
                             <div class="col-md-12">
                                 <a class="btn btn-facebook btn-block text-white rounded" href="{{ route('auth.login.facebook') }}">
                                     <i class="fab fa-facebook-f pr-2"></i>
                                     {{ __('social_login.frontend.sign-in-facebook') }}
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                         @endif
 
                         @if($social_login_google)

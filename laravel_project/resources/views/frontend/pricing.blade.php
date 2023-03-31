@@ -338,16 +338,16 @@
                                                     </span>
                                                     @enderror --}}
                                                 </div>
-                                                <div class="col-sm-3">
+                                                {{-- <div class="col-sm-3">
                                                     <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                                     <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
-                                                    <p class="phone_error error_color" role="alert"></p>
+                                                    <p class="phone_error error_color" role="alert"></p> --}}
                                                     {{-- @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror --}}
-                                                </div>
+                                                {{-- </div> --}}
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
