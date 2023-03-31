@@ -253,11 +253,11 @@
             </div>
 
             @if(empty($login_user))
-                <div class="modal fade" id="coachRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="coachRegistrationModalLabel" aria-hidden="true">
+                <div class="modal fade" id="coachRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="coachRegistrationModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="min-width: 1480px;">
-                        <div class="modal-content">
+                        <div class="modal-content" style="border-color: #f05127;border-width: medium;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="coachRegistrationModalLabel">Coach Registration</h5>
+                                <h5 class="modal-title" id="coachRegistrationModalLabel">Coach Registration</h5><p class="email_reg error_color"></p>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -271,7 +271,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-2">
                                             <div class="text-center">
-                                                <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">Select Profile Picture</button>
+                                                <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2" accept=".jpg,.jpeg,.png">Select Profile Picture</button>
                                                 <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-1.webp')}}" class="img-responsive" width="200px">
                                                 <input id="feature_image" type="hidden" name="user_image" id="user_image">
                                             </div>
@@ -290,7 +290,7 @@
                                                 <div class="col-md-12">
                                                     <label for="category_ids" class="text-black">Category <span class="text-danger">*</span></label>
                                                     <!-- <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> -->
-                                                    <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple style="width:100%">
+                                                    <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" id="category_ids" multiple style="width:100%">
                                                         {{-- <option value="">Select Category</option> --}}
                                                         @foreach($printable_categories as $key => $printable_category)
                                                             @php
@@ -365,8 +365,8 @@
                                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
-                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
+                                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" id="preferred_pronouns" title="Select Preferred Pronouns">
                                                         @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
                                                             <option value="{{ $prkey }}" {{ old('preferred_pronouns') == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
                                                         @endforeach
@@ -433,7 +433,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="hourly_rate_type" class="text-black">Hourly Rate <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
+                                            <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" id="hourly_rate_type" title="Select Hourly Rate">
                                                 @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
                                                     <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
                                                 @endforeach
@@ -447,7 +447,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="working_type" class="text-black">Working Method <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method">
+                                            <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" id="working_type" title="Select Working Method">
                                                 @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                     <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                 @endforeach
@@ -461,7 +461,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="experience_year" class="text-black">Experience Year <span class="text-danger">*</span></label>
-                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
+                                            <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" id="experience_year" title="Select Experience">
                                                 @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
                                                     <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
                                                 @endforeach
@@ -589,17 +589,18 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Signup</button>
-                                    <button type="reset" class="btn btn-default">Reset</button>
+                                    <button type="reset" class="btn btn-default" style="border-color: black;">Reset</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
+                <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
+                        <div class="modal-content" style="border-color: #f05127;border-width: medium;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
+                                {{-- <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5> --}}
+                                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Upload profile image') }}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -613,7 +614,7 @@
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <div class="custom-file">
-                                            <input id="upload_image_input" type="file" class="custom-file-input">
+                                            <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                             <label class="custom-file-label" for="upload_image_input">{{ __('backend.user.choose-image') }}</label>
                                         </div>
                                     </div>
@@ -651,6 +652,46 @@
         $(document).ready(function(){
 
             "use strict";
+            $('.error_color').text('');
+            $('#name').on('input', function(e) {
+                $('.name_error').text('')
+            });
+            $('#email').on('input', function(e) {
+                $('.email_error').text('');
+            });
+            $('#phone').on('input', function(e) {
+                $('.phone_error').text('');
+            });
+            $('#password').on('input', function(e) {
+                $('.password_error').text('');
+            });
+            $('#zip').on('input', function(e) {
+                $('.zip_error').text('');
+            });
+            $('#address').on('input', function(e) {
+                $('.address_error').text('');
+            });
+            $('#preferred_pronouns').change(function(e) {
+                $('.preferred_pronouns_error').text('');
+            });
+            $('#hourly_rate_type').change(function(e) {
+                $('.hourly_rate_type_error').text('');
+            });
+            $('#working_type').change(function(e) {
+                $('.working_type_error').text('');
+            });
+            $('#experience_year').change(function(e) {
+                $('.experience_year_error').text('');
+            });
+            $('#select_city_id').change(function(e) {
+                $('.city_error').text('');
+            });
+            $('#category_ids').change(function(e) {
+                $('.category_error').text('');
+            });
+
+
+
 
             @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
                 // $("[data-youtube]").youtube_background();
@@ -756,6 +797,7 @@
 
                 /* Start country, state, city selector */
                 $('#select_country_id').on('change', function() {
+                    $('.country_error').text('');
                     $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                     $('#select_state_id').selectpicker('refresh');
                     if(this.value > 0) {
@@ -778,6 +820,7 @@
                 });
 
                 $('#select_state_id').on('change', function() {
+                    $('.state_error').text('');
                     $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                     $('#select_city_id').selectpicker('refresh');
                     if(this.value > 0) {
@@ -869,7 +912,7 @@
                         },
 
                         success: function(response){
-                            //console.log(response);
+                            // console.log(response);
                             if(response.status == 'success'){
                                 // console.log(response)
                                 $("#coachRegistrationModal").trigger("reset");
@@ -877,8 +920,14 @@
                                 $('.error_color').text('');                               
 
                             }
+                            if(response.status == 'email_reg'){
+                                // console.log(response)                       
+                                $('.email_error').text(response.msg); 
+                                $(':input[type="submit"]').prop('disabled', false);                             
 
+                            }
                             if(response.status == 'error'){
+                                $('.email_error').text('');
                                 // console.log(response)
                                 $.each(response.msg,function(key,val){
                                     if(response.msg.category_ids){

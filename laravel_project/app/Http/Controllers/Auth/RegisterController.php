@@ -272,28 +272,37 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        if($request->email){
+            $sel_user = User::where('email',$request->email)->first();
+            if($sel_user){
+                return response()->json(['status'=>"email_reg",'msg'=>"Email Id already registered"]);
+
+            }
+        }
         
         $validator = Validator::make($request->all(),[
             'category_ids' => 'required',
-            'name' => 'required|max:80',
-            'email' => 'required',
-            'phone' => 'required|numeric',
-            'password' => 'required|confirmed',
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
+            'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
+            'phone' => 'required|numeric|digits_between:10,12',
+            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'preferred_pronouns' => 'required',
             'hourly_rate_type' => 'required',
             'working_type' => 'required',
             'experience_year' => 'required',
-            'address'=> 'required',
+            'address'=> 'required|max:100',
             'country_id' => 'required',
             'state_id' => 'required',
             'city_id' => 'required',
-            'post_code' => 'required'
+            'post_code' => 'required|numeric|digits_between:1,15'
         ],[
             'category_ids.required' => 'Category is required',
             'name.required' => 'Name is required',
             'email.required'=> 'Email is required',
             'phone.required'=> 'Phone is required',
             'password.required'=> 'Password is required',
+            'password.min'=> 'Password must at least 8 chars',
+            'password.regex'=> 'Password must contains letter,number,special chars',
             'preferred_pronouns.required' => 'Preferred pronouns is required',
             'hourly_rate_type.required' => 'Hourly rate type is required',
             'working_type.required' => 'Working type is required',
@@ -357,6 +366,79 @@ class RegisterController extends Controller
      * @param  mixed  $user
      * @return mixed
      */
+    public function userSignUp(Request $request)
+    {
+
+        if($request->email){
+            $sel_user = User::where('email',$request->email)->first();
+            if($sel_user){
+                return response()->json(['status'=>"email_reg",'msg'=>"Email Id already registered"]);
+
+            }
+        }
+
+        $validator = Validator::make($request->all(),[
+            
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
+            'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',            
+            'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
+            
+        ],[            
+            'name.required' => 'Name is required',
+            'name.regex'         =>  "Invalid name",
+            'name.max'           =>  "Name is too long!",
+            'email.required'=> 'Email is required',            
+            'email.regex'         =>  "Invalid email format", 
+            'email.email'       => "Invalid email format",           
+            'password.required'=> 'Password is required',
+            'password.min'=> 'Password must at least 8 chars',
+            'password.regex'=> 'Password must contains letter,number,special chars',            
+
+        ]);
+
+        $settings = app('site_global_settings');
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+
+        if(!empty($settings->setting_site_name)) {
+            config(['app.name' => $settings->setting_site_name]);
+        }
+
+        if($validator->passes()){
+            try {
+                event(new Registered($user = $this->create($request->all())));
+            } catch (\Exception $e) {
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            }
+
+            return response()->json(['status'=>"success",'data'=>$request->input()]);
+
+        }else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+        }
+
+        if(isset($user)) {
+            $this->guard()->login($user);
+            return $this->registered($request, $user)
+                ?: redirect($this->redirectPath());
+        } else {
+            return redirect()->route('login');
+        }
+
+        
+    }
+
+
     protected function registered(Request $request, $user)
     {
         if ($user->referrer !== null) {

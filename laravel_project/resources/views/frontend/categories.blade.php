@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('category_active', 'active')
 
 @section('styles')
 

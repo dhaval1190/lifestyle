@@ -235,6 +235,15 @@ class UserController extends Controller
     {
         $input = $request->all();
 
+        if (strpos($input['youtube'], "?v=") !== false) {            
+            $youtube_url_id = explode("?v=",$input['youtube'])[1];
+            $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+            
+        }elseif(strpos($input['youtube'], "youtu.be") !== false){
+            $youtube_url_id = explode(".be/",$input['youtube'])[1];
+            $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+        }
+        
         $rules = [];
         $rulesMessage = [];
 
@@ -372,7 +381,8 @@ class UserController extends Controller
             $login_user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
             $login_user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
             $login_user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
-            $login_user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+            // $login_user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+            $login_user->youtube              = isset($embed_url) ? $embed_url : null;
 
             $login_user->address              = isset($input['address']) ? $input['address'] : null;
             $login_user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
