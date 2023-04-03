@@ -285,7 +285,8 @@ class RegisterController extends Controller
             'category_ids' => 'required',
             'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
-            'phone' => 'required|numeric|digits_between:10,20',
+            // 'phone' => 'required|numeric|digits_between:10,12',
+            // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'preferred_pronouns' => 'required',
             'hourly_rate_type' => 'required',
@@ -300,9 +301,7 @@ class RegisterController extends Controller
             'category_ids.required' => 'Category is required',
             'name.required' => 'Name is required',
             'email.required'=> 'Email is required',
-            'phone.required'=> 'Phone is required',
-            'phone.numeric'=> 'Phone must be number',
-            'phone.digits_between'=> 'The phone must be between 10 and 20 digits',
+            // 'phone.required'=> 'Phone is required',
             'password.required'=> 'Password is required',
             'password.min'=> 'Password must at least 8 chars',
             'password.regex'=> 'Password must contains letter,number,special chars',
@@ -386,7 +385,7 @@ class RegisterController extends Controller
             
             'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',            
-            // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?=]*[!@?]).{10,}$/',
+            // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             
         ],[            
