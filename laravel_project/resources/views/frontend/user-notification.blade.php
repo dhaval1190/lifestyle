@@ -33,6 +33,9 @@
   tr:hover {
     background-color: #ddd;
   }
+  .pagination{
+    padding-top: 2px;
+  }
 
 </style>
 @section('content')
@@ -80,6 +83,10 @@
               @endforeach
             </tbody>
           </table>
+          <div class="pagination">
+            {!! $notifications->links('pagination::bootstrap-4') !!}
+
+          </div>
       </div>
   </div>
        

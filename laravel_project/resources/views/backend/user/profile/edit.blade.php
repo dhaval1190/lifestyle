@@ -412,12 +412,14 @@
                                         <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
                                     @endif
                                     <input id="feature_cover_image" type="hidden" name="user_cover_image">
+                                    @if(!empty($login_user->user_cover_image))
                                     <div class="mt-1">
-                                        <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                                        <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
                                             <i class="fas fa-trash-alt"></i>
                                             {{ __('role_permission.user.delete-profile-image') }}
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="col-7">
                                     <div class="row">
@@ -1172,18 +1174,42 @@
                 });
             });
             /* End delete feature image button */
+            /* Start delete cover image button */
+            $('#delete_user_cover_image_button').on('click', function() {
+                // console.log("fkldfkldk")
+                $('#delete_user_cover_image_button').attr("disabled", true);
+                var id = '<?php echo $login_user->user_cover_image; ?>';
+                var url = "{{route('user.coverimage.delete', 0)}}";
+                url = url.replace('0', id);
+                // var ajax_url = '/ajax/user/image/delete/' + '{{ $login_user->id }}';
+                // console.log(url);
+                jQuery.ajax({
+                    url: url,
+                    method: 'post',
+                    success: function(result){
+                        console.log(result);
+
+                        $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}");
+                        $('#feature_image').val("");
+
+                        $('#delete_user_cover_image_button').attr("disabled", false);
+                        location.reload();
+                    }
+                });
+            });
+            /* End delete cover image button */
 
             /* Start country, state, city selector */
             $('#select_country_id').on('change', function() {
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = 'ajax/states/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.state', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/states/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.state', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
@@ -1203,12 +1229,12 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = 'ajax/cities/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.city', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/cities/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.city', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");

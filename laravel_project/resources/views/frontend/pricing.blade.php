@@ -273,7 +273,7 @@
                                             <div class="text-center">
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2" accept=".jpg,.jpeg,.png">Select Profile Picture</button>
                                                 <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-1.webp')}}" class="img-responsive" width="200px">
-                                                <input id="feature_image" type="hidden" name="user_image" id="user_image">
+                                                <input id="feature_image" type="hidden" name="user_image" id="user_image" accept=".jpg,.jpeg,.png">
                                             </div>
                                             {{-- <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="upload_image_input" name="user_image" accept=".jpg,.png">
@@ -338,16 +338,16 @@
                                                     </span>
                                                     @enderror --}}
                                                 </div>
-                                                <div class="col-sm-3">
+                                                {{-- <div class="col-sm-3">
                                                     <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                                     <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
-                                                    <p class="phone_error error_color" role="alert"></p>
+                                                    <p class="phone_error error_color" role="alert"></p> --}}
                                                     {{-- @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror --}}
-                                                </div>
+                                                {{-- </div> --}}
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-sm-3">
@@ -912,7 +912,7 @@
                         },
 
                         success: function(response){
-                            // console.log(response);
+                            console.log(response);
                             if(response.status == 'success'){
                                 // console.log(response)
                                 $("#coachRegistrationModal").trigger("reset");

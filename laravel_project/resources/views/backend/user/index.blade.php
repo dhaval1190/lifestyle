@@ -833,6 +833,26 @@
     @section('scripts')
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <script>
+
+        $(document).ready(function(){
+            $('.notificationReadBtn').on('click',function(){
+            let id = $(this).attr('id');
+            console.log(id)
+
+            $.ajax({
+                    url: "{{ route('read-notification') }}",
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        console.log(response);
+                    }
+                });
+            })
+        });
+
     var $player = $('.js-audio-player'),
         $playbackClass = 'is-playing',
         $fadeDuration = 500
@@ -942,11 +962,13 @@
                         //alert('Token stored.');
                     },
                     error: function(error) {
-                        alert(error);
+                        // alert(error);
+                        console.log(error);
                     },
                 });
             }).catch(function(error) {
-                alert(error);
+                // alert(error);
+                console.log(error);
             });
     }
 
@@ -976,22 +998,7 @@
         chart.options.data = chartData["Profile Progress"];
         chart.render();
 
-        $('.notificationReadBtn').on('click',function(){
-            let id = $(this).attr('id');
-            console.log(id)
-
-            $.ajax({
-                    url: "{{ route('notification.read') }}",
-                    type: 'POST',
-                    data: {
-                        id: id
-                    },
-                    dataType: 'JSON',
-                    success: function(response) {
-                        console.log(response);
-                    }
-                });
-        })
+        
     }
     </script>
 

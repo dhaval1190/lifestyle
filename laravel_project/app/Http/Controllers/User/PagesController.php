@@ -216,7 +216,7 @@ class PagesController extends Controller
         $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
         $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
 
-        $notifications = UserNotification::where('user_id',$login_user->id)->get();      
+        $notifications = UserNotification::where('user_id',$login_user->id)->where('is_read',0)->get();      
        
         
         // $media_detail_id = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
@@ -224,10 +224,6 @@ class PagesController extends Controller
         return response()->view('backend.user.index',
             compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
             'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
-    }
-
-    public function readNotification(Request $request){
-        return response()->json(['data'=>$request->all()]);
     }
 
     public function profileProgressData(Request $request,$user_id){

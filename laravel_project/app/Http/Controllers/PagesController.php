@@ -7251,6 +7251,16 @@ class PagesController extends Controller
         return response()->json(['success' => 'setting favicon image deleted.']);
     }
 
+    public function deleteCoverImage($id)
+    {
+
+        Storage::disk('public')->delete('user/'.$id);
+        User::where('user_cover_image',$id)->update(['user_cover_image'=> null]);
+        
+        // return response()->json(['data' => $id]);
+        return response()->json(['success' => 'setting favicon image deleted.']);
+    }
+
     public function jsonDeleteUserProfileImage(int $user_id)
     {
         $gate_user = User::findOrFail($user_id);
@@ -8079,8 +8089,21 @@ class PagesController extends Controller
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
-        $notifications = UserNotification::where('user_id',$id)->get();
+        // $notifications = UserNotification::where('user_id',$id)->get();
+        $notifications = UserNotification::where('user_id',$id)->paginate(10);
        
-        return view('frontend.user-notification',compact('notifications'));
+        return view('backend.user.user-notification',compact('notifications'));
+    }
+
+    public function readNotification(Request $request){
+        if($request->id){
+            $update = UserNotification::where('id',$request->id)->update(['is_read'=> 1]);
+            if($update){
+                return response()->json(['status'=>'success','msg'=>'Notification marked as read']);
+            }else{
+                return response()->json(['status'=>'error','msg'=>'Something went wrong']);
+
+            }
+        }
     }
 }
