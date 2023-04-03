@@ -22,6 +22,7 @@ use Intervention\Image\Facades\Image;
 use App\Subscription;
 use App\Item;
 use App\Rules\Base64Image;
+use App\MediaDetailsVisits;
 
 
 
@@ -324,6 +325,11 @@ class UserController extends Controller
         // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
         $login_user = Auth::user();
+        $youtube_url = User::where('id', $login_user->id)->select('youtube')->first();
+        if($youtube_url['youtube'] != $input['youtube']){
+           $update = MediaDetailsVisits::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
+           session()->forget("viewed_user_youtube.{$login_user->id}");
+        }
 
         $validate_error = array();
         $email_exist = User::where('email', $email)->where('id', '!=', $login_user->id)->count();

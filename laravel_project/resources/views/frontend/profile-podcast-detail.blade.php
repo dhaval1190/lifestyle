@@ -187,6 +187,19 @@
     <script src="{{ asset('frontend/js/script.js') }}"></script>
     @include('frontend.partials.bootstrap-select-locale')
     <script>
+        $(".play").on('click', function() {
+                    var id = $(this).attr('data-id');                                      
+                    $.ajax({
+                    type:'POST',
+                    headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                    url:'<?php echo url("/media-visitor"); ?>',
+                    data: {'id':id},
+                    success:function(data){
+                    },
+                });
+                });
         const loaderHTML = document.createElement('div');
         loaderHTML.setAttribute('id', 'pre-loader');
         loaderHTML.innerHTML = "<div id='loader-container'><div></div><div></div><div></div></div>";
@@ -212,11 +225,17 @@
                 var _this = $(this)
                 var id = $(this).attr('data-id')
                 var type = $(this).attr('data-type')
+                // var id = $(this).val();
+            
+            // alert(id);
+            url = "{{route('json.profile.podcast', 0)}}";
+            url = url.replace('0', id);
                 if (type == 'pause') {
                     start_loader();
-                    var ajax_url = '/ajax/profile/podcast/' + id;
+                    // var ajax_url = '/ajax/profile/podcast/' + id;
+                    
                     jQuery.ajax({
-                        url: ajax_url,
+                        url: url,
                         method: 'get',
                         error: err => {
                             console.error(err)
