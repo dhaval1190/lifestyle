@@ -1204,12 +1204,12 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = 'ajax/states/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.state', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/states/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.state', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
@@ -1229,12 +1229,12 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = 'ajax/cities/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.city', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/cities/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.city', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
