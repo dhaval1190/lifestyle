@@ -285,7 +285,7 @@ class RegisterController extends Controller
             'category_ids' => 'required',
             'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
-            'phone' => 'required|numeric|digits_between:10,12',
+            'phone' => 'required|numeric|digits_between:10,20',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'preferred_pronouns' => 'required',
             'hourly_rate_type' => 'required',
@@ -301,6 +301,8 @@ class RegisterController extends Controller
             'name.required' => 'Name is required',
             'email.required'=> 'Email is required',
             'phone.required'=> 'Phone is required',
+            'phone.numeric'=> 'Phone must be number',
+            'phone.digits_between'=> 'The phone must be between 10 and 20 digits',
             'password.required'=> 'Password is required',
             'password.min'=> 'Password must at least 8 chars',
             'password.regex'=> 'Password must contains letter,number,special chars',
@@ -312,7 +314,9 @@ class RegisterController extends Controller
             'country_id.required' => 'Country is required',
             'state_id.required' => 'State is required',
             'city_id.required' => 'City is required',
-            'post_code.required' => 'Post code is required'
+            'post_code.required' => 'Post code is required',
+            'post_code.numeric' => 'The post code must be a number',
+            'post_code.digits_between' => 'The post code must not more than 15 digits'
 
         ]);
 
