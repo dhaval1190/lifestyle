@@ -1302,6 +1302,7 @@ class PagesController extends Controller
     }
     public function usersCategories(Request $request,$id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
         
@@ -2295,6 +2296,7 @@ class PagesController extends Controller
 
     public function profileYoutubeDetail(Request $request, $id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
@@ -2306,7 +2308,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.view-youtube', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -2402,6 +2404,7 @@ class PagesController extends Controller
 
     public function profilePodcaseDetail(Request $request, $id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
@@ -2413,7 +2416,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.view-podcast', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -2528,10 +2531,12 @@ class PagesController extends Controller
                     today()->endOfDay()->toDateTimeString(),
                 ])->first();
                 $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
-                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                    ])->first();
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)
+                //   ->whereBetween('media_details_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
                 }
             }
         /**
@@ -2577,10 +2582,12 @@ class PagesController extends Controller
                     today()->endOfDay()->toDateTimeString(),
                 ])->first();
                 $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
-                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
-                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                    ])->first();
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)
+                // ->whereBetween('items_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
                 }
             }
         /**
@@ -2624,10 +2631,12 @@ class PagesController extends Controller
                     today()->endOfDay()->toDateTimeString(),
                 ])->first();
                 $Ebooks[$ebookdetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
-                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                    ])->first();
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$ebookdetail->media_detail_id)
+                //   ->whereBetween('media_details_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
                 }
             }
         
@@ -2662,7 +2671,7 @@ class PagesController extends Controller
         $login_user = Auth::user();
         $notifications = UserNotification::where('user_id',$login_user->id)->get();
         $media_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','video')->groupBy('media_detail_id')->get();
-        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->groupBy('user_id')->get();
+        $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->where('is_status',0)->groupBy('user_id')->get();
        
         $media= array();
         $Youtube= array();
@@ -2674,25 +2683,29 @@ class PagesController extends Controller
                     today()->endOfDay()->toDateTimeString(),
                 ])->first();
                 $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
-                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                    ])->first();
+                  ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)
+                //   ->whereBetween('media_details_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
                 }
             }
         if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
             foreach($youtube_deatils_visit as $youtubedetail){
             //print_r($youtube_deatils_visit);exit;
             $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
-            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
+            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)->whereBetween('media_details_visits.created_at', [
                 today()->startOfDay()->toDateTimeString(),
                 today()->endOfDay()->toDateTimeString(),
             ])->first();
             $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
-                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->whereBetween('media_details_visits.created_at', [
-                today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                ])->first();
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)
+                // ->whereBetween('media_details_visits.created_at', [
+                // today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                // today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                // ])
+                ->first();
             }
         }
         /**
@@ -2737,25 +2750,10 @@ class PagesController extends Controller
         }
         return response()->json($resp);
     }
-
-    public function profilePodcastDetail(Request $request, $id)
-    {
-
-        $user_detail = User::where('id', $id)->first();
-        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
-        
-        return response()->view($theme_view_path . 'profile-podcast-detail',
-            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array',
-                'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
-                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
-                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
-                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
-            ));
-    }
-
+    
     public function profileEbookDetail(Request $request, $id)
     {
+        $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
@@ -2767,7 +2765,7 @@ class PagesController extends Controller
         /**
          * Start SEO
          */
-        SEOMeta::setTitle(__('seo.frontend.categories', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setTitle(__('seo.frontend.view-e-book', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
         SEOMeta::setDescription('');
         SEOMeta::setCanonical(URL::current());
         SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
@@ -2866,10 +2864,11 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-
-        if($media && $media->user_id == $login_user->id)
+        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
         {
             $media_detail->delete();
+            $visite_media->delete();
 
             \Session::flash('flash_message', __('alert.media-deleted'));
             \Session::flash('flash_type', 'success');
@@ -2887,10 +2886,11 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-
-        if($media && $media->user_id == $login_user->id)
+        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
         {
             $media_detail->delete();
+            $visite_media->delete();
 
             \Session::flash('flash_message', __('alert.media-deleted'));
             \Session::flash('flash_type', 'success');
@@ -2909,9 +2909,11 @@ class PagesController extends Controller
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
 
-        if($media && $media->user_id == $login_user->id)
+        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
         {
             $media_detail->delete();
+            $visite_media->delete();
 
             \Session::flash('flash_message', __('alert.media-deleted'));
             \Session::flash('flash_type', 'success');
