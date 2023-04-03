@@ -389,7 +389,7 @@ class RegisterController extends Controller
         ],[            
             'name.required' => 'Name is required',
             'name.regex'         =>  "Invalid name",
-            'name.max'           =>  "Name is too long!",
+            'name.max'           =>  "Name must not more than 30 characters",
             'email.required'=> 'Email is required',            
             'email.regex'         =>  "Invalid email format", 
             'email.email'       => "Invalid email format",           
