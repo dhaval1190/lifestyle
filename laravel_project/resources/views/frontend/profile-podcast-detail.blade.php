@@ -228,8 +228,8 @@
                 // var id = $(this).val();
             
             // alert(id);
-            url = "{{route('json.profile.podcast', 0)}}";
-            url = url.replace('0', id);
+            // url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
+            url = '/ajax/profile/podcast/' + id;
                 if (type == 'pause') {
                     start_loader();
                     // var ajax_url = '/ajax/profile/podcast/' + id;
@@ -239,7 +239,7 @@
                         method: 'get',
                         error: err => {
                             console.error(err)
-                            alert("An error occurred");
+                            console.log("An error occurred");
                             end_loader()
                         },
                         success: function(resp) {
@@ -272,7 +272,7 @@
                                 }, 500)
                             } else {
                                 console.error(err)
-                                alert("An error occurred");
+                                consle.log("An error occurred");
                             }
                             setTimeout(() => {
                                 end_loader()
