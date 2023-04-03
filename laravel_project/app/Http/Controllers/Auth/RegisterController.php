@@ -313,7 +313,9 @@ class RegisterController extends Controller
             'country_id.required' => 'Country is required',
             'state_id.required' => 'State is required',
             'city_id.required' => 'City is required',
-            'post_code.required' => 'Post code is required'
+            'post_code.required' => 'Post code is required',
+            'post_code.numeric' => 'The post code must be a number',
+            'post_code.digits_between' => 'The post code must not more than 15 digits'
 
         ]);
 

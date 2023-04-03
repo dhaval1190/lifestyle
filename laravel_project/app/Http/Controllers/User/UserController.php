@@ -21,6 +21,8 @@ use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use App\Subscription;
 use App\Item;
+use App\Rules\Base64Image;
+
 
 
 class UserController extends Controller
@@ -234,6 +236,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $input = $request->all();
+        // dd($input);
 
         if (strpos($input['youtube'], "?v=") !== false) {            
             $youtube_url_id = explode("?v=",$input['youtube'])[1];
@@ -262,6 +265,10 @@ class UserController extends Controller
         $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_cover']               = ['required_with:media_image'];
         $rules['podcast_cover']             = ['required_with:podcast_image'];
+        $rules['post_code']             =   ['required','numeric','digits_between:1,15'];
+        $rules['company_name']          = ['nullable','string','max:100'];
+        $rules['user_image']            = ['nullable',new Base64Image];
+        $rules['user_cover_image']            = ['nullable',new Base64Image];
         $rulesMessage['media_image.mimes']  = 'Ebook must be a file of type: pdf.';
         $rulesMessage['media_image.max']    = 'Ebook may not be greater than 30720 kilobytes.';
         $rulesMessage['podcast_image.mimes']= 'Podcast MP3/MP4 Audio must be a file of type: mp3, mp4.';
@@ -295,8 +302,10 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','string','max:10'];
-            $rules['user_image']            = ['nullable'];
+            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
+            // $rules['user_image']            = ['nullable'];
+            $rules['user_image']            = ['nullable',new Base64Image];
+            $rules['user_cover_image']            = ['nullable',new Base64Image];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
