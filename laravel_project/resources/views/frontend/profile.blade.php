@@ -602,7 +602,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                             {{ $user_detail['youtube_intro_description'] }}
                                         </p>
                                         @if(!empty($user_detail['youtube_intro_title']) || !empty($user_detail['youtube_intro_title']))
-                                            <a href="{{ route('page.profile.youtube', $user_detail['id']) }}">Read More</a>
+                                            <a href="{{ route('page.profile.youtube', encrypt($user_detail['id'])) }}">Read More</a>
                                         @endif
                                     </div>
                                 </div> 
@@ -618,7 +618,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                 <div class="below_info">
                                     <h3>Keep Learning</h3>
                                     @if(isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() >= 5)
-                                        <a href="{{ route('page.profile.youtube', $user_detail['id']) }}">View all</a>
+                                        <a href="{{ route('page.profile.youtube', encrypt($user_detail['id'])) }}">View all</a>
                                     @endif
                                 </div>
                             </div>
@@ -646,7 +646,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                 <div class="below_info">
                                     <h3>Our E-books</h3>
                                     @if(isset($ebook_media_array) && !empty($ebook_media_array) && $ebook_media_array->count() >= 5)
-                                        <a href="{{ route('page.profile.ebook', $user_detail['id']) }}">View all</a>
+                                        <a href="{{ route('page.profile.ebook', encrypt($user_detail['id'])) }}">View all</a>
                                     @endif
                                 </div>
                             </div>
@@ -678,7 +678,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                 <div class="below_info">
                                     <h3>Our Podcast</h3>
                                     @if(isset($podcast_media_array) && !empty($podcast_media_array) && $podcast_media_array->count() >= 5)
-                                        <a href="{{ route('page.profile.podcast', $user_detail['id']) }}">View all</a>
+                                        <a href="{{ route('page.profile.podcast', encrypt($user_detail['id'])) }}">View all</a>
                                     @endif
                                 </div>
                             </div>
@@ -718,7 +718,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                             <div class="below_info">
                                 <h3>Topics</h3>
                                 @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
-                                    <a href="{{ route('page.user.categories', $user_detail['id']) }}">View all</a>
+                                    <a href="{{ route('page.user.categories', encrypt($user_detail['id'])) }}">View all</a>
                                 @endif
                             </div>
                         </div>

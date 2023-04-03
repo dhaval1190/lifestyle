@@ -311,7 +311,7 @@
                         @endforeach
                     </div>
                 </div>
-                @if(isset($Articledetail) && !empty($Articledetail) || isset($PodcastImage) && !empty($PodcastImage)|| isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
+                @if(isset($Articledetail) && !empty($Articledetail) || isset($Ebooks) && !empty($Ebooks) || isset($PodcastImage) && !empty($PodcastImage)|| isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
                 <div class="col-lg-12 mb-4">
                   <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
                 </div>
