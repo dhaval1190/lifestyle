@@ -221,7 +221,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label>
+                                                    {{-- <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label> --}}
+                                                    <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Session Method">
                                                         @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                             <option value="{{ $wtkey }}" {{ old('working_type', $login_user->working_type) == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
@@ -1178,13 +1179,13 @@
             $('#delete_user_cover_image_button').on('click', function() {
                 // console.log("fkldfkldk")
                 $('#delete_user_cover_image_button').attr("disabled", true);
-                var id = '<?php echo $login_user->user_cover_image; ?>';
-                var url = "{{route('user.coverimage.delete', 0)}}";
-                url = url.replace('0', id);
-                // var ajax_url = '/ajax/user/image/delete/' + '{{ $login_user->id }}';
+                // var id = '<?php echo $login_user->user_cover_image; ?>';
+                // var url = "{{route('user.coverimage.delete', 0)}}";
+                // url = url.replace('0', id);
+                var ajax_url = '/ajax/user/coverimage/delete/' + '{{ $login_user->user_cover_image }}';
                 // console.log(url);
                 jQuery.ajax({
-                    url: url,
+                    url: ajax_url,
                     method: 'post',
                     success: function(result){
                         console.log(result);
@@ -1306,14 +1307,24 @@
 
             var youtubeUrl = $("#media_url").val();
             var matchUrl = ".youtube";
-            if(youtubeUrl.indexOf(matchUrl) == -1){
+            var matchUrl1 = "youtu.be";
+            if(youtubeUrl.indexOf(matchUrl) == -1 && youtubeUrl.indexOf(matchUrl1) == -1){
                 $('.err_media_url').html("Please enter Youtube URL Only");
                 return false;
             }
 
-            var id = youtubeUrl.split("?v=")[1];
+            if(youtubeUrl.indexOf(matchUrl) > -1){
+                var id = youtubeUrl.split("?v=")[1];
+                var media_url = "https://www.youtube.com/embed/" + id;
 
-            var media_url = "https://www.youtube.com/embed/" + id;
+            }else if(youtubeUrl.indexOf(matchUrl1) > -1){
+                var id = youtubeUrl.split(".be/")[1];
+                var media_url = "https://www.youtube.com/embed/" + id;
+            }else{
+                $('.err_media_url').html("Please enter proper youtube URL");
+                return false;
+            }
+
 
             var media_type_text = $("#media_type option:selected").text();
             var media_type_value = $("#media_type").val();
