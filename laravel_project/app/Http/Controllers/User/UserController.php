@@ -23,6 +23,7 @@ use App\Subscription;
 use App\Item;
 use App\Rules\Base64Image;
 use App\MediaDetailsVisits;
+use Illuminate\Validation\Rules\Password;
 
 
 
@@ -253,7 +254,8 @@ class UserController extends Controller
 
         $rules['name']                      = ['required', 'string', 'max:255'];
         $rules['email']                     = ['required', 'string', 'email', 'max:255'];
-        $rules['phone']                     = ['required','string','max:20'];
+        // $rules['phone']                     = ['required','string','max:20'];
+        $rules['phone']                     = ['required','numeric','digits_between:10,12'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
@@ -280,6 +282,8 @@ class UserController extends Controller
         $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
         $rulesMessage['media_cover.required_with'] = 'Ebook Cover field is required when Ebook PDF is present.';
         $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3/MP4 is present.';
+        $rulesMessage['phone.required'] = 'Phone is required';
+        $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
 
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
@@ -525,7 +529,7 @@ class UserController extends Controller
     {
         $request->validate([
             'password' => 'required',
-            'new_password' => 'required|string|confirmed|min:8',
+            'new_password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
         ]);
 
         $login_user = Auth::user();

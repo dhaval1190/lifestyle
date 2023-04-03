@@ -633,7 +633,8 @@
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
-                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive">
+                                                {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
+                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
                                                 <input id="feature_image" type="hidden" name="feature_image">
                                             </div>
                                         </div>
@@ -703,7 +704,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
                             </div>
                         </div>
@@ -1067,7 +1068,8 @@
 
                 $('#delete_feature_image_button').attr("disabled", true);
 
-                $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}");
+                // $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}");
+                $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}");
                 $('#feature_image').val("");
 
                 $('#delete_feature_image_button').attr("disabled", false);
