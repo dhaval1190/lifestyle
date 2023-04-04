@@ -409,8 +409,8 @@
                                     @if(empty($login_user->user_cover_image))
                                         <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%;">
                                     @else
-                                        {{-- <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;"> --}}
-                                        <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
+                                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
+                                        {{-- <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}" style="width:100%;"> --}}
                                     @endif
                                     <input id="feature_cover_image" type="hidden" name="user_cover_image">
                                     @if(!empty($login_user->user_cover_image))
