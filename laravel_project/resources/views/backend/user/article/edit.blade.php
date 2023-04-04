@@ -705,7 +705,8 @@
                                             <div class="col-12">
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
                                                 @if(empty($article->item_image))
-                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive">
+                                                {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
+                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
                                                 @else
                                                 <img id="image_preview" src="{{ Storage::disk('public')->url('item/'. $article->item_image) }}" class="img-responsive">
                                                 @endif

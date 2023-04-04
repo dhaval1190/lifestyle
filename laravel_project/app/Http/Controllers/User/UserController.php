@@ -252,7 +252,7 @@ class UserController extends Controller
         $rules = [];
         $rulesMessage = [];
 
-        $rules['name']                      = ['required', 'string', 'max:255'];
+        $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'string', 'email', 'max:255'];
         // $rules['phone']                     = ['required','string','max:20'];
         $rules['phone']                     = ['required','numeric','digits_between:10,12'];
