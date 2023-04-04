@@ -52,7 +52,7 @@
 
                     @guest
                         @if (Route::has('register'))
-                        <li class="@yield('register_active')"><a href="{{ route('register') }}">{{ __('frontend.header.register') }}</a></li>
+                        {{-- <li class="@yield('register_active')"><a href="{{ route('register') }}">{{ __('frontend.header.register') }}</a></li> --}}
                         @endif
                         <li class="login @yield('login_active')"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
                     @else
