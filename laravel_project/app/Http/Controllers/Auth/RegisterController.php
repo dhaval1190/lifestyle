@@ -443,6 +443,81 @@ class RegisterController extends Controller
         
     }
 
+    public function coachSignUp(Request $request)
+    {
+
+        // return response()->json(['data'=>$request->input()]);
+
+        if($request->email){
+            $sel_user = User::where('email',$request->email)->first();
+            if($sel_user){
+                return response()->json(['status'=>"email_reg",'msg'=>"Email Id already registered"]);
+
+            }
+        }
+
+        $validator = Validator::make($request->all(),[
+            
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
+            'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',            
+            // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
+            
+        ],[            
+            'name.required' => 'Name is required',
+            'name.regex'         =>  "Invalid name",
+            'name.max'           =>  "Name must not more than 30 characters",
+            'email.required'=> 'Email is required',            
+            'email.regex'         =>  "Invalid email format", 
+            'email.email'       => "Invalid email format",           
+            'password.required'=> 'Password is required',
+            'password.min'=> 'Password must at least 8 chars',
+            'password.regex'=> 'Password must contains letter,number,special chars',            
+
+        ]);
+
+        $settings = app('site_global_settings');
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+
+        if(!empty($settings->setting_site_name)) {
+            config(['app.name' => $settings->setting_site_name]);
+        }
+
+        if($validator->passes()){
+            try {
+                event(new Registered($user = $this->create($request->all())));
+            } catch (\Exception $e) {
+                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            }
+
+            return response()->json(['status'=>"success",'data'=>$request->input()]);
+
+        }else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+        }
+
+        if(isset($user)) {
+            $this->guard()->login($user);
+            return $this->registered($request, $user)
+                ?: redirect($this->redirectPath());
+        } else {
+            return redirect()->route('login');
+        }
+
+        
+    }
+
 
     protected function registered(Request $request, $user)
     {

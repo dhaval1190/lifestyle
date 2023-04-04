@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         'maintenance' => \App\Http\Middleware\Maintenance::class,
         'verify_subscription' => \App\Http\Middleware\VerifySubscription::class,
         'blog' => \App\Http\Middleware\BlogMiddleware::class,
+        'check_coach_details' => \App\Http\Middleware\CheckCoachDetails::class,
     ];
 
     /**

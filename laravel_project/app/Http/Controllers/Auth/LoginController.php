@@ -65,6 +65,8 @@ class LoginController extends Controller
 
         if ($user->isUser())
         {
+
+            // dd($user);
             // if the website is in maintenance mode, forcely logout user
             $settings = app('site_global_settings');
             if($settings->setting_site_maintenance_mode == Setting::SITE_MAINTENANCE_MODE_ON)
@@ -78,6 +80,9 @@ class LoginController extends Controller
 
         if ($user->isCoach())
         {
+            if(!isset($user->post_code)){
+                return redirect('/user/profile');
+            }
             // if the website is in maintenance mode, forcely logout user
             $settings = app('site_global_settings');
             if($settings->setting_site_maintenance_mode == Setting::SITE_MAINTENANCE_MODE_ON)

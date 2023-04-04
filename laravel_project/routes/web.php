@@ -62,7 +62,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     /**
      * Public routes
      */
-    Route::get('/', 'PagesController@index')->name('page.home');
+    Route::get('/', 'PagesController@index')->name('page.home')->middleware('check_coach_details');
 
     Route::get('/search', 'PagesController@search')->name('page.search');
 
@@ -71,7 +71,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/faq', 'PagesController@faq')->name('page.faq');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
-    Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
+    Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile')->middleware('check_coach_details');
     Route::get('/ajax/profile/podcast/{id}', 'PagesController@jsonProfilePodcastDetail')->name('json.profile.podcast');
     Route::get('/youtube-detail/{id}', 'PagesController@profileYoutubeDetail')->name('page.profile.youtube');
     Route::get('/podcast-detail/{id}', 'PagesController@profilePodcaseDetail')->name('page.profile.podcast');
@@ -118,6 +118,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
 
     Route::get('/pricing', 'PagesController@pricing')->name('page.pricing');
+    Route::get('/coach-register', 'PagesController@coachRegister')->name('page.register');
     Route::get('/terms-of-service', 'PagesController@termsOfService')->name('page.terms-of-service');
     Route::get('/privacy-policy', 'PagesController@privacyPolicy')->name('page.privacy-policy');
     Route::get('/agreement', 'PagesController@agreement')->name('page.agreement');
@@ -522,7 +523,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
      */
     Route::group(['prefix'=>'user','namespace'=>'User','middleware'=>['verified','auth','user','verify_subscription'],'as'=>'user.'], function(){
 
-        Route::get('/dashboard','PagesController@index')->name('index');
+        Route::get('/dashboard','PagesController@index')->name('index')->middleware('check_coach_details');
         Route::get('/profile-progress/{user_id}','PagesController@profileProgressData')->name('profile.progress');
         Route::resource('/items', 'ItemController');
 
@@ -556,14 +557,14 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/items/{item_slug}/unsave', 'ItemController@unSaveItem')->name('items.unsave');
 
         // item reviews routes
-        Route::get('/items/{item_slug}/reviews/create', 'ItemController@itemReviewsCreate')->name('items.reviews.create');
-        Route::post('/items/{item_slug}/reviews/store', 'ItemController@itemReviewsStore')->name('items.reviews.store');
-        Route::get('/items/{item_slug}/reviews/{review}/edit', 'ItemController@itemReviewsEdit')->name('items.reviews.edit');
-        Route::put('/items/{item_slug}/reviews/update/{review}', 'ItemController@itemReviewsUpdate')->name('items.reviews.update');
-        Route::delete('/items/{item_slug}/reviews/destroy/{review}', 'ItemController@itemReviewsDestroy')->name('items.reviews.destroy');
+        Route::get('/items/{item_slug}/reviews/create', 'ItemController@itemReviewsCreate')->name('items.reviews.create')->middleware('check_coach_details');
+        Route::post('/items/{item_slug}/reviews/store', 'ItemController@itemReviewsStore')->name('items.reviews.store')->middleware('check_coach_details');
+        Route::get('/items/{item_slug}/reviews/{review}/edit', 'ItemController@itemReviewsEdit')->name('items.reviews.edit')->middleware('check_coach_details');
+        Route::put('/items/{item_slug}/reviews/update/{review}', 'ItemController@itemReviewsUpdate')->name('items.reviews.update')->middleware('check_coach_details');
+        Route::delete('/items/{item_slug}/reviews/destroy/{review}', 'ItemController@itemReviewsDestroy')->name('items.reviews.destroy')->middleware('check_coach_details');
 
         // user manage reviews route
-        Route::get('/items/reviews/index', 'ItemController@itemReviewsIndex')->name('items.reviews.index');
+        Route::get('/items/reviews/index', 'ItemController@itemReviewsIndex')->name('items.reviews.index')->middleware('check_coach_details')->middleware('check_coach_details');
 
         // user item hours routes
         Route::put('/items/hours/update/{item_hour}', 'ItemController@updateItemHour')->name('items.hours.update');
@@ -577,7 +578,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
 
         // Articles
-        Route::resource('/articles', 'ArticleController');
+        Route::resource('/articles', 'ArticleController')->middleware('check_coach_details');
         Route::post('/articles/bulk/delete', 'ArticleController@bulkDeleteItem')->name('articles.bulk.delete');
 
         // Articles slug update route
@@ -626,9 +627,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::delete('/articles/hour-exceptions/destroy/{article_hour_exception}', 'ArticleController@destroyItemHourException')->name('articles.hour-exceptions.destroy');
  
         // message routes
-        Route::resource('/messages', 'MessageController');             
+        Route::resource('/messages', 'MessageController')->middleware('check_coach_details');             
         // subscription routes
-        Route::resource('/subscriptions', 'SubscriptionController');
+        Route::resource('/subscriptions', 'SubscriptionController')->middleware('check_coach_details');
 
         // product routes
         Route::resource('/products', 'ProductController');
@@ -693,6 +694,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     });
 
     Route::post('/signUp-user', 'Auth\RegisterController@userSignUp')->name('userSignUp');
+    Route::post('/coach-signUp', 'Auth\RegisterController@coachSignUp')->name('coachSignUp');
 });
 /**
  * End website routes
