@@ -80,7 +80,8 @@
                     @endguest
                     <li>
                         @guest
-                            <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
+                            {{-- <a href="{{ route('page.pricing') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a> --}}
+                            <a href="{{ route('page.register') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('frontend.header.list-business') }}</span></a>
                         @else
                             @if(Auth::user()->isAdmin())
                                 <a href="{{ route('admin.items.create') }}" class="cta"><span class="bg-primary one-bg-primary text-white rounded"><i class="fas fa-plus mr-1"></i> {{ __('backend.article.add-article') }}</span></a>

@@ -66,20 +66,32 @@
 @endsection
 
 @section('content')
+@php 
+    $chk_user = Auth::user()->post_code;
+@endphp
 
+@if(isset($chk_user))  
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
-            <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
-            <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
+                <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
+                <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
+                <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
+            
+    
+            </div>
+            <div class="col-3 text-right">
+            </div>
         </div>
-        <div class="col-3 text-right">
-        </div>
-    </div>
+@endif
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
+            @if(!isset($chk_user)) 
+            <div class="alert alert-danger" role="alert">
+                {{ __('Please enter details to proceed further') }}
+            </div>
+        @endif
             <div class="row">
                 <div class="col-12">
                     <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
@@ -1221,12 +1233,12 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/states/' + this.value;
-                    // var id = this.value;
-                    // var url = "{{route('json.state', 0)}}";
-                    // url = url.replace('0', id);
+                    // var ajax_url = '/ajax/states/' + this.value;
+                    var id = this.value;
+                    var url = "{{route('json.state', 0)}}";
+                    url = url.replace('0', id);
                     jQuery.ajax({
-                        url: ajax_url,
+                        url: url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
@@ -1246,12 +1258,12 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/cities/' + this.value;
-                    // var id = this.value;
-                    // var url = "{{route('json.city', 0)}}";
-                    // url = url.replace('0', id);
+                    // var ajax_url = '/ajax/cities/' + this.value;
+                    var id = this.value;
+                    var url = "{{route('json.city', 0)}}";
+                    url = url.replace('0', id);
                     jQuery.ajax({
-                        url: ajax_url,
+                        url: url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
