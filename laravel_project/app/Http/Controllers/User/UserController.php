@@ -298,9 +298,9 @@ class UserController extends Controller
             $rules['experience_year']       = ['required','string','max:50'];
 
             $rules['website']               = ['nullable','string','url','max:100'];
-            $rules['instagram']             = ['nullable','string','max:100'];
-            $rules['linkedin']              = ['nullable','string','max:100'];
-            $rules['facebook']              = ['nullable','string','max:100'];
+            $rules['instagram']             = ['nullable','string','not:url','max:100'];
+            $rules['linkedin']              = ['nullable','string','url','max:100'];
+            $rules['facebook']              = ['nullable','string','url','max:100'];
             $rules['youtube']               = ['nullable','string','url','max:100'];
 
             $rules['address']               = ['required','string','max:160'];

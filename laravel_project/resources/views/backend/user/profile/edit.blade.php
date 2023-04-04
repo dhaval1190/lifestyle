@@ -66,32 +66,20 @@
 @endsection
 
 @section('content')
-@php 
-    $chk_user = Auth::user()->post_code;
-@endphp
 
-@if(isset($chk_user))  
     <div class="row justify-content-between">
         <div class="col-9">
-                <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
-                <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
-                <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
-            
-    
-            </div>
-            <div class="col-3 text-right">
-            </div>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
+            <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
+            <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
         </div>
-@endif
+        <div class="col-3 text-right">
+        </div>
+    </div>
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
-            @if(!isset($chk_user)) 
-            <div class="alert alert-danger" role="alert">
-                {{ __('Please enter details to proceed further') }}
-            </div>
-        @endif
             <div class="row">
                 <div class="col-12">
                     <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
@@ -288,6 +276,7 @@
                                 <div class="col-sm-2">
                                     <label for="instagram" class="text-black">IG Handle</label>
                                     <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
+                                    <span class="err_instagram_url" style="color:red"></span>
                                     @error('instagram')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -297,6 +286,7 @@
                                 <div class="col-sm-2">
                                     <label for="linkedin" class="text-black">LinkedIn</label>
                                     <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
+                                    <span class="err_linkedin_url" style="color:red"></span>
                                     @error('linkedin')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -306,6 +296,7 @@
                                 <div class="col-sm-2">
                                     <label for="facebook" class="text-black">Facebook</label>
                                     <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
+                                    <span class="err_facebook_url" style="color:red"></span>
                                     @error('facebook')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -712,7 +703,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success m-2 text-white">
+                                <button type="submit" id = "submit"class="btn btn-success m-2 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                                 <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
@@ -1233,12 +1224,12 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = '/ajax/states/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.state', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/states/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.state', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
@@ -1258,12 +1249,12 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    // var ajax_url = '/ajax/cities/' + this.value;
-                    var id = this.value;
-                    var url = "{{route('json.city', 0)}}";
-                    url = url.replace('0', id);
+                    var ajax_url = '/ajax/cities/' + this.value;
+                    // var id = this.value;
+                    // var url = "{{route('json.city', 0)}}";
+                    // url = url.replace('0', id);
                     jQuery.ajax({
-                        url: url,
+                        url: ajax_url,
                         method: 'get',
                         success: function(result) {
                             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
@@ -1364,7 +1355,56 @@
 
             $( "#media_details_added" ).append("<div class='col-12'><input type='hidden' name='media_details[]' value='" + media_detail_value + "'>"+media_detail_text+"<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>");
             $("#media_url").val('');
+
         });
+        $('#facebook').on('focus', function(){
+                $('.err_facebook_url').html('');
+                var facebookUrl = $("#facebook").val();
+                var matchUrl = ".facebook";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_facebook_url').html("Please enter Facebook URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_facebook_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+
+            $('#linkedin').on('focus', function(){
+                $('.err_linkedin_url').html('');
+                var facebookUrl = $("#linkedin").val();
+                var matchUrl = ".linkedin";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_linkedin_url').html("Please enter Linkedin URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            function isUrl(s) {
+            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            return regexp.test(s);
+            }
+            $('#instagram').on('focus', function(){  
+                $('.err_instagram_url').html('');             
+               var instaurl =  isUrl($("#instagram").val());  
+               console.log(instaurl);
+               if(instaurl){
+                $('.err_instagram_url').html("Please enter valid instagram user name Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_instagram_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+              
+            });
     </script>
 
 @endsection

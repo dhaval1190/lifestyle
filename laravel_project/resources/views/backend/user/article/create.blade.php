@@ -351,6 +351,7 @@
                                             {{ __('backend.article.facebook') }}
                                         </label>
                                         <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
+                                        <span class="err_media_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -370,6 +371,7 @@
                                             {{ __('backend.article.twitter') }}
                                         </label>
                                         <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
+                                        <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -386,6 +388,7 @@
                                             {{ __('backend.article.linkedin') }}
                                         </label>
                                         <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
+                                        <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -402,6 +405,7 @@
                                             {{ __('article_whatsapp_instagram.article-social-instagram') }}
                                         </label>
                                         <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram', $login_user->instagram) }}">
+                                        <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
                                         </small>
@@ -527,6 +531,7 @@
                                             <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
+                                        <div id="message" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
@@ -585,6 +590,7 @@
                                             <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
                                             @endfor
                                         </select>
+                                        <div id="exception_close_hour" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
@@ -674,7 +680,7 @@
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-success py-2 px-4 text-white">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>
@@ -781,6 +787,83 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
+         $(document).ready(function(){
+            $('#article_hour_create_button').on('click',function(){
+                $('#message').html('');
+                if(parseInt($('#article_hour_open_time_open_hour').val()) > parseInt($('#article_hour_open_time_close_hour').val())) {
+                    $('#message').html('please select close hour greater than open hour');
+                }
+            });
+            $('#article_hour_exception_create_button').on('click',function(){
+                $('#exception_close_hour').html('');
+                if(parseInt($('#article_hour_exception_open_time_open_hour').val()) > parseInt($('#article_hour_exception_open_time_close_hour').val())) {
+                    $('#exception_close_hour').html('please select exception close hour greater than exception open hour');
+                }
+            });
+
+            $('#article_social_facebook').on('focus', function(){
+                $('.err_media_url').html('');
+                var facebookUrl = $("#article_social_facebook").val();
+                var matchUrl = ".facebook";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_media_url').html("Please enter Facebook URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_media_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#article_social_twitter').on('focus', function(){
+                $('.err_twitter_url').html('');
+                var facebookUrl = $("#article_social_twitter").val();
+                var matchUrl = ".twitter";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_twitter_url').html("Please enter Twitter URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_twitter_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#article_social_linkedin').on('focus', function(){
+                $('.err_linkedin_url').html('');
+                var facebookUrl = $("#article_social_linkedin").val();
+                var matchUrl = ".linkedin";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_linkedin_url').html("Please enter Linkedin URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+
+            function isUrl(s) {
+            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            return regexp.test(s);
+            }
+            $('#article_social_instagram').on('focus', function(){  
+                $('.err_instagram_url').html('');             
+               var instaurl =  isUrl($("#article_social_instagram").val());  
+               console.log(instaurl);
+               if(instaurl){
+                $('.err_instagram_url').html("Please enter valid instagram user name Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_instagram_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+              
+            });
+            });
 
         $(document).ready(function() {
 
