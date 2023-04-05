@@ -823,9 +823,9 @@ class PagesController extends Controller
         $settings = app('site_global_settings');
 
         $validation_array = [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'first_name' => 'required|regex:/^[\pL\s]+$/u|max:100',
+            'last_name' => 'required|regex:/^[\pL\s]+$/u|max:100',
+            'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
             'subject' => 'required|max:255',
             'message' => 'required',
         ];

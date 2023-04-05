@@ -97,7 +97,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
@@ -111,7 +111,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label class="text-black" for="subject">{{ __('auth.password') }}</label>
+                                <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                 @error('password')

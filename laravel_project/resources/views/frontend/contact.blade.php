@@ -57,7 +57,7 @@
 
                         <div class="row form-group">
                             <div class="col-md-6 mb-3 mb-md-0">
-                                <label class="text-black" for="first_name">{{ __('frontend.contact.first-name') }}</label>
+                                <label class="text-black" for="first_name">{{ __('frontend.contact.first-name') }}<span class="text-danger">*</span></label>
                                 <input name="first_name" type="text" id="first_name" class="form-control @error('first_name') is-invalid @enderror" value="{{ old('first_name') }}">
                                 @error('first_name')
                                 <span class="invalid-tooltip">
@@ -66,7 +66,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="text-black" for="last_name">{{ __('frontend.contact.last-name') }}</label>
+                                <label class="text-black" for="last_name">{{ __('frontend.contact.last-name') }}<span class="text-danger">*</span></label>
                                 <input name="last_name" type="text" id="last_name" class="form-control @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}">
                                 @error('last_name')
                                 <span class="invalid-tooltip">
@@ -79,7 +79,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label class="text-black" for="email">{{ __('frontend.contact.email') }}</label>
+                                <label class="text-black" for="email">{{ __('frontend.contact.email') }}<span class="text-danger">*</span></label>
                                 <input name="email" type="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
                                 @error('email')
                                 <span class="invalid-tooltip">
@@ -92,7 +92,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label class="text-black" for="subject">{{ __('frontend.contact.subject') }}</label>
+                                <label class="text-black" for="subject">{{ __('frontend.contact.subject') }}<span class="text-danger">*</span></label>
                                 <input name="subject" type="text" id="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject') }}">
                                 @error('subject')
                                 <span class="invalid-tooltip">
@@ -104,7 +104,7 @@
 
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label class="text-black" for="message">{{ __('frontend.contact.message') }}</label>
+                                <label class="text-black" for="message">{{ __('frontend.contact.message') }}<span class="text-danger">*</span></label>
                                 <textarea name="message" id="message" cols="30" rows="7" class="form-control @error('message') is-invalid @enderror" placeholder="">{{ old('message') }}</textarea>
                                 @error('message')
                                 <span class="invalid-tooltip">

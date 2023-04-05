@@ -94,6 +94,9 @@ $chk_post = Auth::user()->phone;
                             Please enter details to proceed further
                         </div>
                     @endif
+                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
+                        <strong id="img_error"></strong>
+                    </div>
                     <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
                         @csrf
 
@@ -411,6 +414,9 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible fade show" id="cover_image_error_div" role="alert" style="display:none;margin:4px;">
+                                <strong id="cover_img_error"></strong>
                             </div>
                             
                             <div class="row mt-3">
@@ -880,7 +886,7 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                <input id="upload_image_input" type="file" class="custom-file-input">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -913,7 +919,7 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_cover_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                <input id="upload_cover_image_input" type="file" class="custom-file-input">
                                 <label class="custom-file-label" for="upload_cover_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -1088,6 +1094,8 @@ $chk_post = Auth::user()->phone;
             var image_crop = null;
             $('#upload_image').on('click', function() {
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
             var fileTypes = ['jpg', 'jpeg', 'png'];
@@ -1110,25 +1118,27 @@ $chk_post = Auth::user()->phone;
                 var reader = new FileReader();
                 var file = this.files[0]; // Get your file here
                 var fileExt = file.type.split('/')[1]; // Get the file extension
-                console.log(fileExt);
+                // console.log(fileExt);
 
                 if(fileTypes.indexOf(fileExt) !== -1) {
-                    // console.log("djskjdkljkls")
-                reader.onload = function (event) {
-                    image_crop.croppie('bind', {
-                        url: event.target.result
-                    }).then(function(){
-                        console.log('jQuery bind complete');
-                    });
-                };
-                reader.readAsDataURL(this.files[0]);
+        
+                    reader.onload = function (event) {
+                        image_crop.croppie('bind', {
+                            url: event.target.result
+                        }).then(function(){
+                            console.log('jQuery bind complete');
+                        });
+                    };
+                    reader.readAsDataURL(this.files[0]);
                 }else{
-                    alert('Please choose only .jpg,.jpeg,.png file');
+                    // alert('Please choose only .jpg,.jpeg,.png file');
                     $('#image-crop-modal').trigger('reset');
                     $('#image-crop-modal').modal('hide');
                     $('#upload_image_input').val('');
                     image_crop = null;
-                    // $('#crop_image').prop('disabled', true);
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
                 }
             });
 
@@ -1137,7 +1147,6 @@ $chk_post = Auth::user()->phone;
                     type: 'base64',
                     size: 'viewport'
                 }).then(function(response){
-                    console.log("dsdhjshjhs",response)
                     $('#feature_image').val(response);
                     $('#image_preview').attr("src", response);
                 });
@@ -1147,8 +1156,10 @@ $chk_post = Auth::user()->phone;
             var cover_image_crop = null;
             $('#upload_cover_image').on('click', function() {
                 $('#cover-image-crop-modal').modal('show');
+                $('#cover_image_error_div').hide();
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_cover_image_input').on('change', function() {
                 if(!cover_image_crop) {
                     cover_image_crop = $('#cover_image_demo').croppie({
@@ -1166,14 +1177,27 @@ $chk_post = Auth::user()->phone;
                     });
                 }
                 var reader = new FileReader();
-                reader.onload = function (event) {
-                    cover_image_crop.croppie('bind', {
-                        url: event.target.result
-                    }).then(function(){
-                        console.log('jQuery bind complete');
-                    });
-                };
-                reader.readAsDataURL(this.files[0]);
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+                if(fileTypes.indexOf(fileExt) !== -1) {
+                    reader.onload = function (event) {
+                        cover_image_crop.croppie('bind', {
+                            url: event.target.result
+                        }).then(function(){
+                            console.log('jQuery bind complete');
+                        });
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }else{
+                    $('#cover-image-crop-modal').trigger('reset');
+                    $('#cover-image-crop-modal').modal('hide');
+                    $('#upload_cover_image_input').val('');
+                    cover_image_crop = null;
+                    $('#cover_image_demo').croppie('destroy');
+                    $('#cover_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#cover_image_error_div').show();
+
+            }
             });
 
             $('#crop_cover_image').on("click", function(event) {
