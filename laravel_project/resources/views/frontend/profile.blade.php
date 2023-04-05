@@ -228,7 +228,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                 @endif
                                                 <div class="detail one">
                                                 <p> <i class="fas fa-eye" style="cursor: pointer;" onclick="window.location='{{ url("visitor-view/".encrypt($user_detail->id)) }}'" id="eye">                                               
-                                                    <b>Total Visitor(s)</b> : {{ $visit_count }}</i> </p>                                                    
+                                                    <b>Total Visitor(s)</b> : {{ $All_visit_count }}</i> </p>                                                    
                                                 </div> 
                                                 <?php
                                                     $userId = '';
