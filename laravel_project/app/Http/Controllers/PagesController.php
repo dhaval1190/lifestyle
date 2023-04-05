@@ -2888,11 +2888,11 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
-        if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
+        $visite_ebookmedia  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        if($media && $media->user_id == $login_user->id || $visite_ebookmedia && $visite_ebookmedia->user_id == $login_user->id)
         {
             $media_detail->delete();
-            $visite_media->delete();
+            $visite_ebookmedia->delete();
 
             \Session::flash('flash_message', __('alert.media-deleted'));
             \Session::flash('flash_type', 'success');
@@ -2910,12 +2910,11 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-
-        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
-        if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
+        $visite_podcastmedia  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        if($media && $media->user_id == $login_user->id || $visite_podcastmedia && $visite_podcastmedia->user_id == $login_user->id)
         {
             $media_detail->delete();
-            $visite_media->delete();
+            $visite_podcastmedia->delete();
 
             \Session::flash('flash_message', __('alert.media-deleted'));
             \Session::flash('flash_type', 'success');

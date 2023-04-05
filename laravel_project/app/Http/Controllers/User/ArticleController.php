@@ -440,8 +440,8 @@ class ArticleController extends Controller
             'city_id' => 'required|numeric',
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
-            'article_postal_code' => 'nullable|numeric|max:6|min:4',
-            'article_phone' => 'nullable|numeric|max:12|min:10',
+            'article_postal_code' => 'nullable|numeric|digits_between:1,15',
+            'article_phone' => 'nullable|numeric|digits_between:10,12',
             'article_website' => 'nullable|url|max:255',
             'article_social_facebook' => 'nullable|url|max:255',
             'article_social_twitter' => 'nullable|url|max:255',
@@ -453,7 +453,7 @@ class ArticleController extends Controller
             'article_hour_time_zone' => 'required|max:255',
             'article_hour_show_hours' => 'required|numeric|in:1,2',
             'article_social_instagram' => 'nullable|string|max:255',
-            'article_social_whatsapp' => 'nullable|numeric|max:12|min:10',
+            'article_social_whatsapp' => 'nullable|numeric|digits_between:10,12',
         ];
 
         // validate request
