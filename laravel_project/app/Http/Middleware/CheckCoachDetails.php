@@ -13,8 +13,8 @@ class CheckCoachDetails
     {
 
         $login_user = Auth::user();
-        // dd($login_user->post_code);
-        if(isset($login_user->post_code)){
+        // dd($login_user->phone);
+        if(isset($login_user->phone)){
             return $next($request);
         }else{            
             return redirect()->route('user.profile.edit');

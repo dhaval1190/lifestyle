@@ -238,28 +238,30 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $input = $request->all();
-        // dd($input);
 
-        if (strpos($input['youtube'], "?v=") !== false) {            
-            $youtube_url_id = explode("?v=",$input['youtube'])[1];
-            $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
-            
-        }elseif(strpos($input['youtube'], "youtu.be") !== false){
-            $youtube_url_id = explode(".be/",$input['youtube'])[1];
-            $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+        if(isset($input['youtube'])){
+            if (strpos($input['youtube'], "?v=") !== false) {            
+                $youtube_url_id = explode("?v=",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+                
+            }elseif(strpos($input['youtube'], "youtu.be") !== false){
+                $youtube_url_id = explode(".be/",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+            }
         }
         
         $rules = [];
         $rulesMessage = [];
 
         $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
-        $rules['email']                     = ['required', 'string', 'email', 'max:255'];
+        // $rules['email']                     = ['required', 'string', 'email', 'max:255'];
+        $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','max:255'];
         // $rules['phone']                     = ['required','string','max:20'];
-        $rules['phone']                     = ['required','numeric','digits_between:10,12'];
+        $rules['phone']                     = ['required','numeric','digits_between:10,20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
-        $rules['user_about']                = ['nullable'];
+        $rules['user_about']                = ['nullable','max:255'];
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
         $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3,mp4', 'max:30720'];
@@ -268,7 +270,7 @@ class UserController extends Controller
         $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_cover']               = ['required_with:media_image'];
         $rules['podcast_cover']             = ['required_with:podcast_image'];
-        $rules['post_code']             =   ['required','numeric','digits_between:1,15'];
+        // $rules['post_code']             =   ['required','numeric','digits_between:1,15'];
         $rules['company_name']          = ['nullable','string','max:100'];
         $rules['user_image']            = ['nullable',new Base64Image];
         $rules['user_cover_image']            = ['nullable',new Base64Image];
@@ -284,6 +286,7 @@ class UserController extends Controller
         $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3/MP4 is present.';
         $rulesMessage['phone.required'] = 'Phone is required';
         $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
+        
 
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
@@ -315,6 +318,7 @@ class UserController extends Controller
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
         }
+        
 
         $request->validate($rules, $rulesMessage);
 
@@ -329,10 +333,12 @@ class UserController extends Controller
         // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
         $login_user = Auth::user();
-        $youtube_url = User::where('id', $login_user->id)->select('youtube')->first();
-        if($youtube_url['youtube'] != $input['youtube']){
-           $update = MediaDetailsVisits::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
-           session()->forget("viewed_user_youtube.{$login_user->id}");
+        if(isset($input['youtube'])){
+            $youtube_url = User::where('id', $login_user->id)->select('youtube')->first();
+            if($youtube_url['youtube'] != $input['youtube']){
+            $update = MediaDetailsVisits::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
+            session()->forget("viewed_user_youtube.{$login_user->id}");
+            }
         }
 
         $validate_error = array();
