@@ -130,7 +130,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $referrer = User::find(session()->pull('referrer'));
+        $referrer = User::find(session()->pull('referrer'));        
 
         $new_user =  User::create([
             'name'                  => $data['name'],
@@ -140,6 +140,7 @@ class RegisterController extends Controller
             'user_suspended'        => User::USER_NOT_SUSPENDED,
             'referrer_id'           => $referrer ? $referrer->id : null,
         ]);
+        
 
         if(isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) {
 
@@ -168,8 +169,8 @@ class RegisterController extends Controller
             $new_user->post_code             = isset($data['post_code']) ? $data['post_code'] : null;
             $new_user->is_terms_read         = isset($data['is_terms_read']) && !empty($data['is_terms_read']) ? $data['is_terms_read'] : 0;
 
-            $user_image = $data['user_image'];
-            if(!empty($user_image)){
+            // $user_image = $data['user_image'];
+            if(isset($data['user_image']) && !empty($data['user_image'])){
                 $currentDate = Carbon::now()->toDateString();
                 $user_image_name = 'user-' . str_slug($new_user->name).'-'.$currentDate.'-'.uniqid().'.jpg';
                 if(!\Storage::disk('public')->exists('user')){
@@ -179,6 +180,7 @@ class RegisterController extends Controller
                 \Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
                 $new_user->user_image = $user_image_name;
             }
+
         }
 
         $new_user->user_prefer_language = 'en';
@@ -446,8 +448,6 @@ class RegisterController extends Controller
     public function coachSignUp(Request $request)
     {
 
-        // return response()->json(['data'=>$request->input()]);
-
         if($request->email){
             $sel_user = User::where('email',$request->email)->first();
             if($sel_user){
@@ -497,6 +497,7 @@ class RegisterController extends Controller
         if($validator->passes()){
             try {
                 event(new Registered($user = $this->create($request->all())));
+
             } catch (\Exception $e) {
                 Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             }

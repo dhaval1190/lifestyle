@@ -151,7 +151,8 @@
 
                         <div class="row form-group">
                             <div class="col-12">
-                                <p>{{ __('auth.no-account-yet') }}? <a href="{{ route('register') }}">{{ __('auth.register') }}</a></p>
+                                {{-- <p>{{ __('auth.no-account-yet') }}? <a href="{{ route('register') }}">{{ __('auth.register') }}</a></p> --}}
+                                <p>{{ __('auth.no-account-yet') }}? <a href="{{ route('register') }}">{{ __('Sign up as a user') }}</a></p>
                             </div>
                         </div>
 

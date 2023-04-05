@@ -78,6 +78,7 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                                 <input type="hidden" name="is_coach" value="{{ \App\Role::COACH_ROLE_ID }}">
                                     {{-- <input type="hidden" name="plan_id" id="plan_id" value="{{ old('plan_id') }}"> --}}
+                                    <input type="hidden" name="plan_id" id="plan_id" value="1">
                                 <p class="name_error error_color" role="alert"></p>
                                 <!-- @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -301,6 +302,7 @@
 
                         success: function(response){
                             // console.log(response);
+                            // return false;
                             if(response.status == 'success'){
                                 // console.log(response)
                                 $(".error_color").text("");

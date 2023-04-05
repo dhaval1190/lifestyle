@@ -62,7 +62,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     /**
      * Public routes
      */
-    Route::get('/', 'PagesController@index')->name('page.home')->middleware('check_coach_details');
+    Route::get('/', 'PagesController@index')->name('page.home');
 
     Route::get('/search', 'PagesController@search')->name('page.search');
 
