@@ -2,108 +2,113 @@
 
 @section('styles')
 <style>
-.invisible {
-    display: none;
-}
+    .invisible {
+        display: none;
+    }
 
-.canvasjs-chart-credit {
-    display: none;
-}
+    .canvasjs-chart-credit {
+        display: none;
+    }
 
-@import url(https://fonts.googleapis.com/css?family=Muli);
+    @import url(https://fonts.googleapis.com/css?family=Muli);
 
-* {
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-}
-
-
-
-.toggle {
-    cursor: pointer;
-}
-
-.toggle_two {
-    cursor: pointer;
-    float: right;
-    margin-top: 81px;
-    margin-left: 10px;
+    * {
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+    }
 
 
-}
 
-.sidebar_two {
-    position: fixed;
-    width: 500px;
-    float: right;
-    box-shadow: 0px 0px 10px 3px black;
-    border-left: 1px solid black;
-    height: 100%;
-    top: 0px;
-    right: -500px;
-    z-index: 99;
+    .toggle {
+        cursor: pointer;
+    }
 
-    background-color: #5a5c69;
-    opacity: 1.2;
-    /* background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%); */
-    background-size: cover;
-}
+    .toggle_two {
+        cursor: pointer;
+        float: right;
+        margin-top: 81px;
+        margin-left: 10px;
+    }
 
-.sidebar_two h2 {
-    color: white;
-    text-align: left;
-    margin-top: 5rem;
-    padding-left: 15px;
-    font-family: 'Muli', sans-serif;
-}
+    .sidebar_two {
+        position: fixed;
+        width: 500px;
+        float: right;
+        box-shadow: 10px 10px 0px 3px #fff;
+        border-left: 0px solid black;
+        height: 100vh;
+        top: 180px;
+        right: -500px;
+        z-index: 9999;
+        background: #fff;
+        opacity: 1.2;
+        background-size: cover;
+        border-radius: 30px;
+    }
 
-.sidebar_two.active {
-    right: 0px;
-}
+    .sidebar_two h2 {
+        color: white;
+        text-align: left;
+        margin-top: 5rem;
+        padding-left: 15px;
+        font-family: 'Muli', sans-serif;
+    }
 
-.notibox {
-    color: white;
-    font-family: 'Muli', sans-serif;
-    background-color: #5a5c69;
-    width: calc(100% - 60px);
-    padding: 15px;
-    margin: 15px;
-    border-radius: 4px;
-    position: relative;
-}
+    .sidebar_two.active {
+        right: 0px;
+    }
 
-.cancel {
-    position: absolute;
-    right: 7px;
-    top: 10px;
-    cursor: pointer;
-    padding: 3px;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 20px;
-}
+    .notibox {
+        color: white;
+        font-family: 'Muli', sans-serif;
+        background-color: #5a5c69;
+        width: calc(100% - 60px);
+        padding: 15px;
+        margin: 15px;
+        border-radius: 4px;
+        position: relative;
+    }
 
-.cancel:hover {
-    color: black;
-    background-color: white;
-}
+    .cancel {
+        position: absolute;
+        right: 0px;
+        top: 10px;
+        cursor: pointer;
+        padding: 3px;
+        border-radius: 20px;
+    }
 
-.gone {
-    display: none;
-}
+    .cancel:hover {
+        color: black;
+        background-color: white;
+    }
 
-.none {
-    opacity: 0;
-}
+    .gone {
+        display: none;
+    }
 
-.cancel_two {
-    color: #fff;
-}
+    .none {
+        opacity: 0;
+    }
 
-.listing .lh-content {
-    text-align: left !important;
+    .cancel_two {
+        color: #fff;
+    }
 
-}
+    .listing .lh-content {
+        text-align: left !important;
+
+    }
+
+    .close {
+        float: right;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: 0.8;
+    }
 </style>
 @endsection
 
@@ -113,22 +118,20 @@
 <div class="alert alert-warning" role="alert">
     {{ __('backend.subscription.subscription-end-soon-day') }}
 </div>
-@elseif($paid_subscription_days_left > 1 && $paid_subscription_days_left <=
-    \App\Subscription::PAID_SUBSCRIPTION_LEFT_DAYS) <div class="alert alert-warning" role="alert">
+@elseif($paid_subscription_days_left > 1 && $paid_subscription_days_left <= \App\Subscription::PAID_SUBSCRIPTION_LEFT_DAYS) <div class="alert alert-warning" role="alert">
     {{ __('backend.subscription.subscription-end-soon-days', ['days_left' => $paid_subscription_days_left]) }}
     </div>
     @endif
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 firstBlur">
         <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.dashboard') }}</h1>
         <!-- <a href="#"><img src="{{ asset('frontend/images/Svg/notification_zero.svg') }}" alt=""
                                 class="notification_icon" /></a> -->
         <!-- <a href="#" id="action" class="toggle"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}"
                 alt="" class="notification_alert" /></a> -->
         <div class="toggle">
-            <div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}" alt=""
-                    class="notification_alert" /></div>
+            <div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}" alt="" class="notification_alert" data-toggle="modal" data-target="#exampleModalLong" /></div>
         </div>
         {{-- <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
         <span class="icon text-white-50">
@@ -137,29 +140,53 @@
         <span class="text">{{ __('backend.homepage.post-a-listing') }}</span>
         </a> --}}
     </div>
-    <div class="sidebar_two" id="main">
-        <div class="d-flex">
-            <h2>Notifications</h2>
-            <div class="toggle_two" style="color:red;"><button type="button" class="btn btn-primary">Close</button>
-            </div>
-        </div>
-
-        <div class="notibox">
-            <div class="container">
-                <div class="row">
-                    @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
-                    <div class="view"><a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View all</a>
+    <div class="sidebar_two">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="notification_set_height" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="true" data-keyboard="true">
+                        <div class="modal-header">
+                            <h5 class="modal-title notification_msg" id="exampleModalLongTitle">Notification
+                            </h5>
+                            <button type="button" class="close toggle_two" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body notification_body ">
+                            <div class="notification_messages">
+                                @foreach($notifications as $notification)
+                                <div class="notification_message_details">
+                                    @if(empty($notification->user_image))
+                                    <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:50px; height:50px;">
+                                    @else
+                                    <img src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" style="border-radius:50%; width:50px; height:50px;">
+                                    @endif
+                                    <!-- <img src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" alt="" /> -->
+                                    <div class="message">
+                                        <h4 class="m-one">{{$notification->name}}</h4>
+                                        <p class="m-details">
+                                            {{$notification->notification}}
+                                        </p>
+                                          <p class="m-date">{{$notification->created_at->diffForHumans()}}</p>  
+                                        <div class="cancel notificationReadBtn" id="{{ $notification->id }}">✕
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
+                        <div class="notification_footer">
+                            <div class="notification_message_info">
+                                <a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View
+                                    all</a>
+                            </div>
+                        </div>
+                        @endif
                     </div>
-                    @endif
-                    @foreach($notifications as $notification)
-                    <div class="col-md-12">
-                        <p>
-                        <h5>{{$notification->notification}}</h5>
-                        <div class="cancel notificationReadBtn" id="{{ $notification->id }}">✕</div>
-                        </p>
-                    </div>
-                    @endforeach
                 </div>
+
             </div>
         </div>
     </div>
@@ -177,7 +204,7 @@
                     </div>
                 </div>
             </div> -->
-    <div class="row">
+    <div class="row firstBlur">
         @if($login_user->isCoach())
         @php $main_div_class = 'col-lg-9 order-lg-0 order-1'; @endphp
         @else
@@ -201,8 +228,7 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3><a class="decoration-none"
-                                        href="{{ route('user.messages.index') }}">{{ __('backend.homepage.all-messages') }}</a>
+                                <h3><a class="decoration-none" href="{{ route('user.messages.index') }}">{{ __('backend.homepage.all-messages') }}</a>
                                 </h3>
                                 <p class="c-two">{{ number_format($message_count) }}</p>
                             </div>
@@ -216,8 +242,7 @@
                             <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
                             <div class="coaches_detail">
                                 <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
-                                <h3><a class="decoration-none"
-                                        href="{{ route('user.comments.index') }}">{{ __('backend.homepage.all-comments') }}</a>
+                                <h3><a class="decoration-none" href="{{ route('user.comments.index') }}">{{ __('backend.homepage.all-comments') }}</a>
                                 </h3>
                                 <p class="c-three">{{ number_format($comment_count) }}</p>
                             </div>
@@ -230,8 +255,7 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3><a class="decoration-none"
-                                        href="{{ route('user.articles.index') }}">{{ __('backend.homepage.all-articles') }}</a>
+                                <h3><a class="decoration-none" href="{{ route('user.articles.index') }}">{{ __('backend.homepage.all-articles') }}</a>
                                 </h3>
                                 <p class="c-four">{{ number_format($item_count) }}</p>
                             </div>
@@ -254,16 +278,16 @@
                 <div class="col-md-6">
                     <div class="first_coach coach">
                         <div class="coaches">
-                        <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                            <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
                             <div class="coaches_detail">
-                            <h3><a class="decoration-none"
-                                    href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitors') }}</a></h3>
-                            
+                                <h3><a class="decoration-none" href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitors') }}</a>
+                                </h3>
+
                                 <div class="view_eye_post">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                     <p class="views">All</p>
                                     <span class="article_section_number">:
-                                    {{ $All_visit_count }} </span>
+                                        {{ $All_visit_count }} </span>
                                 </div>
                                 <div class="view_calander_post">
                                     <i class="fa fa-calendar"></i>
@@ -276,25 +300,21 @@
                         </div>
                     </div>
                 </div>
-                
                 @endif
-            @endif
+                @endif
                 <div class="col-lg-12">
                     <div class="coach_messages">
                         <div class="coach_message_info">
                             <h2>{{ __('backend.homepage.all-messages') }}</h2>
-                            <a
-                                href="{{ route('user.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
+                            <a href="{{ route('user.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
                         </div>
 
                         @foreach($recent_threads as $recent_threads_key => $thread)
                         <div class="coach_message_details">
                             @if(empty($thread->creator()->user_image))
-                            <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}"
-                                style="border-radius:50%; width:100px; height:100px;">
+                            <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:100px; height:100px;">
                             @else
-                            <img src="{{ Storage::disk('public')->url('user/'. $thread->creator()->user_image) }}"
-                                style="border-radius:50%; width:100px; height:100px;">
+                            <img src="{{ Storage::disk('public')->url('user/'. $thread->creator()->user_image) }}" style="border-radius:50%; width:100px; height:100px;">
                             @endif
                             <div class="message">
                                 <h4 class="m-one">{{ $thread->subject }}</h4>
@@ -311,9 +331,11 @@
                         @endforeach
                     </div>
                 </div>
-                @if(isset($Articledetail) && !empty($Articledetail) || isset($Ebooks) && !empty($Ebooks) || isset($PodcastImage) && !empty($PodcastImage)|| isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
+                @if(isset($Articledetail) && !empty($Articledetail) || isset($Ebooks) && !empty($Ebooks) ||
+                isset($PodcastImage) && !empty($PodcastImage)|| isset($media) && !empty($media) || isset($Youtube) &&
+                !empty($Youtube))
                 <div class="col-lg-12 mb-4">
-                  <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
+                    <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.traffic') }}</h1>
                 </div>
                 @endif
             </div>
@@ -325,7 +347,8 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.article-details') }}</h3>
                                 @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
-                                <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View all</a>
+                                <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View
+                                    all</a>
                                 @endif
                             </div>
                         </div>
@@ -336,13 +359,10 @@
                                     @foreach($Articledetail as $article_key => $Article)
                                     <div class="col-md-3 col-6">
                                         <div class="post-img">
-                                            <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img
-                                                    src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}"
-                                                    alt="" class="w-100" /></a>
+                                            <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}" alt="" class="w-100" /></a>
                                         </div>
                                         <div class="post-information">
-                                            <h4 class="content"><a class="decoration-none"
-                                                    href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_title']}}</a>
+                                            <h4 class="content"><a class="decoration-none" href="{{ route('page.item', $Article['monthly']['item_slug']) }}">{{$Article['monthly']['item_title']}}</a>
                                             </h4>
                                         </div>
                                         <div class="view_eye_post">
@@ -382,8 +402,8 @@
                                 <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
-                            </div>
-                            <div class="col-md-12 plr-45">
+                        </div>
+                        <div class="col-md-12 plr-45">
                             <div class="post-slide">
                                 <div class="row audio-players">
                                     @php $i=1; @endphp
@@ -395,22 +415,22 @@
                                             </button>
                                             <h4 class="audio-player__title">{{ $image['monthly']['media_name'] }}</h4>
                                             <audio preload="auto">
-                                                <source src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_image']) }}"/>
+                                                <source src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_image']) }}" />
                                             </audio>
                                             <!-- <img class="audio-player__cover" src="https://unsplash.it/g/300?image=29"/> -->
                                             <img class="audio-player__cover" src="{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}">
                                             <video preload="auto" loop="loop">
-                                                <source src="" type="video/mp4"/>
+                                                <source src="" type="video/mp4" />
                                             </video>
                                         </div>
                                         <div class="post-information">
-                                        <h4 class="content">{{$image['monthly']['media_name']}}</h4>
+                                            <h4 class="content">{{$image['monthly']['media_name']}}</h4>
                                         </div>
                                         <div class="view_eye_post">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                        <p class="views">All</p>
-                                        <span class="podcast_section_number">:
-                                            {{$image['monthly']['totalcount'] }} </span>
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="podcast_section_number">:
+                                                {{$image['monthly']['totalcount'] }} </span>
                                         </div>
                                         <div class="view_calander_post">
                                             <i class="fa fa-calendar"></i>
@@ -451,10 +471,8 @@
                                 @foreach($Ebooks as $ebook_key => $Ebook)
                                 <div class="col-md-3 col-6 pb-3">
                                     <div class="post-img">
-                                        <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}"
-                                            target="_blank">
-                                            <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}"
-                                                alt="" class="w-100" /></a>
+                                        <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}" target="_blank">
+                                            <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}" alt="" class="w-100" /></a>
                                     </div>
                                     <div class="post-information">
                                         <h4 class="content">{{$Ebook['monthly']['media_name']}}</h4>
@@ -502,13 +520,11 @@
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
-                                            <iframe width="560" height="215" src="{{ $video['monthly']['media_url']}}"
-                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                                encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe>
+                                            <iframe width="560" height="215" src="{{ $video['monthly']['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                         </div>
                                         <div class="post-information">
-                                        <!-- <a href="{{ $video['monthly']['media_url']}}" class="content">{{ $video['monthly']['media_url']}}</a> -->
+                                            <!-- <a href="{{ $video['monthly']['media_url']}}" class="content">{{ $video['monthly']['media_url']}}</a> -->
                                         </div>
                                         <div class="view_eye_post">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
@@ -534,31 +550,28 @@
                                 @php $i=1; @endphp
                                 @foreach($Youtube as $youtube_key => $youtubevideo)
                                 <div class="col-lg-3 col-md-6 col-sm-6">
-                                <div class="post-slide">
-                                    <div class="post-img">
-                                        <a href="{{ $youtubevideo['monthly']['media_url'] }}">
-                                            <iframe width="560" height="215"
-                                                src="{{ $youtubevideo['monthly']['media_url']}}"
-                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                            encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe></a>
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <a href="{{ $youtubevideo['monthly']['media_url'] }}">
+                                                <iframe width="560" height="215" src="{{ $youtubevideo['monthly']['media_url']}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                            encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></a>
+                                        </div>
+                                        <div class="post-information">
+                                            <!-- <a href="{{ $youtubevideo['monthly']['media_url']}}" class="content">{{ $youtubevideo['monthly']['media_url']}}</a> -->
+                                        </div>
+                                        <div class="view_eye_post">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <p class="views">All</p>
+                                            <span class="youtube_section_number">:
+                                                {{$youtubevideo['monthly']['totalcount'] }} </span>
+                                        </div>
+                                        <div class="view_calander_post">
+                                            <i class="fa fa-calendar"></i>
+                                            <p class="calander">Today</p>
+                                            <span class="youtube_section_number">:
+                                                {{$youtubevideo['daily']['totalcount'] }} </span>
+                                        </div>
                                     </div>
-                                    <div class="post-information">
-                                        <!-- <a href="{{ $youtubevideo['monthly']['media_url']}}" class="content">{{ $youtubevideo['monthly']['media_url']}}</a> -->
-                                    </div>
-                                    <div class="view_eye_post">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                        <p class="views">All</p>
-                                        <span class="youtube_section_number">:
-                                            {{$youtubevideo['monthly']['totalcount'] }} </span>
-                                    </div>
-                                    <div class="view_calander_post">
-                                        <i class="fa fa-calendar"></i>
-                                        <p class="calander">Today</p>
-                                        <span class="youtube_section_number">:
-                                            {{$youtubevideo['daily']['totalcount'] }} </span>
-                                    </div>
-                                </div>
                                 </div>
                                 @if($i==1)
                                 @php
@@ -578,15 +591,13 @@
         <div class="col-lg-3 order-lg-1 order-0">
             <div class="coach_sidebar">
                 <div class="setting_icon">
-                    <a href="{{ route('user.profile.edit') }}"><img src="{{ asset('frontend/images/Svg/setting.svg') }}"
-                            alt="" /></a>
+                    <a href="{{ route('user.profile.edit') }}"><img src="{{ asset('frontend/images/Svg/setting.svg') }}" alt="" /></a>
                 </div>
                 <div class="sidebar_info">
                     <div class="sidebar_flex">
                         <div class="sidebar_align">
                             @if(empty($login_user['user_image']))
-                            <img
-                                src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}">
+                            <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}">
                             @else
                             <img src="{{ Storage::disk('public')->url('user/'. $login_user['user_image']) }}">
                             @endif
@@ -624,8 +635,7 @@
                         <div class="prggress_level">
                             <p>Basic</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                     20%
                                 </div>
                             </div>
@@ -633,8 +643,7 @@
                         <div class="prggress_level">
                             <p>Social</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
                                     30%
                                 </div>
                             </div>
@@ -642,8 +651,7 @@
                         <div class="prggress_level">
                             <p>Bronze</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
                                     50%
                                 </div>
                             </div>
@@ -651,8 +659,7 @@
                         <div class="prggress_level">
                             <p>Silver</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
                                     60%
                                 </div>
                             </div>
@@ -660,8 +667,7 @@
                         <div class="prggress_level">
                             <p>Gold</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                                     70%
                                 </div>
                             </div>
@@ -669,8 +675,7 @@
                         <div class="prggress_level">
                             <p>Platinum</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                                     90%
                                 </div>
                             </div>
@@ -678,16 +683,14 @@
                         <div class="prggress_level">
                             <p>Rhodium</p>
                             <div class="progress p-200">
-                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100"
-                                    aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
                                     100%
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="progress_info">
-                        <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}"
-                                target="_blank">{{ __('Learn Here') }}</a></p>
+                        <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
                         <p>
                             {{ $login_user['user_about']}}
                         </p>
@@ -832,14 +835,29 @@
 
     @section('scripts')
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+
     <script>
+        (function() {
+            //Show Modal
+            $("#exampleModalLong").on("show.bs.modal", function(e) {
+                console.log("show");
+                $(".firstBlur").addClass("modalBlur");
+            });
 
-        $(document).ready(function(){
-            $('.notificationReadBtn').on('click',function(){
-            let id = $(this).attr('id');
-            console.log(id)
+            //Remove modal
+            $("#exampleModalLong").on("hide.bs.modal", function(e) {
+                console.log("hide");
+                $(".firstBlur").removeClass("modalBlur");
+            });
+        })();
 
-            $.ajax({
+
+        $(document).ready(function() {
+            $('.notificationReadBtn').on('click', function() {
+                let id = $(this).attr('id');
+                console.log(id)
+
+                $.ajax({
                     url: "{{ route('read-notification') }}",
                     type: 'POST',
                     data: {
@@ -853,153 +871,153 @@
             })
         });
 
-    var $player = $('.js-audio-player'),
-        $playbackClass = 'is-playing',
-        $fadeDuration = 500
+        var $player = $('.js-audio-player'),
+            $playbackClass = 'is-playing',
+            $fadeDuration = 500
 
-    $player.each(function(index) {
-        var $this = $(this),
-            id = 'audio-player-' + index
+        $player.each(function(index) {
+            var $this = $(this),
+                id = 'audio-player-' + index
 
-        $this.attr('id', id)
+            $this.attr('id', id)
 
-        $this.find('.js-control')[0].addEventListener('click', function() {
-            resetPlayback(id)
-            playback($this, $this.find('audio'), $this.find('video'))
-        })
-
-        // Reset state once audio has finished playing
-        $this.find('audio')[0].addEventListener('ended', function() {
-            resetPlayback()
-        })
-    })
-
-    function playback($player, $audio, $video) {
-        if ($audio[0].paused) {
-            $audio[0].play()
-            $video[0].play()
-            $audio.animate({
-                volume: 1
-            }, $fadeDuration)
-            $player.addClass($playbackClass)
-        } else {
-            $audio.animate({
-                volume: 0
-            }, $fadeDuration, function() {
-                $audio[0].pause()
-                $video[0].pause()
+            $this.find('.js-control')[0].addEventListener('click', function() {
+                resetPlayback(id)
+                playback($this, $this.find('audio'), $this.find('video'))
             })
-            $player.removeClass($playbackClass)
-        }
-    }
 
-    function resetPlayback(id) {
-        $player.each(function() {
-            var $this = $(this)
+            // Reset state once audio has finished playing
+            $this.find('audio')[0].addEventListener('ended', function() {
+                resetPlayback()
+            })
+        })
 
-            if ($this.attr('id') !== id) {
-                $this.find('audio').animate({
+        function playback($player, $audio, $video) {
+            if ($audio[0].paused) {
+                $audio[0].play()
+                $video[0].play()
+                $audio.animate({
+                    volume: 1
+                }, $fadeDuration)
+                $player.addClass($playbackClass)
+            } else {
+                $audio.animate({
                     volume: 0
                 }, $fadeDuration, function() {
-                    $(this)[0].pause()
-                    $this.find('video')[0].pause()
+                    $audio[0].pause()
+                    $video[0].pause()
                 })
-                $this.removeClass($playbackClass)
+                $player.removeClass($playbackClass)
             }
-        })
-    }
-    $(".toggle").click(function() {
-        console.log("toggling sidebar");
-        $(".sidebar_two").toggleClass('active');
+        }
 
-    });
-    $(".toggle_two").click(function() {
-        console.log("toggling sidebar");
-        $(".sidebar_two").toggleClass('active');
+        function resetPlayback(id) {
+            $player.each(function() {
+                var $this = $(this)
 
-    });
-    $(".cancel").click(function() {
-        console.log("toggling visibility");
-        $(this).parent().toggleClass('gone');
-
-    });
-
-    $(function() {
-        $('#click').trigger('click');
-    });
-    var firebaseConfig = {
-        aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-        authDomain: "coachhq-c1b3d.firebaseapp.com",
-        projectId: "coachhq-c1b3d",
-        storageBucket: "coachhq-c1b3d.appspot.com",
-        messagingSenderId: "668525619724",
-        appId: "1:668525619724:web:e4282225654d0467655c29",
-        measurementId: "G-VFGKZNYRVM"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    function startFCM() {
-        messaging
-            .requestPermission()
-            .then(function() {
-                return messaging.getToken()
+                if ($this.attr('id') !== id) {
+                    $this.find('audio').animate({
+                        volume: 0
+                    }, $fadeDuration, function() {
+                        $(this)[0].pause()
+                        $this.find('video')[0].pause()
+                    })
+                    $this.removeClass($playbackClass)
+                }
             })
-            .then(function(response) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: '{{ route("save-token") }}',
-                    type: 'POST',
-                    data: {
-                        token: response
-                    },
-                    dataType: 'JSON',
-                    success: function(response) {
-                        //alert('Token stored.');
-                    },
-                    error: function(error) {
-                        // alert(error);
-                        console.log(error);
-                    },
-                });
-            }).catch(function(error) {
-                // alert(error);
-                console.log(error);
-            });
-    }
+        }
+        $(".toggle").click(function() {
+            console.log("toggling sidebar");
+            $(".sidebar_two").toggleClass('active');
 
+        });
+        $(".toggle_two").click(function() {
+            console.log("toggling sidebar");
+            $(".sidebar_two").toggleClass('active');
 
-    window.onload = function() {
-        var chartData = {
-            "Profile Progress": [{
-                cursor: "pointer",
-                explodeOnClick: false,
-                innerRadius: "75%",
-                legendMarkerType: "square",
-                radius: "70%",
-                startAngle: 280,
-                type: "doughnut",
-                indexLabelLineThickness: 4,
-                dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
-            }],
+        });
+        $(".cancel").click(function() {
+            console.log("toggling visibility");
+            $(this).parent().toggleClass('gone');
+
+        });
+
+        $(function() {
+            $('#click').trigger('click');
+        });
+        var firebaseConfig = {
+            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+            authDomain: "coachhq-c1b3d.firebaseapp.com",
+            projectId: "coachhq-c1b3d",
+            storageBucket: "coachhq-c1b3d.appspot.com",
+            messagingSenderId: "668525619724",
+            appId: "1:668525619724:web:e4282225654d0467655c29",
+            measurementId: "G-VFGKZNYRVM"
         };
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
 
-        var dataOptions = {
-            backgroundColor: "#FFEEF9",
-            animationEnabled: true,
-            theme: "light2",
-        };
+        function startFCM() {
+            messaging
+                .requestPermission()
+                .then(function() {
+                    return messaging.getToken()
+                })
+                .then(function(response) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '{{ route("save-token") }}',
+                        type: 'POST',
+                        data: {
+                            token: response
+                        },
+                        dataType: 'JSON',
+                        success: function(response) {
+                            //alert('Token stored.');
+                        },
+                        error: function(error) {
+                            // alert(error);
+                            console.log(error);
+                        },
+                    });
+                }).catch(function(error) {
+                    // alert(error);
+                    console.log(error);
+                });
+        }
 
-        var chart = new CanvasJS.Chart("chartContainer", dataOptions);
-        chart.options.data = chartData["Profile Progress"];
-        chart.render();
 
-        
-    }
+        window.onload = function() {
+            var chartData = {
+                "Profile Progress": [{
+                    cursor: "pointer",
+                    explodeOnClick: false,
+                    innerRadius: "75%",
+                    legendMarkerType: "square",
+                    radius: "70%",
+                    startAngle: 280,
+                    type: "doughnut",
+                    indexLabelLineThickness: 4,
+                    dataPoints: <?php echo json_encode($data_points, JSON_NUMERIC_CHECK); ?>
+                }],
+            };
+
+            var dataOptions = {
+                backgroundColor: "#FFEEF9",
+                animationEnabled: true,
+                theme: "light2",
+            };
+
+            var chart = new CanvasJS.Chart("chartContainer", dataOptions);
+            chart.options.data = chartData["Profile Progress"];
+            chart.render();
+
+
+        }
     </script>
 
     @endsection

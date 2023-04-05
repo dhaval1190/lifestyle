@@ -2281,6 +2281,7 @@ class PagesController extends Controller
                     $view_month_over_month = $this->compareMonthToMonthItem($currentMonthlyViews, $previousMonthlyViews);
                     $view_count_lifetime = $views->count();
                     $visit_count = $currentMonthlyVisits->count();
+                    $All_visit_count = $visits->count();                    
                     $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
                     $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);      
                     $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();            
@@ -2291,7 +2292,7 @@ class PagesController extends Controller
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId','All_visit_count'
             ));
     }
 
@@ -6584,6 +6585,7 @@ class PagesController extends Controller
                 }                               
                 $notification = [
                     'user_id' => $user->id,
+                    'visitor_id' => Auth::user()->id,
                     'notification'=>$data['notification']['title'],
                     'is_read'=>'0',                    
                 ];           
