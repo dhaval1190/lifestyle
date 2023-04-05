@@ -183,6 +183,10 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
   width: 30px !important;
 }
 
+.address_wrap{
+    word-break: break-all;
+}
+
 </style>
 @section('content')
     <!-- <div class="site-section"> -->
@@ -255,7 +259,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                             <div class="upper_address_detail">
                                                 <div class="upper_address">
                                                     <img src="{{ asset('frontend/images/map_icon.svg') }}" alt="" class="address_logo"/>
-                                                    <p>{{ !empty($user_detail['address']) ? $user_detail['address'].',' : '' }} {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name.',' : '' }} {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name.',' : '' }} {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }} {{ $user_detail['post_code'] }}</p>
+                                                    <p class="address_wrap">{{ !empty($user_detail['address']) ? $user_detail['address'].',' : '' }} {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name.',' : '' }} {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name.',' : '' }} {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }} {{ $user_detail['post_code'] }}</p>
                                                 </div>
                                             </div>
                                         </div>

@@ -261,7 +261,7 @@ class UserController extends Controller
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
-        $rules['user_about']                = ['nullable','max:255'];
+        $rules['user_about']                = ['nullable'];
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
         $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3,mp4', 'max:30720'];

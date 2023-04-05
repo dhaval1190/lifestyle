@@ -71,7 +71,7 @@
                         <div class="form-group row">
 
                             <div class="col-md-12">
-                                <label for="name" class="text-black">{{ __('auth.name') }}</label>
+                                <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
                                 <p class="name_error error_color" role="alert"></p>
                                 <!-- @error('name')
@@ -85,7 +85,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
                                 <p class="email_error error_color" role="alert"></p>
 
@@ -99,7 +99,7 @@
 
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label class="text-black" for="subject">{{ __('auth.password') }}</label>
+                                <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                                 <p class="password_error error_color" role="alert"></p>
 
@@ -113,7 +113,7 @@
 
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}</label>
+                                <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}<span class="text-danger">*</span></label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                             </div>
                         </div>
@@ -261,6 +261,9 @@
             $('#password').on('input', function(e) {
                 $('.password_error').text('');
             });
+            $('#password-confirm').on('input', function(e) {
+                $('.password_error').text('');
+            });
 
             @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
             /**
@@ -297,7 +300,8 @@
                                 // console.log(response)
                                 $(".error_color").text("");
                                 $('.please_wait').text('');
-                                location.reload();                                                       
+                                // location.reload(); 
+                                window.location.href = "{{ route('login') }}";                                                      
 
                             }
                             if(response.status == 'email_reg'){
