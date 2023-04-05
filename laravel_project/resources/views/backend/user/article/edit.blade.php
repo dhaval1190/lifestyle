@@ -1239,15 +1239,15 @@
         });
 
         $('#article_social_facebook').on('focus', function(){
-                $('.err_media_url').html('');
+                $('.err_facebook_url').html('');
                 var facebookUrl = $("#article_social_facebook").val();
                 var matchUrl = ".facebook";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
-                    $('.err_media_url').html("Please enter Facebook URL Only");
+                    $('.err_facebook_url').html("Please enter Facebook URL Only");
                     $('#submit').attr("disabled", true);
                     return false;
                 }else{
-                    $('.err_media_url').html('');
+                    $('.err_facebook_url').html('');
                     $('#submit').attr("disabled", false);
 
                 }
