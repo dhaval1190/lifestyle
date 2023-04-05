@@ -18,7 +18,8 @@
                             @endif
                             <li><a href="{{ route('page.contact') }}">{{ __('frontend.footer.contact-us') }}</a></li>
                             @guest
-                                <li><a href="{{ route('page.pricing') }}">{{ __('frontend.header.list-business') }}</a></li>
+                                {{-- <li><a href="{{ route('page.pricing') }}">{{ __('frontend.header.list-business') }}</a></li> --}}
+                                <li><a href="{{ route('page.register') }}">{{ __('frontend.header.list-business') }}</a></li>
                             @endguest
                             @if($site_global_settings->setting_page_terms_of_service_enable == \App\Setting::TERM_PAGE_ENABLED)
                                 <li><a href="#">{{ __('frontend.footer.terms-of-service') }}</a></li>
