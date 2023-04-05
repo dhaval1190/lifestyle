@@ -154,6 +154,7 @@
                         </div>
                         <div class="modal-body notification_body ">
                             <div class="notification_messages">
+                                @if($notifications->count() > 0)
                                 @foreach($notifications as $notification)
                                 <div class="notification_message_details">
                                     @if(empty($notification->user_image))
@@ -174,7 +175,14 @@
                                     </div>
                                 </div>
                                 @endforeach
+                                @else
+                                <div class="notification_message_details">
+                                    <p style="text-align: center">No records found</p>
+                                </div>
+
+                                @endif
                             </div>
+                            
                         </div>
                         @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
                         <div class="notification_footer">
@@ -309,6 +317,7 @@
                             <a href="{{ route('user.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
                         </div>
 
+                        @if($recent_threads->count() > 0)
                         @foreach($recent_threads as $recent_threads_key => $thread)
                         <div class="coach_message_details">
                             @if(empty($thread->creator()->user_image))
@@ -329,6 +338,10 @@
                             </div>
                         </div>
                         @endforeach
+                        @else
+
+                            <p style="text-align: center">No messages</p>
+                        @endif
                     </div>
                 </div>
                 @if(isset($Articledetail) && !empty($Articledetail) || isset($Ebooks) && !empty($Ebooks) ||
