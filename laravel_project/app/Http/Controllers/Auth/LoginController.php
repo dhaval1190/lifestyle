@@ -80,7 +80,7 @@ class LoginController extends Controller
 
         if ($user->isCoach())
         {
-            if(!isset($user->post_code)){
+            if(!isset($user->phone)){
                 return redirect('/user/profile');
             }
             // if the website is in maintenance mode, forcely logout user

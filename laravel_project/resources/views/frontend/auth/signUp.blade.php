@@ -139,12 +139,7 @@
                         @endif
                         <!-- End Google reCAPTCHA version 2 -->
 
-                        <div class="row form-group">
-                            <div class="col-12">
-                                {{-- <p>{{ __('auth.have-an-account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p> --}}
-                                <p>{{ __('Already have an account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p>
-                            </div>
-                        </div>
+                        
                         
                         <div class="row form-group">
                             <div class="col-md-12">
@@ -152,8 +147,13 @@
                                     {{-- {{ __('auth.register') }} --}}
                                     {{ __('Get Listed For Free') }}
                                 </button><span class="please_wait">Please Wait..</span>
+                            </div>                            
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12">
+                                {{-- <p>{{ __('auth.have-an-account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p> --}}
+                                <p>{{ __('Already have an account') }}? <a href="{{ route('login') }}">{{ __('auth.login') }}</a></p>
                             </div>
-                            
                         </div>
 
                         @if($social_login_facebook || $social_login_google || $social_login_twitter || $social_login_linkedin || $social_login_github)

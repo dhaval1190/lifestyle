@@ -67,6 +67,12 @@
 
 @section('content')
 
+@php 
+$chk_post = Auth::user()->phone;
+
+@endphp
+
+@if(isset($chk_post))
     <div class="row justify-content-between">
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
@@ -76,12 +82,18 @@
         <div class="col-3 text-right">
         </div>
     </div>
+@endif
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
+                    @if(!isset($chk_post))
+                        <div class="alert alert-danger" role="alert">
+                            Please enter details to proceed further
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
                         @csrf
 
@@ -711,19 +723,20 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="row">
-                                <div class="col-md-12">
-                                    <div class="below_info">
-                                        <h3>Topics</h3>
-                                        @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
-                                            <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
-                                        @endif
+                        @if($free_items->count() >0)
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="below_info">
+                                            <h3>Topics</h3>
+                                            @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
+                                                <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-12 plr-45">
-                               
-                                <div class="row">
-                        <div class="col-12">
+                                    <div class="col-lg-12 plr-45">
+                                
+                                    <div class="row">
+                            <div class="col-12">
 
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -820,6 +833,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                        @endif
                         </div>
                     </div>
                 </div>
