@@ -64,6 +64,9 @@
                         @csrf
                         <div class="row mb-4">
                             <div class="col">
+                                <div class="alert alert-success alert-dismissible fade show" id="register_success_error_div" role="alert" style="display:none;margin:4px;">
+                                    <strong id="register_success"></strong>
+                                </div>
                               <h3>Register as a coach</h3>
                                 <p>Get listed with us and add up to 10 pieces of content for free! <br>
                                     (Seriously - It's FREE)
@@ -304,15 +307,18 @@
                         },
 
                         success: function(response){
-                            // console.log(response);
+                            console.log(response);
                             // return false;
                             if(response.status == 'success'){
                                 // console.log(response)
                                 $(".error_color").text("");
                                 $('.please_wait').text('');
+                                $('#register_success').text('A verification link is sent to your mail,please click to verify');
+                                $('#register_success_error_div').show();
+                                $('#signUpForm').trigger('reset');
                                 // location.reload(); 
                                 // return redirect()->route('users.profile.edit'); 
-                                window.location.href = "{{ route('login') }}";                                                  
+                                // window.location.href = "{{ route('login') }}";                                                  
 
                             }
                             if(response.status == 'email_reg'){

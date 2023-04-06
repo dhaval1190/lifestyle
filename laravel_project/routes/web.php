@@ -71,7 +71,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/faq', 'PagesController@faq')->name('page.faq');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
-    Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile')->middleware('check_coach_details');
+    Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
     Route::get('/ajax/profile/podcast/{id}', 'PagesController@jsonProfilePodcastDetail')->name('json.profile.podcast');
     Route::get('/youtube-detail/{id}', 'PagesController@profileYoutubeDetail')->name('page.profile.youtube');
     Route::get('/podcast-detail/{id}', 'PagesController@profilePodcaseDetail')->name('page.profile.podcast');
