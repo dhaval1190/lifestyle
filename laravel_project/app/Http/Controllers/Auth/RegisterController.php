@@ -501,20 +501,23 @@ class RegisterController extends Controller
             } catch (\Exception $e) {
                 Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             }
+            $this->guard()->login($user);
+            return $this->registered($request, $user)
+                ? response()->json(['status'=>"success",'data'=>$request->input()]) : redirect($this->redirectPath());
 
-            return response()->json(['status'=>"success",'data'=>$request->input()]);
+            // return response()->json(['status'=>"success",'data'=>$request->input()]);
 
         }else{
             return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
         }
 
-        if(isset($user)) {
-            $this->guard()->login($user);
-            return $this->registered($request, $user)
-                ?: redirect($this->redirectPath());
-        } else {
-            return redirect()->route('login');
-        }
+        // if(isset($user)) {
+        //     $this->guard()->login($user);
+        //     return $this->registered($request, $user)
+        //         ?: redirect($this->redirectPath());
+        // } else {
+        //     return redirect()->route('login');
+        // }
 
         
     }

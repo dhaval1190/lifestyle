@@ -872,7 +872,8 @@ class PagesController extends Controller
         {
             // set up APP_NAME
             config([
-                'app.name' => $settings->setting_site_name,
+                // 'app.name' => $settings->setting_site_name,
+                'app.name' => "The CoachesHQ Family",
             ]);
         }
 
@@ -6270,7 +6271,8 @@ class PagesController extends Controller
                 {
                     // set up APP_NAME
                     config([
-                        'app.name' => $settings->setting_site_name,
+                        // 'app.name' => $settings->setting_site_name,
+                        'app.name' => "The CoachesHQ Family",
                     ]);
                 }
 
@@ -6508,7 +6510,8 @@ class PagesController extends Controller
                 {
                     // set up APP_NAME
                     config([
-                        'app.name' => $settings->setting_site_name,
+                        // 'app.name' => $settings->setting_site_name,
+                        'app.name' => "The CoachesHQ Family",
                     ]);
                 }
 
@@ -7968,7 +7971,8 @@ class PagesController extends Controller
             {
                 // set up APP_NAME
                 config([
-                    'app.name' => $settings->setting_site_name,
+                    // 'app.name' => $settings->setting_site_name,
+                    'app.name' => "The CoachesHQ Family",
                 ]);
             }
 

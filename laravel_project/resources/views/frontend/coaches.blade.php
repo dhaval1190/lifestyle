@@ -182,6 +182,9 @@
                                     <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>Any Gender</option>
                                     <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
                                     <option value="female" {{ $filter_gender_type == "female" ? 'selected' : '' }}>Female</option>
+                                    {{-- @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
+                                                            <option value="{{ $prkey }}" {{ old('preferred_pronouns', $login_user->preferred_pronouns) == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
+                                                        @endforeach --}}
                                 </select>
                                 @error('filter_gender_type')
                                 <span class="invalid-tooltip">
