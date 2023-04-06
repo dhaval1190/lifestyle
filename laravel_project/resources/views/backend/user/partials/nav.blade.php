@@ -23,7 +23,7 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                @if(Auth::user()->isCoach())
+                @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() > 0) && isset(Auth::user()->hourly_rate_type) && isset(Auth::user()->experience_year) && isset(Auth::user() ->preferred_pronouns))
                     <a class="dropdown-item" href="{{ route('page.profile', encrypt(Auth::user()->id)) }}">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         {{ __('backend.nav.profile') }}

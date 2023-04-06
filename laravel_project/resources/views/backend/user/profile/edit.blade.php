@@ -72,26 +72,27 @@ $chk_post = Auth::user()->phone;
 
 @endphp
 
-@if(isset($chk_post))
+
     <div class="row justify-content-between">
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
             <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
+            @if(Auth::user()->isCoach())
             <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
+            @endif
         </div>
         <div class="col-3 text-right">
         </div>
     </div>
-@endif
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
-                    @if(!isset($chk_post))
+                    @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) && !isset(Auth::user()->hourly_rate_type) && !isset(Auth::user()->experience_year) && !isset(Auth::user() ->preferred_pronouns))
                         <div class="alert alert-danger" role="alert">
-                            Please enter details to proceed further
+                            Please enter required details to access other menus
                         </div>
                     @endif
                     <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
@@ -597,8 +598,8 @@ $chk_post = Auth::user()->phone;
                                             @enderror
                                         </div>
                                         <div class="col-2">
-                                            <label class="text-black">Podcast MP3/MP4</label>
-                                            <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" accept=".mp3,.mp4">
+                                            <label class="text-black">Podcast MP3</label>
+                                            <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" accept=".mp3">
                                             @error('podcast_image')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
