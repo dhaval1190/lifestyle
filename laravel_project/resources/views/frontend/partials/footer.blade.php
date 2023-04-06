@@ -98,7 +98,8 @@
             <div class="col-md-12">
                 <div class="border-top pt-5">
                     <p>
-                        {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }}
+                        {{-- {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }} --}}
+                        {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : 'CoachesHQ' }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }}
                     </p>
                 </div>
             </div>

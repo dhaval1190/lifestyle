@@ -264,7 +264,7 @@ class UserController extends Controller
         $rules['user_about']                = ['nullable'];
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
-        $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3,mp4', 'max:30720'];
+        $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3', 'max:30720'];
         $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_image']               = ['nullable', 'file', 'mimes:pdf', 'max:30720'];
         $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
@@ -276,7 +276,7 @@ class UserController extends Controller
         $rules['user_cover_image']            = ['nullable',new Base64Image];
         $rulesMessage['media_image.mimes']  = 'Ebook must be a file of type: pdf.';
         $rulesMessage['media_image.max']    = 'Ebook may not be greater than 30720 kilobytes.';
-        $rulesMessage['podcast_image.mimes']= 'Podcast MP3/MP4 Audio must be a file of type: mp3, mp4.';
+        $rulesMessage['podcast_image.mimes']= 'Podcast Audio must be a file of type: mp3';
         $rulesMessage['podcast_image.max']  = 'Podcast MP3/MP4 Audio may not be greater than 30720 kilobytes.';
         $rulesMessage['media_cover.mimes']  = 'Ebook Cover must be a file of type: jpg, jpeg, png.';
         $rulesMessage['media_cover.max']    = 'Ebook Cover may not be greater than 5120 kilobytes.';
