@@ -387,11 +387,14 @@
                                                         <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                             <div class="row pb-1">
                                                                 <div class="col-12">
-                                                                    <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a>
+                                                                    {{-- <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a> --}}
+                                                                    <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ $coach->name }}</span></a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-5 col-md-12 pr-0">
                                                     <div class="row align-items-center item-box-user-div">
                                                         <div class="col-12">
                                                             <span class="font-size-13">{{ $coach->email }}</span>
@@ -404,7 +407,8 @@
                                                     </div>
                                                     <div class="row align-items-center item-box-user-div">
                                                         <div class="col-12">
-                                                            <span class="font-size-13" style="word-break: break-all;">{{ $coach->company_name }}</span>
+                                                            {{-- <span class="font-size-13" style="word-break: break-all;">{{ $coach->company_name }}</span> --}}
+                                                            <span class="font-size-13">{{ str_limit($coach->company_name, 50, '...') }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
