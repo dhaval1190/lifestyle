@@ -104,7 +104,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
-                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}</label>
+                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
                                         <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id">
                                             @foreach($all_categories as $key => $category)
                                             <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
@@ -120,7 +120,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
-                                        <label for="article_title" class="text-black">{{ __('backend.article.title') }}</label>
+                                        <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
                                         <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}">
                                         @error('article_title')
                                         <span class="invalid-feedback">
@@ -129,7 +129,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="article_address" class="text-black">{{ __('backend.article.address') }}</label>
+                                        <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
                                         @error('article_address')
                                         <span class="invalid-feedback">
@@ -142,7 +142,7 @@
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-2">
-                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
+                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
@@ -159,7 +159,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
+                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
                                         </select>
@@ -171,7 +171,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
+                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
                                         </select>
@@ -183,7 +183,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
+                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
@@ -638,6 +638,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
                                                 {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
                                                 <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
@@ -665,6 +668,9 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display:none">
+                                            <strong id="gallery_img_error"></strong>
+                                        </div>
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
@@ -927,7 +933,7 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/states/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -949,7 +955,7 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/cities/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -1058,8 +1064,11 @@
 
             $('#upload_image').on('click', function(){
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -1078,6 +1087,10 @@
                     });
                 }
                 var reader = new FileReader();
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
                 reader.onload = function (event) {
                     image_crop.croppie('bind', {
                         url: event.target.result
@@ -1085,6 +1098,16 @@
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
+            }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event) {

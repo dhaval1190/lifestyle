@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
-                                        <label for="article_title" class="text-black">{{ __('backend.article.title') }}</label>
+                                        <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
                                         <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') ? old('article_title') : $article->item_title }}">
                                         @error('article_title')
                                         <span class="invalid-tooltip">
@@ -179,7 +179,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="article_address" class="text-black">{{ __('backend.article.address') }}</label>
+                                        <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') ? old('article_address') : $article->item_address }}">
                                         @error('article_address')
                                         <span class="invalid-tooltip">
@@ -191,7 +191,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-2">
-                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
+                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $article->country_id == $country->id))
@@ -206,7 +206,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
+                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             @foreach($all_states as $key => $state)
                                             <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
@@ -219,7 +219,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
+                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             @foreach($all_cities as $key => $city)
                                             <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
@@ -232,7 +232,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}</label>
+                                        <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
                                         @error('article_postal_code')
                                         <span class="invalid-tooltip">
@@ -710,6 +710,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
                                                 @if(empty($article->item_image))
                                                 {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
@@ -745,6 +748,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display: none;">
+                                                    <strong id="gallery_img_error"></strong>
+                                                </div>
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
                                                 <div class="row" id="selected-images">
                                                     @foreach($article->galleries as $key => $gallery)
@@ -797,7 +803,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
                             </div>
                         </div>
@@ -1574,6 +1580,8 @@
              * Start image gallery upload
              */
             $('#upload_gallery').on('click', function(){
+                $('#gallery_image_error_div').hide();
+                $('#gallery_img_error').text('');
                 window.selectedImages = [];
 
                 $.FileDialog({
@@ -1585,12 +1593,28 @@
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
                         html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
-                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
+                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "' id='gallery_img'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
                     }
                     document.getElementById("selected-images").innerHTML += html;
+                    // var img_id = $('#gallery_img').attr('src');
+                    // var img_ext = img_id.split(";base64")[0];
+                    // var img_ext_1 = img_ext.split("/")[1];
+                    // if (img_ext_1 == 'jpeg') {
+                    //     console.log("yes")
+                    // }else{
+                    //     console.log('no')
+                    // }
+                    // if (!img_ext.indexOf('jpeg') > -1)
+                    // {
+                    //     $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    //     $('#gallery_image_error_div').show();
+                    //     console.log("dsds",img_ext_1);
+                    // // }
+                    // console.log(typeof(img_ext_1));
+
                 });
             });
             /**
@@ -1616,8 +1640,11 @@
 
             $('#upload_image').on('click', function(){
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -1636,6 +1663,10 @@
                     });
                 }
                 var reader = new FileReader();
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
                 reader.onload = function (event) {
                     image_crop.croppie('bind', {
                         url: event.target.result
@@ -1643,6 +1674,16 @@
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
+            }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event) {

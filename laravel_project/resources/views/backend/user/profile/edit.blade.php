@@ -664,7 +664,7 @@ $chk_post = Auth::user()->phone;
                                 <div class="col-sm-10">
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="name" class="text-black">{{ __('auth.name') }}</label>
+                                            <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}" required>
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
@@ -673,7 +673,7 @@ $chk_post = Auth::user()->phone;
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}" required>
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
