@@ -283,7 +283,7 @@ class UserController extends Controller
         $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
         $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
         $rulesMessage['media_cover.required_with'] = 'Ebook Cover field is required when Ebook PDF is present.';
-        $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3/MP4 is present.';
+        $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         $rulesMessage['phone.required'] = 'Phone is required';
         $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
         
