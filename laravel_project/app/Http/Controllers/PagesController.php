@@ -6435,10 +6435,10 @@ class PagesController extends Controller
                 $email_to = $request->profile_share_email_to_email;
                 $email_from_name = $request->profile_share_email_name;
                 $email_note = $request->profile_share_email_note;
-                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
+                $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
 
                 $email_notify_message = [
-                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
+                    __('frontend.item.send-email-body-profile', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
                     __('frontend.item.send-email-note'),
                     $email_note,
                 ];
@@ -6467,7 +6467,8 @@ class PagesController extends Controller
                 {
                     // set up APP_NAME
                     config([
-                        'app.name' => $settings->setting_site_name,
+                        // 'app.name' => $settings->setting_site_name,
+                        'app.name' => "The CoachesHQ Family",
                     ]);
                 }
 
