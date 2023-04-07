@@ -51,7 +51,8 @@ class PagesController extends Controller
 
         $pending_item_count = $login_user->items()->where('item_status', Item::ITEM_SUBMITTED)->count();
         $item_count = $login_user->items()->count();
-        $message_count = Message::where('user_id', $login_user->id)->count();
+        // $message_count = Message::where('user_id', $login_user->id)->count();
+        $message_count = Message::where('user_id', $login_user->id)->distinct()->count('thread_id');
         $comment_count = Comment::where('commenter_id', $login_user->id)->count();
 
         $recent_threads = Thread::forUser($login_user->id)->latest('updated_at')->take(3)->get();
