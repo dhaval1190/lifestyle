@@ -178,15 +178,22 @@
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
                             <div class="col-12 col-md-2">
-                                <select class="selectpicker form-control @error('filter_gender_type') is-invalid @enderror" name="filter_gender_type" id="filter_gender_type">
-                                    <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>Any Gender</option>
+                                <select class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror" name="filter_preferred_pronouns" id="filter_preferred_pronouns">
+                                    {{-- <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>Any Gender</option>
                                     <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
-                                    <option value="female" {{ $filter_gender_type == "female" ? 'selected' : '' }}>Female</option>
-                                    {{-- @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
-                                                            <option value="{{ $prkey }}" {{ old('preferred_pronouns', $login_user->preferred_pronouns) == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
-                                                        @endforeach --}}
+                                    <option value="female" {{ $filter_gender_type == "female" ? 'selected' : '' }}>Female</option> --}}
+                                    @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
+                                        @php
+                                        $selected = '';
+                                        if(request()->filter_preferred_pronouns == $prkey){
+                                        $selected = "selected";
+                                        }
+                                        @endphp
+                                        <option value="{{ $prkey }}" {{ $selected }} >{{ $pronoun }}</option>
+                                    @endforeach
                                 </select>
-                                @error('filter_gender_type')
+                                
+                                @error('filter_preferred_pronouns')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
