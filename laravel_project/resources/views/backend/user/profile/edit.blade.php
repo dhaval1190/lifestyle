@@ -683,7 +683,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" required>
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -692,7 +692,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="gender" class="text-black">Gender</label>
-                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
                                                     <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}</option>
                                                 @endforeach

@@ -179,8 +179,8 @@
                             </div> --}}
                             <div class="col-12 col-md-2">
                                 <select class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror" name="filter_preferred_pronouns" id="filter_preferred_pronouns">
-                                    {{-- <option value="0" {{ empty($filter_gender_type) ? 'selected' : '' }}>Any Gender</option>
-                                    <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
+                                    <option value="0" {{ empty($filter_preferred_pronouns) ? 'selected' : '' }}>Any Preferred Pronouns</option>
+                                    {{-- <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
                                     <option value="female" {{ $filter_gender_type == "female" ? 'selected' : '' }}>Female</option> --}}
                                     @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
                                         @php
