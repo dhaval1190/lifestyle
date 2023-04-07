@@ -318,14 +318,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $paid_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $paid_items_query->where('users.working_type', $filter_working_type);
@@ -392,14 +396,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -454,6 +462,7 @@ class PagesController extends Controller
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -614,7 +623,7 @@ class PagesController extends Controller
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
                     'search_query', 'filter_categories', 'filter_state', 'filter_city', 'filter_sort_by', 'paid_items',
                     'free_items', 'pagination', 'all_printable_categories', 'all_states', 'all_cities', 'total_results',
-                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'
                 ));
     }
 
@@ -1009,14 +1018,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $paid_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $paid_items_query->where('users.working_type', $filter_working_type);
@@ -1078,14 +1091,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -1142,6 +1159,7 @@ class PagesController extends Controller
             'filter_state' => $filter_state,            
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -1299,7 +1317,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
+                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_countries','filter_country'
             ));
     }
     public function usersCategories(Request $request,$id)
@@ -1393,14 +1411,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $paid_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $paid_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $paid_items_query->where('users.working_type', $filter_working_type);
@@ -1461,14 +1483,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -1526,6 +1552,7 @@ class PagesController extends Controller
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -1676,7 +1703,7 @@ class PagesController extends Controller
             'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
             'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
             'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-            'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+            'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'
         ));
     }
     
@@ -1756,14 +1783,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_state || $filter_city) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_state || $filter_city || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -1825,6 +1856,7 @@ class PagesController extends Controller
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -1963,7 +1995,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
+                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
             ));
     }
 
@@ -2063,14 +2095,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -2126,6 +2162,7 @@ class PagesController extends Controller
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -3307,14 +3344,18 @@ class PagesController extends Controller
              * Start filter gender type, working type, price range
              */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $paid_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $paid_items_query->where('users.working_type', $filter_working_type);
@@ -3369,14 +3410,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $free_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $free_items_query->where('users.working_type', $filter_working_type);
@@ -3433,6 +3478,7 @@ class PagesController extends Controller
                 'filter_state' => $filter_state,
                 'filter_city' => $filter_city,
                 'filter_gender_type' => $filter_gender_type,
+                'filter_preferred_pronouns' => $filter_preferred_pronouns,
                 'filter_working_type' => $filter_working_type,
                 'filter_hourly_rate' => $filter_hourly_rate,
             ];
@@ -3615,7 +3661,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'filter_sort_by',
                     'filter_categories', 'filter_state', 'filter_city', 'all_cities', 'total_results',
-                    'filter_gender_type','filter_working_type','filter_hourly_rate','all_countries','filter_country'
+                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_countries','filter_country'
                 ));
         }
         else
@@ -3729,14 +3775,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $paid_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $paid_items_query->where('users.working_type', $filter_working_type);
@@ -3786,14 +3836,18 @@ class PagesController extends Controller
          * Start filter gender type, working type, price range
          */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $free_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $free_items_query->where('users.working_type', $filter_working_type);
@@ -3847,6 +3901,7 @@ class PagesController extends Controller
                 'filter_sort_by' => $filter_sort_by,
                 'filter_city' => $filter_city,
                 'filter_gender_type' => $filter_gender_type,
+                'filter_preferred_pronouns' => $filter_preferred_pronouns,
                 'filter_working_type' => $filter_working_type,
                 'filter_hourly_rate' => $filter_hourly_rate,
             ];
@@ -4021,7 +4076,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
                     'filter_sort_by', 'filter_categories', 'filter_city', 'filter_all_cities', 'total_results',
-                    'filter_gender_type','filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'
                 ));
         }
         else
@@ -4134,14 +4189,18 @@ class PagesController extends Controller
                      * Start filter gender type, working type, price range
                      */
                     $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                    $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
                     $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
                     $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                         $paid_items_query->leftJoin('users', function($join) {
                             $join->on('users.id', '=', 'items.user_id');
                         });
                         if($filter_gender_type) {
                             $paid_items_query->where('users.gender', $filter_gender_type);
+                        }
+                        if($filter_preferred_pronouns) {
+                            $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                         }
                         if($filter_working_type) {
                             $paid_items_query->where('users.working_type', $filter_working_type);
@@ -4186,14 +4245,18 @@ class PagesController extends Controller
                      * Start filter gender type, working type, price range
                      */
                     $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                    $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
                     $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
                     $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                    if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                         $free_items_query->leftJoin('users', function($join) {
                             $join->on('users.id', '=', 'items.user_id');
                         });
                         if($filter_gender_type) {
                             $free_items_query->where('users.gender', $filter_gender_type);
+                        }
+                        if($filter_preferred_pronouns) {
+                            $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                         }
                         if($filter_working_type) {
                             $free_items_query->where('users.working_type', $filter_working_type);
@@ -4246,6 +4309,7 @@ class PagesController extends Controller
                         'filter_categories' => $filter_categories,
                         'filter_sort_by' => $filter_sort_by,
                         'filter_gender_type' => $filter_gender_type,
+                        'filter_preferred_pronouns' => $filter_preferred_pronouns,
                         'filter_working_type' => $filter_working_type,
                         'filter_hourly_rate' => $filter_hourly_rate,
                     ];
@@ -4418,7 +4482,7 @@ class PagesController extends Controller
                             'parent_category_id', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
                             'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                             'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
-                            'filter_sort_by', 'filter_categories', 'total_results','filter_gender_type','filter_working_type','filter_hourly_rate'
+                            'filter_sort_by', 'filter_categories', 'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'
                         ));
                 }
                 else
@@ -4513,14 +4577,18 @@ class PagesController extends Controller
              * Start filter gender type, working type, price range
              */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $paid_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $paid_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $paid_items_query->where('users.working_type', $filter_working_type);
@@ -4570,14 +4638,18 @@ class PagesController extends Controller
              * Start filter gender type, working type, price range
              */
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                 $free_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
                 if($filter_gender_type) {
                     $free_items_query->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                 }
                 if($filter_working_type) {
                     $free_items_query->where('users.working_type', $filter_working_type);
@@ -4631,6 +4703,7 @@ class PagesController extends Controller
                 'filter_sort_by' => $filter_sort_by,
                 'filter_city' => $filter_city,
                 'filter_gender_type' => $filter_gender_type,
+                'filter_preferred_pronouns' => $filter_preferred_pronouns,
                 'filter_working_type' => $filter_working_type,
                 'filter_hourly_rate' => $filter_hourly_rate,
             ];
@@ -4780,7 +4853,7 @@ class PagesController extends Controller
                     'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                     'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                     'site_innerpage_header_paragraph_font_color', 'filter_categories', 'filter_all_cities', 'filter_city',
-                    'filter_sort_by', 'total_results', 'all_printable_categories','filter_gender_type','filter_working_type','filter_hourly_rate'));
+                    'filter_sort_by', 'total_results', 'all_printable_categories','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'));
         }
         else
         {
@@ -4859,14 +4932,18 @@ class PagesController extends Controller
                  * Start filter gender type, working type, price range
                  */
                 $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
                 $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
                 $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-                if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                     $paid_items_query->leftJoin('users', function($join) {
                         $join->on('users.id', '=', 'items.user_id');
                     });
                     if($filter_gender_type) {
                         $paid_items_query->where('users.gender', $filter_gender_type);
+                    }
+                    if($filter_preferred_pronouns) {
+                        $paid_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                     }
                     if($filter_working_type) {
                         $paid_items_query->where('users.working_type', $filter_working_type);
@@ -4912,14 +4989,18 @@ class PagesController extends Controller
                  * Start filter gender type, working type, price range
                  */
                 $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+                $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
                 $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
                 $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-                if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+                if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
                     $free_items_query->leftJoin('users', function($join) {
                         $join->on('users.id', '=', 'items.user_id');
                     });
                     if($filter_gender_type) {
                         $free_items_query->where('users.gender', $filter_gender_type);
+                    }
+                    if($filter_preferred_pronouns) {
+                        $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
                     }
                     if($filter_working_type) {
                         $free_items_query->where('users.working_type', $filter_working_type);
@@ -4972,6 +5053,7 @@ class PagesController extends Controller
                     'filter_categories' => $filter_categories,
                     'filter_sort_by' => $filter_sort_by,
                     'filter_gender_type' => $filter_gender_type,
+                    'filter_preferred_pronouns' => $filter_preferred_pronouns,
                     'filter_working_type' => $filter_working_type,
                     'filter_hourly_rate' => $filter_hourly_rate,
                 ];
@@ -5119,7 +5201,7 @@ class PagesController extends Controller
                         'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                         'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                         'site_innerpage_header_paragraph_font_color', 'filter_categories', 'filter_sort_by', 'total_results',
-                        'all_printable_categories','filter_gender_type','filter_working_type','filter_hourly_rate'));
+                        'all_printable_categories','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'));
             }
             else
             {
