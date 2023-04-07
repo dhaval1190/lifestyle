@@ -135,14 +135,18 @@ class UserController extends Controller
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
+            }
+            if($filter_preferred_pronouns) {
+                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
             }
             if($filter_working_type) {
                 $free_items_query->where('users.working_type', $filter_working_type);
@@ -198,6 +202,7 @@ class UserController extends Controller
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
+            'filter_preferred_pronouns' => $filter_preferred_pronouns,
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
@@ -257,7 +262,7 @@ class UserController extends Controller
         // $rules['email']                     = ['required', 'string', 'email', 'max:255'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','max:255'];
         // $rules['phone']                     = ['required','string','max:20'];
-        $rules['phone']                     = ['required','numeric','digits_between:10,20'];
+        // $rules['phone']                     = ['required','numeric','digits_between:10,20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
@@ -284,13 +289,14 @@ class UserController extends Controller
         $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
         $rulesMessage['media_cover.required_with'] = 'Ebook Cover field is required when Ebook PDF is present.';
         $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
-        $rulesMessage['phone.required'] = 'Phone is required';
-        $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
+        // $rulesMessage['phone.required'] = 'Phone is required';
+        // $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
         
 
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
+            $rules['phone']                     = ['required','numeric','digits_between:10,20'];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
 
@@ -317,6 +323,8 @@ class UserController extends Controller
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
+            $rulesMessage['phone.required'] = 'Phone is required';
+            $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
         }
         
 
