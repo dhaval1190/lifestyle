@@ -385,6 +385,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('facebook_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('facebook_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -404,6 +409,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('twitter_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('twitter_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                     <div class="col-md-3">
                                         <label for="article_social_linkedin" class="text-black">
@@ -420,6 +430,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('linkedin_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('linkedin_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                     <div class="col-md-3">
                                         <label for="article_social_instagram" class="text-black">
@@ -1247,7 +1262,8 @@
         $('#article_social_facebook').on('input', function(){
                 $('.err_facebook_url').html('');
                 var facebookUrl = $("#article_social_facebook").val();
-                var matchUrl = ".facebook";                
+                // console.log(facebookUrl)
+                var matchUrl = "facebook";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_facebook_url').html("Please enter Facebook URL Only");
                     $('#submit').attr("disabled", true);
@@ -1265,7 +1281,7 @@
             $('#article_social_twitter').on('input', function(){
                 $('.err_twitter_url').html('');
                 var facebookUrl = $("#article_social_twitter").val();
-                var matchUrl = ".twitter";                
+                var matchUrl = "twitter";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_twitter_url').html("Please enter Twitter URL Only");
                     $('#submit').attr("disabled", true);
@@ -1282,7 +1298,7 @@
             $('#article_social_linkedin').on('input', function(){
                 $('.err_linkedin_url').html('');
                 var facebookUrl = $("#article_social_linkedin").val();
-                var matchUrl = ".linkedin";                
+                var matchUrl = "linkedin";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_linkedin_url').html("Please enter Linkedin URL Only");
                     $('#submit').attr("disabled", true);

@@ -456,6 +456,21 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|numeric|digits_between:10,12',
         ];
 
+        if($request->article_social_facebook){
+            if(stripos($request->article_social_facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }
+        if($request->article_social_twitter){
+            if(stripos($request->article_social_twitter,'twitter') == false){
+                return back()->with('twitter_error','Please enter twitter URL only');
+            }
+        }        
+        if($request->article_social_linkedin){
+            if(stripos($request->article_social_linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedin URL only');
+            }
+        }
         // validate request
         $request->validate($validate_rule);
         $select_categories = $request->category;
@@ -1157,6 +1172,7 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
 
+
         // prepare validate rule for custom fields
         $select_categories = $article->allCategories()->get();
 
@@ -1178,6 +1194,21 @@ class ArticleController extends Controller
             $validate_rule = array_merge($validate_rule, $custom_field_validation);
         }
 
+        if($request->article_social_facebook){
+            if(stripos($request->article_social_facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }
+        if($request->article_social_twitter){
+            if(stripos($request->article_social_twitter,'twitter') == false){
+                return back()->with('twitter_error','Please enter twitter URL only');
+            }
+        }        
+        if($request->article_social_linkedin){
+            if(stripos($request->article_social_linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedin URL only');
+            }
+        }
         // validate request
         $request->validate($validate_rule);
 
