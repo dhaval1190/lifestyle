@@ -22,14 +22,14 @@
                                 <li><a href="{{ route('page.register') }}">{{ __('frontend.header.list-business') }}</a></li>
                             @endguest
                             @if($site_global_settings->setting_page_terms_of_service_enable == \App\Setting::TERM_PAGE_ENABLED)
-                                <li><a href="#">{{ __('frontend.footer.terms-of-service') }}</a></li>
+                                <li><a href="{{ route('page.terms-of-service') }}">{{ __('frontend.footer.terms-of-service') }}</a></li>
                             @endif
                             @if($site_global_settings->setting_page_privacy_policy_enable == \App\Setting::PRIVACY_PAGE_ENABLED)
-                                <li><a href="#">{{ __('frontend.footer.privacy-policy') }}</a></li>
+                                <li><a href="{{ route('page.privacy-policy') }}">{{ __('frontend.footer.privacy-policy') }}</a></li>
                             @endif
-                            @if($site_global_settings->setting_site_sitemap_show_in_footer == \App\Setting::SITE_SITEMAP_SHOW_IN_FOOTER)
+                            {{-- @if($site_global_settings->setting_site_sitemap_show_in_footer == \App\Setting::SITE_SITEMAP_SHOW_IN_FOOTER)
                                 <li><a href="#">{{ __('sitemap.sitemap') }}</a></li>
-                            @endif
+                            @endif --}}
                         </ul>
                     </div>
                     <div class="col-md-3">
