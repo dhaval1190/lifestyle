@@ -252,6 +252,9 @@ class UserController extends Controller
             }elseif(strpos($input['youtube'], "youtu.be") !== false){
                 $youtube_url_id = explode(".be/",$input['youtube'])[1];
                 $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+            }else{
+
+                $embed_url = $input['youtube'];
             }
         }
         
