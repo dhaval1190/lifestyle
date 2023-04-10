@@ -103,19 +103,19 @@
                                                             <div class="row align-items-center">
                                                                 <div class="col-3 col-sm-2 col-md-3 col-lg-2 col-xl-1">
                                                                     @if(empty($item->user->user_image))
-                                                                        {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}" class="img-fluid rounded-circle"> --}}
+                                                                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}" class="img-fluid rounded-circle">
                                                                     @else
                                                                         <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $item->user->user_image) }}" class="img-fluid rounded-circle">
                                                                     @endif
                                                                 </div>
                                                                 <div class="col-9 col-sm-10 col-md-9 col-lg-10 col-xl-11">
                                                                     <span>
-                                                                        {{-- {{ $item->user->name . ' - ' . $item->user->email }} --}}
+                                                                        {{ $item->user->name . ' - ' . $item->user->email }}
                                                                         |
-                                                                        {{-- <a href="{{ route('admin.users.edit', ['user' => $item->user->id]) }}" class="text-info" target="_blank">
+                                                                        <a href="{{ route('admin.users.edit', ['user' => $item->user->id]) }}" class="text-info" target="_blank">
                                                                             <i class="far fa-address-card"></i>
                                                                             {{ __('backend.sidebar.profile') }}
-                                                                        </a> --}}
+                                                                        </a>
                                                                     </span>
                                                                 </div>
                                                             </div>
