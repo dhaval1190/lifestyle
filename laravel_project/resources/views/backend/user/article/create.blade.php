@@ -807,7 +807,7 @@
                 }
             });
 
-            $('#article_social_facebook').on('focus', function(){
+            $('#article_social_facebook').on('input', function(){
                 $('.err_media_url').html('');
                 var facebookUrl = $("#article_social_facebook").val();
                 var matchUrl = ".facebook";                
@@ -821,7 +821,7 @@
 
                 }
             });
-            $('#article_social_twitter').on('focus', function(){
+            $('#article_social_twitter').on('input', function(){
                 $('.err_twitter_url').html('');
                 var facebookUrl = $("#article_social_twitter").val();
                 var matchUrl = ".twitter";                
@@ -835,7 +835,7 @@
 
                 }
             });
-            $('#article_social_linkedin').on('focus', function(){
+            $('#article_social_linkedin').on('input', function(){
                 $('.err_linkedin_url').html('');
                 var facebookUrl = $("#article_social_linkedin").val();
                 var matchUrl = ".linkedin";                
@@ -854,11 +854,12 @@
             var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
             return regexp.test(s);
             }
-            $('#article_social_instagram').on('focus', function(){  
+            $('#article_social_instagram').on('input', function(){  
                 $('.err_instagram_url').html('');             
                var instaurl =  isUrl($("#article_social_instagram").val());  
-               console.log(instaurl);
-               if(instaurl){
+               var instaurl1 =  $("#article_social_instagram").val();
+               matchUrl_insta = 'www';
+               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1){
                 $('.err_instagram_url').html("Please enter valid instagram user name Only");
                     $('#submit').attr("disabled", true);
                     return false;
