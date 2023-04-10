@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-lg-7 col-md-5" data-aos="fade-up" data-aos-delay="400">
 
-                    <h1 class="item-cover-title-section">{{ $item->item_title }}</h1>
+                    <h1 class="item-cover-title-section" style="word-break: break-all;">{{ $item->item_title }}</h1>
 
                     @if($item_has_claimed)
                     <div class="row mb-2">
@@ -911,7 +911,7 @@
                     @if(!empty($item->item_description))
                     <div class="row mb-3">
                         <div class="col-12">
-                            <h4 class="h5 mb-4 text-black">{{ $item->item_title }}</h4>
+                            <h4 class="h5 mb-4 text-black" style="word-break: break-all;">{{ $item->item_title }}</h4>
                             <p>{!! clean(nl2br($item->item_description), array('HTML.Allowed' => 'b,strong,i,em,u,ul,ol,li,p,br')) !!}</p>
                             <hr>
                         </div>
