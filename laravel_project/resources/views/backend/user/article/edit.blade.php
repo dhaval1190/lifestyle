@@ -1251,6 +1251,10 @@
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_facebook_url').html("Please enter Facebook URL Only");
                     $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_facebook_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_facebook_url').html('');
@@ -1265,11 +1269,14 @@
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_twitter_url').html("Please enter Twitter URL Only");
                     $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_twitter_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_twitter_url').html('');
                     $('#submit').attr("disabled", false);
-
                 }
             });
             $('#article_social_linkedin').on('input', function(){
@@ -1279,6 +1286,10 @@
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_linkedin_url').html("Please enter Linkedin URL Only");
                     $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_linkedin_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_linkedin_url').html('');
