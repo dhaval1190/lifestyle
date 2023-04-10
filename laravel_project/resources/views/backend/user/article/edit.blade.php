@@ -635,38 +635,38 @@
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                         <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
-                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                                <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                         <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
-                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                                <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                         <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
-                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                                <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                         <div id="exception_close_hour" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                         <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
-                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                                <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
+                                            <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
@@ -1086,11 +1086,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                        <form action="{{ route('user.articles.hours.destroy', ['article_hour' => $article_hour]) }}" method="POST">
+                        <form action="{{ route('user.articles.hours.destroy', ['article_hour' => $article_hour->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                         </form>
+                        {{-- @php
+                            print_r($article_hour);exit;
+                        @endphp --}}
                     </div>
                 </div>
             </div>
@@ -1107,7 +1110,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="update-article-slug-form" action="{{ route('user.articles.hour-exceptions.update', ['article_hour_exception' => $article_hour_exception]) }}" method="POST">
+                    <form id="update-article-slug-form" action="{{ route('user.articles.hour-exceptions.update', ['article_hour_exception' => $article_hour_exception->id]) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
@@ -1199,7 +1202,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                        <form action="{{ route('user.articles.hour-exceptions.destroy', ['article_hour_exception' => $article_hour_exception]) }}" method="POST">
+                        <form action="{{ route('user.articles.hour-exceptions.destroy', ['article_hour_exception' => $article_hour_exception->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
