@@ -2009,7 +2009,7 @@ class PagesController extends Controller
         $user_detail = User::where('id', $id)->first();
         $media_count = MediaDetail::where('user_id', $id)->count();
         $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
-        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->get();
+        $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->orderBy('id', 'DESC')->get();
         $ebook_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'ebook')->get();
 
         $user_obj = new User();
@@ -2904,21 +2904,22 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-        $visite_media  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        $visite_medias  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->get();
+        if(isset($visite_medias) && !empty($visite_medias)){
+
+        foreach($visite_medias as $visite_media){
         if($media && $media->user_id == $login_user->id || $visite_media && $visite_media->user_id == $login_user->id)
         {
-            $media_detail->delete();
-            $visite_media->delete();
-
-            \Session::flash('flash_message', __('alert.media-deleted'));
-            \Session::flash('flash_type', 'success');
-
-            return redirect()->route('user.profile.edit');
+            MediaDetailsVisits::where('media_detail_id', $media_detail->id)->delete();
+        }   
         }
-        else
-        {
-            return redirect()->route('user.profile.edit');
+                $media_detail->delete();
+        }else{
+                $media_detail->delete();
         }
+                \Session::flash('flash_message', __('alert.media-deleted'));
+                \Session::flash('flash_type', 'success');
+            return redirect()->route('user.profile.edit');
     }
 
     public function destroyEbookMedia(Request $request, MediaDetail $media_detail)
@@ -2926,44 +2927,47 @@ class PagesController extends Controller
         $login_user = Auth::user();
 
         $media = MediaDetail::where('id', $media_detail->id)->first();
-        $visite_ebookmedia  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
+        $visite_ebookmedias  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->get();
+       
+        if(isset($visite_ebookmedias) && !empty($visite_ebookmedias)){
+
+        foreach($visite_ebookmedias as $visite_ebookmedia){
         if($media && $media->user_id == $login_user->id || $visite_ebookmedia && $visite_ebookmedia->user_id == $login_user->id)
         {
-            $media_detail->delete();
-            $visite_ebookmedia->delete();
-
-            \Session::flash('flash_message', __('alert.media-deleted'));
-            \Session::flash('flash_type', 'success');
-
-            return redirect()->route('user.profile.edit');
+            MediaDetailsVisits::where('media_detail_id', $media_detail->id)->delete();
+        }  
         }
-        else
-        {
-            return redirect()->route('user.profile.edit');
+                $media_detail->delete();
+        }else{
+                $media_detail->delete();
         }
+                \Session::flash('flash_message', __('alert.media-deleted'));
+                \Session::flash('flash_type', 'success');
+            return redirect()->route('user.profile.edit');
     }
 
     public function destroyPodcastMedia(Request $request, MediaDetail $media_detail)
     {
-        $login_user = Auth::user();
-
+        $login_user = Auth::user();         
         $media = MediaDetail::where('id', $media_detail->id)->first();
-        $visite_podcastmedia  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->first();
-        if($media && $media->user_id == $login_user->id || $visite_podcastmedia && $visite_podcastmedia->user_id == $login_user->id)
-        {
-            $media_detail->delete();
-            $visite_podcastmedia->delete();
+        $visite_podcastmedias  = MediaDetailsVisits::where('media_detail_id',$media_detail->id)->where('user_id',$login_user->id)->get();
+        
+        if(isset($visite_podcastmedias) && !empty($visite_podcastmedias)){
 
-            \Session::flash('flash_message', __('alert.media-deleted'));
-            \Session::flash('flash_type', 'success');
-
+        foreach($visite_podcastmedias as $visite_podcastmedia){
+            if($media && $media->user_id == $login_user->id || $visite_podcastmedia && $visite_podcastmedia->user_id == $login_user->id)
+        {            
+            MediaDetailsVisits::where('media_detail_id', $media_detail->id)->delete();
+        }
+        }
+                $media_detail->delete();
+        }else{
+                $media_detail->delete();
+        }
+                \Session::flash('flash_message', __('alert.media-deleted'));
+                \Session::flash('flash_type', 'success');
             return redirect()->route('user.profile.edit');
         }
-        else
-        {
-            return redirect()->route('user.profile.edit');
-        }
-    }
 
     public function updateMedia(Request $request, MediaDetail $media_detail)
     {
