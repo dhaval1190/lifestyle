@@ -1114,6 +1114,7 @@ class ArticleController extends Controller
     {
         // Gate::authorize('update-item', $article);
 
+        // dd($request->all());
         $settings = app('site_global_settings');
 
         /**
@@ -2712,73 +2713,105 @@ class ArticleController extends Controller
         return redirect()->route('user.items.index', $request->query());
     }
 
-    public function destroyItemHour(Request $request, ItemHour $item_hour)
+    public function destroyItemHour(Request $request,$item_hour)
     {
         $login_user = Auth::user();
 
-        $item = $item_hour->item()->first();
+        // $item = $item_hour->item()->first();
+        // print_r($item_hour);
+        // print_r($item);
+        // print_r($item->user_id);
+        // print_r($login_user->id);
+        // exit;
+        $item_hour_detail = ItemHour::find($item_hour);
+        // print_r($item_hour_detail);exit;
+        $item = Item::find($item_hour_detail->item_id);
+        // print_r($login_user->id);exit;
+
 
         if($item && $item->user_id == $login_user->id)
         {
-            $item_hour->delete();
+            // $item_hour->delete();
+            $item_hour_detail->delete();
 
             \Session::flash('flash_message', __('item_hour.alert.item-hour-deleted'));
             \Session::flash('flash_type', 'success');
 
-            return redirect()->route('user.items.edit', ['item' => $item]);
+            return redirect()->route('user.articles.edit', ['article' => $item]);
         }
         else
         {
-            return redirect()->route('user.items.index');
+            return redirect()->route('user.articles.index');
         }
     }
 
-    public function destroyItemHourException(Request $request, ItemHourException $item_hour_exception)
+    // public function destroyItemHourException(Request $request, ItemHourException $item_hour_exception)
+    public function destroyItemHourException(Request $request, $item_hour_exception)
     {
         $login_user = Auth::user();
+        $item_hour_exception_detail = ItemHourException::find($item_hour_exception);
+        $item = Item::find($item_hour_exception_detail->item_id);
+        // print_r($item);exit;
 
-        $item = $item_hour_exception->item()->first();
+        // $item = $item_hour_exception->item()->first();
 
         if($item && $item->user_id == $login_user->id)
         {
-            $item_hour_exception->delete();
+            // $item_hour_exception->delete();
+            $item_hour_exception_detail->delete();
 
             \Session::flash('flash_message', __('item_hour.alert.item-hour-exception-deleted'));
             \Session::flash('flash_type', 'success');
 
-            return redirect()->route('user.items.edit', ['item' => $item]);
+            // return redirect()->route('user.items.edit', ['item' => $item]);
+            return redirect()->route('user.articles.edit', ['article' => $item]);
         }
         else
         {
-            return redirect()->route('user.items.index');
+            return redirect()->route('user.articles.index');
         }
     }
 
-    public function updateItemHour(Request $request, ItemHour $item_hour)
+    public function updateItemHour(Request $request,$item_hour)
     {
+        //dd($request->all());
+        
         $login_user = Auth::user();
+        $item_hour_detail = ItemHour::find($item_hour);
+        // print_r($item_hour_detail);exit;
 
-        $item = $item_hour->item()->first();
 
+        // $item = $item_hour->item()->first();
+        $item = Item::find($item_hour_detail->item_id);
+        // print_r($item);
+        // print_r($item->user_id);
+        // print_r($login_user->id);exit;
         if($item && $item->user_id == $login_user->id)
         {
+            // $request->validate([
+            //     'item_hour_day_of_week' => 'required|numeric|between:1,7',
+            //     'item_hour_open_time_hour' => 'required|numeric|between:0,24',
+            //     'item_hour_open_time_minute' => 'required|numeric|between:0,59',
+            //     'item_hour_close_time_hour' => 'required|numeric|between:0,24',
+            //     'item_hour_close_time_minute' => 'required|numeric|between:0,59',
+            // ]);
             $request->validate([
-                'item_hour_day_of_week' => 'required|numeric|between:1,7',
-                'item_hour_open_time_hour' => 'required|numeric|between:0,24',
-                'item_hour_open_time_minute' => 'required|numeric|between:0,59',
-                'item_hour_close_time_hour' => 'required|numeric|between:0,24',
-                'item_hour_close_time_minute' => 'required|numeric|between:0,59',
+                'article_hour_day_of_week' => 'required|numeric|between:1,7',
+                'article_hour_open_time_hour' => 'required|numeric|between:0,24',
+                'article_hour_open_time_minute' => 'required|numeric|between:0,59',
+                'article_hour_close_time_hour' => 'required|numeric|between:0,24',
+                'article_hour_close_time_minute' => 'required|numeric|between:0,59',
             ]);
 
-            $item_hour_day_of_week = $request->item_hour_day_of_week;
+            $item_hour_day_of_week = $request->article_hour_day_of_week;
 
-            $item_hour_open_time_hour = intval($request->item_hour_open_time_hour);
-            $item_hour_close_time_hour = intval($request->item_hour_close_time_hour);
+            $item_hour_open_time_hour = intval($request->article_hour_open_time_hour);
+            $item_hour_close_time_hour = intval($request->article_hour_close_time_hour);
 
             if($item_hour_open_time_hour <= $item_hour_close_time_hour)
             {
-                $item_hour_open_time = $request->item_hour_open_time_hour . ':' . $request->item_hour_open_time_minute . ':00';
-                $item_hour_close_time = $request->item_hour_close_time_hour . ':' . $request->item_hour_close_time_minute . ':00';
+                $item_hour_open_time = $request->article_hour_open_time_hour . ':' . $request->article_hour_open_time_minute . ':00';
+                $item_hour_close_time = $request->article_hour_close_time_hour . ':' . $request->article_hour_close_time_minute . ':00';
 
                 if($item_hour_open_time_hour == 24)
                 {
@@ -2789,48 +2822,64 @@ class ArticleController extends Controller
                 {
                     $item_hour_close_time = '24:00:00';
                 }
-
                 if($item_hour_open_time != $item_hour_close_time)
                 {
-                    $item_hour->item_hour_day_of_week = $item_hour_day_of_week;
-                    $item_hour->item_hour_open_time = $item_hour_open_time;
-                    $item_hour->item_hour_close_time = $item_hour_close_time;
-                    $item_hour->save();
+                    // $item_hour->item_hour_day_of_week = $item_hour_day_of_week;
+                    // $item_hour->item_hour_open_time = $item_hour_open_time;
+                    // $item_hour->item_hour_close_time = $item_hour_close_time;
+                    // $item_hour->save();
+
+                    $item_hour_detail->item_hour_day_of_week = $item_hour_day_of_week;
+                    $item_hour_detail->item_hour_open_time = $item_hour_open_time;
+                    $item_hour_detail->item_hour_close_time = $item_hour_close_time;
+                    $item_hour_detail->save();
                 }
             }
 
             \Session::flash('flash_message', __('item_hour.alert.item-hour-updated'));
             \Session::flash('flash_type', 'success');
 
-            return redirect()->route('user.items.edit', ['item' => $item]);
+            // return redirect()->route('user.items.edit', ['item' => $item]);
+            return redirect()->route('user.articles.edit', ['article' => $item]);
         }
         else
         {
-            return redirect()->route('user.items.index');
+            // return redirect()->route('user.items.index');
+            return redirect()->route('user.articles.index');
         }
     }
 
-    public function updateItemHourException(Request $request, ItemHourException $item_hour_exception)
+    // public function updateItemHourException(Request $request, ItemHourException $item_hour_exception)
+    public function updateItemHourException(Request $request, $item_hour_exception)
     {
         $login_user = Auth::user();
-
-        $item = $item_hour_exception->item()->first();
+// dd($request->all());
+        // $item = $item_hour_exception->item()->first();
+        $item_hour_exception_detail = ItemHourException::find($item_hour_exception);
+        $item = Item::find($item_hour_exception_detail->item_id);
 
         if($item && $item->user_id == $login_user->id)
         {
+            // $request->validate([
+            //     'item_hour_exception_date' => 'required|date|date_format:Y-m-d',
+            //     'item_hour_exception_open_time_hour' => 'nullable|numeric|between:0,24',
+            //     'item_hour_exception_open_time_minute' => 'nullable|numeric|between:0,59',
+            //     'item_hour_exception_close_time_hour' => 'nullable|numeric|between:0,24',
+            //     'item_hour_exception_close_time_minute' => 'nullable|numeric|between:0,59',
+            // ]);
             $request->validate([
-                'item_hour_exception_date' => 'required|date|date_format:Y-m-d',
-                'item_hour_exception_open_time_hour' => 'nullable|numeric|between:0,24',
-                'item_hour_exception_open_time_minute' => 'nullable|numeric|between:0,59',
-                'item_hour_exception_close_time_hour' => 'nullable|numeric|between:0,24',
-                'item_hour_exception_close_time_minute' => 'nullable|numeric|between:0,59',
+                'article_hour_exception_date' => 'required|date|date_format:Y-m-d',
+                'article_hour_exception_open_time_hour' => 'nullable|numeric|between:0,24',
+                'article_hour_exception_open_time_minute' => 'nullable|numeric|between:0,59',
+                'article_hour_exception_close_time_hour' => 'nullable|numeric|between:0,24',
+                'article_hour_exception_close_time_minute' => 'nullable|numeric|between:0,59',
             ]);
 
-            $item_hour_exception_date = $request->item_hour_exception_date;
-            $item_hour_exception_open_time_hour = is_null($request->item_hour_exception_open_time_hour) ? null : $request->item_hour_exception_open_time_hour;
-            $item_hour_exception_open_time_minute = is_null($request->item_hour_exception_open_time_minute) ? null : $request->item_hour_exception_open_time_minute;
-            $item_hour_exception_close_time_hour = is_null($request->item_hour_exception_close_time_hour) ? null : $request->item_hour_exception_close_time_hour;
-            $item_hour_exception_close_time_minute = is_null($request->item_hour_exception_close_time_minute) ? null : $request->item_hour_exception_close_time_minute;
+            $item_hour_exception_date = $request->article_hour_exception_date;
+            $item_hour_exception_open_time_hour = is_null($request->article_hour_exception_open_time_hour) ? null : $request->article_hour_exception_open_time_hour;
+            $item_hour_exception_open_time_minute = is_null($request->article_hour_exception_open_time_minute) ? null : $request->article_hour_exception_open_time_minute;
+            $item_hour_exception_close_time_hour = is_null($request->article_hour_exception_close_time_hour) ? null : $request->article_hour_exception_close_time_hour;
+            $item_hour_exception_close_time_minute = is_null($request->article_hour_exception_close_time_minute) ? null : $request->article_hour_exception_close_time_minute;
 
             $item_hour_exception_open_time = null;
             $item_hour_exception_close_time = null;
@@ -2860,20 +2909,21 @@ class ArticleController extends Controller
 
             if($can_be_updated)
             {
-                $item_hour_exception->item_hour_exception_date = $item_hour_exception_date;
-                $item_hour_exception->item_hour_exception_open_time = $item_hour_exception_open_time;
-                $item_hour_exception->item_hour_exception_close_time = $item_hour_exception_close_time;
-                $item_hour_exception->save();
+                $item_hour_exception_detail->item_hour_exception_date = $item_hour_exception_date;
+                $item_hour_exception_detail->item_hour_exception_open_time = $item_hour_exception_open_time;
+                $item_hour_exception_detail->item_hour_exception_close_time = $item_hour_exception_close_time;
+                $item_hour_exception_detail->save();
             }
 
             \Session::flash('flash_message', __('item_hour.alert.item-hour-exception-updated'));
             \Session::flash('flash_type', 'success');
 
-            return redirect()->route('user.items.edit', ['item' => $item]);
+            // return redirect()->route('user.items.edit', ['item' => $item]);
+            return redirect()->route('user.articles.edit', ['article' => $item]);
         }
         else
         {
-            return redirect()->route('user.items.index');
+            return redirect()->route('user.articles.index');
         }
     }
 }
