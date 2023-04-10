@@ -228,7 +228,7 @@ class PagesController extends Controller
                     ]);
         $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
         $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
-        $notifications = UserNotification::join('users', 'users.id', '=', 'notification.visitor_id')->select('notification.*','users.id','name','user_image')->where('user_id',$login_user->id)->where('is_read',0)->get();     
+        $notifications = UserNotification::join('users', 'users.id', '=', 'notification.visitor_id')->select('notification.*','name','user_image')->where('user_id',$login_user->id)->where('is_read',0)->get();     
         // $media_detail_id = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
         // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
         return response()->view('backend.user.index',

@@ -2955,7 +2955,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                         {{ __('frontend.item.send-email') }}
                                     </button>
                                 </div>
@@ -3301,24 +3301,26 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     
   <script>
-    var firebaseConfig = {
-        aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-        authDomain: "coachhq-c1b3d.firebaseapp.com",
-        projectId: "coachhq-c1b3d",
-        storageBucket: "coachhq-c1b3d.appspot.com",
-        messagingSenderId: "668525619724",
-        appId: "1:668525619724:web:e4282225654d0467655c29",
-        measurementId: "G-VFGKZNYRVM"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-    messaging.onMessage(function (payload) {
-        const title = payload.notification.title;
-        const options = {
-            body: payload.notification.body,
-            icon: payload.notification.icon,
+    $('#submit').on('click', function(){
+        var firebaseConfig = {
+            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+            authDomain: "coachhq-c1b3d.firebaseapp.com",
+            projectId: "coachhq-c1b3d",
+            storageBucket: "coachhq-c1b3d.appspot.com",
+            messagingSenderId: "668525619724",
+            appId: "1:668525619724:web:e4282225654d0467655c29",
+            measurementId: "G-VFGKZNYRVM"
         };
-        new Notification(title, options);
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+        messaging.onMessage(function (payload) {
+            const title = payload.notification.title;
+            const options = {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+            };
+            new Notification(title, options);
+        });
     });
 
         $(document).ready(function(){

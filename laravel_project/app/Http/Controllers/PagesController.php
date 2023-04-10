@@ -6526,8 +6526,8 @@ class PagesController extends Controller
         $settings = app('site_global_settings');
 
         $item = Item::where('item_slug', $item_slug)
-            ->where('item_status', Item::ITEM_PUBLISHED)
-            ->first();
+        ->where('item_status', Item::ITEM_PUBLISHED)
+        ->first();
 
         if($item)
         {
@@ -6620,12 +6620,11 @@ class PagesController extends Controller
                     \Session::flash('flash_message', __('frontend.item.send-email-success'));
                     \Session::flash('flash_type', 'success');
 
-                    $url = 'https://fcm.googleapis.com/fcm/send';
-                    $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();            
+                    $url = 'https://fcm.googleapis.com/fcm/send';                            
                     $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
                     
                     if($request->contact_profile){
-
+                        $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
                         $data = [
                             "registration_ids" => $FcmToken,
                             "notification" => [
@@ -6634,7 +6633,7 @@ class PagesController extends Controller
                             ]
                         ];
                     }else{
-   
+                        $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
                         $data = [
                             "registration_ids" => $FcmToken,
                             "notification" => [

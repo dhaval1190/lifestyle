@@ -349,7 +349,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                            <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                                 {{ __('frontend.item.send-email') }}
                                             </button>
                                         </div>
@@ -868,6 +868,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                     },
                 });
                 });
+            $('#submit').on('click', function(){
             var firebaseConfig = {
                 aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
                 authDomain: "coachhq-c1b3d.firebaseapp.com",
@@ -887,6 +888,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                 };
                 new Notification(title, options);
             });
+        });
             $(document).ready(function(){
                  $('.item-contact-button').on('click', function(){
                 $('#contact-modal').modal('show');

@@ -155,15 +155,15 @@
                         <div class="modal-body notification_body ">
                             <div class="notification_messages">
                                 @if($notifications->count() > 0)
-                                @foreach($notifications as $notification)
-                                <div class="notification_message_details">
+                                @foreach($notifications as $key_notification=>$notification)
+                                <div class="notification_message_details profile_img_{{$notification->id}}" data-id="{{$notification->id}}">
                                     @if(empty($notification->user_image))
-                                    <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:50px; height:50px;">
+                                    <img class="profile_img_{{$notification->id}}" data-id="{{$notification->id}}" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:50px; height:50px;">
                                     @else
-                                    <img src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" style="border-radius:50%; width:50px; height:50px;">
+                                    <img class="profile_img_{{$notification->id}}"data-id="{{$notification->id}}" src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" style="border-radius:50%; width:50px; height:50px;">
                                     @endif
                                     <!-- <img src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" alt="" /> -->
-                                    <div class="message">
+                                    <div class="message profile_img_{{$notification->id}}"data-id="{{$notification->id}}">
                                         <h4 class="m-one">{{$notification->name}}</h4>
                                         <p class="m-details">
                                             {{$notification->notification}}
@@ -174,24 +174,27 @@
                                         
                                     </div>
                                 </div>
+                                @if($key_notification==5)
+                                    @php
+                                    break; @endphp
+                                    @endif
                                 @endforeach
                                 @else
                                 <div class="notification_message_details">
                                     <p style="text-align: center">No records found</p>
                                 </div>
-
                                 @endif
                             </div>
                             
                         </div>
-                        @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 10)
-                        <div class="notification_footer">
-                            <div class="notification_message_info">
-                                <a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View
-                                    all</a>
+                        @if(isset($notifications) && !empty($notifications) && $notifications->count() >= 5)
+                            <div class="notification_footer">
+                                <div class="notification_message_info">
+                                    <a href="{{ route('page.user.notification', encrypt($login_user['id'])) }}">View
+                                        all</a>
+                                </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
                     </div>
                 </div>
 
@@ -950,8 +953,9 @@
 
         });
         $(".cancel").click(function() {
+            let id = $(this).attr('id');
             console.log("toggling visibility");
-            $(this).parent().toggleClass('gone');
+            $('.profile_img_'+id).toggleClass('gone');
 
         });
 
