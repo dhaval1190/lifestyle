@@ -105,8 +105,8 @@
                         <div class="col-md-12 plr-45">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="card rounded-0 shadow">
-                                        <div class="card-body">
+                                    <div class="card rounded-0 shadow mb-5">
+                                        <div class="card-body card_scroll">
                                             <ul class="list-group" id="music-list">
                                                 @foreach($podcast_media_array as $podcast_key => $podcast)
                                                     <li class="list-group-item list-group-item-action item" data-id="<?= $podcast->id ?>">
@@ -143,7 +143,7 @@
                                             <button class="btn btn-sm btn-light bg-gradient text-dark" id="play-btn" data-value="play"><i class="fa fa-play"></i></button>
                                         </div>
                                         <div class="mx-1">
-                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="stop-btn"><i class="fa fa-stop"></i></button>
+                                            <button class="btn btn-sm btn-light bg-gradient text-dark" id="stop-btn" title="Stop"><i class="fa fa-stop"></i></button>
                                         </div>
                                         <div class="mx-1">
                                             <button class="btn btn-sm btn-light bg-gradient text-dark" id="next-btn"><i class="fa fa-step-forward"></i></button>
@@ -228,8 +228,8 @@
                 // var id = $(this).val();
             
             // alert(id);
-            // url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
-            url = '/ajax/profile/podcast/' + id;
+            url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
+            // url = '/ajax/profile/podcast/' + id;
                 if (type == 'pause') {
                     start_loader();
                     // var ajax_url = '/ajax/profile/podcast/' + id;

@@ -408,7 +408,7 @@
                                                     <div class="row align-items-center item-box-user-div">
                                                         <div class="col-12">
                                                             {{-- <span class="font-size-13" style="word-break: break-all;">{{ $coach->company_name }}</span> --}}
-                                                            <span class="font-size-13">{{ str_limit($coach->company_name, 50, '...') }}</span>
+                                                            <span class="font-size-13">{{ str_limit($coach->company_name, 45, '...') }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
