@@ -57,6 +57,8 @@ use Carbon\Carbon;
 use App\MediaDetailsVisits;
 use App\UserNotification;
 use App\SocialLogin;
+use Illuminate\Support\Facades\Validator;
+
 
 class PagesController extends Controller
 {
@@ -6430,9 +6432,19 @@ class PagesController extends Controller
             if(Auth::check())
             {
                 $request->validate([
-                    'profile_share_email_name' => 'required|max:255',
+                    'profile_share_email_name' => 'required|regex:/^[\pL\s]+$/u|max:30',
                     'profile_share_email_from_email' => 'required|email|max:255',
                     'profile_share_email_to_email' => 'required|email|max:255',
+                ],[
+                    'profile_share_email_name.required' => 'Name is required',
+                    'profile_share_email_name.regex'         =>  "Invalid name",
+                    'profile_share_email_name.max'           =>  "Name must not more than 30 characters",
+                    'profile_share_email_from_email.required'=> 'Email is required',            
+                    'profile_share_email_from_email.regex'         =>  "Invalid email format", 
+                    'profile_share_email_from_email.email'       => "Invalid email format",
+                    'profile_share_email_to_email.required'=> 'Email is required',            
+                    'profile_share_email_to_email.regex'         =>  "Invalid email format", 
+                    'profile_share_email_to_email.email'       => "Invalid email format",
                 ]);
 
                 // send an email notification to admin
@@ -8017,8 +8029,15 @@ class PagesController extends Controller
         if(Auth::check())
         {
             $request->validate([
-                'item_share_email_name' => 'required|max:255',
+                'item_share_email_name' => 'required|regex:/^[\pL\s]+$/u|max:30',
                 'item_share_email_to_email' => 'required|email|max:255',
+            ],[
+                'item_share_email_name.required' => 'Name is required',
+                'item_share_email_name.regex'         =>  "Invalid name",
+                'item_share_email_name.max'           =>  "Name must not more than 30 characters",
+                'item_share_email_to_email.required'=> 'Email is required',            
+                'item_share_email_to_email.regex'         =>  "Invalid email format", 
+                'item_share_email_to_email.email'       => "Invalid email format",
             ]);
 
             // send an email notification to admin
