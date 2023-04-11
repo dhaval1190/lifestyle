@@ -336,11 +336,10 @@ class UserController extends Controller
         }
 
         if($request->instagram){
-            if(stripos($request->instagram,'.com') == true ||strcmp($request->instagram,'https') == true ||strcmp($request->instagram,'www.') == true || strcmp($request->instagram,'//') == true){   
+            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
-        } 
-         
+        }         
         if($request->facebook){
             if(stripos($request->facebook,'facebook') == false){
                 return back()->with('facebook_error','Please enter facebook URL only');
@@ -352,7 +351,7 @@ class UserController extends Controller
             }
         }
         if($request->youtube){
-            if(stripos($request->youtube,'youtube') == false){
+            if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
                 return back()->with('youtube_error','Please enter youtube URL only');
             }
         }

@@ -302,7 +302,7 @@ $chk_post = Auth::user()->phone;
                                             <span class="invalid-tooltip">
                                                 <strong>{{ Session::get('instagram_error') }}</strong>
                                             </span>
-                                        @endif
+                                    @endif
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="linkedin" class="text-black">LinkedIn</label>
@@ -1457,8 +1457,9 @@ $chk_post = Auth::user()->phone;
             $('#youtube').on('input', function(){
                 $('.err_youtube_url').html('');
                 var youtubeinUrl = $("#youtube").val();
-                var matchUrl = ".youtube";                
-                if(youtubeinUrl.indexOf(matchUrl) == -1){
+                var matchUrl = ".youtube"; 
+                var matchUrl1 = "youtu.be";               
+                if(youtubeinUrl.indexOf(matchUrl) == -1 && youtubeinUrl.indexOf(matchUrl1) == -1){
                     $('.err_youtube_url').html("Please enter Youtube URL Only");
                     $('#submit').attr("disabled", true);
                     if(youtubeinUrl.length == 0){
@@ -1479,10 +1480,13 @@ $chk_post = Auth::user()->phone;
             }
             $('#instagram').on('input', function(){  
                 $('.err_instagram_url').html('');             
-               var instaurl =  isUrl($("#instagram").val());  
-               console.log(instaurl);
-               if(instaurl){
-                $('.err_instagram_url').html("Please enter valid instagram user name Only");
+               var instaurl =  isUrl($("#instagram").val()); 
+               var instaurl1 =  $("#instagram").val();
+               matchUrl_insta_www = 'www.'; 
+            //    console.log(instaurl);
+            //    if(instaurl){
+               if(instaurl || instaurl1.indexOf(matchUrl_insta_www) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
                     $('#submit').attr("disabled", true);
                     return false;
                 }else{

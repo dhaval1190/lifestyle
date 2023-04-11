@@ -451,6 +451,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('instagram_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('instagram_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                     <!-- <div class="col-md-3">
                                         @php
@@ -1324,9 +1329,10 @@
                 $('.err_instagram_url').html('');             
                var instaurl =  isUrl($("#article_social_instagram").val());  
                var instaurl1 =  $("#article_social_instagram").val();
-               matchUrl_insta = 'www';  
-               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1){
-                $('.err_instagram_url').html("Please enter valid instagram user name Only");
+               matchUrl_insta = 'www.';  
+            //    if(instaurl){
+               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
                     $('#submit').attr("disabled", true);
                     return false;
                 }else{

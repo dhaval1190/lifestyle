@@ -130,9 +130,11 @@
                                 class="notification_icon" /></a> -->
         <!-- <a href="#" id="action" class="toggle"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}"
                 alt="" class="notification_alert" /></a> -->
-        <div class="toggle">
-            <div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}" alt="" class="notification_alert" data-toggle="modal" data-target="#exampleModalLong" /></div>
-        </div>
+        @if(Auth::user()->isCoach())
+            <div class="toggle">
+                <div class="ico"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}" alt="" class="notification_alert" data-toggle="modal" data-target="#exampleModalLong" /></div>
+            </div>
+        @endif
         {{-- <a href="{{ route('user.items.create') }}" class="btn btn-info btn-icon-split">
         <span class="icon text-white-50">
             <i class="fas fa-plus"></i>
