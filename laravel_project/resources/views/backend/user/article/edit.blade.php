@@ -1616,7 +1616,7 @@
                 window.selectedImages = [];
 
                 $.FileDialog({
-                    accept: "image/jpeg",
+                    accept: ".jpeg,.jpg,.png",
                 }).on("files.bs.filedialog", function (event) {
                     var html = "";
                     for (var a = 0; a < event.files.length; a++) {
@@ -1638,6 +1638,7 @@
                                 return false;
                             }
                     }
+                    document.getElementById("selected-images").innerHTML += html;
                 });
             });
             /**
