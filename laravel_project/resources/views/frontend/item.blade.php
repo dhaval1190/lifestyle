@@ -1381,7 +1381,7 @@
                                     @else
                                         <div class="row mb-3 pt-3 pb-3 bg-light">
                                             <div class="col-md-12 text-center">
-                                                <span>{{ __('review.frontend.no-review', ['item_name' => $item->item_title]) }}</span>
+                                                <span style="word-break: break-all;">{{ __('review.frontend.no-review', ['item_name' => $item->item_title]) }}</span>
                                             </div>
                                         </div>
                                     @endif
@@ -1888,10 +1888,10 @@
                                         <i class="fab fa-pinterest-p"></i>
                                         {{ __('social_share.pinterest') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                                         <i class="fab fa-evernote"></i>
                                         {{ __('social_share.evernote') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-reddit" href="" data-social="reddit">
                                         <i class="fab fa-reddit-alien"></i>
                                         {{ __('social_share.reddit') }}
@@ -1900,14 +1900,14 @@
                                         <i class="fab fa-buffer"></i>
                                         {{ __('social_share.buffer') }}
                                     </a> --}}
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                                         <i class="fab fa-wordpress-simple"></i>
                                         {{ __('social_share.wordpress') }}
-                                    </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
+                                    </a> --}}
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
                                         <i class="fab fa-weibo"></i>
                                         {{ __('social_share.weibo') }}
-                                    </a>
+                                    </a> --}}
                                     <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-skype" href="" data-social="skype">
                                         <i class="fab fa-skype"></i>
                                         {{ __('social_share.skype') }}
@@ -1928,10 +1928,10 @@
                                         <i class="fab fa-weixin"></i>
                                         {{ __('social_share.wechat') }}
                                     </a>
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
                                         <i class="fab fa-line"></i>
                                         {{ __('social_share.line') }}
-                                    </a>
+                                    </a> --}}
 
                                 </div>
                             </div>
@@ -2851,10 +2851,10 @@
                             <i class="fab fa-pinterest-p"></i>
                             {{ __('social_share.pinterest') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                             <i class="fab fa-evernote"></i>
                             {{ __('social_share.evernote') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-reddit" href="" data-social="reddit">
                             <i class="fab fa-reddit-alien"></i>
                             {{ __('social_share.reddit') }}
@@ -2863,14 +2863,14 @@
                             <i class="fab fa-buffer"></i>
                             {{ __('social_share.buffer') }}
                         </a> --}}
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                             <i class="fab fa-wordpress-simple"></i>
                             {{ __('social_share.wordpress') }}
-                        </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
+                        </a> --}}
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
                             <i class="fab fa-weibo"></i>
                             {{ __('social_share.weibo') }}
-                        </a>
+                        </a> --}}
                         <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-skype" href="" data-social="skype">
                             <i class="fab fa-skype"></i>
                             {{ __('social_share.skype') }}
@@ -2891,10 +2891,10 @@
                             <i class="fab fa-weixin"></i>
                             {{ __('social_share.wechat') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
                             <i class="fab fa-line"></i>
                             {{ __('social_share.line') }}
-                        </a>
+                        </a> --}}
 
                     </div>
                 </div>

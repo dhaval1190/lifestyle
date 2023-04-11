@@ -364,26 +364,26 @@
                                     <i class="fab fa-pinterest-p"></i>
                                     {{ __('social_share.pinterest') }}
                                 </a>
-                                <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
+                                {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                                     <i class="fab fa-evernote"></i>
                                     {{ __('social_share.evernote') }}
-                                </a>
+                                </a> --}}
                                 <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-reddit" href="" data-social="reddit">
                                     <i class="fab fa-reddit-alien"></i>
                                     {{ __('social_share.reddit') }}
                                 </a>
-                                <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
+                                {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-buffer" href="" data-social="buffer">
                                     <i class="fab fa-buffer"></i>
                                     {{ __('social_share.buffer') }}
-                                </a>
-                                <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
+                                </a> --}}
+                                {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-wordpress" href="" data-social="wordpress">
                                     <i class="fab fa-wordpress-simple"></i>
                                     {{ __('social_share.wordpress') }}
                                 </a>
                                 <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-weibo" href="" data-social="weibo">
                                     <i class="fab fa-weibo"></i>
                                     {{ __('social_share.weibo') }}
-                                </a>
+                                </a> --}}
                                 <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-skype" href="" data-social="skype">
                                     <i class="fab fa-skype"></i>
                                     {{ __('social_share.skype') }}
@@ -392,10 +392,10 @@
                                     <i class="fab fa-telegram-plane"></i>
                                     {{ __('social_share.telegram') }}
                                 </a>
-                                <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
+                                {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-viber" href="" data-social="viber">
                                     <i class="fab fa-viber"></i>
                                     {{ __('social_share.viber') }}
-                                </a>
+                                </a> --}}
                                 <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-whatsapp" href="" data-social="whatsapp">
                                     <i class="fab fa-whatsapp"></i>
                                     {{ __('social_share.whatsapp') }}
@@ -404,10 +404,10 @@
                                     <i class="fab fa-weixin"></i>
                                     {{ __('social_share.wechat') }}
                                 </a>
-                                <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
+                                {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-line" href="" data-social="line">
                                     <i class="fab fa-line"></i>
                                     {{ __('social_share.line') }}
-                                </a>
+                                </a> --}}
 
                             </div>
                         </div>
