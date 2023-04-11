@@ -1087,6 +1087,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
         // }
 
     </script>
+    
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_GOOGLE_MAP)
         <script>

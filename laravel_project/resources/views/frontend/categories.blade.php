@@ -177,7 +177,7 @@
                             <div class="col-12 col-md-1 text-right pl-0">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
-                            <div class="col-12 col-md-2 ">
+                            <div class="col-12 col-md-2 pl-0 pl-sm-3">
                                 <select class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror" name="filter_preferred_pronouns" id="filter_preferred_pronouns">
                                     <option value="0" {{ empty($filter_preferred_pronouns) ? 'selected' : '' }}>Any Preferred Pronouns</option>
                                     {{-- <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
@@ -264,7 +264,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 mt-2">
+                            <div class="col-12 col-md-2 mt-2 pl-0 pl-sm-3">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
@@ -284,7 +284,7 @@
                         <div class="row">
 
                             @foreach($all_printable_categories as $key => $all_printable_category)
-                                <div class="col-6 col-sm-4 col-md-3">
+                                <div class="col-12 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
                                         <input {{ in_array($all_printable_category['category_id'], $filter_categories) ? 'checked' : '' }} name="filter_categories[]" class="form-check-input" type="checkbox" value="{{ $all_printable_category['category_id'] }}" id="filter_categories_{{ $all_printable_category['category_id'] }}">
                                         <label class="form-check-label" for="filter_categories_{{ $all_printable_category['category_id'] }}">

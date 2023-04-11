@@ -333,7 +333,8 @@ class UserController extends Controller
             if(stripos($request->instagram,'.com') == true ||strcmp($request->instagram,'https') == true ||strcmp($request->instagram,'www.') == true || strcmp($request->instagram,'//') == true){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
-        }  
+        } 
+         
         if($request->facebook){
             if(stripos($request->facebook,'facebook') == false){
                 return back()->with('facebook_error','Please enter facebook URL only');

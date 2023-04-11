@@ -1417,7 +1417,7 @@ $chk_post = Auth::user()->phone;
             $("#media_url").val('');
 
         });
-        $('#facebook').on('focus', function(){
+        $('#facebook').on('input', function(){
                 $('.err_facebook_url').html('');
                 var facebookUrl = $("#facebook").val();
                 var matchUrl = ".facebook";                
@@ -1436,7 +1436,7 @@ $chk_post = Auth::user()->phone;
                 }
             });
 
-            $('#linkedin').on('focus', function(){
+            $('#linkedin').on('input', function(){
                 $('.err_linkedin_url').html('');
                 var linkedinUrl = $("#linkedin").val();
                 var matchUrl = ".linkedin";                
@@ -1454,7 +1454,7 @@ $chk_post = Auth::user()->phone;
 
                 }
             });
-            $('#youtube').on('focus', function(){
+            $('#youtube').on('input', function(){
                 $('.err_youtube_url').html('');
                 var youtubeinUrl = $("#youtube").val();
                 var matchUrl = ".youtube";                
@@ -1472,11 +1472,12 @@ $chk_post = Auth::user()->phone;
 
                 }
             });
+
             function isUrl(s) {
             var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
             return regexp.test(s);
             }
-            $('#instagram').on('focus', function(){  
+            $('#instagram').on('input', function(){  
                 $('.err_instagram_url').html('');             
                var instaurl =  isUrl($("#instagram").val());  
                console.log(instaurl);

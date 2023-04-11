@@ -156,13 +156,14 @@
                             <?php
                             // echo "ssssssssssssssssssss";print_r($post->user()->name);echo "kkkkkkkkkkk";
                             ?>
-                            <div class="h-entry">
+                            <div class="h-entry shadow">
                                 @if(empty($post->featured_image))
                                     <div class="mb-3" style="min-height:300px;border-radius: 0.25rem;background-image:url({{ asset('frontend/images/placeholder/full_item_feature_image.webp') }});background-size:cover;background-repeat:no-repeat;background-position: center center;"></div>
                                 @else
                                     <div class="mb-3" style="min-height:300px;border-radius: 0.25rem;background-image:url({{ url('laravel_project/public' . $post->featured_image) }});background-size:cover;background-repeat:no-repeat;background-position: center center;"></div>
                                 @endif
-                                <h2 class="font-size-regular"><a href="{{ route('page.blog.show', $post->slug) }}" class="text-black">{{ $post->title }}</a></h2>
+                              <div class="blog_design_shadow">
+                              <h2 class="font-size-regular pt-0"><a href="{{ route('page.blog.show', $post->slug) }}" class="text-black">{{ $post->title }}</a></h2>
                                 <div class="meta mb-3">
                                     {{ __('frontend.blog.by') }} 
                                     {{-- {{ $post->user()->first()->name }} --}}
@@ -176,6 +177,7 @@
 
                                 </div>
                                 <p>{{ str_limit(preg_replace("/&#?[a-z0-9]{2,8};/i"," ", strip_tags($post->body)), 200) }}</p>
+                              </div>
                             </div>
                         </div>
                         @endforeach

@@ -8270,6 +8270,7 @@ class PagesController extends Controller
             }else{
                 return response()->json(['status'=>'error','msg'=>'Something went wrong']);
 
+                
             }
         }
     }
