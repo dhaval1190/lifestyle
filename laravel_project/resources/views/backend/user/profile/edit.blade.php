@@ -1424,6 +1424,10 @@ $chk_post = Auth::user()->phone;
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_facebook_url').html("Please enter Facebook URL Only");
                     $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_facebook_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_facebook_url').html('');
@@ -1439,6 +1443,10 @@ $chk_post = Auth::user()->phone;
                 if(linkedinUrl.indexOf(matchUrl) == -1){
                     $('.err_linkedin_url').html("Please enter Linkedin URL Only");
                     $('#submit').attr("disabled", true);
+                    if(linkedinUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_linkedin_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_linkedin_url').html('');
@@ -1453,6 +1461,10 @@ $chk_post = Auth::user()->phone;
                 if(youtubeinUrl.indexOf(matchUrl) == -1){
                     $('.err_youtube_url').html("Please enter Youtube URL Only");
                     $('#submit').attr("disabled", true);
+                    if(youtubeinUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_youtube_url').html('');
+                    }
                     return false;
                 }else{
                     $('.err_youtube_url').html('');
