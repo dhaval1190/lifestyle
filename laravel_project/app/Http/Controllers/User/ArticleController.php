@@ -456,6 +456,11 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|numeric|digits_between:10,12',
         ];
 
+        if($request->article_social_instagram){
+            if(stripos($request->article_social_instagram,'.com') !== false || stripos($request->article_social_instagram,'http') !== false || stripos($request->article_social_instagram,'https') !== false || stripos($request->article_social_instagram,'www.') !== false || stripos($request->article_social_instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        } 
         if($request->article_social_facebook){
             if(stripos($request->article_social_facebook,'facebook') == false){
                 return back()->with('facebook_error','Please enter facebook URL only');
@@ -1195,6 +1200,11 @@ class ArticleController extends Controller
             $validate_rule = array_merge($validate_rule, $custom_field_validation);
         }
 
+        if($request->article_social_instagram){
+            if(stripos($request->article_social_instagram,'.com') !== false || stripos($request->article_social_instagram,'http') !== false || stripos($request->article_social_instagram,'https') !== false || stripos($request->article_social_instagram,'www.') !== false || stripos($request->article_social_instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        }
         if($request->article_social_facebook){
             if(stripos($request->article_social_facebook,'facebook') == false){
                 return back()->with('facebook_error','Please enter facebook URL only');
