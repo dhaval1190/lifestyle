@@ -298,6 +298,11 @@ $chk_post = Auth::user()->phone;
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    @if(Session::has('instagram_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('instagram_error') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="linkedin" class="text-black">LinkedIn</label>
@@ -308,6 +313,11 @@ $chk_post = Auth::user()->phone;
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    @if(Session::has('linkedin_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('linkedin_error') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="facebook" class="text-black">Facebook</label>
@@ -318,15 +328,26 @@ $chk_post = Auth::user()->phone;
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    @if(Session::has('facebook_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('facebook_error') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="youtube" class="text-black">Youtube</label>
                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
+                                    <span class="err_youtube_url" style="color:red"></span>
                                     @error('youtube')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    @if(Session::has('youtube_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('youtube_error') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
                                     
                             </div>
@@ -1413,14 +1434,28 @@ $chk_post = Auth::user()->phone;
 
             $('#linkedin').on('focus', function(){
                 $('.err_linkedin_url').html('');
-                var facebookUrl = $("#linkedin").val();
+                var linkedinUrl = $("#linkedin").val();
                 var matchUrl = ".linkedin";                
-                if(facebookUrl.indexOf(matchUrl) == -1){
+                if(linkedinUrl.indexOf(matchUrl) == -1){
                     $('.err_linkedin_url').html("Please enter Linkedin URL Only");
                     $('#submit').attr("disabled", true);
                     return false;
                 }else{
                     $('.err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#youtube').on('focus', function(){
+                $('.err_youtube_url').html('');
+                var youtubeinUrl = $("#youtube").val();
+                var matchUrl = ".youtube";                
+                if(youtubeinUrl.indexOf(matchUrl) == -1){
+                    $('.err_youtube_url').html("Please enter Youtube URL Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_youtube_url').html('');
                     $('#submit').attr("disabled", false);
 
                 }

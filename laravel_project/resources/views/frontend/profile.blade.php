@@ -227,7 +227,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                                 </div>
                                                 @if(isset(Auth::user()->id) && !empty(Auth::user()->id) && $user_detail['id'] == Auth::user()->id)
                                                     <div class="detail two">
-                                                        <i class="fas fa-share-alt item-share-refferal-button"></i>
+                                                        <i class="fas fa-share-alt item-share-refferal-button"style="cursor: pointer;"></i>
                                                     </div>
                                                 @endif
                                                 <div class="detail one">
@@ -1018,6 +1018,17 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
         $('.item-share-refferal-button').on('click', function(){
             $('#share-refferal-modal').modal('show');
         });
+        @error('item_share_email_name')
+            $('#share-refferal-modal').modal('show');
+            @enderror
+
+            @error('item_share_email_to_email')
+            $('#share-refferal-modal').modal('show');
+            @enderror
+
+            @error('item_share_email_note')
+            $('#share-refferal-modal').modal('show');
+            @enderror
 
         var $player = $('.js-audio-player'), $playbackClass = 'is-playing', $fadeDuration = 500
 
