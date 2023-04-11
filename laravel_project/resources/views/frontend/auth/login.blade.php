@@ -92,7 +92,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 mb-5">
 
-                    <form method="POST" action="{{ route('login') }}" class="p-5 bg-white">
+                    <form method="POST" action="{{ route('login') }}" class="p-3 p-sm-5 bg-white">
                         @csrf
                         <div class="row form-group">
 

@@ -334,7 +334,28 @@ class UserController extends Controller
             $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
             $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         }
-        
+
+        if($request->instagram){
+            if(stripos($request->instagram,'.com') == true ||strcmp($request->instagram,'https') == true ||strcmp($request->instagram,'www.') == true || strcmp($request->instagram,'//') == true){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        } 
+         
+        if($request->facebook){
+            if(stripos($request->facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }   
+        if($request->linkedin){
+            if(stripos($request->linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedinssss URL only');
+            }
+        }
+        if($request->youtube){
+            if(stripos($request->youtube,'youtube') == false){
+                return back()->with('youtube_error','Please enter youtube URL only');
+            }
+        }
 
         $request->validate($rules, $rulesMessage);
 

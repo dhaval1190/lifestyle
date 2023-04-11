@@ -58,7 +58,7 @@
 
 
             <div class="row justify-content-center">
-                <div class="col-8">
+                <div class="col-md-8 col-12">
 
                     @foreach($all_faq as $key => $faq)
                         @if($key==5)
