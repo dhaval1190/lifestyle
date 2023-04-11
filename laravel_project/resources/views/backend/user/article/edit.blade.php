@@ -1624,28 +1624,20 @@
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
                         html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
-                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "' id='gallery_img'>" +
+                            "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "' id='gallery_img_0'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
-                    }
-                    document.getElementById("selected-images").innerHTML += html;
-                    // var img_id = $('#gallery_img').attr('src');
-                    // var img_ext = img_id.split(";base64")[0];
-                    // var img_ext_1 = img_ext.split("/")[1];
-                    // if (img_ext_1 == 'jpeg') {
-                    //     console.log("yes")
-                    // }else{
-                    //     console.log('no')
-                    // }
-                    // if (!img_ext.indexOf('jpeg') > -1)
-                    // {
-                    //     $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
-                    //     $('#gallery_image_error_div').show();
-                    //     console.log("dsds",img_ext_1);
-                    // // }
-                    // console.log(typeof(img_ext_1));
 
+                            var img_str = event.files[a].content;
+                            var img_str_split = img_str.split(";base64")[0];
+                            var img_ext = img_str_split.split("/")[1];
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                                $('#gallery_image_error_div').show();
+                                return false;
+                            }
+                    }
                 });
             });
             /**
