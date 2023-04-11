@@ -323,12 +323,18 @@ class UserController extends Controller
             // $rules['user_image']            = ['nullable'];
             $rules['user_image']            = ['nullable',new Base64Image];
             $rules['user_cover_image']            = ['nullable',new Base64Image];
+            $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
+            $rules['podcast_cover']             = ['required_with:podcast_image'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
             $rulesMessage['phone.required'] = 'Phone is required';
             $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
+            $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
+            $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
+            $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         }
+
         if($request->instagram){
             if(stripos($request->instagram,'.com') == true ||strcmp($request->instagram,'https') == true ||strcmp($request->instagram,'www.') == true || strcmp($request->instagram,'//') == true){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
@@ -350,7 +356,6 @@ class UserController extends Controller
                 return back()->with('youtube_error','Please enter youtube URL only');
             }
         }
-
 
         $request->validate($rules, $rulesMessage);
 
@@ -485,8 +490,15 @@ class UserController extends Controller
                     $request->media_image->storeAs('public/media_files', $ebook_file_name);
                 }
                 if(!empty($input['media_cover'])) {
+                    // $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                    // $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+
                     $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
-                    $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+                    $destinationPath = public_path('/storage/media_files');
+                    $img = Image::make($request->file('media_cover')->getRealPath());
+                    $img->resize(200, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath.'/'.$ebook_cover_file_name);
                 }
 
                 MediaDetail::updateOrCreate([
@@ -512,7 +524,16 @@ class UserController extends Controller
                 }
                 if(!empty($input['podcast_cover'])) {
                     $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
-                    $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+                    
+                    // $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+                    // $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();                    
+                
+                    $destinationPath = public_path('/storage/media_files');
+                    $img = Image::make($request->file('podcast_cover')->getRealPath());
+                    $img->resize(200, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath.'/'.$podcast_cover_file_name);
+
                 }
 
                 MediaDetail::updateOrCreate([
