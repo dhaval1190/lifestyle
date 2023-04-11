@@ -78,7 +78,7 @@
                                                         @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
                                                             <span class="text-danger"><i class="fas fa-ban"></i></span>
                                                         @endif
-                                                        <span class="text-gray-800">{{ $item->item_title }}</span>
+                                                        <span class="text-gray-800" style="word-break: break-all;">{{ $item->item_title }}</span>
                                                         @if($item->item_featured == \App\Item::ITEM_FEATURED)
                                                             <span class="text-white bg-info pl-1 pr-1 rounded">{{ __('prefer_country.featured') }}</span>
                                                         @endif
@@ -89,12 +89,14 @@
 
                                                         <br>
                                                         @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                           <div class="d-flex align-items-baseline">
                                                             <i class="fas fa-map-marker-alt"></i>
-                                                            {{ $item->item_address }},
+                                                            <p style="word-break: break-all; padding-left:3px">{{ $item->item_address }},
                                                             {{ $item->city->city_name }},
                                                             {{ $item->state->state_name }},
                                                             {{ $item->country->country_name }}
-                                                            {{ $item->item_postal_code }}
+                                                            {{ $item->item_postal_code }}</p>
+                                                           </div>
                                                         @else
                                                             <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
                                                         @endif
