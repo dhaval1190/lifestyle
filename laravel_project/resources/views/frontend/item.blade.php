@@ -1029,7 +1029,7 @@
                                     <div class="col-12">
                                         <div id="mapid-item"></div>
 
-                                        <div class="row align-items-center pt-2">
+                                        <div class="row align-items-center pt-2" style="word-break: break-all;">
                                             <div class="col-7">
                                                 <small>
                                                     @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)

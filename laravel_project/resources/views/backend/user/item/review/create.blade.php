@@ -222,6 +222,9 @@
                                 @enderror
                                 <div class="row mt-3">
                                     <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display: none;">
+                                            <strong id="gallery_img_error"></strong>
+                                        </div>
                                         <button id="upload_gallery" type="button" class="btn btn-primary mb-2">{{ __('review_galleries.choose-photo') }}</button>
                                         <div class="row" id="selected-images">
 
@@ -263,6 +266,8 @@
              * Start image gallery uplaod
              */
             $('#upload_gallery').on('click', function(){
+                $('#gallery_image_error_div').hide();
+                $('#gallery_img_error').text('');
                 window.selectedImages = [];
 
                 $.FileDialog({
@@ -278,6 +283,15 @@
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#review_image_gallery_" + a + "\").remove();'>" + "{{ __('backend.shared.delete') }}" + "</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='review_image_galleries[]'>" +
                             "</div>";
+
+                            var img_str = event.files[a].content;
+                            var img_str_split = img_str.split(";base64")[0];
+                            var img_ext = img_str_split.split("/")[1];
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                                $('#gallery_image_error_div').show();
+                                return false;
+                            }
                     }
                     document.getElementById("selected-images").innerHTML += html;
                 });
