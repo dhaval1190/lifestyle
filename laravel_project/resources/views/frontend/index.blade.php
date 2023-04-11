@@ -466,7 +466,7 @@
                                     <span class="category">{{ __('categories.and') . " " . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . " " . __('categories.more') }}</span>
                                 @endif
 
-                                <h3 class="pt-2"><a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h3>
+                                <h3 class="pt-2" style="word-break: break-all;"><a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h3>
 
                                 @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
                                 <address>
