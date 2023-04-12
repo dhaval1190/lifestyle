@@ -149,42 +149,84 @@
 
         var ctx = document.getElementById('ROIchartt').getContext('2d');
         var array1 = <?php echo json_encode($weekdata['week'])  ?>;
-        var months =<?php echo json_encode($weekdata['weeks_ar'])  ?>;     
-        // var weekNumber = moment().week();
+        var months =<?php echo json_encode($weekdata['weeks_ar'])  ?>;  
+        var labels =<?php echo json_encode($weekdata['label'])  ?>;    
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Weekly Visitors',
+                data: array1,
+                backgroundColor: '#F05127',
+                borderColor: '#F05127',
+                fill: true,
+            }]
+            };
+
+            // config 
+            const config = {
+            type: 'line',
+            data,
+            options: {
+                scales: {
+                y: {
+                    beginAtZero: true
+                }
+                }
+            }
+            };
+
+            // render init block
+            const myChart = new Chart(
+            document.getElementById('ROIchartt'),
+            config
+            );
+    // Instantly assign Chart.js version
+    const chartVersion = document.getElementById('ROIchartt');
+    chartVersion.innerText = Chart.version; 
+    </script>
+    <!-- <script>
+         // var weekNumber = moment().week();
         // console.log(weekNumber);
         // for (let i = 0; i < 5; i++) {
         //     console.log(weekNumber)
         // months.push(moment().year(2023).month(i+1).date(0).startOf('month'))
         
         // }
-        console.log(months)     
+        // var new_month = [];
+        // months.forEach(function(month) {
+        //     console.log(month);
+        //     new_month.push(month.toString());
+        // });
+        // console.log(new_month)    
+
     
-        var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels:months,
-            datasets: [{
-            label: 'Visitors',
-            backgroundColor: '#F05127',
-            borderColor: '#F05127',
-            fill: true,
-            data: array1,
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-            xAxes: [{
-                type: 'time',
-                displayFormats: {
-                    'week': 'MMM DD'
-                },
-                time: {
-                unit: 'week'
-                }
-            }]
-            }
-        }
-        });
-    </script>
+        // var chart = new Chart(ctx, {
+        // type: 'line',
+        // data: {
+        //     labels:months,
+        //     datasets: [{
+        //     label: 'Visitors',
+        //     backgroundColor: '#F05127',
+        //     borderColor: '#F05127',
+        //     fill: true,
+        //     data: array1,
+        //     }]
+        // },
+        // options: {
+        //     responsive: true,
+        //     scales: {
+        //     xAxes: [{
+        //         type: 'time',
+        //         displayFormats: {
+        //             'week': 'MMM DD'
+        //         },
+        //         time: {
+        //         unit: 'week'
+        //         }
+        //     }]
+        //     }
+        // }
+        // });
+    </script> -->
 @endsection
