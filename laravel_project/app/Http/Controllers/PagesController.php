@@ -8173,7 +8173,6 @@ class PagesController extends Controller
             $data['month'][] = date("F", mktime(0, 0, 0, $key, 10));
             $data['value'][] = $profile;   
         }
-        // print_r($data);exit;
             $month = date('m');                       
             $week = date("W", strtotime($year . "-" . $month ."-01"));
             $str='';
