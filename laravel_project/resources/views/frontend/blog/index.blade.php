@@ -74,7 +74,7 @@
             @endif
 
             <div class="row mb-4">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -218,8 +218,8 @@
 
                 </div>
 
-                <div class="col-md-3 ml-auto">
-
+                <div class="col-md-4 ml-auto">
+                    <div class="blog_section_border_set">
                     @if($ads_before_sidebar_content->count() > 0)
                         @foreach($ads_before_sidebar_content as $ads_before_sidebar_content_key => $ad_before_sidebar_content)
                             <div class="row mb-5">
@@ -274,6 +274,8 @@
                         @endforeach
                     @endif
 
+                    </div>
+                   
                 </div>
 
             </div>

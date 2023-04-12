@@ -8176,11 +8176,11 @@ class PagesController extends Controller
             $month = date('m');                       
             $week = date("W", strtotime($year . "-" . $month ."-01"));
             $str='';
-            $str .= date("d-m-Y", strtotime($year . "-" . $month ."-01")) ."to";
+            $str .= date("d-m-Y", strtotime($year . "-" . $month ."-01")) ." to ";
             $unix = strtotime($year."W".$week ."+1 week");
             while(date("m", $unix) == $month){
             $str .= date("d-m-Y", $unix-86400) . "|";
-            $str .= date("d-m-Y", $unix) ."to"; 
+            $str .= date("d-m-Y", $unix) ." to "; 
             $unix = $unix + (86400*7);
             }
             $str .= date("d-m-Y", strtotime("last day of ".$year . "-" . $month));
@@ -8188,13 +8188,12 @@ class PagesController extends Controller
             $weeks_ar = explode('|',$str);
              //echo '<pre>';  print_r($weeks_ar); exit;
             foreach($weeks_ar as $key =>$week){        
-                $weekcount =explode('to',$week);
+                $weekcount =explode(' to ',$week);
 
                 $weekday[] = ProfileVisit::whereBetween('created_at',array(date('Y-m-d 00:00:00', strtotime($weekcount[0])),date('Y-m-d 23:59:00', strtotime($weekcount[1]))))->where('user_id',$id)->count();
                 $weekdata['weeks_ar'][] = date('Y-m-d', strtotime($weekcount[1]));
-            }
-            // print_r($weekday); 
-            //   exit;
+                $weekdata['label'][] = date('Y-m-d', strtotime($weekcount[0])).' to '.date('Y-m-d', strtotime($weekcount[1]));
+            }          
             foreach($weekday as $key =>$wee){      
                 $weekdata['week'][] = $wee;                   
                 }
@@ -8270,7 +8269,6 @@ class PagesController extends Controller
             }else{
                 return response()->json(['status'=>'error','msg'=>'Something went wrong']);
 
-                
             }
         }
     }
