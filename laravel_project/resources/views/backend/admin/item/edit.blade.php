@@ -227,7 +227,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <input type="hidden" name="article_type" value="1">
+                        <input type="hidden" name="item_type" value="1">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -491,6 +491,7 @@
                                             {{ __('backend.item.facebook') }}
                                         </label>
                                         <input id="item_social_facebook" type="text" class="form-control @error('item_social_facebook') is-invalid @enderror" name="item_social_facebook" value="{{ old('item_social_facebook') ? old('item_social_facebook') : $item->item_social_facebook }}">
+                                        <span class="err_facebook_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -499,6 +500,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('facebook_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('facebook_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -507,6 +513,7 @@
                                             {{ __('backend.item.twitter') }}
                                         </label>
                                         <input id="item_social_twitter" type="text" class="form-control @error('item_social_twitter') is-invalid @enderror" name="item_social_twitter" value="{{ old('item_social_twitter') ? old('item_social_twitter') : $item->item_social_twitter }}">
+                                        <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -515,6 +522,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('twitter_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('twitter_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -525,6 +537,7 @@
                                             {{ __('backend.item.linkedin') }}
                                         </label>
                                         <input id="item_social_linkedin" type="text" class="form-control @error('item_social_linkedin') is-invalid @enderror" name="item_social_linkedin" value="{{ old('item_social_linkedin') ? old('item_social_linkedin') : $item->item_social_linkedin }}">
+                                        <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -533,6 +546,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('linkedin_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('linkedin_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -541,6 +559,7 @@
                                             {{ __('item_whatsapp_instagram.item-social-instagram') }}
                                         </label>
                                         <input id="item_social_instagram" type="text" class="form-control @error('item_social_instagram') is-invalid @enderror" name="item_social_instagram" value="{{ old('item_social_instagram') ? old('item_social_instagram') : $item->item_social_instagram }}">
+                                        <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('item_whatsapp_instagram.item-social-instagram-help') }}
                                         </small>
@@ -549,6 +568,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('instagram_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('instagram_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -665,6 +689,7 @@
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
+                                        <div id="message" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
@@ -726,37 +751,38 @@
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_exception_open_time_open_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
                                         <select id="item_hour_exception_open_time_open_hour" class="selectpicker form-control" name="item_hour_exception_open_time_open_hour" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                                <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
+                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_exception_open_time_open_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
                                         <select id="item_hour_exception_open_time_open_minute" class="selectpicker form-control" name="item_hour_exception_open_time_open_minute" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                                <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
+                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_exception_open_time_close_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
                                         <select id="item_hour_exception_open_time_close_hour" class="selectpicker form-control" name="item_hour_exception_open_time_close_hour" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                                <option value="{{ $full_hour }}">{{ $full_hour }}</option>
+                                            <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
+                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
+                                        <div id="exception_close_hour" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_exception_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
                                         <select id="item_hour_exception_open_time_close_minute" class="selectpicker form-control" name="item_hour_exception_open_time_close_minute" data-live-search="true">
-                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                                <option value="{{ $full_minute }}">{{ $full_minute }}</option>
+                                            <option value="{{ $full_minute }}">{{ $full_minute }}</option>
                                             @endfor
+                                            <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-2">
@@ -955,7 +981,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-success py-2 px-4 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>
@@ -1433,6 +1459,98 @@
                     $('#item_image_gallery_' + domId).remove();
                 }});
         }
+
+        $(document).ready(function(){
+
+            $('#item_hour_create_button').on('click',function(){
+                $('#message').html('');
+                if(parseInt($('#item_hour_open_time_open_hour').val()) > parseInt($('#item_hour_open_time_close_hour').val())) {
+                    $('#message').html('please select close hour greater than open hour');
+                }
+            });
+            $('#item_hour_exception_create_button').on('click',function(){
+                $('#exception_close_hour').html('');
+                if(parseInt($('#item_hour_exception_open_time_open_hour').val()) > parseInt($('#article_hour_exception_open_time_close_hour').val())) {
+                    $('#exception_close_hour').html('please select exception close hour greater than exception open hour');
+                }
+            });
+
+            $('#item_social_facebook').on('input', function(){
+                $('.err_facebook_url').html('');
+                var facebookUrl = $("#item_social_facebook").val();
+                // console.log(facebookUrl)
+                var matchUrl = "facebook";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_facebook_url').html("Please enter Facebook URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_facebook_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_facebook_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#item_social_twitter').on('input', function(){
+                $('.err_twitter_url').html('');
+                var facebookUrl = $("#item_social_twitter").val();
+                var matchUrl = "twitter";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_twitter_url').html("Please enter Twitter URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_twitter_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_twitter_url').html('');
+                    $('#submit').attr("disabled", false);
+                }
+            });
+            $('#item_social_linkedin').on('input', function(){
+                $('.err_linkedin_url').html('');
+                var facebookUrl = $("#item_social_linkedin").val();
+                var matchUrl = "linkedin";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_linkedin_url').html("Please enter Linkedin URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_linkedin_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            function isUrl(s) {
+            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            return regexp.test(s);
+            }
+            $('#item_social_instagram').on('input', function(){  
+                $('.err_instagram_url').html('');             
+               var instaurl =  isUrl($("#item_social_instagram").val());  
+               var instaurl1 =  $("#item_social_instagram").val();
+               matchUrl_insta = 'www.';  
+            //    if(instaurl){
+               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_instagram_url').html('');
+                    $('#submit').attr("disabled", false);
+                }
+              
+            });
+
+        });
 
         $(document).ready(function() {
 
