@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -154,7 +155,7 @@ class UserController extends Controller
         $rulesMessage = [];
 
         $rules['name']                      = ['required', 'string', 'max:255'];
-        $rules['email']                     = ['required', 'string', 'email', 'max:255', 'unique:users'];
+        $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/', 'email', 'max:255', 'unique:users'];
         $rules['phone']                     = ['required','string','max:20'];
         $rules['password']                  = ['required', 'string', 'min:8', 'confirmed'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
@@ -346,20 +347,21 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $input = $request->all();
+        // dd($input);
 
         $rules = [];
         $rulesMessage = [];
 
-        $rules['name']                      = ['required', 'string', 'max:255'];
-        $rules['email']                     = ['required', 'string', 'email', 'max:255'];
-        $rules['phone']                     = ['required','string','max:20'];
+        $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
+        $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','email', 'max:255'];
+        // $rules['phone']                     = ['required','numeric','digits_between:10,20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
         $rules['user_about']             = ['nullable'];
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
-            $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
+            $rules['is_coach']              = ['required'];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
 
@@ -379,8 +381,9 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','string','max:10'];
+            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
             $rules['user_image']            = ['nullable'];
+            $rules['phone']                     = ['required','numeric','digits_between:10,20'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
@@ -515,7 +518,8 @@ class UserController extends Controller
     public function updateUserPassword(Request $request, User $user)
     {
         $request->validate([
-            'new_password' => 'required|string|confirmed|min:8',
+            'password' => 'required',
+            'new_password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
         ]);
 
         // change password

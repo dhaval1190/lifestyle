@@ -3,6 +3,9 @@
 @section('styles')
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 @endsection
 
 @section('content')
@@ -32,6 +35,9 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
+                        <strong id="img_error"></strong>
+                    </div>
                     <form method="POST" action="{{ route('admin.users.store') }}" class="">
                         @csrf
 
@@ -70,8 +76,9 @@
                                 <div class="col-sm-10">
                                     <div class="row mb-3">
                                         <div class="col-md-12">
-                                            <label for="category_ids" class="text-black">Category</label>
-                                            <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
+                                            <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
+                                            {{-- <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> --}}
+                                                <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple>
                                                 {{-- <option value="">Select Category</option> --}}
                                                 @foreach($printable_categories as $key => $printable_category)
                                                 @php
@@ -89,7 +96,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="name" class="text-black">{{ __('auth.name') }}</label>
+                                            <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
@@ -107,7 +114,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
+                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
@@ -127,7 +134,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-md-3">
-                                            <label class="text-black" for="password">{{ __('backend.user.password') }}</label>
+                                            <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
                                             @error('password')
                                             <span class="invalid-tooltip">
@@ -136,7 +143,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}</label>
+                                            <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             @error('password_confirmation')
                                             <span class="invalid-tooltip">
@@ -158,7 +165,7 @@
                                             @enderror
                                         </div> --}}
                                         <div class="col-sm-3">
-                                            <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
+                                            <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
                                                 @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
                                                     <option value="{{ $prkey }}" {{ old('preferred_pronouns') == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
@@ -171,7 +178,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="hourly_rate_type" class="text-black">Hourly Rate</label>
+                                            <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
                                                 @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
                                                     <option value="{{ $hrkey }}" {{ old('hourly_rate_type') == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
@@ -186,7 +193,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="working_type" class="text-black">Working Method</label>
+                                            <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
                                                 @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                     <option value="{{ $wtkey }}" {{ old('working_type') == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
@@ -199,7 +206,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="experience_year" class="text-black">Experience Year</label>
+                                            <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
                                                 @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
                                                     <option value="{{ $eykey }}" {{ old('experience_year') == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
@@ -273,7 +280,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="country_id" class="text-black">Country</label>
+                                    <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
                                     <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
                                         @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
@@ -288,7 +295,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="state_id" class="text-black">State</label>
+                                    <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
                                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" required title="{{ __('backend.item.select-state') }}">
                                     </select>
                                     @error('state_id')
@@ -298,7 +305,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="city_id" class="text-black">City</label>
+                                    <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
                                     <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" required title="{{ __('backend.item.select-city') }}">
                                     </select>
                                     @error('city_id')
@@ -308,7 +315,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="zip" class="text-black">Post Code</label>
+                                    <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
                                     <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
@@ -460,7 +467,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.png,.jpeg">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -478,6 +485,8 @@
 
 @section('scripts')
     <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.user.partials.bootstrap-select-locale')
     <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     <script>
@@ -493,14 +502,25 @@
                 }
             });
 
+            $('.category_ids').select2({
+                maximumSelectionLength: 3
+            });
+
+            $('.selectpicker-category').selectpicker({
+                maxOptions: 3
+            });
+
             $('.selectpicker').selectpicker();
 
             /* Start the croppie image plugin */
             var image_crop = null;
             $('#upload_image').on('click', function() {
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -518,6 +538,10 @@
                     });
                 }
                 var reader = new FileReader();
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
                 reader.onload = function (event) {
                     image_crop.croppie('bind', {
                         url: event.target.result
@@ -526,6 +550,16 @@
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
+            }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event){
