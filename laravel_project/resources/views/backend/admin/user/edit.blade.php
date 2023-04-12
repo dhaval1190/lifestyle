@@ -3,6 +3,8 @@
 @section('styles')
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -86,10 +88,13 @@
 
             <div class="row">
                 <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
+                        <strong id="img_error"></strong>
+                    </div>
                     <form method="POST" action="{{ route('admin.users.update', $user) }}">
                         @csrf
                         @method('PUT')
-
+                        <input type="hidden" name="is_coach" value="{{ $user->isCoach() ? true : false }}">
                         @if($user->isCoach())
                             <div class="row">
                                 <div class="col-sm-2">
@@ -123,8 +128,9 @@
                                 <div class="col-sm-10">
                                     <div class="row mb-3">
                                         <div class="col-md-12">
-                                            <label for="category_ids" class="text-black">Category</label>
-                                            <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true">
+                                            <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
+                                            {{-- <select class="form-control selectpicker @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> --}}
+                                                <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple>
                                                 {{-- <option value="">Select Category</option> --}}
                                                 @foreach($printable_categories as $key => $printable_category)
                                                 @php
@@ -142,8 +148,8 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="name" class="text-black">{{ __('auth.name') }}</label>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required>
+                                            <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}">
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -152,7 +158,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="company_name" class="text-black">Company Name</label>
-                                            <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $user->company_name) }}" required>
+                                            <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $user->company_name) }}">
                                             @error('company_name')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -160,8 +166,8 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required>
+                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}">
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -169,8 +175,8 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}" required>
+                                            <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -195,8 +201,8 @@
                                                     @enderror
                                                 </div> --}}
                                                 <div class="col-sm-3">
-                                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns</label>
-                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
+                                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
                                                         @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
                                                             <option value="{{ $prkey }}" {{ old('preferred_pronouns', $user->preferred_pronouns) == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
                                                         @endforeach
@@ -212,8 +218,8 @@
                                         <div class="col-sm-7">
                                             <div class="row mt-3"> --}}
                                                 <div class="col-sm-3">
-                                                    <label for="hourly_rate_type" class="text-black">Hourly Rate</label>
-                                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
+                                                    <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
                                                         @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
                                                             <option value="{{ $hrkey }}" {{ old('hourly_rate_type', $user->hourly_rate_type) == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
                                                         @endforeach
@@ -225,8 +231,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="working_type" class="text-black">Working Method</label>
-                                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
+                                                    <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method">
                                                         @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
                                                             <option value="{{ $wtkey }}" {{ old('working_type', $user->working_type) == $wtkey ? 'selected' : '' }} >{{ $working_type }}</option>
                                                         @endforeach
@@ -238,8 +244,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <label for="experience_year" class="text-black">Experience Year</label>
-                                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
+                                                    <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
+                                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
                                                         @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
                                                             <option value="{{ $eykey }}" {{ old('experience_year', $user->experience_year) == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
                                                         @endforeach
@@ -258,7 +264,7 @@
                                             <div class="row mt-3">
                                                 <div class="col-sm-6">
                                                     <label for="website" class="text-black">Website</label>
-                                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $user->website) }}" required>
+                                                    <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $user->website) }}">
                                                     @error('website')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -267,7 +273,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="instagram" class="text-black">IG Handle</label>
-                                                    <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}" required>
+                                                    <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}">
                                                     @error('instagram')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -280,7 +286,7 @@
                                             <div class="row mt-3">
                                                 <div class="col-sm-4">
                                                     <label for="linkedin" class="text-black">LinkedIn</label>
-                                                    <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" required>
+                                                    <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
                                                     @error('linkedin')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -289,7 +295,7 @@
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="facebook" class="text-black">Facebook</label>
-                                                    <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}" required>
+                                                    <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}">
                                                     @error('facebook')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -298,7 +304,7 @@
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="youtube" class="text-black">Youtube</label>
-                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}" required>
+                                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}">
                                                     @error('youtube')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -313,8 +319,8 @@
 
                             <div class="row mt-3">
                                 <div class="col-sm-4">
-                                    <label for="address" class="text-black">Address</label>
-                                    <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $user->address) }}" required>
+                                    <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
+                                    <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $user->address) }}">
                                     @error('address')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -322,8 +328,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="country_id" class="text-black">Country</label>
-                                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
+                                    <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
+                                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $user->country_id == $country->id))
                                                 <option value="{{ $country->id }}" {{ $country->id == old('country_id', $user->country_id) ? 'selected' : '' }}>{{ $country->country_name }}</option>
@@ -337,8 +343,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="state_id" class="text-black">State</label>
-                                    <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-state') }}">
+                                    <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
+                                    <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                         @if($all_states)
                                             @foreach($all_states as $key => $state)
                                                 <option {{ $user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
@@ -352,8 +358,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="city_id" class="text-black">City</label>
-                                    <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-city') }}">
+                                    <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
+                                    <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                         @if($all_cities)
                                             @foreach($all_cities as $key => $city)
                                                 <option {{ $user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
@@ -367,8 +373,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-2">
-                                    <label for="zip" class="text-black">Post Code</label>
-                                    <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $user->post_code) }}" required>
+                                    <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
+                                    <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $user->post_code) }}">
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -410,8 +416,8 @@
                                 <div class="col-sm-10">
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
-                                            <label for="name" class="text-black">{{ __('auth.name') }}</label>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required>
+                                            <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}">
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -419,8 +425,8 @@
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}</label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required>
+                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}">
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -429,7 +435,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}" required>
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -438,7 +444,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="gender" class="text-black">Gender</label>
-                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
                                                     <option value="{{ $gkey }}" {{ old('gender', $user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}</option>
                                                 @endforeach
@@ -535,7 +541,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.png,.jpeg">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -553,6 +559,8 @@
 
 @section('scripts')
     <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.user.partials.bootstrap-select-locale')
     <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     <script>
@@ -566,6 +574,14 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
+            });
+
+            $('.category_ids').select2({
+                maximumSelectionLength: 3
+            });
+
+            $('.selectpicker-category').selectpicker({
+                maxOptions: 3
             });
 
             $('.selectpicker').selectpicker();
@@ -587,8 +603,11 @@
             var image_crop = null;
             $('#upload_image').on('click', function() {
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function(){
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -606,6 +625,10 @@
                     });
                 }
                 var reader = new FileReader();
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
                 reader.onload = function (event) {
                     image_crop.croppie('bind', {
                         url: event.target.result
@@ -614,6 +637,16 @@
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
+            }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event) {

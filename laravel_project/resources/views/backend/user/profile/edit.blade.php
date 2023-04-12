@@ -152,10 +152,11 @@ $chk_post = Auth::user()->phone;
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}" required>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -173,7 +174,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}" required>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -182,7 +183,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" required>
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -208,7 +209,7 @@ $chk_post = Auth::user()->phone;
                                                 </div> --}}
                                                 <div class="col-sm-3">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
+                                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
                                                         @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
                                                             <option value="{{ $prkey }}" {{ old('preferred_pronouns', $login_user->preferred_pronouns) == $prkey ? 'selected' : '' }} >{{ $pronoun }}</option>
                                                         @endforeach
@@ -225,7 +226,7 @@ $chk_post = Auth::user()->phone;
                                             <div class="row mt-3"> --}}
                                                 <div class="col-sm-3">
                                                     <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
+                                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
                                                         @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
                                                             <option value="{{ $hrkey }}" {{ old('hourly_rate_type', $login_user->hourly_rate_type) == $hrkey ? 'selected' : '' }} >{{ $rate }}</option>
                                                         @endforeach
@@ -252,7 +253,7 @@ $chk_post = Auth::user()->phone;
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
-                                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
+                                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
                                                         @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
                                                             <option value="{{ $eykey }}" {{ old('experience_year', $login_user->experience_year) == $eykey ? 'selected' : '' }} >{{ $experience_year }}</option>
                                                         @endforeach
@@ -378,7 +379,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
-                                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
+                                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $login_user->country_id == $country->id))
                                                 <option value="{{ $country->id }}" {{ $country->id == old('country_id', $login_user->country_id) ? 'selected' : '' }}>{{ $country->country_name }}</option>
@@ -393,7 +394,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
-                                    <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-state') }}">
+                                    <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                         @if($all_states)
                                             @foreach($all_states as $key => $state)
                                                 <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
@@ -408,7 +409,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
-                                    <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" required title="{{ __('backend.item.select-city') }}">
+                                    <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                         @if($all_cities)
                                             @foreach($all_cities as $key => $city)
                                                 <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
@@ -423,7 +424,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
-                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" required>
+                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -706,7 +707,7 @@ $chk_post = Auth::user()->phone;
                                     <div class="row mt-3">
                                         <div class="col-sm-3">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}" required>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -715,7 +716,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}" required>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
