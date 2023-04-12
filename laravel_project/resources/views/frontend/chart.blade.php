@@ -75,112 +75,72 @@
                             </div> -->
                     </div>
                     <div class="chart"> 
-                            <input class="btn btn-secondary" type="button" value="Month" id="mon" onClick="showHideDiv('month')"/>                         
-                            <input class="btn btn-secondary" style="margin-right:20px" type="button" value="Weekly" id="wee"onClick="showHideDiv('weekly')"/> 
+                            <input class="btn btn-secondary" type="button" value="Month" id="mon" />                         
+                            <input class="btn btn-secondary" style="margin-right:20px" type="button" value="Weekly" id="wee"/> 
                         
-                            <div id="month">
-                                <canvas id="ROIchart"></canvas>
-                            </div>
-                            <div id="weekly" style="display:none">
+                            
+                            <div id="weekly">
                                 <canvas id="ROIchartt"></canvas>
                             </div>
                     </div>    
                 </div>
         </div>
 
-    <script type="text/javascript">
-        function showHideDiv(ele) {
-            var srcElement = document.getElementById(ele);
-            if (srcElement != null) {
-                if (srcElement.style.display == "block") {
-                    
-                }
-                else {
-                    srcElement.style.display = 'block';
-                }
-                return false;
-            }
-        }
-        
-         $(document).ready(function () {
+    <script type="text/javascript">        
+        $(document).ready(function () {
+            chartdetail('monthly');
             $("#mon").click(function () {
-                
-            $("#weekly").hide();
+                chartdetail('monthly');
             });
             
-         });
-         $(document).ready(function () {
             $("#wee").click(function () {
-                
-            $("#month").hide();
+                chartdetail('weekly');
             });
-         });
-    
-        var ctx = document.getElementById('ROIchart').getContext('2d');
-        var array1 = <?php echo json_encode($data['value'])  ?>;
-        var months =[] ;
-        for (let i = 0; i < 12; i++) {
-        months.push(moment().year(2023).month(i+1).date(0).startOf('month'))
-        }
-        var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: months,
-            datasets: [{
-            label: 'Visitors',
-            backgroundColor: '#F05127',
-            borderColor: '#F05127',
-            fill: true,
-            data: array1,
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-            xAxes: [{
-                type: 'time',
-                time: {
-                unit: 'month'
-                }
-            }]
-            }
-        }
         });
 
-        var ctx = document.getElementById('ROIchartt').getContext('2d');
-        var array1 = <?php echo json_encode($weekdata['week'])  ?>;
-        var months =<?php echo json_encode($weekdata['weeks_ar'])  ?>;  
-        var labels =<?php echo json_encode($weekdata['label'])  ?>;    
+         function chartdetail(charttype){
+            var ctx = document.getElementById('ROIchartt').getContext('2d');
+            if(charttype=='monthly'){
+                var array1 = <?php echo json_encode($data['value'])  ?>;
+                var labels = <?php echo json_encode($data['month'])  ?>;
+                var montlylabel = 'Monthly Visitors';
+            }else{
+                var array1 = <?php echo json_encode($weekdata['week'])  ?>;  
+                var labels =<?php echo json_encode($weekdata['label'])  ?>;  
+                var montlylabel = 'Weekly Visitors';
 
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Weekly Visitors',
-                data: array1,
-                backgroundColor: '#F05127',
-                borderColor: '#F05127',
-                fill: true,
-            }]
-            };
-
-            // config 
-            const config = {
-            type: 'line',
-            data,
-            options: {
-                scales: {
-                y: {
-                    beginAtZero: true
-                }
-                }
             }
-            };
+            const adjustlabel = labels.map(label => label.split(' '));
+            const data = {
+                labels: adjustlabel,
+                datasets: [{
+                    label: montlylabel,
+                    data: array1,
+                    backgroundColor: '#F05127',
+                    borderColor: '#F05127',
+                    fill: true,
+                }]
+                };
 
-            // render init block
-            const myChart = new Chart(
-            document.getElementById('ROIchartt'),
-            config
-            );
+                // config 
+                const config = {
+                type: 'line',
+                data,
+                options: {
+                    scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                    }
+                }
+                };
+
+                // render init block
+                const myChart = new Chart(
+                document.getElementById('ROIchartt'),
+                config
+                );
+        }
     // Instantly assign Chart.js version
     const chartVersion = document.getElementById('ROIchartt');
     chartVersion.innerText = Chart.version; 
