@@ -283,6 +283,9 @@ $chk_post = Auth::user()->phone;
                                 <div class="col-sm-4">
                                     <label for="website" class="text-black">Website</label>
                                     <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('backend.shared.url-help') }}
+                                    </small>
                                     @error('website')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -293,6 +296,9 @@ $chk_post = Auth::user()->phone;
                                     <label for="instagram" class="text-black">IG Handle</label>
                                     <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                                     <span class="err_instagram_url" style="color:red"></span>
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                    </small>
                                     @error('instagram')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -308,6 +314,9 @@ $chk_post = Auth::user()->phone;
                                     <label for="linkedin" class="text-black">LinkedIn</label>
                                     <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
                                     <span class="err_linkedin_url" style="color:red"></span>
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('Only linkedin URL allowed (include http:// or https://)') }}
+                                    </small>
                                     @error('linkedin')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -323,6 +332,9 @@ $chk_post = Auth::user()->phone;
                                     <label for="facebook" class="text-black">Facebook</label>
                                     <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
                                     <span class="err_facebook_url" style="color:red"></span>
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('Only facebook URL allowed (include http:// or https://)') }}
+                                    </small>
                                     @error('facebook')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -338,6 +350,9 @@ $chk_post = Auth::user()->phone;
                                     <label for="youtube" class="text-black">Youtube</label>
                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
                                     <span class="err_youtube_url" style="color:red"></span>
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                    </small>
                                     @error('youtube')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -470,6 +485,9 @@ $chk_post = Auth::user()->phone;
                                         <div class="col-sm-12">
                                             <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
                                             <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
+                                            <small id="linkHelpBlock" class="form-text text-muted">
+                                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                            </small>
                                             @error('youtube_intro_title')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -502,7 +520,9 @@ $chk_post = Auth::user()->phone;
                                             <label for="media_url" class="text-black">Youtube Video URL</label>
                                             <span class="err_media_url" style="color:red"></span>
                                             <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
-                                            
+                                            <small id="linkHelpBlock" class="form-text text-muted">
+                                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                            </small>
                                             @error('media_url')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>

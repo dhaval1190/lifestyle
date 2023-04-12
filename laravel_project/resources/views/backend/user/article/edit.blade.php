@@ -775,8 +775,8 @@
                                                 <div class="row" id="selected-images">
                                                     @foreach($article->galleries as $key => $gallery)
                                                         <div class="col-2 mb-2" id="article_image_gallery_{{ $gallery->id }}">
-                                                            <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}" style="width: 100%; border-radius: 5px; border: 1px solid #dadada;">
-                                                            <br/><button class="btn btn-danger btn-sm text-white mt-1" onclick="$(this).attr('disabled', true); deleteGallery({{ $gallery->id }});">{{ __('backend.shared.delete') }}</button>
+                                                            <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}" style="width: 100%; border-radius: 5px; border: 1px solid #dadada; height:120px;">
+                                                            <br/><button class="btn btn-danger btn-sm text-white mt-2 mb-3" onclick="$(this).attr('disabled', true); deleteGallery({{ $gallery->id }});">{{ __('backend.shared.delete') }}</button>
                                                         </div>
                                                     @endforeach
                                                 </div>
