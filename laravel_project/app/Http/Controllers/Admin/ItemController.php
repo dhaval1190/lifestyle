@@ -376,6 +376,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $settings = app('site_global_settings');
 
         // prepare rule for general information
@@ -384,14 +385,14 @@ class ItemController extends Controller
             'category.*' => 'required|numeric|exists:categories,id',
             'item_status' => 'required|numeric',
             'item_featured' => 'required|numeric',
-            'item_title' => 'required|max:255',
+            'item_title' => 'required|max:100',
             'user_id' => 'required|numeric',
             'item_description' => 'nullable',
             'city_id' => 'required|numeric',
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
-            'item_postal_code' => 'nullable|max:255',
-            'item_phone' => 'nullable|max:255',
+            'item_postal_code' => 'nullable|numeric|digits_between:1,15',
+            'item_phone' => 'nullable|numeric|digits_between:10,20',
             'item_website' => 'nullable|url|max:255',
             'item_social_facebook' => 'nullable|url|max:255',
             'item_social_twitter' => 'nullable|url|max:255',
@@ -403,9 +404,31 @@ class ItemController extends Controller
             'item_hour_time_zone' => 'required|max:255',
             'item_hour_show_hours' => 'required|numeric|in:1,2',
             'item_social_instagram' => 'nullable|max:255',
-            'item_social_whatsapp' => 'nullable|numeric',
+            'item_social_whatsapp' => 'nullable|numeric|digits_between:10,12',
         ];
 
+        if($request->item_social_instagram){
+            if(stripos($request->item_social_instagram,'.com') !== false || stripos($request->item_social_instagram,'http') !== false || stripos($request->item_social_instagram,'https') !== false || stripos($request->item_social_instagram,'www.') !== false || stripos($request->item_social_instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        } 
+        if($request->item_social_facebook){
+            if(stripos($request->item_social_facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }
+        if($request->item_social_twitter){
+            if(stripos($request->item_social_twitter,'twitter') == false){
+                return back()->with('twitter_error','Please enter twitter URL only');
+            }
+        }        
+        if($request->item_social_linkedin){
+            if(stripos($request->item_social_linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedin URL only');
+            }
+        }
+
+        $request->validate($validate_rule);
         // validate category_ids
         $select_categories = $request->category;
 
@@ -1166,6 +1189,27 @@ class ItemController extends Controller
             }
 
             $validate_rule = array_merge($validate_rule, $custom_field_validation);
+        }
+
+        if($request->item_social_instagram){
+            if(stripos($request->item_social_instagram,'.com') !== false || stripos($request->item_social_instagram,'http') !== false || stripos($request->item_social_instagram,'https') !== false || stripos($request->item_social_instagram,'www.') !== false || stripos($request->item_social_instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        }
+        if($request->item_social_facebook){
+            if(stripos($request->item_social_facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }
+        if($request->item_social_twitter){
+            if(stripos($request->item_social_twitter,'twitter') == false){
+                return back()->with('twitter_error','Please enter twitter URL only');
+            }
+        }        
+        if($request->item_social_linkedin){
+            if(stripos($request->item_social_linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedin URL only');
+            }
         }
 
         // validate request

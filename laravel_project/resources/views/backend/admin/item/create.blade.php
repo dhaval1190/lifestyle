@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                         </div> -->
-                        <input type="hidden" name="article_type" value="1">
+                        <input type="hidden" name="item_type" value="1">
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -140,7 +140,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
-                                        <label for="item_title" class="text-black">{{ __('backend.item.title') }}</label>
+                                        <label for="item_title" class="text-black">{{ __('backend.item.title') }}<span class="text-danger">*</span></label>
                                         <input id="item_title" type="text" class="form-control @error('item_title') is-invalid @enderror" name="item_title" value="{{ old('item_title') }}">
                                         @error('item_title')
                                             <span class="invalid-tooltip">
@@ -169,7 +169,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
-                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}</label>
+                                        <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
                                         <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id">
                                             @foreach($all_categories as $key => $category)
                                                 <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', $category_ids)) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
@@ -254,7 +254,7 @@
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-3">
-                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}</label>
+                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
@@ -271,7 +271,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}</label>
+                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-state') }}</option> --}}
                                         </select>
@@ -283,7 +283,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}</label>
+                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-city') }}</option> --}}
                                         </select>
@@ -406,6 +406,7 @@
                                             {{ __('backend.item.facebook') }}
                                         </label>
                                         <input id="item_social_facebook" type="text" class="form-control @error('item_social_facebook') is-invalid @enderror" name="item_social_facebook" value="{{ old('item_social_facebook') }}">
+                                        <span class="err_media_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -414,6 +415,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('facebook_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('facebook_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -422,6 +428,7 @@
                                             {{ __('backend.item.twitter') }}
                                         </label>
                                         <input id="item_social_twitter" type="text" class="form-control @error('item_social_twitter') is-invalid @enderror" name="item_social_twitter" value="{{ old('item_social_twitter') }}">
+                                        <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -430,6 +437,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('twitter_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('twitter_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                 </div>
@@ -441,6 +453,7 @@
                                             {{ __('backend.item.linkedin') }}
                                         </label>
                                         <input id="item_social_linkedin" type="text" class="form-control @error('item_social_linkedin') is-invalid @enderror" name="item_social_linkedin" value="{{ old('item_social_linkedin') }}">
+                                        <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('backend.shared.url-help') }}
                                         </small>
@@ -449,6 +462,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('linkedin_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('linkedin_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -457,6 +475,7 @@
                                             {{ __('item_whatsapp_instagram.item-social-instagram') }}
                                         </label>
                                         <input id="item_social_instagram" type="text" class="form-control @error('item_social_instagram') is-invalid @enderror" name="item_social_instagram" value="{{ old('item_social_instagram') }}">
+                                        <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('item_whatsapp_instagram.item-social-instagram-help') }}
                                         </small>
@@ -465,6 +484,11 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                        @if(Session::has('instagram_error'))
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ Session::get('instagram_error') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
                                     <div class="col-md-4">
@@ -521,7 +545,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        <label for="item_hour_show_hours" class="text-black">{{ __('item_hour.show-open-hour') }}</label>
+                                        <label for="item_hour_show_hours" class="text-black">{{ __('item_hour.show-open-hour') }}<span class="text-danger">*</span></label>
                                         <select id="item_hour_show_hours" class="selectpicker form-control @error('item_hour_show_hours') is-invalid @enderror" name="item_hour_show_hours" data-live-search="true">
                                             <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ old('item_hour_show_hours') == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('item_hour.show-hour') }}</option>
                                             <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ old('item_hour_show_hours') == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('item_hour.not-show-hour') }}</option>
@@ -581,6 +605,7 @@
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
+                                        <div id="message" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
@@ -639,6 +664,7 @@
                                                 <option value="{{ $full_hour }}">{{ $full_hour }}</option>
                                             @endfor
                                         </select>
+                                        <div id="exception_close_hour" style="color:red"></div>
                                     </div>
                                     <div class="col-12 col-md-2">
                                         <label for="item_hour_exception_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
@@ -761,6 +787,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-image') }}</button>
                                                 <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
                                                 <input id="feature_image" type="hidden" name="feature_image">
@@ -789,6 +818,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display: none;">
+                                                    <strong id="gallery_img_error"></strong>
+                                                </div>
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-images') }}</button>
                                                 <div class="row" id="selected-images">
 
@@ -804,7 +836,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-success py-2 px-4 text-white">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>
@@ -917,6 +949,102 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
+
+            $(document).ready(function() {
+
+                $('#item_hour_create_button').on('click',function(){
+                    $('#message').html('');
+                        if(parseInt($('#item_hour_open_time_open_hour').val()) > parseInt($('#item_hour_open_time_close_hour').val())) {
+                            $('#message').html('please select close hour greater than open hour');
+                        }
+                });
+                $('#item_hour_exception_create_button').on('click',function(){
+                    $('#exception_close_hour').html('');
+                        if(parseInt($('#item_hour_exception_open_time_open_hour').val()) > parseInt($('#item_hour_exception_open_time_close_hour').val())) {
+                            $('#exception_close_hour').html('please select exception close hour greater than exception open hour');
+                        }
+                });
+
+                $('#item_social_facebook').on('input', function(){
+                $('.err_media_url').html('');
+                var facebookUrl = $("#item_social_facebook").val();
+                console.log(facebookUrl)
+                var matchUrl = "facebook";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.err_media_url').html("Please enter Facebook URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_media_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_media_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+
+            $('#item_social_twitter').on('input', function(){
+                $('.err_twitter_url').html('');
+                var twitterUrl = $("#item_social_twitter").val();
+                var matchUrl = "twitter";                
+                if(twitterUrl.indexOf(matchUrl) == -1){
+                    $('.err_twitter_url').html("Please enter Twitter URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(twitterUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_twitter_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_twitter_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#item_social_linkedin').on('input', function(){
+                $('.err_linkedin_url').html('');
+                var linkedinUrl = $("#item_social_linkedin").val();
+                var matchUrl = "linkedin";                
+                if(linkedinUrl.indexOf(matchUrl) == -1){
+                    $('.err_linkedin_url').html("Please enter Linkedin URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(linkedinUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.err_linkedin_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+
+            function isUrl(s) {
+            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            return regexp.test(s);
+            }
+            $('#item_social_instagram').on('input', function(){  
+                $('.err_instagram_url').html('');             
+               var instaurl =  isUrl($("#item_social_instagram").val());  
+               var instaurl1 =  $("#item_social_instagram").val();
+               matchUrl_insta = 'www.';
+            //    if(instaurl){
+               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.err_instagram_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+              
+            });
+
+        });
 
         $(document).ready(function() {
 
@@ -1174,10 +1302,12 @@
              * Start image gallery uplaod
              */
             $('#upload_gallery').on('click', function(){
+                $('#gallery_image_error_div').hide();
+                $('#gallery_img_error').text('');
                 window.selectedImages = [];
 
                 $.FileDialog({
-                    accept: "image/jpeg",
+                    accept: ".jpeg,.jpg,.png",
                 }).on("files.bs.filedialog", function (event) {
                     var html = "";
                     for (var a = 0; a < event.files.length; a++) {
@@ -1189,6 +1319,15 @@
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#item_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
+
+                            var img_str = event.files[a].content;
+                            var img_str_split = img_str.split(";base64")[0];
+                            var img_ext = img_str_split.split("/")[1];
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                                $('#gallery_image_error_div').show();
+                                return false;
+                            }
                     }
                     document.getElementById("selected-images").innerHTML += html;
                 });
@@ -1215,8 +1354,11 @@
 
             $('#upload_image').on('click', function(){
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -1235,13 +1377,27 @@
                     });
                 }
                 var reader = new FileReader();
-                reader.onload = function (event) {
-                    image_crop.croppie('bind', {
-                        url: event.target.result
-                    }).then(function(){
-                    });
-                };
-                reader.readAsDataURL(this.files[0]);
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
+                    reader.onload = function (event) {
+                        image_crop.croppie('bind', {
+                            url: event.target.result
+                        }).then(function(){
+                        });
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event) {

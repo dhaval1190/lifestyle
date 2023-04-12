@@ -441,7 +441,7 @@ class ArticleController extends Controller
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
             'article_postal_code' => 'nullable|numeric|digits_between:1,15',
-            'article_phone' => 'nullable|numeric|digits_between:10,12',
+            'article_phone' => 'nullable|numeric|digits_between:10,20',
             'article_website' => 'nullable|url|max:255',
             'article_social_facebook' => 'nullable|url|max:255',
             'article_social_twitter' => 'nullable|url|max:255',

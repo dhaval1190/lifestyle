@@ -43,8 +43,12 @@ class PagesController extends Controller
 
         $warning_smtp = $settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED ? false : true;
 
+        $all_messages_count = Thread::count();
+        $pending_users_count = User::where('email_verified_at', null)->count();
+        $comments_count = Comment::count();
+
         return response()->view('backend.admin.index',
             compact('admin_user','category_count', 'item_count', 'post_count', 'user_count',
-                'recent_threads', 'recent_comments', 'warning_smtp'));
+                'recent_threads', 'recent_comments', 'warning_smtp','all_messages_count','pending_users_count','comments_count'));
     }
 }

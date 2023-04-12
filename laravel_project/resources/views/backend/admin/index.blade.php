@@ -40,8 +40,8 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3>{{ __('backend.homepage.pending-listings') }}</h3>
-                                <p class="c-one">0</p>
+                                <a class="decoration-none" href="{{ route('admin.users.index') }}"><h3>{{ __('backend.homepage.pending-listings') }}</h3></a>
+                                <p class="c-one">{{ $pending_users_count }}</p>
                             </div>
                         </div>
                     </div>
@@ -51,8 +51,8 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3>{{ __('backend.homepage.all-messages') }}</h3>
-                                <p class="c-two">0</p>
+                                <a class="decoration-none" href="{{ route('admin.messages.index') }}"><h3>{{ __('backend.homepage.all-messages') }}</h3></a>
+                                <p class="c-two">{{ $all_messages_count }}</p>
                             </div>
                         </div>
                     </div>
@@ -64,8 +64,8 @@
                             <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
                             <div class="coaches_detail">
                                 <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
-                                <h3>{{ __('backend.homepage.all-comments') }}</h3>
-                                <p class="c-three">0</p>
+                                <a class="decoration-none" href="{{ route('admin.comments.index') }}"><h3>{{ __('backend.homepage.all-comments') }}</h3></a>
+                                <p class="c-three">{{ $comments_count }}</p>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                         <div class="coaches">
                             <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
                             <div class="coaches_detail">
-                                <h3>{{ __('backend.homepage.all-articles') }}</h3>
+                                <a class="decoration-none" href="{{ route('admin.items.index') }}"><h3>{{ __('backend.homepage.all-articles') }}</h3></a>
                                 <p class="c-four">{{ number_format($item_count) }}</p>
                             </div>
                         </div>
