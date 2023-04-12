@@ -8170,9 +8170,10 @@ class PagesController extends Controller
             }  
                 
         foreach($new_orders_count as $key =>$profile){             
-            $data['month'][] = date('Y-m-d', strtotime($key));
+            $data['month'][] = date("F", mktime(0, 0, 0, $key, 10));
             $data['value'][] = $profile;   
         }
+        // print_r($data);exit;
             $month = date('m');                       
             $week = date("W", strtotime($year . "-" . $month ."-01"));
             $str='';
