@@ -726,20 +726,27 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3 bg_determine">
                         <div class="col-12">
-                            @if($item->galleries()->count() > 0)
-                                <div id="item-image-gallery">
-                                    @php
-                                    $item_galleries = $item->galleries()->get();
-                                    @endphp
-                                    @foreach($item_galleries as $galleries_key => $gallery)
-                                        <a href="{{ Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) }}" rel="item-image-gallery-thumb">
-                                            <img alt="Image" src="{{ empty($gallery->item_image_gallery_thumb_name) ? Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) : Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_thumb_name) }}"/>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @else
+                            <div class="row mt-2">
+                                  @if($item->galleries()->count() > 0)
+                                  
+                                        @php
+                                        $item_galleries = $item->galleries()->get();
+                                        @endphp
+                                        @foreach($item_galleries as $galleries_key => $gallery)
+                                        <div class="col-md-4 mb-3">
+                                          <div id="item-image-gallery">
+                                            <a href="{{ Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) }}" rel="item-image-gallery-thumb">
+                                                <img alt="Image" src="{{ empty($gallery->item_image_gallery_thumb_name) ? Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) : Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_thumb_name) }}"/>
+                                            </a>
+                                        </div>
+                                        </div>
+                                        @endforeach
+                                
+                            </div>
+                                
+                                @else
 
                                 <div class="text-center">
                                     @if(empty($item->item_image))
@@ -3351,23 +3358,23 @@
             /**
              * Start initial image gallery justify gallery
              */
-            @if($item->galleries()->count() > 0)
-            $("#item-image-gallery").justifiedGallery({
-                rowHeight : 150,
-                maxRowHeight: 180,
-                lastRow : 'nojustify',
-                margins : 3,
-                captions: false,
-                randomize: true,
-                rel : 'item-image-gallery-thumb', //replace with 'gallery1' the rel attribute of each link
-            }).on('jg.complete', function () {
-                $(this).find('a').colorbox({
-                    maxWidth : '95%',
-                    maxHeight : '95%',
-                    opacity : 0.8,
-                });
-            });
-            @endif
+            // @if($item->galleries()->count() > 0)
+            // $("#item-image-gallery").justifiedGallery({
+            //     rowHeight : 150,
+            //     maxRowHeight: 180,
+            //     lastRow : 'nojustify',
+            //     margins : 3,
+            //     captions: false,
+            //     randomize: true,
+            //     rel : 'item-image-gallery-thumb', //replace with 'gallery1' the rel attribute of each link
+            // }).on('jg.complete', function () {
+            //     $(this).find('a').colorbox({
+            //         maxWidth : '95%',
+            //         maxHeight : '95%',
+            //         opacity : 0.8,
+            //     });
+            // });
+            // @endif
             /**
              * End initial image gallery justify gallery
              */
