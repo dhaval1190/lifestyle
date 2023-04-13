@@ -274,11 +274,20 @@
                                                 <div class="col-sm-6">
                                                     <label for="instagram" class="text-black">IG Handle</label>
                                                     <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}">
+                                                    <span class="err_instagram_url" style="color:red"></span>
+                                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                                        {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                                    </small>
                                                     @error('instagram')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
+                                                    @if(Session::has('instagram_error'))
+                                                    <span class="invalid-tooltip">
+                                                        <strong>{{ Session::get('instagram_error') }}</strong>
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -287,29 +296,56 @@
                                                 <div class="col-sm-4">
                                                     <label for="linkedin" class="text-black">LinkedIn</label>
                                                     <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
+                                                    <span class="err_linkedin_url" style="color:red"></span>
+                                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                                        {{ __('Only linkedin URL allowed (include http:// or https://)') }}
+                                                    </small>
                                                     @error('linkedin')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
+                                                    @if(Session::has('linkedin_error'))
+                                                        <span class="invalid-tooltip">
+                                                            <strong>{{ Session::get('linkedin_error') }}</strong>
+                                                        </span>
+                                                    @endif
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="facebook" class="text-black">Facebook</label>
                                                     <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}">
+                                                    <span class="err_facebook_url" style="color:red"></span>
+                                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                                        {{ __('Only facebook URL allowed (include http:// or https://)') }}
+                                                    </small>
                                                     @error('facebook')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
+                                                    @if(Session::has('facebook_error'))
+                                                        <span class="invalid-tooltip">
+                                                            <strong>{{ Session::get('facebook_error') }}</strong>
+                                                        </span>
+                                                    @endif
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="youtube" class="text-black">Youtube</label>
                                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}">
+                                                    <span class="err_youtube_url" style="color:red"></span>
+                                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                                    </small>
                                                     @error('youtube')
                                                     <span class="invalid-tooltip" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
+                                                    @if(Session::has('youtube_error'))
+                                                    <span class="invalid-tooltip">
+                                                        <strong>{{ Session::get('youtube_error') }}</strong>
+                                                    </span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -475,7 +511,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success m-2 text-white">
+                                <button type="submit" id="submit" class="btn btn-success m-2 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                                 <a class="btn btn-warning m-2 text-white" href="{{ route('admin.users.password.edit', $user) }}">
@@ -564,6 +600,70 @@
     @include('backend.user.partials.bootstrap-select-locale')
     <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
     <script>
+
+            $(document).ready(function(){
+
+                function isUrl(s) {
+                var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+                return regexp.test(s);
+                }
+                $('#instagram').on('input', function(){  
+                    $('.err_instagram_url').html('');             
+                var instaurl =  isUrl($("#instagram").val()); 
+                var instaurl1 =  $("#instagram").val();
+                matchUrl_insta_www = 'www.'; 
+                //    console.log(instaurl);
+                //    if(instaurl){
+                if(instaurl || instaurl1.indexOf(matchUrl_insta_www) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                        $('.err_instagram_url').html("Please enter valid instagram user name Only");
+                        $('#submit').attr("disabled", true);
+                        return false;
+                    }else{
+                        $('.err_instagram_url').html('');
+                        $('#submit').attr("disabled", false);
+
+                    }
+                
+                });
+
+                $('#linkedin').on('input', function(){
+                    $('.err_linkedin_url').html('');
+                    var linkedinUrl = $("#linkedin").val();
+                    console.log(linkedinUrl)
+                    var matchUrl = "linkedin";                
+                    if(linkedinUrl.indexOf(matchUrl) == -1){
+                        $('.err_linkedin_url').html("Please enter Linkedin URL Only");
+                        $('#submit').attr("disabled", true);
+                        if(linkedinUrl.length == 0){
+                            $('#submit').attr("disabled", false);
+                            $('.err_linkedin_url').html('');
+                        }
+                        return false;
+                    }else{
+                        $('.err_linkedin_url').html('');
+                        $('#submit').attr("disabled", false);
+
+                    }
+                });
+                $('#facebook').on('input', function(){
+                    $('.err_facebook_url').html('');
+                    var facebookUrl = $("#facebook").val();
+                    var matchUrl = "facebook";                
+                    if(facebookUrl.indexOf(matchUrl) == -1){
+                        $('.err_facebook_url').html("Please enter Facebook URL Only");
+                        $('#submit').attr("disabled", true);
+                        if(facebookUrl.length == 0){
+                            $('#submit').attr("disabled", false);
+                            $('.err_facebook_url').html('');
+                        }
+                        return false;
+                    }else{
+                        $('.err_facebook_url').html('');
+                        $('#submit').attr("disabled", false);
+
+                    }
+                });
+            });
 
         // Call the dataTables jQuery plugin
         $(document).ready(function() {
