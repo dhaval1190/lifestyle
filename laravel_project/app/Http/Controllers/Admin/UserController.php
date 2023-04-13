@@ -170,7 +170,7 @@ class UserController extends Controller
 
         $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/', 'email', 'max:255', 'unique:users'];
-        // $rules['phone']                     = ['required','string','max:20'];
+        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
         $rules['password']                  = ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
@@ -199,7 +199,7 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','string','max:10'];
+            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
             $rules['user_image']            = ['nullable'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach Creation!';
@@ -407,7 +407,7 @@ class UserController extends Controller
 
         $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','email', 'max:255'];
-        // $rules['phone']                     = ['required','numeric','digits_between:10,20'];
+        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];

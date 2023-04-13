@@ -404,7 +404,7 @@ class ItemController extends Controller
             'item_hour_time_zone' => 'required|max:255',
             'item_hour_show_hours' => 'required|numeric|in:1,2',
             'item_social_instagram' => 'nullable|max:255',
-            'item_social_whatsapp' => 'nullable|numeric|digits_between:10,12',
+            'item_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
 
         if($request->item_social_instagram){
@@ -1149,13 +1149,13 @@ class ItemController extends Controller
         $validate_rule = [
             'item_status' => 'required|numeric',
             'item_featured' => 'required|numeric',
-            'item_title' => 'required|max:255',
+            'item_title' => 'required|max:100',
             'item_description' => 'nullable',
             'city_id' => 'required|numeric',
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
-            'item_postal_code' => 'nullable|max:255',
-            'item_phone' => 'nullable|max:255',
+            'item_postal_code' => 'nullable|numeric|digits_between:1,15',
+            'item_phone' => 'nullable|numeric|digits_between:10,20',
             'item_website' => 'nullable|url|max:255',
             'item_social_facebook' => 'nullable|url|max:255',
             'item_social_twitter' => 'nullable|url|max:255',
@@ -1169,6 +1169,8 @@ class ItemController extends Controller
             'item_social_instagram' => 'nullable|max:255',
             'item_social_whatsapp' => 'nullable|numeric',
         ];
+
+        $request->validate($validate_rule);
 
         // prepare validate rule for custom fields
         $select_categories = $item->allCategories()->get();

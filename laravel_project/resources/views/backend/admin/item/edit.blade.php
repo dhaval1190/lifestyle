@@ -14,6 +14,8 @@
 
     <!-- searchable selector -->
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
@@ -928,6 +930,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-image') }}</button>
                                                 @if(empty($item->item_image))
                                                     <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
@@ -961,6 +966,9 @@
                                         @enderror
                                         <div class="row mt-3">
                                             <div class="col-12">
+                                                <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display: none;">
+                                                    <strong id="gallery_img_error"></strong>
+                                                </div>
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.item.select-images') }}</button>
                                                 <div class="row" id="selected-images">
                                                     @foreach($item->galleries as $key => $gallery)
@@ -1013,7 +1021,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.item.choose-image') }}</label>
                             </div>
                         </div>
@@ -1099,7 +1107,8 @@
                     <form id="update-item-category-form" action="{{ route('admin.item.category.update', $item) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control" name="category[]" id="category" data-live-search="true" data-actions-box="true">
+                        {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control" name="category[]" id="category" data-live-search="true" data-actions-box="true"> --}}
+                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
                             @foreach($all_categories as $key => $a_category)
                                 <option {{ in_array($a_category['category_id'], $category_ids) ? 'selected' : '' }} value="{{ $a_category['category_id'] }}">{{ $a_category['category_name'] }}</option>
                             @endforeach
@@ -1422,6 +1431,8 @@
 
     <!-- searchable selector -->
     <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.admin.partials.bootstrap-select-locale')
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -1461,6 +1472,16 @@
         }
 
         $(document).ready(function(){
+
+                $('.category').select2({
+                    maximumSelectionLength: 3
+                });
+
+                $('.selectpicker-category').selectpicker({
+                    maxOptions: 3
+                });
+
+                $('.selectpicker').selectpicker();
 
             $('#item_hour_create_button').on('click',function(){
                 $('#message').html('');
@@ -1803,10 +1824,12 @@
              * Start image gallery uplaod
              */
             $('#upload_gallery').on('click', function(){
+                $('#gallery_image_error_div').hide();
+                $('#gallery_img_error').text('');
                 window.selectedImages = [];
 
                 $.FileDialog({
-                    accept: "image/jpeg",
+                    accept: ".jpeg,.jpg,.png",
                 }).on("files.bs.filedialog", function (event) {
                     var html = "";
                     for (var a = 0; a < event.files.length; a++) {
@@ -1818,6 +1841,15 @@
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#item_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
                             "</div>";
+
+                            var img_str = event.files[a].content;
+                            var img_str_split = img_str.split(";base64")[0];
+                            var img_ext = img_str_split.split("/")[1];
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                                $('#gallery_image_error_div').show();
+                                return false;
+                            }
                     }
                     document.getElementById("selected-images").innerHTML += html;
                 });
@@ -1844,8 +1876,11 @@
 
             $('#upload_image').on('click', function(){
                 $('#image-crop-modal').modal('show');
+                $('#image_error_div').hide();
+                $('#img_error').text('');
             });
 
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
                     image_crop = $('#image_demo').croppie({
@@ -1864,13 +1899,27 @@
                     });
                 }
                 var reader = new FileReader();
-                reader.onload = function (event) {
-                    image_crop.croppie('bind', {
-                        url: event.target.result
-                    }).then(function(){
-                    });
-                };
+                var file = this.files[0]; // Get your file here
+                var fileExt = file.type.split('/')[1]; // Get the file extension
+
+                if(fileTypes.indexOf(fileExt) !== -1) {
+                    reader.onload = function (event) {
+                        image_crop.croppie('bind', {
+                            url: event.target.result
+                        }).then(function(){
+                        });
+                    };
                 reader.readAsDataURL(this.files[0]);
+            }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#image-crop-modal').trigger('reset');
+                    $('#image-crop-modal').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#image_demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
             });
 
             $('#crop_image').on("click", function(event) {
