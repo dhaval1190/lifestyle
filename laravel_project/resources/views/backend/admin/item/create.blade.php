@@ -13,6 +13,8 @@
     <link href="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.css') }}" rel="stylesheet" />
 
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
@@ -170,7 +172,8 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
-                                        <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id">
+                                        {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
+                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
                                             @foreach($all_categories as $key => $category)
                                                 <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', $category_ids)) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
                                             @endforeach
@@ -869,7 +872,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.item.choose-image') }}</label>
                             </div>
                         </div>
@@ -932,6 +935,8 @@
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
     <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.admin.partials.bootstrap-select-locale')
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -951,6 +956,16 @@
     <script>
 
             $(document).ready(function() {
+
+                $('.category').select2({
+                    maximumSelectionLength: 3
+                });
+
+                $('.selectpicker-category').selectpicker({
+                    maxOptions: 3
+                });
+
+                $('.selectpicker').selectpicker();
 
                 $('#item_hour_create_button').on('click',function(){
                     $('#message').html('');
