@@ -974,7 +974,7 @@ class PagesController extends Controller
 
         $category_obj = new Category();
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
-
+         //print_r($request->filter_state);exit;
         // state & city
         $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
@@ -1285,10 +1285,10 @@ class PagesController extends Controller
             $country = Country::find($filter_country);
             $all_states = $country->states()->orderBy('state_name')->get();
         }
-        $all_states = Country::find($site_prefer_country_id)
-            ->states()
-            ->orderBy('state_name')
-            ->get();
+        // $all_states = Country::find($site_prefer_country_id)
+        //     ->states()
+        //     ->orderBy('state_name')
+        //     ->get();
 
         $all_cities = collect([]);
         if(!empty($filter_state))
@@ -1952,10 +1952,10 @@ class PagesController extends Controller
             $all_states = $country->states()->orderBy('state_name')->get();
         }
 
-        $all_states = Country::find($site_prefer_country_id)
-            ->states()
-            ->orderBy('state_name')
-            ->get();
+        // $all_states = Country::find($site_prefer_country_id)
+        //     ->states()
+        //     ->orderBy('state_name')
+        //     ->get();
 
         $all_cities = collect([]);
         if(!empty($filter_state))
