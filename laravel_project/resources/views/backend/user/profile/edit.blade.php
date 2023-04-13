@@ -1441,7 +1441,7 @@ $chk_post = Auth::user()->phone;
         $('#facebook').on('input', function(){
                 $('.err_facebook_url').html('');
                 var facebookUrl = $("#facebook").val();
-                var matchUrl = ".facebook";                
+                var matchUrl = "facebook";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_facebook_url').html("Please enter Facebook URL Only");
                     $('#submit').attr("disabled", true);
@@ -1460,7 +1460,7 @@ $chk_post = Auth::user()->phone;
             $('#linkedin').on('input', function(){
                 $('.err_linkedin_url').html('');
                 var linkedinUrl = $("#linkedin").val();
-                var matchUrl = ".linkedin";                
+                var matchUrl = "linkedin";                
                 if(linkedinUrl.indexOf(matchUrl) == -1){
                     $('.err_linkedin_url').html("Please enter Linkedin URL Only");
                     $('#submit').attr("disabled", true);

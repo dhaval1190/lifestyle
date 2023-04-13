@@ -151,13 +151,27 @@ class UserController extends Controller
     {
         $input = $request->all();
 
+        if(isset($input['youtube'])){
+            if (strpos($input['youtube'], "?v=") !== false) {            
+                $youtube_url_id = explode("?v=",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+                
+            }elseif(strpos($input['youtube'], "youtu.be") !== false){
+                $youtube_url_id = explode(".be/",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+            }else{
+
+                $embed_url = $input['youtube'];
+            }
+        }
+
         $rules = [];
         $rulesMessage = [];
 
-        $rules['name']                      = ['required', 'string', 'max:255'];
+        $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/', 'email', 'max:255', 'unique:users'];
-        $rules['phone']                     = ['required','string','max:20'];
-        $rules['password']                  = ['required', 'string', 'min:8', 'confirmed'];
+        // $rules['phone']                     = ['required','string','max:20'];
+        $rules['password']                  = ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
@@ -167,6 +181,7 @@ class UserController extends Controller
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
+            $rules['phone']                 = ['required','numeric','digits_between:10,20'];
 
             $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
 
@@ -189,6 +204,29 @@ class UserController extends Controller
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach Creation!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach Creation!';
+            $rulesMessage['phone.required'] = 'Phone is required';
+            $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
+        }
+
+        if($request->instagram){
+            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        }         
+        if($request->facebook){
+            if(stripos($request->facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }   
+        if($request->linkedin){
+            if(stripos($request->linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedinssss URL only');
+            }
+        }
+        if($request->youtube){
+            if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
+                return back()->with('youtube_error','Please enter youtube URL only');
+            }
         }
 
         $request->validate($rules, $rulesMessage);
@@ -253,7 +291,8 @@ class UserController extends Controller
         $user->instagram                = isset($input['instagram']) ? $input['instagram'] : null;
         $user->linkedin                 = isset($input['linkedin']) ? $input['linkedin'] : null;
         $user->facebook                 = isset($input['facebook']) ? $input['facebook'] : null;
-        $user->youtube                  = isset($input['youtube']) ? $input['youtube'] : null;
+        // $user->youtube                  = isset($input['youtube']) ? $input['youtube'] : null;
+        $user->youtube                  = isset($input['youtube']) ? $embed_url : null;
 
         $user->address                  = isset($input['address']) ? $input['address'] : null;
         $user->city_id                  = isset($input['city_id']) ? $input['city_id'] : null;
@@ -349,6 +388,20 @@ class UserController extends Controller
         $input = $request->all();
         // dd($input);
 
+        if(isset($input['youtube'])){
+            if (strpos($input['youtube'], "?v=") !== false) {            
+                $youtube_url_id = explode("?v=",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+                
+            }elseif(strpos($input['youtube'], "youtu.be") !== false){
+                $youtube_url_id = explode(".be/",$input['youtube'])[1];
+                $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+            }else{
+
+                $embed_url = $input['youtube'];
+            }
+        }
+
         $rules = [];
         $rulesMessage = [];
 
@@ -387,6 +440,27 @@ class UserController extends Controller
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
+        }
+
+        if($request->instagram){
+            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
+                return back()->with('instagram_error','Please enter valid instagram user name Only');
+            }
+        }         
+        if($request->facebook){
+            if(stripos($request->facebook,'facebook') == false){
+                return back()->with('facebook_error','Please enter facebook URL only');
+            }
+        }   
+        if($request->linkedin){
+            if(stripos($request->linkedin,'linkedin') == false){
+                return back()->with('linkedin_error','Please enter linkedinssss URL only');
+            }
+        }
+        if($request->youtube){
+            if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
+                return back()->with('youtube_error','Please enter youtube URL only');
+            }
         }
 
         $request->validate($rules, $rulesMessage);
@@ -448,7 +522,8 @@ class UserController extends Controller
         $user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
         $user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
         $user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
-        $user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+        // $user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
+        $user->youtube              = isset($input['youtube']) ? $embed_url : null;
 
         $user->address              = isset($input['address']) ? $input['address'] : null;
         $user->city_id              = isset($input['city_id']) ? $input['city_id'] : null;
