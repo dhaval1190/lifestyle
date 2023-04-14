@@ -1437,7 +1437,7 @@
     <!-- Bootstrap Fd Plugin Js-->
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
-    {{-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> --}}
+    <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.admin.partials.bootstrap-select-locale')
