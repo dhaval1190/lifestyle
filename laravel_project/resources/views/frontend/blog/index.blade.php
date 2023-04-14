@@ -165,9 +165,9 @@
                               <div class="blog_design_shadow">
                               <h2 class="font-size-regular pt-0"><a href="{{ route('page.blog.show', $post->slug) }}" class="text-black">{{ $post->title }}</a></h2>
                                 <div class="meta mb-3">
-                                    {{ __('frontend.blog.by') }} 
+                                    {{-- {{ __('frontend.blog.by') }}  --}}
                                     {{-- {{ $post->user()->first()->name }} --}}
-                                    <span class="mx-1">&bullet;</span>
+                                    {{-- <span class="mx-1">&bullet;</span> --}}
                                     {{ $post->updated_at->diffForHumans() }} <span class="mx-1">&bullet;</span>
                                     @if($post->topic()->count() != 0)
                                         <a href="{{ route('page.blog.topic', $post->topic()->first()->slug) }}">{{ $post->topic()->first()->name }}</a>
