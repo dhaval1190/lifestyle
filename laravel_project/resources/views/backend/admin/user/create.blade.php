@@ -136,6 +136,7 @@
                                         <div class="col-md-3">
                                             <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
+                                            <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -145,6 +146,7 @@
                                         <div class="col-md-3">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
+                                            <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password_confirmation')
                                             <span class="invalid-tooltip">
                                                     <strong>{{ $message }}</strong>
@@ -424,6 +426,7 @@
                                         <div class="col-md-4">
                                             <label class="text-black" for="password"><span class="text-danger">*</span>{{ __('backend.user.password') }}</label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
+                                            <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -433,6 +436,7 @@
                                         <div class="col-md-4">
                                             <label class="text-black" for="password_confirmation"><span class="text-danger">*</span>{{ __('backend.user.confirm-password') }}</label>
                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
+                                            <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password_confirmation')
                                             <span class="invalid-tooltip">
                                                     <strong>{{ $message }}</strong>
@@ -530,6 +534,16 @@
         // Call the dataTables jQuery plugin
 
         $(document).ready(function(){
+            $(".toggle-password").click(function() {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+            });
 
             function isUrl(s) {
             var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/

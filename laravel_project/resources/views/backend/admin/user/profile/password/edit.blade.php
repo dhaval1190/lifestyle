@@ -30,8 +30,9 @@
 
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label for="password" class="text-black">{{ __('backend.user.current-password') }}</label>
+                                <label for="password" class="text-black"><span class="text-danger">*</span>{{ __('backend.user.current-password') }}</label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autofocus>
+                                <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('password')
                                 <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -43,8 +44,9 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label for="new_password" class="text-black">{{ __('backend.user.new-password') }}</label>
+                                <label for="new_password" class="text-black"><span class="text-danger">*</span>{{ __('backend.user.new-password') }}</label>
                                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password">
+                                <span toggle="#new_password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password')
                                 <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -56,8 +58,9 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label for="new_password_confirmation" class="text-black">{{ __('backend.user.password-confirm') }}</label>
+                                <label for="new_password_confirmation" class="text-black"><span class="text-danger">*</span>{{ __('backend.user.password-confirm') }}</label>
                                 <input id="new_password_confirmation" type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
+                                <span toggle="#new_password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password_confirmation')
                                 <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -83,4 +86,19 @@
 @endsection
 
 @section('scripts')
+<script>
+$(document).ready(function(){
+
+$(".toggle-password").click(function() {
+
+$(this).toggleClass("fa-eye fa-eye-slash");
+var input = $($(this).attr("toggle"));
+if (input.attr("type") == "password") {
+    input.attr("type", "text");
+} else {
+    input.attr("type", "password");
+}
+});
+});
+</script>
 @endsection

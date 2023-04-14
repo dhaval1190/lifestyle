@@ -113,7 +113,7 @@
                             <div class="col-md-12">
                                 <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -264,6 +264,17 @@
     <script>
 
         $(document).ready(function(){
+            $(".toggle-password").click(function() {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+            });
+
 
             "use strict";
 
