@@ -554,7 +554,7 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     <a href="{{ $user_detail['linkedin'] }}"><p>{{ $user_detail['linkedin'] }}</p></a>
                                 </div>
                                 <div class="middle_main"><img src="{{ asset('frontend/images/instagram.svg') }}" alt="" />
-                                    <a href="{{ $user_detail['instagram'] }}"><p>{{ $user_detail['instagram'] }}</p></a>
+                                    <a href="https://instagram.com/_u/{{ $user_detail->instagram }}/"><p>{{ $user_detail['instagram'] }}</p></a>
                                 </div>
                                 <div class="middle_main"><img src="{{ asset('frontend/images/facebook.svg') }}" alt="" />
                                     <a href="{{ $user_detail['facebook'] }}"><p>{{ $user_detail['facebook'] }}</p></a>
