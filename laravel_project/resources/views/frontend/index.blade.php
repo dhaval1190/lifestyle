@@ -89,7 +89,7 @@
 
                 @php
                     $categories_count = $categories->count();
-                    $is_login = isset(Auth::user()->id) && !empty(Auth::user()->id) ? 1 : 0;
+                    $is_login = isset(Auth::user()->id) && !empty(Auth::user()->id) && (Auth::user()->role_id == 2) ? 1 : 0;
                     $is_terms_read = isset(Auth::user()->is_terms_read) && !empty(Auth::user()->is_terms_read) ? 1 : 0;
                 @endphp
 
