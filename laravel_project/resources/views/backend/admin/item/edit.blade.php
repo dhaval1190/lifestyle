@@ -22,6 +22,11 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+    <style>
+        .select2-container{
+            width: 100% !important;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -1107,9 +1112,12 @@
                     <form id="update-item-category-form" action="{{ route('admin.item.category.update', $item) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control" name="category[]" id="category" data-live-search="true" data-actions-box="true"> --}}
-                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
+                        <select multiple class="form-control form-select category w-100" name="category[]">
+                            {{-- <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple> --}}
                             @foreach($all_categories as $key => $a_category)
+                            @php
+                                if(empty($a_category["is_parent"])) continue;
+                            @endphp
                                 <option {{ in_array($a_category['category_id'], $category_ids) ? 'selected' : '' }} value="{{ $a_category['category_id'] }}">{{ $a_category['category_name'] }}</option>
                             @endforeach
                         </select>
@@ -1429,8 +1437,7 @@
     <!-- Bootstrap Fd Plugin Js-->
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
-    <!-- searchable selector -->
-    <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    {{-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('backend.admin.partials.bootstrap-select-locale')

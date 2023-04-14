@@ -921,15 +921,20 @@ class ArticleController extends Controller
 
         $item_owner = $article->user()->first();
 
-        if($item_owner->isAdmin()) {
-            $all_categories = new Category();
-            $all_categories = $all_categories->getPrintableCategories();
-        } else {
+        // if($item_owner->isAdmin()) {
+        //     $all_categories = new Category();
+        //     $all_categories = $all_categories->getPrintableCategories();
+        // } else {
+        //     $all_categories = [];
+        //     if($item_owner->categories->count() > 0) {
+        //         $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+        //     }
+        // }
+
             $all_categories = [];
             if($item_owner->categories->count() > 0) {
                 $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
             }
-        }
 
         /**
          * Start initial country, state, city selector

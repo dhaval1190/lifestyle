@@ -306,8 +306,8 @@ class ItemController extends Controller
          * End SEO
          */
 
-        $all_categories = new Category();
-        $all_categories = $all_categories->getPrintableCategories();
+         $printable_categories = new Category();
+         $all_categories = $printable_categories->getPrintableCategoriesNoDash();
 
         $category_ids = empty($request->category) ? array() : $request->category;
 
@@ -925,15 +925,19 @@ class ItemController extends Controller
 
         $item_owner = $item->user()->first();
 
-        if($item_owner->isAdmin()) {
-            $all_categories = new Category();
-            $all_categories = $all_categories->getPrintableCategories();
-        } else {
-            $all_categories = [];
-            if($item_owner->categories->count() > 0) {
-                $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
-            }
-        }
+        // if($item_owner->isAdmin()) {
+        //     $all_categories = new Category();
+        //     $all_categories = $all_categories->getPrintableCategories();
+        // } else {
+        //     $all_categories = [];
+        //     if($item_owner->categories->count() > 0) {
+        //         $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+        //     }
+        // }
+
+        $printable_categories = new Category();
+        $all_categories = $printable_categories->getPrintableCategoriesNoDash();
+        // print_r($all_categories);exit;
 
 
         /**
