@@ -3359,21 +3359,21 @@
              * Start initial image gallery justify gallery
              */
             @if($item->galleries()->count() > 0)
-            $("#item-image-gallery").justifiedGallery({
-                rowHeight : 150,
-                maxRowHeight: 180,
-                lastRow : 'nojustify',
-                margins : 3,
-                captions: false,
-                randomize: true,
-                rel : 'item-image-gallery-thumb', //replace with 'gallery1' the rel attribute of each link
-            }).on('jg.complete', function () {
-                $(this).find('a').colorbox({
-                    maxWidth : '95%',
-                    maxHeight : '95%',
-                    opacity : 0.8,
-                });
-            });
+            // $("#item-image-gallery").justifiedGallery({
+            //     rowHeight : 150,
+            //     maxRowHeight: 180,
+            //     lastRow : 'nojustify',
+            //     margins : 3,
+            //     captions: false,
+            //     randomize: true,
+            //     rel : 'item-image-gallery-thumb', //replace with 'gallery1' the rel attribute of each link
+            // }).on('jg.complete', function () {
+            //     $(this).find('a').colorbox({
+            //         maxWidth : '95%',
+            //         maxHeight : '95%',
+            //         opacity : 0.8,
+            //     });
+            // });
             @endif
             /**
              * End initial image gallery justify gallery
