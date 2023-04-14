@@ -101,6 +101,7 @@
                             <div class="col-md-12">
                                 <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 <p class="password_error error_color" role="alert"></p>
 
                                 <!-- @error('password')
@@ -115,6 +116,7 @@
                             <div class="col-md-12">
                                 <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}<span class="text-danger">*</span></label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                <span toggle="#password-confirm" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                             </div>
                         </div>
 
@@ -247,6 +249,16 @@
     <script>
 
         $(document).ready(function(){
+            $(".toggle-password").click(function() {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+            });
 
             "use strict";
             $('.val_field').bind('keypress', validateInput);
