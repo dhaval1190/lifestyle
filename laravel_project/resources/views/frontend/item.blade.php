@@ -724,39 +724,34 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row mb-3 bg_determine">
+                    </div> 
+                    <div class="row mb-3 <?php echo $item->galleries()->count() > 0 ? 'bg_determine' : '';?>">
                         <div class="col-12">
                             <div class="row mt-2">
-                                  @if($item->galleries()->count() > 0)
-                                  
+                                @if($item->galleries()->count() > 0)
                                         @php
                                         $item_galleries = $item->galleries()->get();
                                         @endphp
                                         @foreach($item_galleries as $galleries_key => $gallery)
-                                        <div class="col-md-4 mb-3">
-                                          <div id="item-image-gallery">
-                                            <a href="{{ Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) }}" rel="item-image-gallery-thumb">
-                                                <img alt="Image" src="{{ empty($gallery->item_image_gallery_thumb_name) ? Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) : Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_thumb_name) }}"/>
-                                            </a>
-                                        </div>
+                                        <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+                                            <div id="item-image-gallery">
+                                                <a href="{{ Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) }}" rel="item-image-gallery-thumb">
+                                                    <img alt="Image" src="{{ empty($gallery->item_image_gallery_thumb_name) ? Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_name) : Storage::disk('public')->url('item/gallery/' . $gallery->item_image_gallery_thumb_name) }}"/>
+                                                </a>
+                                            </div>
                                         </div>
                                         @endforeach
-                                
+                                        </div>
+                                        @else
+                                        <div class="col-12">                    
+                                            @if(empty($item->item_image))
+                                                <img src="{{ asset('frontend/images/placeholder/full_item_feature_image.webp') }}" alt="Image" class="img-fluid rounded" style= "width:100%;">
+                                            @else
+                                                <img src="{{ Storage::disk('public')->url('item/' . $item->item_image) }}" alt="Image" class="img-fluid rounded" style= "width:100%;">
+                                            @endif       
+                                        </div>
+                                @endif
                             </div>
-                                
-                                @else
-
-                                <div class="text-center">
-                                    @if(empty($item->item_image))
-                                        <img src="{{ asset('frontend/images/placeholder/full_item_feature_image.webp') }}" alt="Image" class="img-fluid rounded">
-                                    @else
-                                        <img src="{{ Storage::disk('public')->url('item/' . $item->item_image) }}" alt="Image" class="img-fluid rounded">
-                                    @endif
-                                </div>
-
-                            @endif
                             <hr>
                         </div>
                     </div>
