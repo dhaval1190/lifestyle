@@ -39,7 +39,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label for="new_password" class="text-black"><span class="text-danger">*</span>{{ __('backend.user.new-password') }}</label>
+                                <label for="new_password" class="text-black">{{ __('backend.user.new-password') }}<span class="text-danger">*</span></label>
                                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password">
                                 <span toggle="#new_password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password')
@@ -53,7 +53,7 @@
                         <div class="row form-group">
 
                             <div class="col-md-12">
-                                <label for="new_password_confirmation" class="text-black"><span class="text-danger">*</span>{{ __('backend.user.password-confirm') }}</label>
+                                <label for="new_password_confirmation" class="text-black">{{ __('backend.user.password-confirm') }}<span class="text-danger">*</span></label>
                                 <input id="new_password_confirmation" type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
                                 <span toggle="#new_password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password_confirmation')

@@ -424,7 +424,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-md-4">
-                                            <label class="text-black" for="password"><span class="text-danger">*</span>{{ __('backend.user.password') }}</label>
+                                            <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
                                             <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password')
@@ -434,7 +434,7 @@
                                             @enderror
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="text-black" for="password_confirmation"><span class="text-danger">*</span>{{ __('backend.user.confirm-password') }}</label>
+                                            <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
                                             <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password_confirmation')
