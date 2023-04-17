@@ -1788,7 +1788,7 @@ class PagesController extends Controller
         $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_state || $filter_city || $filter_preferred_pronouns) {
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
@@ -1847,6 +1847,7 @@ class PagesController extends Controller
          */
 
         $free_items_query->distinct('items.id')
+            ->with('country')
             ->with('state')
             ->with('city')
             ->with('user');
