@@ -647,13 +647,13 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'name' => 'required|regex:/^[\pL\s]+$/u|max:30',
+            'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/|email|max:255',
             // 'user_prefer_language' => 'nullable|max:5',
             // 'user_prefer_country_id' => 'nullable|numeric',
             // 'category_ids'          => 'nullable',
             // 'company_name'          => 'nullable|string|max:100',
-            'phone'                 => 'required|string|max:20',
+            'phone'                 => 'required|numeric|digits_between:10,20',
             // 'preferred_pronouns'    => 'nullable|string|in:she_her,he_his|max:100',
             // 'gender'                => 'required|string|in:male,female|max:20',
             // 'instagram'             => 'nullable|string|url|max:100',
