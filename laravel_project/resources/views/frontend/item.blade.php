@@ -741,7 +741,6 @@
                                             </div>
                                         </div>
                                         @endforeach
-                                        </div>
                                         @else
                                         <div class="col-12">                    
                                             @if(empty($item->item_image))
@@ -2061,7 +2060,7 @@
 
                 </div>
 
-                <div class="col-lg-3 ml-auto">
+                <div class="col-lg-4">
 
                     <div class="pt-3">
 
@@ -2417,7 +2416,7 @@
                                         // $user_details = Item::where('item_slug',$item->id)->first();
                                         // print_r($user_details);
                                     ?>
-                                    <div class="card" style="width: 18rem;">
+                                    <div class="card" style="width: 100%;">
                                         <div class="card-body" style="background: #dbdbdb">
                                           <h5 class="card-title">Author Details</h5>
                                         </div>
