@@ -1806,7 +1806,7 @@ class PagesController extends Controller
             }
             // filter paid listings country
             if(!empty($filter_country)) {
-                $free_items_query->where('items.country_id', $filter_country);
+                $free_items_query->where('users.country_id', $filter_country);
             }
             // filter free listings state
             if(!empty($filter_state))
