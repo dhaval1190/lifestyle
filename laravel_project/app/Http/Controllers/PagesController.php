@@ -3354,7 +3354,7 @@ class PagesController extends Controller
             $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
                 $paid_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
@@ -3370,6 +3370,20 @@ class PagesController extends Controller
                 if($filter_hourly_rate) {
                     $paid_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
                 }
+                if(!empty($filter_country)) {
+                    $paid_items_query->where('users.country_id', $filter_country);
+                }
+                // filter free listings state
+                if(!empty($filter_state))
+                {
+                    $paid_items_query->where('users.state_id', $filter_state);
+                }
+    
+                // filter free listings city
+                if(!empty($filter_city))
+                {
+                    $paid_items_query->where('users.city_id', $filter_city);
+                }
             }
             /**
              * End filter gender type, working type, price range
@@ -3377,6 +3391,7 @@ class PagesController extends Controller
 
             $paid_items_query->orderBy('items.created_at', 'DESC')
                 ->distinct('items.id')
+                ->with('country')
                 ->with('state')
                 ->with('city')
                 ->with('user');
@@ -3420,7 +3435,7 @@ class PagesController extends Controller
             $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
                 $free_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
@@ -3435,6 +3450,20 @@ class PagesController extends Controller
                 }
                 if($filter_hourly_rate) {
                     $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+                if(!empty($filter_country)) {
+                    $free_items_query->where('users.country_id', $filter_country);
+                }
+                // filter free listings state
+                if(!empty($filter_state))
+                {
+                    $free_items_query->where('users.state_id', $filter_state);
+                }
+    
+                // filter free listings city
+                if(!empty($filter_city))
+                {
+                    $free_items_query->where('users.city_id', $filter_city);
                 }
             }
         /**
@@ -3472,6 +3501,7 @@ class PagesController extends Controller
              */
 
             $free_items_query->distinct('items.id')
+                ->with('country')
                 ->with('state')
                 ->with('city')
                 ->with('user');
@@ -3583,10 +3613,10 @@ class PagesController extends Controller
                 $all_states = $country->states()->orderBy('state_name')->get();
             }
 
-            $all_states = Country::find($site_prefer_country_id)
-                ->states()
-                ->orderBy('state_name')
-                ->get();
+            // $all_states = Country::find($site_prefer_country_id)
+            //     ->states()
+            //     ->orderBy('state_name')
+            //     ->get();
 
             $all_cities = collect([]);
             if(!empty($filter_state))
