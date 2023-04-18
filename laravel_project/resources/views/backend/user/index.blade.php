@@ -710,7 +710,13 @@
                     <div class="progress_info">
                         <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
                         <p>
-                            {{ $login_user['user_about']}}
+                            {{  str_limit($login_user['user_about'],800,'...')}} 
+                            @php 
+                            $length = strlen($login_user['user_about']);
+                            @endphp
+                           @if($length >= 800)
+                            <a href="{{ route('page.profile',encrypt(Auth::user()->id)) }}">{{ __('Read More') }}</a>
+                           @endif
                         </p>
                     </div>
                 </div>

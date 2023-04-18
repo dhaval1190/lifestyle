@@ -83,12 +83,12 @@
                     </div>
                 </div>
 
-                <div class="col-lg-12">
+                <!-- <div class="col-lg-12">
                     <div class="coach_messages">
                         <div class="coach_message_info">
                             <h2>All Messages</h2>
                             <a href="{{ route('admin.messages.index') }}">{{ __('backend.homepage.view-all-message') }}</a>
-                        </div>
+                        </div> -->
                         
                         @foreach($recent_threads as $recent_threads_key => $thread) 
                             <div class="coach_message_details">
