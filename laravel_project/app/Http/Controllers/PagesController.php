@@ -266,6 +266,7 @@ class PagesController extends Controller
         $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
 
         // state & city
+        $filter_country = empty($request->filter_country) ? null : $request->filter_country;
         $filter_state = empty($request->filter_state) ? null : $request->filter_state;
         $filter_city = empty($request->filter_city) ? null : $request->filter_city;
         /**
@@ -305,6 +306,11 @@ class PagesController extends Controller
         ->where(function($query) use ($paid_user_ids) {
             $query->whereIn('items.user_id', $paid_user_ids)->orWhere('items.item_featured_by_admin', Item::ITEM_FEATURED_BY_ADMIN);
         });
+
+        // filter paid listings country
+        if(!empty($filter_country)) {
+            $paid_items_query->where('items.country_id', $filter_country);
+        }
 
         // filter paid listings state
         if(!empty($filter_state)) {
@@ -384,6 +390,10 @@ class PagesController extends Controller
         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
         ->whereIn('items.user_id', $free_user_ids);
 
+        if(!empty($filter_country)) {
+            $free_items_query->where('items.country_id', $filter_country);
+        }
+
         // filter free listings state
         if(!empty($filter_state)) {
             $free_items_query->where('items.state_id', $filter_state);
@@ -461,6 +471,7 @@ class PagesController extends Controller
             'search_query' => $search_query,
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
+            'filter_country' => $filter_country,
             'filter_state' => $filter_state,
             'filter_city' => $filter_city,
             'filter_gender_type' => $filter_gender_type,
@@ -571,8 +582,16 @@ class PagesController extends Controller
          * Start initial filter
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+        $all_countries = Country::orderBy('country_name')->get();
+        $all_states = collect([]);        
+       
+        if(!empty($filter_country))
+        {
+            $country = Country::find($filter_country);
+            $all_states = $country->states()->orderBy('state_name')->get();
+        }
 
-        $all_states = Country::find($site_prefer_country_id)->states()->orderBy('state_name')->get();
+        // $all_states = Country::find($site_prefer_country_id)->states()->orderBy('state_name')->get();
 
         $all_cities = collect([]);
         if(!empty($filter_state)) {
@@ -625,7 +644,7 @@ class PagesController extends Controller
                     'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color',
                     'search_query', 'filter_categories', 'filter_state', 'filter_city', 'filter_sort_by', 'paid_items',
                     'free_items', 'pagination', 'all_printable_categories', 'all_states', 'all_cities', 'total_results',
-                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate'
+                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_countries','filter_country'
                 ));
     }
 
