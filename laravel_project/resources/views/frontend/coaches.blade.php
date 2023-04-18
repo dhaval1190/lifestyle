@@ -287,6 +287,9 @@
                         <div class="row">
 
                             @foreach($all_printable_categories as $key => $all_printable_category)
+                                @php
+                                    if(empty($all_printable_category["is_parent"])) continue;
+                                @endphp
                                 <div class="col-6 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
                                         <input {{ in_array($all_printable_category['category_id'], $filter_categories) ? 'checked' : '' }} name="filter_categories[]" class="form-check-input" type="checkbox" value="{{ $all_printable_category['category_id'] }}" id="filter_categories_{{ $all_printable_category['category_id'] }}">
