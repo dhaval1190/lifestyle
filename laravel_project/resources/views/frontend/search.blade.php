@@ -97,7 +97,13 @@
                                             <i class="fas fa-search"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control rounded" id="search_query" name="search_query" value="{{ $search_query }}" placeholder="{{ __('categories.search-query-placeholder') }}">
+                                    <form action="{{ route('page.search') }}">
+
+                                        <input type="text" class="form-control rounded" id="search_query" name="search_query" value="{{ $search_query }}" placeholder="{{ __('categories.search-query-placeholder') }}">
+                                        <div class="col-lg-12 col-xl-2 ml-auto">
+                                            <input type="submit" class="btn btn-primary btn-block rounded text-white" value="{{ __('frontend.search.search') }}">
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +113,21 @@
                             {{-- <div class="col-12 col-md-2">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-3 pl-3">
+                                <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
+                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
+                                    <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
+                                    <option value="{{ \App\Item::ITEMS_SORT_BY_HIGHEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_HIGHEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-highest') }}</option>
+                                    <option value="{{ \App\Item::ITEMS_SORT_BY_LOWEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_LOWEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-lowest') }}</option>
+                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEARBY_FIRST ? 'selected' : '' }}>{{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option>
+                                </select>
+                                @error('filter_sort_by')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-3">
                                 <select class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror" name="filter_preferred_pronouns" id="filter_preferred_pronouns">
                                     <option value="0" {{ empty($filter_preferred_pronouns) ? 'selected' : '' }}>Any Preferred Pronouns</option>
                                     {{-- <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
@@ -128,9 +148,9 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-3 pl-0">
                                 <select class="selectpicker form-control @error('filter_working_type') is-invalid @enderror" name="filter_working_type" id="filter_working_type">
-                                    <option value="0" {{ empty($filter_working_type) ? 'selected' : '' }}>All Working Type</option>
+                                    <option value="0" {{ empty($filter_working_type) ? 'selected' : '' }}>Any Session Type</option>
                                     <option value="person-to-person" {{ $filter_working_type == "person-to-person" ? 'selected' : '' }}>Person-to-Person</option>
                                     <option value="remotely" {{ $filter_working_type == "remotely" ? 'selected' : '' }}>Remotely</option>
                                     <option value="hybrid" {{ $filter_working_type == "hybrid" ? 'selected' : '' }}>Hybrid (Person-to-Person/Remotely)</option>
@@ -141,9 +161,9 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-3 pl-0">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
-                                    <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>All Price Range</option>
+                                    <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>Any Price Range</option>
                                     <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
                                     <option value="$$" {{ $filter_hourly_rate == '$$' ? 'selected' : '' }}>$$ (125-225)</option>
                                     <option value="$$$" {{ $filter_hourly_rate == '$$$' ? 'selected' : '' }}>$$$ (225-325)</option>
@@ -154,8 +174,24 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                            </div>                           
+                            
+                        </div>
+                        <div class="row form-group align-items-center">
+                            <div class="col-12 col-md-3 pl-3">                                    
+                                <select class="selectpicker form-control @error('filter_country') is-invalid @enderror" name="filter_country" id="filter_country" data-live-search="true">
+                                        <option value="0" {{ empty($filter_country) ? 'selected' : '' }}>{{ __('prefer_country.all-country') }}</option>
+                                        @foreach($all_countries as $all_countries_key => $country)
+                                            <option value="{{ $country->id }}" {{ $filter_country == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                        @endforeach
+                                </select>
+                                    @error('filter_country')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-3 pl-3">
                                 <select class="selectpicker form-control @error('filter_state') is-invalid @enderror" name="filter_state" id="filter_state" data-live-search="true">
                                     <option value="0" {{ empty($filter_state) ? 'selected' : '' }}>{{ __('prefer_country.all-state') }}</option>
                                     @foreach($all_states as $all_states_key => $state)
@@ -168,7 +204,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
+                            <div class="col-12 col-md-3 pl-0">
                                 <select class="selectpicker form-control @error('filter_city') is-invalid @enderror" name="filter_city" id="filter_city" data-live-search="true">
                                     <option value="0" {{ empty($filter_city) ? 'selected' : '' }}>{{ __('prefer_country.all-city') }}</option>
                                     @foreach($all_cities as $all_cities_key => $city)
@@ -181,26 +217,15 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-2 pl-0">
-                                <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_HIGHEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_HIGHEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-highest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_LOWEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_LOWEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-lowest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEARBY_FIRST ? 'selected' : '' }}>{{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option>
-                                </select>
-                                @error('filter_sort_by')
-                                <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
                         </div>
                         <hr>
 
                         <div class="row">
 
                             @foreach($all_printable_categories as $key => $all_printable_category)
+                            @php
+                                    if(empty($all_printable_category["is_parent"])) continue;
+                                @endphp
                                 <div class="col-6 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
                                         <input {{ in_array($all_printable_category['category_id'], $filter_categories) ? 'checked' : '' }} name="filter_categories[]" class="form-check-input" type="checkbox" value="{{ $all_printable_category['category_id'] }}" id="filter_categories_{{ $all_printable_category['category_id'] }}">
@@ -551,6 +576,27 @@
             /**
              * Start state selector in filter
              */
+             $('#filter_country').on('change', function() {
+                $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#filter_state').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/states/' + this.value;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        success: function(result){
+                            $('#filter_state').empty();
+                            $('#filter_state').html("<option selected value='0'>{{ __('prefer_country.all-state')}}</option>");
+                            $.each(JSON.parse(result), function(key, value) {
+                                var state_id = value.id;
+                                var state_name = value.state_name;
+                                $('#filter_state').append('<option value="'+ state_id +'">' + state_name + '</option>');
+                            });
+                            $('#filter_state').selectpicker('refresh');
+                        }
+                    });
+                }
+            });
             $('#filter_state').on('change', function() {
 
                 if(this.value > 0)
