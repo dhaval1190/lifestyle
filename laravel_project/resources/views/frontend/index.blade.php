@@ -350,7 +350,7 @@
 
                                 <h2 class="mb-1 pt-2"><a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h2>
 
-                                @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                @if(isset($item->state->state_slug) && !empty($item->state->state_slug) && $item->item_type == \App\Item::ITEM_TYPE_REGULAR)
                                 <span class="address">
                                     <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
                                     <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
