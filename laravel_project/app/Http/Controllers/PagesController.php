@@ -158,33 +158,28 @@ class PagesController extends Controller
             $longitude = $settings->setting_site_location_lng;
         }
 
-        $popular_items = Item::selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
-            ->where('country_id', $site_prefer_country_id)
+        $popular_items = Item::join('users', 'users.id', '=', 'items.user_id')->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+            ->where('items.country_id', $site_prefer_country_id)
             ->where('item_status', Item::ITEM_PUBLISHED)
+            ->where('users.user_suspended', User::USER_NOT_SUSPENDED)
             ->orderBy('distance')
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('items.created_at', 'DESC')
             ->with('state')
             ->with('city')
             ->with('user')
-            ->take(9)->get();
-
+            ->take(6)->get();
         $popular_items = $popular_items->shuffle();
 
         /**
          * get first 6 latest items
          */
-        $latest_items = Item::latest('created_at')
-            // ->where(function ($query) use ($site_prefer_country_id) {
-            //     $query->where('items.country_id', $site_prefer_country_id)
-            //         ->orWhereNull('items.country_id');
-            // })
+        $latest_items = Item::join('users', 'users.id', '=', 'items.user_id')
+            ->select('items.*')
+            ->where('users.user_suspended', User::USER_NOT_SUSPENDED)
             ->where('item_status', Item::ITEM_PUBLISHED)
-            ->with('state')
-            ->with('city')
-            ->with('user')
             ->take(6)
+            ->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user')
             ->get();
-
         /**
          * testimonials
          */
