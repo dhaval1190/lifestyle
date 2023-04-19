@@ -167,7 +167,7 @@ class PagesController extends Controller
             ->with('state')
             ->with('city')
             ->with('user')
-            ->take(6)->get();
+            ->take(9)->get();
         $popular_items = $popular_items->shuffle();
 
         /**
