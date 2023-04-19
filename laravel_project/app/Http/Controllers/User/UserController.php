@@ -265,7 +265,7 @@ class UserController extends Controller
         // $rules['email']                     = ['required', 'string', 'email', 'max:255'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','email','max:255'];
         // $rules['phone']                     = ['required','string','max:20'];
-        // $rules['phone']                     = ['required','numeric','digits_between:10,20'];
+        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
