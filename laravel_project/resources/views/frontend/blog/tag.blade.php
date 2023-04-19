@@ -158,7 +158,10 @@
                                     @endif
                                     <h2 class="font-size-regular"><a href="{{ route('page.blog.show', $post->slug) }}" class="text-black">{{ $post->title }}</a></h2>
                                     <div class="meta mb-3">
+                                        @if(isset($post->user()->first()->name))
                                         {{ __('frontend.blog.by') }} {{ $post->user()->first()->name }}<span class="mx-1">&bullet;</span>
+
+                                        @endif
                                         {{ $post->updated_at->diffForHumans() }} <span class="mx-1">&bullet;</span>
                                         @if($post->topic()->count() != 0)
                                             <a href="{{ route('page.blog.topic', $post->topic()->first()->slug) }}">{{ $post->topic()->first()->name }}</a>
