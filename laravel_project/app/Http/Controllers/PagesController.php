@@ -1290,7 +1290,9 @@ class PagesController extends Controller
          * Start initial filter
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
-
+        usort($all_printable_categories, function($a, $b) {
+            return $a['category_name'] <=> $b['category_name'];
+        });
         $all_countries = Country::orderBy('country_name')->get();
         $all_states = collect([]);        
        
@@ -1957,7 +1959,9 @@ class PagesController extends Controller
          * Start initial filter
          */
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
-
+        usort($all_printable_categories, function($a, $b) {
+            return $a['category_name'] <=> $b['category_name'];
+        });
         $all_countries = Country::orderBy('country_name')->get();
         $all_states = collect([]);        
        
