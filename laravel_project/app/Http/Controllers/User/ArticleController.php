@@ -433,6 +433,7 @@ class ArticleController extends Controller
             'category.*' => 'exists:categories,id', // check each item in the array
             'article_featured' => 'required|numeric',
             'article_title' => 'required|max:100',
+            'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
             // 'state_id' => 'nullable|numeric',
@@ -440,7 +441,7 @@ class ArticleController extends Controller
             'city_id' => 'required|numeric',
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
-            'article_postal_code' => 'nullable|numeric|digits_between:1,15',
+            'article_postal_code' => 'required|numeric|digits_between:1,15',
             'article_phone' => 'nullable|numeric|digits_between:10,20',
             'article_website' => 'nullable|url|max:255',
             'article_social_facebook' => 'nullable|url|max:255',
@@ -1160,6 +1161,7 @@ class ArticleController extends Controller
         $validate_rule = [
             'article_featured' => 'required|numeric',
             'article_title' => 'required|max:100',
+            'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
             // 'state_id' => 'nullable|numeric',
@@ -1167,7 +1169,7 @@ class ArticleController extends Controller
             'city_id' => 'required|numeric',
             'state_id' => 'required|numeric',
             'country_id' => 'required|numeric',
-            'article_postal_code' => 'nullable|numeric|digits_between:1,15',
+            'article_postal_code' => 'required|nullable|numeric|digits_between:1,15',
             'article_phone' => 'nullable|numeric|digits_between:10,20',
             'article_website' => 'nullable|url|max:255',
             'article_social_facebook' => 'nullable|url|max:255',
