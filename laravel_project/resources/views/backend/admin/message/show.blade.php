@@ -53,7 +53,8 @@
                         @endif
                     </p>
                     <hr/>
-                    <p class="mb-4">{{ $item->item_description }}</p>
+                    {{-- <p class="mb-4">{{ $item->item_description }}</p> --}}
+                    {!! html_entity_decode($item->item_description) !!}
                 </div>
             </div>
 
