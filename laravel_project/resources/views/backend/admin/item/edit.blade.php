@@ -253,7 +253,7 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-3">
-                                        <label for="item_title" class="text-black"><span class="text-danger">*</span>{{ __('backend.item.title') }}</label>
+                                        <label for="item_title" class="text-black">{{ __('backend.item.title') }}<span class="text-danger">*</span></label>
                                         <input id="item_title" type="text" class="form-control @error('item_title') is-invalid @enderror" name="item_title" value="{{ old('item_title') ? old('item_title') : $item->item_title }}">
                                         @error('item_title')
                                         <span class="invalid-tooltip">
@@ -328,7 +328,7 @@
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-3">
-                                        <label for="select_country_id" class="text-black"><span class="text-danger">*</span>{{ __('backend.setting.country') }}</label>
+                                        <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
@@ -345,7 +345,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="select_state_id" class="text-black"><span class="text-danger">*</span>{{ __('backend.state.state') }}</label>
+                                        <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-state') }}</option> --}}
                                             @foreach($all_states as $key => $state)
@@ -360,7 +360,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label for="select_city_id" class="text-black"><span class="text-danger">*</span>{{ __('backend.city.city') }}</label>
+                                        <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-city') }}</option> --}}
                                             @foreach($all_cities as $key => $city)
