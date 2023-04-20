@@ -191,7 +191,11 @@
 
                         <h2 class="font-size-regular text-black">{{ $data['post']->title }}</h2>
                         <div class="mb-5">
-                            {{ __('frontend.blog.by') }} {{ $data['post']->user()->first()->name }}<span class="mx-1">&bullet;</span>
+                            {{-- {{ __('frontend.blog.by') }} {{ $data['post']->user()->first()->name }}<span class="mx-1">&bullet;</span> --}}
+                            @if(isset($data['post']->user()->first()->name))
+                                {{ __('frontend.blog.by') }} {{ $data['post']->user()->first()->name }}<span class="mx-1">&bullet;</span>
+
+                            @endif
                             {{ $data['post']->updated_at->diffForHumans() }} <span class="mx-1">&bullet;</span>
                             @if($data['post']->topic()->count() != 0)
                                 <a href="{{ route('page.blog.topic', $data['post']->topic()->first()->slug) }}">{{ $data['post']->topic()->first()->name }}</a>
