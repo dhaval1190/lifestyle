@@ -182,7 +182,7 @@ $chk_post = Auth::user()->phone;
                                             @enderror
                                         </div>
                                         <div class="col-sm-3">
-                                            <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
+                                            <label for="phone" class="text-black">Phone</label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
