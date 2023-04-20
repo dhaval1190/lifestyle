@@ -603,9 +603,12 @@ table.dataTable>thead>tr>td:not(.sorting_disabled), table.dataTable>thead>tr>th:
                                     <div class="video_info">
                                         <h3>{{ $user_detail['youtube_intro_title'] }}</h3>
                                         <p>
-                                            {{ $user_detail['youtube_intro_description'] }}
+                                            {{str_limit($user_detail['youtube_intro_description'],800,'...') }}
                                         </p>
-                                        @if(!empty($user_detail['youtube_intro_title']) || !empty($user_detail['youtube_intro_title']))
+                                        @php 
+                                        $length = strlen($user_detail['youtube_intro_description']);
+                                        @endphp
+                                        @if($length >= 800 && !empty($user_detail['youtube_intro_title']))
                                             <a href="{{ route('page.profile.youtube', encrypt($user_detail['id'])) }}">Read More</a>
                                         @endif
                                     </div>
