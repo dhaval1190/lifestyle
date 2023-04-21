@@ -36,51 +36,59 @@
         <div class="col-lg-12 order-lg-0 order-1">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="first_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <a class="decoration-none" href="{{ route('admin.users.index') }}"><h3>{{ __('backend.homepage.pending-listings') }}</h3></a>
-                                <p class="c-one">{{ $pending_users_count }}</p>
+                    <a class="decoration-none" href="{{ route('admin.users.index',['user_email_verified'=>1,'user_suspended'=>0,'order_by'=>1,'count_per_page'=>10]) }}">
+                        <div class="first_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.pending-listings') }}</h3>
+                                    <p class="c-one">{{ $pending_users_count }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
+                    
                 </div>
                 <div class="col-md-6">
-                    <div class="second_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <a class="decoration-none" href="{{ route('admin.messages.index') }}"><h3>{{ __('backend.homepage.all-messages') }}</h3></a>
-                                <p class="c-two">{{ $all_messages_count }}</p>
+                    <a class="decoration-none" href="{{ route('admin.messages.index') }}">
+                        <div class="second_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.all-messages') }}</h3>
+                                    <p class="c-two">{{ $all_messages_count }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="third_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
-                                <a class="decoration-none" href="{{ route('admin.comments.index') }}"><h3>{{ __('backend.homepage.all-comments') }}</h3></a>
-                                <p class="c-three">{{ $comments_count }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-md-6">
-                    <div class="fourth_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <a class="decoration-none" href="{{ route('admin.items.index') }}"><h3>{{ __('backend.homepage.all-articles') }}</h3></a>
-                                <p class="c-four">{{ number_format($item_count) }}</p>
+                    <a class="decoration-none" href="{{ route('admin.comments.index') }}">
+                        <div class="third_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
+                                <div class="coaches_detail">                                    
+                                    <h3>{{ __('backend.homepage.all-comments') }}</h3>
+                                    <p class="c-three">{{ $comments_count }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a class="decoration-none" href="{{ route('admin.items.index') }}">
+                        <div class="fourth_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.all-articles') }}</h3>
+                                    <p class="c-four">{{ number_format($item_count) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- <div class="col-lg-12">

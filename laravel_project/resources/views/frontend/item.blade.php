@@ -1885,10 +1885,10 @@
                                         {{ __('social_share.blogger') }}
                                     </a>
 
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
                                         <i class="fab fa-pinterest-p"></i>
                                         {{ __('social_share.pinterest') }}
-                                    </a>
+                                    </a> --}}
                                     {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                                         <i class="fab fa-evernote"></i>
                                         {{ __('social_share.evernote') }}
@@ -2848,10 +2848,10 @@
                             <i class="fab fa-blogger-b"></i>
                             {{ __('social_share.blogger') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
                             <i class="fab fa-pinterest-p"></i>
                             {{ __('social_share.pinterest') }}
-                        </a>
+                        </a> --}}
                         {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                             <i class="fab fa-evernote"></i>
                             {{ __('social_share.evernote') }}
@@ -2912,12 +2912,13 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('page.item.email', ['item_slug' => $item->item_slug]) }}" method="POST">
+                        <form action="{{ route('page.item.email', ['item_slug' => $item->item_slug]) }}" method="POST" name="shareProfileModal" id="shareProfileModal">
                             @csrf
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
-                                    <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
-                                    <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ old('item_share_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
+                                    <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_share_email_name') }}" readonly>
+                                    <p class="profile_name_error error_color" role="alert"></p>
                                     @error('item_share_email_name')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2925,8 +2926,9 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                    <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
+                                    <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_share_email_from_email') }}" readonly>
+                                    <p class="profile_from_email_error error_color" role="alert"></p>
                                     @error('item_share_email_from_email')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2934,8 +2936,9 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
+                                    <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}<span class="text-danger">*</span></label>
                                     <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <p class="profile_to_error error_color" role="alert"></p>
                                     @error('item_share_email_to_email')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2945,8 +2948,9 @@
                             </div>
                             <div class="form-row mb-3">
                                 <div class="col-md-12">
-                                    <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                    <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
                                     <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
+                                    <p class="profile_note_error error_color" role="alert"></p>
                                     @error('item_share_email_note')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -2959,6 +2963,12 @@
                                     <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                         {{ __('frontend.item.send-email') }}
                                     </button>
+                                    <span class="please_wait">Please Wait..</span>
+                                        @if(!Auth::user())
+                                            <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
+                                                {{ __('Login') }}                                            
+                                            </a>
+                                        @endif
                                 </div>
                             </div>
                         </form>
@@ -2999,14 +3009,15 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST">
+                        <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST" name="contactFormModal" id="contactFormModal">
                             @csrf
                             <input type="hidden" name="userId" value = "{{ $item->user_id }}">
                             <input type="hidden" name="articleTitle" value = "{{ $item->item_title }}">
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
-                                    <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}</label>
-                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
+                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                    <p class="name_error error_color" role="alert"></p>
                                     @error('item_conntact_email_name')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -3014,8 +3025,9 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
+                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                    <p class="email_error error_color" role="alert"></p>
                                     @error('item_contact_email_from_email')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -3034,8 +3046,9 @@
                             </div>
                             <div class="form-row mb-3">
                                 <div class="col-md-12">
-                                    <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}</label>
+                                    <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
                                     <textarea class="form-control @error('item_contact_email_note') is-invalid @enderror" id="item_contact_email_note" rows="3" name="item_contact_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_contact_email_note') }}</textarea>
+                                    <p class="note_error error_color" role="alert"></p>
                                     @error('item_contact_email_note')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -3048,6 +3061,12 @@
                                     <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
                                         {{ __('frontend.item.send-email') }}
                                     </button>
+                                    <span class="please_wait">Please Wait..</span>
+                                        @if(!Auth::user())
+                                            <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
+                                                {{ __('Login') }}                                            
+                                            </a>
+                                        @endif 
                                 </div>
                             </div>
                         </form>
@@ -3062,7 +3081,7 @@
     </div>
 </div>
 
-<!-- End call modal
+<!-- End call modal -->
 
 @if($item_total_categories > \App\Item::ITEM_TOTAL_SHOW_CATEGORY)
 <!-- Modal show categories -->
@@ -3302,27 +3321,226 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     
   <script>
-    $('#submit').on('click', function(){
-        var firebaseConfig = {
-            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-            authDomain: "coachhq-c1b3d.firebaseapp.com",
-            projectId: "coachhq-c1b3d",
-            storageBucket: "coachhq-c1b3d.appspot.com",
-            messagingSenderId: "668525619724",
-            appId: "1:668525619724:web:e4282225654d0467655c29",
-            measurementId: "G-VFGKZNYRVM"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const messaging = firebase.messaging();
-        messaging.onMessage(function (payload) {
-            const title = payload.notification.title;
-            const options = {
-                body: payload.notification.body,
-                icon: payload.notification.icon,
-            };
-            new Notification(title, options);
+    $(document).ready(function() {
+            $('.name_error').text('')
+            $('.item_contact_email_from_email').text('')
+            $('.note_error').text('');
+            $('.please_wait').text('');
+
+            $('#item_conntact_email_name').on('input', function(e) {
+                $('.name_error').text('');
+            });
+            $('#item_contact_email_from_email').on('input', function(e) {
+                $('.email_error').text('');
+            });
+            $('#item_contact_email_note').on('input', function(e) {
+                $('.note_error').text('');
+            });
+            $("#contact-modal").on("hidden.bs.modal", function(){
+                $('.name_error').text('');
+                $('.email_error').text('');
+                $(".note_error").text("");
+            });
+            $('#contactFormModal').on('submit', function(e) {
+                e.preventDefault();
+                $('.please_wait').text('Please Wait..');
+                var item_slug = <?php echo json_encode($item->item_slug)  ?>;
+                // alert(item_slug);
+                
+                var formData = new FormData(this);
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: 'http://localhost/coach_directory/items/'+item_slug+'/contact',
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                    },
+
+                    success: function(response) {
+                        // console.log(response);
+                        if (response.status == 'success') {
+                            // console.log(response)
+                            $(".error_color").text("");
+                            $('.please_wait').text('');
+                            // location.reload(); 
+                            // window.location.href = "{{ route('login') }}";
+
+                            var firebaseConfig = {
+                            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                            authDomain: "coachhq-c1b3d.firebaseapp.com",
+                            projectId: "coachhq-c1b3d",
+                            storageBucket: "coachhq-c1b3d.appspot.com",
+                            messagingSenderId: "668525619724",
+                            appId: "1:668525619724:web:e4282225654d0467655c29",
+                            measurementId: "G-VFGKZNYRVM"
+                            };
+                            firebase.initializeApp(firebaseConfig);
+                            const messaging = firebase.messaging();
+                            messaging.onMessage(function(payload) {
+                                const title = payload.notification.title;
+                                const options = {
+                                    body: payload.notification.body,
+                                    icon: payload.notification.icon,
+                                };
+                                new Notification(title, options);
+                            });
+                            location.reload();
+
+                        }
+                        if (response.status == 'error') {
+                            // console.log(response.msg.item_contact_email_note)
+                            $('.please_wait').text('');
+                            $.each(response.msg, function(key, val) {
+                                if (response.msg.item_conntact_email_name) {
+                                    $('.name_error').text(response.msg.item_conntact_email_name)
+                                }
+                                if (response.msg.item_contact_email_from_email) {
+                                    $('.email_error').text(response.msg.item_contact_email_from_email)
+                                }
+                                if (response.msg.item_contact_email_note) {
+                                    $('.note_error').text(response.msg.item_contact_email_note)
+                                }
+                                $(':input[type="submit"]').prop('disabled', false);
+
+                            });
+
+                        }
+                    }
+                });
+
+            });
+
         });
-    });
+
+    // $('#submit').on('click', function(){
+    //     var firebaseConfig = {
+    //         aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+    //         authDomain: "coachhq-c1b3d.firebaseapp.com",
+    //         projectId: "coachhq-c1b3d",
+    //         storageBucket: "coachhq-c1b3d.appspot.com",
+    //         messagingSenderId: "668525619724",
+    //         appId: "1:668525619724:web:e4282225654d0467655c29",
+    //         measurementId: "G-VFGKZNYRVM"
+    //     };
+    //     firebase.initializeApp(firebaseConfig);
+    //     const messaging = firebase.messaging();
+    //     messaging.onMessage(function (payload) {
+    //         const title = payload.notification.title;
+    //         const options = {
+    //             body: payload.notification.body,
+    //             icon: payload.notification.icon,
+    //         };
+    //         new Notification(title, options);
+    //     });
+    // });
+    $(document).ready(function() {
+            $('.profile_name_error').text('')
+            $('.profile_from_email_error').text('')
+            $('.profile_to_error').text('')
+            $('.profile_note_error').text('');
+            $('.please_wait').text('');
+
+            $('#item_share_email_name').on('input', function(e) {
+                $('.profile_name_error').text('');
+            });
+            $('#item_share_email_from_email').on('input', function(e) {
+                $('.profile_from_email_error').text('');
+            });
+            $('#item_share_email_to_email').on('input', function(e) {
+                $('.profile_to_error').text('');
+            });
+            $('#item_share_email_note').on('input', function(e) {
+                $('.profile_note_error').text('');
+            });
+            $("#share-modal").on("hidden.bs.modal", function(){
+                $('.profile_name_error').text('');
+                $('.profile_from_email_error').text('');
+                $('.profile_to_error').text('');
+                $(".profile_note_error").text("");
+            });
+            $('#shareProfileModal').on('submit', function(e) {
+                e.preventDefault();
+                $('.please_wait').text('Please Wait..');
+                var item_slug = <?php echo json_encode($item->item_slug)  ?>;
+                // alert(item_slug);
+                
+                var formData = new FormData(this);
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: 'http://localhost/coach_directory/items/'+item_slug+'/email',
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                    },
+
+                    success: function(response) {
+                        // console.log(response);
+                        if (response.status == 'success') {
+                            // console.log(response)
+                            $(".error_color").text("");
+                            $('.please_wait').text('');
+                            // location.reload(); 
+                            // window.location.href = "{{ route('login') }}";
+
+                            var firebaseConfig = {
+                            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                            authDomain: "coachhq-c1b3d.firebaseapp.com",
+                            projectId: "coachhq-c1b3d",
+                            storageBucket: "coachhq-c1b3d.appspot.com",
+                            messagingSenderId: "668525619724",
+                            appId: "1:668525619724:web:e4282225654d0467655c29",
+                            measurementId: "G-VFGKZNYRVM"
+                            };
+                            firebase.initializeApp(firebaseConfig);
+                            const messaging = firebase.messaging();
+                            messaging.onMessage(function(payload) {
+                                const title = payload.notification.title;
+                                const options = {
+                                    body: payload.notification.body,
+                                    icon: payload.notification.icon,
+                                };
+                                new Notification(title, options);
+                            });
+                            location.reload();
+
+                        }
+                        if (response.status == 'error') {
+                            // console.log(response.msg.item_contact_email_note)
+                            $('.please_wait').text('');
+                            $.each(response.msg, function(key, val) {
+                                if (response.msg.item_share_email_name) {
+                                    $('.profile_name_error').text(response.msg.item_share_email_name)
+                                }
+                                if (response.msg.item_share_email_from_email) {
+                                    $('.profile_from_email_error').text(response.msg.item_share_email_from_email)
+                                }
+                                if (response.msg.item_share_email_to_email) {
+                                    $('.profile_to_error').text(response.msg.item_share_email_to_email)
+                                }
+                                if (response.msg.item_share_email_note) {
+                                    $('.profile_note_error').text(response.msg.item_share_email_note)
+                                }
+                                $(':input[type="submit"]').prop('disabled', false);
+
+                            });
+
+                        }
+                    }
+                });
+
+            });
+
+        });
 
         $(document).ready(function(){
 
