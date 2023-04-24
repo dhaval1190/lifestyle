@@ -170,7 +170,8 @@ class UserController extends Controller
 
         $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/', 'email', 'max:255', 'unique:users'];
-        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
+        //$rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
+        $rules['phone']                     = ['nullable','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
         $rules['password']                  = ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
@@ -181,7 +182,7 @@ class UserController extends Controller
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
-            $rules['phone']                 = ['required','numeric','digits_between:10,20'];
+            $rules['phone']                 = ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
 
             $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
 
@@ -407,7 +408,7 @@ class UserController extends Controller
 
         $rules['name']                      = ['required', 'regex:/^[\pL\s]+$/u', 'max:30'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','email', 'max:255'];
-        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
+        $rules['phone']                     = ['nullable','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
@@ -436,7 +437,7 @@ class UserController extends Controller
             $rules['city_id']               = ['required'];
             $rules['post_code']             = ['required','numeric','digits_between:1,15'];
             $rules['user_image']            = ['nullable'];
-            $rules['phone']                     = ['required','numeric','digits_between:10,20'];
+            $rules['phone']                     = ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach!';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
@@ -653,7 +654,8 @@ class UserController extends Controller
             // 'user_prefer_country_id' => 'nullable|numeric',
             // 'category_ids'          => 'nullable',
             // 'company_name'          => 'nullable|string|max:100',
-            'phone'                 => 'required|numeric|digits_between:10,20',
+           //'phone'                 => 'required|numeric|digits_between:10,20',
+            'phone'                 => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
             // 'preferred_pronouns'    => 'nullable|string|in:she_her,he_his|max:100',
             // 'gender'                => 'required|string|in:male,female|max:20',
             // 'instagram'             => 'nullable|string|url|max:100',

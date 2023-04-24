@@ -85,7 +85,7 @@ class RegisterController extends Controller
             // $rules['plan_id']               = ['required','exists:plans,id'];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
-            $rules['phone']                 = ['required','string','max:20'];
+            $rules['phone']                 = ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
             // $rules['gender']                = ['required','string','in:'.array_keys(\App\User::GENDER_TYPES).'','max:20'];
             $rules['preferred_pronouns']    = ['required','string','in:'.implode(",",array_keys(\App\User::PREFERRED_PRONOUNS)).'','max:100'];
 
