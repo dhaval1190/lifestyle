@@ -225,55 +225,59 @@
         @endif
         <div class="{{ $main_div_class }}">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="first_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <h3>{{ __('backend.homepage.subscription') }}</h3>
-                                <p class="c-one">{{ $plan_name }}</p>
+                @if($login_user->isCoach())
+                    <div class="col-md-6">
+                        <div class="first_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.subscription') }}</h3>
+                                    <p class="c-one">{{ $plan_name }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 <div class="col-md-6">
-                    <div class="second_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <h3><a class="decoration-none" href="{{ route('user.messages.index') }}">{{ __('backend.homepage.all-messages') }}</a>
-                                </h3>
-                                <p class="c-two">{{ number_format($message_count) }}</p>
+                    <a href="{{ route('user.messages.index') }}" class="decoration-none">
+                        <div class="second_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/msg.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.all-messages') }}</h3>
+                                    <p class="c-two">{{ number_format($message_count) }}</p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>  
+                    </a>
                 </div>
                 @if($login_user->isCoach())
                 <div class="col-md-6">
-                    <div class="third_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
-                                <h3><a class="decoration-none" href="{{ route('user.comments.index') }}">{{ __('backend.homepage.all-comments') }}</a>
-                                </h3>
-                                <p class="c-three">{{ number_format($comment_count) }}</p>
+                    <a href="{{ route('user.comments.index') }}" class="decoration-none">
+                        <div class="third_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.all-comments') }}</h3>
+                                    <p class="c-three">{{ number_format($comment_count) }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>                    
                 </div>
 
                 <div class="col-md-6">
-                    <div class="fourth_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <h3><a class="decoration-none" href="{{ route('user.articles.index') }}">{{ __('backend.homepage.all-articles') }}</a>
-                                </h3>
-                                <p class="c-four">{{ number_format($item_count) }}</p>
+                    <a class="decoration-none" href="{{ route('user.articles.index') }}">
+                        <div class="fourth_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('backend.homepage.all-articles') }}</h3>
+                                    <p class="c-four">{{ number_format($item_count) }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>                    
                 </div>
 
                 <div class="col-md-6">
@@ -289,29 +293,29 @@
                 </div>
                 @if(isset($All_visit_count) && !empty($All_visit_count))
                 <div class="col-md-6">
-                    <div class="first_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <h3><a class="decoration-none" href="{{route('page.profile', encrypt($login_user['id'])) }}">{{ __('Profile Visitors') }}</a>
-                                </h3>
-
-                                <div class="view_eye_post">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                    <p class="views">All</p>
-                                    <span class="article_section_number">:
-                                        {{ $All_visit_count }} </span>
+                    <a class="decoration-none" href="{{route('page.profile', encrypt($login_user['id'])) }}">
+                        <div class="first_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('Profile Visitors') }}</h3>    
+                                    <div class="view_eye_post">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <p class="views">All</p>
+                                        <span class="article_section_number">:
+                                            {{ $All_visit_count }} </span>
+                                    </div>
+                                    <div class="view_calander_post">
+                                        <i class="fa fa-calendar"></i>
+                                        <p class="calander">Today</p>
+                                        <span class="article_section_number">: {{ $Today_Visits_count }}
+                                        </span>
+                                    </div>
+                                    <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
                                 </div>
-                                <div class="view_calander_post">
-                                    <i class="fa fa-calendar"></i>
-                                    <p class="calander">Today</p>
-                                    <span class="article_section_number">: {{ $Today_Visits_count }}
-                                    </span>
-                                </div>
-                                <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
                             </div>
                         </div>
-                    </div>
+                    </a>                    
                 </div>
                 @endif
                 @endif

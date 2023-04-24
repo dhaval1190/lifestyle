@@ -652,10 +652,10 @@
                                         {{ __('social_share.blogger') }}
                                     </a>
 
-                                    <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                                    {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
                                         <i class="fab fa-pinterest-p"></i>
                                         {{ __('social_share.pinterest') }}
-                                    </a>
+                                    </a> --}}
                                     {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                                         <i class="fab fa-evernote"></i>
                                         {{ __('social_share.evernote') }}
@@ -1481,10 +1481,10 @@
                             <i class="fab fa-blogger-b"></i>
                             {{ __('social_share.blogger') }}
                         </a>
-                        <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
+                        {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-pinterest" href="" data-social="pinterest">
                             <i class="fab fa-pinterest-p"></i>
                             {{ __('social_share.pinterest') }}
-                        </a>
+                        </a> --}}
                         {{-- <a class="btn btn-primary text-white btn-sm rounded mb-2 btn-evernote" href="" data-social="evernote">
                             <i class="fab fa-evernote"></i>
                             {{ __('social_share.evernote') }}
