@@ -1042,7 +1042,7 @@
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: 'http://localhost/coach_directory/items/'+item_slug+'/contact',
+                    url: '/items/'+item_slug+'/contact',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -1143,7 +1143,7 @@
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: 'http://localhost/coach_directory/profile/'+hexId+'/email',
+                    url: '/profile/'+hexId+'/email',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -1243,7 +1243,7 @@
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: 'http://localhost/coach_directory/referral/'+user_id+'/email',
+                    url: '/referral/'+user_id+'/email',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,

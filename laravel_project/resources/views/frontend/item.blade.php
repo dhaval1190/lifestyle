@@ -3351,7 +3351,7 @@
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: 'http://localhost/coach_directory/items/'+item_slug+'/contact',
+                    url: '/items/'+item_slug+'/contact',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -3473,7 +3473,7 @@
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: 'http://localhost/coach_directory/items/'+item_slug+'/email',
+                    url: '/items/'+item_slug+'/email',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
