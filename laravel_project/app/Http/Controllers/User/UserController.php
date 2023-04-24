@@ -265,7 +265,7 @@ class UserController extends Controller
         // $rules['email']                     = ['required', 'string', 'email', 'max:255'];
         $rules['email']                     = ['required', 'regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/','email','max:255'];
         // $rules['phone']                     = ['required','string','max:20'];
-        $rules['phone']                     = ['nullable','numeric','digits_between:10,20'];
+        $rules['phone']                     = ['nullable','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
         $rules['gender']                    = ['nullable','string','in:'.implode(",",array_keys(\App\User::GENDER_TYPES)).'','max:20'];
         // $rules['user_prefer_language']   = ['nullable', 'max:5'];
         // $rules['user_prefer_country_id'] = ['nullable', 'numeric'];
@@ -299,7 +299,7 @@ class UserController extends Controller
 
         if(isset($input['is_coach']) && !empty($input['is_coach'])) {
             $rules['is_coach']              = ['required','in:'.Role::COACH_ROLE_ID];
-            $rules['phone']                     = ['required','numeric','digits_between:10,20'];
+            $rules['phone']                     = ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
             $rules['category_ids']          = ['required'];
             $rules['company_name']          = ['nullable','string','max:100'];
 
