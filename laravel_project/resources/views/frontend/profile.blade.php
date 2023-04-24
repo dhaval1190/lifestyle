@@ -1013,8 +1013,8 @@
     @include('frontend.partials.bootstrap-select-locale')
     <script>
         $(document).ready(function() {
-            $('.name_error').text('')
-            $('.item_contact_email_from_email').text('')
+            $('.name_error').text('');
+            $('.item_contact_email_from_email').text('');
             $('.note_error').text('');
             $('.please_wait').text('');
 
@@ -1027,7 +1027,7 @@
             $('#item_contact_email_note').on('input', function(e) {
                 $('.note_error').text('');
             });
-            $("#contact-modal").on("hidden.bs.modal", function(){
+            $("#contact-modal").on("hidden.bs.modal", function() {
                 $('.name_error').text('');
                 $('.email_error').text('');
                 $(".note_error").text("");
@@ -1035,14 +1035,14 @@
             $('#contactFormModal').on('submit', function(e) {
                 e.preventDefault();
                 $('.please_wait').text('Please Wait..');
-                var item_slug = <?php echo json_encode($item->item_slug)  ?>;
+                var item_slug = <?php echo json_encode($item->item_slug); ?>;
                 // alert(item_slug);
-                
+
                 var formData = new FormData(this);
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: '/items/'+item_slug+'/contact',
+                    url: '/items/' + item_slug + '/contact',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -1062,13 +1062,13 @@
                             // window.location.href = "{{ route('login') }}";
 
                             var firebaseConfig = {
-                            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-                            authDomain: "coachhq-c1b3d.firebaseapp.com",
-                            projectId: "coachhq-c1b3d",
-                            storageBucket: "coachhq-c1b3d.appspot.com",
-                            messagingSenderId: "668525619724",
-                            appId: "1:668525619724:web:e4282225654d0467655c29",
-                            measurementId: "G-VFGKZNYRVM"
+                                aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                                authDomain: "coachhq-c1b3d.firebaseapp.com",
+                                projectId: "coachhq-c1b3d",
+                                storageBucket: "coachhq-c1b3d.appspot.com",
+                                messagingSenderId: "668525619724",
+                                appId: "1:668525619724:web:e4282225654d0467655c29",
+                                measurementId: "G-VFGKZNYRVM"
                             };
                             firebase.initializeApp(firebaseConfig);
                             const messaging = firebase.messaging();
@@ -1088,13 +1088,16 @@
                             $('.please_wait').text('');
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.item_conntact_email_name) {
-                                    $('.name_error').text(response.msg.item_conntact_email_name)
+                                    $('.name_error').text(response.msg
+                                        .item_conntact_email_name)
                                 }
                                 if (response.msg.item_contact_email_from_email) {
-                                    $('.email_error').text(response.msg.item_contact_email_from_email)
+                                    $('.email_error').text(response.msg
+                                        .item_contact_email_from_email)
                                 }
                                 if (response.msg.item_contact_email_note) {
-                                    $('.note_error').text(response.msg.item_contact_email_note)
+                                    $('.note_error').text(response.msg
+                                        .item_contact_email_note)
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
 
@@ -1103,12 +1106,8 @@
                         }
                     }
                 });
-
             });
 
-        });
-
-        $(document).ready(function() {
             $('.profile_name_error').text('')
             $('.profile_from_email_error').text('')
             $('.profile_to_error').text('')
@@ -1127,7 +1126,7 @@
             $('#profile_share_email_note').on('input', function(e) {
                 $('.profile_note_error').text('');
             });
-            $("#share-modal").on("hidden.bs.modal", function(){
+            $("#share-modal").on("hidden.bs.modal", function() {
                 $('.profile_name_error').text('');
                 $('.profile_from_email_error').text('');
                 $('.profile_to_error').text('');
@@ -1136,14 +1135,14 @@
             $('#shareProfileModal').on('submit', function(e) {
                 e.preventDefault();
                 $('.please_wait').text('Please Wait..');
-                var hexId = <?php echo json_encode($hexId)  ?>;
+                var hexId = <?php echo json_encode($hexId); ?>;
                 // alert(hexId);
-                
+
                 var formData = new FormData(this);
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: '/profile/'+hexId+'/email',
+                    url: '/profile/' + hexId + '/email',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -1163,13 +1162,13 @@
                             // window.location.href = "{{ route('login') }}";
 
                             var firebaseConfig = {
-                            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-                            authDomain: "coachhq-c1b3d.firebaseapp.com",
-                            projectId: "coachhq-c1b3d",
-                            storageBucket: "coachhq-c1b3d.appspot.com",
-                            messagingSenderId: "668525619724",
-                            appId: "1:668525619724:web:e4282225654d0467655c29",
-                            measurementId: "G-VFGKZNYRVM"
+                                aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                                authDomain: "coachhq-c1b3d.firebaseapp.com",
+                                projectId: "coachhq-c1b3d",
+                                storageBucket: "coachhq-c1b3d.appspot.com",
+                                messagingSenderId: "668525619724",
+                                appId: "1:668525619724:web:e4282225654d0467655c29",
+                                measurementId: "G-VFGKZNYRVM"
                             };
                             firebase.initializeApp(firebaseConfig);
                             const messaging = firebase.messaging();
@@ -1189,16 +1188,20 @@
                             $('.please_wait').text('');
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.profile_share_email_name) {
-                                    $('.profile_name_error').text(response.msg.profile_share_email_name)
+                                    $('.profile_name_error').text(response.msg
+                                        .profile_share_email_name)
                                 }
                                 if (response.msg.profile_share_email_from_email) {
-                                    $('.profile_from_email_error').text(response.msg.profile_share_email_from_email)
+                                    $('.profile_from_email_error').text(response.msg
+                                        .profile_share_email_from_email)
                                 }
                                 if (response.msg.profile_share_email_to_email) {
-                                    $('.profile_to_error').text(response.msg.profile_share_email_to_email)
+                                    $('.profile_to_error').text(response.msg
+                                        .profile_share_email_to_email)
                                 }
                                 if (response.msg.profile_share_email_note) {
-                                    $('.profile_note_error').text(response.msg.profile_share_email_note)
+                                    $('.profile_note_error').text(response.msg
+                                        .profile_share_email_note)
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
 
@@ -1210,10 +1213,6 @@
 
             });
 
-        });
-
-        //profile referal share
-        $(document).ready(function() {
             $('.profile_referal_name_error').text('')
             $('.profile_referal_from_email_error').text('')
             $('.profile_referal_note_error').text('');
@@ -1228,7 +1227,7 @@
             $('#item_share_email_note').on('input', function(e) {
                 $('.profile_referal_note_error').text('');
             });
-            $("#share-refferal-modal").on("hidden.bs.modal", function(){
+            $("#share-refferal-modal").on("hidden.bs.modal", function() {
                 $('.profile_referal_name_error').text('');
                 $('.profile_referal_from_email_error').text('');
                 $(".profile_referal_note_error").text("");
@@ -1236,14 +1235,14 @@
             $('#shareProfileReferalModal').on('submit', function(e) {
                 e.preventDefault();
                 $('.please_wait').text('Please Wait..');
-                var user_id = <?php echo json_encode(Auth::user()->id)  ?>;
+                var user_id = <?php echo json_encode($id); ?>;
                 // alert(user_id);
-                
+
                 var formData = new FormData(this);
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: '/referral/'+user_id+'/email',
+                    url: '/referral/' + user_id + '/email',
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
@@ -1263,13 +1262,13 @@
                             // window.location.href = "{{ route('login') }}";
 
                             var firebaseConfig = {
-                            aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
-                            authDomain: "coachhq-c1b3d.firebaseapp.com",
-                            projectId: "coachhq-c1b3d",
-                            storageBucket: "coachhq-c1b3d.appspot.com",
-                            messagingSenderId: "668525619724",
-                            appId: "1:668525619724:web:e4282225654d0467655c29",
-                            measurementId: "G-VFGKZNYRVM"
+                                aapiKey: "AIzaSyA31EsSr68dVVQ-cVZwfbLmeDK8_PUT2fM",
+                                authDomain: "coachhq-c1b3d.firebaseapp.com",
+                                projectId: "coachhq-c1b3d",
+                                storageBucket: "coachhq-c1b3d.appspot.com",
+                                messagingSenderId: "668525619724",
+                                appId: "1:668525619724:web:e4282225654d0467655c29",
+                                measurementId: "G-VFGKZNYRVM"
                             };
                             firebase.initializeApp(firebaseConfig);
                             const messaging = firebase.messaging();
@@ -1289,13 +1288,16 @@
                             $('.please_wait').text('');
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.item_share_email_name) {
-                                    $('.profile_referal_name_error').text(response.msg.item_share_email_name)
+                                    $('.profile_referal_name_error').text(response.msg
+                                        .item_share_email_name)
                                 }
                                 if (response.msg.item_share_email_to_email) {
-                                    $('.profile_referal_from_email_error').text(response.msg.item_share_email_to_email)
+                                    $('.profile_referal_from_email_error').text(response
+                                        .msg.item_share_email_to_email)
                                 }
                                 if (response.msg.item_share_email_note) {
-                                    $('.profile_referal_note_error').text(response.msg.item_share_email_note)
+                                    $('.profile_referal_note_error').text(response.msg
+                                        .item_share_email_note)
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
 
@@ -1306,8 +1308,7 @@
                 });
 
             });
-
-        });
+    });
 
 
 
