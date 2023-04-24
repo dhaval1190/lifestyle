@@ -302,7 +302,7 @@
 
                                     <div class="col-md-3">
                                         <label for="item_postal_code" class="text-black">{{ __('backend.item.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="item_postal_code" type="text" class="form-control @error('item_postal_code') is-invalid @enderror" name="item_postal_code" value="{{ old('item_postal_code') }}">
+                                        <input id="item_postal_code" type="text" class="form-control @error('item_postal_code') is-invalid @enderror" name="item_postal_code" value="{{ old('item_postal_code') }}" onkeypress="validatePostalCode(event)">
                                         @error('item_postal_code')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -342,7 +342,7 @@
 
                                     <div class="col-md-3">
                                         <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
-                                        <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') }}">
+                                        <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') }}" onkeypress="validatePostalCode(event)">
                                         @error('item_phone')
                                         <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>

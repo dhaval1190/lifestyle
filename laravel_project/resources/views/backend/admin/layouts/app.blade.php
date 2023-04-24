@@ -44,6 +44,15 @@
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}"/>
 
     @yield('styles')
+    <script>
+        function validatePostalCode(e) {
+        e = e || window.event;
+        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        var charStr = String.fromCharCode(charCode);
+            if (!charStr.match(/^[0-9]+$/))
+                e.preventDefault();
+        }
+    </script>
 
 </head>
 
