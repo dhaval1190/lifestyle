@@ -345,7 +345,7 @@
                                             <i class="fa-brands fa-whatsapp-square"></i>
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
                                         </label>
-                                        <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') ? old('article_social_whatsapp') : $article->item_social_whatsapp }}">
+                                        <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') ? old('article_social_whatsapp') : $article->item_social_whatsapp }}" onkeypress="validatePostalCode(event)">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
                                         </small>
@@ -796,7 +796,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit"  class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit"  class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>
@@ -928,7 +928,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="button" class="btn btn-success" id="update-article-category-button">{{ __('categories.update-cat') }}</button>
+                    <button type="button" class="btn btn-primary" id="update-article-category-button">{{ __('categories.update-cat') }}</button>
                 </div>
             </div>
         </div>
@@ -972,7 +972,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="button" class="btn btn-success" id="update-article-slug-button">{{ __('article_slug.update-url') }}</button>
+                    <button type="button" class="btn btn-primary" id="update-article-slug-button">{{ __('article_slug.update-url') }}</button>
                 </div>
             </div>
         </div>

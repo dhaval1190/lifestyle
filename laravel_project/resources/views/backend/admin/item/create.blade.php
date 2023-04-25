@@ -502,7 +502,7 @@
                                             <i class="fa-brands fa-whatsapp-square"></i>
                                             {{ __('item_whatsapp_instagram.item-social-whatsapp') }}
                                         </label>
-                                        <input id="item_social_whatsapp" type="text" class="form-control @error('item_social_whatsapp') is-invalid @enderror" name="item_social_whatsapp" value="{{ old('item_social_whatsapp') }}">
+                                        <input id="item_social_whatsapp" type="text" class="form-control @error('item_social_whatsapp') is-invalid @enderror" name="item_social_whatsapp" value="{{ old('item_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }}
                                         </small>
@@ -842,7 +842,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>
@@ -961,11 +961,11 @@
             $(document).ready(function() {
 
                 $('.category').select2({
-                    maximumSelectionLength: 3
+                    maximumSelectionLength: 5
                 });
 
                 $('.selectpicker-category').selectpicker({
-                    maxOptions: 3
+                    maxOptions: 5
                 });
 
                 $('.selectpicker').selectpicker();

@@ -221,7 +221,7 @@
 
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-sm btn-success text-white">
+                                        <button type="submit" class="btn btn-sm btn-primary text-white">
                                             <i class="fas fa-shield-alt"></i>
                                             {{ __('license_verify.register-purchase-code') }}
                                         </button>
@@ -250,7 +250,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <a class="btn btn-sm btn-success text-white" target="_blank" href="{{ is_demo_mode() ? '' : get_domain_verify_token_url($settings->settingLicense->settings_license_purchase_code, $settings->settingLicense->settings_license_codecanyon_username) }}">
+                            <a class="btn btn-sm btn-primary text-white" target="_blank" href="{{ is_demo_mode() ? '' : get_domain_verify_token_url($settings->settingLicense->settings_license_purchase_code, $settings->settingLicense->settings_license_codecanyon_username) }}">
                                 <i class="fas fa-external-link-alt"></i>
                                 {{ __('license_verify.get-domain-verify-token') }}
                             </a>
@@ -294,7 +294,7 @@
 
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-sm btn-success text-white">
+                                        <button type="submit" class="btn btn-sm btn-primary text-white">
                                             <i class="far fa-save"></i>
                                             {{ __('license_verify.domain-verify-token-button') }}
                                         </button>
@@ -325,7 +325,7 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <a class="btn btn-sm btn-success text-white" target="_blank" href="{{ is_demo_mode() ? '' : get_domain_verify_do_url($settings->settingLicense->settings_license_purchase_code, $settings->settingLicense->settings_license_codecanyon_username) }}">
+                            <a class="btn btn-sm btn-primary text-white" target="_blank" href="{{ is_demo_mode() ? '' : get_domain_verify_do_url($settings->settingLicense->settings_license_purchase_code, $settings->settingLicense->settings_license_codecanyon_username) }}">
                                 <i class="fas fa-external-link-alt"></i>
                                 {{ __('license_verify.domain-verify-button') }}
                             </a>

@@ -109,7 +109,7 @@
 
                         <div class="row form-group justify-content-between">
                             <div class="col-6">
-                                <button type="submit" class="btn btn-success text-white">
+                                <button type="submit" class="btn btn-primary text-white">
                                     {{ __('importer_csv.upload') }}
                                 </button>
                             </div>

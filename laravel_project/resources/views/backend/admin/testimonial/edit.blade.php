@@ -112,13 +112,13 @@
 
                         <div class="row form-group justify-content-between">
                             <div class="col-8">
-                                <button type="submit" class="btn btn-success text-white">
+                                <button type="submit" class="btn btn-primary text-white">
                                     Update
                                 </button>
                             </div>
                             <div class="col-4 text-right">
                                 <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
-                                    Delete
+                                    <button class="btn btn-danger">Delete</button>
                                 </a>
                             </div>
                         </div>

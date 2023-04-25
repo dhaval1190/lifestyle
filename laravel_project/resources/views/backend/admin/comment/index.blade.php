@@ -82,7 +82,7 @@
                                         @endif
 
                                             <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal{{ $comment->id }}">
-                                                {{ __('backend.shared.delete') }}
+                                                <button class="btn btn-sm btn-danger mt-2">{{ __('backend.shared.delete') }}</button>
                                             </a>
                                             <!-- Modal -->
                                             <div class="modal fade" id="deleteModal{{ $comment->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{ $comment->id }}" aria-hidden="true">
