@@ -187,7 +187,7 @@
 
                                     <div class="col-md-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" onkeypress="validatePostalCode(event)">
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -310,7 +310,7 @@
                                     </div> --}}
                                     <div class="col-md-3">
                                         <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
-                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}">
+                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                         @error('article_phone')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -654,6 +654,7 @@
                                         <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
                                         @error('feature_image')
                                             <span class="invalid-feedback">
                                                 <strong>{{ $message }}</strong>
@@ -670,19 +671,22 @@
                                                 <input id="feature_image" type="hidden" name="feature_image">
                                             </div>
                                         </div>
-                                        <div class="row mt-2">
-                                            <div class="col-12">
-                                                <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                    {{ __('role_permission.article.delete-feature-image') }}
-                                                </a>
+                                        @if(isset($article->item_image))
+                                            <div class="row mt-2">
+                                                <div class="col-12">
+                                                    <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        {{ __('role_permission.article.delete-feature-image') }}
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                     <div class="col-md-9">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
+                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
                                         {{-- <small class="form-text text-muted">
                                             {{ __('theme_directory_hub.listing.max-upload', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
                                         </small> --}}

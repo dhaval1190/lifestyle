@@ -100,6 +100,7 @@ $chk_post = Auth::user()->phone;
                     </div>
                     <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="is_coach" id="is_coach" value="{{ Auth::user()->isCoach() ? 2 : null }}">
 
                         @if($login_user->isCoach())
                             <div class="row">
@@ -122,14 +123,16 @@ $chk_post = Auth::user()->phone;
                                             <input id="feature_image" type="hidden" name="user_image">
                                         </div>
                                     </div>
-                                    <div class="row mt-1">
-                                        <div class="col-12">
-                                            <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
-                                                <i class="fas fa-trash-alt"></i>
-                                                {{ __('role_permission.user.delete-profile-image') }}
-                                            </a>
+                                    @if(isset($login_user->user_image))
+                                        <div class="row mt-1">
+                                            <div class="col-12">
+                                                <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    {{ __('role_permission.user.delete-profile-image') }}
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="row mb-3">
@@ -183,7 +186,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}">
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -424,7 +427,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
-                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
+                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" onkeypress="validatePostalCode(event)">
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -725,7 +728,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}">
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -929,7 +932,7 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_image_input" type="file" class="custom-file-input">
+                                <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -962,7 +965,7 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <div class="custom-file">
-                                <input id="upload_cover_image_input" type="file" class="custom-file-input">
+                                <input id="upload_cover_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
                                 <label class="custom-file-label" for="upload_cover_image_input">{{ __('backend.user.choose-image') }}</label>
                             </div>
                         </div>
@@ -1517,6 +1520,8 @@ $chk_post = Auth::user()->phone;
                 }
               
             });
+
+            
     </script>
 
 @endsection

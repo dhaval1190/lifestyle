@@ -6652,6 +6652,7 @@ class PagesController extends Controller
 
                 if($validator->passes())
                 {
+                    $authUser = User::where('id',$request->authUserId)->first();
 
                     // send an email notification to admin
                         if($request->contact_profile){
@@ -6660,14 +6661,23 @@ class PagesController extends Controller
                             $item_contact_email = $request->item_contact_email_from_email;                    
                             $email_note = $request->item_contact_email_note;
                             $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+
+                            if($authUser->role_id == 3){
+                                $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                            }else{
+                                $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
+                            }
                             
                             $email_notify_message = [
-                                __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                $from_name_abd_url,
                                 __('frontend.item.send-email-from-name',['name' => $email_from_name]),
                                 __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
                                 __('frontend.item.send-email-contact-note'),
                                 $email_note,
                             ];
+
 
                         }else{
                             $email_to = $user->email;

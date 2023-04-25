@@ -3013,6 +3013,7 @@
                             @csrf
                             <input type="hidden" name="userId" value = "{{ $item->user_id }}">
                             <input type="hidden" name="articleTitle" value = "{{ $item->item_title }}">
+                            <input type="hidden" name="authUserId" value="{{ auth()->user()->id }}">
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
@@ -3238,7 +3239,8 @@
                             <div class="form-row mb-3">
                                 <div class="col-12 col-md-6">
                                     <label for="item_lead_phone" class="text-black">{{ __('role_permission.item-leads.item-lead-phone') }}</label>
-                                    <input id="item_lead_phone" type="text" class="form-control @error('item_lead_phone') is-invalid @enderror" name="item_lead_phone" value="{{ old('item_lead_phone') }}">
+                                    <input id="item_lead_phone" type="text" class="form-control @error('item_lead_phone') is-invalid @enderror" name="item_lead_phone" value="{{ old('item_lead_phone') }}" onkeypress="validatePostalCode(event)"
+                                    >
                                     @error('item_lead_phone')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>

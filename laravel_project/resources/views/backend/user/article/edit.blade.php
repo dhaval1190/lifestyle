@@ -233,7 +233,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}" onkeypress="validatePostalCode(event)">
                                         @error('article_postal_code')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -332,7 +332,8 @@
 
                                     <div class="col-md-3">
                                         <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
-                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock">
+                                        <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock" onkeypress="validatePostalCode(event)"
+                                        >
                                         @error('article_phone')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -723,6 +724,7 @@
                                         <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
                                         @error('feature_image')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -744,20 +746,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-12">
-                                                <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                    {{ __('role_permission.article.delete-feature-image') }}
-                                                </a>
+                                        @if(isset($article->item_image))
+                                            <div class="row mt-1">
+                                                <div class="col-12">
+                                                    <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                        {{ __('role_permission.article.delete-feature-image') }}
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                     </div>
                                     <div class="col-md-9">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
+                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
                                         {{-- <small class="form-text text-muted">
                                             {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
                                         </small> --}}
@@ -1624,6 +1629,7 @@
                 $.FileDialog({
                     accept: ".jpeg,.jpg,.png",
                 }).on("files.bs.filedialog", function (event) {
+                    // console.log("dksdsllkksld");
                     var html = "";
                     for (var a = 0; a < event.files.length; a++) {
 
@@ -1783,7 +1789,8 @@
                     success: function(result){
                         console.log(result);
 
-                        $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}");
+                        // $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}");
+                        $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}");
                         $('#feature_image').val("");
 
                         $('#delete_feature_image_button').attr("disabled", false);

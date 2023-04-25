@@ -161,6 +161,7 @@ return array (
     'send-email-body' => ':from_name shared a business coach with you on :url',
     'send-email-body-profile' => ':from_name shared a profile with you on :url',
     'send-email-contact-body' => 'Contact mail from :from_name :url',
+    'send-email-contact-body-user' => 'Contact mail from :from_name',
     'send-email-error-login' => 'You must log in to share via email.',
     'send-email-note' => 'Note:',
     'send-email-contact-note' => 'Note:-',
