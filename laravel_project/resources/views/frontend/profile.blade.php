@@ -339,7 +339,7 @@
                                 <input type="hidden" name="hexId" value="{{ $hexId }}">
                                 <input type="hidden" name="contact_profile" value="contact_profile">
                                 <input type="hidden" name="userId" value="{{ $user_detail->id }}">
-                                <input type="hidden" name="authUserId" value="{{ auth()->user()->id }}">
+                                <input type="hidden" name="authUserId" value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
