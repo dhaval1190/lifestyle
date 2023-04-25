@@ -3013,7 +3013,7 @@
                             @csrf
                             <input type="hidden" name="userId" value = "{{ $item->user_id }}">
                             <input type="hidden" name="articleTitle" value = "{{ $item->item_title }}">
-                            <input type="hidden" name="authUserId" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="authUserId" value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
