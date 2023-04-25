@@ -414,13 +414,13 @@
                 @endif
             </div>
             <div>
-                @if(isset($PodcastImage) && !empty($PodcastImage))
+                @if(isset($AllPodcast) && !empty($AllPodcast))
                 <section class="podcast_section col-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.podcast-details') }}</h3>
-                                @if(isset($PodcastImage) && !empty($PodcastImage) && count($PodcastImage) >= 5)
+                                @if(isset($AllPodcast) && !empty($AllPodcast) && count($AllPodcast) >= 5)
                                 <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
@@ -429,7 +429,7 @@
                             <div class="post-slide">
                                 <div class="row audio-players">
                                     @php $i=1; @endphp
-                                    @foreach($PodcastImage as $podcast_key => $image)
+                                    @foreach($AllPodcast as $podcast_key => $image)
                                     <div class="col-md-3 col-6">
                                         <div class="audio-player js-audio-player">
                                             <button class="audio-player__control js-control">
@@ -476,13 +476,13 @@
             </div>
 
             <div>
-                @if(isset($Ebooks) && !empty($Ebooks))
+                @if(isset($AllEbooks) && !empty($AllEbooks))
                 <section class="ebook_section col-12">
                     <div class="row ">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.ebook-details') }}</h3>
-                                @if(isset($Ebooks) && !empty($Ebooks)&& count($Ebooks) >= 5 )
+                                @if(isset($AllEbooks) && !empty($AllEbooks)&& count($AllEbooks) >= 5 )
                                 <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
@@ -490,7 +490,7 @@
                         <div class="col-md-12 plr-45">
                             <div class="row">
                                 @php $i=1; @endphp
-                                @foreach($Ebooks as $ebook_key => $Ebook)
+                                @foreach($AllEbooks as $ebook_key => $Ebook)
                                 <div class="col-md-3 col-6 pb-3">
                                     <div class="post-img">
                                         <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}" target="_blank">
@@ -524,13 +524,13 @@
                 @endif
             </div>
             <div>
-                @if(isset($media) && !empty($media) || isset($Youtube) && !empty($Youtube))
+                @if(isset($AllMedia) && !empty($AllMedia) || isset($AllYoutube) && !empty($AllYoutube))
                 <section class="youtube_section col-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.youtube-details') }}</h3>
-                                @if(isset($media) && !empty($media) && (count($media) + count($Youtube)) >= 5)
+                                @if(isset($AllMedia) && !empty($AllMedia) && (count($AllMedia) + count($AllYoutube)) >= 5)
                                 <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
                                 @endif
                             </div>
@@ -538,7 +538,7 @@
                         <div class="col-md-12 plr-45">
                             <div class="row">
                                 @php $i=1; @endphp
-                                @foreach($media as $video_key => $video)
+                                @foreach($AllMedia as $video_key => $video)
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">
@@ -568,9 +568,9 @@
                                 @endif
                                 @php $i++; @endphp
                                 @endforeach
-                                @if(isset($Youtube) && !empty($Youtube))
+                                @if(isset($AllYoutube) && !empty($AllYoutube))
                                 @php $i=1; @endphp
-                                @foreach($Youtube as $youtube_key => $youtubevideo)
+                                @foreach($AllYoutube as $youtube_key => $youtubevideo)
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="post-slide">
                                         <div class="post-img">

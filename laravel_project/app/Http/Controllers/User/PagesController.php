@@ -87,11 +87,23 @@ class PagesController extends Controller
         $podcast_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('media_detail_id')->get();
         $ebook_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('media_detail_id')->get();
         $youtube_deatils_visit = MediaDetailsVisits::where('user_id', $login_user->id)->where('media_type','youtube')->where('is_status',0)->groupBy('user_id')->get();
+        
+        $all_media_deatils_visit = MediaDetail::where('user_id', $login_user->id)->where('media_type','video')->groupBy('id')->get();
+        $all_podcast_deatils_visit = MediaDetail::where('user_id', $login_user->id)->where('media_type','podcast')->groupBy('id')->get();
+        $all_Ebook_Details = MediaDetail::where('user_id', $login_user->id)->where('media_type','ebook')->groupBy('id')->get();
+        $all_youtube_deatils_visit = MediaDetail::where('user_id', $login_user->id)->where('media_type','youtube')->where('is_status',0)->groupBy('id')->get();
+
         $PodcastImage= array();
         $media= array();
         $Articledetail= array();
         $Youtube= array();
         $Ebooks= array();
+
+        $AllEbooks = array();  
+        $AllMedia = array();       
+        $AllYoutube = array();       
+        $AllPodcast = array();       
+
 
         if(isset($ebook_deatils_visit) && !empty($ebook_deatils_visit)){
             foreach($ebook_deatils_visit as $ebookdetail){
@@ -109,130 +121,246 @@ class PagesController extends Controller
                     ->first();
                 }
             }
-        
-        if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
-            foreach($youtube_deatils_visit as $youtubedetail){
-            //print_r($youtube_deatils_visit);exit;
-            $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
-            ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)->whereBetween('media_details_visits.created_at', [
-                today()->startOfDay()->toDateTimeString(),
-                today()->endOfDay()->toDateTimeString(),
-            ])->first();
-            $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
-                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)
-                // ->whereBetween('media_details_visits.created_at', [
-                // today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                // today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                // ])
-                ->first();
-            }
-        }
-        
-            $YoutubecurrentMonthlyVisits = $youtube_deatils_visit->whereBetween('created_at', [
-                today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                today()->endOfMonth()->endOfDay()->toDateTimeString(),
-            ]);
             
-            $TodayYoutubeVisits = $youtube_deatils_visit->whereBetween('created_at', [
-                today()->startOfDay()->toDateTimeString(),
-                today()->endOfDay()->toDateTimeString(),
-            ]); 
-            $Youtubevisit_count = $YoutubecurrentMonthlyVisits->count();
-            $Today_YoutubeVisits_count = $TodayYoutubeVisits->count();
-
-        if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
-        foreach($media_deatils_visit as $mediadetail){
-            $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-            ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
-                today()->startOfDay()->toDateTimeString(),
-                today()->endOfDay()->toDateTimeString(),
-            ])->first();
-            $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-              ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)
-            //   ->whereBetween('media_details_visits.created_at', [
-            //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
-            //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
-            //     ])
-                ->first();
-            }
-        }
-        $MediacurrentMonthlyVisits = $media_deatils_visit->whereBetween('created_at', [
-            today()->startOfMonth()->startOfDay()->toDateTimeString(),
-            today()->endOfMonth()->endOfDay()->toDateTimeString(),
-        ]);
-        
-        $TodayMediaVisits = $media_deatils_visit->whereBetween('created_at', [
-            today()->startOfDay()->toDateTimeString(),
-            today()->endOfDay()->toDateTimeString(),
-        ]); 
-        $Mediavisit_count = $MediacurrentMonthlyVisits->count();
-        $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();        
-        
-        if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
-        foreach($podcast_deatils_visit as $detail){
-            $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-            ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
-                today()->startOfDay()->toDateTimeString(),
-                today()->endOfDay()->toDateTimeString(),
-            ])->first();
-            $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
-              ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)
-            //   ->whereBetween('media_details_visits.created_at', [
-            //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
-            //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
-            //     ])
-                ->first();
-            }
-        }
-        $PodcastcurrentMonthlyVisits = $podcast_deatils_visit->whereBetween('created_at', [
-            today()->startOfMonth()->startOfDay()->toDateTimeString(),
-            today()->endOfMonth()->endOfDay()->toDateTimeString(),
-        ])->unique('media_details_visits.media_detail_id');
-
-        $PodcastTodayVisits = $podcast_deatils_visit->whereBetween('created_at', [
-            today()->startOfDay()->toDateTimeString(),
-            today()->endOfDay()->toDateTimeString(),
-        ]);
-        $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();
-
-        $MonthlyPodcastvisit_Count = $PodcastcurrentMonthlyVisits->count();
-        $Today_Podcastvisits_Count = $PodcastTodayVisits->count();   
-
-        $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
-        ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
-       
-        if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
-            foreach($Ariclevisit_deatils_visit as $articledetail){
-                $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
-                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+        if(isset($all_Ebook_Details) && !empty($all_Ebook_Details)){
+            foreach($all_Ebook_Details as $Ebookdetail){
+                $AllEbooks[$Ebookdetail->id]['daily'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$Ebookdetail->id)
+                ->whereBetween('media_details_visits.created_at', [
                     today()->startOfDay()->toDateTimeString(),
                     today()->endOfDay()->toDateTimeString(),
-                ])->first();
-                $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
-                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)
-                // ->whereBetween('items_visits.created_at', [
+                ])
+                ->first();
+                $AllEbooks[$Ebookdetail->id]['monthly'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                    ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$Ebookdetail->id)
+                //    ->whereBetween('media_details.created_at', [
                 //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
                 //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
                 //     ])
                     ->first();
                 }
             }
-        $visits = ItemVisit::where('item_id', $item->id)->get();                    
-                    $ArticlecurrentMonthlyVisits = $visits->whereBetween('created_at', [
-                        today()->startOfMonth()->startOfDay()->toDateTimeString(),
-                        today()->endOfMonth()->endOfDay()->toDateTimeString(),
-                    ]);
-                    $ArticlecurrentTodayVisits = $visits->whereBetween('created_at', [
+            if(isset($all_youtube_deatils_visit) && !empty($all_youtube_deatils_visit)){
+                foreach($all_youtube_deatils_visit as $allyoutubedetail){                       
+                $query = MediaDetailsVisits::where('media_detail_id',$allyoutubedetail->id)->where('user_id',$allyoutubedetail->user_id)->where('is_status',0)->first();
+                if(isset($query) && !empty($query)){
+
+                $AllYoutube[$allyoutubedetail->id]['daily'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$allyoutubedetail->id)
+                ->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])
+                ->first();
+                $AllYoutube[$allyoutubedetail->id]['monthly'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$allyoutubedetail->id)
+                //    ->whereBetween('media_details.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
+                }else{
+                $AllYoutube[$allyoutubedetail->id]['monthly']['media_url']= $allyoutubedetail->media_url;
+                $AllYoutube[$allyoutubedetail->id]['daily']['media_url']= $allyoutubedetail->media_url;
+                $AllYoutube[$allyoutubedetail->id]['monthly']['totalcount']=0;
+                $AllYoutube[$allyoutubedetail->id]['daily']['totalcount']=0;
+
+
+                }
+                }
+            }
+            //print_r($AllYoutube);exit;
+        
+            if(isset($youtube_deatils_visit) && !empty($youtube_deatils_visit)){
+                foreach($youtube_deatils_visit as $youtubedetail){
+                //print_r($youtube_deatils_visit);exit;
+                $Youtube[$youtubedetail->user_id]['daily'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $Youtube[$youtubedetail->user_id]['monthly'] = MediaDetailsVisits::join('users', 'users.id', '=', 'media_details_visits.user_id')
+                    ->select('media_details_visits.*','media_details_visits.user_id',DB::raw('COUNT(media_details_visits.user_id) as totalcount'))->where('media_details_visits.user_id',$youtubedetail->user_id)->where('media_details_visits.media_type','youtube')->where('is_status',0)
+                    // ->whereBetween('media_details_visits.created_at', [
+                    // today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    // today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    // ])
+                    ->first();
+                }
+            }
+            
+                $YoutubecurrentMonthlyVisits = $youtube_deatils_visit->whereBetween('created_at', [
+                    today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                ]);
+                
+                $TodayYoutubeVisits = $youtube_deatils_visit->whereBetween('created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ]); 
+                $Youtubevisit_count = $YoutubecurrentMonthlyVisits->count();
+                $Today_YoutubeVisits_count = $TodayYoutubeVisits->count();
+
+
+            if(isset($all_media_deatils_visit) && !empty($all_media_deatils_visit)){
+                foreach($all_media_deatils_visit as $allmediadetail){
+
+                    $AllMedia[$allmediadetail->id]['daily'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                    ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$allmediadetail->id)
+                    ->whereBetween('media_details_visits.created_at', [
                         today()->startOfDay()->toDateTimeString(),
                         today()->endOfDay()->toDateTimeString(),
-                    ]);
-        $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
-        $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
-        $notifications = UserNotification::join('users', 'users.id', '=', 'notification.visitor_id')->select('notification.*','name','user_image')->where('user_id',$login_user->id)->where('is_read',0)->get();     
+                    ])
+                    ->first();
+                    $AllMedia[$allmediadetail->id]['monthly'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                    ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$allmediadetail->id)
+                    // ->whereBetween('media_details.created_at', [
+                    //     today()->startOfDay()->toDateTimeString(),
+                    //     today()->endOfDay()->toDateTimeString(),
+                    // ])
+                    ->first();
+                    }
+                }
+               //print_r($AllMedia[$allmediadetail->id]['daily']);exit;
+            if(isset($media_deatils_visit) && !empty($media_deatils_visit)){
+            foreach($media_deatils_visit as $mediadetail){
+                $media[$mediadetail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $media[$mediadetail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$mediadetail->media_detail_id)
+                //   ->whereBetween('media_details_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
+                }
+            }
+            $MediacurrentMonthlyVisits = $media_deatils_visit->whereBetween('created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+            ]);
+            
+            $TodayMediaVisits = $media_deatils_visit->whereBetween('created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ]); 
+            $Mediavisit_count = $MediacurrentMonthlyVisits->count();
+            $Today_MedaidetailsVisits_count = $TodayMediaVisits->count();    
+            
+            if(isset($all_podcast_deatils_visit) && !empty($all_podcast_deatils_visit)){
+                foreach($all_podcast_deatils_visit as $alldetail){
+                    $AllPodcast[$alldetail->id]['daily'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                    ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$alldetail->id)
+                    ->whereBetween('media_details_visits.created_at', [
+                        today()->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ])
+                    ->first();
+                    $AllPodcast[$alldetail->id]['monthly'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                    ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details.id',$alldetail->id)
+                    // ->whereBetween('media_details.created_at', [
+                    //     today()->startOfDay()->toDateTimeString(),
+                    //     today()->endOfDay()->toDateTimeString(),
+                    // ])
+                    ->first();
+                    }
+                }
+            
+            if(isset($podcast_deatils_visit) && !empty($podcast_deatils_visit)){
+            foreach($podcast_deatils_visit as $detail){
+                $PodcastImage[$detail->media_detail_id]['daily'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)->whereBetween('media_details_visits.created_at', [
+                    today()->startOfDay()->toDateTimeString(),
+                    today()->endOfDay()->toDateTimeString(),
+                ])->first();
+                $PodcastImage[$detail->media_detail_id]['monthly'] = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
+                ->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))->where('media_details_visits.media_detail_id',$detail->media_detail_id)
+                //   ->whereBetween('media_details_visits.created_at', [
+                //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                //     ])
+                    ->first();
+                }
+            }
+
+            $PodcastcurrentMonthlyVisits = $podcast_deatils_visit->whereBetween('created_at', [
+                today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                today()->endOfMonth()->endOfDay()->toDateTimeString(),
+            ])->unique('media_details_visits.media_detail_id');
+
+            $PodcastTodayVisits = $podcast_deatils_visit->whereBetween('created_at', [
+                today()->startOfDay()->toDateTimeString(),
+                today()->endOfDay()->toDateTimeString(),
+            ]);
+            $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();
+
+            $MonthlyPodcastvisit_Count = $PodcastcurrentMonthlyVisits->count();
+            $Today_Podcastvisits_Count = $PodcastTodayVisits->count();   
+
+            // $Ariclevisit_deatils_visit = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+            // ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('item_id')->get();
+        
+            // if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+            //     foreach($Ariclevisit_deatils_visit as $articledetail){
+            //         $Articledetail[$articledetail->item_id]['daily'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+            //         ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)->whereBetween('items_visits.created_at', [
+            //             today()->startOfDay()->toDateTimeString(),
+            //             today()->endOfDay()->toDateTimeString(),
+            //         ])->first();
+            //         $Articledetail[$articledetail->item_id]['monthly'] = ItemVisit::join('items', 'items.id', '=', 'items_visits.item_id')
+            //         ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items_visits.item_id',$articledetail->item_id)
+            //         // ->whereBetween('items_visits.created_at', [
+            //         //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+            //         //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+            //         //     ])
+            //             ->first();
+            //         }
+            //     }
+
+            $Ariclevisit_deatils_visit = Item::where('user_id', $login_user->id)->groupBy('id')->get();
+
+            // $Ariclevisit_deatils_visit = Item::join('items_visits', 'items_visits.item_id', '=', 'items.id')
+            // ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('id')->get();
+            if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
+                foreach($Ariclevisit_deatils_visit as $article_detail){
+
+                    $Articledetail[$article_detail->id]['daily'] = Item::Leftjoin('items_visits', 'items_visits.item_id', '=', 'items.id')
+                    ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items.id',$article_detail->id)->whereBetween('items_visits.created_at', [
+                        today()->startOfDay()->toDateTimeString(),
+                        today()->endOfDay()->toDateTimeString(),
+                    ])->first();
+                    
+
+                    $Articledetail[$article_detail->id]['monthly'] = Item::Leftjoin('items_visits', 'items_visits.item_id', '=', 'items.id')
+                    ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('items.id',$article_detail->id)
+                    // ->whereBetween('items_visits.created_at', [
+                    //     today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                    //     today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                    //     ])
+                        ->first();
+                    }
+                }
+                // print_r($Articledetail);exit;
+
+            $visits = ItemVisit::where('item_id', $item->id)->get();                    
+                        $ArticlecurrentMonthlyVisits = $visits->whereBetween('created_at', [
+                            today()->startOfMonth()->startOfDay()->toDateTimeString(),
+                            today()->endOfMonth()->endOfDay()->toDateTimeString(),
+                        ]);
+                        $ArticlecurrentTodayVisits = $visits->whereBetween('created_at', [
+                            today()->startOfDay()->toDateTimeString(),
+                            today()->endOfDay()->toDateTimeString(),
+                        ]);
+            $MonthlyAriclevisit_count = $ArticlecurrentMonthlyVisits->count();
+            $TodayAriclevisit_count = $ArticlecurrentTodayVisits->count();
+            $notifications = UserNotification::join('users', 'users.id', '=', 'notification.visitor_id')->select('notification.*','name','user_image')->where('user_id',$login_user->id)->where('is_read',0)->get();     
         // $media_detail_id = MediaDetailsVisits::join('media_details', 'media_details.id', '=', 'media_details_visits.media_detail_id')
         // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
         return response()->view('backend.user.index',
-            compact('login_user','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
+            compact('login_user','AllEbooks','AllMedia','AllPodcast','AllYoutube','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
             'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
     }
 

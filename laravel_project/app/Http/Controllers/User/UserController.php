@@ -243,7 +243,12 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $input = $request->all();
-
+        $login_user = Auth::user();
+        if(empty($youtube_url['youtube'])){
+           
+           MediaDetail::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
+            session()->forget("viewed_user_youtube.{$login_user->id}");
+        }
         if(isset($input['youtube'])){
             if (strpos($input['youtube'], "?v=") !== false) {            
                 $youtube_url_id = explode("?v=",$input['youtube'])[1];
@@ -256,6 +261,23 @@ class UserController extends Controller
 
                 $embed_url = $input['youtube'];
             }
+            if(isset($input['youtube'])){
+                $youtube_url = User::where('id', $login_user->id)->select('youtube')->first();
+                if(empty($youtube_url['youtube']) && $youtube_url['youtube'] != $input['youtube']){
+                $update = MediaDetail::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
+                session()->forget("viewed_user_youtube.{$login_user->id}");
+                }
+            }
+            if(isset($embed_url)){
+            MediaDetail::Create([
+                'user_id' => $login_user->id,
+                'media_name' => 'youtube',
+                'media_type' => 'youtube',
+                'media_url' => $embed_url,
+                
+            ]);
+        }
+    
         }
         
         $rules = [];
