@@ -247,13 +247,14 @@
                                                         class="fas fa-share-alt item-share-refferal-button"style="cursor: pointer;"></i>
                                                 </div>
                                             @endif
-                                            <div class="detail one">
+                                            <div class="detail one padding-0">
                                                 <p> <i class="fas fa-eye" style="cursor: pointer;"
                                                         onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
                                                         id="eye">
                                                         <b>Total Visitor(s)</b> : {{ $All_visit_count }}</i> </p>
                                             </div>
-                                            <?php
+                                            <div class="both_btn_set_small_device">
+                                                <?php
                                             $userId = '';
                                             if (isset(Auth::user()->id)) {
                                                 $userId = Auth::user()->id ? Auth::user()->id : '';
@@ -266,6 +267,8 @@
                                             @endif
                                             <a class="btn btn-primary rounded text-white item-share-button"><i
                                                     class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <!-- <div class="progress">

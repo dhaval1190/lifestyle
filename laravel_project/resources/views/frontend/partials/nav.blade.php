@@ -12,7 +12,7 @@
     <!-- <div class="container"> -->
     <div class="row align-items-center">
 
-        <div class="col-8 col-xl-2 pr-0">
+        <div class="col-8 col-xl-2 pr-0 pl-0">
 
                 @if(empty($site_global_settings->setting_site_logo))
                 <h1 class="mb-0 site-logo">
