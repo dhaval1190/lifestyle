@@ -64,14 +64,16 @@
                                             <input id="feature_image" type="hidden" name="user_image">
                                         </div>
                                     </div>
-                                    <div class="row mt-1">
-                                        <div class="col-12">
-                                            <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
-                                                <i class="fas fa-trash-alt"></i>
-                                                {{ __('role_permission.user.delete-profile-image') }}
-                                            </a>
+                                    @if(isset($user_admin->user_image))
+                                        <div class="row mt-1">
+                                            <div class="col-12">
+                                                <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    {{ __('role_permission.user.delete-profile-image') }}
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="row mb-3">
@@ -124,7 +126,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" onkeypress="validatePostalCode(event)" required>
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -354,7 +356,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
-                                    <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" required>
+                                    <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}" onkeypress="validatePostalCode(event)" required>
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -383,14 +385,16 @@
                                             <input id="feature_image" type="hidden" name="user_image">
                                         </div>
                                     </div>
-                                    <div class="row mt-1">
-                                        <div class="col-12">
-                                            <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
-                                                <i class="fas fa-trash-alt"></i>
-                                                {{ __('role_permission.user.delete-profile-image') }}
-                                            </a>
+                                    @if(isset($user_admin->user_image))
+                                        <div class="row mt-1">
+                                            <div class="col-12">
+                                                <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    {{ __('role_permission.user.delete-profile-image') }}
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="row mt-3">
@@ -414,7 +418,7 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <label for="phone" class="text-black">Phone</label>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -476,7 +480,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>
@@ -618,11 +622,11 @@
             });
 
             $('.category_ids').select2({
-                maximumSelectionLength: 3
+                maximumSelectionLength: 5
             });
 
             $('.selectpicker-category').selectpicker({
-                maxOptions: 3
+                maxOptions: 5
             });
 
             $('.selectpicker').selectpicker();

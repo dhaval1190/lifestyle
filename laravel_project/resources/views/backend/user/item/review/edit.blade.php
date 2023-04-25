@@ -252,13 +252,13 @@
 
                         <div class="form-row mb-3">
                             <div class="col-md-8">
-                                <button type="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('review.backend.update-review') }}
                                 </button>
                             </div>
                             <div class="col-md-4 text-right">
                                 <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
-                                    {{ __('backend.shared.delete') }}
+                                    <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                                 </a>
                             </div>
                         </div>

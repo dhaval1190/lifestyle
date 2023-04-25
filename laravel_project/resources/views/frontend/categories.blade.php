@@ -41,6 +41,9 @@
                             <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p>
                         </div>
                     </div>
+                    <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                        @include('frontend.partials.search.head')
+                    </div>
 
 
                 </div>

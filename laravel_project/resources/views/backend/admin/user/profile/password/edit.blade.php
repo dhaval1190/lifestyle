@@ -71,7 +71,7 @@
 
                         <div class="row form-group justify-content-between">
                             <div class="col-8">
-                                <button type="submit" class="btn btn-success text-white">
+                                <button type="submit" class="btn btn-primary text-white">
                                     {{ __('backend.user.change-password') }}
                                 </button>
                             </div>

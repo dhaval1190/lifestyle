@@ -111,13 +111,13 @@
 
                         <div class="row form-group justify-content-between">
                             <div class="col-8">
-                                <button type="submit" class="btn btn-success text-white">
+                                <button type="submit" class="btn btn-primary text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>
                             <div class="col-4 text-right">
                                 <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
-                                    {{ __('backend.shared.delete') }}
+                                    <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                                 </a>
                             </div>
                         </div>

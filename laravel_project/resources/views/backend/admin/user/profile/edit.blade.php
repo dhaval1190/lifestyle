@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
-                                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user_admin->phone) }}" required>
+                                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user_admin->phone) }}" onkeypress="validatePostalCode(event)" required>
                                         @error('phone')
                                         <span class="invalid-tooltip" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -104,7 +104,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success m-2 text-white">
+                                <button type="submit" class="btn btn-primary m-2 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                                 <a class="btn btn-warning m-2 text-white" href="{{ route('admin.users.profile.password.edit') }}">

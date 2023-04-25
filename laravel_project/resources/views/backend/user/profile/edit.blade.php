@@ -767,7 +767,7 @@ $chk_post = Auth::user()->phone;
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" id = "submit"class="btn btn-success m-2 text-white">
+                                <button type="submit" id = "submit"class="btn btn-primary m-2 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                                 <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
@@ -1127,11 +1127,11 @@ $chk_post = Auth::user()->phone;
             });
 
             $('.category_ids').select2({
-                maximumSelectionLength: 3
+                maximumSelectionLength: 5
             });
 
             $('.selectpicker-category').selectpicker({
-                maxOptions: 3
+                maxOptions: 5
             });
 
             $('.selectpicker').selectpicker();

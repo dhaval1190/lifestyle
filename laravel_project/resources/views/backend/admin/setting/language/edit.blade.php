@@ -79,7 +79,7 @@
 
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success py-2 px-4 text-white">
+                                <button type="submit" class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>
