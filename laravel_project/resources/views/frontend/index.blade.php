@@ -658,7 +658,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="nda_modal" tabindex="-1" role="dialog" aria-labelledby="nda_modal" aria-hidden="true">
+{{-- <div class="modal fade" id="nda_modal" tabindex="-1" role="dialog" aria-labelledby="nda_modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content" id="nda_modal_content">
             <div class="modal-header">
@@ -713,6 +713,27 @@
                         <p>Date: </p>
                         <p>Coaches HQ LLC Technologies, Inc</p>
                     </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary agree_class" disabled data-dismiss="modal" id="i_agree">I Agree</button>
+                <!-- <button type="button" class="btn btn-secondary agree_class" disabled data-dismiss="modal">Close</button> -->
+            </div>
+        </div>
+    </div>
+</div> --}}
+<div class="modal fade" id="nda_modal" tabindex="-1" role="dialog" aria-labelledby="nda_modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content" id="nda_modal_content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">BETA CONTENT CREATOR AGREEMENT</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                        {!! $setting_agreement_data->setting_page_agreement_text !!}
                 </div>
             </div>
             <div class="modal-footer">
@@ -801,18 +822,37 @@
         });
         var is_terms_read = {{$is_terms_read}};
         var is_login = {{$is_login}};
+        var user_accept_agreement_date = {{ $user_accept_agreement_date }};
+        var agreement_updated_date = {{ $agreement_updated_date }};
+
+        console.log(user_accept_agreement_date," ",agreement_updated_date);
         if(is_login && is_terms_read != 1){
+            console.log("aaaaaaa")
             //$(window).on("scroll", function() {
                 const expDate = new Date();
                 expDate.setTime(expDate.getTime() + (5*60*1000));
-                const cookieValue  = $.cookie('modal_cookie');
-                if(cookieValue  !== "MODALPOPUPED"){
-                    $.cookie("modal_cookie", "MODALPOPUPED",{ expires: expDate });
+                // const cookieValue  = $.cookie('modal_cookie');
+                // if(cookieValue  !== "MODALPOPUPED"){
+                //     $.cookie("modal_cookie", "MODALPOPUPED",{ expires: expDate });
                     setTimeout (function () {
                         $('#nda_modal').modal({backdrop: 'static', keyboard: false}, 'show');
                     }, 10000)
-                }
+                //}
             //});
+        }
+        if(is_login && is_terms_read == 1 && agreement_updated_date > user_accept_agreement_date){
+            console.log("bbbbbbb")
+                const expDate = new Date();
+                expDate.setTime(expDate.getTime() + (5*60*1000));
+                // const cookieValue  = $.cookie('modal_cookie');
+                // if(cookieValue  !== "MODALPOPUPED"){
+                //     console.log("ccc")
+                //     $.cookie("modal_cookie", "MODALPOPUPED",{ expires: expDate });
+                    setTimeout (function () {
+                        $('#nda_modal').modal({backdrop: 'static', keyboard: false}, 'show');
+                    }, 10000)
+                // }
+                
         }
 
         $('#nda_modal_content').scroll(function () {
@@ -828,7 +868,7 @@
                     }
                 });
             jQuery.ajax({
-                url: '/ajax/terms/save',
+                url: 'http://localhost/coach_directory/ajax/terms/save',
                 method: 'post',
                 data: {
                 },

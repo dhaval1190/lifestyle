@@ -128,6 +128,14 @@
                                 <span toggle="#password-confirm" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                             </div>
                         </div>
+                        <div class="row form-group pl-3">
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="check_agreement" id="check_agreement">
+                                <span class="form-check-label fw-semibold text-gray-700 fs-base ms-1">I accept the
+                                    <a href="javascript:void(0)" class="ms-1 link-primary openPopup">Content Creator Agreement</a></span>
+                                </label>
+                                <p class="check_agreement_error error_color" role="alert"></p>
+                        </div>
 
                         <!-- Start Google reCAPTCHA version 2 -->
                         @if($site_global_settings->setting_site_recaptcha_sign_up_enable == \App\Setting::SITE_RECAPTCHA_SIGN_UP_ENABLE)
@@ -241,6 +249,27 @@
 
             </div>
         </div>
+        <div class="modal fade" id="nda_modal" tabindex="-1" role="dialog" aria-labelledby="nda_modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content" id="nda_modal_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">BETA CONTENT CREATOR AGREEMENT</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+                                {!! $agreement_data->setting_page_agreement_text !!}
+                        </div>
+                    </div>
+                    {{-- <div class="modal-footer">
+                        <button type="button" class="btn btn-primary agree_class" disabled data-dismiss="modal" id="i_agree">I Agree</button>
+                        <!-- <button type="button" class="btn btn-secondary agree_class" disabled data-dismiss="modal">Close</button> -->
+                    </div> --}}
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
@@ -287,6 +316,9 @@
             });
             $('#password-confirm').on('input', function(e) {
                 $('.password_error').text('');
+            });
+            $('#check_agreement').on('change',function(){
+                $('.check_agreement_error').text('');
             });
 
             @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
@@ -352,6 +384,9 @@
                                     }                                    
                                     if(response.msg.password){
                                         $('.password_error').text(response.msg.password)
+                                    }
+                                    if(response.msg.check_agreement){
+                                        $('.check_agreement_error').text(response.msg.check_agreement)
                                     }                                    
                                     $(':input[type="submit"]').prop('disabled', false);
                                     
@@ -361,6 +396,11 @@
                         }
                     });
 
+            });
+
+            $('.openPopup').on('click', function() {
+                console.log("dkjskjdlksjkld");
+                $('#nda_modal').modal('show');
             });
 
         });
