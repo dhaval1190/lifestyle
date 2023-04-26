@@ -35,7 +35,7 @@
                     <div class="col-md-3">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.follow-us') }}</strong></h2>
                         @foreach(\App\SocialMedia::orderBy('social_media_order')->get() as $key => $social_media)
-                            <a href="{{ $social_media->social_media_link }}" class="pl-0 pr-3">
+                            <a href="{{ $social_media->social_media_link }}" class="pl-0 pr-lg-3 pr-1">
                                 <i class="{{ $social_media->social_media_icon }}"></i>
                             </a>
                         @endforeach
@@ -96,7 +96,7 @@
 
         <div class="row text-center">
             <div class="col-md-12">
-                <div class="border-top pt-5">
+                <div class="border-top pt-lg-5 pt-3">
                     <p>
                         {{-- {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }} --}}
                         {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : 'CoachesHQ' }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }}

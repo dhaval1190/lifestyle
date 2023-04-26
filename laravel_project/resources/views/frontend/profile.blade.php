@@ -233,11 +233,11 @@
                                         </p>
                                         <div class="details">
                                             <div class="detail one">
-                                                <img src="{{ asset('frontend/images/bag.png') }}" alt="">
+                                                <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="">
                                                 <p>{{ $user_detail['company_name'] }}</p>
                                             </div>
                                             <div class="detail two">
-                                                <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="">
+                                                <img src="{{ asset('frontend/images/blue-bag.svg') }}" alt="">
                                                 <p>{{ !empty($user_detail['preferred_pronouns']) ? \App\User::PREFERRED_PRONOUNS[$user_detail['preferred_pronouns']] : '' }}
                                                 </p>
                                             </div>
@@ -248,10 +248,11 @@
                                                 </div>
                                             @endif
                                             <div class="detail one padding-0">
-                                                <p> <i class="fas fa-eye" style="cursor: pointer;"
+                                            <img src="{{ asset('frontend/images/eye.svg') }}" alt="">
+                                                <p style="cursor: pointer;"
                                                         onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
                                                         id="eye">
-                                                        <b>Total Visitor(s)</b> : {{ $All_visit_count }}</i> </p>
+                                                        <b>Total Visitor(s)</b> : {{ $All_visit_count }} </p>
                                             </div>
                                             <div class="both_btn_set_small_device">
                                                 <?php
@@ -874,7 +875,7 @@
                             <div class="row">
                                 @if ($free_items->count() > 0)
                                     @foreach ($free_items as $free_items_key => $item)
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-4 col-xl-3 col-sm-6 col-12">
                                             @include('frontend.partials.free-item-block')
                                         </div>
                                     @endforeach
@@ -1434,29 +1435,29 @@
         //  $('#eye').on('click', function(){
         //     $('#share-refferal-modal2').modal('show');
         // });
-        $(function() {
+        // $(function() {
 
-            $('#eye').click(function() {
+        //     $('#eye').click(function() {
 
-                if ($(this).hasClass('fa-eye')) {
+        //         if ($(this).hasClass('fa-eye')) {
 
-                    $(this).removeClass('fa-eye');
+        //             $(this).removeClass('fa-eye');
 
-                    $(this).addClass('fa-eye');
-
-
+        //             $(this).addClass('fa-eye');
 
 
-                } else {
-
-                    $(this).removeClass('fa-eye');
-
-                    $(this).addClass('fa-eye');
 
 
-                }
-            });
-        });
+        //         } else {
+
+        //             $(this).removeClass('fa-eye');
+
+        //             $(this).addClass('fa-eye');
+
+
+        //         }
+        //     });
+        // });
         $(document).ready(function() {
             $("#news-slider").owlCarousel({
                 items: 4,

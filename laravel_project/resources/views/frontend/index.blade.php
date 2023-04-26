@@ -32,7 +32,7 @@
     <div class="container">
 
         <!-- Start hero section desktop view-->
-        <div class="row align-items-center justify-content-center text-center d-none d-md-flex">
+        <div class="row align-items-center justify-content-center text-center ">
 
             <div class="col-md-12">
                 <div class="row justify-content-center mb-1">
@@ -45,8 +45,8 @@
                     @include('frontend.partials.search.head')
                 </div>
                 <div class="row justify-content-center mt-5">
-                    <div class="col-md-6 text-center">
-                        <a href="{{ route('page.coaches') }}" class="btn btn-primary btn-lg btn-block rounded text-white" style="font-size:30px">
+                    <div class="col-md-10 col-lg-6 text-center">
+                        <a href="{{ route('page.coaches') }}" class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:30px">
                             {{ __('I want to find a great fit coach!') }}
                         </a>
                     </div>
@@ -81,7 +81,7 @@
     <div class="container">
 
         <!-- Start categories section desktop view-->
-        <div class="overlap-category mb-4 d-none d-md-block">
+        <div class="overlap-category mb-4">
             <div class="text-center">
                 <h2 class="font-weight-light text-primary">I'm looking for information that will help me with...</h2>
             </div>
@@ -138,7 +138,7 @@
         <!-- End categories section desktop view-->
 
         <!-- Start categories section mobile view-->
-        <div class="overlap-category-sm mb-4 d-md-none">
+        <div class="overlap-category-sm mb-4 d-none">
             <div class="row align-items-stretch no-gutters justify-content-center">
 
                 @if($categories_count > 0)
@@ -306,7 +306,7 @@
     </div>
 </div>
 
-<div class="site-section">
+<div class="site-section padding-top-8-bottom-2">
     <div class="container">
         <div class="row justify-content-center mb-5">
             <div class="col-md-7 text-center border-primary">
@@ -427,7 +427,7 @@
 </div>
 
 
-<div class="site-section bg-light">
+<div class="site-section bg-light ">
     <div class="container">
         <div class="row mb-5">
             <div class="col-md-7 text-left border-primary">
