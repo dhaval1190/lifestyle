@@ -187,7 +187,7 @@
 
                                     <div class="col-md-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" onkeypress="validatePostalCode(event)">
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>

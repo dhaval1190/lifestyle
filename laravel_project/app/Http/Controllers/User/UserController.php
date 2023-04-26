@@ -341,7 +341,7 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
+            $rules['post_code']             = ['required','regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/','max:10'];
             // $rules['user_image']            = ['nullable'];
             $rules['user_image']            = ['nullable',new Base64Image];
             $rules['user_cover_image']            = ['nullable',new Base64Image];

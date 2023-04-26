@@ -412,7 +412,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
-                                    <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $user->post_code) }}" onkeypress="validatePostalCode(event)">
+                                    <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $user->post_code) }}">
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>

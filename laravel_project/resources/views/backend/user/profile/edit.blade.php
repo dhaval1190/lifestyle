@@ -427,7 +427,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
-                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" onkeypress="validatePostalCode(event)">
+                                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
                                     @error('post_code')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>

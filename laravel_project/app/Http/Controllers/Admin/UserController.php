@@ -200,7 +200,7 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
+            $rules['post_code']             = ['required','regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/','max:10'];
             $rules['user_image']            = ['nullable'];
 
             $rulesMessage['is_coach.required']  = 'Invalid Coach Creation!';
@@ -435,7 +435,7 @@ class UserController extends Controller
             $rules['country_id']            = ['required'];
             $rules['state_id']              = ['required'];
             $rules['city_id']               = ['required'];
-            $rules['post_code']             = ['required','numeric','digits_between:1,15'];
+            $rules['post_code']             = ['required','regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/','max:10'];
             $rules['user_image']            = ['nullable'];
             $rules['phone']                     = ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:20'];
 
