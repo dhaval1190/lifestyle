@@ -449,6 +449,8 @@ class RegisterController extends Controller
     public function coachSignUp(Request $request)
     {
 
+        // return response()->json(['dataaaaa'=>$request->all()]);
+
         if($request->email){
             $sel_user = User::where('email',$request->email)->first();
             if($sel_user){
@@ -464,6 +466,7 @@ class RegisterController extends Controller
             'email' =>  'required|email',         
             // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
+            'check_agreement' => 'required',
             
         ],[            
             'name.required' => 'Name is required',
@@ -474,7 +477,8 @@ class RegisterController extends Controller
             'email.email'       => "Invalid email format",           
             'password.required'=> 'Password is required',
             'password.min'=> 'Password must at least 8 chars',
-            'password.regex'=> 'Password must contains letter,number,special chars',            
+            'password.regex'=> 'Password must contains letter,number,special chars',  
+            'check_agreement.required' => 'Please accept content creator agreement'          
 
         ]);
 

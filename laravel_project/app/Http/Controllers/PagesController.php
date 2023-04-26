@@ -223,13 +223,25 @@ class PagesController extends Controller
          * End initial blade view file path
          */
 
+         $user_accept_agreement_date= 0;
+         $agreement_updated_date = 0;
+         $setting_agreement_data = Setting::select('setting_page_agreement_text','setting_page_agreement_updated_date')->first();
+
+         if(isset(Auth::user()->is_terms_read_date)){
+             $user_accept_agreement_date = strtotime(Auth::user()->is_terms_read_date);
+             $agreement_updated_date = strtotime($setting_agreement_data->setting_page_agreement_updated_date);
+         }
+        //  dd(gettype($setting_agreement_data));
+         
+
+
         return response()->view($theme_view_path . 'index',
             compact('categories', 'paid_items', 'popular_items', 'latest_items',
                 'all_testimonials', 'recent_blog',
                 'site_homepage_header_background_type', 'site_homepage_header_background_color',
                 'site_homepage_header_background_image', 'site_homepage_header_background_youtube_video',
                 'site_homepage_header_title_font_color', 'site_homepage_header_paragraph_font_color',
-                'site_prefer_country_id'));
+                'site_prefer_country_id','user_accept_agreement_date','agreement_updated_date','setting_agreement_data'));
     }
 
     public function search(Request $request)
@@ -7879,12 +7891,14 @@ class PagesController extends Controller
             session(['referrer' => $request->query('ref')]);
         }
 
+        $agreement_data = Setting::select('setting_page_agreement_text','setting_page_agreement_updated_date')->first();
+
         
         return response()->view($theme_view_path . '.auth.signUp',compact('social_login_facebook', 'social_login_google',
         'social_login_twitter', 'social_login_linkedin', 'social_login_github',
         'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
         'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
-        'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color'));
+        'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color','agreement_data'));
     }
 
     public function termsOfService(Request $request)
@@ -8381,7 +8395,9 @@ class PagesController extends Controller
     public function ajaxTermsSave()
     {
         $login_user = Auth::user();
-        User::where('id', $login_user->id)->update(['is_terms_read' => 1]);
+        $mytime = \Carbon\Carbon::now();
+        $cur_date_time =  $mytime->toDateTimeString();
+        User::where('id', $login_user->id)->update(['is_terms_read' => 1,'is_terms_read_date'=> $cur_date_time ]);
 
         return 1;
     }

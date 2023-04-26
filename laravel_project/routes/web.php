@@ -367,6 +367,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::get('/settings/terms-of-service', 'SettingController@editTermsOfServicePageSetting')->name('settings.page.terms-service.edit');
         Route::post('/settings/terms-of-service', 'SettingController@updateTermsOfServicePageSetting')->name('settings.page.terms-service.update');
 
+        // setting agreement page
+        Route::get('/settings/agreement', 'SettingController@agreementPageSetting')->name('settings.page.agreement');
+        Route::post('/settings/agreement', 'SettingController@updateAgreementPageSetting')->name('settings.page.agreement.update');
+
         // setting privacy-policy page
         Route::get('/settings/privacy-policy', 'SettingController@editPrivacyPolicyPageSetting')->name('settings.page.privacy-policy.edit');
         Route::post('/settings/privacy-policy', 'SettingController@updatePrivacyPolicyPageSetting')->name('settings.page.privacy-policy.update');

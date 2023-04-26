@@ -320,6 +320,54 @@ class SettingController extends Controller
             compact('all_page_terms_of_service_settings'));
     }
 
+    public function agreementPageSetting(Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.backend.admin.setting.terms-service-page', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        $agreement_data = Setting::select('setting_page_agreement_text','setting_page_agreement_updated_date')->first();
+        $last_update_date = explode(" ",$agreement_data->setting_page_agreement_updated_date)[0];
+
+
+        return response()->view('backend.admin.setting.agreement.agreement',compact('agreement_data','last_update_date'));
+    }
+
+    public function updateAgreementPageSetting(Request $request)
+    {
+
+        // dd($request->all());
+        
+        $mytime = \Carbon\Carbon::now();
+        $cur_date_time =  $mytime->toDateTimeString();
+        $date = date('Y-m-d');
+        // $date = date("Y-m-d", strtotime("-2 day"));
+        // dd($date);
+        // echo $request->last_update_date.' '.$date;exit;
+        $new_setting_page_agreement = str_replace($request->last_update_date,$date,$request->setting_page_agreement);
+        $new_1_setting_page_agreement = str_replace("Date: ".$request->last_update_date,$date,$new_setting_page_agreement);
+        // echo "Date: ".$request->last_update_date;exit;
+
+        $setting = Setting::findOrFail(1);
+        $setting->setting_page_agreement_text = $new_1_setting_page_agreement;
+        $setting->setting_page_agreement_updated_date = $cur_date_time;
+        $setting->save();
+
+        $agreement_updated_date = $setting->setting_page_agreement_updated_date;
+
+        return redirect()->route('admin.settings.page.agreement',compact('agreement_updated_date'));
+
+    }
+
     public function updateTermsOfServicePageSetting(Request $request)
     {
         $request->validate([

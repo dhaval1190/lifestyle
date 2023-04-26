@@ -185,6 +185,7 @@
                     <a class="collapse-item" href="{{ route('admin.settings.page.about.edit') }}">{{ __('backend.sidebar.about') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.page.privacy-policy.edit') }}">{{ __('backend.sidebar.privacy-policy') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.page.terms-service.edit') }}">{{ __('backend.sidebar.terms-of-service') }}</a>
+                    <a class="collapse-item" href="{{ route('admin.settings.page.agreement') }}">{{ __('Agreement') }}</a>
                 </div>
             </div>
         </li>
