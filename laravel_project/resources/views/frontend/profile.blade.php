@@ -233,7 +233,8 @@
                                         </p>
                                         <div class="details">
                                             <div class="detail one">
-                                                <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="">
+                                                <!-- <img src="{{ asset('frontend/images/bag-one.svg') }}" alt=""> -->
+                                                <img src="{{ asset('frontend/images/bag.svg') }}" alt="">
                                                 <p>{{ $user_detail['company_name'] }}</p>
                                             </div>
                                             <div class="detail two">
