@@ -483,22 +483,22 @@ class RegisterController extends Controller
         ]);
 
         $settings = app('site_global_settings');
-        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
-        {
-            config_smtp(
-                $settings->settings_site_smtp_sender_name,
-                $settings->settings_site_smtp_sender_email,
-                $settings->settings_site_smtp_host,
-                $settings->settings_site_smtp_port,
-                $settings->settings_site_smtp_encryption,
-                $settings->settings_site_smtp_username,
-                $settings->settings_site_smtp_password
-            );
-        }
+        // if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        // {
+        //     config_smtp(
+        //         $settings->settings_site_smtp_sender_name,
+        //         $settings->settings_site_smtp_sender_email,
+        //         $settings->settings_site_smtp_host,
+        //         $settings->settings_site_smtp_port,
+        //         $settings->settings_site_smtp_encryption,
+        //         $settings->settings_site_smtp_username,
+        //         $settings->settings_site_smtp_password
+        //     );
+        // }
 
-        if(!empty($settings->setting_site_name)) {
-            config(['app.name' => $settings->setting_site_name]);
-        }
+        // if(!empty($settings->setting_site_name)) {
+        //     config(['app.name' => $settings->setting_site_name]);
+        // }
 
         if($validator->passes()){
             try {
@@ -507,6 +507,11 @@ class RegisterController extends Controller
             } catch (\Exception $e) {
                 Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
             }
+
+            $mytime = \Carbon\Carbon::now();
+            $cur_date_time =  $mytime->toDateTimeString();
+            User::where('id', $user->id)->update(['is_terms_read' => 1,'is_terms_read_date'=> $cur_date_time ]);
+            
             $this->guard()->login($user);
             return $this->registered($request, $user)
                 ? response()->json(['status'=>"success",'data'=>$request->input()]) : redirect($this->redirectPath());

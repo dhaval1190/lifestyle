@@ -44,8 +44,8 @@ class Item extends Model implements ReviewRateable
     const ITEM_REVIEW_APPROVED = 1;
     const ITEM_REVIEW_PENDING = 0;
 
-    const ITEM_TOTAL_SHOW_CATEGORY = 4;
-    const ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE = 2;
+    const ITEM_TOTAL_SHOW_CATEGORY = 5;
+    const ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE = 5;
 
     const ITEM_RATING_SORT_BY_NEWEST = 1;
     const ITEM_RATING_SORT_BY_OLDEST = 2;

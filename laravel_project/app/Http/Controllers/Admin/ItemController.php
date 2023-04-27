@@ -1173,7 +1173,7 @@ class ItemController extends Controller
             'item_hour_time_zone' => 'required|max:255',
             'item_hour_show_hours' => 'required|numeric|in:1,2',
             'item_social_instagram' => 'nullable|max:255',
-            'item_social_whatsapp' => 'nullable|numeric',
+            'item_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
 
         $request->validate($validate_rule);
