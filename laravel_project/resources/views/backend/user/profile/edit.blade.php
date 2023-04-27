@@ -354,6 +354,7 @@ $chk_post = Auth::user()->phone;
                                     <label for="youtube" class="text-black">Youtube</label>
                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
                                     <span class="err_youtube_url" style="color:red"></span>
+                                    <span class="youtube_error" style="color:red"></span>
                                     <small id="linkHelpBlock" class="form-text text-muted">
                                         {{ __('Only youtube URL allowed (include http:// or https://)') }}
                                     </small>
@@ -1172,7 +1173,7 @@ $chk_post = Auth::user()->phone;
                         image_crop.croppie('bind', {
                             url: event.target.result
                         }).then(function(){
-                            console.log('jQuery bind complete');
+                            // console.log('jQuery bind complete');
                         });
                     };
                     reader.readAsDataURL(this.files[0]);
@@ -1230,7 +1231,7 @@ $chk_post = Auth::user()->phone;
                         cover_image_crop.croppie('bind', {
                             url: event.target.result
                         }).then(function(){
-                            console.log('jQuery bind complete');
+                            // console.log('jQuery bind complete');
                         });
                     };
                     reader.readAsDataURL(this.files[0]);
@@ -1268,7 +1269,7 @@ $chk_post = Auth::user()->phone;
                     url: ajax_url,
                     method: 'post',
                     success: function(result){
-                        console.log(result);
+                        // console.log(result);
 
                         $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}");
                         $('#feature_image').val("");
@@ -1291,7 +1292,7 @@ $chk_post = Auth::user()->phone;
                     url: ajax_url,
                     method: 'post',
                     success: function(result){
-                        console.log(result);
+                        // console.log(result);
 
                         $('#image_preview').attr("src", "{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}");
                         $('#feature_image').val("");
@@ -1409,23 +1410,39 @@ $chk_post = Auth::user()->phone;
             }            
 
             var youtubeUrl = $("#media_url").val();
+            // console.log(youtubeUrl);
             var matchUrl = ".youtube";
             var matchUrl1 = "youtu.be";
-            if(youtubeUrl.indexOf(matchUrl) == -1 && youtubeUrl.indexOf(matchUrl1) == -1){
+            var matchUrl2 = "channel";
+            
+            if(youtubeUrl.indexOf(matchUrl) == -1 && youtubeUrl.indexOf(matchUrl1) == -1 && youtubeUrl.indexOf(matchUrl3) > -1){
                 $('.err_media_url').html("Please enter Youtube URL Only");
                 return false;
             }
 
-            if(youtubeUrl.indexOf(matchUrl) > -1){
-                var id = youtubeUrl.split("?v=")[1];
-                var media_url = "https://www.youtube.com/embed/" + id;
+            if(youtubeUrl.indexOf(matchUrl) > -1 || youtubeUrl.indexOf(matchUrl1) > -1){
+                if(youtubeUrl.indexOf('embed') > -1){
+                    $('.err_media_url').html("Please enter proper youtube URL");
+                    return false;
+                }else{
+                    if(youtubeUrl.indexOf(matchUrl) > -1 && youtubeUrl.indexOf(matchUrl2) == -1){
+                        var id = youtubeUrl.split("?v=")[1];
+                        var media_url = "https://www.youtube.com/embed/" + id;
+        
+                    }else if(youtubeUrl.indexOf(matchUrl1) > -1 && youtubeUrl.indexOf(matchUrl2) == -1){
+                        var id = youtubeUrl.split(".be/")[1];
+                        var media_url = "https://www.youtube.com/embed/" + id;
+                        
+                    }else if(youtubeUrl.indexOf(matchUrl2) > -1){
+                        $('.err_media_url').html("Please enter youtube video URL only");
+                        return false;
+                    }else{
+                        $('.err_media_url').html("Please enter proper youtube URL");
+                        return false;
+                    }
 
-            }else if(youtubeUrl.indexOf(matchUrl1) > -1){
-                var id = youtubeUrl.split(".be/")[1];
-                var media_url = "https://www.youtube.com/embed/" + id;
-            }else{
-                $('.err_media_url').html("Please enter proper youtube URL");
-                return false;
+                }
+
             }
 
 
@@ -1441,6 +1458,11 @@ $chk_post = Auth::user()->phone;
             $("#media_url").val('');
 
         });
+
+        $('#media_url').on('input',function(){
+            $('.err_media_url').text('');
+        });
+
         $('#facebook').on('input', function(){
                 $('.err_facebook_url').html('');
                 var facebookUrl = $("#facebook").val();

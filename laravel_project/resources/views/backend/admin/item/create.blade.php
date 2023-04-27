@@ -551,7 +551,7 @@
                                     </div>
 
                                     <div class="col-12 col-md-6">
-                                        <label for="item_hour_show_hours" class="text-black">{{ __('item_hour.show-open-hour') }}<span class="text-danger">*</span></label>
+                                        <label for="item_hour_show_hours" class="text-black">{{ __('item_hour.show-open-hour') }}</label>
                                         <select id="item_hour_show_hours" class="selectpicker form-control @error('item_hour_show_hours') is-invalid @enderror" name="item_hour_show_hours" data-live-search="true">
                                             <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ old('item_hour_show_hours') == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('item_hour.show-hour') }}</option>
                                             <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ old('item_hour_show_hours') == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('item_hour.not-show-hour') }}</option>
