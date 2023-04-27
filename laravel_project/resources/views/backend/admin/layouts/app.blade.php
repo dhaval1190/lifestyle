@@ -138,12 +138,14 @@
             $("button").attr("disabled", true);
             return true;
         });
+        $(".form-control").removeClass("is-invalid");
 
     });
 
 </script>
 
 @yield('scripts')
+
 
 </body>
 

@@ -142,6 +142,7 @@
             if (!charStr.match(/^[0-9]+$/))
                 e.preventDefault();
         }
+        $(".form-control").removeClass("is-invalid");
 </script>
 
 </body>
