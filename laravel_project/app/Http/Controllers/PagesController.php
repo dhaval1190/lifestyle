@@ -158,7 +158,7 @@ class PagesController extends Controller
             $longitude = $settings->setting_site_location_lng;
         }
 
-        $popular_items = Item::join('users', 'users.id', '=', 'items.user_id')->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
+        $popular_items = Item::join('users', 'users.id', '=', 'items.user_id')->selectRaw('items.*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$latitude, $longitude, $latitude])
             ->where('items.country_id', $site_prefer_country_id)
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->where('users.user_suspended', User::USER_NOT_SUSPENDED)
