@@ -310,7 +310,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <a href="javascript:;" class="show_more text-sm">{{ __('listings_filter.show-more') }}</a>
+                                <a href="javascript:void(0)" class="show_more text-sm">{{ __('listings_filter.show-more') }}</a>
                             </div>
                         </div>
                         <hr>
@@ -645,7 +645,7 @@
              */
             //this will execute on page load(to be more specific when document ready event occurs)
             @if(count($filter_categories) == 0)
-            if ($(".filter_category_div").length > 7)
+            if ($(".filter_category_div").length > 8)
             {
                 $(".filter_category_div:gt(7)").hide();
                 $(".show_more").show();
@@ -655,7 +655,7 @@
                 $(".show_more").hide();
             }
             @else
-            if ($(".filter_category_div").length > 7)
+            if ($(".filter_category_div").length > 8)
             {
                 $(".show_more").text("{{ __('listings_filter.show-less') }}");
                 $(".show_more").show();
