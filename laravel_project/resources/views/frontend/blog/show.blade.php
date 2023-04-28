@@ -157,7 +157,15 @@
                     @if(empty($data['post']->featured_image))
                         <div class="mb-3" style="min-height:627px;border-radius: 0.25rem;background-image:url({{ asset('frontend/images/placeholder/full_item_feature_image.webp') }});background-size:cover;background-repeat:no-repeat;background-position: center center;"></div>
                     @else
-                        <div class="mb-3" style="min-height:627px;border-radius: 0.25rem;background-image:url({{ url('laravel_project/public' . $data['post']->featured_image) }});background-size:cover;background-repeat:no-repeat;background-position: center center;"></div>
+                        <div class="mb-3" style="min-height:627px;border-radius: 0.25rem;background-image:url({{ url('laravel_project/public' . $data['post']->featured_image) }});background-size:cover;background-repeat:no-repeat;background-position: center center;">
+                        </div>
+                        @if(isset($data['post']->featured_image_caption))
+                            <div>
+                                <p>{{ $data['post']->featured_image_caption }}</p>
+                            </div>
+                        @endif
+
+                            
                     @endif
 
                         <hr/>
