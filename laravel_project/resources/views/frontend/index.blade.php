@@ -857,7 +857,9 @@
         }
 
         $('#nda_modal_content').scroll(function () {
-            if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()) {
+            console.log($(this).scrollTop(),$(this)[0].scrollHeight, $(this).height(),$(this)[0].scrollHeight - $(this).height());
+            // if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()) {
+            if ($(this).scrollTop() >= $(this)[0].scrollHeight - $(this).height()) {
                 $('.agree_class').removeAttr('disabled');
             }
         });

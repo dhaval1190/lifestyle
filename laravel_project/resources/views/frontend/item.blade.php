@@ -15,7 +15,17 @@
     @endif
     <!-- End Google reCAPTCHA version 2 -->
 @endsection
-
+<style>
+    .form-section{
+    display: none;
+    }
+    .form-section.current{
+        display: inline;
+    }
+    .parsley-errors-list{
+        color:red;
+    } 
+</style>
 @section('content')
 
     <!-- Display on xl -->
@@ -2985,7 +2995,7 @@
 
 
 <!--Start call modal -->
-<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal" aria-hidden="true">
+<div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -2994,12 +3004,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-
-                
+            <div class="modal-body">                
                 <div class="row">
                     <div class="col-md-12">
-                        <p>{{ __('frontend.item.share-listing-email') }}</p>
+                        <h5>{{ __('frontend.item.share-listing-email') }}</h5>
+                        <p>{{ __('Please answer the following question so this coach can determine if they are uniquely qualified to best help you and to better prepare them for a potential initial conversation.') }}</p>
                         @if(!Auth::check())
                         <div class="row mb-2">
                             <div class="col-12">
@@ -3009,62 +3018,108 @@
                             </div>
                         </div>
                         @endif
-                        <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST" name="contactFormModal" id="contactFormModal">
+                        <div class="nav nav-fill my-3">
+                            <label class="nav-link shadow-sm step0   border ml-2 ">Step One</label>
+                            <label class="nav-link shadow-sm step1   border ml-2 " >Step Two</label>
+                            <label class="nav-link shadow-sm step2   border ml-2 " >Step Three</label>
+                            <label class="nav-link shadow-sm step3   border ml-2 " >Step Four</label>
+                            <label class="nav-link shadow-sm step4   border ml-2 " >Step Five</label>
+                            <label class="nav-link shadow-sm step5   border ml-2 " >Step Six</label>
+                        </div>
+                        <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
                             @csrf
                             <input type="hidden" name="userId" value = "{{ $item->user_id }}">
                             <input type="hidden" name="articleTitle" value = "{{ $item->item_title }}">
                             <input type="hidden" name="authUserId" value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
-                            <div class="form-row mb-3">
-                                <div class="col-md-6">
-                                    <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
-                                    <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                    <p class="name_error error_color" role="alert"></p>
-                                    @error('item_conntact_email_name')
-                                    <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
-                                    <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                    <p class="email_error error_color" role="alert"></p>
-                                    @error('item_contact_email_from_email')
-                                    <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                {{-- <div class="col-md-4">
-                                    <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}</label>
-                                    <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
-                                    @error('item_share_email_to_email')
-                                    <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div> --}}
-                            </div>
-                            <div class="form-row mb-3">
+                            <div class="form-section">
                                 <div class="col-md-12">
-                                    <label for="item_contact_email_note" class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
-                                    <textarea class="form-control @error('item_contact_email_note') is-invalid @enderror" id="item_contact_email_note" rows="3" name="item_contact_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_contact_email_note') }}</textarea>
-                                    <p class="note_error error_color" role="alert"></p>
-                                    @error('item_contact_email_note')
-                                    <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
+                                            <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            <p class="name_error error_color" role="alert"></p>
+                                            @error('item_conntact_email_name')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
+                                            <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            <p class="email_error error_color" role="alert"></p>
+                                            @error('item_contact_email_from_email')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="Question 1"
+                                            class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span class="text-danger">*</span></label>
+                                        <textarea class="form-control @error('question1') is-invalid @enderror" id="question1"
+                                            rows="3" name="question1" required {{ Auth::check() ? '' : 'disabled' }}>{{ old('question1') }}</textarea>
+                                            <p class="note_error error_color" role="alert"></p>
+                                        @error('question1')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>                                    
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-section col-md-12">
+                                    <label for="Question 2">{{ __('2.What type of traits are important to you when selecting a coach?') }}<span class="text-danger">*</span></label>
+                                    <textarea name="question2" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-section col-md-12 ">                                            
+                                    <label for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span class="text-danger">*</span></label>
+                                    <textarea name="question3" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-section col-md-12 ">                                            
+                                    <label for="Question 4">{{ __('4.On a sale of 1-10 how structured do you want your coaching experience?') }}<span class="text-danger">*</span></label><br>
+                                    <input type="radio" id="question4" name="question4" value="1" required><label for="question4"> 1</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="2" required><label for="question4"> 2</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="3" required><label for="question4"> 3</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="4" required><label for="question4"> 4</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="5" required><label for="question4"> 5</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="6" required><label for="question4"> 6</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="7" required><label for="question4"> 7</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="8" required><label for="question4"> 8</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="9" required><label for="question4"> 9</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="10" required><label for="question4"> 10</label><br>                                            
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-section col-md-12 ">                                            
+                                    <label for="Question 5">{{ __('5.What will change in your life to let you know you made a good investment?') }}<span class="text-danger">*</span></label>
+                                    <textarea name="question5" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-section col-md-12 ">                                            
+                                    <label for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span class="text-danger">*</span></label>
+                                    <textarea name="question6" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                </div>
+                            </div>                            
                             <div class="form-row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
-                                        {{ __('frontend.item.send-email') }}
-                                    </button>
+                                <div class="col-md-12 form-navigation">
+                                    @if(Auth::check())
+                                        <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>
+                                        <button type="button" class="next btn btn-primary float-right mt-2">Next &gt;</button>
+                                        <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2" {{ Auth::check() ? '' : 'disabled' }}>
+                                            {{ __('frontend.item.send-email') }}
+                                        </button>
+                                    @endif
                                     <span class="please_wait">Please Wait..</span>
                                         @if(!Auth::user())
-                                            <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
+                                            <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
                                                 {{ __('Login') }}                                            
                                             </a>
                                         @endif 
@@ -3321,6 +3376,9 @@
 
     <script src="{{ asset('frontend/vendor/jquery-qrcode/jquery-qrcode-0.18.0.min.js') }}"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <!-- start for contact us stepper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- end for contact us stepper -->
     
   <script>
     $(document).ready(function() {
@@ -3364,7 +3422,7 @@
                     },
 
                     success: function(response) {
-                        // console.log(response);
+                        console.log(response);
                         if (response.status == 'success') {
                             // console.log(response)
                             $(".error_color").text("");
@@ -3884,5 +3942,53 @@
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js??v=quarterly&key={{ $site_global_settings->setting_site_map_google_api_key }}&callback=initMap"></script>
     @endif
+    <script>
+        $(function(){
+            var $sections=$('.form-section');
+
+            function navigateTo(index){
+                $sections.removeClass('current').eq(index).addClass('current');
+
+                $('.form-navigation .previous').toggle(index>0);
+                var atTheEnd = index >= $sections.length - 1;
+                $('.form-navigation .next').toggle(!atTheEnd);
+                $('.form-navigation [Type=submit]').toggle(atTheEnd);
+        
+                const step= document.querySelector('.step'+index);
+                // console.log(step);
+                step.style.backgroundColor="#17a2b8";
+                step.style.color="white";
+            }
+
+            function curIndex(){
+                return $sections.index($sections.filter('.current'));
+            }
+
+            $('.form-navigation .previous').click(function(){
+                navigateTo(curIndex() - 1);
+            });
+
+            $('.form-navigation .next').click(function(){
+                $('.contact-coach-form').parsley().whenValidate({
+                    group:'block-'+curIndex()
+                }).done(function(){
+                    navigateTo(curIndex()+1);
+                });
+
+            });
+
+            $sections.each(function(index,section){
+                $(section).find(':input').attr('data-parsley-group','block-'+index);
+            });
+
+            navigateTo(0);
+
+        });
+    </script>
+    <script>
+        $("#contact-modal").on("hidden.bs.modal", function() {
+            $("#contactFormModal").trigger("reset");
+        })
+    </script>
 
 @endsection

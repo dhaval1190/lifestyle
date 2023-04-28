@@ -354,7 +354,7 @@ class SettingController extends Controller
         // dd($date);
         // echo $request->last_update_date.' '.$date;exit;
         $new_setting_page_agreement = str_replace($request->last_update_date,$date,$request->setting_page_agreement);
-        $new_1_setting_page_agreement = str_replace("Date: ".$request->last_update_date,$date,$new_setting_page_agreement);
+        $new_1_setting_page_agreement = str_replace("Date: ".$request->last_update_date,"Date: ".$date,$new_setting_page_agreement);
         // echo "Date: ".$request->last_update_date;exit;
 
         $setting = Setting::findOrFail(1);

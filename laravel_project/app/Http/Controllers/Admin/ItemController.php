@@ -936,8 +936,12 @@ class ItemController extends Controller
         //     }
         // }
 
-        $printable_categories = new Category();
-        $all_categories = $printable_categories->getPrintableCategoriesNoDash();
+        // $printable_categories = new Category();
+        // $all_categories = $printable_categories->getPrintableCategoriesNoDash();
+        $all_categories = [];
+        if($item_owner->categories->count() > 0) {
+                $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+        }
         // print_r($all_categories);exit;
 
 
@@ -1127,8 +1131,9 @@ class ItemController extends Controller
     public function getCoachCategoriesList(Request $request, User $coach)
     {
         if($coach->isAdmin()) {
-            $all_categories = new Category();
-            $all_categories = $all_categories->getPrintableCategories();
+            $printable_categories = new Category();
+            // $all_categories = $all_categories->getPrintableCategories();
+            $all_categories = $printable_categories->getPrintableCategoriesNoDash();
         } else {
             $all_categories = [];
             if($coach->categories->count() > 0) {

@@ -938,6 +938,8 @@ class ArticleController extends Controller
                 $all_categories = $item_owner->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
             }
 
+            // print_r($all_categories);exit;
+
         /**
          * Start initial country, state, city selector
          */

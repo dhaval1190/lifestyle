@@ -6752,7 +6752,9 @@ class PagesController extends Controller
     }
 
     public function contactEmail(string $item_slug, Request $request)
-    {       
+    {     
+        
+        // return response()->json(['status'=>"successssssss",'msg'=>$request->all()]);
         $user = User::where('id',$request->userId)->first();
         $settings = app('site_global_settings');
 
@@ -6773,11 +6775,21 @@ class PagesController extends Controller
                 $validator = Validator::make($request->all(),[
                     'item_conntact_email_name' => 'required|max:255',
                     'item_contact_email_from_email' => 'required|email|max:255',
-                    'item_contact_email_note' => 'required|max:255',
+                    'question1' => 'required|max:255',
+                    'question2' => 'required|max:255',
+                    'question3' => 'required|max:255',
+                    'question4' => 'required|max:255',
+                    'question5' => 'required|max:255',
+                    'question6' => 'required|max:255',
                 ],[
                     'item_conntact_email_name.required' => 'Name is required',
                     'item_contact_email_from_email.required' => 'Email is required',
-                    'item_contact_email_note.required' => 'Note field is required'
+                    'question1.required' => 'Question 1 field is required',
+                    'question2.required' => 'Question 2 field is required',
+                    'question3.required' => 'Question 3 field is required',
+                    'question4.required' => 'Question 4 field is required',
+                    'question5.required' => 'Question 5 field is required',
+                    'question6.required' => 'Question 6 field is required',
                 ]);
 
                 // return response()->json(['status'=>"success",'msg'=>$request->all()]);
@@ -6786,12 +6798,22 @@ class PagesController extends Controller
                 {
                     $authUser = User::where('id',$request->authUserId)->first();
 
+                    DB::table('contact_coach')->insert([
+                        'name' => $request->item_conntact_email_name,
+                        'email' => $request->item_contact_email_from_email,
+                        'question1' =>  $request->question1,
+                        'question2' =>  $request->question2,
+                        'question3' =>  $request->question3,
+                        'question4' =>  $request->question4,
+                        'question5' =>  $request->question5,
+                        'question6' =>  $request->question6,
+                    ]);
                     // send an email notification to admin
                         if($request->contact_profile){
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;                    
-                            $email_note = $request->item_contact_email_note;
+                            // $email_note = $request->question1."<br>".$request->question2."<br>".$request->question3."<br>".$request->question4."<br>".$request->question5."<br>".$request->question6;
                             $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
 
                             if($authUser->role_id == 3){
@@ -6806,8 +6828,20 @@ class PagesController extends Controller
                                 $from_name_abd_url,
                                 __('frontend.item.send-email-from-name',['name' => $email_from_name]),
                                 __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
-                                __('frontend.item.send-email-contact-note'),
-                                $email_note,
+                                // __('Questions/Answers'),
+                                // $email_note,
+                                __('1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                $request->question1,
+                                __('2. What type of traits are important to you when selecting a coach?'),
+                                $request->question2,
+                                __('3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                $request->question3,
+                                __('4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                $request->question4,
+                                __('5. What will change in your life to let you know you made a good investment?'),
+                                $request->question5,
+                                __('6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                $request->question6,
                             ];
 
 
@@ -6816,16 +6850,36 @@ class PagesController extends Controller
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;
                             $articleTitle = $request->articleTitle;
-                            $email_note = $request->item_contact_email_note;
+                            // $email_note = $request->item_contact_email_note;
                             $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
 
+                            if($authUser->role_id == 3){
+                                $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                            }else{
+                                $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
+                            }
+
                             $email_notify_message = [
-                                __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                                $from_name_abd_url,
                                 __('frontend.item.send-email-from-name',['name' => $email_from_name]),
                                 __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
                                 __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
-                                __('frontend.item.send-email-contact-note'),
-                                $email_note,
+                                // __('frontend.item.send-email-contact-note'),
+                                // $email_note,
+                                __('1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                $request->question1,
+                                __('2. What type of traits are important to you when selecting a coach?'),
+                                $request->question2,
+                                __('3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                $request->question3,
+                                __('4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                $request->question4,
+                                __('5. What will change in your life to let you know you made a good investment?'),
+                                $request->question5,
+                                __('6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                $request->question6,
                             ];
                         }
 
