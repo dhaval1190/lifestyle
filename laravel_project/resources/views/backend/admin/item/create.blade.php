@@ -173,7 +173,7 @@
                                     <div class="col-md-12">
                                         <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
                                         {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
-                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
+                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" id="input_category_id" multiple>
                                             @foreach($all_categories as $key => $category)
                                                 @php
                                                     if(empty($category["is_parent"])) continue;
@@ -1121,6 +1121,7 @@
 
 
             $('#user_id').on('change', function() {
+                // console.log("dkslkdlsk");
 
                 $('#input_category_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#input_category_id').selectpicker('refresh');
@@ -1140,6 +1141,7 @@
                         data: {
                         },
                         success: function(result){
+                            // console.log(result)
                             $('#input_category_id').empty();
                             $.each(result, function(key, value) {
                                 var category_id = value.id;
