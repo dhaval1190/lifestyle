@@ -57,7 +57,8 @@
         <!-- End hero section desktop view-->
 
         <!-- Start hero section mobile view-->
-        <div class="row align-items-center justify-content-center text-center d-md-none mt-5">
+        {{-- <div class="row align-items-center justify-content-center text-center d-md-none mt-5"> --}}
+            <div class="row align-items-center justify-content-center text-center d-none mt-5">
 
             <div class="col-md-12">
                 <div class="row justify-content-center mb-1">

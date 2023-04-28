@@ -329,7 +329,8 @@
                     @endguest
 
                     @if(!empty($item->item_phone))
-                    <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a>
+                    {{-- <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a> --}}
+                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
                     @endif
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
                 </div>
@@ -470,7 +471,7 @@
                             </form>
                         @endif
                     @endguest
-                    <!-- <a class="btn btn-primary btn-sm rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
+                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
                 </div>
             </div>
         </div>
@@ -767,7 +768,7 @@
 
                     <!-- start item section after gallery -->
                     @if($item_sections_after_gallery->count() > 0)
-                        <div class="row mb-3">
+                        <div class="row mb-3 padding-set-sm">
                             <div class="col-12">
                                 @foreach($item_sections_after_gallery as $item_sections_after_gallery_key => $after_gallery_section)
                                     <h4 class="h5 mb-4 text-black">{{ $after_gallery_section->item_section_title }}</h4>
@@ -931,7 +932,7 @@
 
                     <!-- start item section after description -->
                     @if($item_sections_after_description->count() > 0)
-                        <div class="row mb-3">
+                        <div class="row mb-3 padding-set-sm">
                             <div class="col-12">
                                 @foreach($item_sections_after_description as $item_sections_after_description_key => $after_description_section)
                                     <h4 class="h5 mb-4 text-black">{{ $after_description_section->item_section_title }}</h4>
