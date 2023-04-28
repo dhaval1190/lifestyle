@@ -100,7 +100,7 @@
                                     <form action="{{ route('page.search') }}">
 
                                         <input type="text" class="form-control rounded" id="search_query" name="search_query" value="{{ $search_query }}" placeholder="{{ __('categories.search-query-placeholder') }}">
-                                        <div class="col-lg-12 col-xl-2 ml-auto">
+                                        <div class="col-lg-12 col-xl-2 ml-auto margin-top-set-w-100-lg">
                                             <input type="submit" class="btn btn-primary btn-block rounded text-white" value="{{ __('frontend.search.search') }}">
                                         </div>
                                     </form>
@@ -109,11 +109,11 @@
                         </div>
                         <hr>
 
-                        <div class="row form-group align-items-center">
+                        <div class="row form-group align-items-center form-margin-zero-set-md">
                             {{-- <div class="col-12 col-md-2">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
-                            <div class="col-12 col-md-3 pl-3">
+                            <div class="col-12 col-md-3 pl-3  padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
@@ -127,7 +127,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-md-3 padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror" name="filter_preferred_pronouns" id="filter_preferred_pronouns">
                                     <option value="0" {{ empty($filter_preferred_pronouns) ? 'selected' : '' }}>Any Preferred Pronouns</option>
                                     {{-- <option value="male" {{ $filter_gender_type == "male" ? 'selected' : '' }}>Male</option>
@@ -148,7 +148,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-3  padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_working_type') is-invalid @enderror" name="filter_working_type" id="filter_working_type">
                                     <option value="0" {{ empty($filter_working_type) ? 'selected' : '' }}>Any Session Type</option>
                                     <option value="person-to-person" {{ $filter_working_type == "person-to-person" ? 'selected' : '' }}>Person-to-Person</option>
@@ -161,7 +161,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-3  padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
                                     <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>Any Price Range</option>
                                     <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
@@ -177,8 +177,8 @@
                             </div>                           
                             
                         </div>
-                        <div class="row form-group align-items-center">
-                            <div class="col-12 col-md-3 pl-3">                                    
+                        <div class="row form-group align-items-center form-margin-zero-set-md">
+                            <div class="col-12 col-md-3 pl-3 padding-top-set-sm-md">                                    
                                 <select class="selectpicker form-control @error('filter_country') is-invalid @enderror" name="filter_country" id="filter_country" data-live-search="true">
                                         <option value="0" {{ empty($filter_country) ? 'selected' : '' }}>{{ __('prefer_country.all-country') }}</option>
                                         @foreach($all_countries as $all_countries_key => $country)
@@ -191,7 +191,7 @@
                                     </span>
                                     @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-3">
+                            <div class="col-12 col-md-3 pl-3 padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_state') is-invalid @enderror" name="filter_state" id="filter_state" data-live-search="true">
                                     <option value="0" {{ empty($filter_state) ? 'selected' : '' }}>{{ __('prefer_country.all-state') }}</option>
                                     @foreach($all_states as $all_states_key => $state)
@@ -204,7 +204,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-3  padding-top-set-sm-md">
                                 <select class="selectpicker form-control @error('filter_city') is-invalid @enderror" name="filter_city" id="filter_city" data-live-search="true">
                                     <option value="0" {{ empty($filter_city) ? 'selected' : '' }}>{{ __('prefer_country.all-city') }}</option>
                                     @foreach($all_cities as $all_cities_key => $city)
@@ -226,7 +226,7 @@
                             @php
                                     if(empty($all_printable_category["is_parent"])) continue;
                                 @endphp
-                                <div class="col-6 col-sm-4 col-md-3">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <div class="form-check filter_category_div">
                                         <input {{ in_array($all_printable_category['category_id'], $filter_categories) ? 'checked' : '' }} name="filter_categories[]" class="form-check-input" type="checkbox" value="{{ $all_printable_category['category_id'] }}" id="filter_categories_{{ $all_printable_category['category_id'] }}">
                                         <label class="form-check-label" for="filter_categories_{{ $all_printable_category['category_id'] }}">
@@ -242,8 +242,10 @@
                             @endforeach
                         </div>
                         <div class="row">
-                            <div class="col-12 text-center">
+                            <div class="col-12">
+                                <div class="show_more_border">
                                 <a href="javascript:;" class="show_more text-sm">{{ __('listings_filter.show-more') }}</a>
+                                </div>
                             </div>
                         </div>
                         <hr>

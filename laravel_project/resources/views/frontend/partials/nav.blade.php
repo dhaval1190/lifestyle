@@ -15,7 +15,7 @@
         <div class="col-8 col-xl-2 pr-0 pl-0">
 
                 @if(empty($site_global_settings->setting_site_logo))
-                <h1 class="mb-0 site-logo">
+                <div class="site-logo">
                     <a href="{{ route('page.home') }}" class="text-black mb-0 customization-header-font-color decoration-none" style="font-size: 17px;">
                         @foreach(explode(' ', empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name) as $key => $word)
                             @if($key/2 == 0)
@@ -25,13 +25,13 @@
                             @endif
                         @endforeach
                     </a>
-                </h1>
+                </div>
                 @else
-                <h1 class="mb-0 mt-1 site-logo">
+                <div class="site-logo">
                     <a href="{{ route('page.home') }}" class="text-black mb-0">
                         <img src="{{ Storage::disk('public')->url('setting/' . $site_global_settings->setting_site_logo) }}">
                     </a>
-                </h1>
+                </div>
                 @endif
 
 
