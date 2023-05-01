@@ -60,7 +60,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 mb-5">
 
-                    <form method="POST" class="p-5 bg-white" name="signUpForm" id="signUpForm">
+                    <form method="POST" class="p-3 p-md-4 p-lg-5 bg-white" name="signUpForm" id="signUpForm">
                         @csrf
                         <div class="row mb-4">
                             <div class="col">

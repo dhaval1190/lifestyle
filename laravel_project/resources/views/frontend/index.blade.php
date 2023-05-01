@@ -261,7 +261,7 @@
 
                                         <div class="row align-items-center">
 
-                                            <div class="col-5 col-md-7 pr-0">
+                                            <div class="col-12 col-md-7 pr-0">
                                                 <div class="row align-items-center item-box-user-div">
                                                     <div class="col-3 item-box-user-img-div">
                                                         @if(empty($item->user->user_image))
@@ -381,7 +381,7 @@
 
                                 <div class="row mt-1 align-items-center">
 
-                                    <div class="col-5 col-md-7 pr-0">
+                                    <div class="col-12 col-md-7 pr-0">
                                         <div class="row align-items-center item-box-user-div">
                                             <div class="col-3 item-box-user-img-div">
                                                 @if(empty($item->user->user_image))
@@ -499,7 +499,7 @@
 
                                 <div class="row align-items-center">
 
-                                    <div class="col-5 col-md-7 pr-0">
+                                    <div class="col-12 col-md-7 pr-0">
                                         <div class="row align-items-center item-box-user-div">
                                             <div class="col-3 item-box-user-img-div">
                                                 @if(empty($item->user->user_image))
