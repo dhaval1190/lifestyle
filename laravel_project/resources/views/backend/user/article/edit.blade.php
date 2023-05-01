@@ -22,6 +22,14 @@
 @endsection
 
 @section('content')
+<style>
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        padding-left: 25px !important;
+    }
+    .ck.ck-editor__main>.ck-editor__editable{
+        padding-left: 25px !important;
+    }
+</style>
 
     <div class="row justify-content-between">
         <div class="col-9">
@@ -1856,39 +1864,54 @@
              * End open hour exception add button
              */
 
-            $('#article_description').trumbowyg({
-                plugins: {
-                    resizimg: {
-                        minSize: 32,
-                        step: 16,
+            // $('#article_description').trumbowyg({
+            //     plugins: {
+            //         resizimg: {
+            //             minSize: 32,
+            //             step: 16,
+            //         }
+            //     },
+            //     btnsDef: {
+            //         // Create a new dropdown
+            //         image: {
+            //             dropdown: ['insertImage', 'base64'],
+            //             ico: 'insertImage'
+            //         }
+            //     },
+            //     // Redefine the button pane
+            //     btns: [
+            //         // ['viewHTML'],
+            //         ['formatting'],
+            //         ['fontfamily'],
+            //         ['strong', 'em', 'del'],
+            //         ['superscript', 'subscript'],
+            //         ['foreColor', 'backColor'],
+            //         ['link','image','noembed'],
+            //         // ['table'],
+            //         ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            //         ['lineheight'],
+            //         ['indent', 'outdent'],
+            //         ['unorderedList', 'orderedList'],
+            //         ['horizontalRule'],
+            //         ['removeformat'],
+            //         ['fullscreen']
+            //     ]
+            // });
+
+            ClassicEditor
+                .create( document.querySelector( '#article_description' ),{
+                    removePlugins: ['MediaEmbed'],
+                    ckfinder:{
+                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
                     }
-                },
-                btnsDef: {
-                    // Create a new dropdown
-                    image: {
-                        dropdown: ['insertImage', 'base64'],
-                        ico: 'insertImage'
-                    }
-                },
-                // Redefine the button pane
-                btns: [
-                    // ['viewHTML'],
-                    ['formatting'],
-                    ['fontfamily'],
-                    ['strong', 'em', 'del'],
-                    ['superscript', 'subscript'],
-                    ['foreColor', 'backColor'],
-                    ['link','image','noembed'],
-                    // ['table'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                    ['lineheight'],
-                    ['indent', 'outdent'],
-                    ['unorderedList', 'orderedList'],
-                    ['horizontalRule'],
-                    ['removeformat'],
-                    ['fullscreen']
-                ]
-            });
+                } )
+                .then(editor => {
+                    // console.log(editor);
+                })
+                .catch( error => {
+			    // console.error( error );
+		    });
+            
 
         });
     </script>

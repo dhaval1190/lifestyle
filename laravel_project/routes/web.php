@@ -584,6 +584,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // Articles
         Route::resource('/articles', 'ArticleController')->middleware('check_coach_details');
         Route::post('/articles/bulk/delete', 'ArticleController@bulkDeleteItem')->name('articles.bulk.delete');
+        Route::post('/article/description_image','ArticleController@uploadArticleDescImage')->name('article.description.image');
 
         // Articles slug update route
         Route::put('/articles/{article}/slug/update', 'ArticleController@updateItemSlug')->name('article.slug.update');

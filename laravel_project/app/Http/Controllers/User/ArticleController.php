@@ -458,8 +458,12 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
 
-        if($request->article_social_instagram){
-            if(stripos($request->article_social_instagram,'.com') !== false || stripos($request->article_social_instagram,'http') !== false || stripos($request->article_social_instagram,'https') !== false || stripos($request->article_social_instagram,'www.') !== false || stripos($request->article_social_instagram,'//') !== false){   
+        $instagram_username = $request->article_social_instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         } 
@@ -582,7 +586,8 @@ class ArticleController extends Controller
         $item_social_facebook = $request->article_social_facebook;
         $item_social_twitter = $request->article_social_twitter;
         $item_social_linkedin = $request->article_social_linkedin;
-        $item_social_instagram = $request->article_social_instagram;
+        // $item_social_instagram = $request->article_social_instagram;
+        $item_social_instagram = $instagram_username;
         $item_keywords = $request->item_keywords;
         $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
@@ -1211,8 +1216,12 @@ class ArticleController extends Controller
             $validate_rule = array_merge($validate_rule, $custom_field_validation);
         }
 
-        if($request->article_social_instagram){
-            if(stripos($request->article_social_instagram,'.com') !== false || stripos($request->article_social_instagram,'http') !== false || stripos($request->article_social_instagram,'https') !== false || stripos($request->article_social_instagram,'www.') !== false || stripos($request->article_social_instagram,'//') !== false){   
+        $instagram_username = $request->article_social_instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         }
@@ -1322,7 +1331,7 @@ class ArticleController extends Controller
         $item_social_facebook = $request->article_social_facebook;
         $item_social_twitter = $request->article_social_twitter;
         $item_social_linkedin = $request->article_social_linkedin;
-        $item_social_instagram = $request->article_social_instagram;
+        $item_social_instagram = $instagram_username;
         $item_keywords = $request->item_keywords;
         $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
@@ -2732,6 +2741,19 @@ class ArticleController extends Controller
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.items.index', $request->query());
+    }
+
+    public function uploadArticleDescImage(Request $request)
+    {
+        if($request->hasFile('upload')){
+            
+            $filename = time().'.'.$request->file('upload')->extension();
+            $request->file('upload')->move('laravel_project/public/storage/article/',$filename);
+
+            $url = asset('laravel_project/public/storage/article/'.$filename);
+            return response()->json(['filename'=>$filename,'uploaded'=>1,'url'=>$url]);
+        }
+        
     }
 
     public function destroyItemHour(Request $request,$item_hour)

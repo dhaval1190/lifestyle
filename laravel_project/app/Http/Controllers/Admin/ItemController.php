@@ -408,8 +408,12 @@ class ItemController extends Controller
             'item_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
 
-        if($request->item_social_instagram){
-            if(stripos($request->item_social_instagram,'.com') !== false || stripos($request->item_social_instagram,'http') !== false || stripos($request->item_social_instagram,'https') !== false || stripos($request->item_social_instagram,'www.') !== false || stripos($request->item_social_instagram,'//') !== false){   
+        $instagram_username = $request->item_social_instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         } 
@@ -579,7 +583,8 @@ class ItemController extends Controller
         $item_social_facebook = $request->item_social_facebook;
         $item_social_twitter = $request->item_social_twitter;
         $item_social_linkedin = $request->item_social_linkedin;
-        $item_social_instagram = $request->item_social_instagram;
+        // $item_social_instagram = $request->item_social_instagram;
+        $item_social_instagram = $instagram_username;
         $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
 
         $item_hour_time_zone = $request->item_hour_time_zone;
@@ -1204,8 +1209,12 @@ class ItemController extends Controller
             $validate_rule = array_merge($validate_rule, $custom_field_validation);
         }
 
-        if($request->item_social_instagram){
-            if(stripos($request->item_social_instagram,'.com') !== false || stripos($request->item_social_instagram,'http') !== false || stripos($request->item_social_instagram,'https') !== false || stripos($request->item_social_instagram,'www.') !== false || stripos($request->item_social_instagram,'//') !== false){   
+        $instagram_username = $request->item_social_instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         }
@@ -1317,7 +1326,8 @@ class ItemController extends Controller
         $item_social_facebook = $request->item_social_facebook;
         $item_social_twitter = $request->item_social_twitter;
         $item_social_linkedin = $request->item_social_linkedin;
-        $item_social_instagram = $request->item_social_instagram;
+        // $item_social_instagram = $request->item_social_instagram;
+        $item_social_instagram = $instagram_username;
         $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
 
         $item_hour_time_zone = $request->item_hour_time_zone;

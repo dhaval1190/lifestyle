@@ -924,7 +924,8 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <h4 class="h5 mb-4 text-black" style="word-break: break-all;">{{ $item->item_title }}</h4>
-                            <p>{!! clean(nl2br($item->item_description), array('HTML.Allowed' => 'b,strong,i,em,u,ul,ol,li,p,br')) !!}</p>
+                            {{-- <p>{!! clean(nl2br($item->item_description), array('HTML.Allowed' => 'b,strong,i,em,u,ul,ol,li,p,br')) !!}</p> --}}
+                            <p>{!! html_entity_decode($item->item_description) !!}</p>
                             <hr>
                         </div>
                     </div>

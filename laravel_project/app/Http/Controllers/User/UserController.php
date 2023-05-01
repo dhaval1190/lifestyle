@@ -360,8 +360,12 @@ class UserController extends Controller
             $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         }
 
-        if($request->instagram){
-            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
+        $instagram_username = $request->instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$request->instagram)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         }         
@@ -464,7 +468,8 @@ class UserController extends Controller
             $login_user->availability         = isset($input['availability']) ? $input['availability'] : null;
 
             $login_user->website              = isset($input['website']) ? $input['website'] : null;
-            $login_user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+            // $login_user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+            $login_user->instagram            = isset($input['instagram']) ? $instagram_username : null;
             $login_user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
             $login_user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
             // $login_user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;
