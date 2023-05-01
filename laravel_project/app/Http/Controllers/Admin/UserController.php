@@ -213,8 +213,12 @@ class UserController extends Controller
             $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
         }
 
-        if($request->instagram){
-            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
+        $instagram_username = $request->instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         }         
@@ -451,8 +455,12 @@ class UserController extends Controller
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
         }
 
-        if($request->instagram){
-            if(stripos($request->instagram,'.com') !== false || stripos($request->instagram,'http') !== false || stripos($request->instagram,'https') !== false || stripos($request->instagram,'www.') !== false || stripos($request->instagram,'//') !== false){   
+        $instagram_username = $request->instagram;
+        if($instagram_username){
+            if(stripos($instagram_username,'@') !== false){   
+                $instagram_username = explode('@',$instagram_username)[1];
+            }
+            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
                 return back()->with('instagram_error','Please enter valid instagram user name Only');
             }
         }         
@@ -528,7 +536,8 @@ class UserController extends Controller
         $user->availability         = isset($input['availability']) ? $input['availability'] : null;
 
         $user->website              = isset($input['website']) ? $input['website'] : null;
-        $user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+        // $user->instagram            = isset($input['instagram']) ? $input['instagram'] : null;
+        $user->instagram            = isset($input['instagram']) ? $instagram_username : null;
         $user->linkedin             = isset($input['linkedin']) ? $input['linkedin'] : null;
         $user->facebook             = isset($input['facebook']) ? $input['facebook'] : null;
         // $user->youtube              = isset($input['youtube']) ? $input['youtube'] : null;

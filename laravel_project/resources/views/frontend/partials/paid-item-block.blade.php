@@ -73,7 +73,7 @@
                         <div class="row pb-1">
                             <div class="col-12">
                                 {{-- <a href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 12, '.') }}</span></a> --}}
-                                <a href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ $item->user->name }}</span></a>
+                                <a href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ $item->user->name }}</span><img src="{{ asset('frontend/images/goto_icon.png') }}" alt=""></a>
                             </div>
                         </div>
                         <div class="row line-height-1-0">
