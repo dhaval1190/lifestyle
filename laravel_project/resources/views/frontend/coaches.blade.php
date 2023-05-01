@@ -402,7 +402,7 @@
                                                 <div class="col-5 col-md-12 pr-0">
                                                     <div class="row align-items-center item-box-user-div">
                                                         <div class="col-12">
-                                                            <span class="font-size-13">{{ $coach->email }}</span>
+                                                            <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row align-items-center item-box-user-div">
