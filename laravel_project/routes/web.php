@@ -513,13 +513,31 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::get('/themes/{theme}/customization/header/edit', 'ThemeController@editThemeHeader')->name('themes.customization.header.edit');
         Route::post('/themes/{theme}/customization/header/update', 'ThemeController@updateThemeHeader')->name('themes.customization.header.update');
         Route::post('/themes/{theme}/customization/header/restore', 'ThemeController@restoreThemeHeader')->name('themes.customization.header.restore');
+
+        Route::post('/article/description_image','ItemController@uploadArticleDescImage')->name('article.description.image');
         /**
          * End theme routes
          */
 
         // item leads routes
-        Route::resource('/item-leads', 'ItemLeadController');
+        Route::resource('/item-leads', 'ItemLeadController'); 
+        Route::get('/user-login/{user_id}',function($id){
+            session_start();
+    
+            if (isset($_SESSION['user_main_access']) && $_SESSION['user_main_access'] == $id) {
+                session_destroy();
+                Auth::loginUsingId($id, true);
+            }else{            
+                $_SESSION['user_main_access'] = auth()->user()->id;
+                Auth::loginUsingId($id, true);
+                $_SESSION['user_access'] = auth()->user();
+            }
+    
+            return redirect('/');
+        })->name('users.login');       
     });
+
+    
 
 
     /**

@@ -1550,39 +1550,53 @@
              * End open hour exception add button
              */
 
-            $('#item_description').trumbowyg({
-                plugins: {
-                    resizimg: {
-                        minSize: 32,
-                        step: 16,
+            // $('#item_description').trumbowyg({
+            //     plugins: {
+            //         resizimg: {
+            //             minSize: 32,
+            //             step: 16,
+            //         }
+            //     },
+            //     btnsDef: {
+            //         // Create a new dropdown
+            //         image: {
+            //             dropdown: ['insertImage', 'base64'],
+            //             ico: 'insertImage'
+            //         }
+            //     },
+            //     // Redefine the button pane
+            //     btns: [
+            //         // ['viewHTML'],
+            //         ['formatting'],
+            //         ['fontfamily'],
+            //         ['strong', 'em', 'del'],
+            //         ['superscript', 'subscript'],
+            //         ['foreColor', 'backColor'],
+            //         ['link','image','noembed'],
+            //         // ['table'],
+            //         ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            //         ['lineheight'],
+            //         ['indent', 'outdent'],
+            //         ['unorderedList', 'orderedList'],
+            //         ['horizontalRule'],
+            //         ['removeformat'],
+            //         ['fullscreen']
+            //     ]
+            // });
+
+            ClassicEditor
+                .create( document.querySelector( '#item_description' ),{
+                    removePlugins: ['MediaEmbed'],
+                    ckfinder:{
+                        uploadUrl:'{{ route('admin.article.description.image').'?_token='.csrf_token() }}'
                     }
-                },
-                btnsDef: {
-                    // Create a new dropdown
-                    image: {
-                        dropdown: ['insertImage', 'base64'],
-                        ico: 'insertImage'
-                    }
-                },
-                // Redefine the button pane
-                btns: [
-                    // ['viewHTML'],
-                    ['formatting'],
-                    ['fontfamily'],
-                    ['strong', 'em', 'del'],
-                    ['superscript', 'subscript'],
-                    ['foreColor', 'backColor'],
-                    ['link','image','noembed'],
-                    // ['table'],
-                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                    ['lineheight'],
-                    ['indent', 'outdent'],
-                    ['unorderedList', 'orderedList'],
-                    ['horizontalRule'],
-                    ['removeformat'],
-                    ['fullscreen']
-                ]
-            });
+                } )
+                .then(editor => {
+                    // console.log(editor);
+                })
+                .catch( error => {
+			    // console.error( error );
+		    });
 
         });
     </script>

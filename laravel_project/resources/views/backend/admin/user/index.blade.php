@@ -117,6 +117,7 @@
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
+                                <th>{{ __('Login') }}</th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -131,6 +132,7 @@
                                 <th>{{ __('backend.user.status') }}</th>
                                 <th>{{ __('backend.user.created-at') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
+                                <th>{{ __('Login') }}</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -169,6 +171,11 @@
                                     <td>
                                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-circle mb-1">
                                             <i class="fas fa-cog"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.users.login', $user->id) }}" class="btn btn-primary btn-circle mb-1">
+                                            <i class="fas fa-user"></i>
                                         </a>
                                     </td>
                                 </tr>

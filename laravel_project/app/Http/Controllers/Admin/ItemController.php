@@ -1040,6 +1040,19 @@ class ItemController extends Controller
         // license check ends here
     }
 
+    public function uploadArticleDescImage(Request $request)
+    {
+        if($request->hasFile('upload')){
+            
+            $filename = time().'.'.$request->file('upload')->extension();
+            $request->file('upload')->move('laravel_project/public/storage/article/',$filename);
+
+            $url = asset('laravel_project/public/storage/article/'.$filename);
+            return response()->json(['filename'=>$filename,'uploaded'=>1,'url'=>$url]);
+        }
+        
+    }
+
     /**
      * @param Request $request
      * @param Item $item
