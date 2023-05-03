@@ -9,7 +9,7 @@
 
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('review.backend.manage-reviews') }}</h1>
+            <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('review.backend.manage-reviews') }}</h1>
             <p class="mb-4">{{ __('review.backend.manage-reviews-desc-user') }}</p>
         </div>
         <div class="col-3 text-right">
@@ -19,7 +19,7 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+        <div class="col-12 p-0">
 
             <div class="row mb-4">
                 <div class="col-12">

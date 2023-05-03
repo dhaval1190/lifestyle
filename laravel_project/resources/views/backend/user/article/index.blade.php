@@ -10,12 +10,12 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.article') }}</h1>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('backend.article.article') }}</h1>
             <p class="mb-4">{{ __('backend.article.article-desc-user') }}</p>
         </div>
-        <div class="col-3 text-right">
-            <a href="{{ route('user.articles.create') }}" class="btn btn-info btn-icon-split">
+        <div class="col-4 col-md-3 text-right">
+            <a href="{{ route('user.articles.create') }}" class="btn btn-info btn-icon-split btn_set_lg">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
                 </span>
@@ -26,10 +26,10 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+        <div class="col-12 p-0">
 
             <div class="row">
-                <div class="col-12 col-md-10">
+                <div class="col-12 col-md-12 col-xl-10">
 
                     <div class="row pb-2">
                         <div class="col-12">
@@ -89,9 +89,9 @@
 
                                                         <br>
                                                         @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                           <div class="d-flex align-items-baseline">
+                                                           <div class="d-flex align-items-baseline border_set_sm">
                                                             <i class="fas fa-map-marker-alt"></i>
-                                                            <p style="word-break: break-all; padding-left:3px">{{ $item->item_address }},
+                                                            <p style="word-break: break-all; padding-left:3px; font-size:14px; margin:0;" class="set_font_sm">{{ $item->item_address }},
                                                             {{ $item->city->city_name }},
                                                             {{ $item->state->state_name }},
                                                             {{ $item->country->country_name }}
@@ -101,7 +101,7 @@
                                                             <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
                                                         @endif
 
-                                                        <div class="pt-2">
+                                                        <div class="pt-2 sub_set_btn">
                                                             @foreach($item->allCategories()->get() as $categories_key => $category)
                                                                 <span class="border border-info text-info pl-1 pr-1 rounded">{{ $category->category_name }}</span>
                                                             @endforeach
@@ -118,12 +118,12 @@
                                                             {{ __('backend.shared.edit') }}
                                                         </a>
                                                         <hr class="mt-2 mb-2">
-                                                        <span class="text-info">
+                                                        <span class="text-info set_font_sm">
                                                             <i class="far fa-plus-square"></i>
                                                             {{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
                                                         </span>
                                                         @if($item->created_at != $item->updated_at)
-                                                            <span class="text-info">
+                                                            <span class="text-info set_font_sm">
                                                                 |
                                                                 <i class="far fa-edit"></i>
                                                                 {{ __('review.backend.updated-at') . ' ' . \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
@@ -144,18 +144,18 @@
 
                     <div class="row mb-3">
                         <div class="col-12 col-md-8">
-                            <button id="select_all_button" class="btn btn-sm btn-primary text-white">
+                            <button id="select_all_button" class="btn btn-sm btn-primary text-white btn_set_sm_width">
                                 <i class="far fa-check-square"></i>
                                 {{ __('admin_users_table.shared.select-all') }}
                             </button>
-                            <button id="un_select_all_button" class="btn btn-sm btn-primary text-white">
+                            <button id="un_select_all_button" class="btn btn-sm btn-primary text-white btn_set_sm_width">
                                 <i class="far fa-square"></i>
                                 {{ __('admin_users_table.shared.un-select-all') }}
                             </button>
                         </div>
                         <div class="col-12 col-md-4 text-right">
                             <div class="dropdown">
-                                <button class="btn btn-info btn-sm dropdown-toggle text-white" type="button" id="table_option_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-info btn-sm dropdown-toggle text-white btn_set_sm_width" type="button" id="table_option_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-tasks"></i>
                                     {{ __('admin_users_table.shared.options') }}
                                 </button>
@@ -177,7 +177,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-2 pt-3 border-left-info">
+                <div class="col-12 col-md-12 col-xl-2 pt-3 border-left-info">
 
                     <div class="row mb-3">
                         <div class="col-12">

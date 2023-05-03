@@ -1,5 +1,5 @@
 <!-- Topbar -->
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow padding-sm-0">
     <div class="detail one padding-0">
         @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() > 0) && isset(Auth::user()->hourly_rate_type) && isset(Auth::user()->experience_year) && isset(Auth::user() ->preferred_pronouns))
             <a class="dropdown-item" href="{{ route('page.profile', encrypt(Auth::user()->id)) }}">
@@ -9,7 +9,7 @@
         @endif
     </div>
     <div class="detail one padding-0">
-        <a class="dropdown-item" href="{{ route('page.home') }}">
+        <a class="dropdown-item  web-hide-sm" href="{{ route('page.home') }}">
             <i class="fas fa-columns fa-sm fa-fw mr-2 text-gray-400"></i>
             {{ __('backend.nav.website') }}
         </a>

@@ -124,7 +124,7 @@
     @endif
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4 firstBlur">
+    <div class="d-flex align-items-center justify-content-between mb-4 firstBlur">
         <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.dashboard') }}</h1>
         <!-- <a href="#"><img src="{{ asset('frontend/images/Svg/notification_zero.svg') }}" alt=""
                                 class="notification_icon" /></a> -->
@@ -219,9 +219,9 @@
             </div> -->
     <div class="row firstBlur">
         @if($login_user->isCoach())
-        @php $main_div_class = 'col-lg-9 order-lg-0 order-1'; @endphp
+        @php $main_div_class = 'col-lg-12 col-xl-9 order-xl-0 order-1'; @endphp
         @else
-        @php $main_div_class = 'col-lg-12 order-lg-0 order-1'; @endphp
+        @php $main_div_class = 'col-lg-12 col-xl-12 order-xl-0 order-1'; @endphp
         @endif
         <div class="{{ $main_div_class }}">
             <div class="row">
@@ -488,7 +488,8 @@
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
-                            <div class="row">
+                         <div class="post-slide">
+                         <div class="row">
                                 @php $i=1; @endphp
                                 @foreach($AllEbooks as $ebook_key => $Ebook)
                                 <div class="col-md-3 col-6 pb-3">
@@ -518,6 +519,7 @@
                                 @php $i++; @endphp
                                 @endforeach
                             </div>
+                         </div>
                         </div>
                     </div>
                 </section>
@@ -610,7 +612,7 @@
             </div>
         </div>
         @if($login_user->isCoach())
-        <div class="col-lg-3 order-lg-1 order-0">
+        <div class="col-lg-12 col-xl-3 order-xl-1 order-0">
             <div class="coach_sidebar">
                 <div class="setting_icon">
                     <a href="{{ route('user.profile.edit') }}"><img src="{{ asset('frontend/images/Svg/setting.svg') }}" alt="" /></a>
@@ -634,7 +636,7 @@
                         <div class="sidebar_details">
                             <div class="detail">
                                 <div class="one">
-                                    <img src="{{ asset('frontend/images/bag.png') }}" alt="" />
+                                    <img src="{{ asset('frontend/images/bag-one.svg') }}" alt="" />
                                     <p>{{ $login_user['company_name'] }}</p>
                                 </div>
                             </div>

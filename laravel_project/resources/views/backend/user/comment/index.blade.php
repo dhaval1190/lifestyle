@@ -18,7 +18,7 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+        <div class="col-12 p-0">
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">

@@ -74,21 +74,20 @@ $chk_post = Auth::user()->phone;
 
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
+        <div class="col-12">
+            <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
             <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
             @if(Auth::user()->isCoach())
             <p class="mb-4">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a></p>
             @endif
         </div>
-        <div class="col-3 text-right">
-        </div>
+        
     </div>
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
-            <div class="row">
+        <div class="col-12 p-0">
+            <div class="row font_icon_color">
                 <div class="col-12">
                     @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) && !isset(Auth::user()->hourly_rate_type) && !isset(Auth::user()->experience_year) && !isset(Auth::user() ->preferred_pronouns))
                         <div class="alert alert-danger" role="alert">
@@ -462,7 +461,7 @@ $chk_post = Auth::user()->phone;
                             </div>
                             
                             <div class="row mt-3">
-                                <div class="col-5">
+                                <div class="col-12 col-md-6 col-lg-12 col-xl-4">
                                     @error('user_cover_image')
                                     <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -485,7 +484,7 @@ $chk_post = Auth::user()->phone;
                                     </div>
                                     @endif
                                 </div>
-                                <div class="col-7">
+                                <div class="col-12 col-md-12 col-lg-12 col-xl-8">
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
@@ -508,7 +507,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2 mt-3">
+                                        <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
                                             <label class="text-black">Youtube</label>
                                             <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
                                                 @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
@@ -521,7 +520,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-8 mt-3">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
                                             <label for="media_url" class="text-black">Youtube Video URL</label>
                                             <span class="err_media_url" style="color:red"></span>
                                             <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
@@ -534,17 +533,17 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2 mt-3">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
                                             <label for="media_url" class="text-black">&nbsp;</label>
-                                            <a class="btn btn-sm btn-block btn-primary rounded text-white" id="media_type_create_button">
+                                            <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
                                                 <i class="fas fa-plus"></i>
                                                 {{ __('Add') }}
                                             </a>
                                         </div>
-                                        <div class="col-12" id="media_details_added">
+                                        <div class="col-12 border_set" id="media_details_added">
                                             @foreach($video_media_array as $video_media_key => $video_media_value)
-                                                <div class="col-12">
-                                                    {{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }} : {{ $video_media_value->media_url }}
+                                                <div class="col-12 p-0 d-flex-between-100">
+                                                    <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }} : {{ $video_media_value->media_url }}</span>
                                                     <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
                                                         <i class="far fa-edit"></i>
                                                     </a>
@@ -561,7 +560,7 @@ $chk_post = Auth::user()->phone;
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Ebook</label>
                                             <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
                                                 @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
@@ -574,7 +573,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Ebook PDF Title</label>
                                             <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
                                             @error('media_name')
@@ -583,7 +582,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Ebook PDF</label>
                                             <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image" accept=".pdf">
                                             @error('media_image')
@@ -592,7 +591,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Ebook Cover</label>
                                             <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
                                             <small class="form-text text-muted">
@@ -604,10 +603,10 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 col-md-12 col-lg-6 border_set ">
                                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
-                                                <div class="col-12">
-                                                    {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} : {{ $ebook_media_value->media_name }}
+                                                <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
+                                                   <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} : {{ $ebook_media_value->media_name }}</span>
                                                     <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
                                                         <i class='far fa-trash-alt'></i>
                                                     </a>
@@ -621,7 +620,7 @@ $chk_post = Auth::user()->phone;
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <div class="row">
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Podcast</label>
                                             <select id="podcast_type" class="form-control selectpicker @error('podcast_type') is-invalid @enderror" name="podcast_type" title="Select Type">
                                                 @foreach(\App\MediaDetail::PODCAST_MEDIA_TYPE as $mkey => $mvalue)
@@ -634,7 +633,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Podcast Title</label>
                                             <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
                                             @error('podcast_name')
@@ -643,7 +642,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Podcast MP3</label>
                                             <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" accept=".mp3">
                                             @error('podcast_image')
@@ -652,7 +651,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Podcast Cover</label>
                                             <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
                                             <small class="form-text text-muted">
@@ -664,10 +663,10 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 col-md-12 col-lg-6 border_set">
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-                                                <div class="col-12">
-                                                    {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}
+                                                <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
+                                                   <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}</span>
                                                     <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
                                                         <i class='far fa-trash-alt'></i>
                                                     </a>
@@ -679,7 +678,7 @@ $chk_post = Auth::user()->phone;
                             </div>
                         @else
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-2 col-md-12 col-lg-4 col-xl-2">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -707,10 +706,10 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
-                                            <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                            <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
                                             @error('name')
                                             <span class="invalid-tooltip" role="alert">
@@ -718,8 +717,8 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
-                                            <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                            <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
                                             @error('email')
                                             <span class="invalid-tooltip" role="alert">
@@ -727,8 +726,8 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
-                                            <label for="phone" class="text-black">Phone</label>
+                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                            <label for="phone" class="text-black labet_set">Phone</label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
                                             <span class="invalid-tooltip" role="alert">
@@ -736,8 +735,8 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
-                                            <label for="gender" class="text-black">Gender</label>
+                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                            <label for="gender" class="text-black labet_set">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
                                                     <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}</option>
@@ -768,25 +767,27 @@ $chk_post = Auth::user()->phone;
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" id = "submit"class="btn btn-primary m-2 text-white">
+                               <div class="two_btn_set_mobile">
+                               <button type="submit" id = "submit"class="btn btn-primary  text-white first_btn my-2">
                                     {{ __('backend.shared.update') }}
                                 </button>
-                                <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
+                                <a class="btn btn-warning text-white first_btn" href="{{ route('user.profile.password.edit') }}">
                                     {{ __('backend.user.change-password') }}
                                 </a>
+                               </div>
                             </div>
                         </div>
                         @if($free_items->count() >0)
                             <div class="row">
                                     <div class="col-md-12">
-                                        <div class="below_info">
+                                        <div class="below_info p-2">
                                             <h3>Topics</h3>
                                             @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
                                                 <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 plr-45">
+                                    <div class="col-lg-12 ">
                                 
                                     <div class="row">
                             <div class="col-12">
@@ -810,7 +811,7 @@ $chk_post = Auth::user()->phone;
                                             <td>
 
                                                 <div class="row">
-                                                    <div class="col-12 col-md-3">
+                                                    <div class="col-12 col-md-4 col-lg-3 col-xl-2 img_width_set_100">
                                                         @if(!empty($item->item_image_tiny))
                                                             <img src="{{ Storage::disk('public')->url('item/' . $item->item_image_tiny) }}" alt="Image" class="img-fluid rounded">
                                                         @elseif(!empty($item->item_image))
@@ -819,7 +820,7 @@ $chk_post = Auth::user()->phone;
                                                             <img src="{{ asset('backend/images/placeholder/full_item_feature_image_tiny.webp') }}" alt="Image" class="img-fluid rounded">
                                                         @endif
                                                     </div>
-                                                    <div class="col-12 col-md-9">
+                                                    <div class="col-12 col-md-8 col-lg-9 col-xl-10">
                                                         @if($item->item_status == \App\Item::ITEM_SUBMITTED)
                                                             <span class="text-warning"><i class="fas fa-exclamation-circle"></i></span>
                                                         @elseif($item->item_status == \App\Item::ITEM_PUBLISHED)
@@ -837,24 +838,29 @@ $chk_post = Auth::user()->phone;
                                                         </span>
 
                                                         <br>
-                                                        @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                    
+                                                      @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                      <div class="d-flex align-items-baseline border_set_sm">
                                                             <i class="fas fa-map-marker-alt"></i>
                                                             {{ $item->item_address }},
                                                             {{ $item->city->city_name }},
                                                             {{ $item->state->state_name }},
                                                             {{ $item->country->country_name }}
                                                             {{ $item->item_postal_code }}
+                                                            </div>
                                                         @else
+                                                     
                                                             <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
                                                         @endif
 
-                                                        <div class="pt-2">
+                                                        <div class="pt-2 sub_set_btn">
                                                             @foreach($item->allCategories()->get() as $categories_key => $category)
                                                                 <span class="border border-info text-info pl-1 pr-1 rounded">{{ $category->category_name }}</span>
                                                             @endforeach
                                                         </div>
                                                         <hr class="mt-3 mb-2">
-                                                        @if($item->item_status == \App\Item::ITEM_PUBLISHED)
+                                                       <div class="two_btn_set">
+                                                       @if($item->item_status == \App\Item::ITEM_PUBLISHED)
                                                         <a href="{{ route('page.item', $item->item_slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
                                                             <i class="fas fa-external-link-alt"></i>
                                                             {{ __('prefer_country.view-item') }}
@@ -864,8 +870,10 @@ $chk_post = Auth::user()->phone;
                                                             <i class="far fa-edit"></i>
                                                             {{ __('backend.shared.edit') }}
                                                         </a>
+                                                       </div>
                                                         <hr class="mt-2 mb-2">
-                                                        <span class="text-info">
+                                                      <div class="two_btn_set_bottom">
+                                                      <span class="text-info">
                                                             <i class="far fa-plus-square"></i>
                                                             {{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
                                                         </span>
@@ -876,6 +884,7 @@ $chk_post = Auth::user()->phone;
                                                                 {{ __('review.backend.updated-at') . ' ' . \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
                                                             </span>
                                                         @endif
+                                                      </div>
 
                                                     </div>
                                                 </div>

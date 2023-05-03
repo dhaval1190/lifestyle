@@ -32,11 +32,11 @@
 </style>
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.edit-article') }}</h1>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-set-sm">{{ __('backend.article.edit-article') }}</h1>
             <p class="mb-4">{{ __('backend.article.edit-article-desc-user') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('user.articles.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -74,7 +74,7 @@
                             @else
                                 <span>{{ route('page.item', $article->item_slug) }}</span>
                             @endif
-                            <a class="text-info pl-2" href="#" data-toggle="modal" data-target="#articleSlugModal">
+                            <a class="text-info pl-lg-2" href="#" data-toggle="modal" data-target="#articleSlugModal">
                                 <i class="far fa-edit"></i>
                                 {{ __('article_slug.update-url') }}
                             </a>
@@ -107,14 +107,14 @@
                             <div class="row">
                                 <div class="col-12">
                                     @foreach($categories as $key => $category)
-                                        <div class="pr-1 pb-2 float-left">
+                                        <div class="pr-1 pb-2 float-left mix_set_btn">
                                     <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1">
                                         {{ $category->category_name }}
                                     </span>
                                         </div>
                                     @endforeach
 
-                                    <a class="text-info pl-2 float-left" href="#" data-toggle="modal" data-target="#categoriesModal">
+                                    <a class="text-info pl-lg-2 float-left" href="#" data-toggle="modal" data-target="#categoriesModal">
                                         <i class="far fa-edit"></i>
                                         {{ __('categories.update-cat') }}
                                     </a>
@@ -126,7 +126,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row font_icon_color">
                 <div class="col-12">
                     <form method="POST" action="{{ route('user.articles.update', $article) }}" id="article-create-form">
                         @csrf
@@ -164,7 +164,7 @@
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 font_set_sm_head_para">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-store"></i>
@@ -198,7 +198,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-2">
+                                    <div class="col-md-4 col-lg-2">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             @foreach($all_countries as $all_countries_key => $country)
@@ -213,7 +213,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4 col-lg-2">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             @foreach($all_states as $key => $state)
@@ -226,7 +226,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4 col-lg-2">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             @foreach($all_cities as $key => $city)
@@ -239,7 +239,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4 col-lg-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
                                         @error('article_postal_code')
@@ -249,7 +249,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-8 col-lg-4">
                                         <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
                                         <div class="input-group">
                                             <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
@@ -263,11 +263,11 @@
 
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
-                                        <div class="form-check form-check-inline">
+                                        <div class="form-check form-check-inline align_base grid_set">
                                             <input {{ $article->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
                                             <label class="form-check-label" for="article_address_hide">
                                                 {{ __('backend.article.hide-address') }}
-                                                <small class="text-muted">
+                                                <small class="text-muted text_hide_sm">
                                                     {{ __('backend.article.hide-address-help') }}
                                                 </small>
                                             </label>
@@ -339,7 +339,8 @@
                                     </div> --}}
 
                                     <div class="col-md-3">
-                                        <label for="article_phone" class="text-black">{{ __('backend.article.phone') }}</label>
+                                        <label for="article_phone" class="text-black">
+                                            <i class="fa-solid fa-phone-square"></i>{{ __('backend.article.phone') }}</label>
                                         <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone') ? old('article_phone') : $article->item_phone }}" aria-describedby="lngHelpBlock" onkeypress="validatePostalCode(event)"
                                         >
                                         @error('article_phone')
@@ -497,7 +498,7 @@
                         <!-- start opening hour section -->
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 font_set_sm_head_para">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-clock"></i>
@@ -552,7 +553,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3 align-articles-end">
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
                                         <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
                                             <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}">{{ __('article_hour.monday') }}</option>
@@ -564,7 +565,7 @@
                                             <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}">{{ __('article_hour.sunday') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                         <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -572,7 +573,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                         <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -580,7 +581,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                         <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -589,7 +590,7 @@
                                         </select>
                                         <div id="message" style="color:red"></div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                         <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -597,8 +598,8 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
-                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="article_hour_create_button">
+                                    <div class="col-12 col-md-4 col-lg-2">
+                                        <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('article_hour.add-open-hour') }}
                                         </a>
@@ -642,11 +643,11 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3 align-articles-end">
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
                                         <input id="article_hour_exception_date" type="text" class="form-control date-picker-input" name="article_hour_exception_date" value="" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                         <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -655,7 +656,7 @@
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                         <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -664,7 +665,7 @@
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                         <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -674,7 +675,7 @@
                                         </select>
                                         <div id="exception_close_hour" style="color:red"></div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-2">
                                         <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                         <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -683,8 +684,8 @@
                                             <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
-                                        <a class="btn btn-sm btn-block btn-primary rounded text-white" id="article_hour_exception_create_button">
+                                    <div class="col-12 col-md-4 col-lg-2">
+                                        <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_exception_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('article_hour.add-open-hour-exception') }}
                                         </a>
@@ -715,7 +716,7 @@
                         <!-- Start feature image and gallery image -->
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 font_set_sm_head_para">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-images"></i>
@@ -728,7 +729,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-12 col-lg-6 col-xl-4">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
@@ -757,7 +758,7 @@
                                         @if(isset($article->item_image))
                                             <div class="row mt-1">
                                                 <div class="col-12">
-                                                    <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
+                                                    <a class="btn btn-danger btn-block text-white delete_btn_set_sm" id="delete_feature_image_button">
                                                         <i class="fas fa-trash-alt"></i>
                                                         {{ __('role_permission.article.delete-feature-image') }}
                                                     </a>
@@ -766,7 +767,7 @@
                                         @endif
 
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-12 col-lg-6 col-xl-8">
                                         <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
                                         <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
@@ -787,7 +788,7 @@
                                                 <button id="upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
                                                 <div class="row" id="selected-images">
                                                     @foreach($article->galleries as $key => $gallery)
-                                                        <div class="col-2 mb-2" id="article_image_gallery_{{ $gallery->id }}">
+                                                        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2" id="article_image_gallery_{{ $gallery->id }}">
                                                             <img class="article_image_gallery_img" src="{{ Storage::disk('public')->url('item/gallery/'. $gallery->item_image_gallery_name) }}" style="width: 100%; border-radius: 5px; border: 1px solid #dadada; height:120px;">
                                                             <br/><button class="btn btn-danger btn-sm text-white mt-2 mb-3" onclick="$(this).attr('disabled', true); deleteGallery({{ $gallery->id }});">{{ __('backend.shared.delete') }}</button>
                                                         </div>
@@ -804,7 +805,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit"  class="btn btn-primary py-2 px-4 text-white">
+                                <button type="submit" id="submit"  class="btn btn-primary py-2 px-4 text-white width_set_100">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>
@@ -1022,7 +1023,7 @@
                                         <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ $article_hour->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_open_time_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                     <select id="article_hour_open_time_hour" class="selectpicker form-control" name="article_hour_open_time_hour" data-live-search="true">
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -1030,7 +1031,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_open_time_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                     <select id="article_hour_open_time_minute" class="selectpicker form-control" name="article_hour_open_time_minute" data-live-search="true">
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -1038,7 +1039,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_close_time_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                     <select id="article_hour_close_time_hour" class="selectpicker form-control" name="article_hour_close_time_hour" data-live-search="true">
                                         @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -1046,7 +1047,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_close_time_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                     <select id="article_hour_close_time_minute" class="selectpicker form-control" name="article_hour_close_time_minute" data-live-search="true">
                                         @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -1144,7 +1145,7 @@
                                     <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
                                     <input id="article_hour_exception_date" type="text" class="form-control date-picker-input" name="article_hour_exception_date" value="{{ $article_hour_exception->item_hour_exception_date }}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_exception_open_time_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
                                     <select id="article_hour_exception_open_time_hour" class="selectpicker form-control" name="article_hour_exception_open_time_hour" data-live-search="true">
                                         <option value="" {{ is_null($article_hour_exception_open_time_hour) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
@@ -1153,7 +1154,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_exception_open_time_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
                                     <select id="article_hour_exception_open_time_minute" class="selectpicker form-control" name="article_hour_exception_open_time_minute" data-live-search="true">
                                         <option value="" {{ is_null($article_hour_exception_open_time_minute) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
@@ -1162,7 +1163,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_exception_close_time_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
                                     <select id="article_hour_exception_close_time_hour" class="selectpicker form-control" name="article_hour_exception_close_time_hour" data-live-search="true">
                                         <option value="" {{ is_null($article_hour_exception_close_time_hour) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
@@ -1171,7 +1172,7 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-12 col-md-2">
+                                <div class="col-12 col-md-4 col-lg-2">
                                     <label for="article_hour_exception_close_time_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
                                     <select id="article_hour_exception_close_time_minute" class="selectpicker form-control" name="article_hour_exception_close_time_minute" data-live-search="true">
                                         <option value="" {{ is_null($article_hour_exception_close_time_minute) ? 'selected' :'' }}>{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
@@ -1643,7 +1644,7 @@
 
                         if(a == 12) {break;}
                         selectedImages.push(event.files[a]);
-                        html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
+                        html += "<div class='col-12 col-md-6 col-lg-4 col-xl-3 mb-2' id='article_image_gallery_" + a + "'>" +
                             "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "' id='gallery_img_0'>" +
                             "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                             "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +

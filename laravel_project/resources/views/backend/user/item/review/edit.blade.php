@@ -8,11 +8,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('review.backend.edit-a-review') }}</h1>
+        <div class="col-md-8 col-8">
+            <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('review.backend.edit-a-review') }}</h1>
             <p class="mb-4">{{ __('review.backend.write-a-review-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-4 text-right">
             <a href="{{ route('user.items.reviews.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -23,11 +23,11 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+    <div class="row bg-white pt-4 pl-3 pr-3 pb-4 custom_set">
+        <div class="col-12 p-0">
 
             <div class="row">
-                <div class="col-3">
+                <div class="col-md-12 col-lg-3 col-12">
                     @if(empty($item->item_image))
                         <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive rounded">
                     @else
@@ -37,8 +37,8 @@
                     <a target="_blank" href="{{ route('page.item', $item->item_slug) }}" class="btn btn-primary btn-block mt-2">{{ __('backend.message.view-listing') }}</a>
 
                 </div>
-                <div class="col-9">
-                    <p>
+                <div class="col-md-12 col-lg-9 col-12">
+                    <p class="sub_set_btn">
                         @foreach($item->allCategories()->get() as $key => $category)
                             <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1 mr-1">
                                 {{ $category->category_name }}
@@ -62,7 +62,7 @@
             <hr>
 
             <div class="row">
-                <div class="col-8">
+                <div class="col-md-12 col-lg-12 col-xl-12 col-12">
                     <form method="POST" action="{{ route('user.items.reviews.update', ['item_slug' => $item->item_slug, 'review' => $review->id]) }}">
                         @csrf
                         @method('PUT')
@@ -107,7 +107,7 @@
 
 
                         <div class="form-row mb-3">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <label for="customer_service_rating" class="text-black">{{ __('review.backend.customer-service') }}</label><br>
                                 <select class="rating_stars" name="customer_service_rating">
                                     <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
@@ -123,7 +123,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <label for="quality_rating" class="text-black">{{ __('review.backend.quality') }}</label><br>
                                 <select class="rating_stars" name="quality_rating">
                                     <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
@@ -139,7 +139,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <label for="friendly_rating" class="text-black">{{ __('review.backend.friendly') }}</label><br>
                                 <select class="rating_stars" name="friendly_rating">
                                     <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
@@ -155,7 +155,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-6">
                                 <label for="pricing_rating" class="text-black">{{ __('review.backend.pricing') }}</label><br>
                                 <select class="rating_stars" name="pricing_rating">
                                     <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
@@ -240,7 +240,7 @@
                                         <button id="upload_gallery" type="button" class="btn btn-primary mb-2">{{ __('review_galleries.choose-photo') }}</button>
                                         <div class="row" id="selected-images">
                                             @foreach($review_image_galleries as $key => $review_gallery)
-                                                <div class="col-lg-3 col-md-4 col-sm-6 mb-2" id="review_image_gallery_{{ $review_gallery->id }}">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 mb-2 col-12 gallery_set_width_mobile" id="review_image_gallery_{{ $review_gallery->id }}">
                                                     <img class="review_image_gallery_img" src="{{ Storage::disk('public')->url('item/review/'. $review_gallery->review_image_gallery_thumb_name) }}">
                                                     <br/><button class="btn btn-danger btn-sm text-white mt-1" onclick="$(this).attr('disabled', true); deleteGallery({{ $review_gallery->id }});">{{ __('backend.shared.delete') }}</button>
                                                 </div>
@@ -252,13 +252,13 @@
                         </div>
 
                         <div class="form-row mb-3">
-                            <div class="col-md-8">
-                                <button type="submit" class="btn btn-primary py-2 px-4 text-white">
+                            <div class="col-md-8 col-8">
+                                <button type="submit" class="btn btn-primary py-2 px-4 text-white font-14">
                                     {{ __('review.backend.update-review') }}
                                 </button>
                             </div>
-                            <div class="col-md-4 text-right">
-                                <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
+                            <div class="col-md-4 col-4 text-right">
+                                <a class="text-danger font-14" href="#" data-toggle="modal" data-target="#deleteModal">
                                     <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                                 </a>
                             </div>
@@ -266,7 +266,7 @@
 
                     </form>
                 </div>
-                <div class="col-4"></div>
+                <div class="col-12 col-md-12 col-lg-4"></div>
             </div>
 
         </div>

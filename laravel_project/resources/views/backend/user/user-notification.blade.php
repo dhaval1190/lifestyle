@@ -42,7 +42,7 @@
 
 <div class="row justify-content-between">
     <div class="col-9">
-        <h1 class="h3 mb-2 text-gray-800">{{ __('Notification') }}</h1>
+        <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('Notification') }}</h1>
         <p class="mb-4">{{ __('All notifications will be shown here') }}</p>
     </div>
     
@@ -50,7 +50,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="row">
-        <table>
+        <table class="table-responsive">
           <thead>            
               <th style="font-weight:700;padding: 14px 10px;">Notification(s)</th>      
               <th style="font-weight:700;padding: 14px 10px;">Status</th>      

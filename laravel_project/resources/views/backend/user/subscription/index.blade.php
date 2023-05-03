@@ -18,11 +18,11 @@
     @endif
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.subscription.subscription') }}</h1>
-            <p class="mb-4">{{ __('backend.subscription.subscription-desc-user') }}</p>
+        <div class="col-md-9 col-8">
+            <h1 class="h3 mb-2 text-gray-800 font-set-sm">{{ __('backend.subscription.subscription') }}</h1>
+            <p class="mb-4 f-12">{{ __('backend.subscription.subscription-desc-user') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('user.subscriptions.edit', $subscription->id) }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
@@ -33,58 +33,58 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+    <div class="row bg-white pt-4 pl-3 pr-3 pb-4 font_set_span_sm">
+        <div class="col-12 p-0">
 
             <div class="row mb-4">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <span class="text-gray-800">{{ __('backend.plan.plan-info') }}</span>
+                            <span class="text-gray-800 border_set_sm">{{ __('backend.plan.plan-info') }}</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            {{ __('backend.plan.plan-name') }}:
+                        <div class="col-6 col-md-6 col-lg-4">
+                          <span>  {{ __('backend.plan.plan-name') }}:</span>
                         </div>
-                        <div class="col-8">
-                            {{ $subscription->plan->plan_name }}
+                        <div class="col-6 col-md-6 col-lg-8">
+                           <span> {{ $subscription->plan->plan_name }}</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            {{ __('backend.plan.plan-type') }}:
+                        <div class="col-6 col-md-6 col-lg-4">
+                          <span>  {{ __('backend.plan.plan-type') }}:</span>
                         </div>
-                        <div class="col-8">
-                            @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
+                        <div class="col-6 col-md-6 col-lg-8">
+                          <span>  @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
                                 {{ __('backend.plan.free-plan') }}
                             @else
                                 {{ __('backend.plan.paid-plan') }}
-                            @endif
+                            @endif</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            {{ __('backend.plan.features') }}:
+                        <div class="col-6 col-md-6 col-lg-4">
+                          <span>  {{ __('backend.plan.features') }}:</span>
                         </div>
-                        <div class="col-8">
-                            {{ $subscription->plan->plan_features }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            {{ __('backend.plan.price') }}:
-                        </div>
-                        <div class="col-8">
-                            {{ $subscription->plan->plan_price }}
+                        <div class="col-6 col-md-6 col-lg-8">
+                         <span>   {{ $subscription->plan->plan_features }}</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            {{ __('backend.plan.period') }}:
+                        <div class="col-6 col-md-6 col-lg-4">
+                          <span>  {{ __('backend.plan.price') }}:</span>
                         </div>
-                        <div class="col-8">
-                            @if($subscription->plan->plan_period == \App\Plan::PLAN_LIFETIME)
+                        <div class="col-6 col-md-6 col-lg-8">
+                          <span>  {{ $subscription->plan->plan_price }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-md-6 col-lg-4">
+                          <span>  {{ __('backend.plan.period') }}:</span>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-8">
+                         <span>   @if($subscription->plan->plan_period == \App\Plan::PLAN_LIFETIME)
                                 {{ __('backend.plan.lifetime') }}
                             @elseif($subscription->plan->plan_period == \App\Plan::PLAN_MONTHLY)
                                 {{ __('backend.plan.monthly') }}
@@ -92,47 +92,47 @@
                                 {{ __('backend.plan.quarterly') }}
                             @elseif($subscription->plan->plan_period == \App\Plan::PLAN_YEARLY)
                                 {{ __('backend.plan.yearly') }}
-                            @endif
+                            @endif</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <span class="text-gray-800">{{ __('backend.subscription.subscription') }}</span>
+                            <span class="text-gray-800 border_set_sm">{{ __('backend.subscription.subscription') }}</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-5">
-                            {{ __('theme_directory_hub.plan.max-free-listing') }}:
+                        <div class="col-6 col-md-6 col-lg-6">
+                          <span>  {{ __('theme_directory_hub.plan.max-free-listing') }}:</span>
                         </div>
-                        <div class="col-7">
-                            {{ is_null($subscription->plan->plan_max_free_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_free_listing }}
+                        <div class="col-6 col-md-6 col-lg-6">
+                           <span> {{ is_null($subscription->plan->plan_max_free_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_free_listing }}</span>
                         </div>
                     </div>
                     {{-- <div class="row">
-                        <div class="col-5">
+                        <div class="col-6 col-md-6 col-lg-6">
                             {{ __('backend.plan.maximum-featured-listing') }}:
                         </div>
-                        <div class="col-7">
+                        <div class="col-6 col-md-6 col-lg-6">
                             {{ is_null($subscription->plan->plan_max_featured_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_featured_listing }}
                         </div>
                     </div> --}}
                     <div class="row">
-                        <div class="col-5">
-                            {{ __('backend.subscription.started-at') }}:
+                        <div class="col-6 col-md-6 col-lg-6">
+                           <span> {{ __('backend.subscription.started-at') }}:</span>
                         </div>
-                        <div class="col-7">
-                            {{ $subscription->subscription_start_date }}
+                        <div class="col-6 col-md-6 col-lg-6">
+                           <span> {{ $subscription->subscription_start_date }}</span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-5">
-                            {{ __('backend.subscription.end-at') }}:
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <span>{{ __('backend.subscription.end-at') }}:</span>
                         </div>
-                        <div class="col-7">
-                            {{ $subscription->subscription_end_date }}
+                        <div class="col-6 col-md-6 col-lg-6">
+                           <span> {{ $subscription->subscription_end_date }}</span>
                         </div>
                     </div>
                     @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
@@ -207,7 +207,7 @@
                 <div class="col-12">
                     <div class="row mb-3">
                         <div class="col-12">
-                            <span class="text-gray-800">Invoices</span>
+                            <span class="text-gray-800 border_set_sm">Invoices</span>
                         </div>
                     </div>
                     <div class="row">

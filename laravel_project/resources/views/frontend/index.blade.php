@@ -13,7 +13,8 @@
 @section('content')
 
     @if($site_homepage_header_background_type == \App\Customization::SITE_HOMEPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
-        <div class="site-blocks-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/health-wellness-coach-with-client.jpg') }});">
+        {{-- <div class="site-blocks-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/health-wellness-coach-with-client.jpg') }});"> --}}
+            <div class="site-blocks-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/health-wellness-coach-with-client.webp') }});">
 
     @elseif($site_homepage_header_background_type == \App\Customization::SITE_HOMEPAGE_HEADER_BACKGROUND_TYPE_COLOR)
         <div class="site-blocks-cover overlay" style="background-color: {{ $site_homepage_header_background_color }};">
