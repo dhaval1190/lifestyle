@@ -286,4 +286,37 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
         $angle = atan2(sqrt($a), $b);
         return $angle * $earthRadius;
     }
+
+    function profileShareEmailTemplateConstants()
+    {
+        return [
+            '[TO_EMAIL]',
+            '[USER_NAME]',            
+            '[NOTE]',
+            '[URL]'
+        ];
+    }
+
+    function contactCoachEmailTemplateConstants()
+    {
+        return [
+            '[COACH_EMAIL]',
+            '[YOUR_NAME]',
+            '[YOUR_EMAIL]' ,         
+            '[ARTICLE_NAME]',
+            '[QUESTIONS]',
+            '[URL]'
+        ];
+    }
+
+    function userContactCoachEmailTemplateConstants()
+    {
+        return [
+            '[COACH_EMAIL]',
+            '[YOUR_NAME]',
+            '[YOUR_EMAIL]' ,         
+            '[ARTICLE_NAME]',
+            '[QUESTIONS]'
+        ];
+    }
 }

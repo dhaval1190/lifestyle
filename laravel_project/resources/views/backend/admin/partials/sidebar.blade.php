@@ -129,6 +129,22 @@
         </div>
     </li>
 
+    @if(auth()->user()->isAdmin())
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
+                <i class="fas fa-star"></i>
+                <span>{{ __('Email Template') }}</span>
+            </a>
+            <div id="collapse_email" class="collapse" aria-labelledby="collapse_email" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {{-- <a class="collapse-item" href="{{ route('admin.settings.page.email-template') }}">{{ __('Email Template') }}</a> --}}
+                    <a class="collapse-item" href="{{ route('admin.settings.page.email-template','profile') }}">{{ __('Profile Template') }}</a>
+                    <a class="collapse-item" href="{{ route('admin.settings.page.email-template','coach') }}">{{ __('Contact Coach Template') }}</a>
+                </div>
+            </div>
+        </li>
+    @endif
+
     <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_product" aria-expanded="true" aria-controls="collapse_product">
             <i class="fas fa-box-open"></i>
@@ -186,6 +202,7 @@
                     <a class="collapse-item" href="{{ route('admin.settings.page.privacy-policy.edit') }}">{{ __('backend.sidebar.privacy-policy') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.page.terms-service.edit') }}">{{ __('backend.sidebar.terms-of-service') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.page.agreement') }}">{{ __('Agreement') }}</a>
+                    {{-- <a class="collapse-item" href="{{ route('admin.settings.page.email-template') }}">{{ __('Email template') }}</a> --}}
                 </div>
             </div>
         </li>

@@ -3021,12 +3021,12 @@
                         </div>
                         @endif
                         <div class="nav nav-fill my-3">
-                            <label class="nav-link shadow-sm step0   border ml-2 ">Step One</label>
-                            <label class="nav-link shadow-sm step1   border ml-2 " >Step Two</label>
-                            <label class="nav-link shadow-sm step2   border ml-2 " >Step Three</label>
-                            <label class="nav-link shadow-sm step3   border ml-2 " >Step Four</label>
-                            <label class="nav-link shadow-sm step4   border ml-2 " >Step Five</label>
-                            <label class="nav-link shadow-sm step5   border ml-2 " >Step Six</label>
+                            <label class="nav-link shadow-sm step0 steps  border ml-2 ">Step One</label>
+                            <label class="nav-link shadow-sm step1 steps  border ml-2 " >Step Two</label>
+                            <label class="nav-link shadow-sm step2 steps  border ml-2 " >Step Three</label>
+                            <label class="nav-link shadow-sm step3 steps  border ml-2 " >Step Four</label>
+                            <label class="nav-link shadow-sm step4 steps  border ml-2 " >Step Five</label>
+                            <label class="nav-link shadow-sm step5 steps  border ml-2 " >Step Six</label>
                         </div>
                         <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}" method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
                             @csrf
@@ -3060,9 +3060,10 @@
                                     <div class="row">
                                         <label for="Question 1"
                                             class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span class="text-danger">*</span></label>
-                                        <textarea class="form-control @error('question1') is-invalid @enderror" id="question1"
+                                        <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt"
                                             rows="3" name="question1" required {{ Auth::check() ? '' : 'disabled' }}>{{ old('question1') }}</textarea>
-                                            <p class="note_error error_color" role="alert"></p>
+                                            <p class="question1_error error_color_modal" role="alert"></p>
+                                            <p class="question1_desc_char_count count_error"></p>
                                         @error('question1')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -3074,40 +3075,48 @@
                             <div class="row">
                                 <div class="form-section col-md-12">
                                     <label for="Question 2">{{ __('2.What type of traits are important to you when selecting a coach?') }}<span class="text-danger">*</span></label>
-                                    <textarea name="question2" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                    <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                    <p class="question2_error error_color_modal" role="alert"></p>
+                                    <p class="question2_desc_char_count count_error"></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-section col-md-12 ">                                            
                                     <label for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span class="text-danger">*</span></label>
-                                    <textarea name="question3" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <textarea name="question3" id="question3_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <p class="question3_error error_color_modal" role="alert"></p>
+                                    <p class="question3_desc_char_count count_error"></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-section col-md-12 ">                                            
                                     <label for="Question 4">{{ __('4.On a sale of 1-10 how structured do you want your coaching experience?') }}<span class="text-danger">*</span></label><br>
-                                    <input type="radio" id="question4" name="question4" value="1" required><label for="question4"> 1</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="2" required><label for="question4"> 2</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="3" required><label for="question4"> 3</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="4" required><label for="question4"> 4</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="5" required><label for="question4"> 5</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="6" required><label for="question4"> 6</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="7" required><label for="question4"> 7</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="8" required><label for="question4"> 8</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="9" required><label for="question4"> 9</label><br>                                            
-                                    <input type="radio" id="question4" name="question4" value="10" required><label for="question4"> 10</label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="1" required><label for="question4"><span class="pl-2"> 1</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="2" required><label for="question4"><span class="pl-2"> 2</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="3" required><label for="question4"><span class="pl-2"> 3</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="4" required><label for="question4"><span class="pl-2"> 4</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="5" required><label for="question4"><span class="pl-2"> 5</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="6" required><label for="question4"><span class="pl-2"> 6</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="7" required><label for="question4"><span class="pl-2"> 7</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="8" required><label for="question4"><span class="pl-2"> 8</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="9" required><label for="question4"><span class="pl-2"> 9</span></label><br>                                            
+                                    <input type="radio" id="question4" name="question4" value="10" required><label for="question4"><span class="pl-2"> 1</span>0</label><br>                                            
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-section col-md-12 ">                                            
                                     <label for="Question 5">{{ __('5.What will change in your life to let you know you made a good investment?') }}<span class="text-danger">*</span></label>
-                                    <textarea name="question5" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <p class="question5_error error_color_modal" role="alert"></p>
+                                    <p class="question5_desc_char_count count_error"></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-section col-md-12 ">                                            
                                     <label for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span class="text-danger">*</span></label>
-                                    <textarea name="question6" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
+                                    <p class="question6_error error_color_modal" role="alert"></p>
+                                    <p class="question6_desc_char_count count_error"></p>
                                 </div>
                             </div>                            
                             <div class="form-row">
@@ -3546,7 +3555,7 @@
                     },
 
                     success: function(response) {
-                        // console.log(response);
+                        console.log(response);
                         if (response.status == 'success') {
                             // console.log(response)
                             $(".error_color").text("");
@@ -3990,6 +3999,9 @@
     <script>
         $("#contact-modal").on("hidden.bs.modal", function() {
             $("#contactFormModal").trigger("reset");
+            $('.question1_desc_char_count,.question2_desc_char_count,.question3_desc_char_count,.question5_desc_char_count,.question6_desc_char_count').text("750/750");
+            $('.question1_error,.question2_error,.question3_error,.question5_error,.question6_error').html('');
+            $('.steps').removeAttr('style');
         })
     </script>
 

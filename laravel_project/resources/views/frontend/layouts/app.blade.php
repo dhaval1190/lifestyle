@@ -95,6 +95,15 @@
             }
         </style>
     @endif
+    <style>
+        .count_error {
+            color:#110D1FCC;
+            text-align:right;
+            font-size:small;
+            padding-right:5px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
@@ -257,6 +266,117 @@
 </script>
 
 @yield('scripts')
+<script>
+    $(document).ready(function(){
+        $('.question1_error,.question2_error,.question3_error,.question5_error,.question6_error').text('');
+        $(function(){
+            var maxLength = 750;
+            $('.question1_desc_char_count').text(maxLength + "/750");
+            $('#question1_txt').keydown(function (e) { 
+                limitedChar($(this));
+            });
+            $('#question1_txt').keyup(function (e) { 
+                limitedChar($(this));
+            });
+
+            function limitedChar(description){
+                if(description.val().length > maxLength){
+                    description.val(description.val().substring(0,maxLength));
+                    $('.question1_error').text('Max 750 characters allowed');
+                }else{
+                    var remainingChar = maxLength - description.val().length;
+                    $('.question1_error').text('');
+                    $('.question1_desc_char_count').text(remainingChar + "/750");
+                }
+            }
+        });
+        $(function(){
+            var maxLength = 750;
+            $('.question2_desc_char_count').text(maxLength + "/750");
+            $('#question2_txt').keydown(function (e) { 
+                limitedChar($(this));
+            });
+            $('#question2_txt').keyup(function (e) { 
+                limitedChar($(this));
+            });
+
+            function limitedChar(description){
+                if(description.val().length > maxLength){
+                    description.val(description.val().substring(0,maxLength));
+                    $('.question2_error').text('Max 750 characters allowed');
+                }else{
+                    var remainingChar = maxLength - description.val().length;
+                    $('.question2_error').text('');
+                    $('.question2_desc_char_count').text(remainingChar + "/750");
+                }
+            }
+        });
+        $(function(){
+            var maxLength = 750;
+            $('.question3_desc_char_count').text(maxLength + "/750");
+            $('#question3_txt').keydown(function (e) { 
+                limitedChar($(this));
+            });
+            $('#question3_txt').keyup(function (e) { 
+                limitedChar($(this));
+            });
+
+            function limitedChar(description){
+                if(description.val().length > maxLength){
+                    description.val(description.val().substring(0,maxLength));
+                    $('.question3_error').text('Max 750 characters allowed');
+                }else{
+                    var remainingChar = maxLength - description.val().length;
+                    $('.question3_error').text('');
+                    $('.question3_desc_char_count').text(remainingChar + "/750");
+                }
+            }
+        });
+        $(function(){
+            var maxLength = 750;
+            $('.question5_desc_char_count').text(maxLength + "/750");
+            $('#question5_txt').keydown(function (e) { 
+                limitedChar($(this));
+            });
+            $('#question5_txt').keyup(function (e) { 
+                limitedChar($(this));
+            });
+
+            function limitedChar(description){
+                if(description.val().length > maxLength){
+                    description.val(description.val().substring(0,maxLength));
+                    $('.question5_error').text('Max 750 characters allowed');
+                }else{
+                    var remainingChar = maxLength - description.val().length;
+                    $('.question5_error').text('');
+                    $('.question5_desc_char_count').text(remainingChar + "/750");
+                }
+            }
+        });
+        $(function(){
+            var maxLength = 750;
+            $('.question6_desc_char_count').text(maxLength + "/750");
+            $('#question6_txt').keydown(function (e) { 
+                limitedChar($(this));
+            });
+            $('#question6_txt').keyup(function (e) { 
+                limitedChar($(this));
+            });
+
+            function limitedChar(description){
+                if(description.val().length > maxLength){
+                    description.val(description.val().substring(0,maxLength));
+                    $('.question6_error').text('Max 750 characters allowed');
+                }else{
+                    var remainingChar = maxLength - description.val().length;
+                    $('.question6_desc_char_count').text(remainingChar + "/750");
+                    $('.question6_error').text('');
+                }
+            }
+        });
+
+    });
+</script>
 
 @if($site_global_settings->setting_site_footer_enabled == \App\Setting::SITE_FOOTER_ENABLED)
     {!! $site_global_settings->setting_site_footer !!}

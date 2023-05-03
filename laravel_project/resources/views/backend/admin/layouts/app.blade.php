@@ -45,6 +45,7 @@
 
     <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
     @yield('styles')
+    <link rel="stylesheet" href="{{ asset('backend/css/plugins.bundle.css') }}">
     <script>
         function validatePostalCode(e) {
         e = e || window.event;
