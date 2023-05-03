@@ -370,6 +370,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // setting agreement page
         Route::get('/settings/agreement', 'SettingController@agreementPageSetting')->name('settings.page.agreement');
         Route::post('/settings/agreement', 'SettingController@updateAgreementPageSetting')->name('settings.page.agreement.update');
+        Route::get('/email-template/{param?}', 'SettingController@showEmailtemplate')->name('settings.page.email-template');
+        Route::post('/email-template', 'SettingController@updateEmailtemplate')->name('settings.page.email-template.update');
 
         // setting privacy-policy page
         Route::get('/settings/privacy-policy', 'SettingController@editPrivacyPolicyPageSetting')->name('settings.page.privacy-policy.edit');
@@ -710,6 +712,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/profile', 'UserController@updateProfile')->name('profile.update');
         Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit');
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
+
+        Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template');
+        // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');
+        Route::post('/user-email-template', 'UserController@updateEmailtemplate')->name('email.template.update');
 
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');

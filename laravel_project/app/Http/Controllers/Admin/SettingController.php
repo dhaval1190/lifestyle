@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use DateTime;
+use App\EmailTemplate;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -366,6 +368,41 @@ class SettingController extends Controller
 
         return redirect()->route('admin.settings.page.agreement',compact('agreement_updated_date'));
 
+    }
+
+    public function showEmailtemplate($param)
+    {
+
+        $user_id = Auth::user()->id;
+        $template_data = EmailTemplate::where('user_id',$user_id)->where('is_contact_or_profile',$param)->first();
+        // dd($email_template_data);
+        if($param == 'profile'){
+            return view('backend.admin.setting.email_template.profile_email_template',compact('template_data'));
+        }elseif($param == 'coach'){
+            return view('backend.admin.setting.email_template.coach_email_template',compact('template_data'));
+
+        }
+    }
+
+    public function updateEmailtemplate(Request $request){
+
+        // dd($request->all());
+        $user_id = Auth::user()->id;
+        $emailObj = new EmailTemplate;
+
+        $template_data = EmailTemplate::where('user_id',$user_id)->where('is_contact_or_profile',$request->is_contact_profile)->first();
+        // dd($template_data);
+        
+        if($template_data){
+            EmailTemplate::where('id',$template_data->id )->where('user_id',$user_id)->update(['email_template'=>$request->message]);
+        }else{
+            $emailObj->user_id = $user_id;
+            $emailObj->email_template = $request->message;
+            $emailObj->is_contact_or_profile = $request->is_contact_profile;
+            $emailObj->save();
+        }
+        
+        return redirect()->route('admin.settings.page.email-template',$request->is_contact_profile);
     }
 
     public function updateTermsOfServicePageSetting(Request $request)

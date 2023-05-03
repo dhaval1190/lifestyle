@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}"/>
     @yield('styles')
+    <link rel="stylesheet" href="{{ asset('backend/css/plugins.bundle.css') }}">
     <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 </head>
 

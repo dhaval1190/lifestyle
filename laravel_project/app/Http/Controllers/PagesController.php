@@ -30,6 +30,7 @@ use App\Theme;
 use App\User;
 use App\Role;
 use App\MediaDetail;
+use App\EmailTemplate;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use DateTime;
@@ -6487,6 +6488,8 @@ class PagesController extends Controller
 
     public function emailItem(string $item_slug, Request $request)
     {
+
+        // return response()->json(['status'=>"successssssss",'msg'=>$request->all()]);
         $settings = app('site_global_settings');
 
         $item = Item::where('item_slug', $item_slug)
@@ -6498,96 +6501,133 @@ class PagesController extends Controller
         {
             if(Auth::check())
             {
-                // $request->validate([
-                //     'item_share_email_name' => 'required|max:255',
-                //     'item_share_email_from_email' => 'required|email|max:255',
-                //     'item_share_email_to_email' => 'required|email|max:255',
-                // ]);
+                    /**
+                     * Start initial SMTP settings
+                     */
+                    if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                    {
+                        // config SMTP
+                        config_smtp(
+                            $settings->settings_site_smtp_sender_name,
+                            $settings->settings_site_smtp_sender_email,
+                            $settings->settings_site_smtp_host,
+                            $settings->settings_site_smtp_port,
+                            $settings->settings_site_smtp_encryption,
+                            $settings->settings_site_smtp_username,
+                            $settings->settings_site_smtp_password
+                        );
+                    }
+                    /**
+                     * End initial SMTP settings
+                     */
 
-                $validator = Validator::make($request->all(),[
-                    'item_share_email_name' => 'required|max:255',
-                    'item_share_email_from_email' => 'required|email|max:255',
-                    'item_share_email_to_email' => 'required|email|max:255',
-                    'item_share_email_note' => 'required|string|max:255',
-                ],[
-                    'item_share_email_name.required' => 'Name field is required',
-                    'item_share_email_from_email.required' => 'From email is required',
-                    'item_share_email_to_email.required' => 'To email is required',
-                    'item_share_email_note.required' => 'Note field is required',
-                ]);
-
-                if($validator->passes()){
-                // send an email notification to admin
-                $email_to = $request->item_share_email_to_email;
-                $email_from_name = $request->item_share_email_name;
-                $email_note = $request->item_share_email_note;
-                $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
-
-                $email_notify_message = [
-                    __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                    __('frontend.item.send-email-note'),
-                    $email_note,
-                ];
-
-                /**
-                 * Start initial SMTP settings
-                 */
-                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
-                {
-                    // config SMTP
-                    config_smtp(
-                        $settings->settings_site_smtp_sender_name,
-                        $settings->settings_site_smtp_sender_email,
-                        $settings->settings_site_smtp_host,
-                        $settings->settings_site_smtp_port,
-                        $settings->settings_site_smtp_encryption,
-                        $settings->settings_site_smtp_username,
-                        $settings->settings_site_smtp_password
-                    );
-                }
-                /**
-                 * End initial SMTP settings
-                 */
-
-                if(!empty($settings->setting_site_name))
-                {
-                    // set up APP_NAME
-                    config([
-                        // 'app.name' => $settings->setting_site_name,
-                        'app.name' => "The CoachesHQ Family",
+                    if(!empty($settings->setting_site_name))
+                    {
+                        // set up APP_NAME
+                        config([
+                            // 'app.name' => $settings->setting_site_name,
+                            'app.name' => "The CoachesHQ Family",
+                        ]);
+                    }
+                    // $request->validate([
+                    //     'item_share_email_name' => 'required|max:255',
+                    //     'item_share_email_from_email' => 'required|email|max:255',
+                    //     'item_share_email_to_email' => 'required|email|max:255',
+                    // ]);
+                    
+                    $validator = Validator::make($request->all(),[
+                        'item_share_email_name' => 'required|max:255',
+                        'item_share_email_from_email' => 'required|email|max:255',
+                        'item_share_email_to_email' => 'required|email|max:255',
+                        'item_share_email_note' => 'required|string|max:255',
+                        ],[
+                        'item_share_email_name.required' => 'Name field is required',
+                        'item_share_email_from_email.required' => 'From email is required',
+                        'item_share_email_to_email.required' => 'To email is required',
+                        'item_share_email_note.required' => 'Note field is required',
                     ]);
-                }
+                
+                if($validator->passes()){
+                    $auth_user_role_id = auth()->user()->role_id;
+                    if($auth_user_role_id == '2'){
+                        $user = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','profile')->first();
 
-                try
-                {
-                    // to admin
-                    Mail::to($email_to)->send(
-                        new Notification(
-                            $email_subject,
-                            $email_to,
-                            null,
-                            $email_notify_message,
-                            __('frontend.item.view-listing'),
-                            'success',
-                            route('page.item', $item->item_slug)
-                        )
-                    );
+                    }elseif($auth_user_role_id == '3'){
+                        $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
+                    }
+                    $email_to = $request->item_share_email_to_email;
+                    $email_from_name = $request->item_share_email_name;
+                    $email_note = $request->item_share_email_note;
+                    $email_subject = __('frontend.item.send-email-subject', ['name' => $email_from_name]);
 
-                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                    \Session::flash('flash_type', 'success');
+                    
+                    if($user){
+                        $template_body = $user->email_template;
+                        $template_body = str_replace('[TO_EMAIL]',$email_to,$template_body);
+                        $template_body = str_replace('[USER_NAME]',$email_from_name,$template_body);
+                        $template_body = str_replace('[URL]',route('page.item', $item->item_slug),$template_body);
+                        $template_body = str_replace('[NOTE]',$email_note,$template_body);
 
-                }
-                catch (\Exception $e)
-                {
-                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                        $email_notify_message = [
+                            'to_mail' => $email_to,
+                            'email_from_name' => $email_from_name,
+                            'message_content' => $template_body, 
+                            'url' => route('page.item', $item->item_slug),
+                            'note' => $email_note,
+                        ];
+                        try{
+                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to){
+                                $messages->to($email_to);
+                            });
 
-                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
-                    \Session::flash('flash_type', 'danger');
-                }
-                return response()->json(['status'=>"success",'msg'=>'Mail sent successfully!']);
-                return redirect()->route('page.item', $item->item_slug);
-            }else{
-                return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                            \Session::flash('flash_type', 'success');
+                        }
+                        catch(\Exception $e){
+                            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                            \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                            \Session::flash('flash_type', 'danger');
+                        }
+                    }else{
+                        $email_notify_message = [
+                            __('frontend.item.send-email-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                            __('frontend.item.send-email-note'),
+                            $email_note,
+                        ];                    
+    
+                        try
+                        {
+                            // to admin
+                            Mail::to($email_to)->send(
+                                new Notification(
+                                    $email_subject,
+                                    $email_to,
+                                    null,
+                                    $email_notify_message,
+                                    __('frontend.item.view-listing'),
+                                    'success',
+                                    route('page.item', $item->item_slug)
+                                )
+                            );
+    
+                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                            \Session::flash('flash_type', 'success');
+    
+                        }
+                        catch (\Exception $e)
+                        {
+                            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+    
+                            \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                            \Session::flash('flash_type', 'danger');
+                        }
+                    }
+                    
+                    return response()->json(['status'=>"success",'msg'=>'Mail sent successfully!']);
+                    // return redirect()->route('page.item', $item->item_slug);
+                }else{
+                    return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
                 }
             }
             else
@@ -6608,6 +6648,7 @@ class PagesController extends Controller
     public function emailProfile(string $profileId, Request $request)
     {
 
+        // return response()->json(['status'=>"successssssss",'msg'=>$request->all()]);
         // print_r($profileId);
         //     echo "<br>";
         //     print_r($request->all());
@@ -6662,76 +6703,124 @@ class PagesController extends Controller
                 ]);
 
                 if($validator->passes()){
-                // send an email notification to admin
-                $email_to = $request->profile_share_email_to_email;
-                $email_from_name = $request->profile_share_email_name;
-                $email_note = $request->profile_share_email_note;
-                $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
+                    /**
+                        * Start initial SMTP settings
+                    */
+                    if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                    {
+                        // config SMTP
+                        config_smtp(
+                            $settings->settings_site_smtp_sender_name,
+                            $settings->settings_site_smtp_sender_email,
+                            $settings->settings_site_smtp_host,
+                            $settings->settings_site_smtp_port,
+                            $settings->settings_site_smtp_encryption,
+                            $settings->settings_site_smtp_username,
+                            $settings->settings_site_smtp_password
+                        );
+                    }
+                    /**
+                     * End initial SMTP settings
+                     */
+                    if(!empty($settings->setting_site_name))
+                    {
+                        // set up APP_NAME
+                        config([
+                            // 'app.name' => $settings->setting_site_name,
+                            'app.name' => "The CoachesHQ Family",
+                        ]);
+                    }
+                    $authUser = User::where('id',auth()->user()->id)->first();
+                    if($authUser->role_id == '2'){
+                        $user = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','profile')->first();
+                        // $template_body = $user->email_template;                    
+                        // $template_body = str_replace('[URL]',route('page.profile', encrypt($authUser->id)),$template_body);
 
-                $email_notify_message = [
-                    __('frontend.item.send-email-body-profile', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
-                    __('frontend.item.send-email-note'),
-                    $email_note,
-                ];
+                    }elseif($authUser->role_id == '3'){                        
+                        $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
+                        // $template_body = $user->email_template; 
+                        
+                    }
+                    
 
-                /**
-                 * Start initial SMTP settings
-                 */
-                if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
-                {
-                    // config SMTP
-                    config_smtp(
-                        $settings->settings_site_smtp_sender_name,
-                        $settings->settings_site_smtp_sender_email,
-                        $settings->settings_site_smtp_host,
-                        $settings->settings_site_smtp_port,
-                        $settings->settings_site_smtp_encryption,
-                        $settings->settings_site_smtp_username,
-                        $settings->settings_site_smtp_password
-                    );
-                }
-                /**
-                 * End initial SMTP settings
-                 */
+                    if($user)
+                    {
+                        $template_body = $user->email_template;                    
+                        $template_body = str_replace('[URL]',route('page.profile', encrypt($authUser->id)),$template_body);
+                        $email_to = $request->profile_share_email_to_email;
+                        $email_from_name = $request->profile_share_email_name;
+                        $email_note = $request->profile_share_email_note;
+                        $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
+                        
+                        $template_body = str_replace('[TO_EMAIL]',$email_to,$template_body);
+                        $template_body = str_replace('[USER_NAME]',$email_from_name,$template_body);
+                        $template_body = str_replace('[URL]',route('page.profile', $profileId),$template_body);
+                        $template_body = str_replace('[NOTE]',$email_note,$template_body);
 
-                if(!empty($settings->setting_site_name))
-                {
-                    // set up APP_NAME
-                    config([
-                        // 'app.name' => $settings->setting_site_name,
-                        'app.name' => "The CoachesHQ Family",
-                    ]);
-                }
+                        $email_notify_message = [
+                            'to_mail' => $email_to,
+                            'email_from_name' => $email_from_name,
+                            'message_content' => $template_body, 
+                            'url' => route('page.profile', $profileId),
+                            'note' => $email_note,
+                        ];
+                        try{
+                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to){
+                                $messages->to($email_to);
+                            });
 
-                try
-                {
-                    // to admin
-                    Mail::to($email_to)->send(
-                        new Notification(
-                            $email_subject,
-                            $email_to,
-                            null,
-                            $email_notify_message,
-                            __('frontend.item.view-listing'),
-                            'success',
-                            route('page.profile', $profileId)
-                        )
-                    );
+                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                            \Session::flash('flash_type', 'success');
+                        }
+                        catch(\Exception $e){
+                            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
 
-                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                    \Session::flash('flash_type', 'success');
+                            \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                            \Session::flash('flash_type', 'danger');
+                        }
+                    }else{
 
-                }
-                catch (\Exception $e)
-                {
-                    Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                        $email_to = $request->profile_share_email_to_email;
+                        $email_from_name = $request->profile_share_email_name;
+                        $email_note = $request->profile_share_email_note;
+                        $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
 
-                    \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
-                    \Session::flash('flash_type', 'danger');
-                }
-                return response()->json(['status'=>"success",'msg'=>"Mail sent successfully!"]);
+                        $email_notify_message = [
+                            __('frontend.item.send-email-body-profile', ['from_name' => $email_from_name, 'url' => route('page.profile', $profileId)]),
+                            __('frontend.item.send-email-note'),
+                            $email_note,
+                        ];               
+    
+                        try
+                        {
+                            // to admin
+                            Mail::to($email_to)->send(
+                                new Notification(
+                                    $email_subject,
+                                    $email_to,
+                                    null,
+                                    $email_notify_message,
+                                    __('frontend.item.view-listing'),
+                                    'success',
+                                    route('page.profile', $profileId)
+                                )
+                            );
 
-                return redirect()->route('page.profile', $profileId);
+                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                            \Session::flash('flash_type', 'success');    
+                        }
+                        catch (\Exception $e)
+                        {
+                            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+    
+                            \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                            \Session::flash('flash_type', 'danger');
+                        }
+                    }                  
+
+                        return response()->json(['status'=>"success",'msg'=>"Mail sent successfully!"]);
+
+                        // return redirect()->route('page.profile', $profileId);
             }else{
                 return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
             }
@@ -6775,12 +6864,12 @@ class PagesController extends Controller
                 $validator = Validator::make($request->all(),[
                     'item_conntact_email_name' => 'required|max:255',
                     'item_contact_email_from_email' => 'required|email|max:255',
-                    'question1' => 'required|max:255',
-                    'question2' => 'required|max:255',
-                    'question3' => 'required|max:255',
-                    'question4' => 'required|max:255',
-                    'question5' => 'required|max:255',
-                    'question6' => 'required|max:255',
+                    'question1' => 'required|max:800',
+                    'question2' => 'required|max:800',
+                    'question3' => 'required|max:800',
+                    'question4' => 'required|max:800',
+                    'question5' => 'required|max:800',
+                    'question6' => 'required|max:800',
                 ],[
                     'item_conntact_email_name.required' => 'Name is required',
                     'item_contact_email_from_email.required' => 'Email is required',
@@ -6796,94 +6885,7 @@ class PagesController extends Controller
 
                 if($validator->passes())
                 {
-                    $authUser = User::where('id',$request->authUserId)->first();
-
-                    DB::table('contact_coach')->insert([
-                        'name' => $request->item_conntact_email_name,
-                        'email' => $request->item_contact_email_from_email,
-                        'question1' =>  $request->question1,
-                        'question2' =>  $request->question2,
-                        'question3' =>  $request->question3,
-                        'question4' =>  $request->question4,
-                        'question5' =>  $request->question5,
-                        'question6' =>  $request->question6,
-                    ]);
-                    // send an email notification to admin
-                        if($request->contact_profile){
-                            $email_to = $user->email;                                   
-                            $email_from_name = $request->item_conntact_email_name;
-                            $item_contact_email = $request->item_contact_email_from_email;                    
-                            // $email_note = $request->question1."<br>".$request->question2."<br>".$request->question3."<br>".$request->question4."<br>".$request->question5."<br>".$request->question6;
-                            $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
-
-                            if($authUser->role_id == 3){
-                                $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
-                                // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
-                            }else{
-                                $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
-                            }
-                            
-                            $email_notify_message = [
-                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
-                                $from_name_abd_url,
-                                __('frontend.item.send-email-from-name',['name' => $email_from_name]),
-                                __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
-                                // __('Questions/Answers'),
-                                // $email_note,
-                                __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
-                                $request->question1,
-                                __('Q2. What type of traits are important to you when selecting a coach?'),
-                                $request->question2,
-                                __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
-                                $request->question3,
-                                __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
-                                $request->question4,
-                                __('Q5. What will change in your life to let you know you made a good investment?'),
-                                $request->question5,
-                                __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
-                                $request->question6,
-                            ];
-
-
-                        }else{
-                            $email_to = $user->email;
-                            $email_from_name = $request->item_conntact_email_name;
-                            $item_contact_email = $request->item_contact_email_from_email;
-                            $articleTitle = $request->articleTitle;
-                            // $email_note = $request->item_contact_email_note;
-                            $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
-
-                            if($authUser->role_id == 3){
-                                $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
-                                // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
-                            }else{
-                                $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
-                            }
-
-                            $email_notify_message = [
-                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
-                                $from_name_abd_url,
-                                __('frontend.item.send-email-from-name',['name' => $email_from_name]),
-                                __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
-                                __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
-                                // __('frontend.item.send-email-contact-note'),
-                                // $email_note,
-                                __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
-                                $request->question1,
-                                __('Q2. What type of traits are important to you when selecting a coach?'),
-                                $request->question2,
-                                __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
-                                $request->question3,
-                                __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
-                                $request->question4,
-                                __('Q5. What will change in your life to let you know you made a good investment?'),
-                                $request->question5,
-                                __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
-                                $request->question6,
-                            ];
-                        }
-
-                        /**
+                    /**
                          * Start initial SMTP settings
                          */
                         if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
@@ -6912,85 +6914,309 @@ class PagesController extends Controller
                             ]);
                         }
 
-                        try
-                        {
-                            // to admin
-                            Mail::to($email_to)->send(
-                                new Notification(
-                                    $email_subject,
-                                    $email_to,
-                                    null,
-                                    $email_notify_message,
-                                    // route('page.item', $item->item_slug),
-                                    // null,
-                                    // null,
-                                )
-                            );
+                        $authUser = User::where('id',$request->authUserId)->first();
 
-                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                            \Session::flash('flash_type', 'success');
+                        DB::table('contact_coach')->insert([
+                            'name' => $request->item_conntact_email_name,
+                            'email' => $request->item_contact_email_from_email,
+                            'question1' =>  $request->question1,
+                            'question2' =>  $request->question2,
+                            'question3' =>  $request->question3,
+                            'question4' =>  $request->question4,
+                            'question5' =>  $request->question5,
+                            'question6' =>  $request->question6,
+                        ]);
 
-                            $url = 'https://fcm.googleapis.com/fcm/send';                            
-                            $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
-                            
-                            if($request->contact_profile){
-                                $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
-                                $data = [
-                                    "registration_ids" => $FcmToken,
-                                    "notification" => [
-                                        "title" =>'New Notification From Your Profile',
-                                        "body" =>'From : '.$request['item_conntact_email_name'],  
-                                    ]
-                                ];
-                            }else{
-                                $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
-                                $data = [
-                                    "registration_ids" => $FcmToken,
-                                    "notification" => [
-                                        "title" =>'New Notification From Your Article: '.$request->articleTitle,
-                                        "body" =>'From : '.$request['item_conntact_email_name'],  
-                                    ]
-                                ];
-                            }                   
-                            $encodedData = json_encode($data);    
-                            $headers = [
-                                'Authorization:key=' . $serverKey,
-                                'Content-Type: application/json',
-                            ];    
-                            $ch = curl_init();        
-                            curl_setopt($ch, CURLOPT_URL, $url);
-                            curl_setopt($ch, CURLOPT_POST, true);
-                            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-                            // Disabling SSL Certificate support temporarly
-                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                            curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-                            // Execute post
-                            $result = curl_exec($ch); 
-                            // Close connection
-                            curl_close($ch);
-                            // FCM response  
+                        if($authUser->role_id == '2'){
+                            $user_template = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','coach')->first();
+                            // $template_body = $user_template->email_template; 
+                            // $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+
+                        }elseif($authUser->role_id == '3'){
+                            $user_template = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','coach')->first();
+                            // $template_body = $user_template->email_template;
+                            // $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
 
                         }
-                        catch (\Exception $e)
+                        $url = 'https://fcm.googleapis.com/fcm/send';                            
+                        $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
+
+                        // return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
+
+                        if($user_template)
                         {
-                            Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+                            $template_body = $user_template->email_template; 
+                            $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                            $email_to = $user->email;                                   
+                            $email_from_name = $request->item_conntact_email_name;
+                            $item_contact_email = $request->item_contact_email_from_email;
 
-                            \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
-                            \Session::flash('flash_type', 'danger');
-                        }                               
-                        $notification = [
-                            'user_id' => $user->id,
-                            'visitor_id' => Auth::user()->id,
-                            'notification'=>$data['notification']['title'],
-                            'is_read'=>'0',                    
-                        ];           
-                        //print_r($user->notification());exit;          
-                        $user->notification()->create($notification);
+                            $template_body = str_replace('[COACH_EMAIL]',$email_to,$template_body);
+                            $template_body = str_replace('[YOUR_NAME]',$email_from_name,$template_body);
+                            $template_body = str_replace('[YOUR_EMAIL]',$item_contact_email,$template_body);
+                            // $template_body = str_replace('[QUESTIONS]',$request->question1,$template_body);
+                            $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of traits are important to you when selecting a coach?</p><br><p>'.$request->question2.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a sale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. What will change in your life to let you know you made a good investment?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
+                            $template_body = str_replace('[QUESTIONS]',$all_questions,$template_body);
 
+                            if($request->contact_profile){
+                                //return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
+
+                                $email_notify_message = [
+                                    'to_mail' => $email_to,
+                                    'email_from_name' => $email_from_name,
+                                    'message_content' => $template_body, 
+                                    'url' => route('page.profile', encrypt($request->authUserId)),
+                                    // 'questions' => $email_note,
+                                    ];
+
+                                    try{
+                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to){
+                                            $messages->to($email_to);
+                                        });
+
+                                        $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
+                                        $data = [
+                                            "registration_ids" => $FcmToken,
+                                            "notification" => [
+                                                "title" =>'New Notification From Your Profile',
+                                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                                            ]
+                                        ];
+            
+                                        \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                        \Session::flash('flash_type', 'success');
+                                    }
+                                    catch(\Exception $e){
+                                        Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            
+                                        \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                                        \Session::flash('flash_type', 'danger');
+                                    }
+                                    //<p></p><br>
+                                
+                            }else{
+                                // return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
+                                $email_notify_message = [
+                                    'to_mail' => $email_to,
+                                    'email_from_name' => $email_from_name,
+                                    'message_content' => $template_body, 
+                                    'url' => route('page.item', $item->item_slug),
+                                    // 'questions' => $email_note,
+                                    ];
+
+                                    try{
+                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to){
+                                            $messages->to($email_to);
+                                        });
+
+                                        $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
+                                        $data = [
+                                            "registration_ids" => $FcmToken,
+                                            "notification" => [
+                                                "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                                "body" =>'From : '.$request['item_conntact_email_name'],  
+                                            ]
+                                        ];
+            
+                                        \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                        \Session::flash('flash_type', 'success');
+                                    }
+                                    catch(\Exception $e){
+                                        Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            
+                                        \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                                        \Session::flash('flash_type', 'danger');
+                                    }
+
+                            }
+
+                                $encodedData = json_encode($data);    
+                                $headers = [
+                                    'Authorization:key=' . $serverKey,
+                                    'Content-Type: application/json',
+                                ];    
+                                $ch = curl_init();        
+                                curl_setopt($ch, CURLOPT_URL, $url);
+                                curl_setopt($ch, CURLOPT_POST, true);
+                                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                                // Disabling SSL Certificate support temporarly
+                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+                                // Execute post
+                                $result = curl_exec($ch); 
+                                // Close connection
+                                curl_close($ch);
+                                // FCM response
+
+                                $notification = [
+                                    'user_id' => $user->id,
+                                    'visitor_id' => Auth::user()->id,
+                                    'notification'=>$data['notification']['title'],
+                                    'is_read'=>'0',                    
+                                ];           
+                                //print_r($user->notification());exit;          
+                                $user->notification()->create($notification);
+
+                        }else{
+                            if($request->contact_profile){
+                                $email_to = $user->email;                                   
+                                $email_from_name = $request->item_conntact_email_name;
+                                $item_contact_email = $request->item_contact_email_from_email;                    
+                                // $email_note = $request->question1."<br>".$request->question2."<br>".$request->question3."<br>".$request->question4."<br>".$request->question5."<br>".$request->question6;
+                                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+    
+                                if($authUser->role_id == 3){
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                    // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                                }else{
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
+                                }
+                                
+                                $email_notify_message = [
+                                    // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                    $from_name_abd_url,
+                                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                                    // __('Questions/Answers'),
+                                    // $email_note,
+                                    __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                    $request->question1,
+                                    __('Q2. What type of traits are important to you when selecting a coach?'),
+                                    $request->question2,
+                                    __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                    $request->question3,
+                                    __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    $request->question4,
+                                    __('Q5. What will change in your life to let you know you made a good investment?'),
+                                    $request->question5,
+                                    __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                    $request->question6,
+                                ];
+    
+    
+                            }else{
+                                $email_to = $user->email;
+                                $email_from_name = $request->item_conntact_email_name;
+                                $item_contact_email = $request->item_contact_email_from_email;
+                                $articleTitle = $request->articleTitle;
+                                // $email_note = $request->item_contact_email_note;
+                                $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
+    
+                                if($authUser->role_id == 3){
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                    // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                                }else{
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
+                                }
+    
+                                $email_notify_message = [
+                                    // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
+                                    $from_name_abd_url,
+                                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                                    __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
+                                    __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
+                                    // __('frontend.item.send-email-contact-note'),
+                                    // $email_note,
+                                    __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                    $request->question1,
+                                    __('Q2. What type of traits are important to you when selecting a coach?'),
+                                    $request->question2,
+                                    __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                    $request->question3,
+                                    __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    $request->question4,
+                                    __('Q5. What will change in your life to let you know you made a good investment?'),
+                                    $request->question5,
+                                    __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                    $request->question6,
+                                ];
+                            }
+
+                            try
+                            {
+                                // to admin
+                                Mail::to($email_to)->send(
+                                    new Notification(
+                                        $email_subject,
+                                        $email_to,
+                                        null,
+                                        $email_notify_message,
+                                        // route('page.item', $item->item_slug),
+                                        // null,
+                                        // null,
+                                    )
+                                );
+
+                                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                \Session::flash('flash_type', 'success');
+
+                                // $url = 'https://fcm.googleapis.com/fcm/send';                            
+                                // $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
+                                
+                                if($request->contact_profile){
+                                    $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
+                                    $data = [
+                                        "registration_ids" => $FcmToken,
+                                        "notification" => [
+                                            "title" =>'New Notification From Your Profile',
+                                            "body" =>'From : '.$request['item_conntact_email_name'],  
+                                        ]
+                                    ];
+                                }else{
+                                    $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
+                                    $data = [
+                                        "registration_ids" => $FcmToken,
+                                        "notification" => [
+                                            "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                            "body" =>'From : '.$request['item_conntact_email_name'],  
+                                        ]
+                                    ];
+                                }                   
+                                $encodedData = json_encode($data);    
+                                $headers = [
+                                    'Authorization:key=' . $serverKey,
+                                    'Content-Type: application/json',
+                                ];    
+                                $ch = curl_init();        
+                                curl_setopt($ch, CURLOPT_URL, $url);
+                                curl_setopt($ch, CURLOPT_POST, true);
+                                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                                // Disabling SSL Certificate support temporarly
+                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+                                // Execute post
+                                $result = curl_exec($ch); 
+                                // Close connection
+                                curl_close($ch);
+                                // FCM response  
+
+                            }
+                            catch (\Exception $e)
+                            {
+                                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+
+                                \Session::flash('flash_message', __('theme_directory_hub.email.alert.sending-problem'));
+                                \Session::flash('flash_type', 'danger');
+                            }                               
+                            $notification = [
+                                'user_id' => $user->id,
+                                'visitor_id' => Auth::user()->id,
+                                'notification'=>$data['notification']['title'],
+                                'is_read'=>'0',                    
+                            ];           
+                            //print_r($user->notification());exit;          
+                            $user->notification()->create($notification);
+
+                        }
+                        
                         return response()->json(['status'=>"success",'msg'=>'Contact details sent successfully!']);
+
                         if($request->contact_profile){
                             return redirect()->route('page.profile', $request->hexId);
                         }else{

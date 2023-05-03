@@ -112,11 +112,24 @@
     @endif
 
     @if(auth()->user()->isCoach())
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('user.subscriptions.index') }}">
-            <i class="far fa-credit-card"></i>
-            <span>{{ __('backend.sidebar.subscription') }}</span></a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('user.subscriptions.index') }}">
+                <i class="far fa-credit-card"></i>
+                <span>{{ __('backend.sidebar.subscription') }}</span></a>
+        </li>   
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
+                <i class="fas fa-star"></i>
+                <span>{{ __('Email Templates') }}</span>
+            </a>
+            <div id="collapse_email" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('user.email.template','profile') }}">{{ __('Profile Template') }}</a>
+                    <a class="collapse-item" href="{{ route('user.email.template','coach') }}">{{ __('Contact Coach Template') }}</a>
+                </div>
+            </div>
+        </li>
     @endif
 
     <!-- Divider -->

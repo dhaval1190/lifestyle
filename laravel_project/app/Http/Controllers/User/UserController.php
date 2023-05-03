@@ -8,6 +8,7 @@ use App\User;
 use App\Role;
 use App\Category;
 use App\MediaDetail;
+use App\EmailTemplate;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -637,5 +638,43 @@ class UserController extends Controller
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.profile.edit');
+    }
+
+    public function showEmailtemplate($param)
+    {
+        // dd($param);
+        $user_id = Auth::user()->id;
+        $template_data = EmailTemplate::where('user_id',$user_id)->where('is_contact_or_profile',$param)->first();
+        // dd($template_data);
+
+        if($param == 'profile'){
+            return view('backend.user.profile_email_template',compact('template_data'));
+        }elseif($param == 'coach'){
+            return view('backend.user.coach_email_template',compact('template_data'));
+
+        }
+    }
+
+    public function updateEmailtemplate(Request $request)
+    {
+        // dd($request->all());
+
+        $user_id = Auth::user()->id;
+        $emailObj = new EmailTemplate;
+
+        $template_data = EmailTemplate::where('user_id',$user_id)->where('is_contact_or_profile',$request->is_contact_profile)->first();
+        // dd($template_data);
+        
+        if($template_data){
+            EmailTemplate::where('id',$template_data->id )->where('user_id',$user_id )->update(['email_template'=>$request->message]);
+        }else{
+            $emailObj->user_id = $user_id;
+            $emailObj->email_template = $request->message;
+            $emailObj->is_contact_or_profile = $request->is_contact_profile;
+            $emailObj->save();
+        }       
+        
+        // dd("222");
+        return redirect()->route('user.email.template',$request->is_contact_profile);
     }
 }
