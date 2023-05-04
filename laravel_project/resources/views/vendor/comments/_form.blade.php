@@ -40,11 +40,13 @@
 
             <div class="form-group">
                 <label for="message">{{ __('frontend.comment.enter-message') }}</label>
-                <textarea class="form-control @if($errors->has('message')) is-invalid @endif" name="message" rows="3"></textarea>
-                <div class="invalid-feedback">
-                    Your message is required.
-                </div>
-                <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">{{ __('frontend.comment.markdown') }}</a> {{ __('frontend.comment.cheatsheet') }}.</small>
+                <textarea class="form-control" name="message" rows="3"></textarea>
+                @if($errors->has('message'))
+                    <div class="invalid-tooltip">
+                        Your message is required.
+                    </div>
+                @endif
+                {{-- <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">{{ __('frontend.comment.markdown') }}</a> {{ __('frontend.comment.cheatsheet') }}.</small> --}}
             </div>
             <button type="submit" class="btn btn-sm btn-outline-success text-uppercase">{{ __('frontend.comment.submit') }}</button>
         </form>
