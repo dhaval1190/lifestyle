@@ -383,7 +383,11 @@ class PagesController extends Controller
     public function profileReviewsStore(Request $request)
     {
         $login_user = Auth::user();         
-        $settings = app('site_global_settings');         
+        $settings = app('site_global_settings');    
+        // $profile = ProfileReviews::where('reviewrateable_id',$request->id)
+        //     //->where('country_id', $site_prefer_country_id)
+        //     ->where('author_id', '!=',Auth::user()->id)
+        //     ->first();     
            $review_count = new Item();
 
            if($review_count)
@@ -425,6 +429,7 @@ class PagesController extends Controller
                     'reviewrateable_id'=>$profile_user_id
                 ], $login_user);
                 $new_item->save();
+                return response()->json(['status'=>"success",'msg'=>'Review Add SuccessFull']);
                 
                 // $review_count = new Item();
                 // $review_count->syncProfileverageRating($profile_user_id);
