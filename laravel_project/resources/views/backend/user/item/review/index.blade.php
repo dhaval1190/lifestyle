@@ -55,7 +55,7 @@
                                 <th>{{ __('review.backend.quality') }}</th>
                                 <th>{{ __('review.backend.friendly') }}</th>
                                 <th>{{ __('review.backend.pricing') }}</th> -->
-                                <th>{{ __('review.backend.title') }}</th>
+                                <!-- <th>{{ __('review.backend.title') }}</th> -->
                                 <th>{{ __('review.backend.description') }}</th>
                                 <th>{{ __('review.backend.status') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
