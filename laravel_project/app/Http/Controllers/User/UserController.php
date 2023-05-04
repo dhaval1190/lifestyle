@@ -659,12 +659,13 @@ class UserController extends Controller
     {
         // dd($request->all());
 
+        $request->validate([
+            'subject' => 'required|max:100',
+            'message' => 'required|max:1000',
+        ]);
         if($request->message == '<p><br></p>'){
             return back()->with('message_error','Message field is required');
         }
-        $request->validate([
-            'message' => 'required|max:1000',
-        ]);
 
         $user_id = Auth::user()->id;
         $emailObj = new EmailTemplate;
@@ -673,10 +674,11 @@ class UserController extends Controller
         // dd($template_data);
         
         if($template_data){
-            EmailTemplate::where('id',$template_data->id )->where('user_id',$user_id )->update(['email_template'=>$request->message]);
+            EmailTemplate::where('id',$template_data->id )->where('user_id',$user_id )->update(['email_template'=>$request->message,'subject'=>$request->subject]);
         }else{
             $emailObj->user_id = $user_id;
             $emailObj->email_template = $request->message;
+            $emailObj->subject = $request->subject;
             $emailObj->is_contact_or_profile = $request->is_contact_profile;
             $emailObj->save();
         }       

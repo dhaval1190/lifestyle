@@ -22,17 +22,15 @@
                         @csrf
                         <input type="hidden" name="is_contact_profile" value="profile">
                         <div class="row form-group">
-                            <div class="col-md-4">
-                                <div class="custom-control custom-checkbox">
-                                    {{-- <input value="1" name="setting_page_about_enable" type="checkbox" class="custom-control-input" id="setting_page_about_enable"> --}}
-                                    {{-- <p>Last Updated on : <b></b></p> --}}
-                                </div>
+                            <div class="col-md-12">                                
+                                    <label for="youtube" class="text-black">Subject:</label>
+                                    <input name="subject" type="text" class="form-control" id="subject" value="{{ isset($template_data->subject) ? $template_data->subject : '' }}">                               
                                 
-                                {{-- @error('setting_page_about_enable')
-                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror --}}
+                                @error('subject')
+                                    <p class="name_error error_color">
+                                        <strong>{{ $message }}</strong>
+                                    </p>
+                                @enderror
                             </div>
                         </div>
                         {{-- <div class="fv-row form-group">
@@ -58,14 +56,14 @@
                                 <input type="hidden" name="message" class="hidden-message" id="hidden-message" value="{{ isset($template_data->email_template) ? $template_data->email_template : '' }}">
                             </div>
                             @error('message')
-                                <span class="invalid-tooltip">
+                                <p class="name_error error_color">
                                     <strong>{{ $message }}</strong>
-                                </span>
+                                </p>
                             @enderror
                             @if(Session::has('message_error'))
-                                <span class="invalid-tooltip">
+                                <p class="name_error error_color">
                                     <strong>{{ Session::get('message_error') }}</strong>
-                                </span>
+                                </p>
                             @endif
                             <div class="mt-2">
                                 @foreach(profileShareEmailTemplateConstants() as $snippets)
