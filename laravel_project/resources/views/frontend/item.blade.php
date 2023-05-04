@@ -328,10 +328,7 @@
                         @endif
                     @endguest
 
-                    @if(!empty($item->item_phone))
-                    {{-- <a class="btn btn-primary rounded text-white" href="tel:{{ $item->item_phone }}"><i class="fas fa-phone-alt"></i> {{ __('frontend.item.call') }}</a> --}}
-                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
-                    @endif
+                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
                 </div>
             </div>
@@ -471,7 +468,7 @@
                             </form>
                         @endif
                     @endguest
-                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
                 </div>
             </div>
         </div>
@@ -1484,7 +1481,7 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <div class="col-lg-3 bg-primary text-white">
+                                        <div class="col-lg-3 bg-primary text-white mtb-10-set">
                                             <div id="review_summary">
                                                 <strong>{{ number_format($item_average_rating, 1) }}</strong>
                                                 @if($item_count_rating > 1)
@@ -2575,16 +2572,16 @@
 
                             <div class="row align-items-center">
 
-                                <div class="col-5 col-md-7 pr-0">
+                                <div class="col-12 col-md-12 pr-0">
                                     <div class="row align-items-center item-box-user-div">
-                                        <div class="col-3 item-box-user-img-div">
+                                        <div class="col-2 col-md-2 col-lg-3 item-box-user-img-div">
                                             @if(empty($similar_coach_item->user->user_image))
                                                 <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_coach_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                             @else
                                                 <img src="{{ Storage::disk('public')->url('user/' . $similar_coach_item->user->user_image) }}" alt="{{ $similar_coach_item->user->name }}" class="img-fluid rounded-circle">
                                             @endif
                                         </div>
-                                        <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                        <div class="col-10 col-md-10 col-lg-9 line-height-1-2 item-box-user-name-div">
                                             <div class="row pb-1">
                                                 <div class="col-12">
                                                     <a class="decoration-none" href="{{ route('page.profile',encrypt($similar_coach_item->user->id)) }}"><span class="font-size-13">{{ str_limit($similar_coach_item->user->name, 14, '.') }}</span></a>
