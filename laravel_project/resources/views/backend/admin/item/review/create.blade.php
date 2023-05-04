@@ -210,7 +210,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>
                                 <small class="form-text text-muted">
@@ -221,16 +221,16 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                                <!-- <div class="row mt-3">
+                                <div class="row mt-3">
                                     <div class="col-12">
                                         <button id="upload_gallery" type="button" class="btn btn-primary mb-2">{{ __('review_galleries.choose-photo') }}</button>
                                         <div class="row" id="selected-images">
 
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">

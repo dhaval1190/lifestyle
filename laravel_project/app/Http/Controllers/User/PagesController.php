@@ -534,7 +534,7 @@ class PagesController extends Controller
             $data->recommend = $request->recommend == 1 ? Item::ITEM_REVIEW_RECOMMEND_YES : Item::ITEM_REVIEW_RECOMMEND_NO;
             
             $res = $data->save();
-            
+            return response()->json(['status'=>"success",'msg'=>'Review Update SuccessFull']);
             $review_count = new Item();
             $review_count->syncProfileverageRating($data->reviewrateable_id);
 
