@@ -387,6 +387,13 @@ class SettingController extends Controller
     public function updateEmailtemplate(Request $request){
 
         // dd($request->all());
+        if($request->message == '<p><br></p>'){
+            return back()->with('message_error','Message field is required');
+        }
+        $request->validate([
+            'message' => 'required|max:1000',
+        ]);
+        
         $user_id = Auth::user()->id;
         $emailObj = new EmailTemplate;
 
