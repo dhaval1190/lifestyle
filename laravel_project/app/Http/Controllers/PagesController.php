@@ -2051,7 +2051,7 @@ class PagesController extends Controller
         $auth_user = Auth::user();	
         $Auth_review = [];	
         if(isset($auth_user)){	
-        $Auth_review = ProfileReviews::where('author_id',Auth::user()->id)->where('reviewrateable_id',$id)->first();	
+        $Auth_review = ProfileReviews::where('author_id',Auth::user()->id)->where('reviewrateable_id',$id)->orderBy('id','DESC')->first();	
        }
 
         $user_obj = new User();
