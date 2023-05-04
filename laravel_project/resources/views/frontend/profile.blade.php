@@ -1622,6 +1622,15 @@
                             $('.please_wait').text('');	
                             // location.reload(); 	
                             // window.location.href = "{{ route('login') }}";	
+                            $('#review-modal').modal('hide');
+                            // $("#review-modal").on("hidden.bs.modal", function() {
+                            // $('.profile_review_rating_error').text('');
+                            // $('.profile_review_body_error').text('');
+                            $("#review_form").trigger("reset");
+                             $('#rating').val(1);
+                            $("#rating").selectpicker("refresh");
+                            $(':input[type="submit"]').prop('disabled', false);	
+            // });
                         }	
                         if (response.status == 'error') {	
                             // console.log(response.msg.item_contact_email_note)	
