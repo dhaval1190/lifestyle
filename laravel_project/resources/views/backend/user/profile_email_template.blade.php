@@ -140,7 +140,7 @@
                 $('#hidden-message').val(html);
             });
             $('.snippest').on('click', function() {
-                console.log($(this).data('tag'));
+                // console.log($(this).data('tag'));
                 
                 // var caretPos =document.getElementById("setting_page_email_template").selectionStart;
                 // // console.log(caretPos);
@@ -157,8 +157,6 @@
                 // document.getElementById('setting_page_email_template').selectionEnd = caretPos + txtToAdd.length
                 // FCKEditor.insertHTML(document.getElementByClass('snippest').value)
                 
-		        $('.snippest').on('click', function() {
-                    console.log($(this).data('tag'))
                     var selection = null;
                     var cursorPosition = null;
                     var selection = quill.getSelection();
@@ -167,11 +165,9 @@
                         cursorPosition = selection.index;
                     }
 			        quill.clipboard.dangerouslyPasteHTML(cursorPosition, $(this).data('tag'));
-		        }); 
                 
             });
             $('#message .ql-blank').html($('#hidden-message').val());
-                // console.log($('#hidden-message').val());
         });
     </script>
 @endsection
