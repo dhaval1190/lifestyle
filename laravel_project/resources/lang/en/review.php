@@ -36,7 +36,7 @@ return array (
     'select-rating' => 'Select your rating',
     'sidebar' => 
     array (
-      'all-reviews' => 'All reviews',
+      'all-reviews' => 'All Topics Reviews',
       'reviews' => 'Reviews',
     ),
     'status' => 'Status',

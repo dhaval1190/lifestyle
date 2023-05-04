@@ -31,6 +31,9 @@
                     <form method="POST" action="{{ route('user.page.reviews.update',$profile_Review->id) }}" name="review_form" id="review_form">
                         @csrf
                         @method('PUT')
+                        <div class="alert alert-success alert-dismissible fade show" id="register_success_error_div" role="alert" style="display:none;margin:4px;">
+                        <span id="register_success">Review Update SuccessFull</span>
+                                </div>
                         <div class="form-row mb-3">
                             <div class="col-md-12 text-right">
                                 @if($profile_Review->approved == \App\Item::ITEM_REVIEW_APPROVED)
@@ -277,6 +280,10 @@
                             $('.please_wait').text('');
                             // location.reload(); 
                             // window.location.href = "{{ route('login') }}";
+                            $('#register_success_error_div').show();
+                            $(':input[type="submit"]').prop('disabled', false);	
+                            $('.btn-danger').prop('disabled', false);	
+
 
                         }
                         if (response.status == 'error') {
