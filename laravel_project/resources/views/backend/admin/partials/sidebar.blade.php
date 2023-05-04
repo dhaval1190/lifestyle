@@ -125,6 +125,7 @@
         <div id="collapse_review" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('admin.items.reviews.index') }}">{{ __('review.backend.sidebar.all-reviews') }}</a>
+                <a class="collapse-item" href="{{ route('admin.page.reviews.index') }}">{{ __('All Profile Reviews') }}</a>
             </div>
         </div>
     </li>

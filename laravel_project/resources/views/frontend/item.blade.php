@@ -1579,7 +1579,7 @@
                                             @endif
 
                                         </div>
-                                        <div class="col-md-8">
+                                        <!-- <div class="col-md-8">
 
                                             <div class="row mb-0">
                                                 <div class="col-md-6">
@@ -1643,7 +1643,7 @@
                                                 </div>
                                             </div>
 
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <hr>
                                 @endforeach

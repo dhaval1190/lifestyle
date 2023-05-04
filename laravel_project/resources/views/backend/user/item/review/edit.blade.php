@@ -106,7 +106,7 @@
                         </div>
 
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-3 col-6">
                                 <label for="customer_service_rating" class="text-black">{{ __('review.backend.customer-service') }}</label><br>
                                 <select class="rating_stars" name="customer_service_rating">
@@ -170,7 +170,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
@@ -180,7 +180,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <label for="title" class="text-black">{{ __('review.backend.title') }}</label>
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') ? old('title') : $review->title }}">
@@ -190,7 +190,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
@@ -221,7 +221,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>
                                 <small class="form-text text-muted">
@@ -249,7 +249,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-8 col-8">
