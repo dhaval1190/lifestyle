@@ -292,6 +292,15 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::get('/items/{item_slug}/reviews/{review}/edit', 'ItemController@itemReviewsEdit')->name('items.reviews.edit');
         Route::put('/items/{item_slug}/reviews/update/{review}', 'ItemController@itemReviewsUpdate')->name('items.reviews.update');
         Route::delete('/items/{item_slug}/reviews/destroy/{review}', 'ItemController@itemReviewsDestroy')->name('items.reviews.destroy');
+        Route::post('/profile/reviews/store', 'ItemController@profileReviewsStore')->name('page.reviews.store');
+        Route::get('/profile/reviews/index', 'ItemController@profileReviewsIndex')->name('page.reviews.index');
+        Route::get('/profile/edit/{id}', 'ItemController@profileReviewsEdit')->name('page.reviews.edit');
+        Route::get('/profile/show/{id}', 'ItemController@profileReviewsShow')->name('page.reviews.show');
+        Route::put('/profile/update/{id}', 'ItemController@profileReviewsUpdate')->name('page.reviews.update');
+        Route::delete('/profile/destroy/{id}', 'ItemController@profileReviewsDestroy')->name('page.reviews.destroy');
+        Route::put('/profile/reviews/update/{id}/approve', 'ItemController@profileReviewsApprove')->name('page.reviews.approve');
+        Route::put('/profile/reviews/update/{id}/disapprove', 'ItemController@profileReviewsDisapprove')->name('page.reviews.disapprove');
+        Route::delete('/profile/reviews/destroy/{id}', 'ItemController@profileReviewsDelete')->name('page.reviews.delete');
 
         // item reviews management admin routes
         Route::get('/items/reviews/index', 'ItemController@itemReviewsIndex')->name('items.reviews.index');
@@ -586,7 +595,11 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::get('/items/{item_slug}/reviews/{review}/edit', 'ItemController@itemReviewsEdit')->name('items.reviews.edit')->middleware('check_coach_details');
         Route::put('/items/{item_slug}/reviews/update/{review}', 'ItemController@itemReviewsUpdate')->name('items.reviews.update')->middleware('check_coach_details');
         Route::delete('/items/{item_slug}/reviews/destroy/{review}', 'ItemController@itemReviewsDestroy')->name('items.reviews.destroy')->middleware('check_coach_details');
-
+        Route::post('/profile/reviews/store', 'PagesController@profileReviewsStore')->name('page.reviews.store');
+        Route::get('/profile/reviews/index', 'PagesController@profileReviewsIndex')->name('page.reviews.index');
+        Route::get('/profile/edit/{id}', 'PagesController@profileReviewsEdit')->name('page.reviews.edit');
+        Route::put('/profile/update/{id}', 'PagesController@profileReviewsUpdate')->name('page.reviews.update');
+        Route::delete('/profile/destroy/{id}', 'PagesController@profileReviewsDestroy')->name('page.reviews.destroy');
         // user manage reviews route
         Route::get('/items/reviews/index', 'ItemController@itemReviewsIndex')->name('items.reviews.index')->middleware('check_coach_details')->middleware('check_coach_details');
 

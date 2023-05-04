@@ -1,4 +1,4 @@
-@extends('backend.user.layouts.app')
+@extends('backend.admin.layouts.app')
 
 @section('styles')
     <!-- Custom styles for this page -->
@@ -10,7 +10,7 @@
     <div class="row justify-content-between">
         <div class="col-9">
             <h1 class="h3 mb-2 text-gray-800">{{ __('review.backend.manage-reviews') }}</h1>
-            <p class="mb-4">{{ __('review.backend.manage-reviews-desc-user') }}</p>
+            <p class="mb-4">{{ __('review.backend.manage-reviews-desc') }}</p>
         </div>
         <div class="col-3 text-right">
 
@@ -28,12 +28,13 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-12">
-                            <form class="form-inline" action="{{ route('user.items.reviews.index') }}" method="GET">
+                            <form class="form-inline" action="{{ route('admin.page.reviews.index') }}" method="GET">
                                 <div class="form-group mr-2">
                                     <select class="custom-select" name="reviews_type">
                                         <option value="all" {{ ($reviews_type == 'all' || empty($reviews_type)) ? 'selected' : '' }}>{{ __('review.backend.all-reviews') }}</option>
                                         <option value="pending" {{ $reviews_type == 'pending' ? 'selected' : '' }}>{{ __('review.backend.review-pending') }}</option>
                                         <option value="approved" {{ $reviews_type == 'approved' ? 'selected' : '' }}>{{ __('review.backend.review-approved') }}</option>
+                                        <option value="me" {{ $reviews_type == 'me' ? 'selected' : '' }}>{{ __('review.backend.my-reviews') }}</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary mr-2">{{ __('backend.shared.update') }}</button>
@@ -80,11 +81,11 @@
                                 <tr>
                                     <td>{{ $review->id }}</td>
                                     <td>{{ $review->rating }}</td>
-                                    <td>{{ $review->customer_service_rating }}</td>
+                                    <!-- <td>{{ $review->customer_service_rating }}</td>
                                     <td>{{ $review->quality_rating }}</td>
                                     <td>{{ $review->friendly_rating }}</td>
                                     <td>{{ $review->pricing_rating }}</td>
-                                    <td>{{ $review->title }}</td>
+                                    <td>{{ $review->title }}</td> -->
                                     <td>{{ str_limit($review->body, 100) }}</td>
                                     <td>
                                         @if($review->approved == \App\Item::ITEM_REVIEW_APPROVED)
@@ -96,9 +97,27 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('user.items.reviews.edit', ['item_slug' => \App\Item::find($review->reviewrateable_id)->item_slug, 'review' => $review->id]) }}" class="btn btn-sm btn-primary mb-1">
-                                            <i class="fas fa-cog"></i>
+                                        <a href="{{ route('admin.page.reviews.show',$review->id) }}" class="btn btn-sm btn-outline-primary mb-1">
+                                            {{ __('review.backend.view') }}
                                         </a>
+                                        @if($review->author_id == Auth::user()->id)
+                                            <a href="{{ route('admin.page.reviews.edit',$review->id) }}" class="btn btn-sm btn-primary mb-1">
+                                                {{ __('backend.shared.edit') }}
+                                            </a>
+                                        @endif
+                                        @if($review->approved == \App\Item::ITEM_REVIEW_APPROVED)
+                                            <form action="{{ route('admin.page.reviews.disapprove',$review->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-sm btn-warning mb-1">{{ __('backend.shared.disapprove') }}</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('admin.page.reviews.approve',$review->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-sm btn-success mb-1">{{ __('backend.shared.approve') }}</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -117,7 +136,7 @@
     <script src="{{ asset('backend/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-
+        // Call the dataTables jQuery plugin
         $(document).ready(function() {
 
             "use strict";

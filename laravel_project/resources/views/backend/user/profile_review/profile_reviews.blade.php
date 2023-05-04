@@ -28,7 +28,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-12">
-                            <form class="form-inline" action="{{ route('user.items.reviews.index') }}" method="GET">
+                            <form class="form-inline" action="{{ route('user.page.reviews.index') }}" method="GET">
                                 <div class="form-group mr-2">
                                     <select class="custom-select" name="reviews_type">
                                         <option value="all" {{ ($reviews_type == 'all' || empty($reviews_type)) ? 'selected' : '' }}>{{ __('review.backend.all-reviews') }}</option>
@@ -80,11 +80,11 @@
                                 <tr>
                                     <td>{{ $review->id }}</td>
                                     <td>{{ $review->rating }}</td>
-                                    <td>{{ $review->customer_service_rating }}</td>
+                                    <!-- <td>{{ $review->customer_service_rating }}</td>
                                     <td>{{ $review->quality_rating }}</td>
                                     <td>{{ $review->friendly_rating }}</td>
                                     <td>{{ $review->pricing_rating }}</td>
-                                    <td>{{ $review->title }}</td>
+                                    <td>{{ $review->title }}</td> -->
                                     <td>{{ str_limit($review->body, 100) }}</td>
                                     <td>
                                         @if($review->approved == \App\Item::ITEM_REVIEW_APPROVED)
@@ -96,7 +96,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('user.items.reviews.edit', ['item_slug' => \App\Item::find($review->reviewrateable_id)->item_slug, 'review' => $review->id]) }}" class="btn btn-sm btn-primary mb-1">
+                                        <a href="{{ route('user.page.reviews.edit',$review->id) }}" class="btn btn-sm btn-primary mb-1">
                                             <i class="fas fa-cog"></i>
                                         </a>
                                     </td>

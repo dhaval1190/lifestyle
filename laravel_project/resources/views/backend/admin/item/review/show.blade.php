@@ -91,7 +91,7 @@
                     </div>
 
 
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="customer_service_rating" class="text-black">{{ __('review.backend.customer-service') }}</label>
 
@@ -104,9 +104,9 @@
                             <div class="pl-0 rating_stars rating_stars_quality_{{ $review->id }}" data-id="rating_stars_quality_{{ $review->id }}" data-rating="{{ $review->quality_rating }}"></div>
                         </div>
 
-                    </div>
+                    </div> -->
 
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="friendly_rating" class="text-black">{{ __('review.backend.friendly') }}</label>
 
@@ -118,7 +118,7 @@
 
                             <div class="pl-0 rating_stars rating_stars_pricing_{{ $review->id }}" data-id="rating_stars_pricing_{{ $review->id }}" data-rating="{{ $review->pricing_rating }}"></div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="col-8">

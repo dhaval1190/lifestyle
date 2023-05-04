@@ -258,30 +258,54 @@
                                                 </div>
                                             @endif
                                             <div class="detail one padding-0">
-                                            <img src="{{ asset('frontend/images/eye.svg') }}" alt="">
-                                                <p style="cursor: pointer;"
-                                                        onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
+                                                <img src="{{ asset('frontend/images/eye.svg') }}" alt="">
+                                                    <p style="cursor: pointer;"
+                                                            onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
                                                         id="eye">
                                                         <b>Total Visitor(s)</b> : {{ $All_visit_count }} </p>
                                             </div>
-                                            <div class="both_btn_set_small_device">
+                                        <div class="both_btn_set_small_device">
                                                 <?php
-                                            $userId = '';
-                                            if (isset(Auth::user()->id)) {
-                                                $userId = Auth::user()->id ? Auth::user()->id : '';
-                                            }
-                                            ?>
-                                            @if ($user_detail->id != $userId)
-                                                <a class="btn btn-primary rounded text-white item-contact-button"><i
-                                                        class="fas fa-phone-alt"></i>
-                                                    {{ __('Contact This Coach') }}</a>&nbsp;
-                                            @endif
-                                            <a class="btn btn-primary rounded text-white item-share-button"><i
-                                                    class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
-                                            </div>
-                                            
+                                                $userId = '';
+                                                if (isset(Auth::user()->id)) {
+                                                    $userId = Auth::user()->id ? Auth::user()->id : '';
+                                                }
+                                                ?>
+                                                @if ($user_detail->id != $userId)
+                                                    <a class="btn btn-primary rounded text-white item-contact-button"><i
+                                                            class="fas fa-phone-alt"></i>
+                                                        {{ __('Contact This Coach') }}</a>&nbsp;
+                                                @endif
+                                                <a class="btn btn-primary rounded text-white item-share-button"><i
+                                                        class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
+                                                @guest	
+                                                <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
+                                                @else	
+                                                    @if($user_detail->id != Auth::user()->id)
+                                                        
+                                                    @if(Auth::user()->isAdmin())	
+                                                    
+                                                        @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))	
+                                                        <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$Auth_review->id)}}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>	
+                                                        @else	
+                                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
+                                                        @endif	
+                                                    @else	
+                                                        @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))	
+                                                        <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id)}}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>	
+                                                        @else	
+                                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
+                                                        @endif	
+                                                            
+                                                        @endif	
+                                                        @endif	
+                                                    @endguest	
+                                                        
                                         </div>
                                     </div>
+                                            
+                                </div>
+                            </div>
                                     <!-- <div class="progress">
                                                     <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
                                                         aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
@@ -290,6 +314,23 @@
                                                 
                                                 </div> -->
                                 </div>
+                                @if($item_count_rating > 0)	
+                                <div class="row mb-3">	
+                                    <div class="col-md-3">	
+                                        <div class="rating_stars_header"></div>	
+                                    </div>	
+                                    <div class="col-md-9 pl-0">	
+                                        <br>	
+                                        <span class="item-cover-address-section">	
+                                            @if($item_count_rating == 1)	
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.review') . ')' }}	
+                                            @else	
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.reviews') . ')' }}	
+                                            @endif	
+                                        </span>	
+                                    </div>	
+                                </div>	
+                          @endif
                                 <div class="upper_address_info">
                                     <h3>Address</h3>
                                     <div class="upper_address_detail">
@@ -687,6 +728,145 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="review-modal" tabindex="-1" role="dialog" aria-labelledby="share-modal"aria-hidden="true">	
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">	
+            <div class="modal-content">	
+                <div class="modal-header">	
+                    <h5 class="modal-title" id="exampleModalLongTitle">Select Your Rating</h5>	
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">	
+                        <span aria-hidden="true">&times;</span>	
+                    </button>	
+                </div>	
+                <div class="modal-body">	
+                    <div class="row">	
+                        <div class="col-8">	
+                                @if (!Auth::check())	
+                                    <div class="row mb-2">	
+                                        <div class="col-12">	
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">	
+                                                {{ __('frontend.item.login-require') }}	
+                                            </div>	
+                                        </div>	
+                                    </div>	
+                                @endif	
+                               @if(!Auth::check() || Auth::user()->isAdmin())	
+                               <form method="POST" action="{{ route('admin.page.reviews.store') }}" name="review_form" id="review_form">	
+                               @else	
+                               @endif	
+                               <form method="POST" action="{{ route('user.page.reviews.store') }}" name="review_form" id="review_form">	
+                                    @csrf	
+                                    <input type="hidden" value="{{$user_detail['id']}}" name="id">	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <span class="text-lg text-gray-800">{{ __('review.backend.select-rating') }}</span>	
+                                            <small class="form-text text-muted">	
+                                            </small>	
+                                        </div>	
+                                    </div>	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <label for="rating" class="text-black">{{ __('review.backend.overall-rating') }}</label><br>	
+                                            <!-- <select class="rating_stars" name="rating"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">{{ __('rating_summary.1-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">{{ __('rating_summary.2-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">{{ __('rating_summary.3-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">{{ __('rating_summary.4-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">{{ __('rating_summary.5-stars') }}</option>	
+                                            </select> -->	
+                                        <select class="selectpicker form-control" name="rating" id="rating" tabindex="null" {{ Auth::check() ? '' : 'disabled' }}>	
+                                        <p class="profile_review_rating_error error_color" role="alert"></p>	
+                                        <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">{{ __('rating_summary.1-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">{{ __('rating_summary.2-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">{{ __('rating_summary.3-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">{{ __('rating_summary.4-stars') }}</option>	
+                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">{{ __('rating_summary.5-stars') }}</option>	
+                                        </select>	
+                                            @error('rating')	
+                                            <span class="invalid-tooltip">	
+                                                    <strong>{{ $message }}</strong>	
+                                                </span>	
+                                            @enderror	
+                                        </div>	
+                                    </div>	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <span class="text-lg text-gray-800">{{ __('review.backend.tell-experience') }}</span>	
+                                            <small class="form-text text-muted">	
+                                            </small>	
+                                        </div>	
+                                    </div>	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <label for="body" class="text-black">{{ __('review.backend.description') }}</label>	
+                                            <!-- <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }} readonly>{{ old('body') }}</textarea> -->	
+                                            <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }}>{{ old('body') }}</textarea>	
+                                             <p class="profile_review_body_error error_color" role="alert"></p>	
+                                           	
+                                            @error('body')	
+                                            <span class="invalid-tooltip">	
+                                                    <strong>{{ $message }}</strong>	
+                                                </span>	
+                                            @enderror	
+                                        </div>	
+                                    </div>	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <div class="form-check form-check-inline">	
+                                                <input {{ old('recommend') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="recommend" name="recommend" value="1"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
+                                                <label class="form-check-label" for="recommend">	
+                                                    {{ __('review.backend.recommend') }}	
+                                                </label>	
+                                            </div>	
+                                            @error('recommend')	
+                                            <span class="invalid-tooltip">	
+                                                    <strong>{{ $message }}</strong>	
+                                                </span>	
+                                            @enderror	
+                                        </div>	
+                                    </div>	
+                                    <!-- <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>	
+                                            <small class="form-text text-muted">	
+                                                {{ __('review_galleries.upload-photos-help') }}	
+                                            </small>	
+                                            @error('review_image_galleries')	
+                                            <span class="invalid-tooltip">	
+                                                <strong>{{ $message }}</strong>	
+                                            </span>	
+                                            @enderror	
+                                            <div class="row mt-3">	
+                                                <div class="col-12">	
+                                                    <button id="upload_gallery" type="button" class="btn btn-primary mb-2"  {{ Auth::check() ? '' : 'disabled' }} readonly>{{ __('review_galleries.choose-photo') }}</button>	
+                                                    <div class="row" id="selected-images">	
+                                                    </div>	
+                                                </div>	
+                                            </div>	
+                                        </div>	
+                                    </div> -->	
+                                    <div class="form-row mb-3">	
+                                        <div class="col-md-12">	
+                                            <button type="submit" class="btn btn-success py-2 px-4 text-white"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
+                                                {{ __('review.backend.post-review') }}	
+                                            </button>	
+                                            <span class="please_wait">Please Wait..</span>	
+                                            @if(!Auth::user())	
+                                                <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">	
+                                                    {{ __('Login') }}                                            	
+                                                </a>	
+                                            @endif   	
+                                        </div>	
+                                    </div>	
+                                </form>	
+                        </div>	
+                    </div>	
+                </div>	
+                	
+            </div>	
+                    	
+        </div>	
+    </div>	
+</div>
     <section class="middle">
         <div class="container">
             <div class="row">
@@ -947,7 +1127,267 @@
                         </div>
                     </div>
                 @endif
-            </div>
+                <div class="row mb-3">
+                        <div class="col-12">
+                        <div class="below_info">
+                            <h3 id="review-section" class="h5 mb-4 text-black">{{ __('review.frontend.reviews-cap') }}</h3>
+                            </div>
+                            @if($reviews->count() == 0)
+                             @guest
+    
+                                        <div class="row mb-3 pt-3 pb-3 bg-light">
+                                            <div class="col-md-12 text-center">
+                                                <p class="mb-0">
+                                                    <span class="icon-star text-warning"></span>
+                                                    <span class="icon-star text-warning"></span>
+                                                    <span class="icon-star text-warning"></span>
+                                                    <span class="icon-star text-warning"></span>
+                                                    <span class="icon-star text-warning"></span>
+                                                </p>                                    
+                                                <div class="row mt-2">
+                                                    <div class="col-md-12 text-center">
+                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                  @else
+                                 
+                                    @if($user_detail->id != Auth::user()->id)   
+                                            @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
+                                           
+                                                <div class="row mb-3 pt-3 pb-3 bg-light">
+                                                    <div class="col-md-9">
+                                                        
+                                                    </div>
+                                                    <div class="col-md-3 text-right">
+                                                        @if(Auth::user()->isAdmin())
+                                                        <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                        @else
+                                                        <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                        @endif
+                                                    </div>
+                                                </div> 
+                                             @else
+                                             <div class="row mb-3 pt-3 pb-3 bg-light">
+                                                <div class="col-md-12 text-center">
+                                                    <p class="mb-0">
+                                                        <span class="icon-star text-warning"></span>
+                                                        <span class="icon-star text-warning"></span>
+                                                        <span class="icon-star text-warning"></span>
+                                                        <span class="icon-star text-warning"></span>
+                                                        <span class="icon-star text-warning"></span>
+                                                    </p>
+                                                    <span>Start your review</span>
+
+                                                    <div class="row mt-2">
+                                                        <div class="col-md-12 text-center">
+                                                            @if(Auth::user()->isAdmin())                                                            
+                                                            <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                            @else
+                                                            <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                              </div>
+                                    @endif   
+                                    @else
+                                        <div class="row mb-3 pt-3 pb-3 bg-light">
+                                            <div class="col-md-12 text-center">
+                                                <span style="word-break: break-all;">{{ __('review.frontend.no-review-profile')}}{{ \App\User::find($user_detail->id)->name }}</span>
+                                            </div>
+                                        </div>                              
+                                        
+                                    @endif
+                            @endguest
+
+                            @else
+
+                                <div class="row mb-3 pt-3 pb-3 pb-3 bg-light" >
+                                <div class="col-md-9">
+                                        @guest
+                                        {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                        @else
+                                            @if($user_detail->id != Auth::user()->id)
+
+                                                @if(Auth::user()->isAdmin())
+                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
+                                                        {{ __('review.frontend.posted-a-review-profile')}}{{\App\User::find($user_detail->id)->name}}
+                                                    @else
+                                                        {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                                    @endif
+
+                                                @else
+                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
+                                                    {{ __('review.frontend.my-reviews') }}
+                                                        
+                                                    @else
+                                                    {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                                    @endif
+
+                                                @endif
+
+                                            @else
+                                                {{ __('review.frontend.my-reviews') }}
+                                            @endif
+                                        @endguest
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        @guest
+                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                        @else                                        
+                                            @if($user_detail->id != Auth::user()->id)
+
+                                                @if(Auth::user()->isAdmin())
+                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
+                                                    <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                    @else
+                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                    @endif
+
+                                                @else
+                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
+                                                    <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                    @else
+                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endguest
+                                    </div>
+                                </div>
+
+                                <!-- Start review summary -->
+                                @if($item_count_rating > 0)
+
+                                    <div class="row mt-4 mb-3">
+                                        <div class="col-12 text-right">
+                                            <form action="{{ route('page.profile',encrypt($user_detail->id))}}#review-section" method="GET" class="form-inline" id="item-rating-sort-by-form">
+                                                <div class="form-group">
+                                                    <label for="rating_sort_by">{{ __('rating_summary.sort-by') }}</label>
+                                                    <select class="custom-select ml-2 @error('rating_sort_by') is-invalid @enderror" name="rating_sort_by" id="rating_sort_by">
+                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_NEWEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_NEWEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-newest') }}</option>
+                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_OLDEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_OLDEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-oldest') }}</option>
+                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_HIGHEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_HIGHEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-highest') }}</option>
+                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_LOWEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_LOWEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-lowest') }}</option>
+                                                    </select>
+                                                    @error('rating_sort_by')
+                                                    <span class="invalid-tooltip">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-lg-3 bg-primary text-white">
+                                            <div id="review_summary">
+                                                <strong>{{ number_format($item_average_rating, 1) }}</strong>
+                                                <!-- @if($item_count_rating > 1)
+                                                    <small>{{ __('rating_summary.based-on-reviews', ['item_rating_count' => $item_count_rating]) }}</small>
+                                                @else
+                                                    <small>{{ __('rating_summary.based-on-review', ['item_rating_count' => $item_count_rating]) }}</small>
+                                                @endif -->
+                                                <small>Profile Reviews Rating</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <!-- Rating Progeress Bar -->
+                                            <div class="row">
+                                                <div class="col-lg-10 col-9 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_one_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.1-stars') }}</strong></small></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-9 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_two_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.2-stars') }}</strong></small></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-9 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_three_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.3-stars') }}</strong></small></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-9 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_four_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.4-stars') }}</strong></small></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-9 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_five_star_percentage }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.5-stars') }}</strong></small></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                @endif
+                                <!-- End review summary -->
+
+                                @foreach($reviews as $reviews_key => $review)
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+
+                                            <div class="row align-items-center mb-3">
+                                                <div class="col-4">
+                                                    @if(empty(\App\User::find($review->author_id)->user_image))
+                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                    @else
+                                                        <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
+                                                    @endif
+                                                </div>
+                                                <div class="col-8 pl-0">
+                                                    <span>{{ \App\User::find($review->author_id)->name }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <span>{{ __('review.backend.overall-rating') }}</span>
+
+                                                    <div class="pl-0 rating_stars rating_stars_{{ $review->id }}" data-id="rating_stars_{{ $review->id }}" data-rating="{{ $review->rating }}"></div>
+                                                </div>
+                                            </div>
+
+                                            @if($review->recommend == \App\Item::ITEM_REVIEW_RECOMMEND_YES)
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12">
+                                                <span class="bg-success text-white pl-2 pr-2 pt-2 pb-2 rounded">
+                                                    <i class="fas fa-check"></i>
+                                                    {{ __('review.backend.recommend') }}
+                                                </span>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                    <hr>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+               </div>
         </div>
     </section>
     <!-- </div> -->
@@ -1078,10 +1518,133 @@
     <!-- start for contact us stepper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- end for contact us stepper -->
-
+    <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
     @include('frontend.partials.bootstrap-select-locale')
     <script>
+        $(document).ready(function() {
+            $('#rating_sort_by').on('change', function() {	
+                $( "#item-rating-sort-by-form" ).submit();	
+            });	
+            "use strict";	
+            /**	
+             * Start image gallery uplaod	
+             */	
+            $('#upload_gallery').on('click', function(){	
+                $('#gallery_image_error_div').hide();	
+                $('#gallery_img_error').text('');	
+                window.selectedImages = [];	
+                $.FileDialog({	
+                    // accept: "image/jpeg",	
+                    accept: ".jpeg,.jpg,.png",	
+                }).on("files.bs.filedialog", function (event) {	
+                    var html = "";	
+                    for (var a = 0; a < event.files.length; a++) {	
+                        if(a == 12) {break;}	
+                        selectedImages.push(event.files[a]);	
+                        html += "<div class='col-lg-3 col-md-4 col-sm-6 mb-2' id='review_image_gallery_" + a + "'>" +	
+                            "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +	
+                            "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#review_image_gallery_" + a + "\").remove();'>" + "{{ __('backend.shared.delete') }}" + "</button>" +	
+                            "<input type='hidden' value='" + event.files[a].content + "' name='review_image_galleries[]'>" +	
+                            "</div>";	
+                            var img_str = event.files[a].content;	
+                            var img_str_split = img_str.split(";base64")[0];	
+                            var img_ext = img_str_split.split("/")[1];	
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {	
+                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');	
+                                $('#gallery_image_error_div').show();	
+                                return false;	
+                            }	
+                    }	
+                    document.getElementById("selected-images").innerHTML += html;	
+                });	
+            });	
+            /**	
+             * End image gallery uplaod	
+             */	
+            @if($item_count_rating > 0)	
+            $(".rating_stars_header").rateYo({	
+                spacing: "5px",	
+                starWidth: "23px",	
+                readOnly: true,	
+                rating: {{ $item_average_rating }},	
+            });	
+            @endif	
+            	
+           	
+    });	
+    </script>	
+    <script>	
+        $(document).ready(function() {	
+            $('.profile_review_rating_error').text('');	
+            $('.profile_review_body_error').text('');           	
+            $('.please_wait').text('');	
+            $('#rating').on('input', function(e) {	
+                $('.profile_review_rating_error').text('');	
+            });	
+            $('#body').on('input', function(e) {	
+                $('.profile_review_body_error').text('');	
+            });           	
+            $("#review-modal").on("hidden.bs.modal", function() {	
+                $('.profile_review_rating_error').text('');	
+                $('.profile_review_rating_error').text('');	
+            });	
+            $('#review_form').on('submit', function(e) {	
+                e.preventDefault();	
+                $('.please_wait').text('Please Wait..');	
+                var user_id = <?php echo json_encode($user_detail->id); ?>;	
+                var role_id = <?php if(isset(Auth::user()->role_id)){ echo json_encode(Auth::user()->role_id);}else{	
+                    echo '5';	
+                } ?>;	
+                // alert(role_id);	
+               if(role_id == 2 || role_id == 3){	
+                    var url = "{{route('user.page.reviews.store')}}";                   	
+                }else{	
+                   var url = "{{route('admin.page.reviews.store')}}"	
+                }	
+                var formData = new FormData(this);	
+                jQuery.ajax({	
+                    type: 'POST',	
+                    url: url,	
+                    data: formData,	
+                    dataType: 'JSON',	
+                    contentType: false,	
+                    cache: false,	
+                    processData: false,	
+                    headers: {	
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')	
+                    },	
+                    success: function(response) {	
+                        console.log(response);	
+                        if (response.status == 'success') {	
+                            // console.log(response)	
+                            $(".error_color").text("");	
+                            $('.please_wait').text('');	
+                            // location.reload(); 	
+                            // window.location.href = "{{ route('login') }}";	
+                        }	
+                        if (response.status == 'error') {	
+                            // console.log(response.msg.item_contact_email_note)	
+                            $('.please_wait').text('');	
+                            $.each(response.msg, function(key, val) {	
+                                if (response.msg.rating) {	
+                                    $('.profile_review_rating_error').text(response.msg.rating)	
+                                }	
+                                if (response.msg.body) {	
+                                    console.log(response.msg.body);	
+                                    $('.profile_review_body_error').text(response.msg.body)	
+                                }	
+                                $(':input[type="submit"]').prop('disabled', false);	
+                            });	
+                        }	
+                    }	
+                });	
+            });	
+        $('.item-review-button').on('click', function() {	
+            $('#review-modal').modal('show');	
+        });	
+        	
+        });	
         $(document).ready(function() {
             $('.name_error').text('');
             $('.item_contact_email_from_email').text('');

@@ -51,10 +51,10 @@
                             <tr>
                                 <th>{{ __('review.backend.id') }}</th>
                                 <th>{{ __('review.backend.overall-rating') }}</th>
-                                <th>{{ __('review.backend.customer-service') }}</th>
+                                <!-- <th>{{ __('review.backend.customer-service') }}</th>
                                 <th>{{ __('review.backend.quality') }}</th>
                                 <th>{{ __('review.backend.friendly') }}</th>
-                                <th>{{ __('review.backend.pricing') }}</th>
+                                <th>{{ __('review.backend.pricing') }}</th> -->
                                 <th>{{ __('review.backend.title') }}</th>
                                 <th>{{ __('review.backend.description') }}</th>
                                 <th>{{ __('review.backend.status') }}</th>
@@ -65,11 +65,11 @@
                             <tr>
                                 <th>{{ __('review.backend.id') }}</th>
                                 <th>{{ __('review.backend.overall-rating') }}</th>
-                                <th>{{ __('review.backend.customer-service') }}</th>
+                                <!-- <th>{{ __('review.backend.customer-service') }}</th>
                                 <th>{{ __('review.backend.quality') }}</th>
                                 <th>{{ __('review.backend.friendly') }}</th>
                                 <th>{{ __('review.backend.pricing') }}</th>
-                                <th>{{ __('review.backend.title') }}</th>
+                                <th>{{ __('review.backend.title') }}</th> -->
                                 <th>{{ __('review.backend.description') }}</th>
                                 <th>{{ __('review.backend.status') }}</th>
                                 <th>{{ __('backend.shared.action') }}</th>
@@ -80,11 +80,11 @@
                                 <tr>
                                     <td>{{ $review->id }}</td>
                                     <td>{{ $review->rating }}</td>
-                                    <td>{{ $review->customer_service_rating }}</td>
+                                    <!-- <td>{{ $review->customer_service_rating }}</td>
                                     <td>{{ $review->quality_rating }}</td>
                                     <td>{{ $review->friendly_rating }}</td>
                                     <td>{{ $review->pricing_rating }}</td>
-                                    <td>{{ $review->title }}</td>
+                                    <td>{{ $review->title }}</td> -->
                                     <td>{{ str_limit($review->body, 100) }}</td>
                                     <td>
                                         @if($review->approved == \App\Item::ITEM_REVIEW_APPROVED)
