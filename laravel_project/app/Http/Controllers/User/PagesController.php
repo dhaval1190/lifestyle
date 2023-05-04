@@ -21,6 +21,9 @@ use App\ProfileVisit;
 use App\MediaDetailsVisits;
 use App\ItemVisit;
 use App\UserNotification;
+use App\ProfileReviews;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Validator;
 
 
 class PagesController extends Controller
@@ -376,5 +379,182 @@ class PagesController extends Controller
         echo "<pre>";
         print_r($progress_data);exit;
         
+    }
+    public function profileReviewsStore(Request $request)
+    {
+        $login_user = Auth::user();         
+        $settings = app('site_global_settings');         
+           $review_count = new Item();
+
+           if($review_count)
+           {
+               if($review_count->profilereviewedByUser(Auth::user()->id,$request->id))
+               {
+                   \Session::flash('flash_message', __('review.alert.cannot-post-more-one-review'));
+                   \Session::flash('flash_type', 'danger');
+   
+                   return redirect()->route('page.profile',encrypt($request->id));
+               }
+               else
+               {
+                $validator = Validator::make($request->all(),[
+                    'rating' => 'required|numeric|max:5',   
+                    'body' => 'required|max:65535',
+                   
+                ],[
+                    'rating.required' => 'Rating field is required',
+                    'body.required' => 'Description is required',
+                   
+                ]);
+                if($validator->passes()){
+                
+                $rating_body = $request->body;
+                $overall_rating = $request->rating;
+                $customer_service_rating = $request->customer_service_rating;   
+                $profile_user_id = $request->id;      
+                $recommend = $request->recommend == 1 ? Item::ITEM_REVIEW_RECOMMEND_YES : Item::ITEM_REVIEW_RECOMMEND_NO;
+                $approved = $login_user->isAdmin() ? true : false;
+
+                $new_item = new ProfileReviews([
+                    'rating' => $overall_rating,
+                    'body' => $rating_body,
+                    'customer_service_rating' => $customer_service_rating,                    
+                    'recommend' => $recommend,
+                    'approved' => $approved, // This is optional and defaults to false
+                    'author_id' => $login_user->id,
+                    'reviewrateable_id'=>$profile_user_id
+                ], $login_user);
+                $new_item->save();
+                
+                // $review_count = new Item();
+                // $review_count->syncProfileverageRating($profile_user_id);
+
+                \Session::flash('flash_message', __('review.alert.review-posted-success'));
+                \Session::flash('flash_type', 'success');
+            }else{
+                return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+                }
+                return redirect()->route('page.profile',encrypt($request->id));
+            }
+        }
+    }
+    public function profileReviewsIndex(Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('review.seo.manage-reviews', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        $reviews_type = $request->reviews_type;
+
+        if(empty($reviews_type) || $reviews_type == 'all')
+        {
+            $reviews = DB::table('profile_reviews')
+                ->where('author_id', \Illuminate\Support\Facades\Auth::user()->id)
+                ->orderBy('updated_at', 'desc')
+                ->get();
+                //print_r($reviews);exit;
+        }
+        else
+        {
+            if($reviews_type == 'pending')
+            {
+                $reviews = DB::table('profile_reviews')
+                    ->where('author_id', \Illuminate\Support\Facades\Auth::user()->id)
+                    ->where('approved', Item::ITEM_REVIEW_PENDING)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            }
+
+            if($reviews_type == 'approved')
+            {
+                $reviews = DB::table('profile_reviews')
+                    ->where('author_id', \Illuminate\Support\Facades\Auth::user()->id)
+                    ->where('approved', Item::ITEM_REVIEW_APPROVED)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+            }
+        }
+
+        return response()->view('backend.user.profile_review.profile_reviews',
+            compact('reviews_type', 'reviews'));
+    }
+    public function profileReviewsEdit(Request $request)
+    {
+        $settings = app('site_global_settings');
+        //$site_prefer_country_id = app('site_prefer_country_id');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('review.seo.edit-a-review', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+          $profile_Reviews = ProfileReviews::where('id',$request->id)->get();
+                return response()->view('backend.user.profile_review.profile_reviews_edit',compact('profile_Reviews'));  
+      
+    }
+    public function profileReviewsUpdate(Request $request)
+    {
+        $login_user = Auth::user();         
+        $settings = app('site_global_settings');
+      
+            $validator = Validator::make($request->all(),[
+                'rating' => 'required|numeric|max:5',   
+                'body' => 'required|max:65535',
+               
+            ],[
+                'rating.required' => 'Rating field is required',
+                'body.required' => 'Description is required',
+               
+            ]);
+            if($validator->passes()){
+
+            $data = ProfileReviews::find($request->id);
+            
+            $data->body = $request->body;
+            $data->rating = $request->rating;           
+            $data->recommend = $request->recommend == 1 ? Item::ITEM_REVIEW_RECOMMEND_YES : Item::ITEM_REVIEW_RECOMMEND_NO;
+            
+            $res = $data->save();
+            
+            $review_count = new Item();
+            $review_count->syncProfileverageRating($data->reviewrateable_id);
+
+           
+            \Session::flash('flash_message', __('review.alert.review-updated-success'));
+            \Session::flash('flash_type', 'success');
+        }else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+            }
+
+            return redirect()->route('user.page.reviews.index');
+            
+    }
+    public function profileReviewsDestroy(Request $request)
+    {
+        $Delete_review = ProfileReviews::find($request->id);
+        ProfileReviews::where('id', $Delete_review->id)->delete();
+        $Delete_review->delete();
+
+        $review_count = new Item();
+        $review_count->syncProfileverageRating($Delete_review->reviewrateable_id);
+
+        \Session::flash('flash_message', __('review.alert.review-deleted-success'));
+        \Session::flash('flash_type', 'success');
+
+        return redirect()->route('user.page.reviews.index');  
     }
 }

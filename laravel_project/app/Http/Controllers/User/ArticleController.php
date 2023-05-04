@@ -1824,11 +1824,11 @@ class ArticleController extends Controller
             {
                 $request->validate([
                     'rating' => 'required|numeric|max:5',
-                    'customer_service_rating' => 'required|numeric|max:5',
-                    'quality_rating' => 'required|numeric|max:5',
-                    'friendly_rating' => 'required|numeric|max:5',
-                    'pricing_rating' => 'required|numeric|max:5',
-                    'title' => 'nullable|max:255',
+                    // 'customer_service_rating' => 'required|numeric|max:5',
+                    // 'quality_rating' => 'required|numeric|max:5',
+                    // 'friendly_rating' => 'required|numeric|max:5',
+                    // 'pricing_rating' => 'required|numeric|max:5',
+                    // 'title' => 'nullable|max:255',
                     'body' => 'required|max:65535',
                     'recommend' => 'nullable|numeric|max:1',
                 ]);
@@ -1969,11 +1969,11 @@ class ArticleController extends Controller
             {
                 $request->validate([
                     'rating' => 'required|numeric|max:5',
-                    'customer_service_rating' => 'required|numeric|max:5',
-                    'quality_rating' => 'required|numeric|max:5',
-                    'friendly_rating' => 'required|numeric|max:5',
-                    'pricing_rating' => 'required|numeric|max:5',
-                    'title' => 'nullable|max:255',
+                    // 'customer_service_rating' => 'required|numeric|max:5',
+                    // 'quality_rating' => 'required|numeric|max:5',
+                    // 'friendly_rating' => 'required|numeric|max:5',
+                    // 'pricing_rating' => 'required|numeric|max:5',
+                    // 'title' => 'nullable|max:255',
                     'body' => 'required|max:65535',
                     'recommend' => 'nullable|numeric|max:1',
                 ]);

@@ -52,11 +52,16 @@ return array (
   array (
     'my-reviews' => 'You are viewing reviews on one of your listings.',
     'no-review' => 'No review received for :item_name.',
+    'no-review-profile' => 'No review received for : ',
     'posted-a-review' => 'Thank you! You\'ve posted a review for :item_name.',
+    'posted-a-review-profile' => 'Thank you! You\'ve posted a review for : ',
+
     'review' => 'review',
     'reviews' => 'reviews',
     'reviews-cap' => 'Reviews',
     'start-a-review' => 'Start your review of :item_name.',
+    'start-a-review-profile' => 'Start your review of : ',
+
   ),
   'seo' => 
   array (

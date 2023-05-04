@@ -359,6 +359,14 @@ class Item extends Model implements ReviewRateable
             ->where('reviewrateable_id', $this->id)
             ->count();
     }
+    public function profilereviewedByUser($user_id,$id)	
+    {	
+        return DB::table('profile_reviews')	
+            ->where('approved',1)	
+            ->where('author_id', $user_id)	
+            ->where('reviewrateable_id', $id)	
+            ->count();	
+    }
 
     public function getReviewByUser($user_id)
     {
@@ -378,6 +386,16 @@ class Item extends Model implements ReviewRateable
 
         return floatval($average_rating_query->average_rating);
     }
+    public function getProfileAverageRating($id)	
+    {	
+        $average_rating_query = DB::table('profile_reviews')	
+            ->selectRaw('ROUND(AVG(rating), 1) as average_rating')	
+            ->where('reviewrateable_id',$id)	
+            ->where('approved',1)	
+            ->first();	
+        return floatval($average_rating_query->average_rating);	
+    }	
+
 
     public function getCountRating()
     {
@@ -385,6 +403,13 @@ class Item extends Model implements ReviewRateable
             ->where('approved', self::ITEM_REVIEW_APPROVED)
             ->where('reviewrateable_id', $this->id)
             ->count();
+    }
+    public function getProfileCountRating($id)	
+    {	
+        return DB::table('profile_reviews')	
+            ->where('approved',1)	
+            ->where('reviewrateable_id',$id)	
+            ->count();	
     }
 
     public function syncItemAverageRating()
@@ -401,12 +426,38 @@ class Item extends Model implements ReviewRateable
             $this->save();
         }
     }
+    public function syncProfileverageRating($id)	
+    {	
+    	
+        if($this->getProfileCountRating($id) > 0)	
+        {	
+            $item_average_rating = $this->getProfileAverageRating($id);	
+            //print_r($item_average_rating);exit;	
+            $user = User::where('id',$id)->update([	
+                'profile_average_rating'=>$item_average_rating	
+            ]);	
+        }	
+        else	
+        {	
+            $user = User::where('id',$id)->update([	
+                'profile_average_rating'=> null	
+            ]);	
+        }	
+    }
 
     public function getStarsCountRating(int $stars)
     {
         return DB::table('reviews')
             ->where('approved', self::ITEM_REVIEW_APPROVED)
             ->where('reviewrateable_id', $this->id)
+            ->where('rating', $stars)
+            ->count();
+    }
+    public function getProfileStarsCountRating(int $stars,$id)
+    {
+        return DB::table('reviews')
+            ->where('approved', self::ITEM_REVIEW_APPROVED)
+            ->where('reviewrateable_id',$id)
             ->where('rating', $stars)
             ->count();
     }
@@ -454,6 +505,49 @@ class Item extends Model implements ReviewRateable
                 ->get();
         }
 
+    }
+    public function getProfileApprovedRatingsSortBy(int $sort_by,$id)	
+    {	
+        if($sort_by == self::ITEM_RATING_SORT_BY_NEWEST)	
+        {	
+            return DB::table('profile_reviews')	
+                ->where('approved', 1)	
+                ->where('reviewrateable_id', $id)	
+                ->orderBy('updated_at', 'desc')	
+                ->get();	
+        }	
+        elseif($sort_by == self::ITEM_RATING_SORT_BY_OLDEST)	
+        {	
+            return DB::table('profile_reviews')	
+                ->where('approved',1)	
+                ->where('reviewrateable_id',$id)	
+                ->orderBy('updated_at', 'asc')	
+                ->get();	
+        }	
+        elseif($sort_by == self::ITEM_RATING_SORT_BY_HIGHEST)	
+        {	
+            return DB::table('profile_reviews')	
+                ->where('approved',1)	
+                ->where('reviewrateable_id',$id)	
+                ->orderBy('rating', 'desc')	
+                ->get();	
+        }	
+        elseif($sort_by == self::ITEM_RATING_SORT_BY_LOWEST)	
+        {	
+            return DB::table('profile_reviews')	
+                ->where('approved',1)	
+                ->where('reviewrateable_id',$id)	
+                ->orderBy('rating', 'asc')	
+                ->get();	
+        }	
+        else	
+        {	
+            return DB::table('profile_reviews')	
+                ->where('approved',1)	
+                ->where('reviewrateable_id',$id)	
+                ->orderBy('updated_at', 'desc')	
+                ->get();	
+        }	
     }
 
     public function insertReviewGalleriesByReviewId(int $review_id,

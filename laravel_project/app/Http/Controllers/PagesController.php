@@ -59,6 +59,7 @@ use App\MediaDetailsVisits;
 use App\UserNotification;
 use App\SocialLogin;
 use Illuminate\Support\Facades\Validator;
+use App\ProfileReviews;
 
 
 class PagesController extends Controller
@@ -2045,6 +2046,13 @@ class PagesController extends Controller
         $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
         $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->orderBy('id', 'DESC')->get();
         $ebook_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'ebook')->get();
+        $review = User::where('id',$id)->first(); 	
+        $profile = ProfileReviews::where('author_id',$review->id)->where('approved',1)->first();	
+        $auth_user = Auth::user();	
+        $Auth_review = [];	
+        if(isset($auth_user)){	
+        $Auth_review = ProfileReviews::where('author_id',Auth::user()->id)->where('reviewrateable_id',$id)->first();	
+       }
 
         $user_obj = new User();
         $progress_data = $user_obj->profileProgressData($request,$user_detail);
@@ -2059,6 +2067,34 @@ class PagesController extends Controller
          * End SEO
          */
         // $category = Category::all()->pluck('category_slug');
+        $review_count = new Item();	
+        $item_count_rating = $review_count->getProfileCountRating($id);	
+        $item_average_rating = $review->profile_average_rating;	
+        //print_r($review->profile_average_rating);exit;	
+        $rating_sort_by = empty($request->rating_sort_by) ? Item::ITEM_RATING_SORT_BY_NEWEST : $request->rating_sort_by;	
+        $reviews = $review_count->getProfileApprovedRatingsSortBy($rating_sort_by,$id);	
+        //rint_r($reviews);exit;	
+        if($item_count_rating > 0)	
+                    {	
+                        $profile_one_star_count_rating = $review_count->getProfileStarsCountRating(Item::ITEM_REVIEW_RATING_ONE,$id);	
+                        $profile_two_star_count_rating = $review_count->getProfileStarsCountRating(Item::ITEM_REVIEW_RATING_TWO,$id);	
+                        $profile_three_star_count_rating = $review_count->getProfileStarsCountRating(Item::ITEM_REVIEW_RATING_THREE,$id);	
+                        $profile_four_star_count_rating = $review_count->getProfileStarsCountRating(Item::ITEM_REVIEW_RATING_FOUR,$id);	
+                        $profile_five_star_count_rating = $review_count->getProfileStarsCountRating(Item::ITEM_REVIEW_RATING_FIVE,$id);	
+                        $profile_one_star_percentage = ($profile_one_star_count_rating / $item_count_rating) * 100;	
+                        $profile_two_star_percentage = ($profile_two_star_count_rating / $item_count_rating) * 100;	
+                        $profile_three_star_percentage = ($profile_three_star_count_rating / $item_count_rating) * 100;	
+                        $profile_four_star_percentage = ($profile_four_star_count_rating / $item_count_rating) * 100;	
+                        $profile_five_star_percentage = ($profile_five_star_count_rating / $item_count_rating) * 100;	
+                    }	
+                    else	
+                    {	
+                        $profile_one_star_percentage = 0;	
+                        $profile_two_star_percentage = 0;	
+                        $profile_three_star_percentage = 0;	
+                        $profile_four_star_percentage = 0;	
+                        $profile_five_star_percentage = 0;	
+                    }	
         $subscription_obj = new Subscription();
 
         $active_user_ids = $subscription_obj->getActiveUserIds();
@@ -2359,12 +2395,13 @@ class PagesController extends Controller
                     $item = Item::where('item_status', Item::ITEM_PUBLISHED)->first();            
                     
         return response()->view($theme_view_path . 'profile',
-            compact('user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
+            compact('item_count_rating','item_average_rating','user_detail', 'media_count', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
-                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId','All_visit_count','id'
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id', 'free_items','all_cities','total_results','view_month_over_month','visit_month_over_month','visit_count','view_count','item','hexId','All_visit_count','id','reviews','profile_one_star_percentage', 'profile_two_star_percentage', 'profile_three_star_percentage',	
+                'profile_four_star_percentage', 'profile_five_star_percentage', 'rating_sort_by','profile','review_count','Auth_review'
             ));
     }
 

@@ -95,7 +95,7 @@
                         </div>
 
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-3">
                                 <label for="customer_service_rating" class="text-black">{{ __('review.backend.customer-service') }}</label><br>
                                 <select class="rating_stars" name="customer_service_rating">
@@ -159,7 +159,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
@@ -169,7 +169,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row mb-3">
+                        <!-- <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <label for="title" class="text-black">{{ __('review.backend.title') }}</label>
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}">
@@ -179,7 +179,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
@@ -221,14 +221,14 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                                <div class="row mt-3">
+                                <!-- <div class="row mt-3">
                                     <div class="col-12">
                                         <button id="upload_gallery" type="button" class="btn btn-primary mb-2">{{ __('review_galleries.choose-photo') }}</button>
                                         <div class="row" id="selected-images">
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
