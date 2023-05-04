@@ -57,6 +57,16 @@
                                 <div class="quill message" style="height: 200px" id="message"></div>
                                 <input type="hidden" name="message" class="hidden-message" id="hidden-message" value="{{ isset($template_data->email_template) ? $template_data->email_template : '' }}">
                             </div>
+                            @error('message')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            @if(Session::has('message_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('message_error') }}</strong>
+                                </span>
+                            @endif
                             <div class="mt-2">
                                 @foreach(contactCoachEmailTemplateConstants() as $snippets)
                                     <a href="javascript:void(0)" class="text-hover-primary snippest badge badge-light-primary me-2 my-1" data-tag="{{$snippets}}">{{str_replace(['[', ']'], ['',''], $snippets)}}</a>
