@@ -94,6 +94,11 @@
 
                     <form method="POST" action="{{ route('login') }}" class="p-3 p-sm-5 bg-white">
                         @csrf
+                        @if(Session::has('email_not_verified'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ Session::get('email_not_verified') }}
+                            </div>
+                        @endif
                         <div class="row form-group">
 
                             <div class="col-md-12">
