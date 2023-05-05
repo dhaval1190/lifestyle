@@ -56,6 +56,11 @@ class LoginController extends Controller
 
     protected function authenticated($request, $user)
     {
+        // $user = User::where('email',$request->email)->first();
+        // if($user->email_verified_at == null){
+        //     Auth::logout();
+        //     return redirect()->route('login')->with('email_not_verified','Your email ID is not verified.Please verify first to login');
+        // }
         if ($user->isAdmin() || $user->isEditor())
         {
             app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());
@@ -80,6 +85,11 @@ class LoginController extends Controller
 
         if ($user->isCoach())
         {
+            $user = User::where('email',$request->email)->first();
+            if($user->email_verified_at == null){
+                Auth::logout();
+                return redirect()->route('login')->with('email_not_verified','Your email ID is not verified.Please verify first to login');
+            }
             if(!isset($user->phone)){
                 return redirect('/user/profile');
             }

@@ -26,6 +26,8 @@ use Intervention\Image\Facades\Image;
 use App\Notifications\ReferrerBonus;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -130,7 +132,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $referrer = User::find(session()->pull('referrer'));        
+        $referrer = User::find(session()->pull('referrer'));    
+        // return response()->json(['dataaaaa'=>$request->all()]);
+
 
         $new_user =  User::create([
             'name'                  => $data['name'],
@@ -142,46 +146,46 @@ class RegisterController extends Controller
         ]);
         
 
-        if(isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) {
+        // if(isset($data['is_coach']) && $data['is_coach'] == Role::COACH_ROLE_ID) {
 
-            $new_user->company_name          = isset($data['company_name']) ? $data['company_name'] : null;
-            $new_user->phone                 = isset($data['phone']) ? $data['phone'] : null;
+        //     $new_user->company_name          = isset($data['company_name']) ? $data['company_name'] : null;
+        //     $new_user->phone                 = isset($data['phone']) ? $data['phone'] : null;
 
-            // $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
-            $new_user->preferred_pronouns    = isset($data['preferred_pronouns']) ? $data['preferred_pronouns'] : null;
+        //     // $new_user->gender                = isset($data['gender']) ? $data['gender'] : null;
+        //     $new_user->preferred_pronouns    = isset($data['preferred_pronouns']) ? $data['preferred_pronouns'] : null;
 
-            $new_user->hourly_rate           = isset($data['hourly_rate']) ? $data['hourly_rate'] : null;
-            $new_user->hourly_rate_type      = isset($data['hourly_rate_type']) ? $data['hourly_rate_type'] : null;
-            $new_user->working_type          = isset($data['working_type']) ? $data['working_type'] : null;
-            $new_user->experience_year       = isset($data['experience_year']) ? $data['experience_year'] : null;
-            $new_user->availability          = isset($data['availability']) ? $data['availability'] : null;
+        //     $new_user->hourly_rate           = isset($data['hourly_rate']) ? $data['hourly_rate'] : null;
+        //     $new_user->hourly_rate_type      = isset($data['hourly_rate_type']) ? $data['hourly_rate_type'] : null;
+        //     $new_user->working_type          = isset($data['working_type']) ? $data['working_type'] : null;
+        //     $new_user->experience_year       = isset($data['experience_year']) ? $data['experience_year'] : null;
+        //     $new_user->availability          = isset($data['availability']) ? $data['availability'] : null;
 
-            $new_user->website               = isset($data['website']) ? $data['website'] : null;
-            $new_user->instagram             = isset($data['instagram']) ? $data['instagram'] : null;
-            $new_user->linkedin              = isset($data['linkedin']) ? $data['linkedin'] : null;
-            $new_user->facebook              = isset($data['facebook']) ? $data['facebook'] : null;
-            $new_user->youtube               = isset($data['youtube']) ? $data['youtube'] : null;
+        //     $new_user->website               = isset($data['website']) ? $data['website'] : null;
+        //     $new_user->instagram             = isset($data['instagram']) ? $data['instagram'] : null;
+        //     $new_user->linkedin              = isset($data['linkedin']) ? $data['linkedin'] : null;
+        //     $new_user->facebook              = isset($data['facebook']) ? $data['facebook'] : null;
+        //     $new_user->youtube               = isset($data['youtube']) ? $data['youtube'] : null;
 
-            $new_user->address               = isset($data['address']) ? $data['address'] : null;
-            $new_user->country_id            = isset($data['country_id']) ? $data['country_id'] : null;
-            $new_user->state_id              = isset($data['state_id']) ? $data['state_id'] : null;
-            $new_user->city_id               = isset($data['city_id']) ? $data['city_id'] : null;
-            $new_user->post_code             = isset($data['post_code']) ? $data['post_code'] : null;
-            $new_user->is_terms_read         = isset($data['is_terms_read']) && !empty($data['is_terms_read']) ? $data['is_terms_read'] : 0;
+        //     $new_user->address               = isset($data['address']) ? $data['address'] : null;
+        //     $new_user->country_id            = isset($data['country_id']) ? $data['country_id'] : null;
+        //     $new_user->state_id              = isset($data['state_id']) ? $data['state_id'] : null;
+        //     $new_user->city_id               = isset($data['city_id']) ? $data['city_id'] : null;
+        //     $new_user->post_code             = isset($data['post_code']) ? $data['post_code'] : null;
+        //     $new_user->is_terms_read         = isset($data['is_terms_read']) && !empty($data['is_terms_read']) ? $data['is_terms_read'] : 0;
 
-            // $user_image = $data['user_image'];
-            if(isset($data['user_image']) && !empty($data['user_image'])){
-                $currentDate = Carbon::now()->toDateString();
-                $user_image_name = 'user-' . str_slug($new_user->name).'-'.$currentDate.'-'.uniqid().'.jpg';
-                if(!\Storage::disk('public')->exists('user')){
-                    \Storage::disk('public')->makeDirectory('user');
-                }
-                $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 200);
-                \Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
-                $new_user->user_image = $user_image_name;
-            }
+        //     // $user_image = $data['user_image'];
+        //     if(isset($data['user_image']) && !empty($data['user_image'])){
+        //         $currentDate = Carbon::now()->toDateString();
+        //         $user_image_name = 'user-' . str_slug($new_user->name).'-'.$currentDate.'-'.uniqid().'.jpg';
+        //         if(!\Storage::disk('public')->exists('user')){
+        //             \Storage::disk('public')->makeDirectory('user');
+        //         }
+        //         $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 200);
+        //         \Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
+        //         $new_user->user_image = $user_image_name;
+        //     }
 
-        }
+        // }
 
         $new_user->user_prefer_language = 'en';
         $new_user->user_prefer_country_id = $new_user->country_id;
@@ -374,6 +378,7 @@ class RegisterController extends Controller
      */
     public function userSignUp(Request $request)
     {
+        // return response()->json(['statussssss'=>"success",'data'=>$request->input()]);
 
         if($request->email){
             $sel_user = User::where('email',$request->email)->first();
@@ -483,40 +488,66 @@ class RegisterController extends Controller
         ]);
 
         $settings = app('site_global_settings');
-        // if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
-        // {
-        //     config_smtp(
-        //         $settings->settings_site_smtp_sender_name,
-        //         $settings->settings_site_smtp_sender_email,
-        //         $settings->settings_site_smtp_host,
-        //         $settings->settings_site_smtp_port,
-        //         $settings->settings_site_smtp_encryption,
-        //         $settings->settings_site_smtp_username,
-        //         $settings->settings_site_smtp_password
-        //     );
-        // }
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
 
-        // if(!empty($settings->setting_site_name)) {
-        //     config(['app.name' => $settings->setting_site_name]);
-        // }
+        if(!empty($settings->setting_site_name)) {
+            config(['app.name' => $settings->setting_site_name]);
+        }
 
         if($validator->passes()){
-            try {
-                event(new Registered($user = $this->create($request->all())));
+            $referrer = User::find(session()->pull('referrer'));
+            $verify_token = Str::random(40);;
+            // try {
+                // event(new Registered($user = $this->create($request->all())));
+                $user =  User::create([
+                    'name'                  => $request->name,
+                    'email'                 => $request->email,
+                    'password'              => Hash::make($request->password),
+                    'role_id'               => (isset($request->is_coach) && $request->is_coach == Role::COACH_ROLE_ID) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
+                    'user_suspended'        => User::USER_NOT_SUSPENDED,
+                    'referrer_id'           => $referrer ? $referrer->id : null,
+                    'verify_token'          => $verify_token
+                ]);
 
-            } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
-            }
+                $email_notify_message = [
+                    'name' => $request->name,
+                    'verify_token' => $verify_token,
+                    'year' => date('Y')
+                ];
+                $email_to = $request->email;
+
+                if($user){
+                    // $data = ['name'=>$request->name,'verify_token'=>$verify_token];
+                    Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
+                        $messages->to($email_to);
+                        $messages->subject('Verify Email Address');
+                    });
+                }
+
+            // } catch (\Exception $e) {
+            //     Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+            // }
 
             $mytime = \Carbon\Carbon::now();
             $cur_date_time =  $mytime->toDateTimeString();
             User::where('id', $user->id)->update(['is_terms_read' => 1,'is_terms_read_date'=> $cur_date_time ]);
             
+            return response()->json(['status'=>"success",'data'=>$request->input()]);
             $this->guard()->login($user);
             return $this->registered($request, $user)
                 ? response()->json(['status'=>"success",'data'=>$request->input()]) : redirect($this->redirectPath());
 
-            // return response()->json(['status'=>"success",'data'=>$request->input()]);
 
         }else{
             return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
@@ -531,6 +562,66 @@ class RegisterController extends Controller
         // }
 
         
+    }
+
+    public function verifyEmail($id){
+
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.auth.email-verification', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+
+        $result = User::where('verify_token',$id)->first();
+        if($result){
+            $mytime = \Carbon\Carbon::now();
+            $cur_date_time =  $mytime->toDateTimeString();
+            User::where('id',$result->id)->update(['email_verified_at'=>$cur_date_time,'verify_token'=>null]);
+            // User::where('id',$result->id)->update(['email_verified_at'=>$cur_date_time]);
+            
+        }else{
+            return redirect()->route('login');
+        }
+        return view('frontend.email.email_verification_page',compact('site_innerpage_header_background_type', 'site_innerpage_header_background_color',
+        'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
+        'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color'));
     }
 
 

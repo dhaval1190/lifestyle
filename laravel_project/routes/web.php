@@ -737,6 +737,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
     Route::post('/signUp-user', 'Auth\RegisterController@userSignUp')->name('userSignUp');
     Route::post('/coach-signUp', 'Auth\RegisterController@coachSignUp')->name('coachSignUp');
+    Route::get('/email-verificaltion/{id}', 'Auth\RegisterController@verifyEmail')->name('verifyEmail');
 });
 /**
  * End website routes
