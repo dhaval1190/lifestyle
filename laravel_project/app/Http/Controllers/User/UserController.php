@@ -250,6 +250,11 @@ class UserController extends Controller
            MediaDetail::where('user_id',$login_user->id)->where('media_type','youtube')->update(['is_status'=> 1]);
             session()->forget("viewed_user_youtube.{$login_user->id}");
         }
+        if($request->youtube){
+            if(stripos($request->youtube,'youtube') == false || stripos($request->youtube,'youtu.be') == false){
+                return back()->with('youtube_error','Please enter youtube URL only');
+            }
+        }
         if(isset($input['youtube'])){
             if (strpos($input['youtube'], "?v=") !== false) {            
                 $youtube_url_id = explode("?v=",$input['youtube'])[1];
@@ -259,7 +264,7 @@ class UserController extends Controller
                 $youtube_url_id = explode(".be/",$input['youtube'])[1];
                 $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
 
-            }elseif(strpos($input['youtube'], "channel") !== false){
+            }elseif(strpos($input['youtube'], "channel") !== false || strpos($input['youtube'], "@") !== false){
                 return back()->with('youtube_error','Please enter youtube video url Only');
                 
             }else{
@@ -380,11 +385,11 @@ class UserController extends Controller
                 return back()->with('linkedin_error','Please enter linkedinssss URL only');
             }
         }
-        if($request->youtube){
-            if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
-                return back()->with('youtube_error','Please enter youtube URL only');
-            }
-        }
+        // if($request->youtube){
+        //     if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
+        //         return back()->with('youtube_error','Please enter youtube URL only');
+        //     }
+        // }
 
         $request->validate($rules, $rulesMessage);
 

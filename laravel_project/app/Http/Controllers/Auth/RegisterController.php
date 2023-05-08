@@ -428,25 +428,66 @@ class RegisterController extends Controller
         }
 
         if($validator->passes()){
-            try {
-                event(new Registered($user = $this->create($request->all())));
-            } catch (\Exception $e) {
-                Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
-            }
+            $referrer = User::find(session()->pull('referrer'));
+            $verify_token = Str::random(40);;
 
+                $user =  User::create([
+                    'name'                  => $request->name,
+                    'email'                 => $request->email,
+                    'password'              => Hash::make($request->password),
+                    'role_id'               => (isset($request->is_coach) && $request->is_coach == Role::COACH_ROLE_ID) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID,
+                    'user_suspended'        => User::USER_NOT_SUSPENDED,
+                    'referrer_id'           => $referrer ? $referrer->id : null,
+                    'verify_token'          => $verify_token
+                ]);
+
+                $user->user_prefer_language = 'en';
+                $user->user_prefer_country_id = $user->country_id;
+                $user->save();
+
+                $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
+
+                if($plan) {
+                    $subscription = new Subscription(array(
+                    'user_id' => $user->id,
+                    'plan_id' => $plan->id,
+                    'subscription_start_date' => Carbon::now()->toDateString(),
+                    ));
+                    $new_subscription = $user->subscription()->save($subscription);
+                }
+
+                $email_notify_message = [
+                    'name' => $request->name,
+                    'verify_token' => $verify_token,
+                    'year' => date('Y')
+                ];
+                $email_to = $request->email;
+
+                if($user){
+                    // $data = ['name'=>$request->name,'verify_token'=>$verify_token];
+                    Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
+                        $messages->to($email_to);
+                        $messages->subject('Verify Email Address');
+                    });
+                }
+
+            // $mytime = \Carbon\Carbon::now();
+            // $cur_date_time =  $mytime->toDateTimeString();
+            // User::where('id', $user->id)->update(['is_terms_read' => 1,'is_terms_read_date'=> $cur_date_time ]);
+            
             return response()->json(['status'=>"success",'data'=>$request->input()]);
 
         }else{
             return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
         }
 
-        if(isset($user)) {
-            $this->guard()->login($user);
-            return $this->registered($request, $user)
-                ?: redirect($this->redirectPath());
-        } else {
-            return redirect()->route('login');
-        }
+        // if(isset($user)) {
+        //     $this->guard()->login($user);
+        //     return $this->registered($request, $user)
+        //         ?: redirect($this->redirectPath());
+        // } else {
+        //     return redirect()->route('login');
+        // }
 
         
     }
@@ -520,6 +561,21 @@ class RegisterController extends Controller
                     'verify_token'          => $verify_token
                 ]);
 
+                $user->user_prefer_language = 'en';
+                $user->user_prefer_country_id = $user->country_id;
+                $user->save();
+
+                $plan = Plan::where('plan_type', Plan::PLAN_TYPE_FREE)->first();
+
+                if($plan) {
+                    $subscription = new Subscription(array(
+                    'user_id' => $user->id,
+                    'plan_id' => $plan->id,
+                    'subscription_start_date' => Carbon::now()->toDateString(),
+                    ));
+                    $new_subscription = $user->subscription()->save($subscription);
+                }
+
                 $email_notify_message = [
                     'name' => $request->name,
                     'verify_token' => $verify_token,
@@ -544,9 +600,10 @@ class RegisterController extends Controller
             User::where('id', $user->id)->update(['is_terms_read' => 1,'is_terms_read_date'=> $cur_date_time ]);
             
             return response()->json(['status'=>"success",'data'=>$request->input()]);
-            $this->guard()->login($user);
-            return $this->registered($request, $user)
-                ? response()->json(['status'=>"success",'data'=>$request->input()]) : redirect($this->redirectPath());
+
+            // $this->guard()->login($user);
+            // return $this->registered($request, $user)
+            //     ? response()->json(['status'=>"success",'data'=>$request->input()]) : redirect($this->redirectPath());
 
 
         }else{

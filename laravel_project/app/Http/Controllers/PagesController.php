@@ -6585,13 +6585,14 @@ class PagesController extends Controller
                     ]);
                 
                 if($validator->passes()){
-                    $auth_user_role_id = auth()->user()->role_id;
-                    if($auth_user_role_id == '2'){
-                        $user = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','profile')->first();
+                    // $auth_user_role_id = auth()->user()->role_id;
+                    // if($auth_user_role_id == '2'){
+                        $to_user_details = User::where('email',$request->item_share_email_to_email)->first();
+                        $user = EmailTemplate::where('user_id',$to_user_details->id)->where('is_contact_or_profile','profile')->first();
 
-                    }elseif($auth_user_role_id == '3'){
-                        $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
-                    }
+                    // }elseif($auth_user_role_id == '3'){
+                    //     $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
+                    // }
                     $email_to = $request->item_share_email_to_email;
                     $email_from_name = $request->item_share_email_name;
                     $email_note = $request->item_share_email_note;
@@ -6767,23 +6768,20 @@ class PagesController extends Controller
                             'app.name' => "The CoachesHQ Family",
                         ]);
                     }
-                    $authUser = User::where('id',auth()->user()->id)->first();
-                    if($authUser->role_id == '2'){
-                        $user = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','profile')->first();
-                        // $template_body = $user->email_template;                    
-                        // $template_body = str_replace('[URL]',route('page.profile', encrypt($authUser->id)),$template_body);
+                    $toUser = User::where('email',$request->profile_share_email_to_email)->first();
+                    // if($authUser->role_id == '2'){
+                    $user = EmailTemplate::where('user_id',$toUser->id)->where('is_contact_or_profile','profile')->first();                        
 
-                    }elseif($authUser->role_id == '3'){                        
-                        $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
-                        // $template_body = $user->email_template; 
+                    // }elseif($authUser->role_id == '3'){                        
+                    //     $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
                         
-                    }
+                    // }
                     
 
                     if($user)
                     {
                         $template_body = $user->email_template;                    
-                        $template_body = str_replace('[URL]',route('page.profile', encrypt($authUser->id)),$template_body);
+                        $template_body = str_replace('[URL]',route('page.profile', encrypt($request->userId)),$template_body);
                         $email_to = $request->profile_share_email_to_email;
                         $email_from_name = $request->profile_share_email_name;
                         $email_note = $request->profile_share_email_note;
@@ -6964,17 +6962,13 @@ class PagesController extends Controller
                             'question6' =>  $request->question6,
                         ]);
 
-                        if($authUser->role_id == '2'){
-                            $user_template = EmailTemplate::where('user_id',auth()->user()->id)->where('is_contact_or_profile','coach')->first();
-                            // $template_body = $user_template->email_template; 
-                            // $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                        // if($authUser->role_id == '2'){
+                            $user_template = EmailTemplate::where('user_id',$request->userId)->where('is_contact_or_profile','coach')->first();                            
 
-                        }elseif($authUser->role_id == '3'){
-                            $user_template = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','coach')->first();
-                            // $template_body = $user_template->email_template;
-                            // $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                        // }elseif($authUser->role_id == '3'){
+                        //     $user_template = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','coach')->first();
 
-                        }
+                        // }
                         $url = 'https://fcm.googleapis.com/fcm/send';                            
                         $serverKey = 'AAAAm6c7agw:APA91bGZ0GrCwMz_aPbtKrwVm-Tgvt9kMHhOU8V02pQmSS2GNjjle5i5Gch3_5wJwGwwQOr5_UeHsZAo-ST2oTikh2Vbr8WQO3X9K4fFaDd5DwU_9TtsMPryyB1x1TjbspNC3GsF_1NU'; // ADD SERVER KEY HERE PROVIDED BY FCM
 
