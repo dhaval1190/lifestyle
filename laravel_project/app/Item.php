@@ -362,7 +362,7 @@ class Item extends Model implements ReviewRateable
     public function profilereviewedByUser($user_id,$id)	
     {	
         return DB::table('profile_reviews')	
-            ->where('approved',1)	
+            // ->where('approved',1)	
             ->where('author_id', $user_id)	
             ->where('reviewrateable_id', $id)	
             ->count();	

@@ -6601,6 +6601,7 @@ class PagesController extends Controller
                     
                     if($user){
                         $template_body = $user->email_template;
+                        $email_subject = $user->subject;
                         $template_body = str_replace('[TO_EMAIL]',$email_to,$template_body);
                         $template_body = str_replace('[USER_NAME]',$email_from_name,$template_body);
                         $template_body = str_replace('[URL]',route('page.item', $item->item_slug),$template_body);
@@ -6612,10 +6613,12 @@ class PagesController extends Controller
                             'message_content' => $template_body, 
                             'url' => route('page.item', $item->item_slug),
                             'note' => $email_note,
+                            'year' => date('Y'),
                         ];
                         try{
-                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to){
+                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
                                 $messages->to($email_to);
+                                $messages->subject($email_subject);
                             });
 
                             \Session::flash('flash_message', __('frontend.item.send-email-success'));
@@ -6686,7 +6689,7 @@ class PagesController extends Controller
     public function emailProfile(string $profileId, Request $request)
     {
 
-        // return response()->json(['status'=>"successssssss",'msg'=>$request->all()]);
+        // return response()->json(['status'=>"successssssss",'msg'=>$request->userId]);
         // print_r($profileId);
         //     echo "<br>";
         //     print_r($request->all());
@@ -6781,11 +6784,12 @@ class PagesController extends Controller
                     if($user)
                     {
                         $template_body = $user->email_template;                    
+                        $email_subject = $user->subject;                    
                         $template_body = str_replace('[URL]',route('page.profile', encrypt($request->userId)),$template_body);
                         $email_to = $request->profile_share_email_to_email;
                         $email_from_name = $request->profile_share_email_name;
                         $email_note = $request->profile_share_email_note;
-                        $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
+                        // $email_subject = __('frontend.item.send-email-subject-profile', ['name' => $email_from_name]);
                         
                         $template_body = str_replace('[TO_EMAIL]',$email_to,$template_body);
                         $template_body = str_replace('[USER_NAME]',$email_from_name,$template_body);
@@ -6798,10 +6802,12 @@ class PagesController extends Controller
                             'message_content' => $template_body, 
                             'url' => route('page.profile', $profileId),
                             'note' => $email_note,
+                            'year' => date('Y'),
                         ];
                         try{
-                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to){
+                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
                                 $messages->to($email_to);
+                                $messages->subject($email_subject);
                             });
 
                             \Session::flash('flash_message', __('frontend.item.send-email-success'));
@@ -6977,6 +6983,7 @@ class PagesController extends Controller
                         if($user_template)
                         {
                             $template_body = $user_template->email_template; 
+                            $email_subject = $user_template->subject; 
                             $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
@@ -6997,12 +7004,14 @@ class PagesController extends Controller
                                     'email_from_name' => $email_from_name,
                                     'message_content' => $template_body, 
                                     'url' => route('page.profile', encrypt($request->authUserId)),
+                                    'year' => date('Y'),
                                     // 'questions' => $email_note,
                                     ];
 
                                     try{
-                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to){
+                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
                                             $messages->to($email_to);
+                                            $messages->subject($email_subject);
                                         });
 
                                         $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
@@ -7033,11 +7042,13 @@ class PagesController extends Controller
                                     'message_content' => $template_body, 
                                     'url' => route('page.item', $item->item_slug),
                                     // 'questions' => $email_note,
+                                    'year' => date('Y'),
                                     ];
 
                                     try{
-                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to){
+                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
                                             $messages->to($email_to);
+                                            $messages->subject($email_subject);
                                         });
 
                                         $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
