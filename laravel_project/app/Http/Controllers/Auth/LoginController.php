@@ -73,6 +73,11 @@ class LoginController extends Controller
 
             // dd($user);
             // if the website is in maintenance mode, forcely logout user
+            $user = User::where('email',$request->email)->first();
+            if($user->email_verified_at == null){
+                Auth::logout();
+                return redirect()->route('login')->with('email_not_verified','Your email ID is not verified.Please verify first to login');
+            }
             $settings = app('site_global_settings');
             if($settings->setting_site_maintenance_mode == Setting::SITE_MAINTENANCE_MODE_ON)
             {

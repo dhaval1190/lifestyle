@@ -269,6 +269,7 @@
     <script>
 
         $(document).ready(function(){
+            $("#email").css('background-image', 'none');
             $(".toggle-password").click(function() {
 
             $(this).toggleClass("fa-eye fa-eye-slash");

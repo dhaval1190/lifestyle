@@ -1524,8 +1524,16 @@ $chk_post = Auth::user()->phone;
                     }
                     return false;
                 }else{
-                    $('.err_youtube_url').html('');
-                    $('#submit').attr("disabled", false);
+                    if(youtubeinUrl.indexOf('@') > -1 || youtubeinUrl.indexOf('channel') > -1){
+                        // console.log("lllllllllllll")
+                        $('.err_youtube_url').html("Please enter Youtube URL Only");
+                        $('#submit').attr("disabled", true);
+                        // return false;
+                    }else{
+                        $('.err_youtube_url').html('');
+                        $('#submit').attr("disabled", false);
+
+                    }
 
                 }
             });
