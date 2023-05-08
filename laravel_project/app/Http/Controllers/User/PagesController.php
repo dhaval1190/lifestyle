@@ -513,7 +513,8 @@ class PagesController extends Controller
     }
     public function profileReviewsUpdate(Request $request)
     {
-        $login_user = Auth::user();         
+        $login_user = Auth::user();    
+        $approved = $login_user->isAdmin() ? true : false;     
         $settings = app('site_global_settings');
       
             $validator = Validator::make($request->all(),[
@@ -532,6 +533,8 @@ class PagesController extends Controller
             $data->body = $request->body;
             $data->rating = $request->rating;           
             $data->recommend = $request->recommend == 1 ? Item::ITEM_REVIEW_RECOMMEND_YES : Item::ITEM_REVIEW_RECOMMEND_NO;
+            $data->recommend == 1 ? Item::ITEM_REVIEW_RECOMMEND_YES : Item::ITEM_REVIEW_RECOMMEND_NO;
+            $data->approved = $approved;
             
             $res = $data->save();
             $review_count = new Item();
