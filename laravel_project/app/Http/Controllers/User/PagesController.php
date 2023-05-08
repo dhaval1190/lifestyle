@@ -508,6 +508,7 @@ class PagesController extends Controller
          * End SEO
          */
           $profile_Reviews = ProfileReviews::where('id',$request->id)->get();
+        //   dd($profile_Reviews);
                 return response()->view('backend.user.profile_review.profile_reviews_edit',compact('profile_Reviews'));  
       
     }

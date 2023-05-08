@@ -302,8 +302,7 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
         return [
             '[COACH_EMAIL]',
             '[YOUR_NAME]',
-            '[YOUR_EMAIL]' ,         
-            '[ARTICLE_NAME]',
+            '[YOUR_EMAIL]' ,
             '[QUESTIONS]',
             '[URL]'
         ];
@@ -314,8 +313,7 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
         return [
             '[COACH_EMAIL]',
             '[YOUR_NAME]',
-            '[YOUR_EMAIL]' ,         
-            '[ARTICLE_NAME]',
+            '[YOUR_EMAIL]' ,
             '[QUESTIONS]'
         ];
     }

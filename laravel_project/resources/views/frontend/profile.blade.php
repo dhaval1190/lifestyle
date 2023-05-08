@@ -636,6 +636,7 @@
                             @endif
                             <form action="{{ route('page.emailProfile.email', ['profile_slug' => $hexId]) }}"
                                 method="POST" name="shareProfileModal" id="shareProfileModal">
+                                <input type="hidden" name="userId" value="{{ $user_detail->id }}">
                                 @csrf
                                 <div class="form-row mb-3">
                                     <div class="col-md-4">
@@ -1153,16 +1154,23 @@
                                     @if($user_detail->id != Auth::user()->id)   
                                             @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
                                            
-                                                <div class="col-12 mb-3 pt-3 pb-3 bg-light">
-                                                    <div class="col-md-9">
-                                                        
-                                                    </div>
-                                                    <div class="col-md-3 text-right">
-                                                        @if(Auth::user()->isAdmin())
-                                                        <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
-                                                        @else
-                                                        <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
-                                                        @endif
+                                                <div class="col-12 mb-3 pt-3 pb-3 bg-light">                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-9">
+                                                            @if(Auth::user()->isAdmin())
+                                                            {{ __('review.frontend.posted-a-review',['item_name'=>$user_detail->name]) }}
+                                                            
+                                                            @else
+                                                            {{ __('review.frontend.posted-a-review',['item_name'=>$user_detail->name]) }}
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-md-3 text-right">
+                                                            @if(Auth::user()->isAdmin())
+                                                            <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                            @else
+                                                            <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div> 
                                              @else
@@ -1191,11 +1199,11 @@
                                               </div>
                                     @endif   
                                     @else
-                                        <div class="row mb-3 pt-3 pb-3 bg-light">
+                                        {{-- <div class="col-12 row mb-3 pt-3 pb-3 bg-light">
                                             <div class="col-12 text-center">
                                                 <span style="word-break: break-all;">{{ __('review.frontend.no-review-profile')}}{{ \App\User::find($user_detail->id)->name }}</span>
                                             </div>
-                                        </div>                              
+                                        </div>                               --}}
                                         
                                     @endif
                             @endguest
@@ -1632,6 +1640,7 @@
                              $('#rating').val(1);
                             $("#rating").selectpicker("refresh");
                             $(':input[type="submit"]').prop('disabled', false);	
+                            location.reload();
             // });
                         }	
                         if (response.status == 'error') {	

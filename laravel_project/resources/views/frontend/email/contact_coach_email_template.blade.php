@@ -1,44 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-<head>
     <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 50%;
-        }
-
-        td,
-        th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .bg {
+        background: #edf2f7;
+      }
+      .invoice-box {
+        max-width: 730px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+        color: #555;
+        background: #fff;
+      }
+      .invoice-box tr td p{
+        padding: 7px 0px;
+      }
+      .invoice-box tr td .ans{
+        padding: 0px 25px;
+      }
     </style>
-</head>
-
-<body>
-
-    <h2>Contact Coach Mail</h2>
-
-    <table>
+  </head>
+  <body>
+    <div class="bg">
+      <table cellpadding="0" cellspacing="0" style="width: 100%;">
         <tr>
-            <th>Details</th>
-            {{-- <th>URL</th>
-            <th>Note</th> --}}
-
+          <h1 style="text-align: center; padding: 25px 0px; width: 100%;">
+            Welcome to our community!
+          </h1>
         </tr>
+      </table>
 
-        <tr>
-            <td>{!! $message_content !!}</td>
-            {{-- <td>{{ $url }}</td>
-            <td>{{ $note }}</td> --}}
+      <div class="invoice-box">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <p style="padding: 10px 0px; font-weight: bold">
+                    {!! $message_content !!}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>       
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <p style="padding-top: 10px;">Regards,</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        </tr>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <p style="padding: 0px 0px;">The CoachesHQ Family</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    </table>
-
-</body>
-
+      <table cellpadding="0" cellspacing="0" style="margin: auto">
+        <tbody>
+          <tr>
+            <td style="padding: 32px">
+              <p
+                style="
+                  text-align: center;
+                  color: #b0adc5;
+                  font-size: 12px;
+                  text-align: center;
+                ">
+                © {{ $year }} Coach Directory. All rights reserved
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
+
