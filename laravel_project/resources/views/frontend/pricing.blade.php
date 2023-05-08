@@ -194,7 +194,7 @@
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('frontend.header.list-business') }}
                                         </a> --}}
-                                        <a href="javascript:void(0)" class="btn btn-block btn-primary text-white rounded coachRegistration" data-plan_id="{{$plan->id}}">
+                                        <a href="{{ route('page.register') }}" class="btn btn-block btn-primary text-white rounded coachRegistration>
                                             <i class="fas fa-plus mr-1"></i>
                                             {{ __('theme_directory_hub.pricing.get-started') }}
                                         </a>

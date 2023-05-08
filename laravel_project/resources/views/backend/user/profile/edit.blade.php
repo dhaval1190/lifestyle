@@ -143,6 +143,7 @@ $chk_post = Auth::user()->phone;
                                                 @foreach($printable_categories as $key => $printable_category)
                                                 @php
                                                 if(empty($printable_category["is_parent"])) continue;
+                                                if($printable_category["category_name"] == 'Entrepreneurial' || $printable_category["category_name"] == 'Productivity') continue;
                                                 @endphp
                                                 <option value="{{ $printable_category["category_id"] }}" {{ in_array($printable_category["category_id"] ,old('category_ids', $login_user->categories()->pluck('categories.id')->all())) ? 'selected' : '' }}>{{ $printable_category["category_name"] }}</option>
                                                 @endforeach

@@ -58,6 +58,11 @@
                 </div>
                 <div class="row align-items-stretch no-gutters justify-content-center">
                     @foreach( $children_categories as $key => $children_category )
+                    <?php
+                        if($children_category->category_slug == 'entrepreneurial' || $children_category->category_slug == 'productivity'){
+                            continue;
+                        }
+                    ?>
                         <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
 
                             @if($children_category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
@@ -228,7 +233,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-lg-0">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
                                     <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>All Price Range</option>
                                     <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
@@ -293,6 +298,9 @@
                         <div class="row">
 
                             @foreach($children_categories as $children_categories_key => $children_category)
+                            <?php
+                                if($children_category->category_name == 'Entrepreneurial' || $children_category->category_name == 'Productivity') continue;
+                                ?>
                                 <div class="col-6 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
                                         <input {{ in_array($children_category->id, $filter_categories) ? 'checked' : '' }} name="filter_categories[]" class="form-check-input" type="checkbox" value="{{ $children_category->id }}" id="filter_categories_{{ $children_category->id }}">

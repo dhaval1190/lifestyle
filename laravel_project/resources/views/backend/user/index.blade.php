@@ -379,7 +379,7 @@
                                 <div class="row">
                                     @php $i=1; @endphp
                                     @foreach($Articledetail as $article_key => $Article)
-                                    <div class="col-md-3 col-6">
+                                    <div class="col-md-3 col-12">
                                         <div class="post-img">
                                             <a href="{{ route('page.item', $Article['monthly']['item_slug']) }}"> <img src="{{ !empty($Article['monthly']['item_image']) ? Storage::disk('public')->url('item/' . $Article['monthly']['item_image']): asset('frontend/images/placeholder/full_item_feature_image_medium.webp')}}" alt="" class="w-100" /></a>
                                         </div>
@@ -430,7 +430,7 @@
                                 <div class="row audio-players">
                                     @php $i=1; @endphp
                                     @foreach($AllPodcast as $podcast_key => $image)
-                                    <div class="col-md-3 col-6">
+                                    <div class="col-md-3 col-12">
                                         <div class="audio-player js-audio-player">
                                             <button class="audio-player__control js-control">
                                                 <div class="audio-player__control-icon"></div>
@@ -492,7 +492,7 @@
                          <div class="row">
                                 @php $i=1; @endphp
                                 @foreach($AllEbooks as $ebook_key => $Ebook)
-                                <div class="col-md-3 col-6 pb-3">
+                                <div class="col-md-3 col-12 pb-3">
                                     <div class="post-img">
                                         <a href="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_image']) }}" target="_blank">
                                             <img src="{{ Storage::disk('public')->url('media_files/'. $Ebook['monthly']['media_cover']) }}" alt="" class="w-100" /></a>

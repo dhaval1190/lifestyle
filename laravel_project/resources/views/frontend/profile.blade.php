@@ -226,13 +226,26 @@
 
                         <div class="upper_main_section">
                             <div class="upper_logo">
-                                @if (empty($user_detail['user_image']))
+                               <div class="logo_star">
+                               @if (empty($user_detail['user_image']))
                                     <img src="{{ asset('backend/images/placeholder/profile-' . intval($user_detail['id'] % 10) . '.webp') }}"
                                         class="logo">
                                 @else
                                     <img src="{{ Storage::disk('public')->url('user/' . $user_detail['user_image']) }}"
                                         class="logo">
                                 @endif
+                                <div class="rating_stars_header"></div>
+                                @if($item_count_rating > 0)	
+                                <span class="item-cover-address-section">	
+                                            @if($item_count_rating == 1)	
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.review') . ')' }}	
+                                            @else	
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.reviews') . ')' }}	
+                                            @endif	
+                                </span>	
+                                        @endif
+                               </div>
+                                
                                 <div class="space_between">
                                     <div class="upper_logo_details">
                                         <h1>{{ $user_detail['name'] }}</h1>
@@ -274,12 +287,12 @@
                                                 @if ($user_detail->id != $userId)
                                                     <a class="btn btn-primary rounded text-white item-contact-button"><i
                                                             class="fas fa-phone-alt"></i>
-                                                        {{ __('Contact This Coach') }}</a>&nbsp;
+                                                        {{ __('Contact This Coach') }}</a>
                                                 @endif
                                                 <a class="btn btn-primary rounded text-white item-share-button"><i
                                                         class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
                                                 @guest	
-                                                <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
+                                                <a class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</a>	
                                                 @else	
                                                     @if($user_detail->id != Auth::user()->id)
                                                         
@@ -301,59 +314,42 @@
                                                         @endif	
                                                     @endguest	
                                                         
+                                                </div>
+                                            </div>
+                                                    
                                         </div>
                                     </div>
-                                            
-                                </div>
-                            </div>
-                                    <!-- <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
-                                                        aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
-                                                        &nbsp;{{ $progress_data['percentage'] }}%
+                                            <div class="upper_address_info">
+                                                    <h3>Address</h3>
+                                                    <div class="upper_address_detail">
+                                                        <div class="upper_address">
+                                                            <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
+                                                                class="address_logo" />
+                                                            <p class="address_wrap">
+                                                                {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
+                                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
+                                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
+                                                                {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
+                                                                {{ $user_detail['post_code'] }}</p>
+                                                        </div>
                                                     </div>
-                                                
-                                                </div> -->
+                                            </div>
+                                               
+                                            <!-- <div class="progress">
+                                                            <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
+                                                                aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
+                                                                &nbsp;{{ $progress_data['percentage'] }}%
+                                                            </div>
+                                                        
+                                            </div> -->
                                 </div>
-                                @if($item_count_rating > 0)	
-                                <div class="row mb-3">	
-                                    <div class="col-md-3">	
-                                        <div class="rating_stars_header"></div>	
-                                    </div>	
-                                    <div class="col-md-9 pl-0">	
-                                        <br>	
-                                        <span class="item-cover-address-section">	
-                                            @if($item_count_rating == 1)	
-                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.review') . ')' }}	
-                                            @else	
-                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.reviews') . ')' }}	
-                                            @endif	
-                                        </span>	
-                                    </div>	
-                                </div>	
-                          @endif
-                                <div class="upper_address_info">
-                                    <h3>Address</h3>
-                                    <div class="upper_address_detail">
-                                        <div class="upper_address">
-                                            <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
-                                                class="address_logo" />
-                                            <p class="address_wrap">
-                                                {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
-                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
-                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
-                                                {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
-                                                {{ $user_detail['post_code'] }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-                        </div>
-                    </div>
-                    <div class="upper_logo_info">
-                        <div class="upper_logo_padding_25">
-                            <h3>About</h3>
-                            <p>{{ $user_detail['user_about'] }}</p>
+                            <div class="upper_logo_info">
+                                                    <div class="upper_logo_padding_25">
+                                                        <h3>About</h3>
+                                                        <p>{{ $user_detail['user_about'] }}</p>
+                                                    </div>
+                                                </div>
                         </div>
                     </div>
                 </div>
@@ -797,7 +793,7 @@
                                     </div>	
                                     <div class="form-row mb-3">	
                                         <div class="col-md-12">	
-                                            <label for="body" class="text-black">{{ __('review.backend.description') }}</label>	
+                                            <label for="body" class="text-black">{{ __('review.backend.description') }}<span class="text-danger">*</span></label>	
                                             <!-- <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }} readonly>{{ old('body') }}</textarea> -->	
                                             <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }}>{{ old('body') }}</textarea>	
                                              <p class="profile_review_body_error error_color" role="alert"></p>	
@@ -941,7 +937,7 @@
                                 <h3>Youtube</h3>
                             </div>
                         </div>
-                        <div class="col-lg-12 plr-45">
+                        <div class="col-lg-12 plr-45 padding_set_left_right">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="video">
@@ -1000,7 +996,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45">
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div id="news-slider" class="owl-carousel">
                                 @foreach ($video_media_array as $video_key => $video)
                                     <div class="post-slide">
@@ -1032,7 +1028,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45">
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div class="post-slide">
                                 <div class="row">
                                     @foreach ($ebook_media_array as $ebook_key => $ebook)
@@ -1070,7 +1066,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 plr-45">
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div class="post-slide">
                                 <div class="row audio-players">
                                     @foreach ($podcast_media_array as $podcast_key => $podcast)
@@ -1113,7 +1109,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-lg-12 plr-45">
+                        <div class="col-lg-12 plr-45 padding_set_left_right">
                             <div class="row">
                                 @if ($free_items->count() > 0)
                                     @foreach ($free_items as $free_items_key => $item)
@@ -1135,7 +1131,7 @@
                             @if($reviews->count() == 0)
                              @guest
     
-                                        <div class="row mb-3 pt-3 pb-3 bg-light">
+                                        <div class="col-12 mb-3 pt-3 pb-3 bg-light">
                                             <div class="col-md-12 text-center">
                                                 <p class="mb-0">
                                                     <span class="icon-star text-warning"></span>
@@ -1157,7 +1153,7 @@
                                     @if($user_detail->id != Auth::user()->id)   
                                             @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
                                            
-                                                <div class="row mb-3 pt-3 pb-3 bg-light">
+                                                <div class="col-12 mb-3 pt-3 pb-3 bg-light">
                                                     <div class="col-md-9">
                                                         
                                                     </div>
@@ -1170,8 +1166,8 @@
                                                     </div>
                                                 </div> 
                                              @else
-                                             <div class="row mb-3 pt-3 pb-3 bg-light">
-                                                <div class="col-md-12 text-center">
+                                             <div class="col-12 mb-3 pt-3 pb-3 bg-light">
+                                                <div class="col-12 text-center">
                                                     <p class="mb-0">
                                                         <span class="icon-star text-warning"></span>
                                                         <span class="icon-star text-warning"></span>
@@ -1196,7 +1192,7 @@
                                     @endif   
                                     @else
                                         <div class="row mb-3 pt-3 pb-3 bg-light">
-                                            <div class="col-md-12 text-center">
+                                            <div class="col-12 text-center">
                                                 <span style="word-break: break-all;">{{ __('review.frontend.no-review-profile')}}{{ \App\User::find($user_detail->id)->name }}</span>
                                             </div>
                                         </div>                              
@@ -1206,8 +1202,9 @@
 
                             @else
 
-                                <div class="row mb-3 pt-3 pb-3 pb-3 bg-light" >
-                                <div class="col-md-9">
+                                <div class="col-12 mb-3 pt-3 pb-3 pb-3 bg-light" >
+                               <div class="row">
+                               <div class="col-md-9">
                                         @guest
                                         {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
                                         @else
@@ -1234,7 +1231,7 @@
                                                 {{ __('review.frontend.my-reviews') }}
                                             @endif
                                         @endguest
-                                    </div>
+                                </div>
                                     <div class="col-md-3 text-right">
                                         @guest
                                         <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
@@ -1258,6 +1255,7 @@
                                             @endif
                                         @endguest
                                     </div>
+                               </div>
                                 </div>
 
                                 <!-- Start review summary -->
@@ -1284,8 +1282,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-lg-3 bg-primary text-white">
+                                    <div class="col-12 mb-3">
+                                      <div class="row">
+                                      <div class="col-lg-3 bg-primary text-white">
                                             <div id="review_summary">
                                                 <strong>{{ number_format($item_average_rating, 1) }}</strong>
                                                 <!-- @if($item_count_rating > 1)
@@ -1339,48 +1338,51 @@
                                                 <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.5-stars') }}</strong></small></div>
                                             </div>
                                         </div>
+                                      </div>
                                     </div>
                                     <hr>
                                 @endif
                                 <!-- End review summary -->
 
                                 @foreach($reviews as $reviews_key => $review)
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
+                                    <div class="col-12 mb-3">
+                                       <div class="row">
+                                       <div class="col-md-4">
 
-                                            <div class="row align-items-center mb-3">
-                                                <div class="col-4">
-                                                    @if(empty(\App\User::find($review->author_id)->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-                                                    @else
-                                                        <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
-                                                    @endif
-                                                </div>
-                                                <div class="col-8 pl-0">
-                                                    <span>{{ \App\User::find($review->author_id)->name }}</span>
-                                                </div>
-                                            </div>
+<div class="row align-items-center mb-3">
+    <div class="col-4">
+        @if(empty(\App\User::find($review->author_id)->user_image))
+            <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+        @else
+            <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
+        @endif
+    </div>
+    <div class="col-8 pl-0">
+        <span>{{ \App\User::find($review->author_id)->name }}</span>
+    </div>
+</div>
 
-                                            <div class="row mb-3">
-                                                <div class="col-md-12">
-                                                    <span>{{ __('review.backend.overall-rating') }}</span>
+<div class="row mb-3">
+    <div class="col-md-12">
+        <span>{{ __('review.backend.overall-rating') }}</span>
 
-                                                    <div class="pl-0 rating_stars rating_stars_{{ $review->id }}" data-id="rating_stars_{{ $review->id }}" data-rating="{{ $review->rating }}"></div>
-                                                </div>
-                                            </div>
+        <div class="pl-0 rating_stars rating_stars_{{ $review->id }}" data-id="rating_stars_{{ $review->id }}" data-rating="{{ $review->rating }}"></div>
+    </div>
+</div>
 
-                                            @if($review->recommend == \App\Item::ITEM_REVIEW_RECOMMEND_YES)
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
-                                                <span class="bg-success text-white pl-2 pr-2 pt-2 pb-2 rounded">
-                                                    <i class="fas fa-check"></i>
-                                                    {{ __('review.backend.recommend') }}
-                                                </span>
-                                                    </div>
-                                                </div>
-                                            @endif
+@if($review->recommend == \App\Item::ITEM_REVIEW_RECOMMEND_YES)
+    <div class="row mb-2">
+        <div class="col-md-12">
+    <span class="bg-success text-white pl-2 pr-2 pt-2 pb-2 rounded">
+        <i class="fas fa-check"></i>
+        {{ __('review.backend.recommend') }}
+    </span>
+        </div>
+    </div>
+@endif
 
-                                        </div>
+</div>
+                                       </div>
                                     </div>
                                     <hr>
                                 @endforeach

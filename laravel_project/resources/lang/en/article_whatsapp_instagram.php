@@ -3,7 +3,7 @@
 return array (
 
     'article-social-instagram' => "Instagram",
-    'article-social-instagram-help' => "Instagram username",
+    'article-social-instagram-help' => "Only instagram username allowed (Not allowed http:// or https://)",
     'article-social-whatsapp' => "Whatsapp",
     'article-social-whatsapp-help' => "whatsapp number, include country code + number, omit any zeroes, brackets, dashes, or empty space. e.g. 17086546789",
 

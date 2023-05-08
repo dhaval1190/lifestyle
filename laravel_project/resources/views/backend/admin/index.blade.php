@@ -100,7 +100,7 @@
                         
                         @foreach($recent_threads as $recent_threads_key => $thread) 
                             <div class="coach_message_details">
-                                @if(empty($thread->creator()->user_image))
+                                @if(empty($thread->creator()->user_image) && isset($login_user['id']))
                                     <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:100px; height:100px;">
                                 @else
                                     <img src="{{ Storage::disk('public')->url('user/'. $thread->creator()->user_image) }}" style="border-radius:50%; width:100px; height:100px;">

@@ -1,14 +1,14 @@
 <footer class="site-footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-9 mb-3">
+            <div class="col-md-10 mb-3">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-lg-8 col-md-6">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.about') }}</strong></h2>
                         <p>{!! clean(nl2br($site_global_settings->setting_site_about), array('HTML.Allowed' => 'b,strong,i,em,u,ul,ol,li,p,br')) !!}</p>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-6 col-lg-2">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.navigations') }}</strong></h2>
                         <ul class="list-unstyled">
                             <li><a href="{{ route('page.pricing') }}">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li>
@@ -32,17 +32,19 @@
                             @endif --}}
                         </ul>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-6 col-lg-2">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.follow-us') }}</strong></h2>
-                        @foreach(\App\SocialMedia::orderBy('social_media_order')->get() as $key => $social_media)
-                            <a href="{{ $social_media->social_media_link }}" class="pl-0 pr-lg-3 pr-1">
-                                <i class="{{ $social_media->social_media_icon }}"></i>
+                        <div class="social_block">
+                              @foreach(\App\SocialMedia::orderBy('social_media_order')->get() as $key => $social_media)
+                          <a href="{{ $social_media->social_media_link }}" class="pl-0 pr-lg-3 pr-1">
+                                <i class="{{ $social_media->social_media_icon }}"></i>{{ $social_media->social_media_name }}
                             </a>
-                        @endforeach
+                            @endforeach
+                          </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2 col-12">
                 <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.posts') }}</strong></h2>
                 <ul class="list-unstyled">
                     @foreach(\Canvas\Models\Post::published()->orderByDesc('published_at')->take(5)->get() as $key => $post)
@@ -96,7 +98,7 @@
 
         <div class="row text-center">
             <div class="col-md-12">
-                <div class="border-top pt-lg-5 pt-3">
+                <div class="border-top pt-3">
                     <p>
                         {{-- {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : $site_global_settings->setting_site_name }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }} --}}
                         {{ __('frontend.footer.copyright') }} &copy; {{ empty($site_global_settings->setting_site_name) ? config('app.name', 'Laravel') : 'CoachesHQ' }} {{ date('Y') }} {{ __('frontend.footer.rights-reserved') }}

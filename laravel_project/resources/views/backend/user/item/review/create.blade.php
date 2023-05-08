@@ -183,7 +183,7 @@
 
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <label for="body" class="text-black">{{ __('review.backend.description') }}</label>
+                                <label for="body" class="text-black">{{ __('review.backend.description') }}<span class="text-danger">*</span></label>
                                 <textarea class="form-control @error('body') is-invalid @enderror" id="body" rows="5" name="body">{{ old('body') }}</textarea>
                                 @error('body')
                                 <span class="invalid-tooltip">

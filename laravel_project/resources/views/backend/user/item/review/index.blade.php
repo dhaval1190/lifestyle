@@ -28,8 +28,8 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-12">
-                            <form class="form-inline" action="{{ route('user.items.reviews.index') }}" method="GET">
-                                <div class="form-group mr-2">
+                            <form class="form-inline d-flex-baseline" action="{{ route('user.items.reviews.index') }}" method="GET">
+                                <div class="form-group mr-2 ">
                                     <select class="custom-select" name="reviews_type">
                                         <option value="all" {{ ($reviews_type == 'all' || empty($reviews_type)) ? 'selected' : '' }}>{{ __('review.backend.all-reviews') }}</option>
                                         <option value="pending" {{ $reviews_type == 'pending' ? 'selected' : '' }}>{{ __('review.backend.review-pending') }}</option>

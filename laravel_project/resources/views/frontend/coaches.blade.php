@@ -289,6 +289,7 @@
                             @foreach($all_printable_categories as $key => $all_printable_category)
                                 @php
                                     if(empty($all_printable_category["is_parent"])) continue;
+                                    if($all_printable_category['category_name'] == 'Entrepreneurial' || $all_printable_category['category_name'] == 'Productivity') continue;
                                 @endphp
                                 <div class="col-6 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">

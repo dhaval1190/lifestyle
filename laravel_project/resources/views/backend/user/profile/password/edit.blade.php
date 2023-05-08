@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.change-profile-password') }}</h1>
+        <div class="col-md-9 col-8">
+            <h1 class="h3 mb-2 set_font_sm_16 text-gray-800">{{ __('backend.user.change-profile-password') }}</h1>
             <p class="mb-4">{{ __('backend.user.change-profile-password-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('user.profile.edit') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -22,7 +22,7 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
+        <div class="col-12 p-0">
             <div class="row">
                 <div class="col-12 col-md-8 col-lg-6">
                     <form method="POST" action="{{ route('user.profile.password.update') }}" class="">
@@ -34,9 +34,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autofocus>
                                 <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('password')
-                                <span class="invalid-tooltip">
+                                <p class="name_error error_color pt-1">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </p>
                                 @enderror
                             </div>
                         </div>
@@ -48,9 +48,9 @@
                                 <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password">
                                 <span toggle="#new_password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password')
-                                <span class="invalid-tooltip">
+                                <p class="name_error error_color pt-1">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </p>
                                 @enderror
                             </div>
                         </div>
@@ -62,15 +62,15 @@
                                 <input id="new_password_confirmation" type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
                                 <span toggle="#new_password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password_confirmation')
-                                <span class="invalid-tooltip">
+                                <p class="name_error error_color pt-1">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </p>
                                 @enderror
                             </div>
                         </div>
 
                         <div class="row form-group justify-content-between">
-                            <div class="col-8">
+                            <div class="col-12 col-md-8">
                                 <button type="submit" class="btn btn-primary text-white">
                                     {{ __('backend.user.change-password') }}
                                 </button>

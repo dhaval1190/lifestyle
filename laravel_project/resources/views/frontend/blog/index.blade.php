@@ -118,7 +118,7 @@
 
             <div class="row">
 
-                <div class="col-md-8">
+                <div class="col-md-9 col-lg-8">
 
                     @if($ads_before_content->count() > 0)
                         @foreach($ads_before_content as $ads_before_content_key => $ad_before_content)
@@ -218,7 +218,7 @@
 
                 </div>
 
-                <div class="col-md-4 ml-auto">
+                <div class="col-md-3 col-lg-4 ml-auto">
                     <div class="blog_section_border_set">
                     @if($ads_before_sidebar_content->count() > 0)
                         @foreach($ads_before_sidebar_content as $ads_before_sidebar_content_key => $ad_before_sidebar_content)

@@ -118,6 +118,9 @@
                                         {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
                                             <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
                                             @foreach($all_categories as $key => $category)
+                                                @php
+                                                    if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
+                                                @endphp
                                             <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
                                             @endforeach
                                         </select>

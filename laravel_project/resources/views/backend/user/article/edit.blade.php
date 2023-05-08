@@ -107,6 +107,11 @@
                             <div class="row">
                                 <div class="col-12">
                                     @foreach($categories as $key => $category)
+                                    <?php
+                                        if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity'){
+                                        continue;
+                                        }
+                                    ?>
                                         <div class="pr-1 pb-2 float-left mix_set_btn">
                                     <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1">
                                         {{ $category->category_name }}
@@ -925,8 +930,11 @@
                         @method('PUT')
                         <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control" name="category[]" id="category" data-live-search="true" data-actions-box="true">
                             @foreach($all_categories as $key => $a_category)
+                                @php                                    
+                                    if($a_category["category_name"] == 'Entrepreneurial' || $a_category["category_name"] == 'Productivity') continue;
+                                @endphp
                                 <option {{ in_array($a_category['category_id'], $category_ids) ? 'selected' : '' }} value="{{ $a_category['category_id'] }}">{{ $a_category['category_name'] }}</option>
-                            @endforeach
+                                @endforeach
                         </select>
                         @error('category')
                         <span class="invalid-tooltip">

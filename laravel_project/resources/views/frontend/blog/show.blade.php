@@ -275,13 +275,15 @@
 
                         @if($data['post']->tags()->count() > 0)
                             <div class="row mb-3">
-                                <div class="col-1">
+                                <div class="col-12 col-md-2 col-lg-1">
                                     <h3 class="h5 text-black">{{ trans_choice('frontend.blog.tag', 1) }}</h3>
                                 </div>
-                                <div class="col-11">
-                                    @foreach($data['post']->tags()->get() as $key => $tag)
+                                <div class="col-12 col-md-12 col-lg-11">
+                                   <div class="d-flex-set-center-tags">
+                                   @foreach($data['post']->tags()->get() as $key => $tag)
                                         <a class="mr-2 mb-2 float-left bg-info text-white pl-2 pr-2 pt-1 pb-1" href="{{ route('page.blog.tag', $tag->slug) }}">{{ $tag->name }}</a>
                                     @endforeach
+                                   </div>
                                 </div>
                             </div>
                         @endif

@@ -177,6 +177,7 @@
                                             @foreach($all_categories as $key => $category)
                                                 @php
                                                     if(empty($category["is_parent"])) continue;
+                                                    if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
                                                 @endphp
                                                 <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', $category_ids)) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
                                             @endforeach

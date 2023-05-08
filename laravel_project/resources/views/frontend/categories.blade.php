@@ -228,7 +228,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-lg-0">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror" name="filter_hourly_rate" id="filter_hourly_rate">
                                     <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>Any Price Range</option>
                                     <option value="$" {{ $filter_hourly_rate == '$' ? 'selected' : '' }}>$ (Less than 125.00)</option>
@@ -292,6 +292,9 @@
                             @foreach($all_printable_categories as $key => $all_printable_category)
                                 @php
                                     if(empty($all_printable_category["is_parent"])) continue;
+                                    if($all_printable_category['category_name'] == 'Entrepreneurial' || $all_printable_category['category_name'] == 'Productivity')
+                                    continue;
+                                    
                                 @endphp
                                 <div class="col-12 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">

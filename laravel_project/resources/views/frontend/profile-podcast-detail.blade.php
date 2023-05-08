@@ -111,13 +111,13 @@
                                                 @foreach($podcast_media_array as $podcast_key => $podcast)
                                                     <li class="list-group-item list-group-item-action item" data-id="<?= $podcast->id ?>">
                                                         <div class="d-flex w-100 align-items-center">
-                                                            <div class="col-auto pe-2">
+                                                            <div class="col-3 col-md-3 pe-2">
                                                                 <img src="{{ Storage::disk('public')->url('media_files/'. $podcast->media_cover) }}" height="100px" width="100px" alt="" class="img-thumbnail bg-gradient bg-dark mini-display-img">
                                                             </div>
-                                                            <div class="col-auto flex-grow-1 flex-shrink-1">
+                                                            <div class="col-7 col-md-7 flex-grow-1 flex-shrink-1">
                                                                 <p class="m-0 text-truncate" title="<?= $podcast->media_name ?>"><?= $podcast->media_name ?></p>
                                                             </div>
-                                                            <div class="col-auto px-2">
+                                                            <div class="col-2 col-md-2 px-2">
                                                                 <button class="btn btn-outline-secondary btn-sm rounded-circle play" data-id="<?= $podcast->id ?>" data-type="pause"><i class="fa fa-play"></i></button>
                                                             </div>
                                                         </div>
@@ -129,10 +129,10 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <div class="col-md-12 text-center">
-                                        <img src="{{ Storage::disk('public')->url('media_files/logo2.jpg') }}" alt="" id="display-img" class="img-fluid border bg-gradient bg-dark" style="width:50% !important;height:50% !important;">
+                                        <img src="{{ Storage::disk('public')->url('media_files/logo2.jpg') }}" alt="" id="display-img" class="img-fluid border bg-gradient bg-dark" style="width:100% !important;height:50% !important;">
                                     </div>
-                                    <h4><b id="inplay-title">---</b></h4>
-                                    <small class="text-muted" id="inplay-duration">--:--</small>
+                                    <h4 class="text-center-font-set"><b id="inplay-title">---</b></h4>
+                                    <small class="text-muted d-flex-set-center" id="inplay-duration">--:--</small>
                                     <!-- <hr>
                                     <p id="inplay-description">---</p> -->
                                     <div class="d-flex w-100 justify-content-center">
@@ -149,7 +149,7 @@
                                             <button class="btn btn-sm btn-light bg-gradient text-dark" id="next-btn"><i class="fa fa-step-forward"></i></button>
                                         </div>
                                     </div>
-                                    <div class="d-flex">
+                                    <div class="d-flex-margin-100">
                                         <div class="mx-1">
                                             <span id="currentTime">--:--</span>
                                         </div>
