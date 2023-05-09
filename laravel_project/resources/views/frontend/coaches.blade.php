@@ -344,7 +344,7 @@
                             <strong>{{ number_format($total_results) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
-                        @if($all_coaches->count() > 10)
+                        @if($all_coaches->count() > 9)
                             <div class="col-md-6 text-right">
                                 <a href="{{ route('page.allcoaches') }}">
                                     <button class="btn btn-primary btn-sm">
@@ -393,7 +393,7 @@
                                     @php $count = 1; @endphp
                                     @foreach($all_coaches as $all_coaches_key => $coach)
                                         @php 
-                                            if($count == 10) break;
+                                            if($count == 11) break;
                                         @endphp
                                         <div class="@if($all_coaches->count() > 4) d-block d-md-flex vertical @else col-lg-4 col-md-4 col-12 col-xl-4  @endif">
                                             <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
