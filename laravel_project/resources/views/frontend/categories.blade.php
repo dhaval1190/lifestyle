@@ -10,7 +10,14 @@
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 @endsection
 
+
 @section('content')
+<style>
+    .owl-carousel .owl-item img {
+    display: inherit;
+    width: unset;
+    }
+</style>
 
     @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
         <div class="site-blocks-cover inner-page-cover overlay" style="background-image: url( {{ asset('frontend/images/placeholder/header-inner.webp') }});">
@@ -333,22 +340,32 @@
                 </div>
             </form>
             <!-- End Filter -->
-
             <div class="row">
 
-                <div class="col-lg-12">
+                <div class="col-lg-12 block-13">
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-1') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('Featured Topics') }}</h2>
                         </div>
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-12 text-left">
-                            <strong>{{ number_format($total_results) }}</strong>
+                        <div class="col-md-6 text-left">
+                            <strong>{{ number_format($paid_items->count()) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
+                        @if($paid_items->count() > 10)
+                            <div class="col-md-6 text-right">
+                                <a href="{{ route('page.all.recenttopics') }}">
+                                    <button class="btn btn-primary btn-sm">
+                                        View All
+                                    </button>                                
+                                </a>
+                                {{-- <strong>{{ number_format($total_results) }}</strong>
+                                {{ __('theme_directory_hub.filter-results') }} --}}
+                            </div>
+                        @endif
                     </div>
 
                     @if($ads_before_content->count() > 0)
@@ -378,32 +395,149 @@
                         @endforeach
                     @endif
 
-                    <div class="row">
-
+                    <div class="@if($paid_items->count() > 4) owl-carousel nonloop-block-13 @else row @endif">
+                        @php $count = 1; @endphp
                         @if($paid_items->count() > 0)
                             @foreach($paid_items as $paid_items_key => $item)
-                                <div class="col-lg-4">
-                                    @include('frontend.partials.paid-item-block')
-                                </div>
+                                @php 
+                                    if($count == 10) break;
+                                @endphp 
+                                @if($paid_items->count() > 4)   
+                                    @include('frontend.partials.paid-item-block')  
+                                @else
+                                    <div class="col-lg-3"> 
+                                        @include('frontend.partials.paid-item-block')                        
+                                    </div>                              
+                                @endif
+                                @php $count++; @endphp
                             @endforeach
                         @endif
+                    </div>
+
+                    @if($ads_after_content->count() > 0)
+                        @foreach($ads_after_content as $ads_after_content_key => $ad_after_content)
+                            <div class="row mt-5">
+                                @if($ad_after_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_LEFT)
+                                    <div class="col-12 text-left">
+                                        <div>
+                                            {!! $ad_after_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @elseif($ad_after_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_CENTER)
+                                    <div class="col-12 text-center">
+                                        <div>
+                                            {!! $ad_after_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @elseif($ad_after_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_RIGHT)
+                                    <div class="col-12 text-right">
+                                        <div>
+                                            {!! $ad_after_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </div>
+                        @endforeach
+                    @endif
+
+                </div>
+
+                <div class="col-lg-6" style="display:none;">
+                    <div class="sticky-top" id="mapid-box"></div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 block-13">
+
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-left border-primary">
+                            <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-1') }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 text-left">
+                            <strong>{{ number_format($total_results) }}</strong>
+                            {{ __('theme_directory_hub.filter-results') }}
+                        </div>
+                        @if($total_results > 10)
+                            <div class="col-md-6 text-right">
+                                <a href="{{ route('page.all.recenttopics') }}">
+                                    <button class="btn btn-primary btn-sm">
+                                        View All
+                                    </button>                                
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+
+                    @if($ads_before_content->count() > 0)
+                        @foreach($ads_before_content as $ads_before_content_key => $ad_before_content)
+                            <div class="row mb-5">
+                                @if($ad_before_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_LEFT)
+                                    <div class="col-12 text-left">
+                                        <div>
+                                            {!! $ad_before_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @elseif($ad_before_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_CENTER)
+                                    <div class="col-12 text-center">
+                                        <div>
+                                            {!! $ad_before_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @elseif($ad_before_content->advertisement_alignment == \App\Advertisement::AD_ALIGNMENT_RIGHT)
+                                    <div class="col-12 text-right">
+                                        <div>
+                                            {!! $ad_before_content->advertisement_code !!}
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </div>
+                        @endforeach
+                    @endif
+
+                    <div class="@if($free_items->count() > 4)owl-carousel nonloop-block-13 @else row @endif">
+                        @php $count = 1; @endphp
+                        {{-- @if($paid_items->count() > 0)
+                            @foreach($paid_items as $paid_items_key => $item)
+                                @php 
+                                    if($count == 5) break;
+                                @endphp                                
+                                    @include('frontend.partials.paid-item-block')                                
+                                @php $count++; @endphp
+                            @endforeach
+                        @endif --}}
 
                         @if($free_items->count() > 0)
-                            @foreach($free_items as $free_items_key => $item)
-                                <div class="col-lg-4">
+                            @foreach($free_items as $free_items_key => $item)                            
+                                @php 
+                                    if($count == 10) break;
+                                @endphp
+                                @if($free_items->count() > 4)
                                     @include('frontend.partials.free-item-block')
-                                </div>
+                                @else
+                                    <div class="col-lg-3">
+                                        @include('frontend.partials.free-item-block')
+                                    </div>
+                                @endif
+                                @php $count++; @endphp
                             @endforeach
                         @endif
 
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-12">
 
                             {{ $pagination->links() }}
                         </div>
-                    </div>
+                    </div> --}}
 
                     @if($ads_after_content->count() > 0)
                         @foreach($ads_after_content as $ads_after_content_key => $ad_after_content)

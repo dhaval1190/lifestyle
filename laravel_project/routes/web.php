@@ -82,12 +82,14 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
+    Route::get('/all-coaches', 'PagesController@allCoaches')->name('page.allcoaches');
     Route::get('/earn-points', 'PagesController@earnPointsDetail')->name('page.earn.points');
     Route::get('/all-podcast-detail/{id}', 'PagesController@ViewAllPodcastDetail')->name('page.profile.allpodcast');
     Route::get('/all-article-detail/{id}', 'PagesController@ViewAllArticleDetail')->name('page.profile.allarticle');
     Route::get('/all-ebook-detail/{id}', 'PagesController@ViewAllEBookDetail')->name('page.profile.allebook');
     Route::get('/all-youtube-detail/{id}', 'PagesController@ViewAllYoutubeDetail')->name('page.profile.allyoutube');
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
+    Route::get('/all-recents-topics', 'PagesController@allRecentTopics')->name('page.all.recenttopics');
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
     Route::get('/visitor-view/{id}', 'PagesController@barchart');
     Route::POST('/media-visitor', 'PagesController@mediavisitors');
