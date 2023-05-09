@@ -395,7 +395,7 @@
                                         @php 
                                             if($count == 10) break;
                                         @endphp
-                                        <div class="@if($all_coaches->count() > 4) d-block d-md-flex listing vertical @else col-lg-4 col-md-4 col-12 col-xl-4  @endif">
+                                        <div class="@if($all_coaches->count() > 4) d-block d-md-flex vertical @else col-lg-4 col-md-4 col-12 col-xl-4  @endif">
                                             <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
                                                 <div class="lh-content">        
                                                     <div class="row align-items-center">
