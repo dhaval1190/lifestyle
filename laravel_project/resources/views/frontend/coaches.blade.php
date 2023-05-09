@@ -341,10 +341,10 @@
 
                     <div class="row mb-4">
                         <div class="col-md-6 text-left">
-                            <strong>{{ number_format($total_results) }}</strong>
+                            <strong>{{ number_format($coach_count) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
-                        @if($all_coaches->count() > 10)
+                        @if($all_coaches->count() > 9)
                             <div class="col-md-6 text-right">
                                 <a href="{{ route('page.allcoaches') }}">
                                     <button class="btn btn-primary btn-sm">
