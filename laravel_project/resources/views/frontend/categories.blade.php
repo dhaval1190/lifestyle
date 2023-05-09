@@ -344,6 +344,7 @@
 
                 <div class="col-lg-12 block-13">
 
+                    @if($paid_items->count() > 0)
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
                             <h2 class="font-weight-light text-primary">{{ __('Featured Topics') }}</h2>
@@ -367,6 +368,7 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     @if($ads_before_content->count() > 0)
                         @foreach($ads_before_content as $ads_before_content_key => $ad_before_content)
