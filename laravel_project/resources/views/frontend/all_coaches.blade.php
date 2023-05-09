@@ -98,7 +98,7 @@
             @endif
 
             <!-- Start Filter -->
-            <form method="GET" action="{{ route('page.coaches') }}" id="filter_form">
+            <form method="GET" action="{{ route('page.allcoaches') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
 
@@ -315,7 +315,7 @@
 
                         <div class="row">
                             <div class="col-12 text-right">
-                                <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.coaches') }}">
+                                <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.allcoaches') }}">
                                     {{ __('theme_directory_hub.filter-link-reset-all') }}
                                 </a>
                                 <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit">
@@ -335,7 +335,7 @@
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('Latest Coaches') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('All Coaches') }}</h2>
                         </div>
                     </div>
 
@@ -343,18 +343,7 @@
                         <div class="col-md-6 text-left">
                             <strong>{{ number_format($total_results) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
-                        </div>
-                        @if($all_coaches->count() > 10)
-                            <div class="col-md-6 text-right">
-                                <a href="{{ route('page.allcoaches') }}">
-                                    <button class="btn btn-primary btn-sm">
-                                        View All
-                                    </button>                                
-                                </a>
-                                {{-- <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }} --}}
-                            </div>
-                        @endif
+                        </div>                        
                     </div>
 
                     @if($ads_before_content->count() > 0)
@@ -384,22 +373,14 @@
                         @endforeach
                     @endif
 
-                    <div class="row">
-                        @if($all_coaches->count() > 4) 
-                        <div class="col-lg-12 block-13">
-                            <div class="owl-carousel nonloop-block-13">
-                                @endif
-                                @if($all_coaches->count() > 0)
-                                    @php $count = 1; @endphp
+                    <div class="row">                    
+                        @if($all_coaches->count() > 0)
                                     @foreach($all_coaches as $all_coaches_key => $coach)
-                                        @php 
-                                            if($count == 10) break;
-                                        @endphp
-                                        <div class="@if($all_coaches->count() > 4) d-block d-md-flex listing vertical @else col-lg-4 col-md-4 col-12 col-xl-4  @endif">
+                                        <div class="col-lg-4 col-md-4 col-12 col-xl-4">
                                             <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
                                                 <div class="lh-content">        
                                                     <div class="row align-items-center">
-                                                        <div class="col-12 col-md-12 pr-0">
+                                                        <div class="col-5 col-md-7 pr-0">
                                                             <div class="row align-items-center item-box-user-div">
                                                                 <div class="col-3 item-box-user-img-div">
                                                                     @if(empty($coach->user_image))
@@ -418,7 +399,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 col-md-12 pr-0">
+                                                        <div class="col-5 col-md-12 pr-0">
                                                             <div class="row align-items-center item-box-user-div">
                                                                 <div class="col-12">
                                                                     <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span>
@@ -440,12 +421,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @php $count++; @endphp
                                     @endforeach
-                                @endif
-                                @if($all_coaches->count() > 4)
-                            </div>
-                        </div>
                         @endif
                     </div>
 
