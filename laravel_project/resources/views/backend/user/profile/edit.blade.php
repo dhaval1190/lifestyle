@@ -103,7 +103,7 @@ $chk_post = Auth::user()->phone;
 
                         @if($login_user->isCoach())
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-2 col-xl-2">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -133,7 +133,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12 col-md-12 col-xl-10">
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
@@ -157,7 +157,7 @@ $chk_post = Auth::user()->phone;
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6 col-12 col-lg-3">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
                                             @error('name')
@@ -166,7 +166,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6 col-12 col-lg-3">
                                             <label for="company_name" class="text-black">Company Name</label>
                                             <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $login_user->company_name) }}">
                                             @error('company_name')
@@ -175,7 +175,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6 col-12 col-lg-3">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
                                             @error('email')
@@ -184,7 +184,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6 col-12 col-lg-3">
                                             <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
@@ -210,7 +210,7 @@ $chk_post = Auth::user()->phone;
                                                     </span>
                                                     @enderror
                                                 </div> --}}
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-6 col-12 col-lg-3">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
                                                         @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
@@ -227,7 +227,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="row mt-3"> --}}
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-6 col-12 col-lg-3">
                                                     <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
                                                         @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
@@ -240,7 +240,7 @@ $chk_post = Auth::user()->phone;
                                                     </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-6 col-12 col-lg-3">
                                                     {{-- <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label> --}}
                                                     <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Session Method">
@@ -254,7 +254,7 @@ $chk_post = Auth::user()->phone;
                                                     </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-6 col-12 col-lg-3">
                                                     <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
                                                         @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
@@ -284,7 +284,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <label for="website" class="text-black">Website</label>
                                     <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
                                     <small id="linkHelpBlock" class="form-text text-muted">
@@ -296,7 +296,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="instagram" class="text-black">IG Handle</label>
                                     <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                                     <span class="err_instagram_url" style="color:red"></span>
@@ -314,7 +314,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                     @endif
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="linkedin" class="text-black">LinkedIn</label>
                                     <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
                                     <span class="err_linkedin_url" style="color:red"></span>
@@ -332,7 +332,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                         @endif
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="facebook" class="text-black">Facebook</label>
                                     <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
                                     <span class="err_facebook_url" style="color:red"></span>
@@ -350,7 +350,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                         @endif
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="youtube" class="text-black">Youtube</label>
                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
                                     <span class="err_youtube_url" style="color:red"></span>
@@ -372,7 +372,7 @@ $chk_post = Auth::user()->phone;
                                     
                             </div>
                             <div class="row mt-3">
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
                                     <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $login_user->address) }}" required>
                                     @error('address')
@@ -381,7 +381,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
                                     <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
@@ -396,7 +396,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
                                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                         @if($all_states)
@@ -411,7 +411,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
                                     <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                         @if($all_cities)
@@ -426,7 +426,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6 col-12 col-lg-2">
                                     <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
                                     <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
                                     @error('post_code')
@@ -604,7 +604,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-12 col-lg-6 border_set ">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6 border_set ">
                                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
                                                 <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                                                    <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} : {{ $ebook_media_value->media_name }}</span>
@@ -664,7 +664,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-12 col-lg-6 border_set">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6 border_set">
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                                                 <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                                                    <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}</span>
@@ -679,7 +679,7 @@ $chk_post = Auth::user()->phone;
                             </div>
                         @else
                             <div class="row">
-                                <div class="col-sm-2 col-md-12 col-lg-4 col-xl-2">
+                                <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-4 col-xl-2">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -709,7 +709,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
                                     <div class="row mt-3">
-                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
                                             <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
                                             @error('name')
@@ -718,7 +718,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
                                             <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
                                             @error('email')
@@ -727,7 +727,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
                                             <label for="phone" class="text-black labet_set">Phone</label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
@@ -736,7 +736,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3 col-md-12 col-lg-6 col-xl-3">
+                                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
                                             <label for="gender" class="text-black labet_set">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)

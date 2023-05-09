@@ -328,7 +328,7 @@
                         @endif
                     @endguest
 
-                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 "><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                    <!-- <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 "><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a> -->
                     <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
                 </div>
             </div>
@@ -468,7 +468,7 @@
                             </form>
                         @endif
                     @endguest
-                    <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 btn-sm"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                    <!-- <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 btn-sm"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a> -->
                 </div>
             </div>
         </div>
@@ -2674,7 +2674,7 @@
 
                             <div class="row align-items-center">
 
-                                <div class="col-5 col-md-7 pr-0">
+                                <div class="col-12 col-md-12 pr-0">
                                     <div class="row align-items-center item-box-user-div">
                                         <div class="col-3 item-box-user-img-div">
                                             @if(empty($similar_item->user->user_image))
