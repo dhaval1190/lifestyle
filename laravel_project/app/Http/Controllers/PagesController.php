@@ -2421,6 +2421,23 @@ class PagesController extends Controller
         /**
          * End initial blade view file path
          */
+        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns) {
+            $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+                ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+                ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+                ->whereIn('items.user_id', $free_items_user_ids)
+                ->distinct('items.user_id')
+                ->count();
+    
+            }else{
+                $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+                    ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+                    ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+                    ->whereIn('items.user_id', $free_user_ids)
+                    ->distinct('items.user_id')
+                    ->count();
+            }
+
         return response()->view($theme_view_path . 'coaches',
             compact('categories', 'free_items', 'pagination', 'all_states',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
@@ -2429,7 +2446,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
+                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country','coach_count'
             ));
     }
 
@@ -2563,9 +2580,10 @@ class PagesController extends Controller
         elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
         {
             $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
-                ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
-                ->orderBy('distance', 'ASC');
+            ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            ->orderBy('distance', 'ASC');
         }
+        
         /**
          * End filter sort by for free listing
          */
@@ -2692,6 +2710,23 @@ class PagesController extends Controller
         }
         
         $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
+
+       if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns) {
+        $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->whereIn('items.user_id', $free_items_user_ids)
+            ->distinct('items.user_id')
+            ->count();
+
+        }else{
+            $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+                ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+                ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+                ->whereIn('items.user_id', $free_user_ids)
+                ->distinct('items.user_id')
+                ->count();
+        }
         
         if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
             $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(9);
@@ -2724,7 +2759,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country'
+                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country','coach_count'
             ));
     }
 
