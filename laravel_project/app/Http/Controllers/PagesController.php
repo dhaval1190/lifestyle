@@ -60,6 +60,7 @@ use App\UserNotification;
 use App\SocialLogin;
 use Illuminate\Support\Facades\Validator;
 use App\ProfileReviews;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 class PagesController extends Controller
@@ -2765,12 +2766,22 @@ class PagesController extends Controller
 
     public function profile(Request $request, $id)
     {
+        
         $hexId = $id;
+        try {
+            $id = decrypt($id);
+        } catch (DecryptException $e) {
+            return redirect()->route('page.home');
+        }
         $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
         $user_detail = User::where('id', $id)->first();
+        dd($user_detail);
+        if(!isset($user_detail)){
+            return redirect('/');
+        }
         $media_count = MediaDetail::where('user_id', $id)->count();
         $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
         $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->orderBy('id', 'DESC')->get();
