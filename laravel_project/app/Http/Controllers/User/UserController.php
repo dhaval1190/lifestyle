@@ -251,7 +251,7 @@ class UserController extends Controller
             session()->forget("viewed_user_youtube.{$login_user->id}");
         }
         if($request->youtube){
-            if(stripos($request->youtube,'youtube') == false || stripos($request->youtube,'youtu.be') == false){
+            if(stripos($request->youtube,'youtube') == false && stripos($request->youtube,'youtu.be') == false){
                 return back()->with('youtube_error','Please enter youtube URL only');
             }
         }
