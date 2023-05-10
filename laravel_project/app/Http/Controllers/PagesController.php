@@ -2773,15 +2773,15 @@ class PagesController extends Controller
         } catch (DecryptException $e) {
             return redirect()->route('page.home');
         }
-        $id = decrypt($id);
+        // $id = decrypt($id);
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
 
         $user_detail = User::where('id', $id)->first();
-        dd($user_detail);
-        if(!isset($user_detail)){
-            return redirect('/');
-        }
+        // dd($user_detail);
+        // if(!isset($user_detail)){
+        //     return redirect('/');
+        // }
         $media_count = MediaDetail::where('user_id', $id)->count();
         $video_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'video')->get();
         $podcast_media_array = MediaDetail::where('user_id', $id)->where('media_type', 'podcast')->orderBy('id', 'DESC')->get();
