@@ -8626,7 +8626,8 @@ class PagesController extends Controller
                         'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
                         'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color'));
         } else {
-            abort(404);
+            // abort(404);
+            return redirect()->route('page.blog');
         }
     }
 
