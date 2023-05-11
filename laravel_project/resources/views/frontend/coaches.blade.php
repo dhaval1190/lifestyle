@@ -424,23 +424,29 @@
                                                     </div> --}}
                                               
                                                     <div class="profile-card-social">
-                                                      <a href="{{ isset($coach->facebook) ? $coach->facebook : ''}}" class="profile-card-social__item facebook" target="_blank">
-                                                        <span class="icon-fonts">
-                                                            <i class="fa fa-facebook-f"></i>
-                                                        </span>
-                                                      </a>
+                                                        @if($coach->facebook)
+                                                            <a href="{{ isset($coach->facebook) ? $coach->facebook : ''}}" class="profile-card-social__item facebook" target="_blank">
+                                                                <span class="icon-fonts">
+                                                                    <i class="fa fa-facebook-f"></i>
+                                                                </span>
+                                                            </a>
+                                                         @endif
                                               
-                                                      <a href="{{ isset($coach->twitter) ? $coach->twitter : ''}}" class="profile-card-social__item twitter" target="_blank">
-                                                        <span class="icon-fonts">
-                                                           <i class="fa fa-twitter"></i>
-                                                        </span>
-                                                      </a>
+                                                         @if($coach->twitter)
+                                                            <a href="{{ isset($coach->twitter) ? $coach->twitter : ''}}" class="profile-card-social__item twitter" target="_blank">
+                                                                <span class="icon-fonts">
+                                                                <i class="fa fa-twitter"></i>
+                                                                </span>
+                                                            </a>
+                                                        @endif
                                               
-                                                      <a href="{{ isset($coach->instagram) ? $coach->instagram : ''}}" class="profile-card-social__item instagram" target="_blank">
-                                                        <span class="icon-fonts">
-                                                            <i class="fa fa-instagram"></i>
-                                                        </span>
-                                                      </a>
+                                                        @if($coach->instagram)
+                                                            <a href="{{ isset($coach->instagram) ? $coach->instagram : ''}}" class="profile-card-social__item instagram" target="_blank">
+                                                                <span class="icon-fonts">
+                                                                    <i class="fa fa-instagram"></i>
+                                                                </span>
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                   </div>
                                                 </div>
