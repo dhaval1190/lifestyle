@@ -432,13 +432,13 @@
                                                             </a>
                                                          @endif
                                               
-                                                         @if($coach->twitter)
-                                                            <a href="{{ isset($coach->twitter) ? $coach->twitter : ''}}" class="profile-card-social__item twitter" target="_blank">
+                                                         {{-- @if($coach->youtube)
+                                                            <a href="{{ isset($coach->youtube) ? $coach->youtube : ''}}" class="profile-card-social__item youtube" target="_blank">
                                                                 <span class="icon-fonts">
-                                                                <i class="fa fa-twitter"></i>
+                                                                <i class="fa fa-youtube"></i>
                                                                 </span>
                                                             </a>
-                                                        @endif
+                                                        @endif --}}
                                               
                                                         @if($coach->instagram)
                                                             <a href="{{ isset($coach->instagram) ? $coach->instagram : ''}}" class="profile-card-social__item instagram" target="_blank">
