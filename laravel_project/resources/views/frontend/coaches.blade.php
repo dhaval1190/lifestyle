@@ -396,50 +396,58 @@
                                             if($count == 11) break;
                                         @endphp
                                         <div class="@if($all_coaches->count() > 4) d-block d-md-flex vertical @else col-lg-4 col-md-4 col-12 col-xl-4  @endif">
-                                            <div class="d-block d-md-flex listing vertical paid_users_item listing__item_featured_box">
-                                                <div class="lh-content">        
-                                                    <div class="row align-items-center">
-                                                        <div class="col-12 col-md-12 pr-0">
-                                                            <div class="row align-items-center item-box-user-div">
-                                                                <div class="col-3 item-box-user-img-div">
-                                                                    @if(empty($coach->user_image))
-                                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-                                                                    @else
-                                                                        <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
-                                                                    @endif
-                                                                </div>
-                                                                <div class="col-9 line-height-1-2 item-box-user-name-div">
-                                                                    <div class="row pb-1">
-                                                                        <div class="col-12">
-                                                                            {{-- <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ str_limit($coach->name, 12, '.') }}</span></a> --}}
-                                                                            <a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="font-size-13">{{ $coach->name }}</span></a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-12 pr-0">
-                                                            <div class="row align-items-center item-box-user-div">
-                                                                <div class="col-12">
-                                                                    <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center item-box-user-div">
-                                                                <div class="col-12">
-                                                                    <span class="font-size-13">{{ $coach->phone }}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center item-box-user-div">
-                                                                <div class="col-12">
-                                                                    {{-- <span class="font-size-13" style="word-break: break-all;">{{ $coach->company_name }}</span> --}}
-                                                                    <span class="font-size-13">{{ str_limit($coach->company_name, 45, '...') }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                          <div class="col-12">
+                                            <div class="wrapper">
+                                                <div class="profile-card js-profile-card">
+                                                  <div class="profile-card__img">
+                                                    @if(empty($coach->user_image))
+                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                    @else
+                                                        <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
+                                                     @endif
+                                                  </div>
+                                              
+                                                  <div class="profile-card__cnt js-profile-cnt">
+                                                    <div class="profile-card__name"><a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="">{{ $coach->name }}</span></a></div>
+                                                    <div class="profile-card__txt @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</div>
+                                                    <div class="profile-card-loc">
+                                                      <span class="profile-card-loc__txt">
+                                                        {{ str_limit($coach->company_name, 45, '...') }}
+                                                      </span>
                                                     </div>
+                                              
+                                                   
+                                                    {{-- <div class="profile-card-inf">
+                                                        <div>
+                                                           <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum vero adipisci magnam, soluta repudiandae iste iure! Veritatis alias voluptatibus beatae.</p>
+                                                        </div>
+                                                    </div> --}}
+                                              
+                                                    <div class="profile-card-social">
+                                                      <a href="{{ isset($coach->facebook) ? $coach->facebook : ''}}" class="profile-card-social__item facebook" target="_blank">
+                                                        <span class="icon-fonts">
+                                                            <i class="fa fa-facebook-f"></i>
+                                                        </span>
+                                                      </a>
+                                              
+                                                      <a href="{{ isset($coach->twitter) ? $coach->twitter : ''}}" class="profile-card-social__item twitter" target="_blank">
+                                                        <span class="icon-fonts">
+                                                           <i class="fa fa-twitter"></i>
+                                                        </span>
+                                                      </a>
+                                              
+                                                      <a href="{{ isset($coach->instagram) ? $coach->instagram : ''}}" class="profile-card-social__item instagram" target="_blank">
+                                                        <span class="icon-fonts">
+                                                            <i class="fa fa-instagram"></i>
+                                                        </span>
+                                                      </a>
+                                                    </div>
+                                                  </div>
                                                 </div>
-                                            </div>
+                                              
+                                              </div>
                                         </div>
+                                          </div>
                                         @php $count++; @endphp
                                     @endforeach
                                 @endif
