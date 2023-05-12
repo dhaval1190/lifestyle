@@ -742,7 +742,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary agree_class" disabled data-dismiss="modal" id="i_agree">I Agree</button>
+                <button type="button" class="btn btn-primary agree_class" data-dismiss="modal" id="i_agree">I Agree</button>
                 <!-- <button type="button" class="btn btn-secondary agree_class" disabled data-dismiss="modal">Close</button> -->
             </div>
         </div>
@@ -860,13 +860,13 @@
                 
         }
 
-        $('#nda_modal_content').scroll(function () {
-            console.log($(this).scrollTop(),$(this)[0].scrollHeight, $(this).height(),$(this)[0].scrollHeight - $(this).height());
-            // if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()) {
-            if ($(this).scrollTop() >= $(this)[0].scrollHeight - $(this).height()) {
-                $('.agree_class').removeAttr('disabled');
-            }
-        });
+        // $('#nda_modal_content').scroll(function () {
+        //     console.log($(this).scrollTop(),$(this)[0].scrollHeight, $(this).height(),$(this)[0].scrollHeight - $(this).height());
+        //     // if ($(this).scrollTop() == $(this)[0].scrollHeight - $(this).height()) {
+        //     if ($(this).scrollTop() >= $(this)[0].scrollHeight - $(this).height()) {
+        //         $('.agree_class').removeAttr('disabled');
+        //     }
+        // });
 
         $('#i_agree').click(function () {
             $.ajaxSetup({
