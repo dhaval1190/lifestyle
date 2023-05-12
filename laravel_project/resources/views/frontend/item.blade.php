@@ -328,8 +328,10 @@
                         @endif
                     @endguest
 
-                    <!-- <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 "><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a> -->
-                    <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
+                    @if($item->user_id != $userId)
+                        <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 "><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                        <!-- <a class="btn btn-primary rounded text-white" href="#" data-toggle="modal" data-target="#qrcodeModal"><i class="fas fa-qrcode"></i></a> -->
+                    @endif
                 </div>
             </div>
         </div>
@@ -468,7 +470,9 @@
                             </form>
                         @endif
                     @endguest
-                    <!-- <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 btn-sm"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a> -->
+                    @if($item->user_id != $userId)
+                        <a class="btn btn-primary rounded text-white item-contact-button contact_btn_set_sm_lg mt-2 mt-lg-0 btn-sm"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -2434,9 +2438,11 @@
                                             <li class="list-group-item">Bio: {!! Str::limit($item_user->user_about, $limit = 70, $end = '...') !!}<a href="{{ route('page.profile', encrypt($item->user->id)) }}">Read more</a></li>
                                             {{-- <li class="list-group-item">Vestibulum at eros</li> --}}
                                         </ul>
-                                        <div class="card-body" style="margin-left: 26px;">
-                                            <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
-                                        </div>
+                                        @if($item->user_id != $userId)
+                                            <div class="card-body" style="margin-left: 26px;">
+                                                <a class="btn btn-primary rounded text-white item-contact-button"><i class="fas fa-phone-alt"></i> {{ __('Contact This Coach') }}</a>
+                                            </div>
+                                        @endif
                                       </div>
                                 </div>
                             @endif
