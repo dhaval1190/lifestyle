@@ -376,63 +376,69 @@
                     <div class="row">                    
                         @if($all_coaches->count() > 0)
                                     @foreach($all_coaches as $all_coaches_key => $coach)
-                                        <div class="col-lg-4 col-md-6 col-12 col-xl-4">
-                                            <div class="col-12">
-                                                <div class="wrapper">
-                                                    <div class="profile-card js-profile-card">
-                                                      <div class="profile-card__img">
-                                                        @if(empty($coach->user_image))
-                                                            <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-                                                        @else
-                                                            <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
-                                                         @endif
-                                                      </div>
-                                                  
-                                                      <div class="profile-card__cnt js-profile-cnt">
-                                                        <div class="profile-card__name"><a href="{{ route('page.profile', encrypt($coach->id)) }}"><span class="">{{ $coach->name }}</span></a></div>
-                                                        <div class="profile-card__txt @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</div>
-                                                        <div class="profile-card-loc">
-                                                          <span class="profile-card-loc__txt">
-                                                            {{ str_limit($coach->company_name, 45, '...') }}
-                                                          </span>
-                                                        </div>
-                                                  
-                                                       
-                                                        {{-- <div class="profile-card-inf">
-                                                            <div>
-                                                               <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum vero adipisci magnam, soluta repudiandae iste iure! Veritatis alias voluptatibus beatae.</p>
-                                                            </div>
-                                                        </div> --}}
-                                                  
-                                                        <div class="profile-card-social">
-                                                            @if($coach->facebook)
-                                                                <a href="{{ isset($coach->facebook) ? $coach->facebook : ''}}" class="profile-card-social__item facebook" target="_blank">
-                                                                    <span class="icon-fonts">
-                                                                        <i class="fa fa-facebook-f"></i>
-                                                                    </span>
-                                                                </a>
-                                                            @endif
-                                                  
-                                                            @if($coach->twitter)
-                                                                <a href="{{ isset($coach->twitter) ? $coach->twitter : ''}}" class="profile-card-social__item twitter" target="_blank">
-                                                                    <span class="icon-fonts">
-                                                                    <i class="fa fa-twitter"></i>
-                                                                    </span>
-                                                                </a>
-                                                            @endif
-                                                  
-                                                            @if($coach->instagram)
-                                                                <a href="{{ isset($coach->instagram) ? $coach->instagram : ''}}" class="profile-card-social__item instagram" target="_blank">
-                                                                    <span class="icon-fonts">
-                                                                        <i class="fa fa-instagram"></i>
-                                                                    </span>
-                                                                </a>
-                                                            @endif
-                                                        </div>
-                                                      </div>
+                                        <div class="col-lg-4 col-md-6 col-12 col-xl-4 padding-top-bottom-set-slider">
+                                            <div class="profile-card js-profile-card">
+                                                <div class="profile-card__img">
+                                                    @if(empty($coach->user_image))
+                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                    @else
+                                                        <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
+                                                    @endif
+                                                </div>
+    
+                                                <div class="profile-card__cnt js-profile-cnt">
+                                                    <a href="{{ route('page.profile', encrypt($coach->id)) }}">
+                                                        <div class="profile-card__name"><span class="font-size-13">{{ $coach->name }}</span></a>
                                                     </div>
-                                                  
-                                                  </div>
+                                                    <div class="profile-card__txt">
+                                                        {{ $coach->email }}
+                                                    </div>
+                                                    <div class="profile-card-loc">
+                                                        <span class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
+                                                    </div>
+    
+                                                    <div class="profile-card-inf">
+                                                        <div>
+                                                            
+                                                        </div>
+                                                    </div>
+    
+                                                    <!-- new  -->
+    
+                                                    <div class="social_content">
+                                                        <div class="shareButton main">
+                                                            <svg class="share" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                            </svg>
+                                                            <svg class="check" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                            </svg>
+                                                            <svg class="close" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="icons">
+                                                            @if($coach->facebook)
+                                                                <a href="{{ $coach->facebook }}" target="_blank"><i
+                                                                class="fa fa-facebook-f social_icon_design"></i></a>
+                                                            @endif
+                                                            @if($coach->youtube)
+                                                                <a href="{{ $coach->youtube }}" target="_blank">
+                                                                <i class="fa fa-youtube social_icon_design"></i></a>
+                                                            @endif
+                                                            @if($coach->instagram)
+                                                                <a href="https://instagram.com/_u/{{ $coach->instagram }}" target="_blank">
+                                                                <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach

@@ -70,7 +70,7 @@
                                             {{ __('backend.plan.yearly') }}
                                         @endif
                                     </td>
-                                    <td>{{ $subscription->user->name }}</td>
+                                    <td>{{ isset($subscription->user->name) ? $subscription->user->name : '' }}</td>
                                     <td>{{ $subscription->subscription_start_date }}</td>
                                     <td>{{ $subscription->subscription_end_date }}</td>
                                     <td>

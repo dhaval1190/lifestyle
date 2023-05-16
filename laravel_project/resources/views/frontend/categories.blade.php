@@ -8,6 +8,8 @@
     @endif
 
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 @endsection
 
 
@@ -504,8 +506,12 @@
                         @endforeach
                     @endif
 
-                    <div class="@if($free_items->count() > 4)owl-carousel nonloop-block-13 @else row @endif">
-                        @php $count = 1; @endphp
+                    {{-- <div class="@if($free_items->count() > 4)owl-carousel nonloop-block-13 @else row @endif"> --}}
+                        <div class="row">
+                                <div class="col-lg-12 margin-top-bottom-set-slider-bottom">
+                                    <section class="carousel-wrap">
+                                        <ul class="carousel">
+                        {{-- @php $count = 1; @endphp --}}
                         {{-- @if($paid_items->count() > 0)
                             @foreach($paid_items as $paid_items_key => $item)
                                 @php 
@@ -516,7 +522,8 @@
                             @endforeach
                         @endif --}}
 
-                        @if($free_items->count() > 0)
+                        {{-- 16-05 --}}
+                        {{-- @if($free_items->count() > 0)
                             @foreach($free_items as $free_items_key => $item)                            
                                 @php 
                                     if($count == 10) break;
@@ -530,8 +537,27 @@
                                 @endif
                                 @php $count++; @endphp
                             @endforeach
+                        @endif --}}
+                        @if($free_items->count() > 0)
+                        @php $count = 1; @endphp
+                            @foreach($free_items as $free_items_key => $item)  
+                            <?php if($count == 8 ){ break; }?>                          
+                                
+                                    @include('frontend.partials.free-item-block')
+                                
+                                    @php $count++; @endphp
+                            @endforeach
                         @endif
-
+                                </div>
+                                </section>
+                            </ul>
+                            <span class="slider">
+                                <a href="javascript:void(0);" value="Prev" id="prev"><i
+                                        class="material-icons">&#xE314;</i></a>
+                                <a href="javascript:void(0);" value="Next" id="next"><i
+                                        class="material-icons">&#xE315;</i></a>
+                            </span>
+                      
                     </div>
 
                     {{-- <div class="row">

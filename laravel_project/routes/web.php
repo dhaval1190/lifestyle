@@ -90,6 +90,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/all-youtube-detail/{id}', 'PagesController@ViewAllYoutubeDetail')->name('page.profile.allyoutube');
     Route::get('/categories', 'PagesController@categories')->name('page.categories');
     Route::get('/all-recents-topics', 'PagesController@allRecentTopics')->name('page.all.recenttopics');
+    Route::get('/all-nearby-topics', 'PagesController@allNearbyTopics')->name('page.all.nearbytopics');
     Route::get('/user-categories/{id}', 'PagesController@usersCategories')->name('page.user.categories');
     Route::get('/visitor-view/{id}', 'PagesController@barchart');
     Route::POST('/media-visitor', 'PagesController@mediavisitors');

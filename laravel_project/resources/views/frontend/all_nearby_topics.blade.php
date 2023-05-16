@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('coach_active', 'active')
+@section('category_active', 'active')
 
 @section('styles')
 
@@ -8,10 +8,16 @@
     @endif
 
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @endsection
 
+
 @section('content')
+    <style>
+        .owl-carousel .owl-item img {
+            display: inherit;
+            width: unset;
+        }
+    </style>
 
     @if ($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
         <div class="site-blocks-cover inner-page-cover overlay"
@@ -38,9 +44,14 @@
 
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-8 text-center">
-                        <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
-                        <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p> -->
+                        <h1 style="color: {{ $site_innerpage_header_title_font_color }};">
+                            {{ __('frontend.categories.title') }}</h1>
+                        <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">
+                            {{ __('frontend.categories.description') }}</p>
                     </div>
+                </div>
+                <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                    @include('frontend.partials.search.head')
                 </div>
 
 
@@ -105,7 +116,7 @@
             @endif
 
             <!-- Start Filter -->
-            <form method="GET" action="{{ route('page.coaches') }}" id="filter_form">
+            <form method="GET" action="{{ route('page.all.recenttopics') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
 
@@ -185,7 +196,7 @@
                             <div class="col-12 col-md-1 text-right pl-0">
                                 {{ __('theme_directory_hub.filter-filter-by') }}
                             </div> --}}
-                            <div class="col-12 col-md-3 mt-2">
+                            <div class="col-12 col-md-3 mt-2 pl-0 pl-sm-3">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror"
                                     name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}"
@@ -210,7 +221,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-md-3 pl-0 pl-sm-3">
                                 <select
                                     class="selectpicker form-control @error('filter_preferred_pronouns') is-invalid @enderror"
                                     name="filter_preferred_pronouns" id="filter_preferred_pronouns">
@@ -229,7 +240,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-
                                 @error('filter_preferred_pronouns')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -255,7 +265,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3 pl-lg-0">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror"
                                     name="filter_hourly_rate" id="filter_hourly_rate">
                                     <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>Any Price
@@ -328,6 +338,7 @@
                                     </span>
                                 @enderror
                             </div>
+
                         </div>
                         <hr>
 
@@ -341,8 +352,9 @@
                                     if ($all_printable_category['category_name'] == 'Entrepreneurial' || $all_printable_category['category_name'] == 'Productivity') {
                                         continue;
                                     }
+                                    
                                 @endphp
-                                <div class="col-6 col-sm-4 col-md-3">
+                                <div class="col-12 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
                                         <input
                                             {{ in_array($all_printable_category['category_id'], $filter_categories) ? 'checked' : '' }}
@@ -372,7 +384,8 @@
 
                         <div class="row">
                             <div class="col-12 text-right">
-                                <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.coaches') }}">
+                                <a class="btn btn-sm btn-outline-primary rounded"
+                                    href="{{ route('page.all.recenttopics') }}">
                                     {{ __('theme_directory_hub.filter-link-reset-all') }}
                                 </a>
                                 <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit">
@@ -388,30 +401,26 @@
 
             <div class="row">
 
-                <div class="col-lg-12">
+                <div class="col-lg-12 block-13">
 
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('Latest Coaches') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('All Nearby Topics') }}</h2>
                         </div>
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-6 text-left">
-                            <strong>{{ number_format($coach_count) }}</strong>
+                        <div class="col-md-12 text-left">
+                            <strong>{{ number_format($popular_items->count()) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
-                        @if ($all_coaches->count() > 9)
-                            <div class="col-md-6 text-right">
-                                <a href="{{ route('page.allcoaches') }}">
-                                    <button class="btn btn-primary btn-sm">
-                                        View All
-                                    </button>
-                                </a>
-                                {{-- <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }} --}}
-                            </div>
-                        @endif
+                        {{-- <div class="col-md-6 text-right">
+                            <a href="{{ route('page.all.recenttopics') }}">
+                                View All
+                            </a>
+                            <strong>{{ number_format($total_results) }}</strong>
+                            {{ __('theme_directory_hub.filter-results') }}
+                        </div> --}}
                     </div>
 
                     @if ($ads_before_content->count() > 0)
@@ -442,456 +451,152 @@
                     @endif
 
                     <div class="row">
-                        <div class="col-lg-12 margin-top-bottom-set-slider">
-                            <section class="carousel-wrap">
-                                <ul class="carousel">
-                                    @php $count = 1; @endphp
-                                    @foreach($all_coaches as $all_coaches_key => $coach)
-                                    <?php if($count == 8 ){ break; }?>
-                                        <li class="items @if($count == 1) main-pos @elseif($count == 2) right-pos @elseif($count == 3) back-pos @elseif($count == 4) back-pos
-                                         @elseif($count == 5) back-pos @elseif($count == 6) back-pos @elseif($count == 7) left-pos  @endif" id="{{ $count }}">
-                                            <div class="profile-card js-profile-card">
-                                                <div class="profile-card__img">
-                                                    @if(empty($coach->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}"
-                                                        alt="Image" />
+
+                        {{-- @if ($paid_items->count() > 0)
+                            @foreach ($paid_items as $paid_items_key => $item)
+                                <div class="col-lg-4">
+                                    @include('frontend.partials.paid-item-block')
+                                </div>
+                            @endforeach
+                        @endif --}}
+
+                        {{-- @if ($free_items->count() > 0)
+                            @foreach ($free_items as $free_items_key => $item)
+                                <div class="col-lg-4">
+                                    @include('frontend.partials.all-free-item-block')
+                                </div>
+                            @endforeach
+                        @endif --}}
+                        @if ($popular_items->count() > 0)
+                            @foreach ($popular_items as $popular_items_key => $item)
+                                <div class="col-md-6 mb-4 mb-lg-4 col-lg-4">
+                                    <div class="listing-item listing">
+                                        <div class="listing-image">
+                                            <img src="{{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }}"
+                                                alt="Image" class="img-fluid">
+                                        </div>
+                                        <div class="listing-item-content">
+
+                                            @php
+                                                $popular_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
+                                            @endphp
+                                            @foreach ($popular_item_getAllCategories as $item_all_categories_key => $category)
+                                                <a class="px-3 mb-3 category"
+                                                    href="{{ route('page.category', $category->category_slug) }}">
+                                                    @if (!empty($category->category_icon))
+                                                        <i class="{{ $category->category_icon }}"></i>
                                                     @else
-                                                    <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
-                                                    alt="{{ $coach->name }}" />
+                                                        <i class="fa-solid fa-heart"></i>
                                                     @endif
-                                                </div>
+                                                    {{ $category->category_name }}
+                                                </a>
+                                            @endforeach
 
-                                                <div class="profile-card__cnt js-profile-cnt">
-                                                    <div class="profile-card__name">
-                                                        <a href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
-                                                    </div>
-                                                    <div class="profile-card__txt">
-                                                        <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span>
-                                                    </div>
-                                                    <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                    </div>
+                                            @php
+                                                $popular_item_allCategories_count = $item->allCategories()->count();
+                                            @endphp
+                                            @if ($popular_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
+                                                <span
+                                                    class="category">{{ __('categories.and') . ' ' . strval($popular_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . ' ' . __('categories.more') }}</span>
+                                            @endif
 
-                                                    <div class="profile-card-inf">
-                                                        <div>
-                                                            <p>
-                                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                                Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                                iure! Veritatis alias voluptatibus beatae.
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                            <h2 class="mb-1 pt-2"><a
+                                                    href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a>
+                                            </h2>
 
-                                                    <!-- new  -->
+                                            @if (isset($item->state->state_slug) &&
+                                                    !empty($item->state->state_slug) &&
+                                                    $item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                <span class="address">
+                                                    <a
+                                                        href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                                    <a
+                                                        href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                </span>
+                                            @endif
 
-                                                    <div class="social_content">
-                                                        <div class="shareButton main">
-                                                            <svg class="share" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                            </svg>
-                                                            <svg class="check" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                            </svg>
-                                                            <svg class="close" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="icons">
-                                                            @if($coach->facebook)
-                                                                <a href="{{ $coach->facebook }}" target="_blank">
-                                                                <i class="fa fa-facebook-f social_icon_design"></i></a>
+                                            @php
+                                                $popular_item_getCountRating = $item->getCountRating();
+                                            @endphp
+                                            @if ($popular_item_getCountRating > 0)
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}"
+                                                            data-id="rating_stars_{{ $item->item_slug }}"
+                                                            data-rating="{{ $item->item_average_rating }}"></div>
+                                                        <address class="mt-1">
+                                                            @if ($popular_item_getCountRating == 1)
+                                                                <span>{{ '(' . $popular_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}</span>
+                                                            @else
+                                                                <span>{{ '(' . $popular_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}</span>
                                                             @endif
-                                                            @if($coach->youtube)
-                                                                <a href="{{ $coach->youtube }}" target="_blank">
-                                                                <i class="fa fa-youtube social_icon_design"></i></a>
+                                                        </address>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <hr class="item-box-hr item-box-index-nearby-hr">
+
+                                            <div class="row mt-1 align-items-center">
+
+                                                <div class="col-12 col-md-7 pr-0">
+                                                    <div class="row align-items-center item-box-user-div">
+                                                        <div class="col-3 item-box-user-img-div">
+                                                            @if (empty($item->user->user_image))
+                                                                <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
+                                                                    alt="Image" class="img-fluid rounded-circle">
+                                                            @else
+                                                                <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"
+                                                                    alt="{{ $item->user->name }}"
+                                                                    class="img-fluid rounded-circle">
                                                             @endif
-                                                            @if($coach->instagram)
-                                                                <a href="https://instagram.com/_u/{{ $coach->instagram }}" target="_blank">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                                @endif
+                                                        </div>
+                                                        <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                                            <div class="row pb-1">
+                                                                <div class="col-12">
+                                                                    {{-- <a class="decoration-none" href="{{ route('page.profile',encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a> --}}
+                                                                    <a class="decoration-none"
+                                                                        href="{{ route('page.profile', encrypt($item->user->id)) }}"><span
+                                                                            class="font-size-13">{{ $item->user->name }}</span></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row line-height-1-0">
+                                                                <div class="col-12">
+                                                                    <span
+                                                                        class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                {{-- <div class="col-7 col-md-5 pl-0 text-right">
+                                        @if ($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
+                                            @if ($item->hasOpened())
+                                                <span class="item-box-index-nearby-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
+                                            @else
+                                                <span class="item-box-index-nearby-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
+                                            @endif
+                                        @endif
+                                    </div> --}}
+
                                             </div>
-                                        </li>
-                                        @php $count++; @endphp
-                                    @endforeach
-                                    {{-- <li class="items right-pos" id="2">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
 
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </li>
-                                    <li class="items back-pos" id="3">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
+                                    </div>
 
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li>
-                                    <li class="items back-pos" id="4">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li>
-                                    <li class="items back-pos" id="5">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li>
-                                    <li class="items back-pos" id="6">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li>
-                                    <li class="items left-pos" id="7">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li> --}}
-                                </ul>
-                                <span class="slider">
-                                    <a href="javascript:void(0);" value="Prev" id="prev"><i
-                                            class="material-icons">&#xE314;</i></a>
-                                    <a href="javascript:void(0);" value="Next" id="next"><i
-                                            class="material-icons">&#xE315;</i></a>
-
-                                </span>
-                            </section>
-
-                        </div>
+                                </div>
+                            @endforeach
+                        @endif
 
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-12">
 
                             {{ $pagination->links() }}
                         </div>
-                    </div>
+                    </div> --}}
 
                     @if ($ads_after_content->count() > 0)
                         @foreach ($ads_after_content as $ads_after_content_key => $ad_after_content)
@@ -936,7 +641,7 @@
                 <div class="container">
                     <div class="row mb-5">
                         <div class="col-md-7 text-left border-primary">
-                            <h2 class="font-weight-light text-primary">{{ __('All Coaches by states') }}</h2>
+                            <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-2') }}</h2>
                         </div>
                     </div>
                     <div class="row mt-5">
@@ -988,7 +693,7 @@
              */
             @if ($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
 
-                @if (count($free_items))
+                @if (count($paid_items) || count($free_items))
 
                     var window_height = $(window).height();
                     $('#mapid-box').css('height', window_height + 'px');
@@ -1003,13 +708,58 @@
                     }).addTo(map);
 
                     var bounds = [];
+                    @foreach ($paid_items as $paid_items_key => $paid_item)
+                        @if ($paid_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+
+                            bounds.push([{{ $paid_item->item_lat }}, {{ $paid_item->item_lng }}]);
+                            var marker = L.marker([{{ $paid_item->item_lat }}, {{ $paid_item->item_lng }}])
+                                .addTo(map);
+
+                            var popup_item_title = '{{ $paid_item->item_title }}';
+
+                            @if ($paid_item->item_address_hide)
+                                var popup_item_address =
+                                    '{{ $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                            @else
+                                var popup_item_address =
+                                    '{{ $paid_item->item_address . ', ' . $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                            @endif
+                            var popup_item_get_direction = '<a target="_blank" href="' +
+                                '{{ 'https://www.google.com/maps/dir/?api=1&destination=' . $paid_item->item_lat . ',' . $paid_item->item_lng }}' +
+                                '"><i class="fas fa-directions"></i> ' + '{{ __('google_map.get-directions') }}' +
+                                '</a>';
+
+                            @if ($paid_item->getCountRating() > 0)
+                                var popup_item_rating = '{{ $paid_item->item_average_rating }}' + '/5';
+                                var popup_item_reviews = ' - {{ $paid_item->getCountRating() }}' + ' ' +
+                                    '{{ __('category_image_option.map.review') }}';
+                            @else
+                                var popup_item_rating = '';
+                                var popup_item_reviews = '';
+                            @endif
+
+                            var popup_item_feature_image_link = '<img src="' +
+                                '{{ !empty($paid_item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $paid_item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}' +
+                                '">';
+                            var popup_item_link = '<a href="' +
+                                '{{ route('page.item', $paid_item->item_slug) }}' + '" target="_blank">' +
+                                popup_item_title + '</a>';
+
+                            marker.bindPopup(popup_item_feature_image_link + "<br><br>" + popup_item_link + "<br>" +
+                                popup_item_rating + popup_item_reviews + "<br>" + popup_item_address + '<br>' +
+                                popup_item_get_direction, {
+                                    minWidth: 226,
+                                    maxWidth: 226
+                                });
+                        @endif
+                    @endforeach
 
                     @foreach ($free_items as $free_items_key => $free_item)
                         @if ($free_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
 
                             bounds.push([{{ $free_item->item_lat }}, {{ $free_item->item_lng }}]);
-                            var marker = L.marker([{{ $free_item->item_lat }}, {{ $free_item->item_lng }}]).addTo(
-                                map);
+                            var marker = L.marker([{{ $free_item->item_lat }}, {{ $free_item->item_lng }}])
+                                .addTo(map);
 
                             var popup_item_title = '{{ $free_item->item_title }}';
 
@@ -1178,7 +928,6 @@
             $('#filter_state').on('change', function() {
                 $('#filter_city').html(
                     "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
-
                 $('#filter_city').selectpicker('refresh');
                 if (this.value > 0) {
                     var ajax_url = '/ajax/cities/' + this.value;
@@ -1268,12 +1017,51 @@
             // Initial the google map
             function initMap() {
 
-                @if (count($free_items))
+                @if (count($paid_items) || count($free_items))
 
                     var window_height = $(window).height();
                     $('#mapid-box').css('height', window_height + 'px');
 
                     var locations = [];
+
+                    @foreach ($paid_items as $paid_items_key => $paid_item)
+                        @if ($paid_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+
+                            var popup_item_title = '{{ $paid_item->item_title }}';
+
+                            @if ($paid_item->item_address_hide)
+                                var popup_item_address =
+                                    '{{ $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                            @else
+                                var popup_item_address =
+                                    '{{ $paid_item->item_address . ', ' . $paid_item->city->city_name . ', ' . $paid_item->state->state_name . ' ' . $paid_item->item_postal_code }}';
+                            @endif
+                            var popup_item_get_direction = '<a target="_blank" href="' +
+                                '{{ 'https://www.google.com/maps/dir/?api=1&destination=' . $paid_item->item_lat . ',' . $paid_item->item_lng }}' +
+                                '"><i class="fas fa-directions"></i> ' + '{{ __('google_map.get-directions') }}' + '</a>';
+
+                            @if ($paid_item->getCountRating() > 0)
+                                var popup_item_rating = '{{ $paid_item->item_average_rating }}' + '/5';
+                                var popup_item_reviews = ' - {{ $paid_item->getCountRating() }}' + ' ' +
+                                    '{{ __('category_image_option.map.review') }}';
+                            @else
+                                var popup_item_rating = '';
+                                var popup_item_reviews = '';
+                            @endif
+
+                            var popup_item_feature_image_link = '<img src="' +
+                                '{{ !empty($paid_item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $paid_item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}' +
+                                '">';
+                            var popup_item_link = '<a href="' + '{{ route('page.item', $paid_item->item_slug) }}' +
+                                '" target="_blank">' + popup_item_title + '</a>';
+
+                            locations.push(["<div class='google_map_scrollFix'>" + popup_item_feature_image_link + "<br><br>" +
+                                popup_item_link + "<br>" + popup_item_rating + popup_item_reviews + "<br>" +
+                                popup_item_address + '<br>' + popup_item_get_direction + "</div>",
+                                {{ $paid_item->item_lat }}, {{ $paid_item->item_lng }}
+                            ]);
+                        @endif
+                    @endforeach
 
                     @foreach ($free_items as $free_items_key => $free_item)
                         @if ($free_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
@@ -1425,7 +1213,6 @@
         <script async defer
             src="https://maps.googleapis.com/maps/api/js??v=quarterly&key={{ $site_global_settings->setting_site_map_google_api_key }}&callback=initMap">
         </script>
-        {{-- <script src="https://github.com/mattbryson/TouchSwipe-Jquery-Plugin/blob/master/jquery.touchSwipe.min.js"></script> --}}
     @endif
 
 @endsection
