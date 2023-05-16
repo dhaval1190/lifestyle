@@ -447,7 +447,7 @@
                                 <ul class="carousel">
                                     @php $count = 1; @endphp
                                     @foreach($all_coaches as $all_coaches_key => $coach)
-                                    <?php if($count == 8 ){ break; }?>
+                                    @php if($count == 8 ) break; @endphp
                                         <li class="items @if($count == 1) main-pos @elseif($count == 2) right-pos @elseif($count == 3) back-pos @elseif($count == 4) back-pos
                                          @elseif($count == 5) back-pos @elseif($count == 6) back-pos @elseif($count == 7) left-pos  @endif" id="{{ $count }}">
                                             <div class="profile-card js-profile-card">
