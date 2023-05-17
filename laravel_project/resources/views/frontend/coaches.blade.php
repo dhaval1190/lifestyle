@@ -445,11 +445,11 @@
                         <div class="col-lg-12 margin-top-bottom-set-slider">
                             <section class="carousel-wrap">
                                 <ul class="carousel">
-                                    @php $count = 1; @endphp
+                                @php $count = 1; @endphp
                                     @foreach($all_coaches as $all_coaches_key => $coach)
-                                    @php if($count == 8 ) break; @endphp
+                                    @php if($count == 7 ) break; @endphp
                                         <li class="items @if($count == 1) main-pos @elseif($count == 2) right-pos @elseif($count == 3) back-pos @elseif($count == 4) back-pos
-                                         @elseif($count == 5) back-pos @elseif($count == 6) back-pos @elseif($count == 7) left-pos  @endif" id="{{ $count }}">
+                                         @elseif($count == 5) back-pos @elseif($count == 6) left-pos @endif" id="{{ $count }}">
                                             <div class="profile-card js-profile-card">
                                                 <div class="profile-card__img">
                                                     @if(empty($coach->user_image))
@@ -469,16 +469,16 @@
                                                         <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span>
                                                     </div>
                                                     <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                        <span class="profile-card-loc__txt">{{ $coach->company_name }}</span>
                                                     </div>
 
                                                     <div class="profile-card-inf">
                                                         <div>
-                                                            <p>
+                                                            <!-- <p>
                                                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                                                                 Nostrum vero adipisci magnam, soluta repudiandae iste
                                                                 iure! Veritatis alias voluptatibus beatae.
-                                                            </p>
+                                                            </p> -->
                                                         </div>
                                                     </div>
 
