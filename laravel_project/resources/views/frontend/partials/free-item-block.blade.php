@@ -43,7 +43,7 @@
                                         {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_address . ',' : '' }}
                                         <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
                                         <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                        {{ $item->item_postal_code }}
+                                        {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_postal_code :'' }}
                                     </address>
                                 @endif
                         
@@ -67,11 +67,13 @@
                                     <div class="col-12 col-md-12 pr-0">
                                         <div class="row align-items-center item-box-user-div">
                                             <div class="col-3 item-box-user-img-div">
+                                            <a href="{{ route('page.profile',encrypt($item->user->id)) }}">
                                                 @if(empty($item->user->user_image))
                                                     <img src="{{ asset('frontend/images/placeholder/profile-'. intval($item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                                 @else
                                                     <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}" alt="{{ $item->user->name }}" class="img-fluid rounded-circle">
                                                 @endif
+                                            </a>
                                             </div>
                                             <div class="col-9 line-height-1-2 item-box-user-name-div">
                                                 <div class="row pb-1">

@@ -96,7 +96,10 @@
                             @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
                                 {{ $item->item_address }} <br>
                             @endif
-                            {{ $item->city->city_name }}, {{ $item->state->state_name }} {{ $item->item_postal_code }}
+                            {{ $item->city->city_name }}, {{ $item->state->state_name }}
+                            @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
+                             {{ $item->item_postal_code }}
+                            @endif
                         @endif
                     </p>
 

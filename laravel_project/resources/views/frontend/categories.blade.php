@@ -110,7 +110,7 @@
             @endif
 
             <!-- Start Filter -->
-            <form method="GET" action="{{ route('page.categories') }}" id="filter_form">
+            <form method="GET" action="{{ route('page.all.recenttopics') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
 
@@ -940,13 +940,14 @@
             /**
              * Start filter form submit
              */
-            $("#filter_form_submit").on('click', function() {
-                $("#filter_form").submit();
-            });
+            
             /**
              * End filter form submit
              */
         });
+        $("#filter_form_submit").on('click', function() {
+                $("#filter_form").submit();
+            });
 
     </script>
 
