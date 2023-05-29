@@ -1004,7 +1004,7 @@
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
+                    var ajax_url = '/ajax/states/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -1026,7 +1026,7 @@
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
+                    var ajax_url = '/ajax/cities/' + this.value;
                     jQuery.ajax({
                         url: ajax_url,
                         method: 'get',
@@ -1047,7 +1047,7 @@
             });
 
             @if(old('country_id'))
-                var ajax_url_initial_states = 'http://localhost/coach_directory/ajax/states/{{ old('country_id') }}';
+                var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
                 jQuery.ajax({
                     url: ajax_url_initial_states,
                     method: 'get',
