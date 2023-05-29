@@ -97,7 +97,7 @@
                                                                 {{ $event->event_end_hour }}:{{ __('00') }}
                                                             </p>
                                                         </div>
-                                                        <div class="event_schedule_date">
+                                                        <div class="event_schedule_date" id="join_event">
                                                             <img src="{{ asset('frontend/images/video.png') }}"
                                                                 alt="" />
                                                             @if ($event->event_start_date < date('Y-m-d'))
@@ -221,6 +221,15 @@
         // }
 
         // setInterval(time, 1000);
+        // function loadlink(){
+        // location.reload();
+        // console.log('TESTING!!!!');
+        //     }
+
+        //     loadlink();
+        //     setInterval(function(){
+        //         loadlink()
+        //     }, 100000);
     </script>
 
 

@@ -549,7 +549,7 @@ $chk_post = Auth::user()->phone;
                                                 {{ __('Add') }}
                                             </a>
                                         </div>
-                                        <div class="col-12 border_set" id="media_details_added">
+                                        <div class="col-12" id="media_details_added">
                                             @foreach($video_media_array as $video_media_key => $video_media_value)
                                                 <div class="col-12 p-0 d-flex-between-100">
                                                     <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }} : {{ $video_media_value->media_url }}</span>
@@ -612,7 +612,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6 border_set ">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6">
                                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
                                                 <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                                                    <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} : {{ $ebook_media_value->media_name }}</span>
@@ -698,7 +698,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6 border_set">
+                                        <div class="col-12 col-md-12 col-lg-12 col-xl-6">
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                                                 <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                                                    <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}</span>

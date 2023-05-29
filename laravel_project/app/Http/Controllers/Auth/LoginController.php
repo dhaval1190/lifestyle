@@ -98,6 +98,10 @@ class LoginController extends Controller
             if(!isset($user->phone)){
                 return redirect('/user/profile');
             }
+            if($user->user_suspended == 1){
+                Auth::logout();
+                return redirect()->route('login')->with('email_not_verified','Your email ID is suspended.Please contact to Admin');
+            }
             // if the website is in maintenance mode, forcely logout user
             $settings = app('site_global_settings');
             if($settings->setting_site_maintenance_mode == Setting::SITE_MAINTENANCE_MODE_ON)

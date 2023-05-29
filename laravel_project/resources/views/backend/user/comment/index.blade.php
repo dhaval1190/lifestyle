@@ -49,7 +49,8 @@
                                     <td>{{ $comment->id }}</td>
                                     <td>
                                         @if($comment->commentable_type == 'App\Item')
-                                            <a href="{{ route('page.item', \App\Item::find($comment->commentable_id)->item_slug) . '#comment-' . $comment->id }}" target="_blank" class="btn btn-primary btn-sm">{{ __('backend.sidebar.listing') }}</a>
+                                            {{-- <a href="{{ route('page.item', \App\Item::find($comment->commentable_id)->item_slug) . '#comment-' . $comment->id }}" target="_blank" class="btn btn-primary btn-sm">{{ __('backend.sidebar.listing') }}</a> --}}
+                                            <a href="{{ route('page.item', \App\Item::find($comment->commentable_id)->item_slug) }}" target="_blank" class="btn btn-primary btn-sm">{{ __('backend.sidebar.listing') }}</a>
                                         @else
                                             <a href="{{ route('page.blog.show', \Canvas\Models\Post::find($comment->commentable_id)->slug) . '#comment-' . $comment->id }}" target="_blank" class="btn btn-info btn-sm">{{ __('backend.sidebar.blog') }}</a>
                                         @endif
