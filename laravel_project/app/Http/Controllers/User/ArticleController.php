@@ -346,6 +346,8 @@ class ArticleController extends Controller
          * Start initial country selector
          */
         $all_countries = Country::orderBy('country_name')->get();
+        // $all_states = State::orderBy('state_name')->get();
+        // $all_cities = City::orderBy('city_name')->get();
         /**
          * End initial country selector
          */

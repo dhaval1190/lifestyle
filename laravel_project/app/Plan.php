@@ -41,4 +41,9 @@ class Plan extends Model
     {
         return $this->hasMany('App\Subscription');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

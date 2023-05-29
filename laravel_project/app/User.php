@@ -15,10 +15,11 @@ use DateTime;
 use DateInterval;
 use App\Mail\Notification;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, Commenter, Messagable;
+    use Notifiable, Commenter, Messagable,Billable;
 
     const USER_NOT_SUSPENDED = 0;
     const USER_SUSPENDED = 1;
@@ -414,9 +415,11 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         elseif($this->hasPaidSubscription())
         {
-            $plan_max_free_listing = $this->subscription->plan->plan_max_free_listing;
+            // $plan_max_free_listing = $this->subscription->plan->plan_max_free_listing;
+            $current_subscription = $this->subscriptions->first();
+            $plan_max_free_listing = Plan::where('id',$current_subscription->plan_id)->first();
 
-            if(is_null($plan_max_free_listing))
+            if(is_null($plan_max_free_listing->plan_max_free_listing))
             {
                 return true;
             }
@@ -802,5 +805,13 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }      
 
+    }
+
+    public function plan()
+    {
+        return $this->hasOneThrough(
+        Plan::class, Subscription::class,
+        'user_id', 'stripe_id', 'id', 'stripe_price'
+        );
     }
 }

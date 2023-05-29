@@ -2313,6 +2313,7 @@ class ItemController extends Controller
     public function itemReviewsDelete(int $review_id)
     {
 
+        dd($review_id);
         $review = DB::table('reviews')
             ->where('id', $review_id)
             ->first();
@@ -3515,20 +3516,20 @@ class ItemController extends Controller
         }		
     }		
     public function profileReviewsDelete(Request $request)		
-    {		
+    {	
+        
         $review = DB::table('profile_reviews')		
             ->where('id', $request->id)		
             ->first();		
         if($review)		
-        {		
-            $item = ProfileReviews::find($review->reviewrateable_id);		
+        {	
             DB::table('profile_reviews')		
                 ->where('id', $request->id)		
                 ->delete();		
-            if($item){		
+            
             $review_count = new Item();		
-            $review_count->syncProfileverageRating($request->id);		
-            }		
+            $review_count->syncProfileverageRating($review->reviewrateable_id);		
+            		
             \Session::flash('flash_message', __('review.alert.review-deleted-success'));		
             \Session::flash('flash_type', 'success');		
             return redirect()->route('admin.page.reviews.index');		

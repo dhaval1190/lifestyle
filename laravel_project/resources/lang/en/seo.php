@@ -171,6 +171,7 @@ return array (
     'visitor-states' => 'Profile Visitors - :site_name',
     'coaches' => 'Coaches - :site_name',
     'faq' => 'FAQ - :site_name',
+    'events' => 'Events - :site_name',
 
   ),
 );

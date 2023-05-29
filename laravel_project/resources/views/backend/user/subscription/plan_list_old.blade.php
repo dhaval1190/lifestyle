@@ -122,9 +122,9 @@
                                     @if($setting_site_bank_transfer_enable == \App\Setting::SITE_PAYMENT_BANK_TRANSFER_ENABLE)
                                         <div class="row pb-3">
                                             <div class="col-12">
-                                                <a class="btn btn-sm btn-success btn-block text-white {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
+                                                {{-- <a class="btn btn-sm btn-success btn-block text-white {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
                                                     {{ __('bank_transfer.pay-bank-transfer') }}
-                                                </a>
+                                                </a> --}}
                                             </div>
                                         </div>
 
@@ -137,7 +137,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form method="POST" action="{{ route('user.banktransfer.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
+                                                    {{-- <form method="POST" action="{{ route('user.banktransfer.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
                                                         @csrf
 
                                                         <input type="hidden" name="invoice_bank_transfer_bank_name" id="invoice_bank_transfer_bank_name_{{ $plan->id }}" value="{{ $all_setting_bank_transfers->first()->setting_bank_transfer_bank_name }}">
@@ -201,14 +201,14 @@
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
                                                             <button type="submit" class="btn btn-success">{{ __('bank_transfer.submit') }}</button>
                                                         </div>
-                                                    </form>
+                                                    </form> --}}
                                                 </div>
                                             </div>
                                         </div>
                                     @endif
 
                                     @if($setting_site_paypal_enable == \App\Setting::SITE_PAYMENT_PAYPAL_ENABLE)
-                                        <form method="GET" action="{{ route('user.paypal.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
+                                        {{-- <form method="GET" action="{{ route('user.paypal.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
@@ -217,11 +217,11 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form> --}}
                                     @endif
 
                                     @if($setting_site_razorpay_enable == \App\Setting::SITE_PAYMENT_RAZORPAY_ENABLE)
-                                        <form method="POST" action="{{ route('user.razorpay.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
+                                        {{-- <form method="POST" action="{{ route('user.razorpay.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
@@ -230,7 +230,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form> --}}
                                     @endif
 
                                     {{-- @if($setting_site_stripe_enable == \App\Setting::SITE_PAYMENT_STRIPE_ENABLE)
@@ -246,8 +246,13 @@
                                         </form>
                                     @endif --}}
                                     @if(isset($active_plan))
-                                        @if($active_plan->id == $plan->id)
+                                        @if($active_plan->id == $plan->id && $subscription_status !== 'canceled')
                                             <button type="button" class="btn btn-primary pull-right" disabled>Active</a>
+
+                                        @elseif($active_plan->id == $plan->id && $subscription_status == 'canceled')
+                                            <button type="button" class="btn btn-primary pull-right" disabled>Cancelled</a>
+                                        @elseif($subscription_status == 'canceled')
+                                            <a href="{{ url('user/plans/'.$plan->slug) }}" class="btn btn-primary pull-right">Choose</a>
                                         @else
                                             <a href="{{ url('user/plan/upgrade/'.$plan->slug) }}" class="btn btn-primary pull-right">Upgrade</a>
                                         @endif
@@ -256,7 +261,7 @@
                                     @endif
 
                                     @if($setting_site_payumoney_enable == \App\Setting::SITE_PAYMENT_PAYUMONEY_ENABLE)
-                                        <form method="POST" action="{{ route('user.payumoney.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
+                                        {{-- <form method="POST" action="{{ route('user.payumoney.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
@@ -265,7 +270,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form> --}}
                                     @endif
 
                                 @endif
