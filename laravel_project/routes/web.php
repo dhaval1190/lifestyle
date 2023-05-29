@@ -69,6 +69,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::get('/about', 'PagesController@about')->name('page.about');
     Route::get('/contact', 'PagesController@contact')->name('page.contact');
     Route::get('/faq', 'PagesController@faq')->name('page.faq');
+    Route::get('/events', 'PagesController@event')->name('page.event');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
@@ -227,6 +228,8 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
 
     Route::get('/user/subscription/verify/{subscription}', 'User\SubscriptionController@verifySubscription')->name('user.subscription.verify');
     Route::get('/user/subscription/free/{subscription}', 'User\SubscriptionController@freeSubscriptionActivate')->name('user.subscription.free');
+    Route::post('/user/subscription/pay', 'User\SubscriptionController@subscriptionPay')->name('user.subscription.pay');
+    Route::post('/user/upgrade-subscription/pay', 'User\SubscriptionController@upgradeSubscriptionPay')->name('user.upgradesubscription.pay');
 
     Route::post('/user/stripe/checkout/plan/{plan_id}/subscription/{subscription_id}', 'User\StripeController@doCheckout')->name('user.stripe.checkout.do');
     Route::get('/user/stripe/checkout/success/plan/{plan_id}/subscription/{subscription_id}', 'User\StripeController@showCheckoutSuccess')->name('user.stripe.checkout.success');
@@ -384,6 +387,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::post('/settings/agreement', 'SettingController@updateAgreementPageSetting')->name('settings.page.agreement.update');
         Route::get('/email-template/{param?}', 'SettingController@showEmailtemplate')->name('settings.page.email-template');
         Route::post('/email-template', 'SettingController@updateEmailtemplate')->name('settings.page.email-template.update');
+
+        //Events
+        Route::resource('/events', 'EventController');
+        Route::post('/ajax/event/image/delete/{id}','EventController@deleteEventImage');
 
         // setting privacy-policy page
         Route::get('/settings/privacy-policy', 'SettingController@editPrivacyPolicyPageSetting')->name('settings.page.privacy-policy.edit');
@@ -671,6 +678,9 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::resource('/messages', 'MessageController')->middleware('check_coach_details');             
         // subscription routes
         Route::resource('/subscriptions', 'SubscriptionController')->middleware('check_coach_details');
+        Route::get('/plans', 'PlanController@index')->name('plans.index')->middleware('check_coach_details');
+        Route::get('/plans/{plan_name}', 'PlanController@show')->name('user.plans.show')->middleware('check_coach_details');
+        Route::get('/plan/upgrade/{plan_name}', 'PlanController@upgradePlan')->name('user.plan.upgrade')->middleware('check_coach_details');
 
         // product routes
         Route::resource('/products', 'ProductController');
