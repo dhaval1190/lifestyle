@@ -449,8 +449,53 @@
                                     </div>                                    
                                     <div class="row">
                                         <div class="form-section col-md-12">
-                                            <label for="Question 2">{{ __('2.What type of traits are important to you when selecting a coach?') }}<span class="text-danger">*</span></label>
-                                            <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                            <label for="Question 2">{{ __('2.What type of personality traits would be helpful for a person to have when coaching you?') }}<span class="text-danger">*</span>
+                                                <p class="pl-3">Check all that apply fields:</p>
+                                            </label>
+                                            {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Patient" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    a) Patient
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Diplomatic" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    b) Diplomatic
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Direct" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    c) Direct
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Sensitive" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    d) Sensitive
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="High Energy" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    e) High Energy
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Calm" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    f) Calm
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="question_2">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    g) Other
+                                                </label>
+                                                <textarea name="question2[]" class="form-control mb-3" cols="30" rows="5" id="question2_txt" style="display:none"></textarea>
+                                            </div>
                                             <p class="question2_error error_color_modal" role="alert"></p>
                                             <p class="question2_desc_char_count count_error"></p>
                                         </div>
@@ -480,7 +525,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-section col-md-12 ">                                            
-                                            <label for="Question 5">{{ __('5.What will change in your life to let you know you made a good investment?') }}<span class="text-danger">*</span></label>
+                                            <label for="Question 5">{{ __('5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?') }}<span class="text-danger">*</span></label>
                                             <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
                                             <p class="question5_error error_color_modal" role="alert"></p>
                                             <p class="question5_desc_char_count count_error"></p>
@@ -2444,6 +2489,28 @@
             });
 
             navigateTo(0);
+
+            $('#question_2').on('change',function(){
+                $('#question2_txt').slideToggle("slow");
+                var val = this.checked ? this.value : '';
+                if(val){
+                    $("#question2_txt").prop('required',true);
+                    $("#question2_checkbox1").prop('required',false);
+                    $("#question2_checkbox2").prop('required',false);
+                    $("#question2_checkbox3").prop('required',false);
+                    $("#question2_checkbox4").prop('required',false);
+                    $("#question2_checkbox5").prop('required',false);
+                    $("#question2_checkbox6").prop('required',false);
+                }else{
+                    $("#question2_txt").prop('required',false);
+                    $("#question2_checkbox1").prop('required',true);
+                    $("#question2_checkbox2").prop('required',true);
+                    $("#question2_checkbox3").prop('required',true);
+                    $("#question2_checkbox4").prop('required',true);
+                    $("#question2_checkbox5").prop('required',true);
+                    $("#question2_checkbox6").prop('required',true);
+                }
+            });
 
         });
         

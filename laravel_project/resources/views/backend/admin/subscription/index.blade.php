@@ -52,27 +52,31 @@
                                 <tr>
                                     <td>{{ $subscription->id }}</td>
                                     <td>
-                                        @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
-                                            {{ __('backend.plan.free') }}
+                                        {{-- @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE) --}}
+                                            {{-- {{ __('backend.plan.free') }}
                                         @else
                                             {{ __('backend.plan.paid') }}
-                                        @endif
+                                        @endif --}}
                                     </td>
-                                    <td>{{ $subscription->plan->plan_price }}</td>
+                                    {{-- <td>{{ $subscription->plan->plan_price }}</td> --}}
+                                    <td>{{ "dslkdlsl" }}</td>
                                     <td>
-                                        @if($subscription->plan->plan_period == \App\Plan::PLAN_LIFETIME)
+                                        {{-- @if($subscription->plan->plan_period == \App\Plan::PLAN_LIFETIME)
                                             {{ __('backend.plan.lifetime') }}
                                         @elseif($subscription->plan->plan_period == \App\Plan::PLAN_MONTHLY)
                                             {{ __('backend.plan.monthly') }}
                                         @elseif($subscription->plan->plan_period == \App\Plan::PLAN_QUARTERLY)
                                             {{ __('backend.plan.quarterly') }}
-                                        @elseif($subscription->plan->plan_period == \App\Plan::PLAN_YEARLY)
+                                        @elseif($subscription->plan->plan_period == \App\Plan::PLAN_YEARLY) --}}
                                             {{ __('backend.plan.yearly') }}
-                                        @endif
+                                        {{-- @endif --}}
                                     </td>
-                                    <td>{{ isset($subscription->user->name) ? $subscription->user->name : '' }}</td>
-                                    <td>{{ $subscription->subscription_start_date }}</td>
-                                    <td>{{ $subscription->subscription_end_date }}</td>
+                                    {{-- <td>{{ $subscription->user->name }}</td> --}}
+                                    <td>{{ "sdjjdsljk" }}</td>
+                                    {{-- <td>{{ $subscription->subscription_start_date }}</td> --}}
+                                    <td>{{ "sajjsklke" }}</td>
+                                    {{-- <td>{{ $subscription->subscription_end_date }}</td> --}}
+                                    <td>{{ "sksadjskjl" }}</td>
                                     <td>
                                         <a href="{{ route('admin.subscriptions.edit', $subscription->id) }}" class="btn btn-primary btn-circle">
                                             <i class="fas fa-cog"></i>

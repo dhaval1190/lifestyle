@@ -61,6 +61,7 @@ use App\SocialLogin;
 use Illuminate\Support\Facades\Validator;
 use App\ProfileReviews;
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Event;
 
 
 class PagesController extends Controller
@@ -857,6 +858,65 @@ class PagesController extends Controller
                     'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                     'site_innerpage_header_paragraph_font_color'));
     }
+
+    public function event()	
+    {	
+        	
+        $settings = app('site_global_settings');	
+        /**	
+         * Start SEO	
+         */	
+        SEOMeta::setTitle(__('seo.frontend.events', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));	
+        SEOMeta::setDescription('');	
+        SEOMeta::setCanonical(URL::current());	
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);	
+        /**	
+         * End SEO	
+         */	
+         $all_events = Event::whereDate('event_start_date','<=',now())->where('status',1)->orderBy('event_start_date','DESC')->orderBy('event_start_hour','DESC')->orderBy('event_start_min','DESC')->paginate(10);	
+        /**	
+         * Start inner page header customization	
+         */	
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)	
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;	
+        /**	
+         * End inner page header customization	
+         */	
+        /**	
+         * Start initial blade view file path	
+         */	
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);	
+        $theme_view_path = $theme_view_path->getViewPath();	
+        /**	
+         * End initial blade view file path	
+         */	
+        /**	
+         * Start initial Google reCAPTCHA version 2	
+         */	
+        if($settings->setting_site_recaptcha_contact_enable == Setting::SITE_RECAPTCHA_CONTACT_ENABLE)	
+        {	
+            config_re_captcha($settings->setting_site_recaptcha_site_key, $settings->setting_site_recaptcha_secret_key);	
+        }	
+        /**	
+         * End initial Google reCAPTCHA version 2	
+         */	
+        return response()->view($theme_view_path . 'event',	
+            compact('all_events', 'site_innerpage_header_background_type',	
+                    'site_innerpage_header_background_color', 'site_innerpage_header_background_image',	
+                    'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',	
+                    'site_innerpage_header_paragraph_font_color'));	
+    }	
+
 
     public function doContact(Request $request)
     {
@@ -8120,11 +8180,17 @@ class PagesController extends Controller
 
                         $authUser = User::where('id',$request->authUserId)->first();
 
+                        $question_2_val = '';	
+                        foreach($request->question2 as $question_2){	
+                            $question_2_val.= $question_2.",";	
+                        }	
+                        // return response()->json(['status'=>"successsssssssssssss",'msg'=>$question_2_val]);
+
                         DB::table('contact_coach')->insert([
                             'name' => $request->item_conntact_email_name,
                             'email' => $request->item_contact_email_from_email,
                             'question1' =>  $request->question1,
-                            'question2' =>  $request->question2,
+                            'question2' =>  $question_2_val,
                             'question3' =>  $request->question3,
                             'question4' =>  $request->question4,
                             'question5' =>  $request->question5,
@@ -8156,7 +8222,13 @@ class PagesController extends Controller
                             $template_body = str_replace('[YOUR_NAME]',$email_from_name,$template_body);
                             $template_body = str_replace('[YOUR_EMAIL]',$item_contact_email,$template_body);
                             // $template_body = str_replace('[QUESTIONS]',$request->question1,$template_body);
-                            $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of traits are important to you when selecting a coach?</p><br><p>'.$request->question2.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a sale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. What will change in your life to let you know you made a good investment?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
+
+                            $question2_val = '';	
+                            foreach ($request->question2 as $question_2){ 	
+                                $question2_val.= $question_2.",";	
+                            }
+
+                            $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of personality traits would be helpful for a person to have when coaching you?</p><br><p>'.$question2_val.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a sale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
                             $template_body = str_replace('[QUESTIONS]',$all_questions,$template_body);
 
                             if($request->contact_profile){
@@ -8279,6 +8351,11 @@ class PagesController extends Controller
                                 }else{
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
                                 }
+
+                                $question2_val = '';	
+                                foreach ($request->question2 as $question_2){ 	
+                                    $question2_val.= $question_2.",";	
+                                }
                                 
                                 $email_notify_message = [
                                     // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
@@ -8289,13 +8366,13 @@ class PagesController extends Controller
                                     // $email_note,
                                     __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
                                     $request->question1,
-                                    __('Q2. What type of traits are important to you when selecting a coach?'),
-                                    $request->question2,
+                                    __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
+                                    $question2_val,
                                     __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
                                     $request->question3,
                                     __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
                                     $request->question4,
-                                    __('Q5. What will change in your life to let you know you made a good investment?'),
+                                    __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
                                     $request->question5,
                                     __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
                                     $request->question6,
@@ -8316,6 +8393,11 @@ class PagesController extends Controller
                                 }else{
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
                                 }
+
+                                $question2_val = '';	
+                                foreach ($request->question2 as $question_2){ 	
+                                    $question2_val.= $question_2.",";	
+                                }
     
                                 $email_notify_message = [
                                     // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
@@ -8327,13 +8409,13 @@ class PagesController extends Controller
                                     // $email_note,
                                     __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
                                     $request->question1,
-                                    __('Q2. What type of traits are important to you when selecting a coach?'),
-                                    $request->question2,
+                                    __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
+                                    $question2_val,
                                     __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
                                     $request->question3,
                                     __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
                                     $request->question4,
-                                    __('Q5. What will change in your life to let you know you made a good investment?'),
+                                    __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
                                     $request->question5,
                                     __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
                                     $request->question6,
