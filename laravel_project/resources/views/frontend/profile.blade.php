@@ -324,19 +324,19 @@
                                                     <div class="upper_address_detail">
                                                         <div class="upper_address">
                                                             <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
-                                                                class="address_logo" />
-                                                         @if ($user_detail->id = $userId)
+                                                            class="address_logo" />
                                                             <p class="address_wrap">
+                                                                @if ($user_detail->id == $userId)                                                                
                                                                 {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
                                                                 {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
                                                                 {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
                                                                 {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
                                                                 {{ $user_detail['post_code'] }}
                                                                 @else
-                                                                    {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
-                                                                    {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
-                                                                </p>
-                                                        @endif
+                                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
+                                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name : '' }}                                                               
+                                                                @endif
+                                                            </p>
                                                         </div>
                                                     </div>
                                             </div>
