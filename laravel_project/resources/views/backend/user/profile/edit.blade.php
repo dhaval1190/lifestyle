@@ -132,6 +132,14 @@ $chk_post = Auth::user()->phone;
                                             </div>
                                         </div>
                                     @endif
+                                    <div class="row mt-1">
+                                        <div class="col-12">
+                                            <span class="text-lg text-gray-800 mt-5">{{ __('Select Profile Image') }}</span>
+                                            <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                            <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                                            <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-xl-10">
                                     <div class="row mb-3">
@@ -273,7 +281,7 @@ $chk_post = Auth::user()->phone;
                                     <div class="row mt-3">
                                         <div class="col-md-12">
                                             <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                                            <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="3">{{ old('user_about', $login_user->user_about) }}</textarea>
+                                            <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="6">{{ old('user_about', $login_user->user_about) }}</textarea>
                                             @error('user_about')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>

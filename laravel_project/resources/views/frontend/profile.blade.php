@@ -325,12 +325,18 @@
                                                         <div class="upper_address">
                                                             <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
                                                                 class="address_logo" />
+                                                         @if ($user_detail->id = $userId)
                                                             <p class="address_wrap">
                                                                 {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
                                                                 {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
                                                                 {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
                                                                 {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
-                                                                {{ $user_detail['post_code'] }}</p>
+                                                                {{ $user_detail['post_code'] }}
+                                                                @else
+                                                                    {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
+                                                                    {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
+                                                                </p>
+                                                        @endif
                                                         </div>
                                                     </div>
                                             </div>
@@ -1000,9 +1006,7 @@
                                                 title="YouTube video player" frameborder="0"
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowfullscreen></iframe> -->
-                                        @php
-                                            //print_r($user_detail);exit;
-                                        @endphp
+                                        
                                         <!-- <div class='c-video__image-container vid-fit-reveal' id="js-fitvideo">
                                               <div class="bt-play"></div> -->
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe> -->
