@@ -244,6 +244,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $input = $request->all();
+        // dd($input);
         $login_user = Auth::user();
         if(empty($youtube_url['youtube'])){
            
@@ -304,11 +305,13 @@ class UserController extends Controller
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
         $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3', 'max:30720'];
+        // $rules['podcast_image']             = ['nullable','string','url','max:500'];
         $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_image']               = ['nullable', 'file', 'mimes:pdf', 'max:30720'];
         $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_cover']               = ['required_with:media_image'];
         $rules['podcast_cover']             = ['required_with:podcast_image'];
+        // $rules['podcast_web_type']             = ['required_with:podcast_image'];
         // $rules['post_code']             =   ['required','numeric','digits_between:1,15'];
         $rules['company_name']          = ['nullable','string','max:100'];
         $rules['user_image']            = ['nullable',new Base64Image];
@@ -356,7 +359,9 @@ class UserController extends Controller
             $rules['user_cover_image']            = ['nullable',new Base64Image];
             $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
             $rules['podcast_cover']             = ['required_with:podcast_image'];
+            // $rules['podcast_web_type']             = ['required_with:podcast_image'];
 
+            $rulesMessage['podcast_image.url']  = 'Please enter valid URL';
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
             $rulesMessage['phone.required'] = 'Phone is required';

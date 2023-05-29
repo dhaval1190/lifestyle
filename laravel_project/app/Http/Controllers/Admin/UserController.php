@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -556,6 +557,34 @@ class UserController extends Controller
         $user->save();
 
         if(isset($input['category_ids']) && !empty($input['category_ids'])) {
+            $coach_assign_category_id_array = array();
+            $coach_assign_categories = $user->categories;
+
+            foreach($coach_assign_categories as $coach_assign_category){
+                $coach_assign_category_id_array[] =  $coach_assign_category->id;                    
+            }
+            $cat_id_diff_results=array_diff($coach_assign_category_id_array,$input['category_ids']);
+            $diff_cat_id = '';
+            foreach($cat_id_diff_results as $diff_cat){
+                        $diff_cat_id  = $diff_cat;
+                        // echo $diff_cat_id."<br>";
+                }
+                $result = DB::table('items')->join('category_item', function($join) use ($diff_cat_id,$user) { 
+                        $join->on('items.id', '=', 'category_item.item_id')->where('items.user_id',$user->id)->where('category_item.category_id',$diff_cat_id);
+                    })->get();
+                    // $result_array = $result;
+                    // echo "<pre>";
+                    // print_r(count($result));
+                    // echo "</pre>"; 
+                    // exit;
+
+                    if(count($result) > 0){
+                        return back()->with('item_exist',"You can't remove this category because there is article present. First changes that article category.");
+                    }
+
+            
+            // print_r($cat_id_diff_results);exit;
+            
             $user->categories()->sync($input['category_ids']);
         }
 

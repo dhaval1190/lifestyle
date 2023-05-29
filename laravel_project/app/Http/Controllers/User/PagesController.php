@@ -48,7 +48,7 @@ class PagesController extends Controller
 
         $paid_subscription_days_left = $login_user->subscriptionDaysLeft();
 
-        $subscription_details = $login_user->subscription()->where('user_id', $login_user->id)->first();
+        $subscription_details = $login_user->subscription()->where('user_id', $login_user->id)->orderBY('id','DESC')->first();
         $plan_details = Plan::where('id',$subscription_details->plan_id)->first();
         $plan_name = $plan_details->plan_name;
 

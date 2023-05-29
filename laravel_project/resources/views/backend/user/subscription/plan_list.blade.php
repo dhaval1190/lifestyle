@@ -39,29 +39,42 @@
                         </div>
 
                         <section id="model_1" class="w-100">
-                            {{-- <div class="tabs-container">
-                                <ul class="nav nav-tabs container" id="myTab" role="tablist">
-                                    <div class="nav-tag">
-                                        <p class="nav_tag_text">Active</p>
-                                        <img src="{{ asset('frontend/images/active_icon.png') }}" alt=""
-                                            class="w-100" />
-                                    </div>
+                            @php
+                                $plan_price = '';
+                                if (isset($active_plan->plan_price)) {
+                                    $plan_price = $active_plan->plan_price;
+                                }
+                                
+                            @endphp
+                            @if (isset($active_plan->plan_price))
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs container" id="myTab" role="tablist">
+                                        <div class="nav-tag">
+                                            <p class="nav_tag_text">Active</p>
+                                            <img src="{{ asset('frontend/images/active_icon.png') }}" alt=""
+                                                class="w-100" />
+                                        </div>
 
-                                    <div class="nav-bg">
-                                        <li class="nav-item">
-                                            <p class="nav-link active nav_text" aria-controls="home" aria-selected="true"><i
-                                                    class="fa fa-home"></i>{{ $active_plan->plan_name }}</p>
-                                        </li>
-                                        <li class="nav-item">
-                                            <p class="nav-link nav-text-tab" aria-controls="profile" aria-selected="false">
-                                                <i class="fa fa-money"></i>{{ $active_plan->plan_name }}
-                                                <span
-                                                    class="nav-number">{{ $site_global_settings->setting_product_currency_symbol . $active_plan->plan_price }}</span>
-                                            </p>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </div> --}}
+                                        <div class="nav-bg">
+                                            <li class="nav-item">
+                                                <p class="nav-link active nav_text" aria-controls="home"
+                                                    aria-selected="true"><i
+                                                        class="fa fa-home"></i>{{ isset($active_plan->plan_name) ? $active_plan->plan_name : '' }}
+                                                </p>
+                                            </li>
+                                            <li class="nav-item">
+                                                <p class="nav-link nav-text-tab" aria-controls="profile"
+                                                    aria-selected="false">
+                                                    <i
+                                                        class="fa fa-money"></i>{{ isset($active_plan->plan_name) ? $active_plan->plan_name : '' }}
+                                                    <span
+                                                        class="nav-number">{{ $site_global_settings->setting_product_currency_symbol . $plan_price }}</span>
+                                                </p>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="tab-content container" id="myTabContent">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel"
                                     aria-labelledby="home-tab">
@@ -122,9 +135,31 @@
                                                         </ul>
                                                     </div>
                                                     <div class="price_pay_btn">
-                                                        <a href="{{ url('user/plans/' . $plan->slug) }}"
-                                                            class="pay_btn">Choose</a>
+                                                        @if (isset($active_plan))
+                                                            @if ($active_plan->id == $plan->id && $subscription_status !== 'canceled')
+                                                                <button type="button" class="pay_btn" disabled>Currently
+                                                                    Active</a>
+                                                                @elseif($active_plan->id == $plan->id && $subscription_status == 'canceled')
+                                                                    <button type="button" class="pay_btn"
+                                                                        disabled>Cancelled</a>
+                                                                    @elseif($subscription_status == 'canceled')
+                                                                        <a href="{{ url('user/plans/' . $plan->slug) }}"
+                                                                            class="pay_btn">Choose</a>
+                                                                    @else
+                                                                        <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
+                                                                            class="pay_btn">Upgrade Plan</a>
+                                                            @endif
+                                                        @else
+                                                            <a href="{{ url('user/plans/' . $plan->slug) }}"
+                                                                class="pay_btn">Choose</a>
+                                                        @endif
+                                                        {{-- <a href="#" class="pay_btn">Pay with Stripe</a> --}}
                                                     </div>
+                                                    @if (isset($active_plan->id) && $active_plan->id == $plan->id)
+                                                        <div class="ribbon ribbon-top-left">
+                                                            <span>CURRENT PLAN</span>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             @php $count++; @endphp

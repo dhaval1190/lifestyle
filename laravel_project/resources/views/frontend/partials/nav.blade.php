@@ -46,7 +46,14 @@
                     @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
                     <li class="@yield('about_active')"><a href="{{ route('page.about') }}">{{ __('frontend.header.about') }}</a></li>
                     @endif
-                    <li class="@yield('blog_active')"><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li>
+                    {{-- <li class="@yield('blog_active')"><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li> --}}
+                    <li class="has-children">
+                        <a href="#">News/Events</a>
+                        <ul class="dropdown">
+                            <li class="@yield('blog_active')"><a href="{{ route('page.blog') }}">{{ __('News') }}</a></li>
+                            <li class="@yield('event_active')"><a href="{{ route('page.event') }}">{{ __('Events') }}</a></li>
+                        </ul>
+                    </li>
                     <li class="@yield('faq_active')"><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
                     <!-- <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li> -->
 

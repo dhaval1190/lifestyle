@@ -128,6 +128,14 @@
                                     @endif
                                 </div>
                                 <div class="col-sm-10">
+                                    @if(Session::has('item_exist'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ Session::get('item_exist') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>

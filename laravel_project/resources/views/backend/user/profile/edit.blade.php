@@ -628,6 +628,14 @@ $chk_post = Auth::user()->phone;
                                                     <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
                                                 @endforeach
                                             </select>
+                                            {{-- <input type="hidden" name="podcast_type" value="podcast"> --}}
+
+                                            {{-- <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
+                                                <option name = "apple_podcast" value="apple_podcast">Apple Podcast</option>
+                                                <option name = "stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
+                                                <option name = "google_podcast" value="google_podcast">Google Podcast</option>
+                                                <option name = "spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
+                                            </select> --}}
                                             @error('media_type')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -652,6 +660,24 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
+                                        {{-- <div class="col-12 col-md-12 col-lg-3">
+                                            <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
+                                            <span class="err_media_url" style="color:red"></span>
+                                            <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                                            <small id="linkHelpBlock" class="form-text text-muted">
+                                                {{ __('Only URL allowed (include http:// or https://)') }}
+                                            </small>
+                                            @error('podcast_image')
+                                            <span class="invalid-tooltip" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                            @if(Session::has('podcast_error'))
+                                                <span class="invalid-tooltip" role="alert">
+                                                    <strong>{{ Session::get('podcast_error') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div> --}}
                                         <div class="col-12 col-md-12 col-lg-3">
                                             <label class="text-black">Podcast Cover</label>
                                             <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
@@ -668,6 +694,9 @@ $chk_post = Auth::user()->phone;
                                             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                                                 <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                                                    <span class="set_width"> {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : {{ $podcast_media_value->media_name }}</span>
+                                                    {{-- <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}">
+                                                        <i class="far fa-edit"></i>
+                                                    </a> --}}
                                                     <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
                                                         <i class='far fa-trash-alt'></i>
                                                     </a>
@@ -1091,6 +1120,55 @@ $chk_post = Auth::user()->phone;
     @endforeach
 
     @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+    {{-- <div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Podcast') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="update-article-slug-form" action="{{ route('podcastmedia.update', ['podcate_detail' => $podcast_media_value]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="media_type" class="text-black">Type</label>
+                                <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">                                    
+                                    <option name = "apple_podcast" value="apple_podcast">Apple Podcast</option>
+                                    <option name = "spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
+                                    <option name = "stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
+                                    <option name = "google_podcast" value="google_podcast">Google Podcast</option>                                    
+                                </select>
+                                @error('media_type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-9">
+                                <label for="media_url" class="text-black">Podcast Title</label>
+                                <input type="hidden" name="podcast_media_id" value="{{ $podcast_media_value->id }}">
+                                <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ $podcast_media_value->media_name }}">
+                                @error('media_url')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>                
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> --}}
+
         <div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -1319,7 +1397,7 @@ $chk_post = Auth::user()->phone;
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/states/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
                     // var id = this.value;
                     // var url = "{{route('json.state', 0)}}";
                     // url = url.replace('0', id);
@@ -1344,7 +1422,7 @@ $chk_post = Auth::user()->phone;
                 $('#select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
                 $('#select_city_id').selectpicker('refresh');
                 if(this.value > 0) {
-                    var ajax_url = '/ajax/cities/' + this.value;
+                    var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
                     // var id = this.value;
                     // var url = "{{route('json.city', 0)}}";
                     // url = url.replace('0', id);

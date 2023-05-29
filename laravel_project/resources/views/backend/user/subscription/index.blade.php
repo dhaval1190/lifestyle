@@ -7,7 +7,7 @@
 
 @section('content')
 
-    @if($paid_subscription_days_left == 1)
+    {{-- @if($paid_subscription_days_left == 1)
         <div class="alert alert-warning" role="alert">
             {{ __('backend.subscription.subscription-end-soon-day') }}
         </div>
@@ -15,7 +15,7 @@
         <div class="alert alert-warning" role="alert">
             {{ __('backend.subscription.subscription-end-soon-days', ['days_left' => $paid_subscription_days_left]) }}
         </div>
-    @endif
+    @endif --}}
 
     <div class="row justify-content-between">
         <div class="col-md-9 col-8">
@@ -23,7 +23,8 @@
             <p class="mb-4 f-12">{{ __('backend.subscription.subscription-desc-user') }}</p>
         </div>
         <div class="col-4 col-md-3 text-right">
-            <a href="{{ route('user.subscriptions.edit', $subscription->id) }}" class="btn btn-info btn-icon-split">
+            {{-- <a href="{{ route('user.subscriptions.edit', $subscription->id) }}" class="btn btn-info btn-icon-split"> --}}
+                <a href="{{ route('user.plans.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
                 </span>
@@ -34,6 +35,26 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4 font_set_span_sm">
+        @if(Session::has('success'))
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
+        @if(Session::has('error'))
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
         <div class="col-12 p-0">
 
             <div class="row mb-4">
@@ -48,38 +69,38 @@
                           <span>  {{ __('backend.plan.plan-name') }}:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-8">
-                           <span> {{ $subscription->plan->plan_name }}</span>
+                           <span> {{ $plan_details->plan_name }} </span>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-6 col-md-6 col-lg-4">
                           <span>  {{ __('backend.plan.plan-type') }}:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-8">
-                          <span>  @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
+                            <span>  @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_FREE)
                                 {{ __('backend.plan.free-plan') }}
                             @else
                                 {{ __('backend.plan.paid-plan') }}
                             @endif</span>
                         </div>
-                    </div>
-                    <div class="row">
+                    </div> --}}
+                    {{-- <div class="row">
                         <div class="col-6 col-md-6 col-lg-4">
                           <span>  {{ __('backend.plan.features') }}:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-8">
                          <span>   {{ $subscription->plan->plan_features }}</span>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-6 col-md-6 col-lg-4">
                           <span>  {{ __('backend.plan.price') }}:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-8">
-                          <span>  {{ $subscription->plan->plan_price }}</span>
+                          <span>${{ $plan_details->plan_price }}</span>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-6 col-md-6 col-lg-4">
                           <span>  {{ __('backend.plan.period') }}:</span>
                         </div>
@@ -94,7 +115,7 @@
                                 {{ __('backend.plan.yearly') }}
                             @endif</span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="col-12 col-md-6">
@@ -103,7 +124,7 @@
                             <span class="text-gray-800 border_set_sm">{{ __('backend.subscription.subscription') }}</span>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-6 col-md-6 col-lg-6">
                           <span>  {{ __('theme_directory_hub.plan.max-free-listing') }}:</span>
                         </div>
@@ -111,12 +132,12 @@
                            <span> {{ is_null($subscription->plan->plan_max_free_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_free_listing }}</span>
                         </div>
                     </div>
-                    {{-- <div class="row">
+                    <div class="row">
                         <div class="col-6 col-md-6 col-lg-6">
                             {{ __('backend.plan.maximum-featured-listing') }}:
                         </div>
                         <div class="col-6 col-md-6 col-lg-6">
-                            {{ is_null($subscription->plan->plan_max_featured_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_featured_listing }}
+                            {{ isset($subscription->plan->plan_max_featured_listing) ? __('backend.plan.unlimited') : $subscription->plan->plan_max_featured_listing }}
                         </div>
                     </div> --}}
                     <div class="row">
@@ -124,18 +145,18 @@
                            <span> {{ __('backend.subscription.started-at') }}:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-6">
-                           <span> {{ $subscription->subscription_start_date }}</span>
+                           <span>@if($plan_details->plan_type != '1') {{ $current_subscription->subscription_start_date }} @endif </span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 col-md-6 col-lg-6">
-                            <span>{{ __('backend.subscription.end-at') }}:</span>
+                            <span>@if ($current_subscription->ends_at == null) {{ "Renew on" }} @else {{ __('backend.subscription.end-at') }}{{ " (Cancelled)" }} @endif:</span>
                         </div>
                         <div class="col-6 col-md-6 col-lg-6">
-                           <span> {{ $subscription->subscription_end_date }}</span>
+                           <span>@if ($current_subscription->ends_at == null) {{ $current_subscription->subscription_end_date  }} @else {{ $current_subscription->ends_at }}  @endif</span>
                         </div>
                     </div>
-                    @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
+                    {{-- @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
                     <div class="row mt-3">
                         <div class="col-12">
 
@@ -198,7 +219,7 @@
 
                         </div>
                     </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
 
@@ -213,38 +234,48 @@
                     <div class="row">
                             <div class="col-12">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <table class="table align-middle table-row-dashed fs-8 gy-5" id="kt_table_invoices">
                                         <thead>
-                                        <tr>
-                                            <th>{{ __('backend.subscription.invoice-num') }}</th>
-                                            <th>{{ __('backend.subscription.title') }}</th>
-                                            <th>{{ __('backend.subscription.description') }}</th>
-                                            <th>{{ __('backend.subscription.amount') }}</th>
-                                            <th>{{ __('backend.subscription.status') }}</th>
-                                            <th>{{ __('backend.subscription.date') }}</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th>{{ __('backend.subscription.invoice-num') }}</th>
-                                            <th>{{ __('backend.subscription.title') }}</th>
-                                            <th>{{ __('backend.subscription.description') }}</th>
-                                            <th>{{ __('backend.subscription.amount') }}</th>
-                                            <th>{{ __('backend.subscription.status') }}</th>
-                                            <th>{{ __('backend.subscription.date') }}</th>
-                                        </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        @foreach($invoices as $key => $invoice)
-                                            <tr>
-                                                <td>{{ $invoice->invoice_num }}</td>
-                                                <td>{{ $invoice->invoice_item_title }}</td>
-                                                <td>{{ $invoice->invoice_item_description }}</td>
-                                                <td>{{ $invoice->invoice_amount }}</td>
-                                                <td>{{ $invoice->invoice_status }}</td>
-                                                <td>{{ $invoice->created_at }}</td>
+                                            <tr class="text-start fw-bolder fs-7 text-uppercase gs-0">
+                                                <th class="min-w-125px">Number</th>
+                                                <th class="min-w-125px">Amount</th>
+                                                <th class="min-w-125px">Paid For</th>
+                                                <th class="min-w-125px">Method</th>
+                                                <th class="min-w-125px">Created At</th>
+                                                <th class="min-w-80px">Status</th>
+                                                <th class="text-end min-w-100px">Action</th>
                                             </tr>
-                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            @foreach($invoices as $invoice)
+                                                
+                                                <tr id="{{$invoice->id}}">
+                                                    <td>{{$invoice->number}}</td>
+                                                    <td>
+                                                        @if($invoice->billing_reason == 'manual' && $invoice->metadata && isset($invoice->metadata->campaign_register_id) )
+                                                            ${{ number_format( (isset($invoice->lines->data[0]) ? $invoice->lines->data[0]->amount : $invoice->amount_paid)/100, 2) }}
+                                                        @else
+                                                            ${{number_format($invoice->amount_paid/100, 2)}}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if($invoice->billing_reason == 'manual' && $invoice->metadata && isset($invoice->metadata->campaign_register_id) )
+                                                            Campaign Registry Fee
+                                                        @else
+                                                            Subscription
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$invoice->collection_method}}</td>
+                                                    <td>{{ date('Y-m-d',$invoice->created) }}</td>
+                        
+                                                    <td>{{$invoice->status}}</td>
+                                                    <td class="text-end">                                                       
+                                                        
+                                                        <a href="{{$invoice->invoice_pdf}}" class="menu-link px-3">Download</a>
+                                                            
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

@@ -7,34 +7,26 @@
 
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.subscription.switch-plan') }}</h1>
-            <p class="mb-4">{{ __('backend.subscription.switch-plan-desc-user') }}</p>
-        </div>
-        <div class="col-3 text-right">
-            <a href="{{ route('user.subscriptions.index') }}" class="btn btn-info btn-icon-split">
-                <span class="icon text-white-50">
-                  <i class="fas fa-backspace"></i>
-                </span>
-                <span class="text">{{ __('backend.shared.back') }}</span>
-            </a>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.subscription.verify-plan') }}</h1>
+            <p class="mb-4">{{ __('backend.subscription.verify-plan-desc-user') }}</p>
         </div>
     </div>
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
-            {{-- @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
+            @if($subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
                 <div class="row mb-4">
                     <div class="col-12">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ __('backend.subscription.switch-plan-help') }}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ __('backend.subscription.verify-plan-help') }}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                     </div>
                 </div>
-            @endif --}}
+            @endif
 
             <div class="row justify-content-center">
                 @foreach($all_plans as $plans_key => $plan)
@@ -44,7 +36,6 @@
                                 <h4 class="my-0 font-weight-normal">
                                     @if(!empty($login_user))
                                         @if($login_user->isUser() || $login_user->isCoach())
-
                                             @if($login_user->hasPaidSubscription())
                                                 @if($login_user->subscription->plan->id == $plan->id)
                                                     <span class="text-success">
@@ -58,10 +49,8 @@
                                                 </span>
                                                 @endif
                                             @endif
-
                                         @endif
                                     @endif
-
                                     {{ $plan->plan_name }}
                                 </h4>
                             </div>
@@ -118,16 +107,14 @@
                                 </ul>
 
                                 @if($plan->plan_type == \App\Plan::PLAN_TYPE_PAID)
-
                                     @if($setting_site_bank_transfer_enable == \App\Setting::SITE_PAYMENT_BANK_TRANSFER_ENABLE)
                                         <div class="row pb-3">
                                             <div class="col-12">
-                                                <a class="btn btn-sm btn-success btn-block text-white {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
+                                                <a class="btn btn-sm btn-success btn-block text-white" href="#" data-toggle="modal" data-target="#banktransferModal{{ strval($plan->id) }}">
                                                     {{ __('bank_transfer.pay-bank-transfer') }}
                                                 </a>
                                             </div>
                                         </div>
-
                                         <div class="modal fade" id="banktransferModal{{ strval($plan->id) }}" tabindex="-1" role="dialog" aria-labelledby="banktransferModal{{ strval($plan->id) }}" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -212,7 +199,7 @@
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
-                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white" {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}>
+                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white">
                                                         {{ __('payment.pay-paypal') }}
                                                     </button>
                                                 </div>
@@ -225,7 +212,7 @@
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
-                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white" {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}>
+                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white">
                                                         {{ __('payment.pay-razorpay') }}
                                                     </button>
                                                 </div>
@@ -233,26 +220,17 @@
                                         </form>
                                     @endif
 
-                                    {{-- @if($setting_site_stripe_enable == \App\Setting::SITE_PAYMENT_STRIPE_ENABLE)
+                                    @if($setting_site_stripe_enable == \App\Setting::SITE_PAYMENT_STRIPE_ENABLE)
                                         <form method="POST" action="{{ route('user.stripe.checkout.do', ['plan_id'=>$plan->id, 'subscription_id'=>$subscription->id]) }}" class="">
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
-                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white" {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}>
+                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white">
                                                         {{ __('stripe.pay-stripe') }}
                                                     </button>
                                                 </div>
                                             </div>
                                         </form>
-                                    @endif --}}
-                                    @if(isset($active_plan))
-                                        @if($active_plan->id == $plan->id)
-                                            <button type="button" class="btn btn-primary pull-right" disabled>Active</a>
-                                        @else
-                                            <a href="{{ url('user/plan/upgrade/'.$plan->slug) }}" class="btn btn-primary pull-right">Upgrade</a>
-                                        @endif
-                                    @else
-                                        <a href="{{ url('user/plans/'.$plan->slug) }}" class="btn btn-primary pull-right">Choose</a>
                                     @endif
 
                                     @if($setting_site_payumoney_enable == \App\Setting::SITE_PAYMENT_PAYUMONEY_ENABLE)
@@ -260,7 +238,7 @@
                                             @csrf
                                             <div class="row form-group justify-content-between">
                                                 <div class="col-12">
-                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white" {{ $subscription->plan->plan_type == \App\Plan::PLAN_TYPE_PAID ? 'disabled' : '' }}>
+                                                    <button type="submit" class="btn btn-sm btn-success btn-block text-white">
                                                         {{ __('payumoney.pay-payumoney') }}
                                                     </button>
                                                 </div>
@@ -268,6 +246,9 @@
                                         </form>
                                     @endif
 
+                                    <a href="{{ route('user.subscription.free', $subscription->id) }}" class="btn btn-sm btn-info btn-block text-white">
+                                        {{ __('backend.subscription.switch-free-plan') }}
+                                    </a>
                                 @endif
                             </div>
                         </div>

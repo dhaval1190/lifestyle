@@ -455,7 +455,7 @@ class Item extends Model implements ReviewRateable
     }
     public function getProfileStarsCountRating(int $stars,$id)
     {
-        return DB::table('reviews')
+        return DB::table('profile_reviews')
             ->where('approved', self::ITEM_REVIEW_APPROVED)
             ->where('reviewrateable_id',$id)
             ->where('rating', $stars)
