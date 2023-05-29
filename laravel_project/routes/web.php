@@ -606,7 +606,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         Route::put('/items/{item_slug}/reviews/update/{review}', 'ItemController@itemReviewsUpdate')->name('items.reviews.update')->middleware('check_coach_details');
         Route::delete('/items/{item_slug}/reviews/destroy/{review}', 'ItemController@itemReviewsDestroy')->name('items.reviews.destroy')->middleware('check_coach_details');
         Route::post('/profile/reviews/store', 'PagesController@profileReviewsStore')->name('page.reviews.store');
-        Route::get('/profile/reviews/index', 'PagesController@profileReviewsIndex')->name('page.reviews.index');
+        Route::get('/profile/reviews/index', 'PagesController@profileReviewsIndex')->name('page.reviews.index')->middleware('check_coach_details');
         Route::get('/profile/edit/{id}', 'PagesController@profileReviewsEdit')->name('page.reviews.edit');
         Route::put('/profile/update/{id}', 'PagesController@profileReviewsUpdate')->name('page.reviews.update');
         Route::delete('/profile/destroy/{id}', 'PagesController@profileReviewsDestroy')->name('page.reviews.destroy');
@@ -736,10 +736,10 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
         // user profile routes
         Route::get('/profile', 'UserController@editProfile')->name('profile.edit');
         Route::post('/profile', 'UserController@updateProfile')->name('profile.update');
-        Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit');
+        Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit')->middleware('check_coach_details');
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
 
-        Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template');
+        Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');
         // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');
         Route::post('/user-email-template', 'UserController@updateEmailtemplate')->name('email.template.update');
 

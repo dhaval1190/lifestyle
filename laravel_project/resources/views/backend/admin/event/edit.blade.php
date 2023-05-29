@@ -26,7 +26,7 @@
 @section('content')
     <div class="row justify-content-between">
         <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('Add Event') }}</h1>
+            <h1 class="h3 mb-2 text-gray-800">{{ __('Edit Event') }}</h1>
             <p class="mb-4">{{ __('This page allows you to create a new event record in the database.') }}</p>
         </div>
         <div class="col-3 text-right">
@@ -48,9 +48,9 @@
                         <div class="form_inner">
                             <div class="form_column_right">
                                 <div class="form_column_right_wrap">
-                                    <div class="title_bar">
+                                    {{-- <div class="title_bar">
                                         <h2 class="title">Edit Event</h2>
-                                    </div>
+                                    </div> --}}
                                     <form method="POST" action="{{ route('admin.events.update', $event->id) }}">
                                         @method('PUT')
                                         @csrf
@@ -105,7 +105,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">Start
-                                                                    <span>(EDT)</span></label>
+                                                                    <span>(UTC)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
@@ -124,7 +124,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">End
-                                                                    <span>(EDT)</span></label>
+                                                                    <span>(UTC)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
@@ -160,7 +160,7 @@
                                                 <div class="form_group">
                                                     <label class="group_title">URL
                                                         <span>(Required)</span></label>
-                                                    <input name="event_social_url" type="text" class="form_time"
+                                                    <input name="event_social_url" type="url" class="form_time"
                                                         value="{{ $event->event_social_url ? $event->event_social_url : old('event_social_url') }}">
                                                     @error('event_social_url')
                                                         <span class="error_color">
@@ -179,6 +179,10 @@
                                                             class="fa-solid fa-file-image"></i>
                                                         {{ __('backend.item.select-image') }}
                                                     </button>
+                                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                                        <small class="form-text text-muted">{{ __('maximum file size: 10mb') }}</small>
+                                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>                                                       
+                                                    
                                                     <input type="hidden" name="event_image" class="input_control"
                                                         id="event_image">
                                                     <label class="upload_media" for="file_upload">
@@ -225,10 +229,10 @@
                                         </div>
                                         <hr>
                                         <div class="form_footer">
-                                            <a href="#" class="form_footer_btn cancel_btn"
+                                            <a href="{{ route('admin.events.index') }}" class="form_footer_btn cancel_btn"
                                                 type="reset">Cancel</a>
                                             <button type="submit" class="form_footer_btn">
-                                                {{ __('backend.shared.create') }}
+                                                {{ __('backend.shared.update') }}
                                             </button>
                                         </div>
                                 </div>

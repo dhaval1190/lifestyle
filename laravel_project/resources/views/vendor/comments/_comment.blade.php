@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label for="message">{{ __('frontend.comment.update-message') }}</label>
                                     <textarea required class="form-control" name="message" rows="3">{{ $comment->comment }}</textarea>
-                                    <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">{{ __('frontend.comment.markdown') }}</a> {{ __('frontend.comment.cheatsheet') }}.</small>
+                                    {{-- <small class="form-text text-muted"><a target="_blank" href="https://help.github.com/articles/basic-writing-and-formatting-syntax">{{ __('frontend.comment.markdown') }}</a> {{ __('frontend.comment.cheatsheet') }}.</small> --}}
                                 </div>
                             </div>
                             <div class="modal-footer">

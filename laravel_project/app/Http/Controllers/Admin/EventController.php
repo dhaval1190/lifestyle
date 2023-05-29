@@ -12,30 +12,43 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use App\Rules\Base64Image;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
     public function index(Request $request)
     {
 
-        $all_events = Event::orderBy('event_start_date','DESC')->paginate(10);
-        $active_btn = '';
+        $all_events = new Event;
+
         if($request->search_query == 'upcoming'){
-            $all_events = Event::where('event_start_date','>=',date('Y-m-d'))->orderBy('event_start_date','DESC')->paginate(10);
+            $all_events = $all_events->where('event_start_date','>=',date('Y-m-d'))
+                                ->where('event_end_hour','>',date('H:i'))
+                                ->orderBy('event_start_date','DESC');
         }
         if($request->search_query == 'past'){
-            $all_events = Event::where('event_start_date','<',date('Y-m-d'))->orderBy('event_start_date','DESC')->paginate(10);
+            $all_events = $all_events->where('event_start_date','<=',date('Y-m-d'))
+                                ->where('event_end_date','<=',date('Y-m-d'))
+                                ->where(DB::raw("CONCAT(`event_start_date`,' ',`event_end_hour`)"),'<=', date('Y-m-d H:i'))
+                                ->orderBy('event_start_date','DESC');
         }
         if(isset($request->keyword_search)){
-            $all_events = Event::where('event_name','LIKE','%'.$request->keyword_search.'%')->orderBy('event_start_date','DESC')->paginate(10);
+            $all_events = $all_events->where('event_name','LIKE','%'.$request->keyword_search.'%')->orderBy('event_start_date','DESC');
         }
         if($request->search_query == 'published'){
-            $all_events = Event::where('status',1)->orderBy('event_start_date','DESC')->paginate(10);
+            $all_events = $all_events->where('status',1)->orderBy('event_start_date','DESC');
         }
         if($request->search_query == 'draft'){
-            $all_events = Event::where('status',0)->orderBy('event_start_date','DESC')->paginate(10);
+            $all_events = $all_events->where('status',0)->orderBy('event_start_date','DESC');
         }
         $event_count = $all_events->count();
+        $all_events = $all_events->paginate(5);
+
+        if(!empty($request->search_query)){
+            // dd("dksjdjkls");
+            $all_events->appends(['search_query'=> $request->search_query]);
+        }
 
         return view('backend.admin.event.index',compact('all_events','event_count'));
     }
@@ -52,7 +65,7 @@ class EventController extends Controller
         // dd($request->all());
         
         $request->validate([
-            'event_name' => 'required|max:100|string',
+            'event_name' => 'required|max:100|regex:/^[a-zA-Z0-9\s]+$/',
             'event_start_date' => 'required',
             'event_start_hour' => 'required',
             // 'event_start_min' => 'required|numeric',
@@ -60,8 +73,9 @@ class EventController extends Controller
             // 'event_end_date' => 'required',
             'event_end_hour' => 'required',
             // 'event_end_min' => 'required|numeric',
-            'event_social_url' => 'required|string|max:255',
+            'event_social_url' => 'required|url|max:255',
             'draft_publish' => 'required',
+            'event_image' => ['nullable',new Base64Image]
         ],[
             'event_start_date.required' => 'Start date is required',
             'event_start_hour.required' => 'Start hour is required',
@@ -124,7 +138,7 @@ class EventController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'event_name' => 'required|max:100|string',
+            'event_name' => 'required|max:100|regex:/^[a-zA-Z0-9\s]+$/',
             'event_start_date' => 'required',
             'event_start_hour' => 'required',
             // 'event_start_min' => 'required|numeric',
@@ -132,8 +146,9 @@ class EventController extends Controller
             // 'event_end_date' => 'required',
             'event_end_hour' => 'required',
             // 'event_end_min' => 'required|numeric',
-            'event_social_url' => 'required|string|max:255',
+            'event_social_url' => 'required|url|max:255',
             'draft_publish' => 'required',
+            'event_image' => ['nullable',new Base64Image]
         ],[
             'event_start_date.required' => 'Start date is required',
             'event_start_hour.required' => 'Start hour is required',
