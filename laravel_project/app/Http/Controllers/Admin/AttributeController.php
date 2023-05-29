@@ -17,6 +17,10 @@ use Illuminate\Validation\ValidationException;
 
 class AttributeController extends Controller
 {
+    public function __construct()
+    {
+        return redirect()->route('page.home')->send();
+    }
 
     /**
      * Display a listing of the resource.

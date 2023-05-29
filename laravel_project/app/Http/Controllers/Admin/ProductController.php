@@ -22,6 +22,10 @@ use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        return redirect()->route('page.home')->send();
+    }
 
     /**
      * Display a listing of the resource.

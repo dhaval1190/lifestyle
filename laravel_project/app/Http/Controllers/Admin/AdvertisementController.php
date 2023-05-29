@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\URL;
 
 class AdvertisementController extends Controller
 {
+    public function __construct()
+    {
+        return redirect()->route('page.home')->send();
+    }
     /**
      * Display a listing of the resource.
      *
