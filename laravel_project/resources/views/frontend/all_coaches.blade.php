@@ -395,7 +395,7 @@
                                                     </div> -->
                                                     <div class="profile-card__txt">
                                                         <!-- <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span> -->
-                                                        <div class="d-block d-md-flex listing vertical" style="min-height:0px;">
+                                                        <div class="d-block d-md-flex listing vertical parent_set_listing" style="min-height:0px;">
                                                                 @if(isset($coach->category_parent_name) && !empty($coach->category_parent_name))
                                                                     @foreach($coach->category_parent_name as $item_all_categories_key => $category) 
                                                                     <a href="{{ route('page.category', $category->category_slug) }}">                                                  
@@ -414,7 +414,7 @@
                                                                     <p>
                                                                     @foreach($coach->category_icon_one as $icon_key => $icon)
                                                                     <a href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
-                                                                    <span class="category">
+                                                                    <span class="category_child">
                                                                         <i class="{{$icon}}"></i>  {{$coach->category_name_one[$icon_key]}}
                                                                     </span>
                                                                     </a>
