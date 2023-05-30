@@ -470,8 +470,8 @@
                                                     <div class="profile-card__txt">
                                                         <!-- <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span> -->
                                                         <div class="d-block d-md-flex listing vertical" style="min-height:0px;">
-                                                                @if(isset($parent_category_name) && !empty($parent_category_name))
-                                                                    @foreach($parent_category_name as $item_all_categories_key => $category) 
+                                                                @if(isset($coach->category_parent_name) && !empty($coach->category_parent_name))
+                                                                    @foreach($coach->category_parent_name as $item_all_categories_key => $category) 
                                                                     <a href="{{ route('page.category', $category->category_slug) }}">                                                  
                                                                         <span class="category">
                                                                             @if(!empty($category->category_icon))
@@ -496,6 +496,9 @@
                                                                     </p>
                                                                 @endif
                                                         </div>
+                                                    </div>
+                                                    <div class="profile-card-loc">
+                                                        <span class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
                                                     </div>
 
                                                     <div class="profile-card-inf">

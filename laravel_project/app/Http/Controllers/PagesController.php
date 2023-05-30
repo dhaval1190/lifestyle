@@ -2897,6 +2897,10 @@ class PagesController extends Controller
             $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
             ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
             ->get();
+            $category=[];
+            $parent_category=[];
+            $category_icon=[];
+            $category_slug=[];
             foreach($coach_categorys as $category_name){
                 $category[] = $category_name['category_name'];
                 $parent_category[] = $category_name['category_parent_id'];
@@ -2908,8 +2912,6 @@ class PagesController extends Controller
             $category_coach['category_icon_one'] = $category_icon;
             $category_coach['category_slug_one'] = $category_slug;
             $category_coach['category_parent_name'] = $parent_category_name;
-            $category_coach['category_icon'] = $category_icon;
-            $category_coach['category_slug'] = $parent_category_name;
         }
         $total_results = $all_coaches->count();
         /**
@@ -2949,7 +2951,7 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
                 'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
-                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country','coach_count','parent_category_name'
+                'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country','coach_count'
             ));
     }
 
@@ -3240,6 +3242,26 @@ class PagesController extends Controller
         }else{
             $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
+        }
+        foreach($all_coaches as $category_coach){
+            $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+            ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
+            ->get();
+            $category=[];
+            $parent_category=[];
+            $category_icon=[];
+            $category_slug=[];
+            foreach($coach_categorys as $category_name){
+                $category[] = $category_name['category_name'];
+                $parent_category[] = $category_name['category_parent_id'];
+                $category_icon[] = $category_name['category_icon'];
+                $category_slug[] = $category_name['category_slug'];
+            }
+            $parent_category_name =Category::whereIn('id',$parent_category)->select('categories.*','category_name','category_icon','category_slug')->get();
+            $category_coach['category_name_one'] = $category;
+            $category_coach['category_icon_one'] = $category_icon;
+            $category_coach['category_slug_one'] = $category_slug;
+            $category_coach['category_parent_name'] = $parent_category_name;
         }
         $total_results = $all_coaches->count();
         /**

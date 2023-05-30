@@ -390,8 +390,38 @@
                                                     <a href="{{ route('page.profile', encrypt($coach->id)) }}">
                                                         <div class="profile-card__name"><span class="font-size-13">{{ $coach->name }}</span></a>
                                                     </div>
-                                                    <div class="profile-card__txt">
+                                                    <!-- <div class="profile-card__txt">
                                                         {{ $coach->email }}
+                                                    </div> -->
+                                                    <div class="profile-card__txt">
+                                                        <!-- <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span> -->
+                                                        <div class="d-block d-md-flex listing vertical" style="min-height:0px;">
+                                                                @if(isset($coach->category_parent_name) && !empty($coach->category_parent_name))
+                                                                    @foreach($coach->category_parent_name as $item_all_categories_key => $category) 
+                                                                    <a href="{{ route('page.category', $category->category_slug) }}">                                                  
+                                                                        <span class="category">
+                                                                            @if(!empty($category->category_icon))
+                                                                                <i class="{{ $category->category_icon }}"></i>
+                                                                            @else
+                                                                                <i class="fa-solid fa-heart"></i>
+                                                                            @endif
+                                                                            {{ $category->category_name }}
+                                                                        </span>
+                                                                    </a>
+                                                                    @endforeach
+                                                                @endif
+                                                                @if(!empty($coach->category_icon_one))
+                                                                    <p>
+                                                                    @foreach($coach->category_icon_one as $icon_key => $icon)
+                                                                    <a href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
+                                                                    <span class="category">
+                                                                        <i class="{{$icon}}"></i>  {{$coach->category_name_one[$icon_key]}}
+                                                                    </span>
+                                                                    </a>
+                                                                    @endforeach
+                                                                    </p>
+                                                                @endif
+                                                        </div>
                                                     </div>
                                                     <div class="profile-card-loc">
                                                         <span class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
