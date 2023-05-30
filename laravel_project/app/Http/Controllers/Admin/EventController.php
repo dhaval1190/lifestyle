@@ -24,7 +24,7 @@ class EventController extends Controller
 
         if($request->search_query == 'upcoming'){
             $all_events = $all_events->where('event_start_date','>=',date('Y-m-d'))
-                                ->where('event_end_hour','>',date('H:i'))
+                                ->where(DB::raw("CONCAT(`event_start_date`,' ',`event_end_hour`)"),'>=', date('Y-m-d H:i'))
                                 ->orderBy('event_start_date','DESC');
         }
         if($request->search_query == 'past'){

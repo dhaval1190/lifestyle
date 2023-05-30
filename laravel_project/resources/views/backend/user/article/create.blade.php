@@ -66,6 +66,18 @@
 
             <div class="row font_icon_color">
                 <div class="col-12">
+                    @if(Session::has('required_field_error'))
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ Session::get('required_field_error') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <form method="POST" action="{{ route('user.articles.store') }}" id="article-create-form">
                         @csrf
                         <!-- <div class="row border-left-primary mb-4">
@@ -116,7 +128,7 @@
                                     <div class="col-md-12">
                                         <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
                                         {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
-                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple>
+                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple required>
                                             @foreach($all_categories as $key => $category)
                                                 @php
                                                     if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
@@ -135,7 +147,7 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
                                         <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
-                                        <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}">
+                                        <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}" required>
                                         @error('article_title')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -144,7 +156,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
-                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
+                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}" required>
                                         @error('article_address')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -157,7 +169,7 @@
 
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
-                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
+                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" required>
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
@@ -198,7 +210,7 @@
 
                                     <div class="col-md-4 col-lg-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" required>
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
