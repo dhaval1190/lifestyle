@@ -6294,7 +6294,11 @@ class PagesController extends Controller
             /**
              * Start initial filter
              */
+            // $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
             $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+                usort($all_printable_categories, function($a, $b) {
+                return $a['category_name'] <=> $b['category_name'];
+            });
 
             $filter_all_cities = $state->cities()->orderBy('city_name')->get();
 
@@ -6644,7 +6648,11 @@ class PagesController extends Controller
                 /**
                  * Start initial filter
                  */
+                // $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
                 $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+                    usort($all_printable_categories, function($a, $b) {
+                    return $a['category_name'] <=> $b['category_name'];
+                });
 
                 $total_results = $total_paid_items + $total_free_items;
                 /**

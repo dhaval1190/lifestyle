@@ -35,7 +35,7 @@ use DateTime;
 use Mail;
 use App\Mail\Notification;
 use App\Setting;
-
+use Exception;
 
 class ArticleController extends Controller
 {
@@ -400,6 +400,8 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+
+        // dd($request->all());
         $settings = app('site_global_settings');
 
         /**
@@ -459,6 +461,10 @@ class ArticleController extends Controller
             'article_social_instagram' => 'nullable|string|max:255',
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
+
+        if($request->category == '' || $request->article_title == '' || $request->article_address == '' || $request->country_id == '' || $request->state_id == '' || $request->city_id == '' || $request->article_postal_code == '' ){
+            return back()->with('required_field_error','Please fill the required fields');
+        }
 
         $instagram_username = $request->article_social_instagram;
         if($instagram_username){
