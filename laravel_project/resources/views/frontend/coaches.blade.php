@@ -105,7 +105,7 @@
             @endif
 
             <!-- Start Filter -->
-            <form method="GET" action="{{ route('page.coaches') }}" id="filter_form">
+            <form method="GET" action="{{ route('page.allcoaches') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
 
