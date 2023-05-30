@@ -100,7 +100,7 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                                <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                                 <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 <p class="password_error error_color" role="alert"></p>
 
@@ -115,7 +115,7 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="password-confirm">{{ __('auth.confirm-password') }}<span class="text-danger">*</span></label>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control set_padding_left_right_form" name="password_confirmation" autocomplete="new-password">
                                 <span toggle="#password-confirm" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                             </div>
                         </div>

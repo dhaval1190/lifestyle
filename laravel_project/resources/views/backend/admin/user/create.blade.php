@@ -138,7 +138,7 @@
                                     <div class="row mt-3">
                                         <div class="col-md-3">
                                             <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
+                                            <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" value="">
                                             <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password')
                                             <span class="invalid-tooltip">
@@ -148,7 +148,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
-                                            <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
+                                            <input id="password_confirmation" type="password" class="form-control set_padding_left_right_form @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password_confirmation')
                                             <span class="invalid-tooltip">
@@ -430,7 +430,7 @@
                                     <div class="row mt-3">
                                         <div class="col-md-4">
                                             <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="">
+                                            <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" value="">
                                             <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password')
                                             <span class="invalid-tooltip">
@@ -440,7 +440,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
-                                            <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
+                                            <input id="password_confirmation" type="password" class="form-control set_padding_left_right_form @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                             @error('password_confirmation')
                                             <span class="invalid-tooltip">

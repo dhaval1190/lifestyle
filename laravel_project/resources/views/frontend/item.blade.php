@@ -2404,15 +2404,15 @@
                                             <div class="form-group">
                                                 <input id="subject" type="text" class="form-control rounded" name="subject" value="{{ old('subject') }}" placeholder="{{ __('backend.message.subject') }}">
                                                 @error('subject')
-                                                <span class="invalid-tooltip">
+                                                <p class="error_color">
                                                     <strong>{{ $message }}</strong>
-                                                </span>
+                                                </p>
                                                 @enderror
                                             </div>
                                             <div class="form-group">
-                                                <textarea rows="6" id="message" type="text" class="form-control rounded" name="message" placeholder="{{ __('backend.message.message-txt') }}">{{ old('message') }}</textarea>
-                                                @error('message')
-                                                <p class="invalid-tooltip">
+                                                <textarea rows="6" id="message" type="text" class="form-control rounded" name="simple_message" placeholder="{{ __('backend.message.message-txt') }}">{{ old('simple_message') }}</textarea>
+                                                @error('simple_message')
+                                                <p class="error_color">
                                                     <strong>{{ $message }}</strong>
                                                 </p>
                                                 @enderror

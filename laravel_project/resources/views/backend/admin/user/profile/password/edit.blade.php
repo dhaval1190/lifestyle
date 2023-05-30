@@ -31,7 +31,7 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label for="password" class="text-black">{{ __('backend.user.current-password') }}<span class="text-danger">*</span></label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autofocus>
+                                <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" autofocus>
                                 <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('password')
                                 <span class="invalid-tooltip">
@@ -45,7 +45,7 @@
 
                             <div class="col-md-12">
                                 <label for="new_password" class="text-black">{{ __('backend.user.new-password') }}<span class="text-danger">*</span></label>
-                                <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password">
+                                <input id="new_password" type="password" class="form-control set_padding_left_right_form @error('new_password') is-invalid @enderror" name="new_password">
                                 <span toggle="#new_password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password')
                                 <span class="invalid-tooltip">
@@ -59,7 +59,7 @@
 
                             <div class="col-md-12">
                                 <label for="new_password_confirmation" class="text-black">{{ __('backend.user.password-confirm') }}<span class="text-danger">*</span></label>
-                                <input id="new_password_confirmation" type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
+                                <input id="new_password_confirmation" type="password" class="form-control set_padding_left_right_form @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
                                 <span toggle="#new_password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('new_password_confirmation')
                                 <span class="invalid-tooltip">

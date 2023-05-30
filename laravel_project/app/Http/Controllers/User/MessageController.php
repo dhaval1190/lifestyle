@@ -103,13 +103,15 @@ class MessageController extends Controller
     {
         $request->validate([
             'subject' => 'required|max:255',
-            'message' => 'required',
+            'simple_message' => 'required',
             'recipient' => 'required|numeric',
             'item' => 'required|numeric',
+        ],[
+            'simple_message.required' => 'Message field is required'
         ]);
 
         $subject = $request->subject;
-        $message = $request->message;
+        $message = $request->simple_message;
         $recipient_user_id = $request->recipient;
         $item_id = $request->item;
 
@@ -244,11 +246,13 @@ class MessageController extends Controller
     public function update(Request $request, int $thread_id)
     {
         $request->validate([
-            'message' => 'required',
+            'simple_message' => 'required',
+        ],[
+            'simple_message.required' => 'Message field is required'
         ]);
 
         $thread = Thread::findOrFail($thread_id);
-        $message = $request->message;
+        $message = $request->simple_message;
         $login_user = Auth::user();
 
         if(!$thread->hasParticipant($login_user->id))

@@ -117,7 +117,7 @@
 
                             <div class="col-md-12">
                                 <label class="text-black" for="subject">{{ __('auth.password') }}<span class="text-danger">*</span></label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
