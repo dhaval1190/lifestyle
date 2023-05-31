@@ -229,11 +229,16 @@ class UserController extends Controller
         //     $state = State::find($filter_state);
         //     $all_cities = $state->cities()->orderBy('city_name')->get();
         // }
-
+        $user_obj = new User();
+        $progress_data = $user_obj->profileProgressData($request,$login_user);
+        $data_points = array(
+            array("y"=> ($progress_data['percentage']), "name"=> "Completed", "color"=> "#4D72DE"),
+            array("y"=> (100- $progress_data['percentage']), "name"=> "Remaining", "color"=> "#D3D3D3")
+        );    
         $total_results = $total_free_items;
 
         return response()->view('backend.user.profile.edit',
-            compact('user_detail','free_items','all_cities','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array'));
+            compact('user_detail','free_items','all_cities','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points'));
     }
 
     /**

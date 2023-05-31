@@ -397,8 +397,7 @@
                                                         <!-- <span class="font-size-13" @if(strlen($coach->email) > 25)style="word-break: break-all @endif">{{ $coach->email }}</span> -->
                                                         <div class="d-block d-md-flex listing vertical parent_set_listing" style="min-height:0px;">
                                                                 @if(isset($coach->category_parent_name) && !empty($coach->category_parent_name))
-                                                                    @foreach($coach->category_parent_name as $item_all_categories_key => $category) 
-                                                                    <a href="{{ route('page.category', $category->category_slug) }}">                                                  
+                                                                    @foreach($coach->category_parent_name as $item_all_categories_key => $category)                                            
                                                                         <span class="category">
                                                                             @if(!empty($category->category_icon))
                                                                                 <i class="{{ $category->category_icon }}"></i>
@@ -407,7 +406,6 @@
                                                                             @endif
                                                                             {{ $category->category_name }}
                                                                         </span>
-                                                                    </a>
                                                                     @endforeach
                                                                 @endif
                                                                 @if(!empty($coach->category_icon_one))
