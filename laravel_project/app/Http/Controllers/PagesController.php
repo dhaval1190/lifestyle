@@ -185,6 +185,28 @@ class PagesController extends Controller
             ->take(6)
             ->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user')
             ->get();
+            /**
+             * testimonials
+             */
+            $trainding_user_ids = $active_user_ids;
+            $trainding_items = Item::query();
+            $trainding_items->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->whereIn('items.user_id', $trainding_user_ids);
+            $trainding_items->distinct('items.id')
+            ->with('country')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+            $trainding_items_new = $trainding_items->get();
+            $trainding_items_user_ids = $trainding_items->pluck('id')->toArray(); 
+            foreach($trainding_items_user_ids as $items_ids){    
+                $all_trainding_items[] = Item::where('items.id',$items_ids)->leftjoin('items_visits','items_visits.item_id','=','items.id')
+                ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))
+                ->orderBy('totalcount')->first();
+            }
+             $all_trainding_items = collect($all_trainding_items)->sortByDesc('totalcount');
         /**
          * testimonials
          */
@@ -236,6 +258,48 @@ class PagesController extends Controller
              $user_accept_agreement_date = strtotime(Auth::user()->is_terms_read_date);
              $agreement_updated_date = strtotime($setting_agreement_data->setting_page_agreement_updated_date);
          }
+        $active_user_ids = $subscription_obj->getActiveCoachUserIds();
+        $featured_coaches = Item::query();
+        $free_user_ids = $active_user_ids;
+        $featured_coaches->where("items.item_status", Item::ITEM_PUBLISHED)
+            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+            ->whereIn('items.user_id', $free_user_ids);
+            $featured_coaches->distinct('items.id')
+            ->with('country')
+            ->with('state')
+            ->with('city')
+            ->with('user');
+            $free_items = $featured_coaches->get();
+            $free_items_user_ids = $featured_coaches->pluck('user_id')->toArray(); 
+            
+            foreach($free_items_user_ids as $user_ids){    
+            $all_coaches[] = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->where('users.id',$user_ids)->join('profile_visits','profile_visits.user_id','=','users.id')
+            ->select('users.*','profile_visits.user_id',DB::raw('COUNT(profile_visits.user_id) as totalcount'))->orderBy('totalcount')->first();
+        }
+        $all_coaches = collect($all_coaches)->sortByDesc('totalcount');
+        
+            foreach($all_coaches as $category_coach){
+                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+                ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
+                ->get();
+                $category=[];
+                $parent_category=[];
+                $category_icon=[];
+                $category_slug=[];
+                foreach($coach_categorys as $category_name){
+                    $category[] = $category_name['category_name'];
+                    $parent_category[] = $category_name['category_parent_id'];
+                    $category_icon[] = $category_name['category_icon'];
+                    $category_slug[] = $category_name['category_slug'];
+                }
+                $parent_category_name =Category::whereIn('id',$parent_category)->select('categories.*','category_name','category_icon','category_slug')->get();
+                $category_coach['category_name_one'] = $category;
+                $category_coach['category_icon_one'] = $category_icon;
+                $category_coach['category_slug_one'] = $category_slug;
+                $category_coach['category_parent_name'] = $parent_category_name;
+            }
+           // print_r($trainding_items);exit;
         //  dd(gettype($setting_agreement_data));
          
 
@@ -246,7 +310,7 @@ class PagesController extends Controller
                 'site_homepage_header_background_type', 'site_homepage_header_background_color',
                 'site_homepage_header_background_image', 'site_homepage_header_background_youtube_video',
                 'site_homepage_header_title_font_color', 'site_homepage_header_paragraph_font_color',
-                'site_prefer_country_id','user_accept_agreement_date','agreement_updated_date','setting_agreement_data'));
+                'site_prefer_country_id','user_accept_agreement_date','agreement_updated_date','setting_agreement_data','all_coaches','all_trainding_items'));
     }
 
     public function search(Request $request)
@@ -1274,7 +1338,7 @@ class PagesController extends Controller
         {
             $num_of_pages = ceil(($total_paid_items + $total_free_items) / 10);
             
-            $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 4 ? 4 : ceil($total_paid_items / $num_of_pages);
+            $paid_items_per_page = ceil($total_paid_items / $num_of_pages) > 5 ? 5 : ceil($total_paid_items / $num_of_pages);
 
             $free_items_per_page = 10 - $paid_items_per_page;
 
@@ -3245,10 +3309,17 @@ class PagesController extends Controller
         }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
             // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(9);
             $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC');
+        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING){
+            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','DESC');
+        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING){
+            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','ASC');
         }else{
             // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
             $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids);
         }
+        $all_coaches = $all_coaches->paginate(9);
+        $all_coaches->appends($querystringArray); 
+        $total_results = $all_coaches->count();
         foreach($all_coaches as $category_coach){
             $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
             ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
@@ -3269,10 +3340,6 @@ class PagesController extends Controller
             $category_coach['category_slug_one'] = $category_slug;
             $category_coach['category_parent_name'] = $parent_category_name;
         }
-
-        $all_coaches = $all_coaches->paginate(9);
-        $all_coaches->appends($querystringArray); 
-        $total_results = $all_coaches->count();
         // dd($total_results);
         /**
          * End initial filter
