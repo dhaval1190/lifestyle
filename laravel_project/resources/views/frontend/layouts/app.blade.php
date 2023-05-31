@@ -511,7 +511,7 @@ $('.items').click(function() {
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
-    <script>
+    {{-- <script>
     var swiper = new Swiper(".swiper-container", {
         effect: "coverflow",
         grabCursor: true,
@@ -526,7 +526,8 @@ $('.items').click(function() {
         },
         loop:true,
     });
-</script>
+</script> --}}
+@yield('carousel_scripts')
 
   
   {{-- <script>
