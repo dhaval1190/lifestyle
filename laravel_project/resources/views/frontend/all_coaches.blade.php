@@ -478,7 +478,8 @@
                     <div class="row">
                         <div class="col-12">
 
-                            {{ $pagination->links() }}
+                            {{-- {{ $pagination->links() }} --}}
+                            {{ $all_coaches->links() }}
                         </div>
                     </div>
 
@@ -578,7 +579,7 @@
              */
             @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
 
-                @if(count($free_items))
+                @if($free_items->count())
 
                 var window_height = $(window).height();
                 $('#mapid-box').css('height', window_height + 'px');

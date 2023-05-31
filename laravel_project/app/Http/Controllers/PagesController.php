@@ -3115,7 +3115,8 @@ class PagesController extends Controller
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
-        $free_items = $free_items_query->paginate(10);
+        // $free_items = $free_items_query->paginate(10);
+        $free_items = $free_items_query;
         //$pagination = $free_items->appends($querystringArray);
 
         /**
@@ -3220,7 +3221,7 @@ class PagesController extends Controller
         
         $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
 
-       if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns ||$filter_categories) {
+       if($filter_sort_by && ($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns ||$filter_categories)) {
         $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
@@ -3237,15 +3238,16 @@ class PagesController extends Controller
                 ->count();
         }
         
+        $all_coaches = new User;
         if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
-            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(9);
-            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->get();
+            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(9);
+            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC');
         }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
-            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(9);
-            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->get();
+            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(9);
+            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC');
         }else{
-            $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
-            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->get();
+            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
+            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids);
         }
         foreach($all_coaches as $category_coach){
             $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
@@ -3267,7 +3269,11 @@ class PagesController extends Controller
             $category_coach['category_slug_one'] = $category_slug;
             $category_coach['category_parent_name'] = $parent_category_name;
         }
+
+        $all_coaches = $all_coaches->paginate(9);
+        $all_coaches->appends($querystringArray); 
         $total_results = $all_coaches->count();
+        // dd($total_results);
         /**
          * End initial filter
          */
@@ -3281,7 +3287,7 @@ class PagesController extends Controller
          * End initial blade view file path
          */
         return response()->view($theme_view_path . 'all_coaches',
-            compact('categories', 'free_items', 'pagination', 'all_states',
+            compact('categories', 'free_items','all_states',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
