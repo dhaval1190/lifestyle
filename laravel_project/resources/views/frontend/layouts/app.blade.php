@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/fonts/icomoon/style.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/fonts/nanum-gothic/style.min.css') }}">
     <!-- End Firefox does not support preload -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 
     <link rel="stylesheet" href="{{ asset('frontend/css/stylesheet.css') }}">
 
@@ -49,7 +50,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
+
+
+
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}"/>
+
+
+
 
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -498,6 +505,29 @@ $('.items').click(function() {
       }
     });
   </script>
+
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+    <script>
+    var swiper = new Swiper(".swiper-container", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        coverflowEffect: {
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 3.8,
+            slideShadows: true,
+        },
+        loop:true,
+    });
+</script>
+
   
   {{-- <script>
       const shareButton = document.querySelectorAll("button.shareButton");

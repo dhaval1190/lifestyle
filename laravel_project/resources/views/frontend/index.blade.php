@@ -463,7 +463,7 @@
 </div>
 
 
-<div class="site-section bg-light ">
+<!-- <div class="site-section bg-light ">
     <div class="container">
         <div class="row mb-5 align-items-center">
             <div class="col-md-7 text-left border-primary">
@@ -591,7 +591,119 @@
 
         </div>
     </div>
-</div>
+</div> -->
+
+
+<section class="card_texting container">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                @foreach($latest_items as $latest_items_key => $item)
+                <div class="swiper-slide">
+                <div class="listing">
+                            <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
+                            <div class="lh-content">
+
+                                @php
+                                    $latest_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
+                                @endphp
+                                @foreach($latest_item_getAllCategories as $item_all_categories_key => $category)
+                                    <a href="{{ route('page.category', $category->category_slug) }}">
+                                        <span class="category">
+                                             @if(!empty($category->category_icon))
+                                                <i class="{{ $category->category_icon }}"></i>
+                                             @else
+                                                <i class="fa-solid fa-heart"></i>
+                                            @endif
+                                            {{ $category->category_name }}
+                                        </span>
+                                    </a>
+                                @endforeach
+
+                                @php
+                                    $latest_item_allCategories_count = $item->allCategories()->count();
+                                @endphp
+                                @if($latest_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
+                                    <span class="category">{{ __('categories.and') . " " . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . " " . __('categories.more') }}</span>
+                                @endif
+
+                                <h3 class="pt-2" style="word-break: break-all;"><a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h3>
+
+                                @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                <address>
+                                    <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                    <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                </address>
+                                @endif
+
+                                @php
+                                    $latest_item_getCountRating = $item->getCountRating();
+                                @endphp
+                                @if($latest_item_getCountRating > 0)
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ $item->item_average_rating }}"></div>
+                                            <address class="mt-1">
+                                                @if($latest_item_getCountRating == 1)
+                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
+                                                @else
+                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
+                                                @endif
+                                            </address>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <hr class="item-box-hr">
+
+                                <div class="row align-items-center">
+
+                                    <div class="col-12 col-md-7 pr-0">
+                                        <div class="row align-items-center item-box-user-div">
+                                            <div class="col-3 item-box-user-img-div">
+                                            <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}">
+                                                @if(empty($item->user->user_image))
+                                                    <img src="{{ asset('frontend/images/placeholder/profile-'. intval($item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                @else
+                                                    <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}" alt="{{ $item->user->name }}" class="img-fluid rounded-circle">
+                                                @endif
+                                            </a>
+                                            </div>
+                                            <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                                <div class="row pb-1">
+                                                    <div class="col-12">
+                                                        {{-- <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a> --}}
+                                                        <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ $item->user->name }}</span></a>
+                                                    </div>
+                                                </div>
+                                                <div class="row line-height-1-0">
+                                                    <div class="col-12">
+                                                        <span class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-7 col-md-5 pl-0 text-right">
+                                        @if($item->item_hour_show_hours == \App\Item::ITEM_HOUR_SHOW)
+                                            @if($item->hasOpened())
+                                                <span class="item-box-hour-span-opened">{{ __('item_hour.frontend-item-box-hour-opened') }}</span>
+                                            @else
+                                                <span class="item-box-hour-span-closed">{{ __('item_hour.frontend-item-box-hour-closed') }}</span>
+                                            @endif
+                                        @endif
+                                    </div> --}}
+
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            @endforeach
+         </div>
+            <div class="swiper-pagination"></div>
+
+        </div>
+    </section>
 
 @if($all_testimonials->count() > 0)
 <div class="site-section bg-white">
@@ -925,253 +1037,6 @@
         });
 
     </script>
-    <script>
-        
-// This slider is for atleast 5 numbers of slides to n numbers of slides
-// you can go through by clicking left or right button or swipe left or right
 
-var sliders = document.querySelectorAll(".slide");
-var center = Math.floor(sliders.length / 2);
-var leftEndBack = center - 3 >= 0? center - 3 : undefined;
-var leftEnd = center - 2 >= 0? center - 2 : undefined;
-var leftMid = center - 1 >= 0? center - 1 : undefined;
-var rightMid = center + 1 < sliders.length? center + 1 : undefined;
-var rightEnd = center + 2 < sliders.length? center + 2 : undefined;
-var rightEndBack = center + 3 < sliders.length? center + 3 : undefined;
-let touchstartX = 0
-let touchendX = 0
-let container = document.getElementById('slider-content');
-
-if (leftEndBack != undefined) sliders[leftEndBack].classList.add("position-none");
-if (leftEnd != undefined) sliders[leftEnd].classList.add("position-1");
-if (leftMid != undefined) sliders[leftMid].classList.add("position-2");
-if (center != undefined) sliders[center].classList.add("position-3");
-if (rightMid != undefined) sliders[rightMid].classList.add("position-4");
-if (rightEnd != undefined) sliders[rightEnd].classList.add("position-5");
-if (rightEndBack != undefined) sliders[rightEndBack].classList.add("position-none");
-
-if (sliders.length > 0) $('.slide').addClass('position-none');
-
-
-function leftScroll(){
-  
-  if(leftEndBack != undefined){
-    sliders[leftEndBack].classList.remove("position-none");
-    sliders[leftEndBack].classList.add("position-1");
-  }
-  else{
-    sliders[rightEnd].classList.remove("position-none");
-    sliders[rightEnd].classList.add("position-1");
-  }
-  
-  if(leftEnd != undefined){
-    sliders[leftEnd].classList.remove("position-1");
-    sliders[leftEnd].classList.add("position-2");
-  }
-  
-  if(leftMid != undefined){
-    sliders[leftMid].classList.remove("position-2");
-    sliders[leftMid].classList.add("position-3");
-  }
-  
-  if(center != undefined){
-    sliders[center].classList.remove("position-3");
-    sliders[center].classList.add("position-4");
-  }
-  
-  if(rightMid != undefined){
-    sliders[rightMid].classList.remove("position-4");
-    sliders[rightMid].classList.add("position-5");
-  }
-  
-  if(rightEnd != undefined){
-    sliders[rightEnd].classList.remove("position-5");
-    sliders[rightMid].classList.add("position-none");
-  }
-  
-  leftEndBack != undefined ? leftEndBack-- : leftEndBack;
-  leftEnd != undefined? leftEnd-- : leftEnd;
-  leftMid != undefined? leftMid-- : leftMid;
-  center != undefined? center-- : center;
-  rightMid != undefined? rightMid-- : rightMid;
-  rightEnd != undefined? rightEnd-- : rightEnd;
-  rightEndBack != undefined ? rightEndBack-- : rightEndBack;
-  
-  if(leftEndBack != undefined && leftEndBack == -1)
-    leftEndBack = sliders.length - 1;
-  if(leftEnd != undefined && leftEnd == -1)
-    leftEnd = sliders.length - 1;
-  if(leftMid != undefined && leftMid == -1)
-    leftMid = sliders.length - 1;
-  if(center != undefined && center == -1)
-    center = sliders.length - 1;
-  if(rightMid != undefined && rightMid == -1)
-    rightMid = sliders.length - 1;
-  if(rightEnd != undefined && rightEnd == -1)
-    rightEnd = sliders.length - 1;
-  if(rightEndBack != undefined && rightEndBack == -1)
-    rightEndBack = sliders.length - 1;
-}
-
-function rightScroll(){
-  
-  if(leftEnd != undefined){
-    sliders[leftEnd].classList.remove("position-1");
-    sliders[leftEnd].classList.add("position-none");
-  }  
-  if(leftMid != undefined){
-    sliders[leftMid].classList.remove("position-2");
-    sliders[leftMid].classList.add("position-1");
-  }  
-  if(center != undefined){
-    sliders[center].classList.remove("position-3");
-    sliders[center].classList.add("position-2");
-  }  
-  if(rightMid != undefined){
-    sliders[rightMid].classList.remove("position-4");
-    sliders[rightMid].classList.add("position-3");
-  }  
-  if(rightEnd != undefined){
-    sliders[rightEnd].classList.remove("position-5");
-    sliders[rightEnd].classList.add("position-4");
-  }
-  if(rightEndBack != undefined){
-    sliders[rightEndBack].classList.remove("position-none");
-    sliders[rightEndBack].classList.add("position-5");
-  }
-  else if(leftEndBack != undefined){
-    sliders[leftEndBack].classList.remove("position-none");
-    sliders[leftEndBack].classList.add("position-5");
-  }
-  else{
-    sliders[leftEnd].classList.remove("position-none");
-    sliders[leftEnd].classList.add("position-5");
-  }
-  
-  leftEndBack != undefined? leftEndBack++ : leftEndBack;
-  leftEnd != undefined? leftEnd++ : leftEnd;
-  leftMid != undefined? leftMid++ : leftMid;
-  center != undefined? center++ : center;
-  rightMid != undefined? rightMid++ : rightMid;
-  rightEnd != undefined? rightEnd++ : rightEnd;
-  rightEndBack != undefined? rightEndBack++ : rightEndBack;
-
-  if(leftEndBack != undefined && leftEndBack == sliders.length)
-    leftEndBack = 0;
-  if(leftEnd != undefined && leftEnd == sliders.length)
-    leftEnd = 0;
-  if(leftMid != undefined && leftMid == sliders.length)
-    leftMid = 0;
-  if(center != undefined && center == sliders.length)
-    center = 0;
-  if(rightMid != undefined && rightMid == sliders.length)
-    rightMid = 0;
-  if(rightEnd != undefined && rightEnd == sliders.length)
-    rightEnd = 0;
-  if(rightEndBack != undefined && rightEndBack == sliders.length)
-    rightEndBack = 0;
-}
-
-class Swipe {
-    constructor(element) {
-        this.xDown = null;
-        this.yDown = null;
-        this.element = typeof(element) === 'string' ? document.querySelector(element) : element;
-
-        this.element.addEventListener('touchstart', function(evt) {
-            this.xDown = evt.touches[0].clientX;
-            this.yDown = evt.touches[0].clientY;
-        }.bind(this), false);
-
-    }
-
-    onLeft(callback) {
-        this.onLeft = callback;
-
-        return this;
-    }
-
-    onRight(callback) {
-        this.onRight = callback;
-
-        return this;
-    }
-
-    handleTouchMove(evt) {
-        if ( ! this.xDown || ! this.yDown ) {
-            return;
-        }
-
-        var xUp = evt.touches[0].clientX;
-        var yUp = evt.touches[0].clientY;
-
-        this.xDiff = this.xDown - xUp;
-        this.yDiff = this.yDown - yUp;
-
-        if ( Math.abs( this.xDiff ) > Math.abs( this.yDiff ) ) { 
-            if ( this.xDiff > 0 ) {
-                this.onLeft();
-            } else {
-                this.onRight();
-            }
-        } else {
-            if ( this.yDiff > 0 ) {
-                this.onUp();
-            } else {
-                this.onDown();
-            }
-        }
-
-        this.xDown = null;
-        this.yDown = null;
-    }
-
-    run() {
-        this.element.addEventListener('touchmove', function(evt) {
-            this.handleTouchMove(evt).bind(this);
-        }.bind(this), false);
-    }
-}
-
-var swiper = new Swipe(container);
-
-
-//left scroll
-$(".left-arrow").on("click", leftScroll);
-
-swiper.onRight(function () {
-  leftScroll();
-});
-swiper.run();
-
-// $(".position-2").on("click", function(){
-//   leftScroll();
-// });
-
-// $(".position-1").on("click", function(){
-//   leftScroll();
-//   leftScroll();
-// });
-
-
-
-// right scroll
-$(".right-arrow").on("click", rightScroll);
-
-swiper.onLeft(function () {
-  rightScroll();
-});
-swiper.run();
-
-// $(".position-4").on("click", function(){
-//   rightScroll();
-// });
-
-// $(".position-5").on("click", function(){
-//   rightScroll();
-//   rightScroll();
-// });
-
-    </script>
 
 @endsection
