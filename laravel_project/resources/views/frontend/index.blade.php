@@ -426,10 +426,10 @@
             </section>
         </div>
     </div>
+    @if($paid_items->count() > 0)
     <div class="site-section bg-light">
         <section class="card_texting container">
             <div class="swiper-container">
-                @if($paid_items->count() > 0)
                         <div class="row mb-4">
                             <div class="col-md-7 text-left border-primary">
                                 <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.featured-ads') }}</h2>
@@ -540,10 +540,10 @@
                             </div>
                             @endforeach
                         </div>
-                @endif
             </div>
         </section>
     </div>
+    @endif
         <!-- <div class="row justify-content-center mb-5">
             <div class="col-md-7 text-center border-primary">
                 <h2 class="font-weight-light text-primary">{{ __('frontend.homepage.nearby-listings') }}</h2>
