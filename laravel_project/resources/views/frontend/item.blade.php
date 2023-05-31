@@ -1039,7 +1039,7 @@
                             @endforeach
                         @endif
 
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-12">
                                 <h4 class="h5 mb-4 text-black">{{ __('frontend.item.location') }}</h4>
                                 <div class="row pt-2 pb-2">
@@ -1067,7 +1067,7 @@
                                 </div>
                                 <hr>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- start item section after location map -->
                         @if($item_sections_after_location_map->count() > 0)
