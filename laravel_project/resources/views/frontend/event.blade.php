@@ -48,9 +48,9 @@
         </div>
     </div>
 
-    {{-- @if ($all_events->count() > 0) --}}
-        <div class="site-section">
-            <div class="container">
+    <div class="site-section">
+        <div class="container">
+                @if ($all_events->count() > 0)
                 <div class="row justify-content-center mb-5">
                     <div class="col-md-7 text-center border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Events') }}</h2>
@@ -63,8 +63,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <span id="span"></span>
-                        {{-- {{ date('Y-m-d H:i:s') }} --}}
-                        @if($all_events->count())
+                        {{-- {{ date('Y-m-d H:i:s') }} --}}                        
                             @php $count=1; @endphp
                             @foreach ($all_events as $event)
                                 <div class="tab_section">
@@ -164,18 +163,21 @@
                                     </div><!-- /container -->
                                 </div>
                                 @php $count++; @endphp
-                            @endforeach
-                        @else
-                        <p style="color:black;">{{ "No Event Found!" }}</p>
-                        @endif
+                            @endforeach                        
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     {!! $all_events->links('pagination::bootstrap-4') !!}
                 </div>
+                @else
+                <div class="row">
+                    <div class="col-md-12">            
+                        <p style="color:black;text-align:center;">{{ "No Event Found!" }}</p>
+                    </div>
+                </div>
             </div>
         </div>
-    {{-- @endif --}}
+    @endif
 
 @endsection
 
