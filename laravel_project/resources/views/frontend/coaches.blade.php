@@ -472,7 +472,7 @@
                                                         <div class="d-block d-md-flex listing vertical parent_set_listing" style="min-height:0px;">
                                                                 @if(isset($coach->category_parent_name) && !empty($coach->category_parent_name))
                                                                     @foreach($coach->category_parent_name as $item_all_categories_key => $category) 
-                                                                    <a href="{{ route('page.category', $category->category_slug) }}">                                                  
+                                                                                                                      
                                                                         <span class="category">
                                                                             @if(!empty($category->category_icon))
                                                                                 <i class="{{ $category->category_icon }}"></i>
@@ -481,7 +481,7 @@
                                                                             @endif
                                                                             {{ $category->category_name }}
                                                                         </span>
-                                                                    </a>
+                                                                    
                                                                     @endforeach
                                                                 @endif
                                                                 @if(!empty($coach->category_icon_one))
@@ -551,65 +551,298 @@
                                         </li>
                                         @php $count++; @endphp
                                     @endforeach
-                                {{-- <li class="items right-pos" id="2">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
+                                    {{-- <li class="items right-pos" id="2">
+                                            <div class="profile-card js-profile-card">
+                                                <div class="profile-card__img">
+                                                    <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                                                        alt="profile card" />
+                                                </div>
+
+                                                <div class="profile-card__cnt js-profile-cnt">
+                                                    <div class="profile-card__name">Muhammed Erdem</div>
+                                                    <div class="profile-card__txt">
+                                                        Front-end Developer from <strong>Mesopotamia</strong>
+                                                    </div>
+                                                    <div class="profile-card-loc">
+                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                    </div>
+
+                                                    <div class="profile-card-inf">
+                                                        <div>
+                                                            <p>
+                                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                Nostrum vero adipisci magnam, soluta repudiandae iste
+                                                                iure! Veritatis alias voluptatibus beatae.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- new  -->
+
+                                                    <div class="social_content">
+                                                        <div class="shareButton main">
+                                                            <svg class="share" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                            </svg>
+                                                            <svg class="check" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                            </svg>
+                                                            <svg class="close" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="icons">
+                                                            <a href=""><i
+                                                                    class="fa fa-facebook-f social_icon_design"></i></a>
+                                                            <a href="">
+                                                                <i class="fa fa-twitter social_icon_design"></i></a>
+                                                            <a href="">
+                                                                <i class="fa fa-instagram social_icon_design"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            </li>
+                                            <li class="items back-pos" id="3">
+                                                <div class="profile-card js-profile-card">
+                                                    <div class="profile-card__img">
+                                                        <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                                                            alt="profile card" />
+                                                    </div>
 
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
+                                                    <div class="profile-card__cnt js-profile-cnt">
+                                                        <div class="profile-card__name">Muhammed Erdem</div>
+                                                        <div class="profile-card__txt">
+                                                            Front-end Developer from <strong>Mesopotamia</strong>
+                                                        </div>
+                                                        <div class="profile-card-loc">
+                                                            <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                        </div>
 
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
+                                                        <div class="profile-card-inf">
+                                                            <div>
+                                                                <p>
+                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                    Nostrum vero adipisci magnam, soluta repudiandae iste
+                                                                    iure! Veritatis alias voluptatibus beatae.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- new  -->
+
+                                                        <div class="social_content">
+                                                            <div class="shareButton main">
+                                                                <svg class="share" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                                </svg>
+                                                                <svg class="check" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                                </svg>
+                                                                <svg class="close" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="icons">
+                                                                <a href=""><i
+                                                                        class="fa fa-facebook-f social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-twitter social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
+                                            </li>
+                                            <li class="items back-pos" id="4">
+                                                <div class="profile-card js-profile-card">
+                                                    <div class="profile-card__img">
+                                                        <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                                                            alt="profile card" />
                                                     </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
+
+                                                    <div class="profile-card__cnt js-profile-cnt">
+                                                        <div class="profile-card__name">Muhammed Erdem</div>
+                                                        <div class="profile-card__txt">
+                                                            Front-end Developer from <strong>Mesopotamia</strong>
+                                                        </div>
+                                                        <div class="profile-card-loc">
+                                                            <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                        </div>
+
+                                                        <div class="profile-card-inf">
+                                                            <div>
+                                                                <p>
+                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                    Nostrum vero adipisci magnam, soluta repudiandae iste
+                                                                    iure! Veritatis alias voluptatibus beatae.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- new  -->
+
+                                                        <div class="social_content">
+                                                            <div class="shareButton main">
+                                                                <svg class="share" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                                </svg>
+                                                                <svg class="check" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                                </svg>
+                                                                <svg class="close" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="icons">
+                                                                <a href=""><i
+                                                                        class="fa fa-facebook-f social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-twitter social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        </li>
-                                        <li class="items back-pos" id="3">
+
+                                            </li>
+                                            <li class="items back-pos" id="5">
+                                                <div class="profile-card js-profile-card">
+                                                    <div class="profile-card__img">
+                                                        <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                                                            alt="profile card" />
+                                                    </div>
+
+                                                    <div class="profile-card__cnt js-profile-cnt">
+                                                        <div class="profile-card__name">Muhammed Erdem</div>
+                                                        <div class="profile-card__txt">
+                                                            Front-end Developer from <strong>Mesopotamia</strong>
+                                                        </div>
+                                                        <div class="profile-card-loc">
+                                                            <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                        </div>
+
+                                                        <div class="profile-card-inf">
+                                                            <div>
+                                                                <p>
+                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                    Nostrum vero adipisci magnam, soluta repudiandae iste
+                                                                    iure! Veritatis alias voluptatibus beatae.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- new  -->
+
+                                                        <div class="social_content">
+                                                            <div class="shareButton main">
+                                                                <svg class="share" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                                </svg>
+                                                                <svg class="check" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                                </svg>
+                                                                <svg class="close" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="icons">
+                                                                <a href=""><i
+                                                                        class="fa fa-facebook-f social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-twitter social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </li>
+                                            <li class="items back-pos" id="6">
+                                                <div class="profile-card js-profile-card">
+                                                    <div class="profile-card__img">
+                                                        <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
+                                                            alt="profile card" />
+                                                    </div>
+
+                                                    <div class="profile-card__cnt js-profile-cnt">
+                                                        <div class="profile-card__name">Muhammed Erdem</div>
+                                                        <div class="profile-card__txt">
+                                                            Front-end Developer from <strong>Mesopotamia</strong>
+                                                        </div>
+                                                        <div class="profile-card-loc">
+                                                            <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
+                                                        </div>
+
+                                                        <div class="profile-card-inf">
+                                                            <div>
+                                                                <p>
+                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                    Nostrum vero adipisci magnam, soluta repudiandae iste
+                                                                    iure! Veritatis alias voluptatibus beatae.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="social_content">
+                                                            <div class="shareButton main">
+                                                                <svg class="share" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                                </svg>
+                                                                <svg class="check" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                                </svg>
+                                                                <svg class="close" style="width: 24px; height: 24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <path
+                                                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="icons">
+                                                                <a href=""><i
+                                                                        class="fa fa-facebook-f social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-twitter social_icon_design"></i></a>
+                                                                <a href="">
+                                                                    <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </li>
+                                            <li class="items left-pos" id="7">
                                             <div class="profile-card js-profile-card">
                                                 <div class="profile-card__img">
                                                     <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
@@ -667,240 +900,7 @@
                                                 </div>
                                             </div>
 
-                                        </li>
-                                        <li class="items back-pos" id="4">
-                                            <div class="profile-card js-profile-card">
-                                                <div class="profile-card__img">
-                                                    <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                        alt="profile card" />
-                                                </div>
-
-                                                <div class="profile-card__cnt js-profile-cnt">
-                                                    <div class="profile-card__name">Muhammed Erdem</div>
-                                                    <div class="profile-card__txt">
-                                                        Front-end Developer from <strong>Mesopotamia</strong>
-                                                    </div>
-                                                    <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                    </div>
-
-                                                    <div class="profile-card-inf">
-                                                        <div>
-                                                            <p>
-                                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                                Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                                iure! Veritatis alias voluptatibus beatae.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- new  -->
-
-                                                    <div class="social_content">
-                                                        <div class="shareButton main">
-                                                            <svg class="share" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                            </svg>
-                                                            <svg class="check" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                            </svg>
-                                                            <svg class="close" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="icons">
-                                                            <a href=""><i
-                                                                    class="fa fa-facebook-f social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-twitter social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </li>
-                                        <li class="items back-pos" id="5">
-                                            <div class="profile-card js-profile-card">
-                                                <div class="profile-card__img">
-                                                    <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                        alt="profile card" />
-                                                </div>
-
-                                                <div class="profile-card__cnt js-profile-cnt">
-                                                    <div class="profile-card__name">Muhammed Erdem</div>
-                                                    <div class="profile-card__txt">
-                                                        Front-end Developer from <strong>Mesopotamia</strong>
-                                                    </div>
-                                                    <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                    </div>
-
-                                                    <div class="profile-card-inf">
-                                                        <div>
-                                                            <p>
-                                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                                Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                                iure! Veritatis alias voluptatibus beatae.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- new  -->
-
-                                                    <div class="social_content">
-                                                        <div class="shareButton main">
-                                                            <svg class="share" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                            </svg>
-                                                            <svg class="check" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                            </svg>
-                                                            <svg class="close" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="icons">
-                                                            <a href=""><i
-                                                                    class="fa fa-facebook-f social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-twitter social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </li>
-                                        <li class="items back-pos" id="6">
-                                            <div class="profile-card js-profile-card">
-                                                <div class="profile-card__img">
-                                                    <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                        alt="profile card" />
-                                                </div>
-
-                                                <div class="profile-card__cnt js-profile-cnt">
-                                                    <div class="profile-card__name">Muhammed Erdem</div>
-                                                    <div class="profile-card__txt">
-                                                        Front-end Developer from <strong>Mesopotamia</strong>
-                                                    </div>
-                                                    <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                    </div>
-
-                                                    <div class="profile-card-inf">
-                                                        <div>
-                                                            <p>
-                                                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                                Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                                iure! Veritatis alias voluptatibus beatae.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="social_content">
-                                                        <div class="shareButton main">
-                                                            <svg class="share" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                            </svg>
-                                                            <svg class="check" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                            </svg>
-                                                            <svg class="close" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="icons">
-                                                            <a href=""><i
-                                                                    class="fa fa-facebook-f social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-twitter social_icon_design"></i></a>
-                                                            <a href="">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </li>
-                                        <li class="items left-pos" id="7">
-                                        <div class="profile-card js-profile-card">
-                                            <div class="profile-card__img">
-                                                <img src="https://res.cloudinary.com/muhammederdem/image/upload/v1537638518/Ba%C5%9Fl%C4%B1ks%C4%B1z-1.jpg"
-                                                    alt="profile card" />
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">Muhammed Erdem</div>
-                                                <div class="profile-card__txt">
-                                                    Front-end Developer from <strong>Mesopotamia</strong>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span class="profile-card-loc__txt"> Istanbul, Turkey </span>
-                                                </div>
-
-                                                <div class="profile-card-inf">
-                                                    <div>
-                                                        <p>
-                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                            Nostrum vero adipisci magnam, soluta repudiandae iste
-                                                            iure! Veritatis alias voluptatibus beatae.
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <!-- new  -->
-
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        <a href=""><i
-                                                                class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-twitter social_icon_design"></i></a>
-                                                        <a href="">
-                                                            <i class="fa fa-instagram social_icon_design"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </li> --}}
+                                        </li> --}}
                                 </ul>
                                 <span class="slider">
                                     <a href="javascript:void(0);" value="Prev" id="prev"><i
@@ -910,14 +910,10 @@
 
                                 </span>
                             </section>
-
                         </div>
-
                     </div>
-
                     <div class="row">
                         <div class="col-12">
-
                             {{ $pagination->links() }}
                         </div>
                     </div>
