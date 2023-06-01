@@ -7706,6 +7706,7 @@ class PagesController extends Controller
                     $visit_count = $currentMonthlyVisits->count();
                     $visit_trend = json_encode($this->countTrackedDataItem($visits, self::DAYS));
                     $visit_month_over_month = $this->compareMonthToMonthItem($currentMonthlyVisits, $previousMonthlyVisits);
+                    $All_visit_count = $visits->count();
 
                     return response()->view($theme_view_path . 'item',
                         compact('item', 'nearby_items', 'similar_items','similar_items_of_coaches',
@@ -7721,7 +7722,7 @@ class PagesController extends Controller
                             'current_open_range', 'item_hours_monday', 'item_hours_tuesday', 'item_hours_wednesday', 'item_hours_thursday',
                             'item_hours_friday', 'item_hours_saturday', 'item_hours_sunday', 'item_hour_exceptions_obj', 'item_hours',
                             'item_hour_exceptions','item_user','view_count','view_trend','view_month_over_month','view_count_lifetime','visit_count',
-                            'visit_trend','visit_month_over_month'));
+                            'visit_trend','visit_month_over_month','All_visit_count'));
                 }
                 else
                 {

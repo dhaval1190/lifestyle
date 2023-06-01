@@ -707,7 +707,7 @@
                                         <div class="d-flex">
                                             <div class="mr-5">
                                                 <p class="mb-0 small text-muted text-uppercase font-weight-bold"><b>Total Views</b></p> 
-                                                <h3 class="mt-1">{{ $visit_count }}</h3>
+                                                <h3 class="mt-1">{{ $All_visit_count }}</h3>
                                             </div> 
                                         </div>
                                     </div>
