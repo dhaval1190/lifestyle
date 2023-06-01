@@ -42,6 +42,8 @@ class User extends Authenticatable implements MustVerifyEmail
     const COUNT_PER_PAGE_500 = 500;
     const COUNT_PER_PAGE_1000 = 1000;
 
+    const ITEM_REVIEW_APPROVED = 1;
+
     const GENDER_TYPES = [
         'male'    => 'Male',
         'female'  => 'Female',
@@ -813,5 +815,13 @@ class User extends Authenticatable implements MustVerifyEmail
         Plan::class, Subscription::class,
         'user_id', 'stripe_id', 'id', 'stripe_price'
         );
+    }
+
+    public function getProfileCountRating()
+    {
+        return DB::table('profile_reviews')
+            ->where('approved', self::ITEM_REVIEW_APPROVED)
+            ->where('reviewrateable_id', $this->id)
+            ->count();
     }
 }

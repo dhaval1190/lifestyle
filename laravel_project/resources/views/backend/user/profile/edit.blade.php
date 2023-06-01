@@ -795,21 +795,21 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-3">
                             <label class="text-black">Podcast</label>
-                            <select id="podcast_type"
+                            {{-- <select id="podcast_type"
                                 class="form-control selectpicker @error('podcast_type') is-invalid @enderror"
                                 name="podcast_type" title="Select Type">
                                 @foreach(\App\MediaDetail::PODCAST_MEDIA_TYPE as $mkey => $mvalue)
                                 <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
                                 @endforeach
-                            </select>
-                            {{-- <input type="hidden" name="podcast_type" value="podcast"> --}}
+                            </select> --}}
+                            <input type="hidden" name="podcast_type" value="podcast">
 
-                            {{-- <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
+                            <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
                                                 <option name = "apple_podcast" value="apple_podcast">Apple Podcast</option>
                                                 <option name = "stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
                                                 <option name = "google_podcast" value="google_podcast">Google Podcast</option>
                                                 <option name = "spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
-                                            </select> --}}
+                                            </select>
                             @error('media_type')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -828,7 +828,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        <div class="col-12 col-md-12 col-lg-3">
+                        {{-- <div class="col-12 col-md-12 col-lg-3">
                             <label class="text-black">Podcast MP3</label>
                             <input id="podcast_image" type="file"
                                 class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image"
@@ -838,8 +838,8 @@ $chk_post = Auth::user()->phone;
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                        </div>
-                        {{-- <div class="col-12 col-md-12 col-lg-3">
+                        </div> --}}
+                        <div class="col-12 col-md-12 col-lg-3">
                                             <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
                                             <span class="err_media_url" style="color:red"></span>
                                             <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
@@ -856,8 +856,8 @@ $chk_post = Auth::user()->phone;
                             <strong>{{ Session::get('podcast_error') }}</strong>
                         </span>
                         @endif
-                    </div> --}}
-                    <div class="col-12 col-md-12 col-lg-3">
+                    </div>
+                    {{-- <div class="col-12 col-md-12 col-lg-3">
                         <label class="text-black">Podcast Cover</label>
                         <input id="podcast_cover" type="file"
                             class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover"
@@ -870,16 +870,16 @@ $chk_post = Auth::user()->phone;
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-12 col-md-12 col-lg-12 col-xl-6">
                         @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                         <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
                             <span class="set_width">
                                 {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} :
                                 {{ $podcast_media_value->media_name }}</span>
-                            {{-- <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}">
+                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}">
                             <i class="far fa-edit"></i>
-                            </a> --}}
+                            </a>
                             <a class="text-danger" href="#" data-toggle="modal"
                                 data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
                                 <i class='far fa-trash-alt'></i>
@@ -1357,7 +1357,7 @@ $chk_post = Auth::user()->phone;
 @endforeach
 
 @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-{{-- <div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
 aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1411,7 +1411,7 @@ aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidd
         </form>
     </div>
 </div>
-</div> --}}
+</div>
 
 <div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
     aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">

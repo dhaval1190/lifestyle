@@ -46,9 +46,9 @@
 
             </div>
         </div>
-    </div>
+     </div>
 
-    <div class="site-section">
+     <div class="site-section">
         <div class="container">
                 @if ($all_events->count() > 0)
                 <div class="row justify-content-center mb-5">
@@ -175,9 +175,9 @@
                         <p style="color:black;text-align:center;">{{ "No Event Found!" }}</p>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
-    @endif
 
 @endsection
 
