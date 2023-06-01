@@ -182,7 +182,7 @@ class PagesController extends Controller
             ->select('items.*')
             ->where('users.user_suspended', User::USER_NOT_SUSPENDED)
             ->where('item_status', Item::ITEM_PUBLISHED)
-            ->take(6)
+            ->take(7)
             ->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user')
             ->get();
             /**
@@ -201,6 +201,7 @@ class PagesController extends Controller
             ->with('user');
             $trainding_items_new = $trainding_items->get();
             $trainding_items_user_ids = $trainding_items->pluck('id')->toArray(); 
+            $all_trainding_items = array();
             foreach($trainding_items_user_ids as $items_ids){    
                 $all_trainding_items[] = Item::where('items.id',$items_ids)->leftjoin('items_visits','items_visits.item_id','=','items.id')
                 ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))
@@ -273,6 +274,7 @@ class PagesController extends Controller
             $free_items = $featured_coaches->get();
             $free_items_user_ids = $featured_coaches->pluck('user_id')->toArray(); 
             
+            $all_coaches = array();
             foreach($free_items_user_ids as $user_ids){    
             $all_coaches[] = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->where('users.id',$user_ids)->join('profile_visits','profile_visits.user_id','=','users.id')
             ->select('users.*','profile_visits.user_id',DB::raw('COUNT(profile_visits.user_id) as totalcount'))->orderBy('totalcount')->first();
