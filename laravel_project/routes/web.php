@@ -81,6 +81,7 @@ Route::middleware(['installed','demo','global_variables','maintenance'])->group(
     Route::post('/media/add', 'PagesController@addMedia')->name('media.add');
     Route::delete('/media/destroy/{media_detail}', 'PagesController@destroyMedia')->name('media.destroy');
     Route::delete('/ebookmedia/destroy/{media_detail}', 'PagesController@destroyEbookMedia')->name('ebookmedia.destroy');
+    Route::put('/podcastmedia/update/{podcast_detail?}', 'PagesController@updatePodcastMedia')->name('podcastmedia.update');
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
     Route::get('/all-coaches', 'PagesController@allCoaches')->name('page.allcoaches');

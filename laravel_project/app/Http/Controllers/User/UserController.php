@@ -310,28 +310,28 @@ class UserController extends Controller
         $rules['user_about']                = ['nullable'];
         $rules['certifications']            = ['nullable'];
         $rules['awards']                    = ['nullable'];
-        $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3', 'max:30720'];
-        // $rules['podcast_image']             = ['nullable','string','url','max:500'];
+        // $rules['podcast_image']             = ['nullable', 'file', 'mimes:mp3', 'max:30720'];
+        $rules['podcast_image']             = ['nullable','string','url','max:500'];
         $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_image']               = ['nullable', 'file', 'mimes:pdf', 'max:30720'];
         $rules['media_cover']               = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
         $rules['media_cover']               = ['required_with:media_image'];
-        $rules['podcast_cover']             = ['required_with:podcast_image'];
-        // $rules['podcast_web_type']             = ['required_with:podcast_image'];
+        // $rules['podcast_cover']             = ['required_with:podcast_image'];
+        $rules['podcast_web_type']             = ['required_with:podcast_image'];
         // $rules['post_code']             =   ['required','numeric','digits_between:1,15'];
         $rules['company_name']          = ['nullable','string','max:100'];
         $rules['user_image']            = ['nullable',new Base64Image];
         $rules['user_cover_image']            = ['nullable',new Base64Image];
         $rulesMessage['media_image.mimes']  = 'Ebook must be a file of type: pdf.';
         $rulesMessage['media_image.max']    = 'Ebook may not be greater than 30720 kilobytes.';
-        $rulesMessage['podcast_image.mimes']= 'Podcast Audio must be a file of type: mp3';
-        $rulesMessage['podcast_image.max']  = 'Podcast MP3/MP4 Audio may not be greater than 30720 kilobytes.';
+        // $rulesMessage['podcast_image.mimes']= 'Podcast Audio must be a file of type: mp3';
+        // $rulesMessage['podcast_image.max']  = 'Podcast MP3/MP4 Audio may not be greater than 30720 kilobytes.';
         $rulesMessage['media_cover.mimes']  = 'Ebook Cover must be a file of type: jpg, jpeg, png.';
         $rulesMessage['media_cover.max']    = 'Ebook Cover may not be greater than 5120 kilobytes.';
-        $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
-        $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
+        // $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
+        // $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
         $rulesMessage['media_cover.required_with'] = 'Ebook Cover field is required when Ebook PDF is present.';
-        $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
+        // $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         // $rulesMessage['phone.required'] = 'Phone is required';
         // $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
         
@@ -363,18 +363,18 @@ class UserController extends Controller
             // $rules['user_image']            = ['nullable'];
             $rules['user_image']            = ['nullable',new Base64Image];
             $rules['user_cover_image']            = ['nullable',new Base64Image];
-            $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
-            $rules['podcast_cover']             = ['required_with:podcast_image'];
-            // $rules['podcast_web_type']             = ['required_with:podcast_image'];
+            // $rules['podcast_cover']             = ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:5120'];
+            // $rules['podcast_cover']             = ['required_with:podcast_image'];
+            $rules['podcast_web_type']             = ['required_with:podcast_image'];
 
             $rulesMessage['podcast_image.url']  = 'Please enter valid URL';
             $rulesMessage['is_coach.required']  = 'Invalid Coach';
             $rulesMessage['is_coach.in']        = 'Invalid Coach!';
             $rulesMessage['phone.required'] = 'Phone is required';
             $rulesMessage['phone.digits_between'] = 'The phone must between 10 and 20 digits';
-            $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
-            $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
-            $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
+            // $rulesMessage['podcast_cover.mimes']= 'Podcast Cover must be a file of type: jpg, jpeg, png.';
+            // $rulesMessage['podcast_cover.max']  = 'Podcast Cover may not be greater than 5120 kilobytes.';
+            // $rulesMessage['podcast_cover.required_with'] = 'Podcast Cover field is required when Podcast MP3 is present.';
         }
 
         $instagram_username = $request->instagram;
@@ -560,13 +560,92 @@ class UserController extends Controller
                 ]);
             }
 
+            // if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
+            //     if(!Storage::disk('public')->exists('media_files')){
+            //         Storage::disk('public')->makeDirectory('media_files');
+            //     }
+            //     if(!empty($input['podcast_image'])) {
+            //         $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
+            //         $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+            //     }
+            //     if(!empty($input['podcast_cover'])) {
+            //         $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                    
+            //         // $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+            //         // $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();                    
+                
+            //         $destinationPath = public_path('/storage/media_files');
+            //         $img = Image::make($request->file('podcast_cover')->getRealPath());
+            //         $img->resize(200, 200, function ($constraint) {
+            //             $constraint->aspectRatio();
+            //         })->save($destinationPath.'/'.$podcast_cover_file_name);
+
+            //     }
+
+            //     MediaDetail::updateOrCreate([
+            //         'user_id' => $login_user->id,
+            //         'media_name' => $request->podcast_name,
+            //         'media_type' => $request->podcast_type,
+            //         'media_cover' => !empty($podcast_cover_file_name) ? $podcast_cover_file_name : null,
+            //         'media_image' => !empty($podcast_file_name) ? $podcast_file_name : null,
+            //     ],[
+            //         'user_id' => $login_user->id,
+            //         'media_type' => $request->podcast_type,
+            //         'media_image' => $podcast_file_name
+            //     ]);
+            // }
+
             if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
-                if(!Storage::disk('public')->exists('media_files')){
-                    Storage::disk('public')->makeDirectory('media_files');
+                // if(!Storage::disk('public')->exists('media_files')){
+                //     Storage::disk('public')->makeDirectory('media_files');
+                // }
+                if($request->podcast_web_type == 'apple_podcast'){
+                    if(stripos($request->podcast_image,'apple') == false){
+                        return back()->with('podcast_error','Podcast type and URL not matching');
+                    }
+                    if(stripos($request->podcast_image,'apple') !== false && stripos($request->podcast_image,'embed') !== false){
+                        return back()->with('podcast_error','Please enter valid URL');
+                    }else{
+                        $podcast_url = $request->podcast_image;
+                        $exp_podcast_url = explode("podcasts.apple.com",$podcast_url);                        
+                        $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];                        
+                    }
+                }
+                if($request->podcast_web_type == 'stitcher_podcast'){
+                    if(stripos($request->podcast_image,'stitcher') !== false && stripos($request->podcast_image,'embed') !== false){
+                        $embed_podcast_url = $request->podcast_image;
+                    }elseif(stripos($request->podcast_image,'iframe') !== false){
+                        return back()->with('podcast_error','Please enter proper URL');
+                    }else{
+                        return back()->with('podcast_error','Please enter proper URL');
+                    }
+                    
+                }
+                if($request->podcast_web_type == 'google_podcast'){
+                    if(stripos($request->podcast_image,'redcircle') == false){
+                        return back()->with('podcast_error','Podcast type and URL not matching');
+                    }else{
+                        $embed_podcast_url = $request->podcast_image;
+                    }
+                }
+                if($request->podcast_web_type == 'spotify_podcast'){
+                    if(stripos($request->podcast_image,'spotify') == false){
+                        return back()->with('podcast_error','Podcast type and URL not matching');
+                    }
+                    if(stripos($request->podcast_image,'iframe') !== false){
+                        return back()->with('podcast_error','Please enter proper URL');
+                    }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
+                        $podcast_url = $request->podcast_image;
+                        $exp_podcast_url = explode("open.spotify.com",$podcast_url);
+                        $exp_podcast_url_2 = explode("?",$exp_podcast_url[1])[0];
+                        $embed_podcast_url = $exp_podcast_url[0]."open.spotify.com/embed".$exp_podcast_url_2."/?utm_source=generator";                        
+                    }
                 }
                 if(!empty($input['podcast_image'])) {
-                    $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
-                    $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+                    // $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
+                    // $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+                    // $podcast_file_name = $request->podcast_image;
+                    $podcast_file_name = $embed_podcast_url;
                 }
                 if(!empty($input['podcast_cover'])) {
                     $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
@@ -588,6 +667,7 @@ class UserController extends Controller
                     'media_type' => $request->podcast_type,
                     'media_cover' => !empty($podcast_cover_file_name) ? $podcast_cover_file_name : null,
                     'media_image' => !empty($podcast_file_name) ? $podcast_file_name : null,
+                    'podcast_web_type' => !empty($request->podcast_web_type) ? $request->podcast_web_type : null,
                 ],[
                     'user_id' => $login_user->id,
                     'media_type' => $request->podcast_type,
