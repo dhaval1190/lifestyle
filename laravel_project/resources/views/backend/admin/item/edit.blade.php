@@ -1,5 +1,7 @@
 @extends('backend.admin.layouts.app')
-
+@php 
+$login_user = Auth::user();
+@endphp
 @section('styles')
 
     @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
@@ -334,11 +336,11 @@
 
                                     <div class="col-md-3">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
-                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
+                                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}">
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
                                                 @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status == \App\Country::COUNTRY_STATUS_DISABLE && $item->country_id == $country->id))
-                                                    <option value="{{ $country->id }}" {{ (old('country_id') ? old('country_id') : $item->country_id) == $country->id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                                <option value="{{ $country->id }}"{{ $country->id == old('country_id', $item->country_id) ? 'selected' : '' }}>{{ $country->country_name }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -354,8 +356,13 @@
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-state') }}</option> --}}
                                             @foreach($all_states as $key => $state)
+                                                @error('state_id')<option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
+                                                {{ $state->state_name }}</option>
+                                                @else
                                                 <option {{ $item->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">{{ $state->state_name }}</option>
+                                                @enderror
                                             @endforeach
+                                               
                                         </select>
                                         @error('state_id')
                                         <span class="invalid-tooltip">
@@ -369,7 +376,11 @@
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-city') }}</option> --}}
                                             @foreach($all_cities as $key => $city)
+                                                @error('state_id') <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
+                                                {{ $city->state_name }}</option>
+                                                @else
                                                 <option {{ $item->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">{{ $city->city_name }}</option>
+                                                @enderror
                                             @endforeach
                                         </select>
                                         @error('city_id')
@@ -1487,6 +1498,14 @@
         }
 
         $(document).ready(function(){
+            @error('state_id')
+            $('#select_country_id').val(0);
+            $('#select_state_id').empty();
+            $('#select_city_id').empty();
+            $('#select_country_id').selectpicker('refresh');
+            $('#select_state_id').selectpicker('refresh');
+            $('#select_city_id').selectpicker('refresh');
+            @enderror
 
                 $('.category').select2({
                     maximumSelectionLength: 5
@@ -1731,6 +1750,8 @@
                                 $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
                             });
                             $('#select_state_id').selectpicker('refresh');
+                            $('#select_city_id').selectpicker('refresh');
+
                         }});
                 }
 
@@ -1770,75 +1791,73 @@
 
             });
 
-            @if(old('country_id'))
-                var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
+            // @if(old('country_id'))
+            //     var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    url: ajax_url_initial_states,
-                    method: 'get',
-                    data: {
-                    },
-                    success: function(result){
-                        $('#select_state_id').empty();
-                        // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
-                        $.each(JSON.parse(result), function(key, value) {
-                            var state_id = value.id;
-                            var state_name = value.state_name;
+            //     $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     jQuery.ajax({
+            //         url: ajax_url_initial_states,
+            //         method: 'get',
+            //         data: {
+            //         },
+            //         success: function(result){
+            //             $('#select_state_id').empty();
+            //             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
+            //             $.each(JSON.parse(result), function(key, value) {
+            //                 var state_id = value.id;
+            //                 var state_name = value.state_name;
 
-                            if(state_id === {{ old('state_id') }})
-                            {
-                                $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
-                            }
-                            else
-                            {
-                                $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
-                            }
+            //                 if(state_id === {{ old('state_id') }})
+            //                 {
+            //                     $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
+            //                 }
+            //                 else
+            //                 {
+            //                     $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
+            //                 }
 
-                        });
-                        $('#select_state_id').selectpicker('refresh');
-                }});
-            @endif
+            //             });
+            //             $('#select_state_id').selectpicker('refresh');
+            //     }});
+            // @endif
 
-            @if(old('state_id'))
-                var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
+            // @if(old('state_id'))
+            //     var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    url: ajax_url_initial_cities,
-                    method: 'get',
-                    data: {
-                    },
-                    success: function(result){
-                        $('#select_city_id').empty();
-                        // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
-                        $.each(JSON.parse(result), function(key, value) {
-                            var city_id = value.id;
-                            var city_name = value.city_name;
+            //     $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     jQuery.ajax({
+            //         url: ajax_url_initial_cities,
+            //         method: 'get',
+            //         data: {
+            //         },
+            //         success: function(result){
+            //             $('#select_city_id').empty();
+            //             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
+            //             $.each(JSON.parse(result), function(key, value) {
+            //                 var city_id = value.id;
+            //                 var city_name = value.city_name;
 
-                            if(city_id === {{ old('city_id') }})
-                            {
-                                $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
-                            }
-                            else
-                            {
-                                $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
-                            }
-                        });
-                        $('#select_city_id').selectpicker('refresh');
-                }});
-            @endif
-            /**
-             * End country, state, city selector
-             */
+            //                 if(city_id === {{ old('city_id') }})
+            //                 {
+            //                     $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
+            //                 }
+            //                 else
+            //                 {
+            //                     $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
+            //                 }
+            //             });
+            //             $('#select_city_id').selectpicker('refresh');
+            //     }});
+            // @endif
+           
 
             /**
              * Start image gallery uplaod

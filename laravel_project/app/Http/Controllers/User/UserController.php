@@ -238,7 +238,7 @@ class UserController extends Controller
         $total_results = $total_free_items;
 
         return response()->view('backend.user.profile.edit',
-            compact('user_detail','free_items','all_cities','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points'));
+            compact('user_detail','free_items','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points'));
     }
 
     /**
