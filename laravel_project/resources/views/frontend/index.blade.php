@@ -205,13 +205,13 @@
                         <h2 class="font-weight-light text-primary">{{ __('Featured Coaches') }}
                         </h2>
                     </div>
-                    @if($all_coaches->count() >= 8)
+                    <!-- @if($all_coaches->count() >= 8)
                         <div class="col-md-5 text-right">
                             <a href="{{ route('page.allcoaches') }}" class="btn btn-primary rounded text-white">
                                 {{ __('View All Coaches') }}
                             </a>
                         </div>
-                    @endif
+                    @endif -->
                 </div>
             @endif
             <div class="row">
@@ -443,13 +443,13 @@
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Trending Topics') }}</h2>
                     </div>
-                    @if($all_trainding_items->count() >= 8)
+                    <!-- @if($all_trainding_items->count() >= 8)
                         <div class="col-md-5 text-right">
                             <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
                                 {{ __('all_latest_listings.view-all-latest') }}
                             </a>
                         </div>
-                    @endif
+                    @endif -->
                 </div>
             @endif
             @if ($all_trainding_items->count() >= 5)
@@ -1225,13 +1225,13 @@
                 <div class="col-md-7 text-left border-primary">
                     <h2 class="font-weight-light text-primary mt-5">{{ __('frontend.homepage.recent-listings') }}</h2>
                 </div>
-                @if($latest_items->count() >= 8)
+                <!-- @if($latest_items->count() >= 8)
                     <div class="col-md-5 text-right">
                         <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
                             {{ __('all_latest_listings.view-all-latest') }}
                         </a>
                     </div>
-                @endif
+                @endif -->
             </div>
         </div>
     @endif
