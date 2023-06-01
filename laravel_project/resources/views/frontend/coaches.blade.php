@@ -551,7 +551,9 @@
                         <section class="card_texting container pt-100">
                             <div class="swiper-container-coaches">
                                 <div class="swiper-wrapper">
+                                    @php $count = 1; @endphp
                                     @foreach ($all_coaches as $all_coaches_key => $coach)
+                                    @php if ($count == 8){ break; } @endphp
                                         <div class="swiper-slide">
                                             <div class="profile-card js-profile-card">
                                                 <div class="profile-card__img">
@@ -642,6 +644,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @php $count++; @endphp
                                     @endforeach
                                 </div>
                                 <div class="swiper-pagination"></div>
