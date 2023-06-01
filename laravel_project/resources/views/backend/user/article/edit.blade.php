@@ -227,7 +227,7 @@ $login_user = Auth::user();
                                                 @error('state_id')<option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
                                                 {{ $state->state_name }}</option>
                                                 @else
-                                                <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
+                                                <option {{ $article->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
                                                 {{ $state->state_name }}</option>
                                                 @enderror
                                             @endforeach
@@ -245,7 +245,7 @@ $login_user = Auth::user();
                                                 @error('state_id') <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
                                                 {{ $city->state_name }}</option>
                                                 @else
-                                                <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
+                                                <option {{ $article->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
                                                 {{ $city->city_name }}</option>
                                                 @enderror
                                             @endforeach
