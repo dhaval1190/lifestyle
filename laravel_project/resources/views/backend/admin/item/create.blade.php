@@ -1184,7 +1184,11 @@
             $('#select_country_id').on('change', function() {
 
                 $('#select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#select_city_id').html(
+                    "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                //  $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
                 $('#select_state_id').selectpicker('refresh');
+                $('#select_city_id').selectpicker('refresh');
 
                 if(this.value > 0)
                 {
@@ -1202,6 +1206,8 @@
                         },
                         success: function(result){
                             $('#select_state_id').empty();
+                            $('#select_city_id').empty();
+
                             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
                             $.each(JSON.parse(result), function(key, value) {
                                 var state_id = value.id;

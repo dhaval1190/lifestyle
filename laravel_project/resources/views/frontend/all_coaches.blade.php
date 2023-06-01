@@ -379,11 +379,13 @@
                                         <div class="col-lg-4 col-md-6 col-12 col-xl-4 padding-top-bottom-set-slider">
                                             <div class="profile-card js-profile-card">
                                                 <div class="profile-card__img">
+                                                <a href="{{ route('page.profile', encrypt($coach->id)) }}">
                                                     @if(empty($coach->user_image))
                                                         <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                                     @else
                                                         <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
                                                     @endif
+                                                </a>
                                                 </div>
     
                                                 <div class="profile-card__cnt js-profile-cnt">
