@@ -1530,7 +1530,7 @@ $login_user = Auth::user();
 
                 if(this.value > 0)
                 {
-                    var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
+                    var ajax_url = '/ajax/states/' + this.value;
 
                     $.ajaxSetup({
                         headers: {
@@ -1568,7 +1568,7 @@ $login_user = Auth::user();
 
                 if(this.value > 0)
                 {
-                    var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
+                    var ajax_url = '/ajax/cities/' + this.value;
 
                     $.ajaxSetup({
                         headers: {
@@ -1595,7 +1595,7 @@ $login_user = Auth::user();
             });
 
             // @if(old('country_id'))
-            //     var ajax_url_initial_states = 'http://localhost/coach_directory/ajax/states/{{ old('country_id') }}';
+            //     var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
 
             //     $.ajaxSetup({
             //         headers: {
@@ -1629,7 +1629,7 @@ $login_user = Auth::user();
             // @endif
 
             // @if(old('state_id'))
-            //     var ajax_url_initial_cities = 'http://localhost/coach_directory/ajax/cities/{{ old('state_id') }}';
+            //     var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
 
             //     $.ajaxSetup({
             //         headers: {
