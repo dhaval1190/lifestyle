@@ -1637,7 +1637,12 @@ $(document).ready(function() {
     $('#select_country_id').on('change', function() {
         $('#select_state_id').html(
             "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+        $('#select_city_id').html(
+            "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+        //  $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
         $('#select_state_id').selectpicker('refresh');
+        $('#select_city_id').selectpicker('refresh');
+
         if (this.value > 0) {
             var ajax_url = '/ajax/states/' + this.value;
             // var id = this.value;
@@ -1649,6 +1654,8 @@ $(document).ready(function() {
                 success: function(result) {
                     // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
                     $('#select_state_id').empty();
+                    $('#select_city_id').empty();
+
                     $.each(JSON.parse(result), function(key, value) {
                         var state_id = value.id;
                         var state_name = value.state_name;
@@ -1689,7 +1696,7 @@ $(document).ready(function() {
     });
 
     @if(old('country_id'))
-    var ajax_url_initial_states = 'ajax/states/{{ old('
+    var ajax_url_initial_states = '/ajax/states/{{ old('
     country_id ') }}';
     jQuery.ajax({
         url: ajax_url_initial_states,
@@ -1718,7 +1725,7 @@ $(document).ready(function() {
     @endif
 
     @if(old('state_id'))
-    var ajax_url_initial_cities = 'ajax/cities/{{ old('
+    var ajax_url_initial_cities = '/ajax/cities/{{ old('
     state_id ') }}';
     jQuery.ajax({
         url: ajax_url_initial_cities,
