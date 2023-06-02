@@ -36,7 +36,8 @@
                 $perPage
             );
 
-            $grouped_comments->withPath(request()->path());
+            $explode_path = explode('/',request()->path())[1];
+            $grouped_comments->withPath($explode_path);
         } else {
             $grouped_comments = $comments->groupBy('child_id');
         }
