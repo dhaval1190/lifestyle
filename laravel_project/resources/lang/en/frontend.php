@@ -184,6 +184,7 @@ return array (
     'unsave-item-error-login' => 'You must log in to remove a saved coach.',
     'unsave-item-success' => 'Coach removed from your saved collection.',
     'view-listing' => 'View Coach',
+    'view-listing-item' => 'View Article',
     'send-referral-email-subject' => ':name shared a referral link with you',
     'send-referral-email-body' => ':from_name shared a referral link with you, please register on :url',
   ),

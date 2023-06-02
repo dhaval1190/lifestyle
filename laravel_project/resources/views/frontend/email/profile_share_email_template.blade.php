@@ -93,7 +93,7 @@
                         <td>
                             <p style="padding: 20px 0px;">If you're having trouble clicking the "View Coach" button, copy and paste the URL below into your web browser:
                             <span>
-                                <a href={{ url('/') }}/{{ $url }}" target="_blank">{{ url('/') }}/{{ $url }}</a>
+                                <a href="{{ $url }}" target="_blank">{{ $url }}</a>
                             </span>
                             </p>
                         </td>

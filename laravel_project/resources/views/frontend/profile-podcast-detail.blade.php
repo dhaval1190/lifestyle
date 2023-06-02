@@ -292,7 +292,7 @@
             
             // alert(id);
             // url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
-            url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
+            url = '/ajax/profile/podcast/' + id;
                 if (type == 'pause') {
                     start_loader();
                     // var ajax_url = '/ajax/profile/podcast/' + id;
