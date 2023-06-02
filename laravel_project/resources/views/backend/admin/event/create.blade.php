@@ -90,7 +90,7 @@
                                                                     <i class="bi bi-calendar"></i>
                                                                 </div>
                                                                 <input type="date" name="event_start_date"
-                                                                    class="form_time" value="value="{{ old('event_start_date') }}"">
+                                                                    class="form_time" value="{{ old('event_start_date') }}">
                                                                 </div>
                                                                 @error('event_start_date')
                                                                     <span class="error_color">

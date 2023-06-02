@@ -148,6 +148,9 @@
                                                                     @elseif($subscription_status !== 'canceled' && $subscription_status !== 'active')
                                                                         <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
                                                                             class="pay_btn">Upgrade Plan</a>
+                                                                    @elseif($subscription_status == 'active' && $active_plan->slug != 'yearly-premium')
+                                                                        <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
+                                                                            class="pay_btn">Upgrade Plan</a>
                                                             @endif
                                                         @else
                                                             <a href="{{ url('user/plans/' . $plan->slug) }}"
