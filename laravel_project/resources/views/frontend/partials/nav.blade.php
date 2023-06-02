@@ -65,7 +65,7 @@
                     @else
                         <li class="has-children">
                             <!-- <a href="#">{{ Auth::user()->name }}</a> -->
-                            <a href="#">{{  str_limit(Auth::user()->name,20,'...')}}</a>
+                            <a href="#">{{  str_limit(Auth::user()->name,15,'...')}}</a>
                             <ul class="dropdown">
                                 <li>
                                     @if(Auth::user()->isAdmin())
