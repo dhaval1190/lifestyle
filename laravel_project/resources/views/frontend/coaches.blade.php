@@ -749,11 +749,11 @@
                         </div>
                     @endif
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-12">
                             {{ $pagination->links() }}
                         </div>
-                    </div>
+                    </div> -->
 
                     @if ($ads_after_content->count() > 0)
                         @foreach ($ads_after_content as $ads_after_content_key => $ad_after_content)
