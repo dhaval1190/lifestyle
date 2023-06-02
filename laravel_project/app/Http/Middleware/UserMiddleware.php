@@ -24,6 +24,8 @@ class UserMiddleware
             }
             else
             {
+
+                Auth::logout();
                 $settings = app('site_global_settings');
                 /**
                  * Start SEO
@@ -35,7 +37,8 @@ class UserMiddleware
                 /**
                  * End SEO
                  */
-                return response()->view('backend.user.suspend');
+                // return response()->view('backend.user.suspend');
+                return redirect()->route('login')->with('email_not_verified','Your email ID is suspended.Please contact to Admin');
             }
 
 

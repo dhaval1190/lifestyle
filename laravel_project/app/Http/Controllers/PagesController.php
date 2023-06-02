@@ -8018,7 +8018,7 @@ class PagesController extends Controller
                                     $email_to,
                                     null,
                                     $email_notify_message,
-                                    __('frontend.item.view-listing'),
+                                    __('frontend.item.view-listing-item'),
                                     'success',
                                     route('page.item', $item->item_slug)
                                 )
@@ -8362,7 +8362,11 @@ class PagesController extends Controller
                         {
                             $template_body = $user_template->email_template; 
                             $email_subject = $user_template->subject; 
-                            $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                            if(auth()->user()->role_id == 3){
+                                $template_body = str_replace('[URL]','',$template_body);
+                            }else{
+                                $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                            }
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;

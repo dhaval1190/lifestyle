@@ -436,7 +436,7 @@ class ArticleController extends Controller
             'category' => 'required|array',
             'category.*' => 'exists:categories,id', // check each item in the array
             'article_featured' => 'required|numeric',
-            'article_title' => 'required|max:200',
+            'article_title' => 'required|max:150',
             'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
@@ -1176,7 +1176,7 @@ class ArticleController extends Controller
         // prepare rule for general information
         $validate_rule = [
             'article_featured' => 'required|numeric',
-            'article_title' => 'required|max:200',
+            'article_title' => 'required|max:150',
             'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
