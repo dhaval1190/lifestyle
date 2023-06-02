@@ -88,19 +88,21 @@ class EventController extends Controller
             'draft_publish.required' => 'Please check draft or publish'
         ]);
 
-        $event_start_hour = $request->event_start_hour;
+        $event_start_hour = explode(" ",$request->event_start_hour)[0];
         // $event_start_min = $request->event_start_min;
-        $event_end_hour = $request->event_end_hour;
+        $event_end_hour = explode(" ",$request->event_end_hour)[0];
         // $event_end_min = $request->event_end_min;
+
+        // echo $event_start_hour." <> ".$event_end_hour;exit;
 
         $eventObj = new Event;
 
         $eventObj->event_name = $request->event_name;
         $eventObj->event_start_date = $request->event_start_date;
-        $eventObj->event_start_hour = $request->event_start_hour;
+        $eventObj->event_start_hour = $event_start_hour;
         // $eventObj->event_start_min = $request->event_start_min;
         $eventObj->event_end_date = $request->event_start_date;
-        $eventObj->event_end_hour = $request->event_end_hour;
+        $eventObj->event_end_hour = $event_end_hour;
         // $eventObj->event_end_min = $request->event_end_min;
         $eventObj->event_description = isset($request->event_description) ? $request->event_description : null;
         $eventObj->event_social_url = $request->event_social_url;
@@ -161,9 +163,9 @@ class EventController extends Controller
             'draft_publish.required' => 'Please check draft or publish'
         ]);
 
-        $event_start_hour = $request->event_start_hour;
+        $event_start_hour = explode(" ",$request->event_start_hour)[0];
         // $event_start_min = $request->event_start_min;
-        $event_end_hour = $request->event_end_hour;
+        $event_end_hour = explode(" ",$request->event_end_hour)[0];
         // $event_end_min = $request->event_end_min;
 
         $eventObj = Event::find($id);
@@ -171,10 +173,10 @@ class EventController extends Controller
 
         $eventObj->event_name = $request->event_name;
         $eventObj->event_start_date = $request->event_start_date;
-        $eventObj->event_start_hour = $request->event_start_hour;
+        $eventObj->event_start_hour = $event_start_hour;
         // $eventObj->event_start_min = $request->event_start_min;
         $eventObj->event_end_date = $request->event_start_date;
-        $eventObj->event_end_hour = $request->event_end_hour;
+        $eventObj->event_end_hour = $event_end_hour;
         // $eventObj->event_end_min = $request->event_end_min;
         $eventObj->event_description = isset($request->event_description) ? $request->event_description : null;
         $eventObj->event_social_url = $request->event_social_url;

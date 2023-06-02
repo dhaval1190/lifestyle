@@ -90,7 +90,7 @@
                                                                     <i class="bi bi-calendar"></i>
                                                                 </div>
                                                                 <input type="date" name="event_start_date"
-                                                                    class="form_time" value="{{ old('event_start_date') }}">
+                                                                    class="form_time" value="value="{{ old('event_start_date') }}"">
                                                                 </div>
                                                                 @error('event_start_date')
                                                                     <span class="error_color">
@@ -108,8 +108,8 @@
                                                                 <div class="icon">
                                                                     <i class="bi bi-clock-fill"></i>
                                                                 </div>
-                                                                <input type="time" name="event_start_hour"
-                                                                    class="form_time" value="{{ old('event_start_hour') }}">
+                                                                <input class="form-control" type="text" id="datetime1" name="event_start_hour"
+                                                                    value="{{ old('event_start_hour') }}">
                                                                 </div>
                                                                 @error('event_start_hour')
                                                                     <span class="error_color">
@@ -126,8 +126,8 @@
                                                                 <div class="icon">
                                                                     <i class="bi bi-clock-fill"></i>
                                                                 </div>
-                                                                <input name="event_end_hour" type="time"
-                                                                    class="form_time" value="{{ old('event_end_hour') }}">
+                                                                <input name="event_end_hour" class="form-control" type="text" id="datetime2"
+                                                                    value="{{ old('event_end_hour') }}">
                                                                 </div>
                                                                 @error('event_end_hour')
                                                                     <span class="error_color">
@@ -296,6 +296,34 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> --}}
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+  </script>
+
+  <!-- Include Moment.js CDN -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
+  </script>
+
+  <!-- Include Bootstrap DateTimePicker CDN -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet">
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+    </script>
+
+<script>
+
+    $('#datetime1').datetimepicker({
+      format: 'HH:mm:ss'
+    });
+    $('#datetime2').datetimepicker({
+      format: 'HH:mm:ss'
+    });
+  </script>
 
     <script>
         $(document).ready(function() {

@@ -92,9 +92,9 @@
                                                                 <img src="{{ asset('frontend/images/time.png') }}"
                                                                     alt="" />
                                                                 {{-- <p>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }} To {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_end_date.' '.$event->event_end_hour.':'.$event->event_end_min)->format('h:i A') }}</p> --}}
-                                                                <p>{{ $event->event_start_hour }}:{{ __('00') }}
+                                                                <p>{{ $event->event_start_hour }}
                                                                     To
-                                                                    {{ $event->event_end_hour }}:{{ __('00') }}
+                                                                    {{ $event->event_end_hour }}
                                                                 </p>
                                                             </div>
                                                             <div class="event_schedule_date" id="join_event">
@@ -102,14 +102,14 @@
                                                                     alt="" />
                                                                 @if ($event->event_start_date < date('Y-m-d'))
                                                                     <p class="info">Event Ended</p>
-                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour . ':00' &&
-                                                                        date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour . ':00')
+                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                        date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
                                                                     <a href="{{ $event->event_social_url }}" target="_blank"
                                                                         id="join_btn">
                                                                         <p class="info">Join</p>
                                                                     </a>
-                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour . ':00' &&
-                                                                        date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour . ':00')
+                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                        date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
                                                                     <p class="info">Event Ended</p>
                                                                 @else
                                                                     <p class="info">Not Started</p>
