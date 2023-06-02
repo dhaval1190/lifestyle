@@ -2848,9 +2848,8 @@ class PagesController extends Controller
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
-        $free_items = $free_items_query->paginate(10);
-        //$pagination = $free_items->appends($querystringArray);
-
+       // $free_items = $free_items_query->paginate(10);
+       $free_items = $free_items_query;
         /**
          * End do listing query
          */

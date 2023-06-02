@@ -850,7 +850,7 @@
              */
             @if ($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
 
-                @if (count($free_items))
+                @if (!empty($free_items))
 
                     var window_height = $(window).height();
                     $('#mapid-box').css('height', window_height + 'px');
