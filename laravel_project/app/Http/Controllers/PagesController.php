@@ -7997,7 +7997,7 @@ class PagesController extends Controller
                                     $email_to,
                                     null,
                                     $email_notify_message,
-                                    __('frontend.item.view-listing'),
+                                    __('frontend.item.view-listing-item'),
                                     'success',
                                     route('page.item', $item->item_slug)
                                 )
@@ -8341,6 +8341,13 @@ class PagesController extends Controller
                         {
                             $template_body = $user_template->email_template; 
                             $email_subject = $user_template->subject; 
+                            if(auth()->user()->role_id == 3){
+                                $template_body = str_replace('[URL]','',$template_body);
+                                $profile_url = '';
+                            }else{
+                                $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                                $profile_url = route('page.profile', encrypt($request->authUserId));
+                            }
                             $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
@@ -8366,7 +8373,7 @@ class PagesController extends Controller
                                     'to_mail' => $email_to,
                                     'email_from_name' => $email_from_name,
                                     'message_content' => $template_body, 
-                                    'url' => route('page.profile', encrypt($request->authUserId)),
+                                    'url' => $profile_url,
                                     'year' => date('Y'),
                                     // 'questions' => $email_note,
                                     ];

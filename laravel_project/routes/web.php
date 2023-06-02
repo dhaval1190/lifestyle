@@ -26,7 +26,7 @@ Route::get('/utils/cache', 'UtilsController@makeCache')->name('utils.cache');
 /**
  * Start website routes
  */
-Route::middleware(['installed','demo','global_variables','maintenance'])->group(function () {
+Route::middleware(['installed','demo','global_variables','maintenance','front_user'])->group(function () {
 
     /**
      * Auth routes

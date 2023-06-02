@@ -141,11 +141,11 @@
                                                                     Active</a>
                                                                 @elseif($active_plan->id == $plan->id && $subscription_status == 'canceled')
                                                                     <button type="button" class="pay_btn"
-                                                                        disabled>Cancelled</a>
-                                                                    @elseif($subscription_status == 'canceled')
+                                                                        disabled>Canceled</a>
+                                                                    {{-- @elseif($subscription_status == 'canceled')
                                                                         <a href="{{ url('user/plans/' . $plan->slug) }}"
-                                                                            class="pay_btn">Choose</a>
-                                                                    @else
+                                                                            class="pay_btn">Choose</a> --}}
+                                                                    @elseif($subscription_status !== 'canceled' && $subscription_status !== 'active')
                                                                         <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
                                                                             class="pay_btn">Upgrade Plan</a>
                                                             @endif
@@ -168,6 +168,9 @@
                                 </div>
                             </div>
                         </section>
+                        @if ($subscription_status == 'canceled')  
+                            <p>Note: You have canceled the plan. Renew will be done after current period ends.</p>
+                        @endif
                     </div>
                 </div>
             </section>
