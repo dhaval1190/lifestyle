@@ -3673,17 +3673,17 @@
              * Start initial map
              */
             @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP && $item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-            var map = L.map('mapid-item', {
-                center: [{{ $item->item_lat }}, {{ $item->item_lng }}],
-                zoom: 13,
-                scrollWheelZoom: false,
-            });
+            // var map = L.map('mapid-item', {
+            //     center: [{{ $item->item_lat }}, {{ $item->item_lng }}],
+            //     zoom: 13,
+            //     scrollWheelZoom: false,
+            // });
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+            // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            // }).addTo(map);
 
-            L.marker([{{ $item->item_lat }}, {{ $item->item_lng }}]).addTo(map);
+            // L.marker([{{ $item->item_lat }}, {{ $item->item_lng }}]).addTo(map);
             @endif
             /**
              * End initial map

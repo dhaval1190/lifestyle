@@ -877,7 +877,7 @@ $chk_post = Auth::user()->phone;
                             <span class="set_width">
                                 {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} :
                                 {{ $podcast_media_value->media_name }}</span>
-                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}">
+                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
                             <i class="far fa-edit"></i>
                             </a>
                             <a class="text-danger" href="#" data-toggle="modal"
@@ -1357,61 +1357,61 @@ $chk_post = Auth::user()->phone;
 @endforeach
 
 @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-<div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
-aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Podcast') }}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form id="update-article-slug-form"
-            action="{{ route('podcastmedia.update', ['podcate_detail' => $podcast_media_value]) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-3">
-                        <label for="media_type" class="text-black">Type</label>
-                        <select id="media_type"
-                            class="form-control selectpicker @error('media_type') is-invalid @enderror"
-                            name="media_type" title="Select Type">
-                            <option name="apple_podcast" value="apple_podcast">Apple Podcast</option>
-                            <option name="spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
-                            <option name="stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
-                            <option name="google_podcast" value="google_podcast">Google Podcast</option>
-                        </select>
-                        @error('media_type')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-9">
-                        <label for="media_url" class="text-black">Podcast Title</label>
-                        <input type="hidden" name="podcast_media_id" value="{{ $podcast_media_value->id }}">
-                        <input id="podcast_name" type="text"
-                            class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name"
-                            value="{{ $podcast_media_value->media_name }}">
-                        @error('media_url')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+    <div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Podcast') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <form id="update-article-slug-form"
+                    action="{{ route('podcastmedia.update', ['podcate_detail' => $podcast_media_value]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="media_type" class="text-black">Type</label>
+                                <select id="media_type"
+                                    class="form-control selectpicker @error('media_type') is-invalid @enderror"
+                                    name="podcast_web_type" title="Select Type">
+                                    <option name="apple_podcast" value="apple_podcast" {{ $podcast_media_value->podcast_web_type == 'apple_podcast' ? 'selected' : '' }} disabled>Apple Podcast</option>
+                                    <option name="spotify_podcast" value="spotify_podcast" {{ $podcast_media_value->podcast_web_type == 'spotify_podcast' ? 'selected' : '' }} disabled>Spotify Podcast</option>
+                                    <option name="stitcher_podcast" value="stitcher_podcast" {{ $podcast_media_value->podcast_web_type == 'stitcher_podcast' ? 'selected' : '' }} disabled>Stitcher Podcast</option>
+                                    <option name="google_podcast" value="google_podcast" {{ $podcast_media_value->podcast_web_type == 'google_podcast' ? 'selected' : '' }} disabled>Google Podcast</option>
+                                </select>
+                                @error('media_type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-9">
+                                <label for="media_url" class="text-black">Podcast Title</label>
+                                <input type="hidden" name="podcast_media_id" value="{{ $podcast_media_value->id }}">
+                                <input id="podcast_name" type="text"
+                                    class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name"
+                                    value="{{ $podcast_media_value->media_name }}">
+                                @error('media_url')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-</div>
 
 <div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog"
     aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
