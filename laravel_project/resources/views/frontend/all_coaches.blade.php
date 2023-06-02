@@ -423,7 +423,7 @@
                                                                 @endif
                                                         </div>
                                                         @php $get_count_rating = $coach->getProfileCountRating(); @endphp
-                                                        <div class="pl-0 m_auto_set rating_stars rating_stars_{{ $coach->name }}" data-id="rating_stars_{{ $coach->name }}" data-rating="{{ $coach->profile_average_rating ? $coach->profile_average_rating : 0 }}"></div>
+                                                        <div class="pl-0 m_auto_set rating_stars rating_stars_{{ $coach->id }}" data-id="rating_stars_{{ $coach->id }}" data-rating="{{ $coach->profile_average_rating}}"></div>
                                                             <address class="mt-1">
                                                                 @if($get_count_rating == 1)
                                                                     {{ '(' . $get_count_rating . ' ' . __('review.frontend.review') . ')' }}
