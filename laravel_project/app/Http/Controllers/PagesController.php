@@ -2561,8 +2561,8 @@ class PagesController extends Controller
             
             $free_items_per_page = 10 - $paid_items_per_page;
             
-            $paid_items = $paid_items_query->paginate($paid_items_per_page);
-            $free_items = $free_items_query->paginate($free_items_per_page);
+            $paid_items = $paid_items_query->paginate(9);
+            $free_items = $free_items_query->paginate(9);
             
             if(ceil($total_paid_items / $paid_items_per_page) > ceil($total_free_items / $free_items_per_page))
             {
@@ -4566,27 +4566,6 @@ class PagesController extends Controller
 
             return redirect()->route('user.profile.edit');
         } else {
-            return redirect()->route('user.profile.edit');
-        }
-    }
-
-    public function updatePodcastMedia(Request $request)
-    {
-
-        $login_user = Auth::user();
-
-        $media = MediaDetail::where('id', $request->podcast_media_id)->where('user_id',$login_user->id)->first();
-        if ($media && $media->user_id == $login_user->id) {
-            // $media->podcast_web_type = $request->podcast_web_type;
-            $media->media_name = $request->podcast_name;
-            $media->save();
-
-            \Session::flash('flash_message', __('alert.media-updated'));
-            \Session::flash('flash_type', 'success');
-
-            return redirect()->route('user.profile.edit');
-
-        }else{
             return redirect()->route('user.profile.edit');
         }
     }
@@ -8018,7 +7997,7 @@ class PagesController extends Controller
                                     $email_to,
                                     null,
                                     $email_notify_message,
-                                    __('frontend.item.view-listing-item'),
+                                    __('frontend.item.view-listing'),
                                     'success',
                                     route('page.item', $item->item_slug)
                                 )
@@ -8362,11 +8341,7 @@ class PagesController extends Controller
                         {
                             $template_body = $user_template->email_template; 
                             $email_subject = $user_template->subject; 
-                            if(auth()->user()->role_id == 3){
-                                $template_body = str_replace('[URL]','',$template_body);
-                            }else{
-                                $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
-                            }
+                            $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;
