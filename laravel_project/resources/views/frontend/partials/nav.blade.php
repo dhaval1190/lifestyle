@@ -64,7 +64,8 @@
                         <li class="login @yield('login_active')"><a href="{{ route('login') }}"><span class="border-left pl-xl-4"></span>{{ __('frontend.header.login') }}</a></li>
                     @else
                         <li class="has-children">
-                            <a href="#">{{ Auth::user()->name }}</a>
+                            <!-- <a href="#">{{ Auth::user()->name }}</a> -->
+                            <a href="#">{{  str_limit(Auth::user()->name,20,'...')}}</a>
                             <ul class="dropdown">
                                 <li>
                                     @if(Auth::user()->isAdmin())

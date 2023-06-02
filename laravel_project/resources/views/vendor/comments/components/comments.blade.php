@@ -23,12 +23,12 @@
 
             $slicedParentCommentsIds = $slicedParentComments->pluck('id')->toArray();
 
-            $comments = $comments
+            $comments = $comments;
                 // Remove parent Comments from comments
-                ->whereNotIn('id', $slicedParentCommentsIds)
+               // ->whereNotIn('id', $slicedParentCommentsIds)
                 // Keep only comments that are related to spliced parent comments.
                 // This maybe improves performance?
-                ->whereIn('child_id', $slicedParentCommentsIds);
+               // ->whereIn('child_id', $slicedParentCommentsIds);
 
             $grouped_comments = new \Illuminate\Pagination\LengthAwarePaginator(
                 $slicedParentComments->merge($comments)->groupBy('child_id'),
