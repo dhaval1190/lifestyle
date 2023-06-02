@@ -54,7 +54,7 @@ class PlanController extends Controller
         if(isset($authUser_subs->stripe_id)){
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET')); 
             $subscriptionData = \Stripe\Subscription::retrieve($authUser_subs->stripe_id);
-            // dd($subscriptionData);          
+            // dd($subscriptionData->status);          
                 $subscription_status = $subscriptionData->status;            
         }
         
@@ -78,6 +78,15 @@ class PlanController extends Controller
     public function show(Request $request,$plan_slug)
     {
         
+        $authUser_subs = Subscription::where('user_id',auth()->user()->id)->orderBy('id','DESC')->first();
+        if(isset($authUser_subs->stripe_id)){
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET')); 
+            $subscriptionData = \Stripe\Subscription::retrieve($authUser_subs->stripe_id);
+            if($subscriptionData->status == 'canceled' || $subscriptionData->status == 'active'){
+                return back();
+            }            
+        }
+
         $plan = Plan::where('slug',$plan_slug)->first();     
         $intent = auth()->user()->createSetupIntent();
 

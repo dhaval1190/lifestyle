@@ -30,6 +30,7 @@ class VerifySubscription
         if(isset($subscription->stripe_id)){
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET')); 
             $subscriptionData = \Stripe\Subscription::retrieve($subscription->stripe_id);
+            // dd($subscriptionData->status);
             // dd(date('Y-m-d H:i:s',$subscriptionData->current_period_end));
             $current_period_end =  date('Y-m-d H:i:s', $subscriptionData->current_period_end);
             if($subscriptionData->status == 'canceled'){
