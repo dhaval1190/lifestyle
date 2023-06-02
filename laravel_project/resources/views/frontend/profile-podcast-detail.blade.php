@@ -204,6 +204,7 @@
                                         </div>
                                       </div>
                                     </div>
+                                    <p>{{ $podcast['media_name'] }}</p>
                                   </div>
                                 @endforeach
                             </div>                          
