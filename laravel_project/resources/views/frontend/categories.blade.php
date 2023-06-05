@@ -532,8 +532,8 @@
 
                     <div class="row mb-4">
                         <div class="col-md-6 text-left">
-                            {{-- <strong>{{ number_format($total_results) }}</strong> --}}
-                            <strong>{{ number_format($free_items->count()) }}</strong>
+                            <strong>{{ number_format($total_results) }}</strong>
+                            {{-- <strong>{{ number_format($free_items->count()) }}</strong> --}}
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
                         @if ($free_items->count() >= 8)
