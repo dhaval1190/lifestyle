@@ -133,7 +133,8 @@ $login_user = Auth::user();
                 </div>
             </div>
 
-            <div class="row font_icon_color">
+            {{-- <div class="row font_icon_color"> --}}
+                <div class="row">
                 <div class="col-12">
                     <form method="POST" action="{{ route('user.articles.update', $article) }}" id="article-create-form">
                         @csrf

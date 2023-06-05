@@ -22,6 +22,208 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
 @endsection
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+    @import url("https://fonts.googleapis.com/css?family=Pacifico");
+
+    .input-group-addon {
+        cursor: pointer;
+    }
+
+    .input-group.date {
+        text-transform: uppercase;
+    }
+
+    .form-control {
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+
+    .form-control:hover,
+    .form-control:focus,
+    .form-control:active {
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border: 1px solid #34495e;
+    }
+
+    body {
+        background: #e0e0e0;
+        font-family: "Open Sans", sans-serif;
+        font-size: 14px;
+        line-height: 21px;
+        padding: 15px 0;
+    }
+
+    h1 {
+        color: #333;
+        font-family: "Pacifico", cursive;
+        font-size: 28px;
+        line-height: 42px;
+        margin: 0 0 15px;
+        text-align: center;
+    }
+
+    .content {
+        background: #fff;
+        border-radius: 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075), 0 2px 4px rgba(0, 0, 0, 0.0375);
+        padding: 30px 30px 20px;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu {
+        border: 1px solid #34495e;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 10px 0 0 0;
+        padding: 0;
+        min-width: 300px;
+        max-width: 100%;
+        width: auto;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu.bottom:before,
+    .bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {
+        display: none;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td,
+    .bootstrap-datetimepicker-widget.dropdown-menu table th {
+        border-radius: 0;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.old,
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.new {
+        color: #bbb;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.today:before {
+        border-bottom-color: #0095ff;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.active,
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.active:hover,
+    .bootstrap-datetimepicker-widget.dropdown-menu table td span.active {
+        background-color: #0095ff;
+        text-shadow: none;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.active.today:before,
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.active:hover.today:before,
+    .bootstrap-datetimepicker-widget.dropdown-menu table td span.active.today:before {
+        border-bottom-color: #fff;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table th {
+        height: 40px;
+        padding: 0;
+        width: 40px;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table th.picker-switch {
+        width: auto;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table tr:first-of-type th {
+        border-bottom: 1px solid #34495e;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td.day {
+        height: 32px;
+        line-height: 32px;
+        padding: 0;
+        width: auto;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu table td span {
+        border-radius: 0;
+        height: 77px;
+        line-height: 77px;
+        margin: 0;
+        width: 25%;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-months tbody tr td,
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-years tbody tr td,
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-decades tbody tr td {
+        padding: 0;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-decades tbody tr td {
+        height: 27px;
+        line-height: 27px;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-decades tbody tr td span {
+        display: block;
+        float: left;
+        width: 50%;
+        height: 46px;
+        line-height: 46px !important;
+        padding: 0;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .datepicker-decades tbody tr td span:not(.decade) {
+        display: none;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td {
+        padding: 0;
+        width: 30%;
+        height: 20px;
+        line-height: 20px;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td:nth-child(2) {
+        width: 10%;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td a,
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td span,
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td button {
+        border: none;
+        border-radius: 0;
+        height: 56px;
+        line-height: 56px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td span {
+        color: #333;
+        margin-top: -1px;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td button {
+        background-color: #fff;
+        color: #333;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .timepicker-picker table td button:hover {
+        background-color: #eee;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .picker-switch table td {
+        border-top: 1px solid #34495e;
+    }
+
+    .bootstrap-datetimepicker-widget.dropdown-menu .picker-switch table td a,
+    .bootstrap-datetimepicker-widget.dropdown-menu .picker-switch table td span {
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .todayText:before {
+        content: "Today's Date";
+    }
+</style>
 
 @section('content')
     <div class="row justify-content-between">
@@ -111,8 +313,13 @@
                                                                 <div class="icon">
                                                                     <i class="bi bi-clock-fill"></i>
                                                                 </div>
-                                                                <input class="form-control" type="text" id="datetime1" name="event_start_hour"
-                                                                    value="{{ $event->event_start_hour }}">
+                                                                <div class="input-group time" id="timepicker1">
+                                                                    <input class="form-control" name="event_start_hour"
+                                                                        placeholder="HH:mm:ss" value="{{ $event->event_start_hour }}"/><span
+                                                                        class="input-group-append input-group-addon"><span
+                                                                            class="input-group-text"><i
+                                                                                class="fa fa-clock"></i></span></span>
+                                                                </div>
                                                             </div>
                                                             @error('event_start_hour')
                                                                 <span class="error_color">
@@ -129,8 +336,13 @@
                                                                 <div class="icon">
                                                                     <i class="bi bi-clock-fill"></i>
                                                                 </div>
-                                                                <input name="event_end_hour" class="form-control" type="text" id="datetime2"
-                                                                   value="{{ $event->event_end_hour }}">
+                                                                <div class="input-group time" id="timepicker2">
+                                                                    <input class="form-control" name="event_end_hour"
+                                                                        placeholder="HH:mm:ss"  value="{{ $event->event_end_hour }}"/><span
+                                                                        class="input-group-append input-group-addon"><span
+                                                                            class="input-group-text"><i
+                                                                                class="fa fa-clock"></i></span></span>
+                                                                </div>
                                                             </div>
                                                             @error('event_end_hour')
                                                                 <span class="error_color">
@@ -144,17 +356,17 @@
                                                 <hr>
 
                                                 <!-- <div class="form_group">
-                                                                        <label class="group_title">Location
-                                                                            <span>(Required)</span></label>
-                                                                            <div class="select">
-                                                                        <select class="input_control select__field">
-                                                                            <option>Select Location</option>
-                                                                            <option>Select Location</option>
-                                                                            <option>Select Location</option>
-                                                                            <option>Select Location</option>
-                                                                        </select>
-                                                                        </div>
-                                                                    </div> -->
+                                                                            <label class="group_title">Location
+                                                                                <span>(Required)</span></label>
+                                                                                <div class="select">
+                                                                            <select class="input_control select__field">
+                                                                                <option>Select Location</option>
+                                                                                <option>Select Location</option>
+                                                                                <option>Select Location</option>
+                                                                                <option>Select Location</option>
+                                                                            </select>
+                                                                            </div>
+                                                                        </div> -->
 
                                                 <div class="form_group">
                                                     <label class="group_title">URL
@@ -178,10 +390,13 @@
                                                             class="fa-solid fa-file-image"></i>
                                                         {{ __('backend.item.select-image') }}
                                                     </button>
-                                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
-                                                        <small class="form-text text-muted">{{ __('maximum file size: 10mb') }}</small>
-                                                        <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>                                                       
-                                                    
+                                                    <small
+                                                        class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                                    <small
+                                                        class="form-text text-muted">{{ __('maximum file size: 10mb') }}</small>
+                                                    <small
+                                                        class="form-text text-muted">{{ __('Accepts only JPG,JPEG and PNG image type') }}</small>
+
                                                     <input type="hidden" name="event_image" class="input_control"
                                                         id="event_image">
                                                     <label class="upload_media" for="file_upload">
@@ -228,8 +443,8 @@
                                         </div>
                                         <hr>
                                         <div class="form_footer">
-                                            <a href="{{ route('admin.events.index') }}" class="form_footer_btn cancel_btn"
-                                                type="reset">Cancel</a>
+                                            <a href="{{ route('admin.events.index') }}"
+                                                class="form_footer_btn cancel_btn" type="reset">Cancel</a>
                                             <button type="submit" class="form_footer_btn">
                                                 {{ __('backend.shared.update') }}
                                             </button>
@@ -288,7 +503,7 @@
 
 @section('scripts')
     <!-- Image Crop Plugin Js -->
-    <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
+    {{-- <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script> --}}
     <script src="{{ asset('backend/vendor/spectrum/spectrum.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
@@ -310,34 +525,48 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> --}}
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
+    {{-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> --}}
+  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
   </script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
-  </script>
+  </script> --}}
 
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"> --}}
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
+
+
+<script>
+    
+</script>
   <!-- Include Moment.js CDN -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
-  </script>
+  {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
+  </script> --}}
 
   <!-- Include Bootstrap DateTimePicker CDN -->
-  <link
+  {{-- <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
     rel="stylesheet">
 
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-    </script>
+    </script> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
 
 <script>
 
-    $('#datetime1').datetimepicker({
-      format: 'HH:mm:ss'
-    });
-    $('#datetime2').datetimepicker({
-      format: 'HH:mm:ss'
-    });
+    // $('#datetime1').datetimepicker({
+    //   format: 'HH:mm:ss'
+    // });
+    // $('#datetime2').datetimepicker({
+    //   format: 'HH:mm:ss'
+    // });
   </script>
 
     <script>
@@ -348,13 +577,13 @@
             /**
              * Start color picker
              */
-            $('#category_header_background_color').spectrum({
-                type: "component",
-                togglePaletteOnly: "true",
-                showInput: "true",
-                showInitial: "true",
-                showAlpha: "false"
-            });
+            // $('#category_header_background_color').spectrum({
+            //     type: "component",
+            //     togglePaletteOnly: "true",
+            //     showInput: "true",
+            //     showInitial: "true",
+            //     showAlpha: "false"
+            // });
             /**
              * End color picker
              */
@@ -362,7 +591,7 @@
             /**
              * Start the croppie image plugin
              */
-            $('.selectpicker').selectpicker();
+            // $('.selectpicker').selectpicker();
             var image_crop = null;
 
             $('#upload_image').on('click', function() {
@@ -515,12 +744,51 @@
              * End image file upload preview
              */
 
-            $('#event_start_date').datepicker({
-                format: 'yyyy-mm-dd',
-            });
-            $('#event_end_date').datepicker({
-                format: 'yyyy-mm-dd',
-            });
+            // $('#event_start_date').datepicker({
+            //     format: 'yyyy-mm-dd',
+            // });
+            // $('#event_end_date').datepicker({
+            //     format: 'yyyy-mm-dd',
+            // });
         });
     </script>
+    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> --}}
+    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
+    <script>
+        if (/Mobi/.test(navigator.userAgent)) {
+  // if mobile device, use native pickers
+  $(".date input").attr("type", "date");
+  $(".time input").attr("type", "time");
+} else {
+  // if desktop device, use DateTimePicker
+  $("#datepicker").datetimepicker({
+    useCurrent: false,
+    format: "DD-MMM-YYYY",
+    showTodayButton: true,
+    icons: {
+      next: "fa fa-chevron-right",
+      previous: "fa fa-chevron-left",
+      today: 'todayText',
+    }
+  });
+  $("#timepicker1").datetimepicker({
+    format: 'HH:mm:ss',
+    icons: {
+      up: "fa fa-chevron-up",
+      down: "fa fa-chevron-down"
+    }
+  });
+  $("#timepicker2").datetimepicker({
+    format: 'HH:mm:ss',
+    icons: {
+      up: "fa fa-chevron-up",
+      down: "fa fa-chevron-down"
+    }
+  });
+}
+
+    </script>  
 @endsection
