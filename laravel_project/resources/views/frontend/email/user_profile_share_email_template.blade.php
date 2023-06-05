@@ -22,16 +22,16 @@
 
     <h2>Profile Share</h2>
 
-    <table>
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
         <tr>
-            <th>Details</th>
+            <th style="font-size: 10px; line-height:30px; width:100%;">Details</th>
             {{-- <th>URL</th>
             <th>Note</th> --}}
 
         </tr>
 
         <tr>
-            <td>{!! $message_content !!}</td>
+            <td style="font-size: 10px; line-height:30px; width:100%;">{!! $message_content !!}</td>
             {{-- <td>{{ $url }}</td>
             <td>{{ $note }}</td> --}}
 

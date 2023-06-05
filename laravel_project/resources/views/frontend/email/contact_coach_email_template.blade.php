@@ -48,7 +48,7 @@
         <table>
           <tbody>
             <tr>
-              <td>
+              <td style="font-size: 10px; line-height:30px; width:100%;">
                 <p style="padding: 10px 0px; font-weight: bold">
                     {!! $message_content !!}
                 </p>
@@ -59,7 +59,7 @@
         <table>
           <tbody>
             <tr>
-              <td>
+              <td style="font-size: 10px; line-height:30px; width:100%;">
                 <p style="padding-top: 10px;">Regards,</p>
               </td>
             </tr>
@@ -69,7 +69,7 @@
         <table>
           <tbody>
             <tr>
-              <td>
+              <td style="font-size: 10px; line-height:30px; width:100%;">
                 <p style="padding: 0px 0px;">The CoachesHQ Family</p>
               </td>
             </tr>

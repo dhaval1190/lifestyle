@@ -1767,7 +1767,7 @@
                             @comments([
                             'model' => $item,
                             'approved' => true,
-                            'perPage' => 10
+                            'perPage' => 200
                             ])
 
                             <hr>

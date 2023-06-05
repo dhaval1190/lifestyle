@@ -46,11 +46,11 @@
           </table>
 
         <div class="invoice-box">
-            <table>
+            <table cellpadding="0" cellspacing="0" style="width: 100%;">
               <tbody>
                 <tr>
                   <td>
-                    <td>{!! $message_content !!}</td>
+                    <td style="font-size: 10px; line-height:30px; width:100%;">{!! $message_content !!}</td>
                   </td>
                 </tr>
               </tbody>
