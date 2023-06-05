@@ -56,7 +56,7 @@
 </ul>
 
 @isset ($perPage)
-    {{ $grouped_comments->links() }}
+    {{-- {{ $grouped_comments->links() }} --}}
 @endisset
 
 @auth
