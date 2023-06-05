@@ -1182,7 +1182,7 @@
                         <div class="col-md-12">
                             <div class="below_info">
                                 <h3>Our Podcast</h3>
-                                @if (isset($podcast_media_array) && !empty($podcast_media_array) && $podcast_media_array->count() >= 3)
+                                @if (isset($podcast_media_array) && !empty($podcast_media_array) && $podcast_media_array->count() >= 4)
                                     <a href="{{ route('page.profile.podcast', encrypt($user_detail['id'])) }}">View
                                         all</a>
                                 @endif
@@ -1190,23 +1190,26 @@
                         </div>
                         <div class="col-md-12 plr-45 padding_set_left_right_15">                                
                             <div class="row">
+                                @php $count = 1; @endphp
                                 @foreach ($podcast_media_array as $podcast_key => $podcast)
-                                <div class="col-md-3">
-                                    <div class="">
-                                      <div class="box-video vid-fit-reveal" data-id="{{ $podcast->id }}" data-testid="play-pause-button" data-vid="box-video_{{ $podcast['id'] }}" id="#js-fitvideo_{{ $podcast->id }}">
-                                        <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                          style="background-image: @if(str_contains($podcast['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
-                                          <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
-                                        </a>
-                                        <div class="video-container">
-                                          <iframe width="590" height="100%"
-                                            src="{{ $podcast['media_image'] }}" id="vid-reveal_{{ $podcast->id }}" frameborder="0"
-                                            allowfullscreen="allowfullscreen"></iframe>
+                                    @php if($count == 5) break; @endphp
+                                    <div class="col-md-3">
+                                        <div class="">
+                                        <div class="box-video vid-fit-reveal" data-id="{{ $podcast->id }}" data-testid="play-pause-button" data-vid="box-video_{{ $podcast['id'] }}" id="#js-fitvideo_{{ $podcast->id }}">
+                                            <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                            style="background-image: @if(str_contains($podcast['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
+                                            <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
+                                            </a>
+                                            <div class="video-container">
+                                            <iframe width="590" height="100%"
+                                                src="{{ $podcast['media_image'] }}" id="vid-reveal_{{ $podcast->id }}" frameborder="0"
+                                                allowfullscreen="allowfullscreen"></iframe>
+                                            </div>
                                         </div>
-                                      </div>
+                                        </div>
+                                        <p>{{ $podcast['media_name'] }}</p>
                                     </div>
-                                    <p>{{ $podcast['media_name'] }}</p>
-                                  </div>
+                                    @php $count++; @endphp
                                 @endforeach
                             </div>                          
                         </div>
