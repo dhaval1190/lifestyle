@@ -993,13 +993,18 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="video">
-                                        <div class='c-video__image-container vid-fit-user'
-                                            data-id="{{ $user_detail->id }}"
+                                        <div class='c-video__image-container vid-fit-user box-video-youtube'
+                                            data-id="{{ $user_detail->id }}" data-vid="box-video-youtube_{{ $user_detail->id }}"
                                             id="#js-fitvideouser_{{ $user_detail->id }}">
+                                            <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $user_detail->id }}" data-toggle="modal" data-target="#youtubeModal"
+                                                        data-src="{{ $user_detail->youtube }}">
+                                                        <div class="bt-play" id="bt-playuser_{{ $user_detail->id }}"></div>
+                                            </a>
                                             <div class="bt-play" id="bt-playuser_{{ $user_detail->id }}"></div>
                                             <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
                                                 frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal"
-                                                frameborder="0" allow="autoplay"></iframe>
+                                                frameborder="0" allow="autoplay">
+                                            </iframe>
                                         </div>
 
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
@@ -1040,13 +1045,13 @@
                         <div class="col-md-12">
                             <div class="below_info">
                                 <h3>Keep Learning</h3>
-                                @if (isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() >= 5)
+                                @if (isset($video_media_array) && !empty($video_media_array) && $video_media_array->count() >= 4)
                                     <a href="{{ route('page.profile.youtube', encrypt($user_detail['id'])) }}">View
                                         all</a>
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45 padding_set_left_right_15">
+                        {{-- <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div id="news-slider" class="owl-carousel">
                                 @foreach ($video_media_array as $video_key => $video)
                                     <div class="post-slide">
@@ -1064,6 +1069,31 @@
                                     </div>
                                 @endforeach
                             </div>
+                        </div> --}}
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">                                
+                            <div class="row">
+                                @php $count = 1; @endphp
+                                @foreach ($video_media_array as $video_key => $video)
+                                @php if($count == 4) break; @endphp
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                                data-id="{{ $video->id }}" id="#js-fitvideo_{{ $video->id }}" data-vid="box-video-youtube_{{ $video->id }}">
+                                                <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video->id }}" data-toggle="modal" data-target="#youtubeModal"
+                                                    data-src="{{ $video['media_url'] }}">
+                                                    <div class="bt-play" id="bt-play_{{ $video->id }}"></div>
+                                                </a>
+                                                <iframe width="250" height="215" src="{{ $video['media_url'] }}"
+                                                    title="YouTube video player" frameborder="0"
+                                                    id="vid-reveal_{{ $video->id }}"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $count++; @endphp
+                                @endforeach
+                            </div>                          
                         </div>
                     </div>
                 @endif
@@ -1601,6 +1631,24 @@
                   </button>
                 </div>
                  <iframe src="" id="iframesrcURL" frameborder="0"  class=""></iframe>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <!-- For youtube modal-->
+    <div class="modal-4">
+        <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
+              <div class="modal-content content_design3">
+                <div class="modal-header border-bottom-0">
+                  <h5 class="modal-title" id="exampleModalLabel_youtube"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                 <iframe src="" id="youtubeiframesrcURL" frameborder="0"  class="min_h_300" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                 allowfullscreen></iframe>
               </div>
             </div>
           </div>
@@ -2624,7 +2672,34 @@
                 $('#iframesrcURL').attr('src', podcastUrl);
                 // $(this).addClass('open');
             });
-        })
+
+            $("#podcastModal").on("hidden.bs.modal", function() {
+                $('#iframesrcURL').attr('src', '');            
+            });
+
+            //for youtube video
+
+            $(".box-video-youtube").click(function () {
+                $('#youtubeiframesrcURL').attr('src', '');
+                // $('#youtubeiframesrcURL').removeAttr('class');
+                $('#exampleModalLabel_podcast').text('');                
+
+
+                var youtube_div_Id = $(this).data('vid');
+                var split_youtube_div_id = youtube_div_Id.split('_')[1];                
+                // console.log(split_youtube_div_id)
+                var youtubeUrl = $('#youtube_id_'+split_youtube_div_id).data('src');
+                // console.log(youtubeUrl);
+                
+                $('#youtubeiframesrcURL').attr('src', youtubeUrl);
+            });
+
+            $("#youtubeModal").on("hidden.bs.modal", function() {
+                $('#youtubeiframesrcURL').attr('src', '');            
+            });
+
+
+        });
     
     </script>
 @endsection
