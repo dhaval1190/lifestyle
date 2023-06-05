@@ -60,7 +60,7 @@
                 <tbody>
                     <tr>
                         <td style="background: #48bb78; color: #fff; border-bottom: 8px solid #48bb78; border-left: 18px solid #48bb78; border-right: 18px solid #48bb78; border-top: 8px solid #48bb78; display: inline-block;">
-                            <a href="{{ $url }}" style="color: #fff; text-decoration: none;">View Article</a>
+                            <a href="{{ $url }}" style="color: #fff; text-decoration: none;">View {{ $coach_article }}</a>
                         </td>
                     </tr>
                 </tbody>

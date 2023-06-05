@@ -7938,7 +7938,12 @@ class PagesController extends Controller
                     // $auth_user_role_id = auth()->user()->role_id;
                     // if($auth_user_role_id == '2'){
                         $to_user_details = User::where('email',$request->item_share_email_to_email)->first();
-                        $user = EmailTemplate::where('user_id',$to_user_details->id)->where('is_contact_or_profile','profile')->first();
+                        $user = '';
+                        if(isset($to_user_details)){
+                            $user = EmailTemplate::where('user_id',$to_user_details->id)->where('is_contact_or_profile','profile')->first();
+
+                        }
+                        // return response()->json(['status'=>"successssssss",'msg'=>$user]);
 
                     // }elseif($auth_user_role_id == '3'){
                     //     $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
@@ -7964,6 +7969,7 @@ class PagesController extends Controller
                             'url' => route('page.item', $item->item_slug),
                             'note' => $email_note,
                             'year' => date('Y'),
+                            'coach_article' => 'Article'
                         ];
                         try{
                             Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
@@ -8123,7 +8129,10 @@ class PagesController extends Controller
                     }
                     $toUser = User::where('email',$request->profile_share_email_to_email)->first();
                     // if($authUser->role_id == '2'){
-                    $user = EmailTemplate::where('user_id',$toUser->id)->where('is_contact_or_profile','profile')->first();                        
+                    $user = '';
+                    if(isset($toUser)){
+                        $user = EmailTemplate::where('user_id',$toUser->id)->where('is_contact_or_profile','profile')->first(); 
+                    }                       
 
                     // }elseif($authUser->role_id == '3'){                        
                     //     $user = EmailTemplate::where('user_id',1)->where('is_contact_or_profile','profile')->first();
@@ -8153,6 +8162,7 @@ class PagesController extends Controller
                             'url' => route('page.profile', $profileId),
                             'note' => $email_note,
                             'year' => date('Y'),
+                            'coach_article' => 'Coach'
                         ];
                         try{
                             Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
