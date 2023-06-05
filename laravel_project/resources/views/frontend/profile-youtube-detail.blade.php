@@ -374,7 +374,7 @@
             <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
               <div class="modal-content content_design3">
                 <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="exampleModalLabel_youtube"></h5>
+                  <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
