@@ -7,32 +7,30 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('Contact To Coach Email Template Page') }}</h1>
-            <p class="mb-4">{{ __('This page allows you to edit email template page body content of the website.') }}</p>
+        <div class="col-lg-9 col-12">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact To Coach Email Template Page') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('This page allows you to edit email template page body content of the website.') }}</p>
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12">
-                    <form method="POST" action="{{ route('user.email.template.update') }}" class="" id="updateMail">
-                        @csrf
-                        <input type="hidden" name="is_contact_profile" value="coach">
-                        <div class="row form-group">
-                            <div class="col-md-12">                                
-                                    <label for="youtube" class="text-black">Subject:</label>
-                                    <input name="subject" type="text" class="form-control" id="subject" value="{{ isset($template_data->subject) ? $template_data->subject : '' }}">                               
+    <div class="row bg-white">
+        <div class="col-12">        
+            <form method="POST" action="{{ route('user.email.template.update') }}" class="" id="updateMail">
+                @csrf
+                    <input type="hidden" name="is_contact_profile" value="coach">
+                    <div class="row form-group">
+                        <div class="col-md-12">                                
+                                <label for="youtube" class="text-black">Subject:</label>
+                                <input name="subject" type="text" class="form-control" id="subject" value="{{ isset($template_data->subject) ? $template_data->subject : '' }}">                               
                                 
-                                @error('subject')
-                                    <p class="name_error error_color">
-                                        <strong>{{ $message }}</strong>
-                                    </p>
-                                @enderror
-                            </div>
+                            @error('subject')
+                                <p class="name_error error_color">
+                                    <strong>{{ $message }}</strong>
+                                </p>
+                            @enderror
                         </div>
+                    </div>
                         {{-- <div class="fv-row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="setting_page_email_template">{{ __('backend.shared.page-editor') }}</label>
@@ -73,18 +71,53 @@
                         </div>
                         <hr/>
                         <div class="row form-group justify-content-between">
-                            <div class="col-8">
-                                <button type="submit" class="btn btn-primary py-2 px-4 text-white">
-                                    {{ __('backend.shared.update') }}
-                                </button>
-                                <a class="btn btn-secondary" href="{{ route('admin.index') }}">{{ __('backend.shared.cancel') }}</a>
+                            <div class="col-8 col-12">
+                                <div class="two_btn_set_">
+                                    <button type="submit" class="btn btn-primary py-2 px-4 text-white">
+                                        {{ __('backend.shared.update') }}
+                                    </button>
+                                    <a class="btn btn-secondary" href="{{ url('/user/dashboard') }}">{{ __('backend.shared.cancel') }}</a>
+                                </div>
                             </div>
+                            @if(isset($template_data->id))
+                                <div class="col-md-4 col-4 text-right">
+                                    <a class="text-danger font-14" href="#" data-toggle="modal" data-target="#deleteModal">
+                                        <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
-                    </form>
+            </form>                
+        </div>
+    </div>
+
+    <!-- Modal -->
+    @if(isset($template_data->id))
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.shared.delete-confirm') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ __('Do you want to delete the template?') }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <form action="{{ route('user.email.template.destroy',['id'=>$template_data->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="is_contact_profile" value="coach">
+                            <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @section('scripts')
@@ -125,7 +158,6 @@
                     [{
                         'align': []
                     }],
-                    ['image', ]
                 ]
             },
             placeholder: '{{__('Type your content here...')}}',

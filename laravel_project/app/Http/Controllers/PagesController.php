@@ -8320,12 +8320,22 @@ class PagesController extends Controller
                         $question_2_val = '';	
                         foreach($request->question2 as $question_2){	
                             $question_2_val.= $question_2.",";	
-                        }	
-                        // return response()->json(['status'=>"successsssssssssssss",'msg'=>$question_2_val]);
+                        }
+                        
+                        if(isset($request->contact_profile)){
+                            $profile_or_article = 'Coach Profile';
 
-                        DB::table('contact_coach')->insert([
+                        }else{
+                            $profile_or_article = 'Coach Article';
+                        }
+                        // return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
+
+                        $contact_data_id = DB::table('contact_coach')->insertGetId([
                             'name' => $request->item_conntact_email_name,
                             'email' => $request->item_contact_email_from_email,
+                            'sender_id' => $request->authUserId,
+                            'receiver_id' => $request->userId,
+                            'profile_article' => $profile_or_article,
                             'question1' =>  $request->question1,
                             'question2' =>  $question_2_val,
                             'question3' =>  $request->question3,
@@ -8333,6 +8343,8 @@ class PagesController extends Controller
                             'question5' =>  $request->question5,
                             'question6' =>  $request->question6,
                         ]);
+
+                        // return response()->json(['status'=>"successsssssssssssss",'msg'=>$contact_data]);
 
                         // if($authUser->role_id == '2'){
                             $user_template = EmailTemplate::where('user_id',$request->userId)->where('is_contact_or_profile','coach')->first();                            
@@ -8362,9 +8374,9 @@ class PagesController extends Controller
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;
 
-                            $template_body = str_replace('[COACH_EMAIL]',$email_to,$template_body);
+                            $template_body = str_replace('[COACH_EMAIL]',$item_contact_email,$template_body);
                             $template_body = str_replace('[YOUR_NAME]',$email_from_name,$template_body);
-                            $template_body = str_replace('[YOUR_EMAIL]',$item_contact_email,$template_body);
+                            $template_body = str_replace('[YOUR_EMAIL]',$email_to,$template_body);
                             // $template_body = str_replace('[QUESTIONS]',$request->question1,$template_body);
 
                             $question2_val = '';	
@@ -8373,7 +8385,7 @@ class PagesController extends Controller
                             }
 
                             $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of personality traits would be helpful for a person to have when coaching you?</p><br><p>'.$question2_val.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a sale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
-                            $template_body = str_replace('[QUESTIONS]',$all_questions,$template_body);
+                            // $template_body = str_replace('[QUESTIONS]',$all_questions,$template_body);
 
                             if($request->contact_profile){
                                 //return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
@@ -8382,7 +8394,8 @@ class PagesController extends Controller
                                     'to_mail' => $email_to,
                                     'email_from_name' => $email_from_name,
                                     'message_content' => $template_body, 
-                                    'url' => $profile_url,
+                                    // 'url' => $profile_url,
+                                    'url' => route('user.contact-leads.edit',['contact_lead'=>$contact_data_id]),
                                     'year' => date('Y'),
                                     // 'questions' => $email_note,
                                     ];
@@ -8419,7 +8432,8 @@ class PagesController extends Controller
                                     'to_mail' => $email_to,
                                     'email_from_name' => $email_from_name,
                                     'message_content' => $template_body, 
-                                    'url' => route('page.item', $item->item_slug),
+                                    // 'url' => route('page.item', $item->item_slug),
+                                    'url' => route('user.contact-leads.edit',['contact_lead'=>$contact_data_id]),
                                     // 'questions' => $email_note,
                                     'year' => date('Y'),
                                     ];
@@ -8493,7 +8507,8 @@ class PagesController extends Controller
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
                                     // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
                                 }else{
-                                    $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
+                                    // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-desc', ['from_name' => $email_from_name]);
                                 }
 
                                 $question2_val = '';	
@@ -8504,22 +8519,22 @@ class PagesController extends Controller
                                 $email_notify_message = [
                                     // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
                                     $from_name_abd_url,
-                                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                                    // __('frontend.item.send-email-from-name',['name' => $email_from_name]),
                                     __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
                                     // __('Questions/Answers'),
                                     // $email_note,
-                                    __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
-                                    $request->question1,
-                                    __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
-                                    $question2_val,
-                                    __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
-                                    $request->question3,
-                                    __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
-                                    $request->question4,
-                                    __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
-                                    $request->question5,
-                                    __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
-                                    $request->question6,
+                                    // __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                    // $request->question1,
+                                    // __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
+                                    // $question2_val,
+                                    // __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                    // $request->question3,
+                                    // __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    // $request->question4,
+                                    // __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
+                                    // $request->question5,
+                                    // __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                    // $request->question6,
                                 ];
     
     
@@ -8535,7 +8550,8 @@ class PagesController extends Controller
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
                                     // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
                                 }else{
-                                    $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
+                                    // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
+                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-desc-article', ['from_name' => $email_from_name]);
                                 }
 
                                 $question2_val = '';	
@@ -8546,23 +8562,23 @@ class PagesController extends Controller
                                 $email_notify_message = [
                                     // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]),
                                     $from_name_abd_url,
-                                    __('frontend.item.send-email-from-name',['name' => $email_from_name]),
+                                    // __('frontend.item.send-email-from-name',['name' => $email_from_name]),
                                     __('frontend.item.send-email-from-email',['email' => $item_contact_email]),
                                     __('frontend.item.send-email-article-title',['article_name' => $articleTitle]),
                                     // __('frontend.item.send-email-contact-note'),
                                     // $email_note,
-                                    __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
-                                    $request->question1,
-                                    __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
-                                    $question2_val,
-                                    __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
-                                    $request->question3,
-                                    __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
-                                    $request->question4,
-                                    __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
-                                    $request->question5,
-                                    __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
-                                    $request->question6,
+                                    // __('Q1. What are the top 2 challenges you feel this coach can help you navigate?'),
+                                    // $request->question1,
+                                    // __('Q2. What type of personality traits would be helpful for a person to have when coaching you?'),
+                                    // $question2_val,
+                                    // __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
+                                    // $request->question3,
+                                    // __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    // $request->question4,
+                                    // __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
+                                    // $request->question5,
+                                    // __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
+                                    // $request->question6,
                                 ];
                             }
 
@@ -8575,7 +8591,9 @@ class PagesController extends Controller
                                         $email_to,
                                         null,
                                         $email_notify_message,
-                                        // route('page.item', $item->item_slug),
+                                        'View',
+                                        'success',
+                                        route('user.contact-leads.edit',['contact_lead'=>$contact_data_id]),
                                         // null,
                                         // null,
                                     )

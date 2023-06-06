@@ -60,6 +60,7 @@ return array (
         'admin-create-desc' => "This page allows you manually create a listing lead and save it to the website.",
 
         'admin-edit' => "Edit a listing lead",
+        'admin-contact-lead' => "Showing contact lead",
         'admin-edit-desc' => "This page allows you manually edit a listing lead and update it to the website.",
 
         'email' => [

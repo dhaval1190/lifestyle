@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
+   
     <style>
       * {
         margin: 0;
@@ -45,21 +45,36 @@
       </table>
 
       <div class="invoice-box">
-        <table>
+        <table style="width:100%">
           <tbody>
             <tr>
-              <td style="font-size: 10px; line-height:30px; width:100%;">
+              <td style="font-size: 15px; line-height:30px; width:100%;">
                 <p style="padding: 10px 0px; font-weight: bold">
                     {!! $message_content !!}
                 </p>
               </td>
+            </tr>
+            <tr>
+             <td style="text-align: center"><a href="{{ $url }}">
+              <button type="button" style="
+              border-radius: 4px;
+              color: #fff;
+              display: inline-block;
+              overflow: hidden;
+              text-decoration: none;
+              background-color: #48bb78;
+              border-bottom: 8px solid #48bb78;
+              border-left: 18px solid #48bb78;
+              border-right: 18px solid #48bb78; 
+              border-top: 8px solid #48bb78;cursor:pointer;">{{ __('View') }}</button>
+            </a></td>
             </tr>
           </tbody>
         </table>       
         <table>
           <tbody>
             <tr>
-              <td style="font-size: 10px; line-height:30px; width:100%;">
+              <td style="font-size: 15px; line-height:30px; width:100%;">
                 <p style="padding-top: 10px;">Regards,</p>
               </td>
             </tr>
@@ -69,7 +84,7 @@
         <table>
           <tbody>
             <tr>
-              <td style="font-size: 10px; line-height:30px; width:100%;">
+              <td style="font-size: 15px; line-height:30px; width:100%;">
                 <p style="padding: 0px 0px;">The CoachesHQ Family</p>
               </td>
             </tr>
