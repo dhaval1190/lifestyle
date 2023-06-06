@@ -48,14 +48,17 @@
                 </span>
             @enderror
         </div>
-        <div class="col-md-4">
-            <div class="see_coach_btn_set">
-                <a href="{{ route('page.profile', encrypt($contact_lead->sender_id)) }}">
-                    <button type="button" class="btn btn-primary">See Coach</button>
+    
+        @if($user_role->role_id !== 3)
+            <div class="col-md-4">
+                <div class="see_coach_btn_set">
+                    <a href="{{ route('page.profile', encrypt($contact_lead->sender_id)) }}">
+                        <button type="button" class="btn btn-primary">See Coach</button>
 
-                </a>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
     
     {{-- ----------------Question  --}}
@@ -70,30 +73,22 @@
                     <span class="questions">Q2.What type of personality traits would be helpful for a person to have when coaching you?</span>
                     <p class="answer">{{ $contact_lead->question2 }}</p>
                 </div>
-                {{-- <div class="question_set_coaches">
-                    <p>Q3.What specific training, expertise and industry knowledge is important for this coach to possess?</p>
+                <div class="question_set_coaches">
+                    <span class="questions">Q3.What specific training, expertise and industry knowledge is important for this coach to possess?</span>
+                    <p class="answer">{{ $contact_lead->question3 }}</p>
                 </div>
-                <div class="row">
-                    <p>{{ $contact_lead->question3 }}</p>
+                <div class="question_set_coaches">
+                    <span class="questions">Q4.On a sale of 1-10 how structured do you want your coaching experience?</span>
+                    <p class="answer">{{ $contact_lead->question4 }}</p>
                 </div>
-                <div class="row">
-                    <p>Q4.On a sale of 1-10 how structured do you want your coaching experience?</p>
+                <div class="question_set_coaches">
+                    <span class="questions">Q5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</span>
+                    <p class="answer">{{ $contact_lead->question5 }}</p>
                 </div>
-                <div class="row">
-                    <p>{{ $contact_lead->question4 }}</p>
+                <div class="question_set_coaches">
+                    <span class="questions">Q6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</span>
+                    <p class="answer">{{ $contact_lead->question6 }}</p>
                 </div>
-                <div class="row">
-                    <p>Q5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</p>
-                </div>
-                <div class="row">
-                    <p>{{ $contact_lead->question5 }}</p>
-                </div>
-                <div class="row">
-                    <p>Q6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p>
-                </div>
-                <div class="row">
-                    <p>{{ $contact_lead->question6 }}</p>
-                </div> --}}
             </div>
         </div>
      

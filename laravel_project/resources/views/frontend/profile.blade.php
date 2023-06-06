@@ -460,37 +460,37 @@
                                             </label>
                                             {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Patient" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Patient" id="question2_checkbox1" required>
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     a) Patient
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Diplomatic" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Diplomatic" id="question2_checkbox2" required>
                                                 <label class="form-check-label" for="flexCheckChecked">
                                                     b) Diplomatic
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Direct" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Direct" id="question2_checkbox3" required>
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     c) Direct
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Sensitive" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Sensitive" id="question2_checkbox4" required>
                                                 <label class="form-check-label" for="flexCheckChecked">
                                                     d) Sensitive
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="High Energy" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="High Energy" id="question2_checkbox5" required>
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     e) High Energy
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Calm" required>
+                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Calm" id="question2_checkbox6" required>
                                                 <label class="form-check-label" for="flexCheckChecked">
                                                     f) Calm
                                                 </label>
@@ -1735,6 +1735,32 @@
            	
     });	
     </script>	
+    <script>
+        $(document).ready(function(){
+            $('#question_2').on('change',function(){
+                $('#question2_txt').slideToggle("slow");
+                var val = this.checked ? this.value : '';
+                console.log(val);
+                if(val){
+                    $("#question2_txt").prop('required',true);
+                    $("#question2_checkbox1").prop('required',false);
+                    $("#question2_checkbox2").prop('required',false);
+                    $("#question2_checkbox3").prop('required',false);
+                    $("#question2_checkbox4").prop('required',false);
+                    $("#question2_checkbox5").prop('required',false);
+                    $("#question2_checkbox6").prop('required',false);
+                }else{
+                    $("#question2_txt").prop('required',false);
+                    $("#question2_checkbox1").prop('required',true);
+                    $("#question2_checkbox2").prop('required',true);
+                    $("#question2_checkbox3").prop('required',true);
+                    $("#question2_checkbox4").prop('required',true);
+                    $("#question2_checkbox5").prop('required',true);
+                    $("#question2_checkbox6").prop('required',true);
+                }
+            });
+        });
+    </script>
     <script>	
         $(document).ready(function() {	
             $('.profile_review_rating_error').text('');	
@@ -2596,27 +2622,7 @@
 
             navigateTo(0);
 
-            $('#question_2').on('change',function(){
-                $('#question2_txt').slideToggle("slow");
-                var val = this.checked ? this.value : '';
-                if(val){
-                    $("#question2_txt").prop('required',true);
-                    $("#question2_checkbox1").prop('required',false);
-                    $("#question2_checkbox2").prop('required',false);
-                    $("#question2_checkbox3").prop('required',false);
-                    $("#question2_checkbox4").prop('required',false);
-                    $("#question2_checkbox5").prop('required',false);
-                    $("#question2_checkbox6").prop('required',false);
-                }else{
-                    $("#question2_txt").prop('required',false);
-                    $("#question2_checkbox1").prop('required',true);
-                    $("#question2_checkbox2").prop('required',true);
-                    $("#question2_checkbox3").prop('required',true);
-                    $("#question2_checkbox4").prop('required',true);
-                    $("#question2_checkbox5").prop('required',true);
-                    $("#question2_checkbox6").prop('required',true);
-                }
-            });
+            
 
         });
         
