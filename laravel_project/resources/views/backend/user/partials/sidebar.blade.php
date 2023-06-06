@@ -131,6 +131,18 @@
                 </div>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_contact_lead" aria-expanded="true" aria-controls="collapse_contact_lead">
+                <i class="fas fa-star"></i>
+                <span>{{ __('Contact Leads') }}</span>
+            </a>
+            <div id="collapse_contact_lead" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('user.contact-leads.index') }}">{{ __('All Leads') }}</a>
+                    {{-- <a class="collapse-item" href="{{ route('user.email.template','coach') }}">{{ __('Contact Coach Template') }}</a> --}}
+                </div>
+            </div>
+        </li>
     @endif
 
     <!-- Divider -->

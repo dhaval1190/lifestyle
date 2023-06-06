@@ -777,9 +777,28 @@ class UserController extends Controller
             $emailObj->subject = $request->subject;
             $emailObj->is_contact_or_profile = $request->is_contact_profile;
             $emailObj->save();
-        }       
+        }
+        
+        \Session::flash('flash_message', __('Template updated successfully'));
+        \Session::flash('flash_type', 'success');
         
         // dd("222");
         return redirect()->route('user.email.template',$request->is_contact_profile);
+    }
+
+    public function deleteTemplate(Request $request)
+    {
+
+        // dd($request->all());
+        if(isset($request->id)){
+            $user_id = Auth::user()->id;
+            EmailTemplate::where('id',$request->id )->where('user_id',$user_id)->delete();
+
+            \Session::flash('flash_message', __('Template deleted successfully'));
+            \Session::flash('flash_type', 'success');
+            return redirect()->route('user.email.template',$request->is_contact_profile);
+        }
+
+        return back();
     }
 }

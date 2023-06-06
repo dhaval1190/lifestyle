@@ -50,7 +50,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <td style="font-size: 10px; line-height:30px; width:100%;">{!! $message_content !!}</td>
+                    <td style="font-size: 15px; line-height:30px; width:100%;">{!! $message_content !!}</td>
                   </td>
                 </tr>
               </tbody>
@@ -108,7 +108,7 @@
             <tbody>
                 <tr>
                     <td style="padding: 32px;">
-                        <p style="text-align: center; color: #b0adc5; font-size: 12px; text-align: center">© {{ $year }} Coach Directory. All rights reserved</p>
+                        <p style="text-align: center; color: #b0adc5; font-size: 15px; text-align: center">© {{ $year }} Coach Directory. All rights reserved</p>
                     </td>
                 </tr>
             </tbody>

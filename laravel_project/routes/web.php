@@ -743,9 +743,11 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');
         // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');
         Route::post('/user-email-template', 'UserController@updateEmailtemplate')->name('email.template.update');
+        Route::delete('/user-email-template', 'UserController@deleteTemplate')->name('email.template.destroy');
 
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');
+        Route::resource('/contact-leads', 'ContactLeadController');
         
     });
 
