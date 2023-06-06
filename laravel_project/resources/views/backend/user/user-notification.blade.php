@@ -48,12 +48,10 @@
     
 </div>
 
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <table class="table-responsive">
+<table class="table-responsive">
           <thead>            
-              <th style="font-weight:700;padding: 14px 10px;">Notification(s)</th>      
-              <th style="font-weight:700;padding: 14px 10px;">Status</th>      
+              <th style="font-weight:700;padding: 14px 10px; width:100%;">Notification(s)</th>      
+              <th style="font-weight:700;padding: 14px 10px; width:100%">Status</th>      
           </thead>
           <tbody>
             @foreach($notifications as $notification)
@@ -67,11 +65,7 @@
         </table>
         <div class="pagination">
           {!! $notifications->links('pagination::bootstrap-4') !!}
-
         </div>
-    </div>
-</div>
-
 
 
 @endsection

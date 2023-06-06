@@ -467,8 +467,8 @@
                     @endif
 
                     @if ($paid_items->count() >= 5)
-                        <section class="card_texting container">
-                            <div class="swiper-container-paid">
+                        <section class="card_texting container ptb-100-500">
+                            <div class="swiper-container-paid swiper_topics_carousel_set">
                                 <div class="swiper-wrapper">
                                     @php $count = 1; @endphp
                                     @foreach ($paid_items as $paid_items_key => $item)
@@ -575,8 +575,8 @@
                     @endif
 
                     {{-- <div class="@if ($free_items->count() > 4)owl-carousel nonloop-block-13 @else row @endif"> --}}
-                    <section class="card_texting container">
-                        <div class="swiper-container-free">
+                    <section class="card_texting container ptb-100-500">
+                        <div class="swiper-container-free swiper_topics_carousel_set ">
                             <div class="swiper-wrapper">
                                 {{-- @php $count = 1; @endphp --}}
                                 {{-- @if ($paid_items->count() > 0)

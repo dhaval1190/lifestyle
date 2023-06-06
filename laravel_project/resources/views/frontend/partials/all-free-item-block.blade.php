@@ -3,7 +3,7 @@
     $get_all_categories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY, isset($parent_category_id) ? $parent_category_id : null);
     $all_categories_count = $item->allCategories()->count();
 @endphp
-<div class="d-block d-md-flex listing vertical">
+<div class="d-block d-md-flex listing vertical ">
     <a href="{{ route('page.item', ['item_slug' => $item->item_slug]) }}" class="img d-block listing_for_map_hover" style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})" data-map-lat="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? $item->item_lat : '' }}" data-map-lng="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? $item->item_lng : '' }}" data-map-title="{{ $item->item_title }}" data-map-address="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? ($item->item_address_hide ? $item->city->city_name . ', ' . $item->state->state_name . ' ' . $item->item_postal_code : $item->item_address . ', ' . $item->city->city_name . ', ' . $item->state->state_name . ' ' . $item->item_postal_code) : '' }}" data-map-rating="{{ $item->item_average_rating }}" data-map-reviews="{{ $get_count_rating }}" data-map-link="{{ route('page.item', $item->item_slug) }}" data-map-feature-image-link="{{ !empty($item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}">
     </a>
     <div class="lh-content mb-5">

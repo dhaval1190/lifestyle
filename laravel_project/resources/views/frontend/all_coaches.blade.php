@@ -376,7 +376,7 @@
                     <div class="row">                    
                         @if($all_coaches->count() > 0)
                                     @foreach($all_coaches as $all_coaches_key => $coach)
-                                        <div class="col-lg-4 col-md-6 col-12 col-xl-4 padding-top-bottom-set-slider">
+                                        <div class="col-lg-4 col-md-6 col-12 col-xl-4 padding-top-bottom-set-slider carousel_design_set_all_coaches">
                                             <div class="profile-card js-profile-card">
                                                 <div class="profile-card__img">
                                                 <a href="{{ route('page.profile', encrypt($coach->id)) }}">
@@ -436,11 +436,11 @@
                                                         <span class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
                                                     </div>
     
-                                                    <div class="profile-card-inf">
+                                                    {{-- <div class="profile-card-inf">
                                                         <div>
                                                             
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
     
                                                     <!-- new  -->
     

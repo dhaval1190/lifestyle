@@ -2531,7 +2531,7 @@
         <div class="row">
 
             @foreach($similar_items_of_coaches as $similar_coaches_items_key => $similar_coach_item)
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-5">
                     <div class="d-block d-md-flex listing">
                         <a href="{{ route('page.item', $similar_coach_item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($similar_coach_item->item_image_small) ? Storage::disk('public')->url('item/' . $similar_coach_item->item_image_small) : (!empty($similar_coach_item->item_image) ? Storage::disk('public')->url('item/' . $similar_coach_item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_small.webp')) }})"></a>
                         <div class="lh-content">
@@ -2633,7 +2633,7 @@
         <div class="row">
 
             @foreach($similar_items as $similar_items_key => $similar_item)
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-5">
                     <div class="d-block d-md-flex listing">
                         <a href="{{ route('page.item', $similar_item->item_slug) }}" class="img d-block" style="background-image: url({{ !empty($similar_item->item_image_small) ? Storage::disk('public')->url('item/' . $similar_item->item_image_small) : (!empty($similar_item->item_image) ? Storage::disk('public')->url('item/' . $similar_item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_small.webp')) }})"></a>
                         <div class="lh-content">

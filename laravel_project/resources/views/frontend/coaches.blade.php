@@ -255,7 +255,7 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-12 col-md-3 pl-0">
+                            <div class="col-12 col-md-3">
                                 <select class="selectpicker form-control @error('filter_hourly_rate') is-invalid @enderror"
                                     name="filter_hourly_rate" id="filter_hourly_rate">
                                     <option value="0" {{ empty($filter_hourly_rate) ? 'selected' : '' }}>Any Price
@@ -548,7 +548,7 @@
                         </div>
                     </div> --}}
                     @if ($all_coaches->count() >= 5)
-                        <section class="card_texting container pt-100">
+                        <section class="card_texting container ptb-100-500">
                             <div class="swiper-container-coaches">
                                 <div class="swiper-wrapper">
                                     @php $count = 1; @endphp

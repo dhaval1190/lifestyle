@@ -396,7 +396,7 @@
 
                         @if($paid_items->count() > 0)
                             @foreach($paid_items as $paid_items_key => $item)
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-md-6 mb-5 mb-sm-0">
                                     @include('frontend.partials.paid-item-block')
                                 </div>
                             @endforeach
@@ -404,7 +404,7 @@
 
                         @if($free_items->count() > 0)
                             @foreach($free_items as $free_items_key => $item)
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-md-6 mb-5 mb-sm-0">
                                     @include('frontend.partials.all-free-item-block')
                                 </div>
                             @endforeach
@@ -414,8 +414,9 @@
 
                     <div class="row">
                         <div class="col-12">
-
-                            {{ $pagination->links() }}
+                          <div class="pagination_set_sm_center">
+                          {{ $pagination->links() }}
+                          </div>
                         </div>
                     </div>
 

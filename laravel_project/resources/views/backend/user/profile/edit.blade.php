@@ -99,8 +99,8 @@ $chk_post = Auth::user()->phone;
 @endphp
 
 
-<div class="row justify-content-between">
-    <div class="col-8">
+<div class="row">
+    <div class="col-lg-8 co-12">
         <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('backend.user.edit-profile') }}</h1>
         <p class="mb-4">{{ __('backend.user.edit-profile-desc') }}</p>
         @if(Auth::user()->isCoach())
@@ -109,22 +109,16 @@ $chk_post = Auth::user()->phone;
         @endif
     </div>
     @if(Auth::user()->isCoach())
-    <div class="col-4">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="coach_sidebar d-flex align-items-center">
+    <div class="col-lg-4 col-12">
+    <div class="coach_sidebar display_flex_center">
                 <div class="sidebar_info">
                         <div class="level">
                             <h5>{{ $progress_data['profile'] }}</h5>
                             <h6>{{ $progress_data['percentage'] }}% Completed</h6>
                       </div>
                     </div>
-                    <div class="col-12">
                     <div id="chartContainer" style="height: 200px; width: 100%;" class="level_two"></div>
-                    </div>
                 </div>
-            </div>
-        </div>
     </div>
     @endif
 </div>
@@ -202,7 +196,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-xl-10">
+                        <div class="col-sm-12 col-md-12 col-xl-10 col-lg-10">
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="category_ids" class="text-black">Category<span
@@ -232,7 +226,7 @@ $chk_post = Auth::user()->phone;
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-sm-6 col-12 col-lg-3">
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                     <label for="name" class="text-black">{{ __('auth.name') }}<span
                                             class="text-danger">*</span></label>
                                     <input id="name" type="text"
@@ -244,7 +238,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-6 col-12 col-lg-3">
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                     <label for="company_name" class="text-black">Company Name</label>
                                     <input id="company_name" type="text"
                                         class="form-control @error('company_name') is-invalid @enderror"
@@ -256,7 +250,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-6 col-12 col-lg-3">
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                     <label class="text-black" for="email">{{ __('auth.email-addr') }}<span
                                             class="text-danger">*</span></label>
                                     <input id="email" type="email"
@@ -268,7 +262,7 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-6 col-12 col-lg-3">
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                     <label for="phone" class="text-black">Phone<span
                                             class="text-danger">*</span></label>
                                     <input id="phone" type="text"
@@ -300,7 +294,7 @@ $chk_post = Auth::user()->phone;
                                 </span>
                                 @enderror
                             </div> --}}
-                            <div class="col-sm-6 col-12 col-lg-3">
+                            <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                 <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span
                                         class="text-danger">*</span></label>
                                 <select
@@ -322,7 +316,7 @@ $chk_post = Auth::user()->phone;
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="row mt-3"> --}}
-                            <div class="col-sm-6 col-12 col-lg-3">
+                            <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                 <label for="hourly_rate_type" class="text-black">Hourly Rate<span
                                         class="text-danger">*</span></label>
                                 <select
@@ -340,7 +334,7 @@ $chk_post = Auth::user()->phone;
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-sm-6 col-12 col-lg-3">
+                            <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                 {{-- <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label> --}}
                                 <label for="working_type" class="text-black">Working Method<span
                                         class="text-danger">*</span></label>
@@ -358,7 +352,7 @@ $chk_post = Auth::user()->phone;
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-sm-6 col-12 col-lg-3">
+                            <div class="col-sm-6 col-12 col-xl-3 col-lg-4">
                                 <label for="experience_year" class="text-black">Experience Year<span
                                         class="text-danger">*</span></label>
                                 <select class="form-control selectpicker @error('experience_year') is-invalid @enderror"

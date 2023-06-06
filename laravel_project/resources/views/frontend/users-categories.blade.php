@@ -364,7 +364,7 @@
 
                         @if($free_items->count() > 0)
                             @foreach($free_items as $free_items_key => $item)
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-md-6 mb-5 mb-sm-0">
                                     @include('frontend.partials.all-free-item-block')
                                 </div>
                             @endforeach

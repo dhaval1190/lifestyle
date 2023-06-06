@@ -369,7 +369,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -389,12 +389,12 @@
                                 </div>
                             @endif
                             <div class="nav nav-fill my-3">
-                                <label class="nav-link shadow-sm step0 steps   border ml-2 ">Step One</label>
-                                <label class="nav-link shadow-sm step1 steps  border ml-2 " >Step Two</label>
-                                <label class="nav-link shadow-sm step2 steps  border ml-2 " >Step Three</label>
-                                <label class="nav-link shadow-sm step3 steps  border ml-2 " >Step Four</label>
-                                <label class="nav-link shadow-sm step4 steps  border ml-2 " >Step Five</label>
-                                <label class="nav-link shadow-sm step5 steps  border ml-2 " >Step Six</label>
+                                <label class="nav-link shadow-sm step0 steps  border  ">Step One</label>
+                                <label class="nav-link shadow-sm step1 steps  border  " >Step Two</label>
+                                <label class="nav-link shadow-sm step2 steps  border  " >Step Three</label>
+                                <label class="nav-link shadow-sm step3 steps  border  " >Step Four</label>
+                                <label class="nav-link shadow-sm step4 steps  border  " >Step Five</label>
+                                <label class="nav-link shadow-sm step5 steps  border  " >Step Six</label>
                             </div>
                                 <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}"
                                     method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
@@ -407,7 +407,7 @@
                                     <div class="form-section">
                                         <div class="col-md-12">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 pl-0">
                                                     <label for="item_conntact_email_name"
                                                     class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
                                                     <input id="item_conntact_email_name" type="text"
@@ -422,7 +422,7 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 pl-0">
                                                     <label for="item_contact_email_from_email"
                                                     class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
                                                     <input id="item_contact_email_from_email" type="email"
@@ -582,7 +582,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1230,7 +1230,7 @@
                             <div class="row">
                                 @if ($free_items->count() > 0)
                                     @foreach ($free_items as $free_items_key => $item)
-                                        <div class="col-md-6 col-lg-4 col-xl-3 col-sm-6 col-12">
+                                        <div class="col-md-6 col-lg-4 col-xl-3 col-sm-6 col-12 mb-5 mb-sm-0">
                                             @include('frontend.partials.all-free-item-block')
                                         </div>
                                     @endforeach

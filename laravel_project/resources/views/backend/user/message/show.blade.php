@@ -36,7 +36,7 @@
                     <a href="{{ route('page.item', $item->item_slug) }}" class="btn btn-primary btn-block mt-2 mb-2 mb-md-0" target="_blank">{{ __('backend.message.view-listing') }}</a>
 
                 </div>
-                <div class="col-12 col-md-12 col-lg-9">
+                <div class="col-12 col-md-12 col-lg-9 figure_image_set">
                     <p class="sub_set_btn">
                         @foreach($item->allCategories()->get() as $key => $category)
                             <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1 mr-1">
