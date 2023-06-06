@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use App\ContactLead;
+use App\User;
 
 class ContactLeadController extends Controller
 {
@@ -57,11 +58,12 @@ class ContactLeadController extends Controller
 
         $login_user = Auth::user();
 
-        $contact_lead = ContactLead::where('id',$id)->where('receiver_id',$login_user->id)->first();
+        $contact_lead = ContactLead::where('id',$id)->where('receiver_id',$login_user->id)->first(); 
+        $user_role = User::where('id',$contact_lead->sender_id)->select('role_id')->first();
         // $contact_lead = ContactLead::where('id',$id)->first();
             if($contact_lead){
                 return response()->view('backend.user.item.contact-lead.edit',
-                    compact('contact_lead'));
+                    compact('contact_lead','user_role'));
             }else{
                 return redirect()->route('user.contact-leads.index');
             }
