@@ -26,11 +26,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.add-article') }}</h1>
-            <p class="mb-4">{{ __('backend.article.add-article-desc-user') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.article.add-article') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.article.add-article-desc-user') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-4 text-right">
             <a href="{{ route('admin.items.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 pb-4 font_icon_color">
         <div class="col-12">
 
             {{-- @if (count($errors) > 0)
@@ -245,7 +245,7 @@
                                             <input {{ old('item_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="item_address_hide" name="item_address_hide" value="1">
                                             <label class="form-check-label" for="item_address_hide">
                                                 {{ __('backend.item.hide-address') }}
-                                                <small class="text-muted">
+                                                <small class="text-muted text_hide_sm">
                                                     {{ __('backend.item.hide-address-help') }}
                                                 </small>
                                             </label>
@@ -390,7 +390,7 @@
                                 </div>
 
                                 <!-- Start web & social media -->
-                                <div class="form-row mb-3">
+                                <div class="form-row mb-3 font_icon_color">
                                     <div class="col-md-4">
                                         <label for="item_website" class="text-black">
                                             <i class="fa-solid fa-globe"></i>
@@ -453,7 +453,7 @@
 
                                 </div>
 
-                                <div class="form-row mb-3">
+                                <div class="form-row mb-3 font_icon_color">
                                     <div class="col-md-4">
                                         <label for="item_social_linkedin" class="text-black">
                                             <i class="fa-brands fa-linkedin"></i>
@@ -622,7 +622,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour') }}
@@ -682,7 +682,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_exception_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour-exception') }}
@@ -803,7 +803,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
+                                        <div class="row mt-1 mb-1">
                                             <div class="col-12">
                                                 <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
                                                     <i class="fas fa-trash-alt"></i>
@@ -843,7 +843,7 @@
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white btn-100-width-sm">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>

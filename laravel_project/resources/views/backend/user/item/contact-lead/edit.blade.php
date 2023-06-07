@@ -10,7 +10,7 @@
             <h1 class="h3 mb-2 text-gray-800 font-14">{{ __('role_permission.item-leads.admin-contact-lead') }}</h1>
             <p class="mb-4">{{ __('This page shows you the listing of contact lead sent to you') }}</p>
         </div>
-        <div class="col-4 col-md-4 col-lg-3 back01">
+        <div class="col-4 col-md-4 col-lg-3 back01 text-right">
             <a href="{{ route('user.contact-leads.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                     <i class="fas fa-backspace"></i>

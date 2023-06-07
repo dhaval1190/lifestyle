@@ -80,10 +80,12 @@
                         </div>
                     </div>
                     @if(isset($template_data->id))
-                        <div class="col-md-4 col-4 text-right">
+                        <div class="col-md-4 col-12 text-right">
+                        <div class="delete_btn_set_">
                             <a class="text-danger font-14" href="#" data-toggle="modal" data-target="#deleteModal">
                                 <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                             </a>
+                        </div>
                         </div>
                     @endif
                 </div>

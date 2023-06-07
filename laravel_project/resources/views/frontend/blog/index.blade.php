@@ -202,8 +202,10 @@
                     @endif
 
 
-                    <div class="col-12 text-center mt-5">
+                    <div class="col-12 text-center mt-2">
+                        <div class="pagination_set_sm_center">
                         {{ $data['posts']->links() }}
+                        </div>
                     </div>
 
                     @if ($ads_after_content->count() > 0)

@@ -9,8 +9,8 @@
 
     <div class="row justify-content-between">
         <div class="col-md-8 col-8">
-            <h1 class="h3 mb-2 font-set-sm text-gray-800">{{ __('review.backend.edit-a-review') }}</h1>
-            <p class="mb-4">{{ __('review.backend.write-a-review-desc') }}</p>
+            <h1 class="h3 mb-2 font-set-sm text-gray-800 font-sm-20">{{ __('review.backend.edit-a-review') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('review.backend.write-a-review-desc') }}</p>
         </div>
         <div class="col-4 col-md-4 text-right">
             <a href="{{ route('user.items.reviews.index') }}" class="btn btn-info btn-icon-split">

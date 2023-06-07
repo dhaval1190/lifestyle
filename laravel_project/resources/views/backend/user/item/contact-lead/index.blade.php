@@ -9,9 +9,9 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('Contact coach mail list') }}</h1>
-            {{-- <p class="mb-4">{{ __('role_permission.item-leads.admin-index-desc') }}</p> --}}
+        <div class="col-lg-9 col-12">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact coach mail list') }}</h1>
+            {{-- <p class="mb-4 font-sm-14">{{ __('role_permission.item-leads.admin-index-desc') }}</p> --}}
         </div>
         {{-- <div class="col-3 text-right">
             <a href="{{ route('user.item-leads.create') }}" class="btn btn-info btn-icon-split">
@@ -24,12 +24,10 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 pb-4">
         <div class="col-12">
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="table-responsive">
+        <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
@@ -70,8 +68,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
         </div>
     </div>
 

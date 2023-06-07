@@ -71,7 +71,7 @@
                         </div>
                         <hr/>
                         <div class="row form-group justify-content-between">
-                            <div class="col-8 col-12">
+                            <div class="col-md-4 col-12">
                                 <div class="two_btn_set_">
                                     <button type="submit" class="btn btn-primary py-2 px-4 text-white">
                                         {{ __('backend.shared.update') }}
@@ -80,10 +80,12 @@
                                 </div>
                             </div>
                             @if(isset($template_data->id))
-                                <div class="col-md-4 col-4 text-right">
-                                    <a class="text-danger font-14" href="#" data-toggle="modal" data-target="#deleteModal">
+                                <div class="col-md-4 col-12 text-right">
+                                  <div class="delete_btn_set_">
+                                  <a class="text-danger font-14" href="#" data-toggle="modal" data-target="#deleteModal">
                                         <button class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
                                     </a>
+                                  </div>
                                 </div>
                             @endif
                         </div>

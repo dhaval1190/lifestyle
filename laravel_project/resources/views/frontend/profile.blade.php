@@ -787,7 +787,7 @@
                 </div>	
                 <div class="modal-body">	
                     <div class="row">	
-                        <div class="col-8">	
+                        <div class="col-12">	
                                 @if (!Auth::check())	
                                     <div class="row mb-2">	
                                         <div class="col-12">	

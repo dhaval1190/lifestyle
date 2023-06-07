@@ -125,7 +125,7 @@
 
     <!-- Page Heading -->
     <div class="d-flex align-items-center justify-content-between mb-4 firstBlur">
-        <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.dashboard') }}</h1>
+        <h1 class="h3 mb-0 text-gray-800 font-sm-20">{{ __('backend.homepage.dashboard') }}</h1>
         <!-- <a href="#"><img src="{{ asset('frontend/images/Svg/notification_zero.svg') }}" alt=""
                                 class="notification_icon" /></a> -->
         <!-- <a href="#" id="action" class="toggle"><img src="{{ asset('frontend/images/Svg/notification_alert.svg') }}"
@@ -1055,7 +1055,7 @@
             <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
               <div class="modal-content content_design3">
                 <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="exampleModalLabel_youtube"></h5>
+                  <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
