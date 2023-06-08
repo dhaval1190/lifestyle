@@ -30,7 +30,7 @@
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.article.add-article') }}</h1>
             <p class="mb-4 font-sm-14">{{ __('backend.article.add-article-desc-user') }}</p>
         </div>
-        <div class="col-4 col-md-4 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.items.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
