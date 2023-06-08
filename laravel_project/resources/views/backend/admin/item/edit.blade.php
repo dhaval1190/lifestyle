@@ -404,7 +404,7 @@ $login_user = Auth::user();
 
                                 <div class="form-row mb-3">
 
-                                    <!-- <div class="col-md-3">
+                                    <div class="col-md-3">
                                         <label for="item_lat" class="text-black">{{ __('backend.item.lat') }}</label>
                                         <input id="item_lat" type="text" class="form-control @error('item_lat') is-invalid @enderror" name="item_lat" value="{{ old('item_lat') ? old('item_lat') : $item->item_lat }}" aria-describedby="latHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -415,9 +415,9 @@ $login_user = Auth::user();
                                         <strong>{{ $message }}</strong>
                                          </span>
                                          @enderror
-                                    </div> -->
+                                    </div>
 
-                                    <!-- <div class="col-md-3">
+                                    <div class="col-md-3">
                                         <label for="item_lng" class="text-black">{{ __('backend.item.lng') }}</label>
                                         <input id="item_lng" type="text" class="form-control @error('item_lng') is-invalid @enderror" name="item_lng" value="{{ old('item_lng') ? old('item_lng') : $item->item_lng }}" aria-describedby="lngHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -428,7 +428,7 @@ $login_user = Auth::user();
                                         <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> -->
+                                    </div>
 
                                     <div class="col-md-3">
                                         <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
