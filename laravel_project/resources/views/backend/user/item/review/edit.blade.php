@@ -55,7 +55,20 @@
                     </p>
                     <hr/>
                     {{-- <p class="mb-4">{{ $item->item_description }}</p> --}}
-                    <p class="mb-4">{!! html_entity_decode($item->item_description) !!}</p>                    
+                    <div class="read_more">
+                        @if (strlen($item->item_description) > 600)
+                            <input type="checkbox" class="read-more-state"
+                                id="post-1" />
+                        @endif
+                        <p class="read-more-wrap">
+                            {{-- <p class="mb-4">{!! html_entity_decode($item->item_description) !!} --}}
+                                {!! Str::limit($item->item_description, $limit = 600, $end = '') !!}<span
+                                class="read-more-target">{{ substr($item->item_description, $limit) }}</span>
+                        </p> 
+                        @if (strlen($item->item_description) > 600)
+                            <label for="post-1" class="read-more-trigger"></label>
+                        @endif 
+                    </div>                  
                 </div>
             </div>
 
