@@ -8,18 +8,18 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.message.message') }}</h1>
-            <p class="mb-4">{{ __('backend.message.message-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.message.message') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.message.message-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
+
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
-
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="row mb-2">
@@ -28,15 +28,23 @@
                     <div class="row mb-2">
                         <div class="col-12">
                             <form class="form-inline" action="{{ route('admin.messages.index') }}" method="GET">
-                                <div class="form-group mr-2">
-                                    <select class="custom-select" name="user_id">
+                               <div class="row">
+                                <div class="col-md-6">
+                                     <div class="form-group mr-2">
+                                      <select class="custom-select" name="user_id">
                                         <option value="0">{{ __('backend.message.all-users') }}</option>
                                         @foreach($all_users as $key => $user)
                                             <option value="{{ $user->id }}" {{ $user->id == $user_id ? 'selected' : '' }}>{{ $user->name }}</option>
                                         @endforeach
-                                    </select>
+                                      </select>
+                                 </div>
+                            
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">{{ __('backend.shared.update') }}</button>
+                                <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary ">{{ __('backend.shared.update') }}</button>
+                                <div>
+                            </div>
+                         </div>
                             </form>
                         </div>
                     </div>
@@ -44,7 +52,7 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 pl-3">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>

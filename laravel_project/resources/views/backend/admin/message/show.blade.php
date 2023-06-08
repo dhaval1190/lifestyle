@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.message.show-message') }}</h1>
-            <p class="mb-4">{{ __('backend.message.show-message-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.message.show-message') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.message.show-message-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.messages.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -21,12 +21,12 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
 
 
             <div class="row mb-5">
-                <div class="col-3">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-2">
                     @if(empty($item->item_image))
                         <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive rounded">
                     @else
@@ -36,7 +36,7 @@
                     <a href="{{ route('page.item', $item->item_slug) }}" class="btn btn-primary btn-block mt-2" target="_blank">{{ __('backend.message.view-listing') }}</a>
 
                 </div>
-                <div class="col-9">
+                <div class="col-12 col-md-6 col-lg-8 col-xl-10 my-4">
                     <p>
                         @foreach($item->allCategories()->get() as $key => $category)
                             <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1 mr-1">

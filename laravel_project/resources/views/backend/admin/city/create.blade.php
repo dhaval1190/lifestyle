@@ -6,11 +6,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.city.add-city') }}</h1>
-            <p class="mb-4">{{ __('backend.city.add-city-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.city.add-city') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.city.add-city-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.cities.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12 col-md-8 col-lg-6">

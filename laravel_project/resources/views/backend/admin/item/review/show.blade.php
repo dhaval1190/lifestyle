@@ -10,11 +10,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('review.backend.review-detail') }}</h1>
-            <p class="mb-4">{{ __('review.backend.review-detail-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('review.backend.review-detail') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('review.backend.review-detail-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.items.reviews.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -25,11 +25,11 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
 
             <div class="row">
-                <div class="col-3">
+                <div class="col-12 col-md-5 col-lg-3 col-xl-3">
                     @if(empty($item->item_image))
                         <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive rounded">
                     @else
@@ -39,8 +39,8 @@
                     <a target="_blank" href="{{ route('page.item', $item->item_slug) }}" class="btn btn-primary btn-block mt-2">{{ __('backend.message.view-listing') }}</a>
 
                 </div>
-                <div class="col-9">
-                    <p>
+                <div class="col-12 col-md-7 col-lg-9 col-xl-9">
+                    <p class="set_top_bottom_space">
                         @foreach($item->allCategories()->get() as $key => $category)
                             <span class="bg-info rounded text-white pl-2 pr-2 pt-1 pb-1 mr-1">
                                 {{ $category->category_name }}
@@ -56,7 +56,7 @@
                         @endif
                     </p>
                     <hr/>
-                    <p class="mb-4">{{ $item->item_description }}</p>
+                    <p class="mb-4">{!! $item->item_description !!}</p>
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
 
 
             <div class="row">
-                <div class="col-4">
+                <div class="col-12">
 
                     <div class="row mb-3">
                         <div class="col-md-12">
@@ -121,10 +121,10 @@
                     </div> -->
 
                 </div>
-                <div class="col-8">
+                <div class="col-12">
 
                     <div class="row mb-3 align-items-center">
-                        <div class="col-md-1">
+                        <div class="col-md-3 col-lg-2 col-xl-1">
                             @if(empty(\App\User::find($review->author_id)->user_image))
                                 <img src="{{ asset('backend/images/placeholder/profile-'. intval(\App\User::find($review->author_id)->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
                             @else
@@ -132,10 +132,10 @@
                                 <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
                             @endif
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-lg-5 col-xl-6">
                             <span>{{ \App\User::find($review->author_id)->name }}</span>
                         </div>
-                        <div class="col-md-7 text-right">
+                        <div class="col-md-5 col-lg-5 col-xl-5 text-lg-right text-sm-left">
                             <span>{{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($review->created_at)->diffForHumans() }}</span>
                             @if($review->created_at != $review->updated_at)
                                 <br>
@@ -179,7 +179,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-6">
                     @if($review->approved == \App\Item::ITEM_REVIEW_APPROVED)
                         <form action="{{ route('admin.items.reviews.disapprove', ['review_id' => $review->id]) }}" method="POST">
                             @csrf
@@ -194,8 +194,8 @@
                         </form>
                     @endif
                 </div>
-                <div class="col-md-6 text-right">
-                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
+                <div class="col-6 text-right">
+                    <a class="text-white btn btn-danger" href="#" data-toggle="modal" data-target="#deleteModal">
                         {{ __('backend.shared.delete') }}
                     </a>
                 </div>

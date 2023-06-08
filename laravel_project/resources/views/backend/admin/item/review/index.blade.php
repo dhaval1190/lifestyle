@@ -8,17 +8,17 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('review.backend.manage-reviews') }}</h1>
-            <p class="mb-4">{{ __('review.backend.manage-reviews-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('review.backend.manage-reviews') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('review.backend.manage-reviews-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
 
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
 
             <div class="row mb-4">
@@ -29,15 +29,22 @@
                     <div class="row mb-2">
                         <div class="col-12">
                             <form class="form-inline" action="{{ route('admin.items.reviews.index') }}" method="GET">
-                                <div class="form-group mr-2">
-                                    <select class="custom-select" name="reviews_type">
-                                        <option value="all" {{ ($reviews_type == 'all' || empty($reviews_type)) ? 'selected' : '' }}>{{ __('review.backend.all-reviews') }}</option>
-                                        <option value="pending" {{ $reviews_type == 'pending' ? 'selected' : '' }}>{{ __('review.backend.review-pending') }}</option>
-                                        <option value="approved" {{ $reviews_type == 'approved' ? 'selected' : '' }}>{{ __('review.backend.review-approved') }}</option>
-                                        <option value="me" {{ $reviews_type == 'me' ? 'selected' : '' }}>{{ __('review.backend.my-reviews') }}</option>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mr-2">
+                                            <select class="custom-select" name="reviews_type">
+                                                <option value="all" {{ ($reviews_type == 'all' || empty($reviews_type)) ? 'selected' : '' }}>{{ __('review.backend.all-reviews') }}</option>
+                                                <option value="pending" {{ $reviews_type == 'pending' ? 'selected' : '' }}>{{ __('review.backend.review-pending') }}</option>
+                                                <option value="approved" {{ $reviews_type == 'approved' ? 'selected' : '' }}>{{ __('review.backend.review-approved') }}</option>
+                                                <option value="me" {{ $reviews_type == 'me' ? 'selected' : '' }}>{{ __('review.backend.my-reviews') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary mr-2">{{ __('backend.shared.update') }}</button>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">{{ __('backend.shared.update') }}</button>
                             </form>
                         </div>
                     </div>

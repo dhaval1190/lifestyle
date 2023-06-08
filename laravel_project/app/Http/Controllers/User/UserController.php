@@ -656,6 +656,46 @@ class UserController extends Controller
                         return back()->with('podcast_error','Podcast type and URL not matching');
                     }else{
                         $embed_podcast_url = $request->podcast_image;
+                        $podcast_ep_id = explode('ep/',$embed_podcast_url)[1];
+                        
+                        $html = $this->file_get_contents_curl($embed_podcast_url);
+
+                        $doc = new \DOMDocument();
+                        @$doc->loadHTML($html);
+                        $nodes = $doc->getElementsByTagName('title');
+                        //get and display what you need:
+                        $title = $nodes->item(0)->nodeValue;
+                        $metas = $doc->getElementsByTagName('meta');
+
+                        $podcast_cover_file_name = '';
+                        for ($i = 0; $i < $metas->length; $i++)
+                        {
+                            $meta = $metas->item($i);
+                            if($meta->getAttribute('name') == 'twitter:image')
+                                $podcast_cover_file_name = $meta->getAttribute('content');
+                            if($meta->getAttribute('property') == 'og:url')
+                                $podcast_web_url = $meta->getAttribute('content');
+                        }
+                        $exp_podcast_web_url = explode('/',$podcast_web_url);
+                        $podcast_url_key = $exp_podcast_web_url[4];
+                        // echo "https://feeds.redcircle.com/".$podcast_url_key;exit;
+
+                        $xml = simplexml_load_file("https://feeds.redcircle.com/".$podcast_url_key);
+                        // print_r($xml);exit;
+                        $json = json_encode($xml);
+                        $podcast_array = json_decode($json,TRUE);
+                        // print_r($podcast_array);exit;                            
+
+                        $podcast_track_name = '';
+                        $podcast_duration = null;
+                        foreach($podcast_array['channel']['item'] as $result){
+                            if(str_contains($result['enclosure']['@attributes']['url'],$podcast_ep_id)){
+                                $podcast_track_name =  $result['title'];
+                                break;
+                            }
+                        }
+
+
                     }
                 }
                 if($request->podcast_web_type == 'spotify_podcast'){
@@ -891,5 +931,19 @@ class UserController extends Controller
                     'message' => json_last_error_msg()];
         }
         return $data; 
+    }
+
+    function file_get_contents_curl($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+
+        $data = curl_exec($ch);
+        curl_close($ch);
+
+        return $data;
     }
 }
