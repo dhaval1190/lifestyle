@@ -7,7 +7,7 @@
 
     <div class="row justify-content-between">
         <div class="col-4 col-md-6">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.user') }}</h1>
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.user.user') }}</h1>
         </div>
         <div class="col-8 col-md-6 text-right">
             <a href="{{ route('admin.users.create') }}?is_coach=1" class="btn btn-info btn-icon-split">
@@ -24,12 +24,12 @@
             </a>
         </div>
         <div class="col-12">
-            <p class="mb-4">{{ __('backend.user.user-desc') }}</p>
+            <p class="mb-4 mt-2 mt-sm-0 font-sm-14">{{ __('backend.user.user-desc') }}</p>
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white  pr-3 pb-4">
         <div class="col-12">
 
             <div class="row border-left-info bg-light pt-3">
@@ -45,21 +45,21 @@
 
                         <div class="row form-group">
 
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="user_email_verified">
                                     <option value="{{ \App\User::USER_EMAIL_VERIFIED }}" {{ $user_email_verified == \App\User::USER_EMAIL_VERIFIED ? 'selected' : '' }}>{{ __('admin_users_table.email-verified') }}</option>
                                     <option value="{{ \App\User::USER_EMAIL_NOT_VERIFIED }}" {{ $user_email_verified == \App\User::USER_EMAIL_NOT_VERIFIED ? 'selected' : '' }}>{{ __('admin_users_table.email-un-verified') }}</option>
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="user_suspended">
                                     <option value="{{ \App\User::USER_NOT_SUSPENDED }}" {{ $user_suspended == \App\User::USER_NOT_SUSPENDED ? 'selected' : '' }}>{{ __('admin_users_table.status-active') }}</option>
                                     <option value="{{ \App\User::USER_SUSPENDED }}" {{ $user_suspended == \App\User::USER_SUSPENDED ? 'selected' : '' }}>{{ __('admin_users_table.status-suspend') }}</option>
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="order_by">
                                     <option value="{{ \App\User::ORDER_BY_USER_NEWEST }}" {{ $order_by == \App\User::ORDER_BY_USER_NEWEST ? 'selected' : '' }}>{{ __('admin_users_table.user-order-by-newest') }}</option>
                                     <option value="{{ \App\User::ORDER_BY_USER_OLDEST }}" {{ $order_by == \App\User::ORDER_BY_USER_OLDEST ? 'selected' : '' }}>{{ __('admin_users_table.user-order-by-oldest') }}</option>
@@ -70,7 +70,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-2">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="count_per_page">
                                     <option value="{{ \App\User::COUNT_PER_PAGE_10 }}" {{ $count_per_page == \App\User::COUNT_PER_PAGE_10 ? 'selected' : '' }}>{{ __('admin_users_table.shared.count-per-page-10') }}</option>
                                     <option value="{{ \App\User::COUNT_PER_PAGE_25 }}" {{ $count_per_page == \App\User::COUNT_PER_PAGE_25 ? 'selected' : '' }}>{{ __('admin_users_table.shared.count-per-page-25') }}</option>
@@ -82,8 +82,8 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-2">
-                                <button type="submit" class="btn btn-primary mr-2">{{ __('backend.shared.update') }}</button>
+                            <div class="col-12  col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                                <button type="submit" class="btn btn-primary btn-100-width-sm mr-2">{{ __('backend.shared.update') }}</button>
                             </div>
 
                         </div>
@@ -195,19 +195,19 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-12 col-md-8">
-                    <button id="select_all_button" class="btn btn-sm btn-primary text-white">
+                <div class="col-12 col-md-8 ">
+                    <button id="select_all_button" class="btn btn-sm btn-primary text-white btn-100-width-sm mb-2 mb-sm-0" >
                         <i class="far fa-check-square"></i>
                         {{ __('admin_users_table.shared.select-all') }}
                     </button>
-                    <button id="un_select_all_button" class="btn btn-sm btn-primary text-white">
+                    <button id="un_select_all_button" class="btn btn-sm btn-primary text-white btn-100-width-sm">
                         <i class="far fa-square"></i>
                         {{ __('admin_users_table.shared.un-select-all') }}
                     </button>
                 </div>
                 <div class="col-12 col-md-4 text-right">
                     <div class="dropdown">
-                        <button class="btn btn-info btn-sm dropdown-toggle text-white" type="button" id="table_option_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-info btn-sm dropdown-toggle text-white btn-100-width-sm  mt-2 mt-sm-0" type="button" id="table_option_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-tasks"></i>
                             {{ __('admin_users_table.shared.options') }}
                         </button>

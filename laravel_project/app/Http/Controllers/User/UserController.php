@@ -607,8 +607,38 @@ class UserController extends Controller
                         return back()->with('podcast_error','Please enter valid URL');
                     }else{
                         $podcast_url = $request->podcast_image;
-                        $exp_podcast_url = explode("podcasts.apple.com",$podcast_url);                        
-                        $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];                        
+                        $exp_podcast_url = explode("podcasts.apple.com",$podcast_url); 
+                        $exp_exp_podcast_url = explode('/id',$exp_podcast_url[1]);
+                        $exp_exp_exp_podcast_url = explode('?i=',$exp_exp_podcast_url[1]);
+                        $playlist_id = $exp_exp_exp_podcast_url[0];
+                        $playlist_episode_id = $exp_exp_exp_podcast_url[1];
+                        // echo $playlist_id;
+                        // echo $playlist_episode_id;
+                        // exit;                       
+                        $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];  
+                        
+                        $ch = curl_init("https://itunes.apple.com/lookup?id=".$playlist_id."&country=US&media=podcast&entity=podcastEpisode&limit=100");
+                        $options = array(
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
+                        );
+                        curl_setopt_array( $ch, $options );
+
+                        $results = curl_exec($ch);
+                        $results_data = json_decode($results,true);
+                        
+                        curl_close($ch);                        
+                        foreach($results_data['results'] as $result){
+                            // print_r($result);
+                            if($result['trackId'] == $playlist_episode_id){
+                                $podcast_track_name = $result['trackName'];                                
+                                $podcast_duration_millisec =  $result['trackTimeMillis'];
+                                $seconds = floor($podcast_duration_millisec / 1000);
+                                $podcast_duration = gmdate("i:s", $seconds);
+                                $podcast_cover_file_name =  $result['artworkUrl160'];         
+            
+                            }
+                        }
                     }
                 }
                 if($request->podcast_web_type == 'stitcher_podcast'){
@@ -638,7 +668,46 @@ class UserController extends Controller
                         $podcast_url = $request->podcast_image;
                         $exp_podcast_url = explode("open.spotify.com",$podcast_url);
                         $exp_podcast_url_2 = explode("?",$exp_podcast_url[1])[0];
-                        $embed_podcast_url = $exp_podcast_url[0]."open.spotify.com/embed".$exp_podcast_url_2."/?utm_source=generator";                        
+                        $exp2_exp_podcast_url_2 = explode("/",$exp_podcast_url_2);
+                        $spotify_epi_id = $exp2_exp_podcast_url_2[2];
+                        $embed_podcast_url = $exp_podcast_url[0]."open.spotify.com/embed".$exp_podcast_url_2."/?utm_source=generator";  
+                        
+                        //call API to get podcast details like name,image,duration
+                        $headers  = ['Authorization: Basic '.base64_encode('1b82aa6d520c43dba5c52d8874ce2f5d:3bb76a5092ec4691bf208260ea612350')];
+                        $url      = 'https://accounts.spotify.com/api/token';
+                        $options  = [CURLOPT_URL            => $url,
+                                    CURLOPT_RETURNTRANSFER => TRUE,
+                                    CURLOPT_POST           => TRUE,
+                                    CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
+                                    CURLOPT_HTTPHEADER     => $headers];
+                        $credentials = $this->callSpotifyApi($options); 
+                        // dd($credentials);
+                        $token = $credentials->access_token;
+
+
+
+                        $headers  = ['Content-Type: application/json','Authorization: Bearer '.$token];
+                        // $url      = 'https://api.spotify.com/v1/playlists/37i9dQZF1DXdMbUSbTOEeW';
+                        $url      = 'https://api.spotify.com/v1/episodes/'.$spotify_epi_id.'?market=US';
+                        $options  = [CURLOPT_URL            => $url,
+                                    CURLOPT_RETURNTRANSFER => TRUE,
+                                    CURLOPT_FOLLOWLOCATION => TRUE,
+                                    CURLOPT_ENCODING       => '',
+                                    CURLOPT_MAXREDIRS      => 10,
+                                    CURLOPT_TIMEOUT        => 30,
+                                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                                    CURLOPT_HTTPHEADER     => $headers];
+                        $spotify_podcast_details = $this->callSpotifyApi($options); 
+                        // print_r($spotify_podcast_details);exit;
+                        $podcast_track_name = $spotify_podcast_details->name;
+                        $podcast_cover_file_name = $spotify_podcast_details->images[1]->url;
+                        $spotify_podcast_duration_millisec = $spotify_podcast_details->duration_ms;
+
+                        $seconds = floor($spotify_podcast_duration_millisec / 1000);
+                        $podcast_duration = gmdate("i:s", $seconds);
+
+                        // dd($podcast_duration);
                     }
                 }
                 if(!empty($input['podcast_image'])) {
@@ -661,13 +730,16 @@ class UserController extends Controller
 
                 }
 
+                // dd($podcast_duration);
                 MediaDetail::updateOrCreate([
                     'user_id' => $login_user->id,
-                    'media_name' => $request->podcast_name,
+                    // 'media_name' => $request->podcast_name,
+                    'media_name' => $podcast_track_name,
                     'media_type' => $request->podcast_type,
                     'media_cover' => !empty($podcast_cover_file_name) ? $podcast_cover_file_name : null,
                     'media_image' => !empty($podcast_file_name) ? $podcast_file_name : null,
                     'podcast_web_type' => !empty($request->podcast_web_type) ? $request->podcast_web_type : null,
+                    'media_duration' => $podcast_duration
                 ],[
                     'user_id' => $login_user->id,
                     'media_type' => $request->podcast_type,
@@ -800,5 +872,24 @@ class UserController extends Controller
         }
 
         return back();
+    }
+
+    function callSpotifyApi($options) 
+    {
+        $curl  = curl_init();
+        curl_setopt_array($curl, $options); 
+        $json  = curl_exec($curl);
+        $error = curl_error($curl);
+        curl_close($curl);
+        if ($error) {
+            return ['error'   => TRUE,
+                    'message' => $error];
+        }
+        $data  = json_decode($json);
+        if (is_null($data)) {
+            return ['error'   => TRUE,
+                    'message' => json_last_error_msg()];
+        }
+        return $data; 
     }
 }

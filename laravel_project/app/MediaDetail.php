@@ -45,6 +45,7 @@ class MediaDetail extends Model
         'media_cover',
         'media_url',
         'podcast_web_type',
+        'media_duration'
     ];
      /**
      * Get the visits relationship.

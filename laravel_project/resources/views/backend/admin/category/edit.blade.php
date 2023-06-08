@@ -9,11 +9,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.category.edit-category') }}</h1>
-            <p class="mb-4">{{ __('backend.category.edit-category-desc') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.category.edit-category') }}</h1>
+            <p class="mb-4 font-sm-14 ">{{ __('backend.category.edit-category-desc') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.categories.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -24,15 +24,15 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 pb-4 font_icon_color">
         <div class="col-12">
 
             <div class="row border-left-info mb-4">
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                            <span class="text-lg text-gray-800">{{ __('backend.item.item-link') }}:</span>
-                            <a href="{{ route('page.category', ['category_slug' => $category->category_slug]) }}" target="_blank">
+                            <span class="text-lg text-gray-800 font-sm-14">{{ __('backend.item.item-link') }}:</span>
+                            <a href="{{ route('page.category', ['category_slug' => $category->category_slug]) }}" target="_blank" class="font-sm-13">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 {{ route('page.category', ['category_slug' => $category->category_slug]) }}
                             </a>
@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-4">
                                         <label for="category_name" class="text-black">{{ __('backend.category.category-name') }}</label>
                                         <input id="category_name" type="text" class="form-control @error('category_name') is-invalid @enderror" name="category_name" value="{{ old('category_name') ? old('category_name') : $category->category_name }}">
                                         @error('category_name')
@@ -72,7 +72,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-4">
                                         <label for="category_slug" class="text-black">{{ __('backend.category.slug') }}</label>
                                         <input id="category_slug" type="text" class="form-control @error('category_slug') is-invalid @enderror" name="category_slug" value="{{ old('category_slug') ? old('category_slug') : $category->category_slug }}">
                                         <small class="text-muted">
@@ -85,7 +85,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-4">
                                         <label class="text-black" for="category_parent_id">{{ __('categories.choose-parent-cat') }}</label>
                                         <select class="custom-select @error('category_parent_id') is-invalid @enderror" name="category_parent_id">
                                             <option value="0" {{ empty(old('category_parent_id') ? old('category_parent_id') : $category->category_parent_id) ? 'selected' : '' }}>{{ __('categories.no-parent-cat') }}</option>
@@ -249,7 +249,7 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-6 col-xl-4">
                                         <label class="text-black" for="category_header_background_color">{{ __('category_image_option.form-header-background-color') }}</label>
                                         <input id="category_header_background_color" class="color-picker-input" name="category_header_background_color" value="{{ old('category_header_background_color') ? old('category_header_background_color') : $category->category_header_background_color }}">
                                         <small class="form-text text-muted">
@@ -262,7 +262,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-6 col-xl-4">
                                         <label for="category_header_background_image" class="text-black">{{ __('category_image_option.form-header-background-image') }}</label>
                                         <div class="input-group mb-2">
                                             <span class="input-group-btn">
@@ -284,7 +284,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6 col-lg-6 col-xl-4">
                                         <label for="category_header_background_youtube_video" class="text-black">{{ __('category_image_option.form-header-background-video') }}</label>
                                         <input id="category_header_background_youtube_video" type="text" class="form-control @error('category_header_background_youtube_video') is-invalid @enderror" name="category_header_background_youtube_video" value="{{ old('category_header_background_youtube_video') ? old('category_header_background_youtube_video') : $category->category_header_background_youtube_video }}">
                                         <small class="form-text text-muted">
@@ -309,7 +309,7 @@
                                 </button>
                             </div>
                             <div class="col-4 text-right">
-                                <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteModal">
+                                <a class="text-white btn btn-danger text-white" href="#" data-toggle="modal" data-target="#deleteModal">
                                     {{ __('backend.shared.delete') }}
                                 </a>
                             </div>

@@ -34,11 +34,11 @@ $login_user = Auth::user();
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.article.edit-article') }}</h1>
-            <p class="mb-4">{{ __('backend.article.edit-article-desc-user') }}</p>
+        <div class="col-8 col-md-9">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.article.edit-article') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.article.edit-article-desc-user') }}</p>
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.items.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -49,7 +49,7 @@ $login_user = Auth::user();
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 pb-4 font_icon_color">
         <div class="col-12">
 
             <div class="row mb-2">
@@ -86,14 +86,14 @@ $login_user = Auth::user();
 
                     <div class="row mb-2">
                         <div class="col-12">
-                            <span class="text-lg text-gray-800">{{ __('backend.item.item-link') }}:</span>
+                            <span class="text-lg text-gray-800 font-sm-14">{{ __('backend.item.item-link') }}:</span>
 
                             @if($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                <a href="{{ route('page.item', $item->item_slug) }}" target="_blank">{{ route('page.item', $item->item_slug) }}</a>
+                                <a href="{{ route('page.item', $item->item_slug) }}" target="_blank" class="font-sm-14">{{ route('page.item', $item->item_slug) }}</a>
                             @else
                                 <span>{{ route('page.item', $item->item_slug) }}</span>
                             @endif
-                            <a class="text-info pl-2" href="#" data-toggle="modal" data-target="#itemSlugModal">
+                            <a class="text-info pl-2 font-sm-14" href="#" data-toggle="modal" data-target="#itemSlugModal">
                                 <i class="far fa-edit"></i>
                                 {{ __('item_slug.update-url') }}
                             </a>
@@ -104,67 +104,67 @@ $login_user = Auth::user();
                         <div class="col-12">
 
                             @if($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                <form class="float-left pr-1" action="{{ route('admin.items.disapprove', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.disapprove', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-warning">
+                                    <button type="submit" class="btn btn-sm btn-warning btn-100-width-sm">
                                         <i class="far fa-times-circle"></i>
                                         {{ __('backend.shared.disapprove') }}
                                     </button>
                                 </form>
 
-                                <form class="float-left pr-1" action="{{ route('admin.items.suspend', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.suspend', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-danger">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-100-width-sm">
                                         <i class="far fa-flag"></i>
                                         {{ __('backend.shared.suspend') }}
                                     </button>
                                 </form>
                             @elseif($item->item_status == \App\Item::ITEM_SUBMITTED)
-                                <form class="float-left pr-1" action="{{ route('admin.items.approve', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.approve', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-success">
+                                    <button type="submit" class="btn btn-sm btn-success btn-100-width-sm">
                                         <i class="far fa-check-circle"></i>
                                         {{ __('backend.shared.approve') }}
                                     </button>
                                 </form>
 
-                                <form class="float-left pr-1" action="{{ route('admin.items.suspend', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.suspend', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-danger">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-100-width-sm">
                                         <i class="far fa-flag"></i>
                                         {{ __('backend.shared.suspend') }}
                                     </button>
                                 </form>
                             @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
-                                <form class="float-left pr-1" action="{{ route('admin.items.approve', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.approve', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-success">
+                                    <button type="submit" class="btn btn-sm btn-success btn-100-width-sm">
                                         <i class="far fa-check-circle"></i>
                                         {{ __('backend.shared.approve') }}
                                     </button>
                                 </form>
 
-                                <form class="float-left pr-1" action="{{ route('admin.items.disapprove', $item) }}" method="POST">
+                                <form class="float-left pr-1 w-100-sm" action="{{ route('admin.items.disapprove', $item) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-warning">
+                                    <button type="submit" class="btn btn-sm btn-warning btn-100-width-sm">
                                         <i class="far fa-times-circle"></i>
                                         {{ __('backend.shared.disapprove') }}
                                     </button>
                                 </form>
                             @endif
 
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.items.sections.index', ['item' => $item]) }}">
+                            <a class="btn btn-sm btn-primary btn-100-width-sm mb-2 mb-sm-0" href="{{ route('admin.items.sections.index', ['item' => $item]) }}">
                                 <i class="fas fa-bars"></i>
                                 {{ __('item_section.manage-sections') }}
                             </a>
 
-                            <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#deleteModal">
+                            <a class="btn btn-sm btn-outline-danger btn-100-width-sm" href="#" data-toggle="modal" data-target="#deleteModal">
                                 <i class="far fa-trash-alt"></i>
                                 {{ __('backend.item.delete-item') }}
                             </a>
@@ -319,7 +319,7 @@ $login_user = Auth::user();
                                             <input {{ $item->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="item_address_hide" name="item_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
                                             <label class="form-check-label" for="item_address_hide">
                                                 {{ __('backend.item.hide-address') }}
-                                                <small class="text-muted">
+                                                <small class="text-muted text_hide_sm">
                                                     {{ __('backend.item.hide-address-help') }}
                                                 </small>
                                             </label>
@@ -722,7 +722,7 @@ $login_user = Auth::user();
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour') }}
@@ -808,7 +808,7 @@ $login_user = Auth::user();
                                             <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_exception_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour-exception') }}
@@ -1012,7 +1012,7 @@ $login_user = Auth::user();
                         <hr/>
                         <div class="form-row mb-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white btn-100-width-sm">
                                     {{ __('backend.shared.update') }}
                                 </button>
                             </div>

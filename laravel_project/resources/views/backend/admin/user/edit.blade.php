@@ -12,16 +12,16 @@ $login_user = Auth::user();
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
+        <div class="col-8 col-md-9">
             @if($user->isCoach())
-                <h1 class="h3 mb-2 text-gray-800">Edit a Coach</h1>
-                <p class="mb-4">This page allows you to edit an existing couch record in the database.</p>
+                <h1 class="h3 mb-2 text-gray-800 font-sm-20">Edit a Coach</h1>
+                <p class="mb-4 font-sm-14">This page allows you to edit an existing couch record in the database.</p>
             @else
-                <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.edit-user') }}</h1>
-                <p class="mb-4">{{ __('backend.user.edit-user-desc') }}</p>
+                <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.user.edit-user') }}</h1>
+                <p class="mb-4 font-sm-14">{{ __('backend.user.edit-user-desc') }}</p>
             @endif
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.users.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -32,17 +32,17 @@ $login_user = Auth::user();
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
             <div class="row justify-content-between">
-                <div class="col-6">
+                <div class="col-lg-6 col-md-4 col-12">
                     @if($user->user_suspended == \App\User::USER_NOT_SUSPENDED)
                         <span class="text-success">{{ __('backend.user.account-active') }}</span>
                     @else
                         <span class="text-danger">{{ __('backend.user.account-suspended') }}</span>
                     @endif
                 </div>
-                <div class="col-6 text-right">
+                <div class="col-lg-6 col-md-8 col-12 text-right">
                     @if($user->user_suspended == \App\User::USER_NOT_SUSPENDED)
                         <form class="pb-2" action="{{ route('admin.users.suspend', $user) }}" method="POST">
                             @csrf
@@ -50,8 +50,8 @@ $login_user = Auth::user();
                             @if(empty($user->email_verified_at))
                                 <button type="button" class="btn btn-warning mr-1 verify_email_button" data-user_id="{{$user->id}}">{{ __('admin_users_table.verify-selected') }}</a>
                             @endif
-                            <button type="submit" class="btn btn-primary">{{ __('backend.user.suspend-account') }}</button>
-                            <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#deleteModal">
+                            <button type="submit" class="btn btn-primary btn-100-width-sm mb-2 mb-sm-0">{{ __('backend.user.suspend-account') }}</button>
+                            <a class="btn btn-danger btn-100-width-sm" href="#" data-toggle="modal" data-target="#deleteModal">
                                 {{ __('backend.user.delete-user') }}
                             </a>
                         </form>
@@ -99,7 +99,7 @@ $login_user = Auth::user();
                         <input type="hidden" name="is_coach" value="{{ $user->isCoach() ? true : false }}">
                         @if($user->isCoach())
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-12 col-md-4">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -129,7 +129,7 @@ $login_user = Auth::user();
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-lg-10 col-12 col-md-8">
                                     @if(Session::has('item_exist'))
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             {{ Session::get('item_exist') }}
@@ -160,7 +160,7 @@ $login_user = Auth::user();
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}">
                                             @error('name')
@@ -169,7 +169,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="company_name" class="text-black">Company Name</label>
                                             <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $user->company_name) }}">
                                             @error('company_name')
@@ -178,7 +178,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}">
                                             @error('email')
@@ -187,7 +187,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
@@ -213,7 +213,7 @@ $login_user = Auth::user();
                                                     </span>
                                                     @enderror
                                                 </div> --}}
-                                                <div class="col-sm-3">
+                                                <div class="col-lg-3 col-md-6 col-12">
                                                     <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
                                                         @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
@@ -230,7 +230,7 @@ $login_user = Auth::user();
                                         </div>
                                         <div class="col-sm-7">
                                             <div class="row mt-3"> --}}
-                                                <div class="col-sm-3">
+                                                <div class="col-lg-3 col-md-6 col-12">
                                                     <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
                                                         @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
@@ -243,7 +243,7 @@ $login_user = Auth::user();
                                                     </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-lg-3 col-md-6 col-12">
                                                     <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" title="Select Working Method">
                                                         @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
@@ -256,7 +256,7 @@ $login_user = Auth::user();
                                                     </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="col-lg-3 col-md-6 col-12">
                                                     <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
                                                         @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
@@ -273,7 +273,7 @@ $login_user = Auth::user();
                                         </div> --}}
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-5">
+                                        <div class="col-lg-5 col-12">
                                             <div class="row mt-3">
                                                 <div class="col-sm-6">
                                                     <label for="website" class="text-black">Website</label>
@@ -304,7 +304,7 @@ $login_user = Auth::user();
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-7">
+                                        <div class="col-lg-7 col-12 ">
                                             <div class="row mt-3">
                                                 <div class="col-sm-4">
                                                     <label for="linkedin" class="text-black">LinkedIn</label>
@@ -367,7 +367,7 @@ $login_user = Auth::user();
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-sm-4">
+                                <div class="col-lg-4 col-md-6">
                                     <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
                                     <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $user->address) }}">
                                     @error('address')
@@ -376,7 +376,7 @@ $login_user = Auth::user();
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-6">
                                     <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
                                     <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
@@ -393,7 +393,7 @@ $login_user = Auth::user();
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-6">
                                     <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
                                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
                                         @if($all_states)
@@ -413,7 +413,7 @@ $login_user = Auth::user();
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-6">
                                     <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
                                     <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
                                         @if($all_cities)
@@ -433,7 +433,7 @@ $login_user = Auth::user();
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-6">
                                     <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
                                     <input id="zip" type="text" class="form-control zip @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $user->post_code) }}">
                                     @error('post_code')
@@ -446,7 +446,7 @@ $login_user = Auth::user();
                         @else
 
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-6">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -478,7 +478,7 @@ $login_user = Auth::user();
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}">
                                             @error('name')
@@ -487,7 +487,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}">
                                             @error('email')
@@ -496,7 +496,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="phone" class="text-black">Phone</label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $user->phone) }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
@@ -505,7 +505,7 @@ $login_user = Auth::user();
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="gender" class="text-black">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
@@ -538,10 +538,10 @@ $login_user = Auth::user();
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-primary m-2 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary mb-2 mb-sm-0 text-white btn-100-width-sm">
                                     {{ __('backend.shared.update') }}
                                 </button>
-                                <a class="btn btn-warning m-2 text-white" href="{{ route('admin.users.password.edit', $user) }}">
+                                <a class="btn btn-warning text-white btn-100-width-sm" href="{{ route('admin.users.password.edit', $user) }}">
                                     {{ __('backend.user.change-password') }}
                                 </a>
                             </div>

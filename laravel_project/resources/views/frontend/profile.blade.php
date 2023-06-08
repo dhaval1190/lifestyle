@@ -1196,8 +1196,11 @@
                                     <div class="col-md-3">
                                         <div class="">
                                         <div class="box-video vid-fit-reveal" data-id="{{ $podcast->id }}" data-testid="play-pause-button" data-vid="box-video_{{ $podcast['id'] }}" id="#js-fitvideo_{{ $podcast->id }}">
-                                            <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                            {{-- <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
                                             style="background-image: @if(str_contains($podcast['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
+                                             --}}
+                                             <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                            style="background-image: url('{{ $podcast['media_cover'] }} '); opacity: 1;" data-src="{{ $podcast['media_image'] }}">
                                             <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
                                             </a>
                                             <div class="video-container">
@@ -1208,6 +1211,7 @@
                                         </div>
                                         </div>
                                         <p>{{ $podcast['media_name'] }}</p>
+                                        {{-- <p>{{ $podcast['media_duration'] }}</p> --}}
                                     </div>
                                     @php $count++; @endphp
                                 @endforeach

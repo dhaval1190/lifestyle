@@ -11,16 +11,16 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
+        <div class="col-8 col-md-9">
             @if(isset($_GET['is_coach']) && $_GET['is_coach'] == 1)
-                <h1 class="h3 mb-2 text-gray-800">Add A Coach</h1>
-                <p class="mb-4">This page allows you to create a new coach record in the database.</p>
+                <h1 class="h3 mb-2 text-gray-800 font-sm-20">Add A Coach</h1>
+                <p class="mb-4 font-sm-14">This page allows you to create a new coach record in the database.</p>
             @else
-                <h1 class="h3 mb-2 text-gray-800">{{ __('backend.user.add-user') }}</h1>
-                <p class="mb-4">{{ __('backend.user.add-user-desc') }}</p>
+                <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.user.add-user') }}</h1>
+                <p class="mb-4 font-sm-14">{{ __('backend.user.add-user-desc') }}</p>
             @endif
         </div>
-        <div class="col-3 text-right">
+        <div class="col-4 col-md-3 text-right">
             <a href="{{ route('admin.users.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
@@ -45,7 +45,7 @@
                             <input type="hidden" name="is_coach" value="{{ \App\Role::COACH_ROLE_ID }}">
 
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-4">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -75,7 +75,7 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-lg-10 col-md-8">
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
                                             @error('name')
@@ -107,7 +107,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="company_name" class="text-black">Company Name</label>
                                             <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}">
                                             @error('company_name')
@@ -116,7 +116,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
                                             @error('email')
@@ -125,7 +125,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" onkeypress="validatePostalCode(event)" required>
                                             @error('phone')
@@ -136,7 +136,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-6">
                                             <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" value="">
                                             <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
@@ -146,7 +146,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6 col-lg-6">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
                                             <input id="password_confirmation" type="password" class="form-control set_padding_left_right_form @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
@@ -156,7 +156,7 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        {{-- <div class="col-sm-3">
+                                        {{-- <div class="col-lg-3 col-md-6 col-12">
                                             <label for="gender" class="text-black">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
@@ -169,7 +169,7 @@
                                             </span>
                                             @enderror
                                         </div> --}}
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" required title="Select Preferred Pronouns">
                                                 @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
@@ -182,7 +182,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" required title="Select Hourly Rate">
                                                 @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
@@ -197,7 +197,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Working Method">
                                                 @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
@@ -210,7 +210,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-6 col-12">
                                             <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
                                             <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" required title="Select Experience">
                                                 @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
@@ -234,7 +234,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-4 col-12">
                                             <label for="instagram" class="text-black">IG Handle</label>
                                             <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram') }}">
                                             <span class="err_instagram_url" style="color:red"></span>
@@ -252,7 +252,7 @@
                                             </span>
                                     @endif
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-4 col-12">
                                             <label for="linkedin" class="text-black">LinkedIn</label>
                                             <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin') }}">
                                             <span class="err_linkedin_url" style="color:red"></span>
@@ -270,7 +270,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-4 col-12">
                                             <label for="facebook" class="text-black">Facebook</label>
                                             <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook') }}">
                                             <span class="err_facebook_url" style="color:red"></span>
@@ -288,7 +288,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-lg-3 col-md-4 col-12">
                                             <label for="youtube" class="text-black">Youtube</label>
                                             <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube') }}">
                                             <span class="err_youtube_url" style="color:red"></span>
@@ -311,7 +311,7 @@
                             </div>
 
                             <div class="row mt-3">
-                                <div class="col-sm-4">
+                                <div class="col-md-6 col-lg-4">
                                     <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
                                     <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required>
                                     @error('address')
@@ -320,7 +320,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-md-6 col-lg-2">
                                     <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
                                     <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="false" required title="{{ __('prefer_country.select-country') }}">
                                         @foreach($all_countries as $all_countries_key => $country)
@@ -335,7 +335,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-4 col-lg-2">
                                     <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
                                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" required title="{{ __('backend.item.select-state') }}">
                                     </select>
@@ -345,7 +345,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-4 col-lg-2">
                                     <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
                                     <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" required title="{{ __('backend.item.select-city') }}">
                                     </select>
@@ -355,7 +355,7 @@
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-4  col-lg-2">
                                     <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
                                     <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}">
                                     @error('post_code')
@@ -367,7 +367,7 @@
                             </div>
                         @else
                             <div class="row">
-                                <div class="col-sm-2">
+                                <div class="col-lg-2 col-md-4">
                                     {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                                     {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
@@ -397,9 +397,9 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="col-sm-10">
+                                <div class="col-lg-10 col-md-8">
                                     <div class="row mt-3">
-                                        <div class="col-sm-4">
+                                        <div class="col-lg-4 col-md-6">
                                             <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
                                             @error('name')
@@ -408,7 +408,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-lg-4 col-md-6">
                                             <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
                                             @error('email')
@@ -417,7 +417,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-lg-4 col-md-6">
                                             <label for="phone" class="text-black">Phone</label>
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" onkeypress="validatePostalCode(event)">
                                             @error('phone')
@@ -428,7 +428,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <label class="text-black" for="password">{{ __('backend.user.password') }}<span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control set_padding_left_right_form @error('password') is-invalid @enderror" name="password" value="">
                                             <span toggle="#password" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
@@ -438,7 +438,7 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6 col-lg-4">
                                             <label class="text-black" for="password_confirmation">{{ __('backend.user.confirm-password') }}<span class="text-danger">*</span></label>
                                             <input id="password_confirmation" type="password" class="form-control set_padding_left_right_form @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="">
                                             <span toggle="#password_confirmation" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
@@ -448,7 +448,7 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-lg-4 col-md-6">
                                             <label for="gender" class="text-black">Gender</label>
                                             <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
                                                 @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
@@ -481,7 +481,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
+                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white btn-100-width-sm">
                                     {{ __('backend.shared.create') }}
                                 </button>
                             </div>

@@ -62,10 +62,18 @@
 
                                                     <div class="box-video vid-fit-reveal"
                                                         data-vid="box-video_{{ $image['monthly']['id'] }}">
-                                                        <a href="" target="_blank" class="bg-video"
+                                                        {{-- <a href="" target="_blank" class="bg-video"
                                                             id="podcast_id_{{ $image['monthly']['id'] }}"
                                                             data-toggle="modal" data-target="#podcastModal"
                                                             style="background-image: @if (str_contains($image['monthly']['media_image'], 'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'], 'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'], 'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'], 'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;"
+                                                            data-src="{{ $image['monthly']['media_image'] }}">
+                                                            <div class="bt-play"
+                                                                id="bt-play_{{ $image['monthly']['id'] }}"></div>
+                                                        </a> --}}
+                                                        <a href="" target="_blank" class="bg-video"
+                                                            id="podcast_id_{{ $image['monthly']['id'] }}"
+                                                            data-toggle="modal" data-target="#podcastModal"
+                                                            style="background-image: url('{{ $image['monthly']['media_cover'] }}'); opacity: 1;"
                                                             data-src="{{ $image['monthly']['media_image'] }}">
                                                             <div class="bt-play"
                                                                 id="bt-play_{{ $image['monthly']['id'] }}"></div>
