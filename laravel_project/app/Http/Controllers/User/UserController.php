@@ -704,13 +704,15 @@ class UserController extends Controller
                     }
                     if(stripos($request->podcast_image,'iframe') !== false){
                         return back()->with('podcast_error','Please enter proper URL');
-                    }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
+                    // }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
+                    }elseif(stripos($request->podcast_image,'spotify') !== false){
                         $podcast_url = $request->podcast_image;
                         $exp_podcast_url = explode("open.spotify.com",$podcast_url);
                         $exp_podcast_url_2 = explode("?",$exp_podcast_url[1])[0];
                         $exp2_exp_podcast_url_2 = explode("/",$exp_podcast_url_2);
                         $spotify_epi_id = $exp2_exp_podcast_url_2[2];
                         $embed_podcast_url = $exp_podcast_url[0]."open.spotify.com/embed".$exp_podcast_url_2."/?utm_source=generator";  
+                        // dd($embed_podcast_url);
                         
                         //call API to get podcast details like name,image,duration
                         $headers  = ['Authorization: Basic '.base64_encode('1b82aa6d520c43dba5c52d8874ce2f5d:3bb76a5092ec4691bf208260ea612350')];
@@ -740,12 +742,16 @@ class UserController extends Controller
                                     CURLOPT_HTTPHEADER     => $headers];
                         $spotify_podcast_details = $this->callSpotifyApi($options); 
                         // print_r($spotify_podcast_details);exit;
-                        $podcast_track_name = $spotify_podcast_details->name;
-                        $podcast_cover_file_name = $spotify_podcast_details->images[1]->url;
-                        $spotify_podcast_duration_millisec = $spotify_podcast_details->duration_ms;
-
-                        $seconds = floor($spotify_podcast_duration_millisec / 1000);
-                        $podcast_duration = gmdate("i:s", $seconds);
+                        if(isset($spotify_podcast_details->name)){
+                            $podcast_track_name = $spotify_podcast_details->name;
+                            $podcast_cover_file_name = $spotify_podcast_details->images[1]->url;
+                            $spotify_podcast_duration_millisec = $spotify_podcast_details->duration_ms;
+    
+                            $seconds = floor($spotify_podcast_duration_millisec / 1000);
+                            $podcast_duration = gmdate("i:s", $seconds);
+                        }else{
+                            return back()->with('podcast_error','Non existing episode id');
+                        }
 
                         // dd($podcast_duration);
                     }
