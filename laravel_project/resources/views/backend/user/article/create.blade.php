@@ -218,7 +218,7 @@
                                         @enderror
                                     </div>
 
-                                    <!-- <div class="col-md-8 col-lg-4">
+                                    <div class="col-md-8 col-lg-4">
                                         <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
                                         <div class="input-group">
                                             <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
@@ -227,7 +227,7 @@
                                                 <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
 
                                 <div class="form-row mb-3">
