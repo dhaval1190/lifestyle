@@ -266,7 +266,7 @@
                     </a>                    
                 </div>
 
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <a class="decoration-none" href="{{ route('user.articles.index') }}">
                         <div class="fourth_coach coach">
                             <div class="coaches">
@@ -274,6 +274,20 @@
                                 <div class="coaches_detail">
                                     <h3>{{ __('backend.homepage.all-articles') }}</h3>
                                     <p class="c-four">{{ number_format($item_count) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>                    
+                </div> --}}
+
+                <div class="col-md-6">
+                    <a class="decoration-none" href="{{ route('user.contact-leads.index') }}">
+                        <div class="fourth_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('Contact Leads') }}</h3>
+                                    <p class="c-four">{{ number_format($contact_lead_count) }}</p>
                                 </div>
                             </div>
                         </div>

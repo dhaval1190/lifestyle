@@ -28,6 +28,16 @@
 </style>
 @section('content')
 
+@php 
+    $user_detail = '';
+    $userId = '';
+    $user_detail = Auth::user();
+    if(isset($user_detail)){
+        $userId = $user_detail->id;
+
+    }
+@endphp
+
     <!-- Display on xl -->
     @if(!empty($item->item_image) && !empty($item->item_image_blur))
         <div class="site-blocks-cover inner-page-cover overlay d-none d-xl-flex" style="background-image: url({{ Storage::disk('public')->url('item/' . $item->item_image_blur) }});">
@@ -91,17 +101,21 @@
                         </a>
                     @endif
 
-                    <p class="item-cover-address-section">
-                        @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                            @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
-                                {{ $item->item_address }} <br>
-                            @endif
-                            {{ $item->city->city_name }}, {{ $item->state->state_name }}
-                            @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
-                             {{ $item->item_postal_code }}
-                            @endif
+                    @if(isset($user_detail->id))
+                        @if($user_detail->id == $item->user_id)
+                            <p class="item-cover-address-section">
+                                @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                    @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
+                                        {{ $item->item_address }} <br>
+                                    @endif
+                                    {{ $item->city->city_name }}, {{ $item->state->state_name }}
+                                    @if($item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE)
+                                    {{ $item->item_postal_code }}
+                                    @endif
+                                @endif
+                            </p>
                         @endif
-                    </p>
+                    @endif
 
                     @guest
                         <a class="btn btn-primary rounded text-white" href="{{ route('user.items.reviews.create', $item->item_slug) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.write-a-review') }}</a>

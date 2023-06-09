@@ -198,8 +198,8 @@
                         <div class="col-md-6">
                             <ul class="list_design_ptb-30">
                                 <li>Years Exp.</li>
-                                <li>Certifications</li>
-                                <li>Awards</li>
+                                {{-- <li>Certifications</li>
+                                <li>Awards</li> --}}
                                 <li>Address</li>
                                 <li>Country</li>
                                 <li>State</li>
@@ -218,7 +218,7 @@
                                 <li>LinkedIn*</li>
                                 <li>YouTube*</li>
                             </ul>
-                            <p class="content">*Must use /have a min of 2 platforms</p>
+                            <p class="content">*Must use /have a min of 3 platforms</p>
                         </div>
                     </div>
                     <div class="row" id="bronze_content">
@@ -259,7 +259,7 @@
                         <div class="col-md-12">
                             <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
                             <ul class="list_design_ptb-30">
-                                <li>5 client referrals</li>
+                                <li>5 Client referrals</li>
                             </ul>
                         </div>
                     </div>

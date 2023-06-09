@@ -641,7 +641,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $data['profile']    = '';
         $data['percentage'] = 0;
 
-        if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['awards']) && !empty($user['certifications']) && !empty($user['experience_year'])){
+        // if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['awards']) && !empty($user['certifications']) && !empty($user['experience_year'])){
+            if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['experience_year'])){
             $data['basic_profile']  = true;
             $data['profile']        = 'Basic';
             $data['percentage']     = 20;
@@ -655,11 +656,12 @@ class User extends Authenticatable implements MustVerifyEmail
                 $ebook_media_count      = MediaDetail::where('user_id', $user->id)->where('media_type', 'ebook')->count();
                 $blog_count             = \Canvas\Models\Post::where('user_id', $user->id)->count();
                 $referral_count         = count($user->referrals);
-                if($article_count >= 10){
+                $total_content_count = $article_count + $video_media_count + $podcast_media_count + $ebook_media_count;
+                if($article_count >= 10 || $total_content_count >= 10){
                     $data['bronze_profile'] = true;
                     $data['profile']        = 'Bronze';
                     $data['percentage']     = 50;
-                    if($article_count >= 20 && $video_media_count >= 1 && $podcast_media_count >= 1 && $ebook_media_count >= 1 && $blog_count >= 1){
+                    if(($article_count >= 20 || $total_content_count >= 20) && $video_media_count >= 1 && $podcast_media_count >= 1 && $ebook_media_count >= 1 /*&& $blog_count >= 1*/){
                         $data['silver_profile'] = true;
                         $data['profile']        = 'Silver';
                         $data['percentage']     = 60;
@@ -668,7 +670,7 @@ class User extends Authenticatable implements MustVerifyEmail
                             $data['gold_profile']   = true;
                             $data['profile']        = 'Gold';
                             $data['percentage']     = 70;
-                            if($article_count >= 30 && $review_count >= 7 && $referral_count >= 1){
+                            if(($article_count >= 30 || $total_content_count >= 30) && $review_count >= 7 && $referral_count >= 1){
                                 $data['platinum_profile']   = true;
                                 $data['profile']            = 'Platinum';
                                 $data['percentage']         = 90;
@@ -692,7 +694,7 @@ class User extends Authenticatable implements MustVerifyEmail
                         }
                     }else{
                         $data['silver_profile'] = false;
-                        $remaining_detail['article_count'] = (20 - $article_count).' Pieces of content';
+                        $remaining_detail['article_count'] = (20 - $total_content_count).' Pieces of content';
                         if(empty($video_media_count)) $remaining_detail['video_media_count'] = '1 Youtube Video Detail';
                         if(empty($podcast_media_count)) $remaining_detail['podcast_media_count'] = '1 Podcast Detail';
                         if(empty($ebook_media_count)) $remaining_detail['ebook_media_count'] = '1 Ebook Detail';
@@ -700,7 +702,7 @@ class User extends Authenticatable implements MustVerifyEmail
                     }
                 }else{
                     $data['bronze_profile'] = false;
-                    $remaining_detail['article_count'] = (10 - $article_count).' Pieces of content';
+                    $remaining_detail['article_count'] = (10 - $total_content_count).' Pieces of content';
                 }
             }else{
                 $data['Social_profile'] = false;
@@ -725,8 +727,8 @@ class User extends Authenticatable implements MustVerifyEmail
             if(empty($user['country_id'])) $remaining_detail['country_id'] = 'Country';
             if(empty($user['city_id'])) $remaining_detail['city_id'] = 'City';
             if(empty($user['address'])) $remaining_detail['address'] = 'Address';
-            if(empty($user['awards'])) $remaining_detail['awards'] = 'Awards';
-            if(empty($user['certifications'])) $remaining_detail['certifications'] = 'Certifications';
+            // if(empty($user['awards'])) $remaining_detail['awards'] = 'Awards';
+            // if(empty($user['certifications'])) $remaining_detail['certifications'] = 'Certifications';
             if(empty($user['experience_year'])) $remaining_detail['experience_year'] = 'Experience Year';
         }
         $data['remaining_detail'] = $remaining_detail;
