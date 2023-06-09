@@ -797,7 +797,7 @@ $chk_post = Auth::user()->phone;
                                 @endforeach
                             </select> --}}
                             <input type="hidden" name="podcast_type" value="podcast">
-
+                            <span class="podcast_type_err_media_url" style="color:red"></span>
                             <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
                                                 <option name = "apple_podcast" value="apple_podcast">Apple Podcast</option>
                                                 <option name = "stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
@@ -834,37 +834,45 @@ $chk_post = Auth::user()->phone;
                             @enderror
                         </div> --}}
                         <div class="col-12 col-md-12 col-lg-3">
-                                            <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
-                                            <span class="err_media_url" style="color:red"></span>
-                                            <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
-                        <small id="linkHelpBlock" class="form-text text-muted">
-                            {{ __('Only URL allowed (include http:// or https://)') }}
-                        </small>
-                        @error('podcast_image')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                        @if(Session::has('podcast_error'))
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ Session::get('podcast_error') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-                    {{-- <div class="col-12 col-md-12 col-lg-3">
-                        <label class="text-black">Podcast Cover</label>
-                        <input id="podcast_cover" type="file"
-                            class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover"
-                            accept=".jpg,.jpeg,.png">
-                        <small class="form-text text-muted">
-                            {{ __('backend.item.feature-image-help') }}
-                        </small>
-                        @error('podcast_cover')
-                        <span class="invalid-tooltip">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div> --}}
+                                <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
+                                <span class="podcast_err_media_url" style="color:red"></span>
+                                <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('Only URL allowed (include http:// or https://)') }}
+                                </small>
+                                @error('podcast_image')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('podcast_error'))
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ Session::get('podcast_error') }}</strong>
+                                </span>
+                                @endif
+                        </div>
+                        {{-- <div class="col-12 col-md-12 col-lg-3">
+                            <label class="text-black">Podcast Cover</label>
+                            <input id="podcast_cover" type="file"
+                                class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover"
+                                accept=".jpg,.jpeg,.png">
+                            <small class="form-text text-muted">
+                                {{ __('backend.item.feature-image-help') }}
+                            </small>
+                            @error('podcast_cover')
+                            <span class="invalid-tooltip">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div> --}}
+                        <div class="col-12 col-md-12 col-lg-3">
+                            <label for="podcast_url" class="text-black">&nbsp;</label>
+                            <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm"
+                                id="podcast_create_button">
+                                <i class="fas fa-plus"></i>
+                                {{ __('Add') }}
+                            </a>
+                        </div>
                     <div class="col-12 col-md-12 col-lg-12 col-xl-6">
                         @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                         <div class="col-12 col-md-12 col-lg-6 d-flex-between-100">
@@ -1827,6 +1835,48 @@ $('#media_type_create_button').on('click', function() {
         "<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>"
     );
     $("#media_url").val('');
+
+});
+
+
+//for podcast
+$('#podcast_create_button').on('click', function() {
+    $('.podcast_err_media_url').html("");
+    if ($("#podcast_web_type").val() == '') {
+        $('.podcast_type_err_media_url').html("Please select podcast type");
+        return false;
+    }
+    if ($("#podcast_image").val() == '') {
+        $('.podcast_err_media_url').html("Please enter Podcast URL");
+        return false;
+    }
+
+    
+    var podcast_media_type_text = $("#podcast_web_type option:selected").text();
+    var podcast_media_web_type_value = $("#podcast_web_type").val();
+    var podcast_media_url_value = $("#podcast_image").val();
+
+        var ajax_url = '/user/podcast/details';
+        jQuery.ajax({
+            url: ajax_url,
+            method: 'post',
+            data: {podcast_media_type:podcast_media_web_type_value,podcast_media_url_value:podcast_media_url_value},
+            success: function(result) {
+                console.log(result);
+
+                
+            }
+        });
+
+
+    // var media_detail_value = media_type_value + '||' + media_url;
+    // var media_detail_text = podcast_media_type_text + ' : ' + media_url;
+
+    // $("#media_details_added").append("<div class='col-12'><input type='hidden' name='media_details[]' value='" +
+    //     media_detail_value + "'>" + media_detail_text +
+    //     "<a class='btn btn-sm text-danger bg-white' onclick='$(this).parent().remove();'><i class='far fa-trash-alt'></i></a></div>"
+    // );
+    // $("#media_url").val('');
 
 });
 
