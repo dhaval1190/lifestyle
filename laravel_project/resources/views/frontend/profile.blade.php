@@ -287,13 +287,17 @@
                                                     $userId = Auth::user()->id ? Auth::user()->id : '';
                                                 }
                                                 ?>
+                                                @if ($user_detail->id == $userId)
+                                                <a class="btn btn-primary rounded text-white item-share-refferal-button"><i
+                                                    class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
+                                                @endif
                                                 @if ($user_detail->id != $userId)
                                                     <a class="btn btn-primary rounded text-white item-contact-button"><i
                                                             class="fas fa-phone-alt"></i>
                                                         {{ __('Contact This Coach') }}</a>
+                                                        <a class="btn btn-primary rounded text-white item-share-button"><i
+                                                                class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
                                                 @endif
-                                                <a class="btn btn-primary rounded text-white item-share-button"><i
-                                                        class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
                                                 @guest
                                                     <a class="btn btn-primary rounded text-white item-review-button"><i
                                                             class="fas fa-star"></i> Write a Review</a>
@@ -1071,10 +1075,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="below_info">
-                                <h3>Youtube</h3>
+                                <h3>Youtube Channel</h3>
                             </div>
                         </div>
-                        <div class="col-lg-12 plr-45 padding_set_left_right">
+                        {{-- <div class="col-lg-12 plr-45 padding_set_left_right">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="video">
@@ -1123,6 +1127,15 @@
                                 </div>
                             </div>
 
+                        </div> --}}
+                        <div class="col-lg-12 plr-45 padding_set_left_right">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <a href="{{ $user_detail['youtube'] }}" class="btn btn-primary rounded" target="_blank">
+                                        {{ __('Click to visit the channel') }}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @endif

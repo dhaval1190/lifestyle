@@ -1885,7 +1885,7 @@ $('#youtube').on('input', function() {
         }
         return false;
     } else {
-        if (youtubeinUrl.indexOf('@') > -1 || youtubeinUrl.indexOf('channel') > -1) {
+        if (youtubeinUrl.indexOf('@') > -1) {
             // console.log("lllllllllllll")
             $('.err_youtube_url').html("Please enter Youtube URL Only");
             $('#submit').attr("disabled", true);
