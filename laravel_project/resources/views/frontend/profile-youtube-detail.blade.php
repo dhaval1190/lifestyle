@@ -281,10 +281,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="below_info">
-                                <h3>Youtube</h3>
+                                <h3>Youtube Channel</h3>
                             </div>
                         </div>
-                        <div class="col-lg-12 plr-45">
+                        {{-- <div class="col-lg-12 plr-45">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="video">
@@ -312,6 +312,15 @@
                                 </div>
                             </div>
 
+                        </div> --}}
+                        <div class="col-lg-12 plr-45 padding_set_left_right">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <a href="{{ $user_detail['youtube'] }}" class="btn btn-primary rounded" target="_blank">
+                                        {{ __('Click to visit the channel') }}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
