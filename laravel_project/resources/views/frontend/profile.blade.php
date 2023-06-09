@@ -1128,7 +1128,7 @@
                             </div>
 
                         </div> --}}
-                        <div class="col-lg-12 plr-45 padding_set_left_right">
+                        <div class="col-lg-12 plr-45 padding_set_left_right mb-2">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <a href="{{ $user_detail['youtube'] }}" class="btn btn-primary rounded" target="_blank">

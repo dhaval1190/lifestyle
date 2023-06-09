@@ -1877,6 +1877,7 @@ $('#youtube').on('input', function() {
     var matchUrl = ".youtube";
     var matchUrl1 = "youtu.be";
     if (youtubeinUrl.indexOf(matchUrl) == -1 && youtubeinUrl.indexOf(matchUrl1) == -1) {
+        console.log("dkslkdlsjkl");
         $('.err_youtube_url').html("Please enter Youtube URL Only");
         $('#submit').attr("disabled", true);
         if (youtubeinUrl.length == 0) {
@@ -1884,19 +1885,20 @@ $('#youtube').on('input', function() {
             $('.err_youtube_url').html('');
         }
         return false;
-    } else {
-        if (youtubeinUrl.indexOf('@') > -1) {
-            // console.log("lllllllllllll")
-            $('.err_youtube_url').html("Please enter Youtube URL Only");
-            $('#submit').attr("disabled", true);
-            // return false;
-        } else {
-            $('.err_youtube_url').html('');
-            $('#submit').attr("disabled", false);
+    } 
+    // else {
+    //     if (youtubeinUrl.indexOf('@') > -1) {
+    //         // console.log("lllllllllllll")
+    //         $('.err_youtube_url').html("Please enter Youtube URL Only");
+    //         $('#submit').attr("disabled", true);
+    //         // return false;
+    //     } else {
+    //         $('.err_youtube_url').html('');
+    //         $('#submit').attr("disabled", false);
 
-        }
+    //     }
 
-    }
+    //}
 });
 
 function isUrl(s) {
