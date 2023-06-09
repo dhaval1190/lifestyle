@@ -30,6 +30,16 @@
         <div data-youtube="{{ $site_homepage_header_background_youtube_video }}"></div>
     @endif
 
+    @php 
+        $user_detail = '';
+        $userId = '';
+        $user_detail = Auth::user();
+        if(isset($user_detail)){
+            $userId = $user_detail->id;
+
+        }
+    @endphp
+
     <div class="container">
         <!-- Start hero section desktop view-->
         <div class="row align-items-center justify-content-center text-center ">
@@ -498,12 +508,16 @@
                                                 </h3>
 
                                                 @if ($trainding_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                    <address>
-                                                        <a
-                                                            href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
-                                                        <a
-                                                            href="{{ route('page.state', ['state_slug' => $trainding_item->state->state_slug]) }}">{{ $trainding_item->state->state_name }}</a>
-                                                    </address>
+                                                    @if(isset($user_detail->id))
+                                                        @if($user_detail->id == $trainding_item->user_id)
+                                                            <address>
+                                                                <a
+                                                                    href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
+                                                                <a
+                                                                    href="{{ route('page.state', ['state_slug' => $trainding_item->state->state_slug]) }}">{{ $trainding_item->state->state_name }}</a>
+                                                            </address>
+                                                        @endif
+                                                    @endif                                                    
                                                 @endif
 
                                                 @php
@@ -629,12 +643,16 @@
                                         </h3>
 
                                         @if ($trainding_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            <address>
-                                                <a
-                                                    href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
-                                                <a
-                                                    href="{{ route('page.state', ['state_slug' => $trainding_item->state->state_slug]) }}">{{ $trainding_item->state->state_name }}</a>
-                                            </address>
+                                            @if(isset($user_detail->id))
+                                                @if($user_detail->id == $trainding_item->user_id)
+                                                    <address>
+                                                        <a
+                                                            href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
+                                                        <a
+                                                            href="{{ route('page.state', ['state_slug' => $trainding_item->state->state_slug]) }}">{{ $trainding_item->state->state_name }}</a>
+                                                    </address>
+                                                @endif
+                                            @endif
                                         @endif
 
                                         @php
@@ -764,12 +782,16 @@
                                             </h3>
 
                                             @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                <address>
-                                                    <a
-                                                        href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                                                    <a
-                                                        href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                                </address>
+                                                @if(isset($user_detail->id))
+                                                    @if($user_detail->id == $item->user_id)
+                                                        <address>
+                                                            <a
+                                                                href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                                            <a
+                                                                href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                        </address>
+                                                    @endif
+                                                @endif
                                             @endif
 
                                             @php
@@ -891,12 +913,16 @@
                                         </h3>
 
                                         @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            <address>
-                                                <a
-                                                    href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                                                <a
-                                                    href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                            </address>
+                                            @if(isset($user_detail->id))
+                                                @if($user_detail->id == $item->user_id)
+                                                    <address>
+                                                        <a
+                                                            href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                                        <a
+                                                            href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                    </address>
+                                                @endif
+                                            @endif
                                         @endif
 
                                         @php
@@ -1029,10 +1055,14 @@
                                         </h3>
 
                                         @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            <address>
-                                                {{-- <a href="{{ route('page.city',['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a> --}}
-                                                {{-- <a href="{{ route('page.state',['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a> --}}
-                                            </address>
+                                            @if(isset($user_detail->id))
+                                                @if($user_detail->id == $item->user_id)
+                                                    <address>
+                                                        <a href="{{ route('page.city',['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>
+                                                        <a href="{{ route('page.state',['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                    </address>
+                                                @endif
+                                            @endif
                                         @endif
 
                                         @php
@@ -1144,12 +1174,16 @@
                                 </h3>
 
                                 @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                    <address>
-                                        <a
-                                            href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                                        <a
-                                            href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                    </address>
+                                    @if(isset($user_detail->id))
+                                        @if($user_detail->id == $item->user_id)
+                                            <address>
+                                                <a
+                                                    href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                                <a
+                                                    href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                            </address>
+                                        @endif
+                                    @endif
                                 @endif
 
                                 @php

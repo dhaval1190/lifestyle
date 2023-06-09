@@ -7,7 +7,6 @@
 @endsection
 
 @section('content')
-
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact coach mail list') }}</h1>
@@ -27,20 +26,21 @@
     <div class="row bg-white pt-4 pb-4">
         <div class="col-12">
 
-        <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+            @if ($all_contact_leads->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
                             <tr>
                                 <th>{{ __('backend.city.id') }}</th>
                                 {{-- <th>{{ __('role_permission.item-leads.listing') }}</th> --}}
                                 <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
                                 <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
                                 <th>{{ __('Mail Page') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>                                
+                                <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>
                                 <th>{{ __('View') }}</th>
                             </tr>
-                            </thead>
-                            {{-- <tfoot>
+                        </thead>
+                        {{-- <tfoot>
                             <tr>
                                 <th>{{ __('backend.city.id') }}</th>                                
                                 <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
@@ -50,27 +50,30 @@
                                 <th>{{ __('View') }}</th>
                             </tr>
                             </tfoot> --}}
-                            <tbody>
-                            @foreach($all_contact_leads as $all_contact_leads_key => $contact_lead)
+                        <tbody>
+                            @foreach ($all_contact_leads as $all_contact_leads_key => $contact_lead)
                                 <tr>
-                                    <td>{{ $contact_lead->id }}</td>                                    
+                                    <td>{{ $contact_lead->id }}</td>
                                     <td>{{ $contact_lead->name }}</td>
                                     <td>{{ $contact_lead->email }}</td>
-                                    <td>{{ $contact_lead->profile_article }}</td>                                    
+                                    <td>{{ $contact_lead->profile_article }}</td>
                                     <td>{{ $contact_lead->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('user.contact-leads.edit', ['contact_lead' => $contact_lead]) }}" class="btn btn-primary btn-circle">
+                                        <a href="{{ route('user.contact-leads.edit', ['contact_lead' => $contact_lead]) }}"
+                                            class="btn btn-primary btn-circle">
                                             <i class="fas fa-cog"></i>
                                         </a>
                                     </td>
                                 </tr>
                             @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-center">No Record Found!</p>
+            @endif
         </div>
     </div>
-
 @endsection
 
 @section('scripts')

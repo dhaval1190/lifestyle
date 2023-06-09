@@ -22,6 +22,7 @@ use App\MediaDetailsVisits;
 use App\ItemVisit;
 use App\UserNotification;
 use App\ProfileReviews;
+use App\ContactLead;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 
@@ -70,6 +71,8 @@ class PagesController extends Controller
             array("y"=> (100- $progress_data['percentage']), "name"=> "Remaining", "color"=> "#D3D3D3")
         );
         $profile_visit = ProfileVisit::where('user_id', $login_user->id)->get();
+        $contact_lead_count = ContactLead::where('receiver_id', $login_user->id)->count();
+        // dd($contact_lead_count);
         
         $currentMonthlyVisits = $profile_visit->whereBetween('created_at', [
             today()->startOfMonth()->startOfDay()->toDateTimeString(),
@@ -364,7 +367,7 @@ class PagesController extends Controller
         // ->select('media_details_visits.*')->groupBy('media_detail_id')->get();
         return response()->view('backend.user.index',
             compact('login_user','AllEbooks','AllMedia','AllPodcast','AllYoutube','pending_item_count', 'item_count', 'message_count', 'comment_count', 'progress_data', 'data_points',
-            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks'));
+            'recent_threads', 'recent_comments', 'paid_subscription_days_left','plan_name','visit_count','Today_Visits_count','Mediavisit_count','TodayMediaVisits','Today_MedaidetailsVisits_count','PodcastTodayVisits','TodayVisits','Today_Podcastvisits_Count','PodcastcurrentMonthlyVisits','MonthlyPodcastvisit_Count','PodcastImage','media','MonthlyAriclevisit_count','TodayAriclevisit_count','Articledetail','Youtube','notifications','All_visit_count','Ebooks','contact_lead_count'));
     }
 
     public function profileProgressData(Request $request,$user_id){

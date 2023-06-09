@@ -61,6 +61,15 @@
 
     <div class="site-section">
         <div class="container">
+            @php 
+                $user_detail = '';
+                $userId = '';
+                $user_detail = Auth::user();
+                if(isset($user_detail)){
+                    $userId = $user_detail->id;
+
+                }
+            @endphp
 
 
             @if($categories->count() > 0)

@@ -35,12 +35,16 @@
         <h3 class="pt-2 listing_for_map_hover" style="word-break: break-all;" data-map-lat="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? $item->item_lat : '' }}" data-map-lng="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? $item->item_lng : '' }}" data-map-title="{{ $item->item_title }}" data-map-address="{{ $item->item_type == \App\Item::ITEM_TYPE_REGULAR ? ($item->item_address_hide ? $item->city->city_name . ', ' . $item->state->state_name . ' ' . $item->item_postal_code : $item->item_address . ', ' . $item->city->city_name . ', ' . $item->state->state_name . ' ' . $item->item_postal_code) : '' }}" data-map-rating="{{ $item->item_average_rating }}" data-map-reviews="{{ $get_count_rating }}" data-map-link="{{ route('page.item', $item->item_slug) }}" data-map-feature-image-link="{{ !empty($item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}"><a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h3>
 
         @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-            <address>
-                {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_address . ',' : '' }}
-                <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                {{$item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_postal_code :''}}
-            </address>
+            @if(isset($user_detail->id))
+                @if($user_detail->id == $item->user_id)
+                    <address>
+                        {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_address . ',' : '' }}
+                        <a href="{{ route('page.city', ['state_slug'=>$item->state->state_slug, 'city_slug'=>$item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                        <a href="{{ route('page.state', ['state_slug'=>$item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                        {{$item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_postal_code :''}}
+                    </address>
+                @endif
+            @endif
         @endif
 
         <div class="row">

@@ -51,14 +51,18 @@
             </h3>
 
             @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                <address>
-                    {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_address . ',' : '' }}
-                    <a
-                        href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                    <a
-                        href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                    {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_postal_code : '' }}
-                </address>
+                @if(isset($user_detail->id))
+                    @if($user_detail->id == $userId)
+                        <address>
+                            {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_address . ',' : '' }}
+                            <a
+                                href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                            <a
+                                href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                            {{ $item->item_address_hide == \App\Item::ITEM_ADDR_NOT_HIDE ? $item->item_postal_code : '' }}
+                        </address>
+                    @endif
+                @endif
             @endif
 
             <div class="row">

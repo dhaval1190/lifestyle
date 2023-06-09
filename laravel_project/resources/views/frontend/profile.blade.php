@@ -193,17 +193,19 @@
 
     .address_wrap {
         word-break: break-all;
-    } 
-    .form-section{
-    display: none;
     }
-    .form-section.current{
+
+    .form-section {
+        display: none;
+    }
+
+    .form-section.current {
         display: inline;
     }
-    .parsley-errors-list{
-        color:red;
-    }   
-    
+
+    .parsley-errors-list {
+        color: red;
+    }
 </style>
 @section('content')
     <!-- <div class="site-section"> -->
@@ -226,26 +228,26 @@
 
                         <div class="upper_main_section">
                             <div class="upper_logo">
-                               <div class="logo_star">
-                               @if (empty($user_detail['user_image']))
-                                    <img src="{{ asset('backend/images/placeholder/profile-' . intval($user_detail['id'] % 10) . '.webp') }}"
-                                        class="logo">
-                                @else
-                                    <img src="{{ Storage::disk('public')->url('user/' . $user_detail['user_image']) }}"
-                                        class="logo">
-                                @endif
-                                <div class="rating_stars_header"></div>
-                                @if($item_count_rating > 0)	
-                                <span class="item-cover-address-section">	
-                                            @if($item_count_rating == 1)	
-                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.review') . ')' }}	
-                                            @else	
-                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.reviews') . ')' }}	
-                                            @endif	
-                                </span>	
-                                        @endif
-                               </div>
-                                
+                                <div class="logo_star">
+                                    @if (empty($user_detail['user_image']))
+                                        <img src="{{ asset('backend/images/placeholder/profile-' . intval($user_detail['id'] % 10) . '.webp') }}"
+                                            class="logo">
+                                    @else
+                                        <img src="{{ Storage::disk('public')->url('user/' . $user_detail['user_image']) }}"
+                                            class="logo">
+                                    @endif
+                                    <div class="rating_stars_header"></div>
+                                    @if ($item_count_rating > 0)
+                                        <span class="item-cover-address-section">
+                                            @if ($item_count_rating == 1)
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.review') . ')' }}
+                                            @else
+                                                {{ '(' . $item_count_rating . ' ' . __('review.frontend.reviews') . ')' }}
+                                            @endif
+                                        </span>
+                                    @endif
+                                </div>
+
                                 <div class="space_between">
                                     <div class="upper_logo_details">
                                         <h1>{{ $user_detail['name'] }}</h1>
@@ -272,12 +274,13 @@
                                             @endif
                                             <div class="detail one padding-0">
                                                 <img src="{{ asset('frontend/images/eye.svg') }}" alt="">
-                                                    <p style="cursor: pointer;"
-                                                            onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
-                                                        id="eye">
-                                                        <b>Total Visitor(s)</b> : {{ $All_visit_count }} </p>
+                                                <p style="cursor: pointer;"
+                                                    onclick="window.location='{{ url('visitor-view/' . encrypt($user_detail->id)) }}'"
+                                                    id="eye">
+                                                    <b>Total Visitor(s)</b> : {{ $All_visit_count }}
+                                                </p>
                                             </div>
-                                        <div class="both_btn_set_small_device">
+                                            <div class="both_btn_set_small_device">
                                                 <?php
                                                 $userId = '';
                                                 if (isset(Auth::user()->id)) {
@@ -291,76 +294,86 @@
                                                 @endif
                                                 <a class="btn btn-primary rounded text-white item-share-button"><i
                                                         class="fas fa-share-alt"></i> {{ __('frontend.item.share') }}</a>
-                                                @guest	
-                                                <a class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</a>	
-                                                @else	
-                                                    @if($user_detail->id != Auth::user()->id)
-                                                        
-                                                    @if(Auth::user()->isAdmin())	
-                                                    
-                                                        @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))	
-                                                        <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$Auth_review->id)}}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>	
-                                                        @else	
-                                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
-                                                        @endif	
-                                                    @else	
-                                                        @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))	
-                                                        <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id)}}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>	
-                                                        @else	
-                                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> Write a Review</button>	
-                                                        @endif	
-                                                            
-                                                        @endif	
-                                                        @endif	
-                                                    @endguest	
-                                                        
-                                                </div>
+                                                @guest
+                                                    <a class="btn btn-primary rounded text-white item-review-button"><i
+                                                            class="fas fa-star"></i> Write a Review</a>
+                                                @else
+                                                    @if ($user_detail->id != Auth::user()->id)
+                                                        @if (Auth::user()->isAdmin())
+                                                            @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                                <a class="btn btn-primary rounded text-white"
+                                                                    href="{{ route('admin.page.reviews.edit', $Auth_review->id) }}"
+                                                                    target="_blank"><i class="fas fa-star"></i>
+                                                                    {{ __('review.backend.edit-a-review') }}</a>
+                                                            @else
+                                                                <button
+                                                                    class="btn btn-primary rounded text-white item-review-button"><i
+                                                                        class="fas fa-star"></i> Write a Review</button>
+                                                            @endif
+                                                        @else
+                                                            @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                                <a class="btn btn-primary rounded text-white"
+                                                                    href="{{ route('user.page.reviews.edit', $Auth_review->id) }}"
+                                                                    target="_blank"><i class="fas fa-star"></i>
+                                                                    {{ __('review.backend.edit-a-review') }}</a>
+                                                            @else
+                                                                <button
+                                                                    class="btn btn-primary rounded text-white item-review-button"><i
+                                                                        class="fas fa-star"></i> Write a Review</button>
+                                                            @endif
+                                                        @endif
+                                                    @endif
+                                                @endguest
+
                                             </div>
-                                                    
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @if ($user_detail->id == $userId)
+                                    <div class="upper_address_info">
+                                        <h3>Address</h3>
+                                        <div class="upper_address_detail">
+                                            <div class="upper_address">
+                                                <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
+                                                    class="address_logo" />
+                                                <p class="address_wrap">
+                                                    {{-- @if ($user_detail->id == $userId)                                                                 --}}
+                                                    {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
+                                                    {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
+                                                    {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
+                                                    {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
+                                                    {{ $user_detail['post_code'] }}
+                                                    {{-- @else
+                                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
+                                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name : '' }}                                                                --}}
+                                                    {{-- @endif --}}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                            <div class="upper_address_info">
-                                                    <h3>Address</h3>
-                                                    <div class="upper_address_detail">
-                                                        <div class="upper_address">
-                                                            <img src="{{ asset('frontend/images/map_icon.svg') }}" alt=""
-                                                            class="address_logo" />
-                                                            <p class="address_wrap">
-                                                                @if ($user_detail->id == $userId)                                                                
-                                                                {{ !empty($user_detail['address']) ? $user_detail['address'] . ',' : '' }}
-                                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
-                                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name . ',' : '' }}
-                                                                {{ !empty($user_detail->country->country_name) ? $user_detail->country->country_name : '' }}
-                                                                {{ $user_detail['post_code'] }}
-                                                                @else
-                                                                {{ !empty($user_detail->city->city_name) ? $user_detail->city->city_name . ',' : '' }}
-                                                                {{ !empty($user_detail->state->state_name) ? $user_detail->state->state_name : '' }}                                                               
-                                                                @endif
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                               
-                                            <!-- <div class="progress">
-                                                            <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
-                                                                aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
-                                                                &nbsp;{{ $progress_data['percentage'] }}%
-                                                            </div>
-                                                        
-                                            </div> -->
-                                </div>
+                                @endif
+
+                                <!-- <div class="progress">
+                                                                <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
+                                                                    aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
+                                                                    &nbsp;{{ $progress_data['percentage'] }}%
+                                                                </div>
+                                                            
+                                                </div> -->
                             </div>
-                            <div class="upper_logo_info">
-                                                    <div class="upper_logo_padding_25">
-                                                        <h3>About</h3>
-                                                        <p>{{ $user_detail['user_about'] }}</p>
-                                                    </div>
-                                                </div>
+                        </div>
+                        <div class="upper_logo_info">
+                            <div class="upper_logo_padding_25">
+                                <h3>About</h3>
+                                <p>{{ $user_detail['user_about'] }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
 
@@ -378,7 +391,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h5>{{ __('frontend.item.share-listing-email') }}</h5>
-                            <p>{{ __('Please answer the following question so this coach can determine if they are uniquely qualified to best help you and to better prepare them for a potential initial conversation.') }}</p>
+                            <p>{{ __('Please answer the following question so this coach can determine if they are uniquely qualified to best help you and to better prepare them for a potential initial conversation.') }}
+                            </p>
                             @if (!Auth::check())
                                 <div class="row mb-2">
                                     <div class="col-12">
@@ -390,181 +404,217 @@
                             @endif
                             <div class="nav nav-fill my-3">
                                 <label class="nav-link shadow-sm step0 steps  border  ">Step One</label>
-                                <label class="nav-link shadow-sm step1 steps  border  " >Step Two</label>
-                                <label class="nav-link shadow-sm step2 steps  border  " >Step Three</label>
-                                <label class="nav-link shadow-sm step3 steps  border  " >Step Four</label>
-                                <label class="nav-link shadow-sm step4 steps  border  " >Step Five</label>
-                                <label class="nav-link shadow-sm step5 steps  border  " >Step Six</label>
+                                <label class="nav-link shadow-sm step1 steps  border  ">Step Two</label>
+                                <label class="nav-link shadow-sm step2 steps  border  ">Step Three</label>
+                                <label class="nav-link shadow-sm step3 steps  border  ">Step Four</label>
+                                <label class="nav-link shadow-sm step4 steps  border  ">Step Five</label>
+                                <label class="nav-link shadow-sm step5 steps  border  ">Step Six</label>
                             </div>
-                                <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}"
-                                    method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
-                                    @csrf
-                                    <input type="hidden" name="hexId" value="{{ $hexId }}">
-                                    <input type="hidden" name="contact_profile" value="contact_profile">
-                                    <input type="hidden" name="userId" value="{{ $user_detail->id }}">
-                                    <input type="hidden" name="authUserId" value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
+                            <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}"
+                                method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
+                                @csrf
+                                <input type="hidden" name="hexId" value="{{ $hexId }}">
+                                <input type="hidden" name="contact_profile" value="contact_profile">
+                                <input type="hidden" name="userId" value="{{ $user_detail->id }}">
+                                <input type="hidden" name="authUserId"
+                                    value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
 
-                                    <div class="form-section">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-6 pl-0">
-                                                    <label for="item_conntact_email_name"
-                                                    class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
-                                                    <input id="item_conntact_email_name" type="text"
+                                <div class="form-section">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6 pl-0">
+                                                <label for="item_conntact_email_name"
+                                                    class="text-black">{{ __('frontend.item.name') }}<span
+                                                        class="text-danger">*</span></label>
+                                                <input id="item_conntact_email_name" type="text"
                                                     class="form-control @error('item_conntact_email_name') is-invalid @enderror"
                                                     name="item_conntact_email_name"
                                                     value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}"
                                                     {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                                    <p class="name_error error_color" role="alert"></p>
-                                                    @error('item_conntact_email_name')
-                                                        <span class="invalid-tooltip">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-6 pl-0">
-                                                    <label for="item_contact_email_from_email"
-                                                    class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
-                                                    <input id="item_contact_email_from_email" type="email"
+                                                <p class="name_error error_color" role="alert"></p>
+                                                @error('item_conntact_email_name')
+                                                    <span class="invalid-tooltip">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6 pl-0">
+                                                <label for="item_contact_email_from_email"
+                                                    class="text-black">{{ __('frontend.item.email') }}<span
+                                                        class="text-danger">*</span></label>
+                                                <input id="item_contact_email_from_email" type="email"
                                                     class="form-control @error('item_contact_email_from_email') is-invalid @enderror"
                                                     name="item_contact_email_from_email"
                                                     value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}"
                                                     {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                                    <p class="email_error error_color" role="alert"></p>
-                                                    @error('item_contact_email_from_email')
-                                                        <span class="invalid-tooltip">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <label for="Question 1"
-                                                    class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span class="text-danger">*</span></label>
-                                                <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt"
-                                                    rows="3" name="question1" required {{ Auth::check() ? '' : 'disabled' }}>{{ old('question1') }}</textarea>
-                                                    <p class="question1_error error_color_modal" role="alert"></p>
-                                                    <p class="question1_desc_char_count count_error"></p>
-                                                @error('question1')
+                                                <p class="email_error error_color" role="alert"></p>
+                                                @error('item_contact_email_from_email')
                                                     <span class="invalid-tooltip">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
                                         </div>
-                                    </div>                                    
-                                    <div class="row">
-                                        <div class="form-section col-md-12">
-                                            <label for="Question 2">{{ __('2.What type of personality traits would be helpful for a person to have when coaching you?') }}<span class="text-danger">*</span>
-                                                <p class="pl-3">Check all that apply fields:</p>
+                                        <div class="row">
+                                            <label for="Question 1"
+                                                class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span
+                                                    class="text-danger">*</span></label>
+                                            <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt" rows="3"
+                                                name="question1" required {{ Auth::check() ? '' : 'disabled' }}>{{ old('question1') }}</textarea>
+                                            <p class="question1_error error_color_modal" role="alert"></p>
+                                            <p class="question1_desc_char_count count_error"></p>
+                                            @error('question1')
+                                                <span class="invalid-tooltip">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-section col-md-12">
+                                        <label
+                                            for="Question 2">{{ __('2.What type of personality traits would be helpful for a person to have when coaching you?') }}<span
+                                                class="text-danger">*</span>
+                                            <p class="pl-3">Check all that apply fields:</p>
+                                        </label>
+                                        {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="Patient" id="question2_checkbox1" required>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                a) Patient
                                             </label>
-                                            {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Patient" id="question2_checkbox1" required>
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    a) Patient
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Diplomatic" id="question2_checkbox2" required>
-                                                <label class="form-check-label" for="flexCheckChecked">
-                                                    b) Diplomatic
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Direct" id="question2_checkbox3" required>
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    c) Direct
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Sensitive" id="question2_checkbox4" required>
-                                                <label class="form-check-label" for="flexCheckChecked">
-                                                    d) Sensitive
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="High Energy" id="question2_checkbox5" required>
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    e) High Energy
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="question2[]" value="Calm" id="question2_checkbox6" required>
-                                                <label class="form-check-label" for="flexCheckChecked">
-                                                    f) Calm
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="question_2">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    g) Other
-                                                </label>
-                                                <textarea name="question2[]" class="form-control mb-3" cols="30" rows="5" id="question2_txt" style="display:none"></textarea>
-                                            </div>
-                                            <p class="question2_error error_color_modal" role="alert"></p>
-                                            <p class="question2_desc_char_count count_error"></p>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-section col-md-12 ">                                            
-                                            <label for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span class="text-danger">*</span></label>
-                                            <textarea name="question3" id="question3_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
-                                            <p class="question3_error error_color_modal" role="alert"></p>
-                                            <p class="question3_desc_char_count count_error"></p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="Diplomatic" id="question2_checkbox2" required>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                b) Diplomatic
+                                            </label>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-section col-md-12 ">                                            
-                                            <label for="Question 4">{{ __('4.On a sale of 1-10 how structured do you want your coaching experience?') }}<span class="text-danger">*</span></label><br>
-                                            <input type="radio" id="question4" name="question4" value="1" required><label for="question4"><span class="pl-2"> 1</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="2" required><label for="question4"><span class="pl-2"> 2</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="3" required><label for="question4"><span class="pl-2"> 3</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="4" required><label for="question4"><span class="pl-2"> 4</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="5" required><label for="question4"><span class="pl-2"> 5</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="6" required><label for="question4"><span class="pl-2"> 6</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="7" required><label for="question4"><span class="pl-2"> 7</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="8" required><label for="question4"><span class="pl-2"> 8</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="9" required><label for="question4"><span class="pl-2"> 9</span></label><br>                                            
-                                            <input type="radio" id="question4" name="question4" value="10" required><label for="question4"><span class="pl-2">10</span></label><br>                                            
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="Direct" id="question2_checkbox3" required>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                c) Direct
+                                            </label>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-section col-md-12 ">                                            
-                                            <label for="Question 5">{{ __('5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?') }}<span class="text-danger">*</span></label>
-                                            <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
-                                            <p class="question5_error error_color_modal" role="alert"></p>
-                                            <p class="question5_desc_char_count count_error"></p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="Sensitive" id="question2_checkbox4" required>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                d) Sensitive
+                                            </label>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-section col-md-12 ">                                            
-                                            <label for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span class="text-danger">*</span></label>
-                                            <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
-                                            <p class="question6_error error_color_modal" role="alert"></p>
-                                            <p class="question6_desc_char_count count_error"></p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="High Energy" id="question2_checkbox5" required>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                e) High Energy
+                                            </label>
                                         </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 form-navigation">
-                                            @if(Auth::check())
-                                                <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>
-                                                <button type="button" class="next btn btn-primary float-right mt-2">Next &gt;</button>
-                                                <button type="submit" id="submit" class="btn btn-primary py-2 px-4 mt-2 text-white rounded float-right" {{ Auth::check() ? '' : 'disabled' }}>
-                                                    {{ __('frontend.item.send-email') }}
-                                                </button>
-                                            @endif
-                                            <span class="please_wait">Please Wait..</span>
-                                            @if(!Auth::user())
-                                                <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
-                                                    {{ __('Login') }}                                            
-                                                </a>
-                                            @endif                      
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="question2[]"
+                                                value="Calm" id="question2_checkbox6" required>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                f) Calm
+                                            </label>
                                         </div>
-                                    
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="question_2">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                g) Other
+                                            </label>
+                                            <textarea name="question2[]" class="form-control mb-3" cols="30" rows="5" id="question2_txt"
+                                                style="display:none"></textarea>
+                                        </div>
+                                        <p class="question2_error error_color_modal" role="alert"></p>
+                                        <p class="question2_desc_char_count count_error"></p>
                                     </div>
-                                </form>
-                            
+                                </div>
+                                <div class="row">
+                                    <div class="form-section col-md-12 ">
+                                        <label
+                                            for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span
+                                                class="text-danger">*</span></label>
+                                        <textarea name="question3" id="question3_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                        <p class="question3_error error_color_modal" role="alert"></p>
+                                        <p class="question3_desc_char_count count_error"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-section col-md-12 ">
+                                        <label
+                                            for="Question 4">{{ __('4.On a sale of 1-10 how structured do you want your coaching experience?') }}<span
+                                                class="text-danger">*</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="1"
+                                            required><label for="question4"><span class="pl-2"> 1</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="2"
+                                            required><label for="question4"><span class="pl-2"> 2</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="3"
+                                            required><label for="question4"><span class="pl-2"> 3</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="4"
+                                            required><label for="question4"><span class="pl-2"> 4</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="5"
+                                            required><label for="question4"><span class="pl-2"> 5</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="6"
+                                            required><label for="question4"><span class="pl-2"> 6</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="7"
+                                            required><label for="question4"><span class="pl-2"> 7</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="8"
+                                            required><label for="question4"><span class="pl-2"> 8</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="9"
+                                            required><label for="question4"><span class="pl-2"> 9</span></label><br>
+                                        <input type="radio" id="question4" name="question4" value="10"
+                                            required><label for="question4"><span class="pl-2">10</span></label><br>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-section col-md-12 ">
+                                        <label
+                                            for="Question 5">{{ __('5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?') }}<span
+                                                class="text-danger">*</span></label>
+                                        <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                        <p class="question5_error error_color_modal" role="alert"></p>
+                                        <p class="question5_desc_char_count count_error"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-section col-md-12 ">
+                                        <label
+                                            for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span
+                                                class="text-danger">*</span></label>
+                                        <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                        <p class="question6_error error_color_modal" role="alert"></p>
+                                        <p class="question6_desc_char_count count_error"></p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 form-navigation">
+                                        @if (Auth::check())
+                                            <button type="button" class="previous btn btn-primary float-left mt-2">&lt;
+                                                Previous</button>
+                                            <button type="button" class="next btn btn-primary float-right mt-2">Next
+                                                &gt;</button>
+                                            <button type="submit" id="submit"
+                                                class="btn btn-primary py-2 px-4 mt-2 text-white rounded float-right"
+                                                {{ Auth::check() ? '' : 'disabled' }}>
+                                                {{ __('frontend.item.send-email') }}
+                                            </button>
+                                        @endif
+                                        <span class="please_wait">Please Wait..</span>
+                                        @if (!Auth::user())
+                                            <a
+                                                href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
+                                                {{ __('Login') }}
+                                            </a>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            </form>
+
                         </div>
                     </div>
 
@@ -582,7 +632,8 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -692,13 +743,14 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-4">
                                         <label for="profile_share_email_name"
-                                            class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
+                                            class="text-black">{{ __('frontend.item.name') }}<span
+                                                class="text-danger">*</span></label>
                                         <input id="profile_share_email_name" type="text"
                                             class="form-control @error('profile_share_email_name') is-invalid @enderror"
                                             name="profile_share_email_name"
                                             value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}"
                                             {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                            <p class="profile_name_error error_color" role="alert"></p>
+                                        <p class="profile_name_error error_color" role="alert"></p>
                                         @error('profile_share_email_name')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -707,13 +759,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="profile_share_email_from_email"
-                                            class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
+                                            class="text-black">{{ __('frontend.item.email') }}<span
+                                                class="text-danger">*</span></label>
                                         <input id="profile_share_email_from_email" type="email"
                                             class="form-control @error('profile_share_email_from_email') is-invalid @enderror"
                                             name="profile_share_email_from_email"
                                             value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('profile_share_email_from_email') }}"
                                             {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                            <p class="profile_from_email_error error_color" role="alert"></p>
+                                        <p class="profile_from_email_error error_color" role="alert"></p>
                                         @error('profile_share_email_from_email')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -722,13 +775,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="profile_share_email_to_email"
-                                            class="text-black">{{ __('frontend.item.email-to') }}<span class="text-danger">*</span></label>
+                                            class="text-black">{{ __('frontend.item.email-to') }}<span
+                                                class="text-danger">*</span></label>
                                         <input id="profile_share_email_to_email" type="email"
                                             class="form-control @error('profile_share_email_to_email') is-invalid @enderror"
                                             name="profile_share_email_to_email"
                                             value="{{ old('profile_share_email_to_email') }}"
                                             {{ Auth::check() ? '' : 'disabled' }}>
-                                            <p class="profile_to_error error_color" role="alert"></p>
+                                        <p class="profile_to_error error_color" role="alert"></p>
                                         @error('profile_share_email_to_email')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -739,10 +793,11 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <label for="profile_share_email_note"
-                                            class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
+                                            class="text-black">{{ __('frontend.item.add-note') }}<span
+                                                class="text-danger">*</span></label>
                                         <textarea class="form-control @error('profile_share_email_note') is-invalid @enderror" id="profile_share_email_note"
                                             rows="3" name="profile_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('profile_share_email_note') }}</textarea>
-                                            <p class="profile_note_error error_color" role="alert"></p>
+                                        <p class="profile_note_error error_color" role="alert"></p>
                                         @error('profile_share_email_note')
                                             <span class="invalid-tooltip">
                                                 <strong>{{ $message }}</strong>
@@ -757,9 +812,10 @@
                                             {{ __('frontend.item.send-email') }}
                                         </button>
                                         <span class="please_wait">Please Wait..</span>
-                                        @if(!Auth::user())
-                                            <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
-                                                {{ __('Login') }}                                            
+                                        @if (!Auth::user())
+                                            <a
+                                                href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
+                                                {{ __('Login') }}
                                             </a>
                                         @endif
                                     </div>
@@ -776,178 +832,206 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="review-modal" tabindex="-1" role="dialog" aria-labelledby="share-modal"aria-hidden="true">	
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">	
-            <div class="modal-content">	
-                <div class="modal-header">	
-                    <h5 class="modal-title" id="exampleModalLongTitle">Select Your Rating</h5>	
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">	
-                        <span aria-hidden="true">&times;</span>	
-                    </button>	
-                </div>	
-                <div class="modal-body">	
-                    <div class="row">	
-                        <div class="col-12">	
-                                @if (!Auth::check())	
-                                    <div class="row mb-2">	
-                                        <div class="col-12">	
-                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">	
-                                                {{ __('frontend.item.login-require') }}	
-                                            </div>	
-                                        </div>	
-                                    </div>	
-                                @endif	
-                               @if(!Auth::check() || Auth::user()->isAdmin())	
-                               <form method="POST" action="{{ route('admin.page.reviews.store') }}" name="review_form" id="review_form">	
-                               @else	
-                               @endif	
-                               <form method="POST" action="{{ route('user.page.reviews.store') }}" name="review_form" id="review_form">	
-                                    @csrf	
-                                    <input type="hidden" value="{{$user_detail['id']}}" name="id">	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <span class="text-lg text-gray-800">{{ __('review.backend.select-rating') }}</span>	
-                                            <small class="form-text text-muted">	
-                                            </small>	
-                                        </div>	
-                                    </div>	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <label for="rating" class="text-black">{{ __('review.backend.overall-rating') }}</label><br>	
-                                            <!-- <select class="rating_stars" name="rating"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">{{ __('rating_summary.1-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">{{ __('rating_summary.2-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">{{ __('rating_summary.3-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">{{ __('rating_summary.4-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">{{ __('rating_summary.5-stars') }}</option>	
-                                            </select> -->	
-                                        <select class="selectpicker form-control" name="rating" id="rating" tabindex="null" {{ Auth::check() ? '' : 'disabled' }}>	
-                                        <p class="profile_review_rating_error error_color" role="alert"></p>	
-                                        <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">{{ __('rating_summary.1-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">{{ __('rating_summary.2-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">{{ __('rating_summary.3-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">{{ __('rating_summary.4-stars') }}</option>	
-                                                <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">{{ __('rating_summary.5-stars') }}</option>	
-                                        </select>	
-                                            @error('rating')	
-                                            <span class="invalid-tooltip">	
-                                                    <strong>{{ $message }}</strong>	
-                                                </span>	
-                                            @enderror	
-                                        </div>	
-                                    </div>	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <span class="text-lg text-gray-800">{{ __('review.backend.tell-experience') }}</span>	
-                                            <small class="form-text text-muted">	
-                                            </small>	
-                                        </div>	
-                                    </div>	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <label for="body" class="text-black">{{ __('review.backend.description') }}<span class="text-danger">*</span></label>	
-                                            <!-- <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }} readonly>{{ old('body') }}</textarea> -->	
-                                            <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body" {{ Auth::check() ? '' : 'disabled' }}>{{ old('body') }}</textarea>	
-                                             <p class="profile_review_body_error error_color" role="alert"></p>	
-                                           	
-                                            @error('body')	
-                                            <span class="invalid-tooltip">	
-                                                    <strong>{{ $message }}</strong>	
-                                                </span>	
-                                            @enderror	
-                                        </div>	
-                                    </div>	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <div class="form-check form-check-inline">	
-                                                <input {{ old('recommend') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="recommend" name="recommend" value="1"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
-                                                <label class="form-check-label" for="recommend">	
-                                                    {{ __('review.backend.recommend') }}	
-                                                </label>	
-                                            </div>	
-                                            @error('recommend')	
-                                            <span class="invalid-tooltip">	
-                                                    <strong>{{ $message }}</strong>	
-                                                </span>	
-                                            @enderror	
-                                        </div>	
-                                    </div>	
-                                    <!-- <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>	
-                                            <small class="form-text text-muted">	
-                                                {{ __('review_galleries.upload-photos-help') }}	
-                                            </small>	
-                                            @error('review_image_galleries')	
-                                            <span class="invalid-tooltip">	
-                                                <strong>{{ $message }}</strong>	
-                                            </span>	
-                                            @enderror	
-                                            <div class="row mt-3">	
-                                                <div class="col-12">	
-                                                    <button id="upload_gallery" type="button" class="btn btn-primary mb-2"  {{ Auth::check() ? '' : 'disabled' }} readonly>{{ __('review_galleries.choose-photo') }}</button>	
-                                                    <div class="row" id="selected-images">	
-                                                    </div>	
-                                                </div>	
-                                            </div>	
-                                        </div>	
-                                    </div> -->	
-                                    <div class="form-row mb-3">	
-                                        <div class="col-md-12">	
-                                            <button type="submit" class="btn btn-success py-2 px-4 text-white"  {{ Auth::check() ? '' : 'disabled' }} readonly>	
-                                                {{ __('review.backend.post-review') }}	
-                                            </button>	
-                                            <span class="please_wait">Please Wait..</span>	
-                                            @if(!Auth::user())	
-                                                <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">	
-                                                    {{ __('Login') }}                                            	
-                                                </a>	
-                                            @endif   	
-                                        </div>	
-                                    </div>	
-                                </form>	
-                        </div>	
-                    </div>	
-                </div>	
-                	
-            </div>	
-                    	
-        </div>	
-    </div>	
-</div>
+    <div class="modal fade" id="review-modal" tabindex="-1" role="dialog"
+        aria-labelledby="share-modal"aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Select Your Rating</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            @if (!Auth::check())
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ __('frontend.item.login-require') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (!Auth::check() || Auth::user()->isAdmin())
+                                <form method="POST" action="{{ route('admin.page.reviews.store') }}"
+                                    name="review_form" id="review_form">
+                                @else
+                            @endif
+                            <form method="POST" action="{{ route('user.page.reviews.store') }}" name="review_form"
+                                id="review_form">
+                                @csrf
+                                <input type="hidden" value="{{ $user_detail['id'] }}" name="id">
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <span
+                                            class="text-lg text-gray-800">{{ __('review.backend.select-rating') }}</span>
+                                        <small class="form-text text-muted">
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="rating"
+                                            class="text-black">{{ __('review.backend.overall-rating') }}</label><br>
+                                        <!-- <select class="rating_stars" name="rating"  {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">{{ __('rating_summary.1-stars') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">{{ __('rating_summary.2-stars') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">{{ __('rating_summary.3-stars') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">{{ __('rating_summary.4-stars') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">{{ __('rating_summary.5-stars') }}</option>
+                                                </select> -->
+                                        <select class="selectpicker form-control" name="rating" id="rating"
+                                            tabindex="null" {{ Auth::check() ? '' : 'disabled' }}>
+                                            <p class="profile_review_rating_error error_color" role="alert"></p>
+                                            <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}">
+                                                {{ __('rating_summary.1-stars') }}</option>
+                                            <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}">
+                                                {{ __('rating_summary.2-stars') }}</option>
+                                            <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}">
+                                                {{ __('rating_summary.3-stars') }}</option>
+                                            <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}">
+                                                {{ __('rating_summary.4-stars') }}</option>
+                                            <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}">
+                                                {{ __('rating_summary.5-stars') }}</option>
+                                        </select>
+                                        @error('rating')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <span
+                                            class="text-lg text-gray-800">{{ __('review.backend.tell-experience') }}</span>
+                                        <small class="form-text text-muted">
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="body"
+                                            class="text-black">{{ __('review.backend.description') }}<span
+                                                class="text-danger">*</span></label>
+                                        <!-- <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body"
+                                            {{ Auth::check() ? '' : 'disabled' }} readonly>{{ old('body') }}</textarea> -->
+                                        <textarea class="form-control @error('body') is-invalid @enderror" id="body"rows="3" name="body"
+                                            {{ Auth::check() ? '' : 'disabled' }}>{{ old('body') }}</textarea>
+                                        <p class="profile_review_body_error error_color" role="alert"></p>
+
+                                        @error('body')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-check form-check-inline">
+                                            <input {{ old('recommend') == 1 ? 'checked' : '' }} class="form-check-input"
+                                                type="checkbox" id="recommend" name="recommend" value="1"
+                                                {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            <label class="form-check-label" for="recommend">
+                                                {{ __('review.backend.recommend') }}
+                                            </label>
+                                        </div>
+                                        @error('recommend')
+                                            <span class="invalid-tooltip">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- <div class="form-row mb-3">
+                                            <div class="col-md-12">
+                                                <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>
+                                                <small class="form-text text-muted">
+                                                    {{ __('review_galleries.upload-photos-help') }}
+                                                </small>
+                                                @error('review_image_galleries')
+        <span class="invalid-tooltip">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+    @enderror
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <button id="upload_gallery" type="button" class="btn btn-primary mb-2"  {{ Auth::check() ? '' : 'disabled' }} readonly>{{ __('review_galleries.choose-photo') }}</button>
+                                                        <div class="row" id="selected-images">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                <div class="form-row mb-3">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success py-2 px-4 text-white"
+                                            {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            {{ __('review.backend.post-review') }}
+                                        </button>
+                                        <span class="please_wait">Please Wait..</span>
+                                        @if (!Auth::user())
+                                            <a
+                                                href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
+                                                {{ __('Login') }}
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
     <section class="middle">
         <div class="container">
             <div class="row">
-                @if(isset($user_detail['website']))
+                @if (isset($user_detail['website']))
                     <div class="col-md-6">
                         <div class="middle_bg">
                             <div class="middle_info">
                                 <h3>Contact Details</h3>
                             </div>
                             <div class="middle_detail">
-                                <!-- <div class="middle_main"><img src="{{ asset('frontend/images/email.svg') }}" alt="" />
-                                            <p>{{ $user_detail['email'] }}</p>
-                                        </div>
-                                        <div class="middle_main"><img src="{{ asset('frontend/images/call.svg') }}" alt="" />
-                                            <p>{{ $user_detail['phone'] }}</p>
-                                        </div> -->
-                                <div class="middle_main"><img src="{{ asset('frontend/images/web.svg') }}" alt="" />
+                                {{-- <div class="middle_main"><img src="{{ asset('frontend/images/email.svg') }}" alt="" />
+                                                <p>{{ $user_detail['email'] }}</p>
+                                            </div>
+                                            <div class="middle_main"><img src="{{ asset('frontend/images/call.svg') }}" alt="" />
+                                                <p>{{ $user_detail['phone'] }}</p>
+                                            </div> --}}
+                                <div class="middle_main"><img src="{{ asset('frontend/images/web.svg') }}"
+                                        alt="" />
                                     <a href="{{ $user_detail['website'] }}" target="_blank">
                                         <p>{{ $user_detail['website'] }}</p>
                                     </a>
                                 </div>
                             </div>
+                            <div>
+                                @if ($user_detail->id != $userId)
+                                    <a class="btn btn-primary rounded text-white item-contact-button ml-50-set"><i
+                                            class="fas fa-phone-alt"></i>
+                                        {{ __('Contact This Coach') }}</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @endif
-                @if((isset($user_detail['linkedin'])) || (isset($user_detail['instagram'])) || (isset($user_detail['facebook'])))
+                @if (isset($user_detail['linkedin']) || isset($user_detail['instagram']) || isset($user_detail['facebook']))
                     <div class="col-md-6 mt-3 mt-md-0">
                         <div class="middle_bg_two">
                             <div class="middle_info">
                                 <h3>Social Links</h3>
                             </div>
                             <div class="middle_detail">
-                                @if(isset($user_detail['linkedin']))
+                                @if (isset($user_detail['linkedin']))
                                     <div class="middle_main"><img src="{{ asset('frontend/images/linkedin.svg') }}"
                                             alt="" />
                                         <a href="{{ $user_detail['linkedin'] }}" target="_blank">
@@ -955,15 +1039,16 @@
                                         </a>
                                     </div>
                                 @endif
-                                @if(isset($user_detail['instagram']))
+                                @if (isset($user_detail['instagram']))
                                     <div class="middle_main"><img src="{{ asset('frontend/images/instagram.svg') }}"
                                             alt="" />
-                                        <a href="https://instagram.com/_u/{{ $user_detail->instagram }}/" target="_blank">
+                                        <a href="https://instagram.com/_u/{{ $user_detail->instagram }}/"
+                                            target="_blank">
                                             <p>{{ $user_detail['instagram'] }}</p>
                                         </a>
                                     </div>
                                 @endif
-                                @if(isset($user_detail['facebook']))
+                                @if (isset($user_detail['facebook']))
                                     <div class="middle_main"><img src="{{ asset('frontend/images/facebook.svg') }}"
                                             alt="" />
                                         <a href="{{ $user_detail['facebook'] }}" target="_blank">
@@ -994,11 +1079,13 @@
                                 <div class="col-lg-6">
                                     <div class="video">
                                         <div class='c-video__image-container vid-fit-user box-video-youtube'
-                                            data-id="{{ $user_detail->id }}" data-vid="box-video-youtube_{{ $user_detail->id }}"
+                                            data-id="{{ $user_detail->id }}"
+                                            data-vid="box-video-youtube_{{ $user_detail->id }}"
                                             id="#js-fitvideouser_{{ $user_detail->id }}">
-                                            <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $user_detail->id }}" data-toggle="modal" data-target="#youtubeModal"
-                                                        data-src="{{ $user_detail->youtube }}">
-                                                        <div class="bt-play" id="bt-playuser_{{ $user_detail->id }}"></div>
+                                            <a href="" target="_blank" class="bg-video"
+                                                id="youtube_id_{{ $user_detail->id }}" data-toggle="modal"
+                                                data-target="#youtubeModal" data-src="{{ $user_detail->youtube }}">
+                                                <div class="bt-play" id="bt-playuser_{{ $user_detail->id }}"></div>
                                             </a>
                                             <div class="bt-play" id="bt-playuser_{{ $user_detail->id }}"></div>
                                             <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
@@ -1008,12 +1095,12 @@
                                         </div>
 
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}"
-                                                title="YouTube video player" frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe> -->
-                                        
+                                                    title="YouTube video player" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen></iframe> -->
+
                                         <!-- <div class='c-video__image-container vid-fit-reveal' id="js-fitvideo">
-                                              <div class="bt-play"></div> -->
+                                                  <div class="bt-play"></div> -->
                                         <!-- <iframe width="500" height="380" src="{{ $user_detail['youtube'] }}" frameborder="0" allowfullscreen id="vid-reveal" class="c-video-reveal" frameborder="0" allow="autoplay"></iframe> -->
                                         <!-- </div> -->
                                     </div>
@@ -1070,17 +1157,23 @@
                                 @endforeach
                             </div>
                         </div> --}}
-                        <div class="col-md-12 plr-45 padding_set_left_right_15">                                
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div class="row">
                                 @php $count = 1; @endphp
                                 @foreach ($video_media_array as $video_key => $video)
-                                @php if($count == 4) break; @endphp
+                                    @php
+                                        if ($count == 4) {
+                                            break;
+                                        }
+                                    @endphp
                                     <div class="post-slide">
                                         <div class="post-img">
                                             <div class='c-video__image-container vid-fit-reveal box-video-youtube'
-                                                data-id="{{ $video->id }}" id="#js-fitvideo_{{ $video->id }}" data-vid="box-video-youtube_{{ $video->id }}">
-                                                <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video->id }}" data-toggle="modal" data-target="#youtubeModal"
-                                                    data-src="{{ $video['media_url'] }}">
+                                                data-id="{{ $video->id }}" id="#js-fitvideo_{{ $video->id }}"
+                                                data-vid="box-video-youtube_{{ $video->id }}">
+                                                <a href="" target="_blank" class="bg-video"
+                                                    id="youtube_id_{{ $video->id }}" data-toggle="modal"
+                                                    data-target="#youtubeModal" data-src="{{ $video['media_url'] }}">
                                                     <div class="bt-play" id="bt-play_{{ $video->id }}"></div>
                                                 </a>
                                                 <iframe width="250" height="215" src="{{ $video['media_url'] }}"
@@ -1093,7 +1186,7 @@
                                     </div>
                                     @php $count++; @endphp
                                 @endforeach
-                            </div>                          
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -1188,34 +1281,45 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-12 plr-45 padding_set_left_right_15">                                
+                        <div class="col-md-12 plr-45 padding_set_left_right_15">
                             <div class="row">
                                 @php $count = 1; @endphp
                                 @foreach ($podcast_media_array as $podcast_key => $podcast)
-                                    @php if($count == 5) break; @endphp
+                                    @php
+                                        if ($count == 5) {
+                                            break;
+                                        }
+                                    @endphp
                                     <div class="col-md-3">
                                         <div class="">
-                                        <div class="box-video vid-fit-reveal" data-id="{{ $podcast->id }}" data-testid="play-pause-button" data-vid="box-video_{{ $podcast['id'] }}" id="#js-fitvideo_{{ $podcast->id }}">
-                                            {{-- <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                            style="background-image: @if(str_contains($podcast['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
+                                            <div class="box-video vid-fit-reveal" data-id="{{ $podcast->id }}"
+                                                data-testid="play-pause-button"
+                                                data-vid="box-video_{{ $podcast['id'] }}"
+                                                id="#js-fitvideo_{{ $podcast->id }}">
+                                                {{-- <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                            style="background-image: @if (str_contains($podcast['media_image'], 'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
                                              --}}
-                                             <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                            style="background-image: url('{{ $podcast['media_cover'] }} '); opacity: 1;" data-src="{{ $podcast['media_image'] }}">
-                                            <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
-                                            </a>
-                                            <div class="video-container">
-                                            <iframe width="590" height="100%"
-                                                src="{{ $podcast['media_image'] }}" id="vid-reveal_{{ $podcast->id }}" frameborder="0"
-                                                allowfullscreen="allowfullscreen"></iframe>
+                                                <a href="" target="_blank" class="bg-video"
+                                                    id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal"
+                                                    data-target="#podcastModal"
+                                                    style="background-image: url('{{ $podcast['media_cover'] }} '); opacity: 1;"
+                                                    data-src="{{ $podcast['media_image'] }}">
+                                                    <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
+                                                </a>
+                                                <div class="video-container">
+                                                    <iframe width="590" height="100%"
+                                                        src="{{ $podcast['media_image'] }}"
+                                                        id="vid-reveal_{{ $podcast->id }}" frameborder="0"
+                                                        allowfullscreen="allowfullscreen"></iframe>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                         <p>{{ $podcast['media_name'] }}</p>
                                         {{-- <p>{{ $podcast['media_duration'] }}</p> --}}
                                     </div>
                                     @php $count++; @endphp
                                 @endforeach
-                            </div>                          
+                            </div>
                         </div>
                     </div>
                 @endif
@@ -1245,181 +1349,206 @@
                     </div>
                 @endif
                 <div class="row mb-3">
-                        <div class="col-12">
-                        <div class="below_info">
-                            <h3 id="review-section" class="h5 mb-4 text-black">{{ __('review.frontend.reviews-cap') }}</h3>
+                    <div class="col-12">
+                        @if($reviews->count() > 0)
+                            <div class="below_info">
+                                <h3 id="review-section" class="h5 mb-4 text-black">{{ __('review.frontend.reviews-cap') }}
+                                </h3>
                             </div>
-                            @if($reviews->count() == 0)
-                             @guest
-    
-                                        <div class="col-12 mb-3 pt-3 pb-3 bg-light">
+                        @endif
+                        @if ($reviews->count() == 0)
+                            @guest
+
+                                <div class="col-12 mb-3 pt-3 pb-3 bg-light">
+                                    <div class="col-md-12 text-center">
+                                        <p class="mb-0">
+                                            <span class="icon-star text-warning"></span>
+                                            <span class="icon-star text-warning"></span>
+                                            <span class="icon-star text-warning"></span>
+                                            <span class="icon-star text-warning"></span>
+                                            <span class="icon-star text-warning"></span>
+                                        </p>
+                                        <div class="row mt-2">
                                             <div class="col-md-12 text-center">
+                                                <button class="btn btn-primary rounded text-white item-review-button"><i
+                                                        class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @else
+                                @if ($user_detail->id != Auth::user()->id)
+                                    @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                        <div class="col-12 mb-3 pt-3 pb-3 bg-light">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    @if (Auth::user()->isAdmin())
+                                                        {{ __('review.frontend.posted-a-review', ['item_name' => $user_detail->name]) }}
+                                                    @else
+                                                        {{ __('review.frontend.posted-a-review', ['item_name' => $user_detail->name]) }}
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-3 text-right">
+                                                    @if (Auth::user()->isAdmin())
+                                                        <a class="btn btn-primary rounded text-white"
+                                                            href="{{ route('admin.page.reviews.edit', $user_detail->id) }}"
+                                                            target="_blank"><i class="fas fa-star"></i>
+                                                            {{ __('review.backend.edit-a-review') }}</a>
+                                                    @else
+                                                        <a class="btn btn-primary rounded text-white"
+                                                            href="{{ route('user.page.reviews.edit', $Auth_review->id) }}"
+                                                            target="_blank"><i class="fas fa-star"></i>
+                                                            {{ __('review.backend.edit-a-review') }}</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="col-12 mb-3 pt-3 pb-3 bg-light">
+                                            <div class="col-12 text-center">
                                                 <p class="mb-0">
                                                     <span class="icon-star text-warning"></span>
                                                     <span class="icon-star text-warning"></span>
                                                     <span class="icon-star text-warning"></span>
                                                     <span class="icon-star text-warning"></span>
                                                     <span class="icon-star text-warning"></span>
-                                                </p>                                    
+                                                </p>
+                                                <span>Start your review</span>
+
                                                 <div class="row mt-2">
                                                     <div class="col-md-12 text-center">
-                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                        @if (Auth::user()->isAdmin())
+                                                            <button
+                                                                class="btn btn-primary rounded text-white item-review-button"><i
+                                                                    class="fas fa-star"></i>
+                                                                {{ __('Write a Review') }}</button>
+                                                        @else
+                                                            <button
+                                                                class="btn btn-primary rounded text-white item-review-button"><i
+                                                                    class="fas fa-star"></i>
+                                                                {{ __('Write a Review') }}</button>
+                                                        @endif
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                  @else
-                                 
-                                    @if($user_detail->id != Auth::user()->id)   
-                                            @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
-                                           
-                                                <div class="col-12 mb-3 pt-3 pb-3 bg-light">                                                    
-                                                    <div class="row">
-                                                        <div class="col-md-9">
-                                                            @if(Auth::user()->isAdmin())
-                                                            {{ __('review.frontend.posted-a-review',['item_name'=>$user_detail->name]) }}
-                                                            
-                                                            @else
-                                                            {{ __('review.frontend.posted-a-review',['item_name'=>$user_detail->name]) }}
-                                                            @endif
-                                                        </div>
-                                                        <div class="col-md-3 text-right">
-                                                            @if(Auth::user()->isAdmin())
-                                                            <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$user_detail->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
-                                                            @else
-                                                            <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div> 
-                                             @else
-                                             <div class="col-12 mb-3 pt-3 pb-3 bg-light">
-                                                <div class="col-12 text-center">
-                                                    <p class="mb-0">
-                                                        <span class="icon-star text-warning"></span>
-                                                        <span class="icon-star text-warning"></span>
-                                                        <span class="icon-star text-warning"></span>
-                                                        <span class="icon-star text-warning"></span>
-                                                        <span class="icon-star text-warning"></span>
-                                                    </p>
-                                                    <span>Start your review</span>
-
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-12 text-center">
-                                                            @if(Auth::user()->isAdmin())                                                            
-                                                            <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
-                                                            @else
-                                                            <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                              </div>
-                                    @endif   
-                                    @else
-                                        {{-- <div class="col-12 row mb-3 pt-3 pb-3 bg-light">
+                                    @endif
+                                @else
+                                    {{-- <div class="col-12 row mb-3 pt-3 pb-3 bg-light">
                                             <div class="col-12 text-center">
                                                 <span style="word-break: break-all;">{{ __('review.frontend.no-review-profile')}}{{ \App\User::find($user_detail->id)->name }}</span>
                                             </div>
                                         </div>                               --}}
-                                        
-                                    @endif
+                                @endif
                             @endguest
-
-                            @else
-
-                                <div class="col-12 mb-3 pt-3 pb-3 pb-3 bg-light" >
-                               <div class="row">
-                               <div class="col-md-9">
+                        @else
+                            <div class="col-12 mb-3 pt-3 pb-3 pb-3 bg-light">
+                                <div class="row">
+                                    <div class="col-md-9">
                                         @guest
-                                        {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                            {{ __('review.frontend.start-a-review-profile') }}{{ \App\User::find($user_detail->id)->name }}
                                         @else
-                                            @if($user_detail->id != Auth::user()->id)
-
-                                                @if(Auth::user()->isAdmin())
-                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
-                                                        {{ __('review.frontend.posted-a-review-profile')}}{{\App\User::find($user_detail->id)->name}}
+                                            @if ($user_detail->id != Auth::user()->id)
+                                                @if (Auth::user()->isAdmin())
+                                                    @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                        {{ __('review.frontend.posted-a-review-profile') }}{{ \App\User::find($user_detail->id)->name }}
                                                     @else
-                                                        {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                                        {{ __('review.frontend.start-a-review-profile') }}{{ \App\User::find($user_detail->id)->name }}
                                                     @endif
-
                                                 @else
-                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
-                                                    {{ __('review.frontend.my-reviews') }}
-                                                        
+                                                    @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                        {{ __('review.frontend.my-reviews') }}
                                                     @else
-                                                    {{ __('review.frontend.start-a-review-profile')}}{{ \App\User::find($user_detail->id)->name }}
+                                                        {{ __('review.frontend.start-a-review-profile') }}{{ \App\User::find($user_detail->id)->name }}
                                                     @endif
-
                                                 @endif
-
                                             @else
                                                 {{ __('review.frontend.my-reviews') }}
                                             @endif
                                         @endguest
-                                </div>
+                                    </div>
                                     <div class="col-md-3 text-right">
                                         @guest
-                                        <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
-                                        @else                                        
-                                            @if($user_detail->id != Auth::user()->id)
-
-                                                @if(Auth::user()->isAdmin())
-                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
-                                                    <a class="btn btn-primary rounded text-white" href="{{ route('admin.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                            <button class="btn btn-primary rounded text-white item-review-button"><i
+                                                    class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                        @else
+                                            @if ($user_detail->id != Auth::user()->id)
+                                                @if (Auth::user()->isAdmin())
+                                                    @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                        <a class="btn btn-primary rounded text-white"
+                                                            href="{{ route('admin.page.reviews.edit', $Auth_review->id) }}"
+                                                            target="_blank"><i class="fas fa-star"></i>
+                                                            {{ __('review.backend.edit-a-review') }}</a>
                                                     @else
-                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                        <button
+                                                            class="btn btn-primary rounded text-white item-review-button"><i
+                                                                class="fas fa-star"></i> {{ __('Write a Review') }}</button>
                                                     @endif
-
                                                 @else
-                                                    @if($review_count->profilereviewedByUser(Auth::user()->id,$user_detail->id))
-                                                    <a class="btn btn-primary rounded text-white" href="{{ route('user.page.reviews.edit',$Auth_review->id) }}" target="_blank"><i class="fas fa-star"></i> {{ __('review.backend.edit-a-review') }}</a>
+                                                    @if ($review_count->profilereviewedByUser(Auth::user()->id, $user_detail->id))
+                                                        <a class="btn btn-primary rounded text-white"
+                                                            href="{{ route('user.page.reviews.edit', $Auth_review->id) }}"
+                                                            target="_blank"><i class="fas fa-star"></i>
+                                                            {{ __('review.backend.edit-a-review') }}</a>
                                                     @else
-                                                    <button class="btn btn-primary rounded text-white item-review-button"><i class="fas fa-star"></i> {{ __('Write a Review') }}</button>
+                                                        <button
+                                                            class="btn btn-primary rounded text-white item-review-button"><i
+                                                                class="fas fa-star"></i> {{ __('Write a Review') }}</button>
                                                     @endif
                                                 @endif
                                             @endif
                                         @endguest
                                     </div>
-                               </div>
                                 </div>
+                            </div>
 
-                                <!-- Start review summary -->
-                                @if($item_count_rating > 0)
-
-                                    <div class="row mt-4 mb-3">
-                                        <div class="col-12 text-right">
-                                            <form action="{{ route('page.profile',encrypt($user_detail->id))}}#review-section" method="GET" class="form-inline" id="item-rating-sort-by-form">
-                                                <div class="form-group">
-                                                    <label for="rating_sort_by">{{ __('rating_summary.sort-by') }}</label>
-                                                    <select class="custom-select ml-2 @error('rating_sort_by') is-invalid @enderror" name="rating_sort_by" id="rating_sort_by">
-                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_NEWEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_NEWEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-newest') }}</option>
-                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_OLDEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_OLDEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-oldest') }}</option>
-                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_HIGHEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_HIGHEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-highest') }}</option>
-                                                        <option value="{{ \App\Item::ITEM_RATING_SORT_BY_LOWEST }}" {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_LOWEST ? 'selected' : '' }}>{{ __('rating_summary.sort-by-lowest') }}</option>
-                                                    </select>
-                                                    @error('rating_sort_by')
+                            <!-- Start review summary -->
+                            @if ($item_count_rating > 0)
+                                <div class="row mt-4 mb-3">
+                                    <div class="col-12 text-right">
+                                        <form
+                                            action="{{ route('page.profile', encrypt($user_detail->id)) }}#review-section"
+                                            method="GET" class="form-inline" id="item-rating-sort-by-form">
+                                            <div class="form-group">
+                                                <label for="rating_sort_by">{{ __('rating_summary.sort-by') }}</label>
+                                                <select
+                                                    class="custom-select ml-2 @error('rating_sort_by') is-invalid @enderror"
+                                                    name="rating_sort_by" id="rating_sort_by">
+                                                    <option value="{{ \App\Item::ITEM_RATING_SORT_BY_NEWEST }}"
+                                                        {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_NEWEST ? 'selected' : '' }}>
+                                                        {{ __('rating_summary.sort-by-newest') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_RATING_SORT_BY_OLDEST }}"
+                                                        {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_OLDEST ? 'selected' : '' }}>
+                                                        {{ __('rating_summary.sort-by-oldest') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_RATING_SORT_BY_HIGHEST }}"
+                                                        {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_HIGHEST ? 'selected' : '' }}>
+                                                        {{ __('rating_summary.sort-by-highest') }}</option>
+                                                    <option value="{{ \App\Item::ITEM_RATING_SORT_BY_LOWEST }}"
+                                                        {{ $rating_sort_by == \App\Item::ITEM_RATING_SORT_BY_LOWEST ? 'selected' : '' }}>
+                                                        {{ __('rating_summary.sort-by-lowest') }}</option>
+                                                </select>
+                                                @error('rating_sort_by')
                                                     <span class="invalid-tooltip">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                    @enderror
-                                                </div>
-                                            </form>
-                                        </div>
+                                                @enderror
+                                            </div>
+                                        </form>
                                     </div>
+                                </div>
 
-                                    <div class="col-12 mb-3">
-                                      <div class="row">
-                                      <div class="col-lg-3 bg-primary text-white">
+                                <div class="col-12 mb-3">
+                                    <div class="row">
+                                        <div class="col-lg-3 bg-primary text-white">
                                             <div id="review_summary">
                                                 <strong>{{ number_format($item_average_rating, 1) }}</strong>
-                                                <!-- @if($item_count_rating > 1)
+                                                {{-- @if ($item_count_rating > 1)
                                                     <small>{{ __('rating_summary.based-on-reviews', ['item_rating_count' => $item_count_rating]) }}</small>
                                                 @else
                                                     <small>{{ __('rating_summary.based-on-review', ['item_rating_count' => $item_count_rating]) }}</small>
-                                                @endif -->
+                                                @endif --}}
                                                 <small>Profile Reviews Rating</small>
                                             </div>
                                         </div>
@@ -1428,96 +1557,126 @@
                                             <div class="row">
                                                 <div class="col-lg-10 col-9 mt-2">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_one_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $profile_one_star_percentage }}%"
+                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.1-stars') }}</strong></small></div>
+                                                <div class="col-lg-2 col-3">
+                                                    <small><strong>{{ __('rating_summary.1-stars') }}</strong></small>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-10 col-9 mt-2">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_two_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $profile_two_star_percentage }}%"
+                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.2-stars') }}</strong></small></div>
+                                                <div class="col-lg-2 col-3">
+                                                    <small><strong>{{ __('rating_summary.2-stars') }}</strong></small>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-10 col-9 mt-2">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_three_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $profile_three_star_percentage }}%"
+                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.3-stars') }}</strong></small></div>
+                                                <div class="col-lg-2 col-3">
+                                                    <small><strong>{{ __('rating_summary.3-stars') }}</strong></small>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-10 col-9 mt-2">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_four_star_percentage }}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $profile_four_star_percentage }}%"
+                                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.4-stars') }}</strong></small></div>
+                                                <div class="col-lg-2 col-3">
+                                                    <small><strong>{{ __('rating_summary.4-stars') }}</strong></small>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-10 col-9 mt-2">
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" style="width: {{ $profile_five_star_percentage }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar" role="progressbar"
+                                                            style="width: {{ $profile_five_star_percentage }}%"
+                                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2 col-3"><small><strong>{{ __('rating_summary.5-stars') }}</strong></small></div>
+                                                <div class="col-lg-2 col-3">
+                                                    <small><strong>{{ __('rating_summary.5-stars') }}</strong></small>
+                                                </div>
                                             </div>
                                         </div>
-                                      </div>
                                     </div>
-                                    <hr>
-                                @endif
-                                <!-- End review summary -->
-
-                                @foreach($reviews as $reviews_key => $review)
-                                    <div class="col-12 mb-3">
-                                       <div class="row">
-                                       <div class="col-md-4">
-
-<div class="row align-items-center mb-3">
-    <div class="col-4">
-        @if(empty(\App\User::find($review->author_id)->user_image))
-            <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
-        @else
-            <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
-        @endif
-    </div>
-    <div class="col-8 pl-0">
-        <span>{{ \App\User::find($review->author_id)->name }}</span>
-    </div>
-</div>
-
-<div class="row mb-3">
-    <div class="col-md-12">
-        <span>{{ __('review.backend.overall-rating') }}</span>
-
-        <div class="pl-0 rating_stars rating_stars_{{ $review->id }}" data-id="rating_stars_{{ $review->id }}" data-rating="{{ $review->rating }}"></div>
-    </div>
-</div>
-
-@if($review->recommend == \App\Item::ITEM_REVIEW_RECOMMEND_YES)
-    <div class="row mb-2">
-        <div class="col-md-12">
-    <span class="bg-success text-white pl-2 pr-2 pt-2 pb-2 rounded">
-        <i class="fas fa-check"></i>
-        {{ __('review.backend.recommend') }}
-    </span>
-        </div>
-    </div>
-@endif
-
-</div>
-                                       </div>
-                                    </div>
-                                    <hr>
-                                @endforeach
+                                </div>
+                                <hr>
                             @endif
-                        </div>
+                            <!-- End review summary -->
+
+                            @foreach ($reviews as $reviews_key => $review)
+                                <div class="col-12 mb-3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+
+                                            <div class="row align-items-center mb-3">
+                                                <div class="col-4">
+                                                    @if (empty(\App\User::find($review->author_id)->user_image))
+                                                        <img src="{{ asset('frontend/images/placeholder/profile-' . intval($review->author_id % 10) . '.webp') }}"
+                                                            alt="Image" class="img-fluid rounded-circle">
+                                                    @else
+                                                        <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}"
+                                                            alt="{{ \App\User::find($review->author_id)->name }}"
+                                                            class="img-fluid rounded-circle">
+                                                    @endif
+                                                </div>
+                                                <div class="col-8 pl-0">
+                                                    <span>{{ \App\User::find($review->author_id)->name }}</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <span>{{ __('review.backend.overall-rating') }}</span>
+
+                                                    <div class="pl-0 rating_stars rating_stars_{{ $review->id }}"
+                                                        data-id="rating_stars_{{ $review->id }}"
+                                                        data-rating="{{ $review->rating }}"></div>
+                                                </div>
+                                            </div>
+
+                                            @if ($review->recommend == \App\Item::ITEM_REVIEW_RECOMMEND_YES)
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12">
+                                                        <span class="bg-success text-white pl-2 pr-2 pt-2 pb-2 rounded">
+                                                            <i class="fas fa-check"></i>
+                                                            {{ __('review.backend.recommend') }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
+                        @endif
                     </div>
-               </div>
+                </div>
+            </div>
         </div>
     </section>
     <!-- </div> -->
@@ -1547,18 +1706,20 @@
                             @endif
                             @if (isset(Auth::user()->id) && !empty(Auth::user()->id) && $user_detail['id'] == Auth::user()->id)
                                 {{-- <form action="{{ route('page.referral.email', ['referral_link' => Auth::user()->id]) }}" --}}
-                                    <form action="#"
-                                    method="POST" name="shareProfileReferalModal" id="shareProfileReferalModal">
+                                <form action="#" method="POST" name="shareProfileReferalModal"
+                                    id="shareProfileReferalModal">
                                     @csrf
                                     <div class="form-row mb-3">
                                         <div class="col-md-4">
                                             <label for="item_share_email_name"
-                                                class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
+                                                class="text-black">{{ __('frontend.item.name') }}<span
+                                                    class="text-danger">*</span></label>
                                             <input id="item_share_email_name" type="text"
                                                 class="form-control @error('item_share_email_name') is-invalid @enderror"
-                                                name="item_share_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_share_email_name') }}"
+                                                name="item_share_email_name"
+                                                value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_share_email_name') }}"
                                                 {{ Auth::check() ? '' : 'disabled' }} readonly>
-                                                <p class="profile_referal_name_error error_color" role="alert"></p>
+                                            <p class="profile_referal_name_error error_color" role="alert"></p>
                                             @error('item_share_email_name')
                                                 <span class="invalid-tooltip">
                                                     <strong>{{ $message }}</strong>
@@ -1566,23 +1727,24 @@
                                             @enderror
                                         </div>
                                         <!-- <div class="col-md-4">
-                                                <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
-                                                <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
-                                                @error('item_share_email_from_email')
-                                                        <span class="invalid-tooltip">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                        </div> -->
+                                                    <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}</label>
+                                                    <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ old('item_share_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                                    @error('item_share_email_from_email')
+        <span class="invalid-tooltip">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+    @enderror
+                                            </div> -->
                                         <div class="col-md-4">
                                             <label for="item_share_email_to_email"
-                                                class="text-black">{{ __('frontend.item.email-to') }}<span class="text-danger">*</span></label>
+                                                class="text-black">{{ __('frontend.item.email-to') }}<span
+                                                    class="text-danger">*</span></label>
                                             <input id="item_share_email_to_email" type="email"
                                                 class="form-control @error('item_share_email_to_email') is-invalid @enderror"
                                                 name="item_share_email_to_email"
                                                 value="{{ old('item_share_email_to_email') }}"
                                                 {{ Auth::check() ? '' : 'disabled' }}>
-                                                <p class="profile_referal_from_email_error error_color" role="alert"></p>
+                                            <p class="profile_referal_from_email_error error_color" role="alert"></p>
                                             @error('item_share_email_to_email')
                                                 <span class="invalid-tooltip">
                                                     <strong>{{ $message }}</strong>
@@ -1593,10 +1755,11 @@
                                     <div class="form-row mb-3">
                                         <div class="col-md-12">
                                             <label for="item_share_email_note"
-                                                class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
+                                                class="text-black">{{ __('frontend.item.add-note') }}<span
+                                                    class="text-danger">*</span></label>
                                             <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note"
                                                 rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
-                                                <p class="profile_referal_note_error error_color" role="alert"></p>
+                                            <p class="profile_referal_note_error error_color" role="alert"></p>
                                             @error('item_share_email_note')
                                                 <span class="invalid-tooltip">
                                                     <strong>{{ $message }}</strong>
@@ -1628,37 +1791,40 @@
 
     <!-- For podcast modal-->
     <div class="modal-4">
-        <div class="modal fade" id="podcastModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
+        <div class="modal fade" id="podcastModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
-              <div class="modal-content content_design3">
-                <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="exampleModalLabel_podcast"></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="modal-content content_design3">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="exampleModalLabel_podcast"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <iframe src="" id="iframesrcURL" frameborder="0" class=""></iframe>
                 </div>
-                 <iframe src="" id="iframesrcURL" frameborder="0"  class=""></iframe>
-              </div>
             </div>
-          </div>
+        </div>
     </div>
 
     <!-- For youtube modal-->
     <div class="modal-4">
-        <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
+        <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
-              <div class="modal-content content_design3">
-                <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="modal-content content_design3">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <iframe src="" id="youtubeiframesrcURL" frameborder="0" class="min_h_300"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
                 </div>
-                 <iframe src="" id="youtubeiframesrcURL" frameborder="0"  class="min_h_300" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                 allowfullscreen></iframe>
-              </div>
             </div>
-          </div>
+        </div>
     </div>
 @endsection
 
@@ -1681,136 +1847,147 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <!-- start for contact us stepper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"
+        integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- end for contact us stepper -->
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
     @include('frontend.partials.bootstrap-select-locale')
     <script>
         $(document).ready(function() {
-            $('#rating_sort_by').on('change', function() {	
-                $( "#item-rating-sort-by-form" ).submit();	
-            });	
-            "use strict";	
+            $('#rating_sort_by').on('change', function() {
+                $("#item-rating-sort-by-form").submit();
+            });
+            "use strict";
             /**	
              * Start image gallery uplaod	
-             */	
-            $('#upload_gallery').on('click', function(){	
-                $('#gallery_image_error_div').hide();	
-                $('#gallery_img_error').text('');	
-                window.selectedImages = [];	
-                $.FileDialog({	
+             */
+            $('#upload_gallery').on('click', function() {
+                $('#gallery_image_error_div').hide();
+                $('#gallery_img_error').text('');
+                window.selectedImages = [];
+                $.FileDialog({
                     // accept: "image/jpeg",	
-                    accept: ".jpeg,.jpg,.png",	
-                }).on("files.bs.filedialog", function (event) {	
-                    var html = "";	
-                    for (var a = 0; a < event.files.length; a++) {	
-                        if(a == 12) {break;}	
-                        selectedImages.push(event.files[a]);	
-                        html += "<div class='col-lg-3 col-md-4 col-sm-6 mb-2' id='review_image_gallery_" + a + "'>" +	
-                            "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +	
-                            "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#review_image_gallery_" + a + "\").remove();'>" + "{{ __('backend.shared.delete') }}" + "</button>" +	
-                            "<input type='hidden' value='" + event.files[a].content + "' name='review_image_galleries[]'>" +	
-                            "</div>";	
-                            var img_str = event.files[a].content;	
-                            var img_str_split = img_str.split(";base64")[0];	
-                            var img_ext = img_str_split.split("/")[1];	
-                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {	
-                                $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');	
-                                $('#gallery_image_error_div').show();	
-                                return false;	
-                            }	
-                    }	
-                    document.getElementById("selected-images").innerHTML += html;	
-                });	
-            });	
+                    accept: ".jpeg,.jpg,.png",
+                }).on("files.bs.filedialog", function(event) {
+                    var html = "";
+                    for (var a = 0; a < event.files.length; a++) {
+                        if (a == 12) {
+                            break;
+                        }
+                        selectedImages.push(event.files[a]);
+                        html +=
+                            "<div class='col-lg-3 col-md-4 col-sm-6 mb-2' id='review_image_gallery_" +
+                            a + "'>" +
+                            "<img style='max-width: 120px;' src='" + event.files[a].content + "'>" +
+                            "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#review_image_gallery_" +
+                            a + "\").remove();'>" + "{{ __('backend.shared.delete') }}" +
+                            "</button>" +
+                            "<input type='hidden' value='" + event.files[a].content +
+                            "' name='review_image_galleries[]'>" +
+                            "</div>";
+                        var img_str = event.files[a].content;
+                        var img_str_split = img_str.split(";base64")[0];
+                        var img_ext = img_str_split.split("/")[1];
+                        if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                            $('#gallery_img_error').text('Please choose only .jpg,.jpeg,.png file');
+                            $('#gallery_image_error_div').show();
+                            return false;
+                        }
+                    }
+                    document.getElementById("selected-images").innerHTML += html;
+                });
+            });
             /**	
              * End image gallery uplaod	
-             */	
-            @if($item_count_rating > 0)	
-            $(".rating_stars_header").rateYo({	
-                spacing: "5px",	
-                starWidth: "23px",	
-                readOnly: true,	
-                rating: {{ $item_average_rating }},	
-            });	
-            @endif	
-            	
-           	
-    });	
-    </script>	
+             */
+            @if ($item_count_rating > 0)
+                $(".rating_stars_header").rateYo({
+                    spacing: "5px",
+                    starWidth: "23px",
+                    readOnly: true,
+                    rating: {{ $item_average_rating }},
+                });
+            @endif
+
+
+        });
+    </script>
     <script>
-        $(document).ready(function(){
-            $('#question_2').on('change',function(){
+        $(document).ready(function() {
+            $('#question_2').on('change', function() {
                 $('#question2_txt').slideToggle("slow");
                 var val = this.checked ? this.value : '';
                 console.log(val);
-                if(val){
-                    $("#question2_txt").prop('required',true);
-                    $("#question2_checkbox1").prop('required',false);
-                    $("#question2_checkbox2").prop('required',false);
-                    $("#question2_checkbox3").prop('required',false);
-                    $("#question2_checkbox4").prop('required',false);
-                    $("#question2_checkbox5").prop('required',false);
-                    $("#question2_checkbox6").prop('required',false);
-                }else{
-                    $("#question2_txt").prop('required',false);
-                    $("#question2_checkbox1").prop('required',true);
-                    $("#question2_checkbox2").prop('required',true);
-                    $("#question2_checkbox3").prop('required',true);
-                    $("#question2_checkbox4").prop('required',true);
-                    $("#question2_checkbox5").prop('required',true);
-                    $("#question2_checkbox6").prop('required',true);
+                if (val) {
+                    $("#question2_txt").prop('required', true);
+                    $("#question2_checkbox1").prop('required', false);
+                    $("#question2_checkbox2").prop('required', false);
+                    $("#question2_checkbox3").prop('required', false);
+                    $("#question2_checkbox4").prop('required', false);
+                    $("#question2_checkbox5").prop('required', false);
+                    $("#question2_checkbox6").prop('required', false);
+                } else {
+                    $("#question2_txt").prop('required', false);
+                    $("#question2_checkbox1").prop('required', true);
+                    $("#question2_checkbox2").prop('required', true);
+                    $("#question2_checkbox3").prop('required', true);
+                    $("#question2_checkbox4").prop('required', true);
+                    $("#question2_checkbox5").prop('required', true);
+                    $("#question2_checkbox6").prop('required', true);
                 }
             });
         });
     </script>
-    <script>	
-        $(document).ready(function() {	
-            $('.profile_review_rating_error').text('');	
-            $('.profile_review_body_error').text('');           	
-            $('.please_wait').text('');	
-            $('#rating').on('input', function(e) {	
-                $('.profile_review_rating_error').text('');	
-            });	
-            $('#body').on('input', function(e) {	
-                $('.profile_review_body_error').text('');	
-            });           	
-            $("#review-modal").on("hidden.bs.modal", function() {	
-                $('.profile_review_rating_error').text('');	
-                $('.profile_review_rating_error').text('');	
-            });	
-            $('#review_form').on('submit', function(e) {	
-                e.preventDefault();	
-                $('.please_wait').text('Please Wait..');	
-                var user_id = <?php echo json_encode($user_detail->id); ?>;	
-                var role_id = <?php if(isset(Auth::user()->role_id)){ echo json_encode(Auth::user()->role_id);}else{	
-                    echo '5';	
-                } ?>;	
+    <script>
+        $(document).ready(function() {
+            $('.profile_review_rating_error').text('');
+            $('.profile_review_body_error').text('');
+            $('.please_wait').text('');
+            $('#rating').on('input', function(e) {
+                $('.profile_review_rating_error').text('');
+            });
+            $('#body').on('input', function(e) {
+                $('.profile_review_body_error').text('');
+            });
+            $("#review-modal").on("hidden.bs.modal", function() {
+                $('.profile_review_rating_error').text('');
+                $('.profile_review_rating_error').text('');
+            });
+            $('#review_form').on('submit', function(e) {
+                e.preventDefault();
+                $('.please_wait').text('Please Wait..');
+                var user_id = <?php echo json_encode($user_detail->id); ?>;
+                var role_id = <?php if (isset(Auth::user()->role_id)) {
+                    echo json_encode(Auth::user()->role_id);
+                } else {
+                    echo '5';
+                } ?>;
                 // alert(role_id);	
-               if(role_id == 2 || role_id == 3){	
-                    var url = "{{route('user.page.reviews.store')}}";                   	
-                }else{	
-                   var url = "{{route('admin.page.reviews.store')}}"	
-                }	
-                var formData = new FormData(this);	
-                jQuery.ajax({	
-                    type: 'POST',	
-                    url: url,	
-                    data: formData,	
-                    dataType: 'JSON',	
-                    contentType: false,	
-                    cache: false,	
-                    processData: false,	
-                    headers: {	
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')	
-                    },	
-                    success: function(response) {	
-                        console.log(response);	
-                        if (response.status == 'success') {	
+                if (role_id == 2 || role_id == 3) {
+                    var url = "{{ route('user.page.reviews.store') }}";
+                } else {
+                    var url = "{{ route('admin.page.reviews.store') }}"
+                }
+                var formData = new FormData(this);
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == 'success') {
                             // console.log(response)	
-                            $(".error_color").text("");	
-                            $('.please_wait').text('');	
+                            $(".error_color").text("");
+                            $('.please_wait').text('');
                             // location.reload(); 	
                             // window.location.href = "{{ route('login') }}";	
                             $('#review-modal').modal('hide');
@@ -1818,34 +1995,36 @@
                             // $('.profile_review_rating_error').text('');
                             // $('.profile_review_body_error').text('');
                             $("#review_form").trigger("reset");
-                             $('#rating').val(1);
+                            $('#rating').val(1);
                             $("#rating").selectpicker("refresh");
-                            $(':input[type="submit"]').prop('disabled', false);	
+                            $(':input[type="submit"]').prop('disabled', false);
                             location.reload();
-            // });
-                        }	
-                        if (response.status == 'error') {	
+                            // });
+                        }
+                        if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)	
-                            $('.please_wait').text('');	
-                            $.each(response.msg, function(key, val) {	
-                                if (response.msg.rating) {	
-                                    $('.profile_review_rating_error').text(response.msg.rating)	
-                                }	
-                                if (response.msg.body) {	
-                                    console.log(response.msg.body);	
-                                    $('.profile_review_body_error').text(response.msg.body)	
-                                }	
-                                $(':input[type="submit"]').prop('disabled', false);	
-                            });	
-                        }	
-                    }	
-                });	
-            });	
-        $('.item-review-button').on('click', function() {	
-            $('#review-modal').modal('show');	
-        });	
-        	
-        });	
+                            $('.please_wait').text('');
+                            $.each(response.msg, function(key, val) {
+                                if (response.msg.rating) {
+                                    $('.profile_review_rating_error').text(response.msg
+                                        .rating)
+                                }
+                                if (response.msg.body) {
+                                    console.log(response.msg.body);
+                                    $('.profile_review_body_error').text(response.msg
+                                        .body)
+                                }
+                                $(':input[type="submit"]').prop('disabled', false);
+                            });
+                        }
+                    }
+                });
+            });
+            $('.item-review-button').on('click', function() {
+                $('#review-modal').modal('show');
+            });
+
+        });
         $(document).ready(function() {
             $('.name_error').text('');
             $('.item_contact_email_from_email').text('');
@@ -2143,7 +2322,7 @@
                 });
 
             });
-    });
+        });
 
 
 
@@ -2392,8 +2571,6 @@
         //     var selectImg = document.getElementById(id);
         //     selectImg.src = '{{ asset('frontend/images/Rectangle 6.png') }}';
         // }
-
-        
     </script>
 
 
@@ -2586,62 +2763,62 @@
         @enderror
     </script>
     <script>
-        $(function(){
-            var $sections=$('.form-section');
+        $(function() {
+            var $sections = $('.form-section');
 
-            function navigateTo(index){
+            function navigateTo(index) {
                 $sections.removeClass('current').eq(index).addClass('current');
 
-                $('.form-navigation .previous').toggle(index>0);
+                $('.form-navigation .previous').toggle(index > 0);
                 var atTheEnd = index >= $sections.length - 1;
                 $('.form-navigation .next').toggle(!atTheEnd);
                 $('.form-navigation [Type=submit]').toggle(atTheEnd);
-        
-                const step= document.querySelector('.step'+index);
+
+                const step = document.querySelector('.step' + index);
                 // console.log(step);
-                step.style.backgroundColor="#17a2b8";
-                step.style.color="white";
+                step.style.backgroundColor = "#17a2b8";
+                step.style.color = "white";
             }
 
-            function curIndex(){
+            function curIndex() {
                 return $sections.index($sections.filter('.current'));
             }
 
-            $('.form-navigation .previous').click(function(){
+            $('.form-navigation .previous').click(function() {
                 navigateTo(curIndex() - 1);
             });
 
-            $('.form-navigation .next').click(function(){
+            $('.form-navigation .next').click(function() {
                 $('.contact-coach-form').parsley().whenValidate({
-                    group:'block-'+curIndex()
-                }).done(function(){
-                    navigateTo(curIndex()+1);
+                    group: 'block-' + curIndex()
+                }).done(function() {
+                    navigateTo(curIndex() + 1);
                 });
 
             });
 
-            $sections.each(function(index,section){
-                $(section).find(':input').attr('data-parsley-group','block-'+index);
+            $sections.each(function(index, section) {
+                $(section).find(':input').attr('data-parsley-group', 'block-' + index);
             });
 
             navigateTo(0);
 
-            
+
 
         });
-        
     </script>
     <script>
         $("#contact-modal").on("hidden.bs.modal", function() {
             $("#contactFormModal").trigger("reset");
-            $('.question1_desc_char_count,.question2_desc_char_count,.question3_desc_char_count,.question5_desc_char_count,.question6_desc_char_count').text("750/750");
+            $('.question1_desc_char_count,.question2_desc_char_count,.question3_desc_char_count,.question5_desc_char_count,.question6_desc_char_count')
+                .text("750/750");
             $('.question1_error,.question2_error,.question3_error,.question5_error,.question6_error').html('');
             $('.steps').removeAttr('style');
         })
     </script>
     <script>
-        $(document).ready(function(){
-            $(".box-video").click(function () {
+        $(document).ready(function() {
+            $(".box-video").click(function() {
                 $('#iframesrcURL').attr('src', '');
                 $('#iframesrcURL').removeAttr('class');
                 $('.modal_dialog').removeClass('modal-xl');
@@ -2649,13 +2826,13 @@
                 $('.modal-content').removeClass('content_design2');
                 $('.modal-content').removeClass('content_design1');
                 $('#exampleModalLabel_podcast').text('');
-                
+
 
 
                 var podcast_div_Id = $(this).data('vid');
                 var split_podcast_div_id = podcast_div_Id.split('_')[1];
-                var podcastUrl = $('#podcast_id_'+split_podcast_div_id).data('src');
-                if(podcastUrl.indexOf('redcircle') > -1) {
+                var podcastUrl = $('#podcast_id_' + split_podcast_div_id).data('src');
+                if (podcastUrl.indexOf('redcircle') > -1) {
                     $('#iframesrcURL').addClass('min_h_800');
                     $('.modal_dialog').addClass('modal-xl');
                     $('.modal-content').addClass('content_design3');
@@ -2663,7 +2840,7 @@
 
 
                 }
-                if(podcastUrl.indexOf('stitcher') > -1) {
+                if (podcastUrl.indexOf('stitcher') > -1) {
                     $('#iframesrcURL').addClass('min_h_300');
                     $('.modal_dialog').addClass('modal-xl');
                     $('.modal-content').addClass('content_design3');
@@ -2671,13 +2848,13 @@
 
 
                 }
-                if(podcastUrl.indexOf('apple') > -1) {
+                if (podcastUrl.indexOf('apple') > -1) {
                     $('.modal-content').addClass('content_design2');
                     $('#exampleModalLabel_podcast').text('Apple Podcast');
 
                 }
 
-                if(podcastUrl.indexOf('spotify') > -1) {
+                if (podcastUrl.indexOf('spotify') > -1) {
                     $('.modal-content').addClass('content_design1');
                     $('#exampleModalLabel_podcast').text('Spotify Podcast');
 
@@ -2687,32 +2864,31 @@
             });
 
             $("#podcastModal").on("hidden.bs.modal", function() {
-                $('#iframesrcURL').attr('src', '');            
+                $('#iframesrcURL').attr('src', '');
             });
 
             //for youtube video
 
-            $(".box-video-youtube").click(function () {
+            $(".box-video-youtube").click(function() {
                 $('#youtubeiframesrcURL').attr('src', '');
                 // $('#youtubeiframesrcURL').removeAttr('class');
                 // $('#exampleModalLabel_podcast').text('');                
 
 
                 var youtube_div_Id = $(this).data('vid');
-                var split_youtube_div_id = youtube_div_Id.split('_')[1];                
+                var split_youtube_div_id = youtube_div_Id.split('_')[1];
                 // console.log(split_youtube_div_id)
-                var youtubeUrl = $('#youtube_id_'+split_youtube_div_id).data('src');
+                var youtubeUrl = $('#youtube_id_' + split_youtube_div_id).data('src');
                 // console.log(youtubeUrl);
-                
+
                 $('#youtubeiframesrcURL').attr('src', youtubeUrl);
             });
 
             $("#youtubeModal").on("hidden.bs.modal", function() {
-                $('#youtubeiframesrcURL').attr('src', '');            
+                $('#youtubeiframesrcURL').attr('src', '');
             });
 
 
         });
-    
     </script>
 @endsection

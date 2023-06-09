@@ -50,6 +50,12 @@
 
     <div class="site-section">
         <div class="container">
+            <?php
+                $userId = '';
+                if (isset(Auth::user()->id)) {
+                    $userId = Auth::user()->id ? Auth::user()->id : '';
+                }
+            ?>
 
 
             @if($categories->count() > 0)
