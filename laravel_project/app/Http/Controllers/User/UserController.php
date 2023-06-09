@@ -856,6 +856,12 @@ class UserController extends Controller
         return redirect()->route('user.profile.edit');
     }
 
+
+    public function getPodcastDetails(Request $request)
+    {
+        return response()->json(['status'=>true,'msg'=>$request->all()]);
+    }
+
     public function showEmailtemplate($param)
     {
         // dd($param);
