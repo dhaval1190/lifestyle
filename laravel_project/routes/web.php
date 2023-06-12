@@ -739,7 +739,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::post('/profile', 'UserController@updateProfile')->name('profile.update');
         Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit')->middleware('check_coach_details');
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
-        Route::post('/podcast/details', 'UserController@getPodcastDetails');
+        Route::post('/podcast/details', 'UserController@addPodcastDetails');
 
         Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');
         // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');
@@ -749,6 +749,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');
         Route::resource('/contact-leads', 'ContactLeadController');
+        Route::get('/referral', 'ReferralController@index')->name('referral.index');
         
     });
 

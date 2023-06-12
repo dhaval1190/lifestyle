@@ -7,14 +7,14 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('Agreement Page') }}</h1>
-            <p class="mb-4">{{ __('This page allows you to edit agreement page body content of the website.') }}</p>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-6">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Agreement Page') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('This page allows you to edit agreement page body content of the website.') }}</p>
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
@@ -24,7 +24,7 @@
 
                         <div class="row form-group">
 
-                            <div class="col-md-4">
+                            <div class=" col-12 col-md-12 col-lg-6 col-xl-6">
 
                                 <div class="custom-control custom-checkbox">
                                     {{-- <input value="1" name="setting_page_about_enable" type="checkbox" class="custom-control-input" id="setting_page_about_enable"> --}}

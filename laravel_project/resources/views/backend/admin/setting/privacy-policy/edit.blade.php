@@ -7,14 +7,14 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-9">
-            <h1 class="h3 mb-2 text-gray-800">{{ __('backend.privacy-policy.privacy-policy-page') }}</h1>
-            <p class="mb-4">{{ __('backend.privacy-policy.privacy-policy-page-desc') }}</p>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-6">
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.privacy-policy.privacy-policy-page') }}</h1>
+            <p class="mb-4 font-sm-14">{{ __('backend.privacy-policy.privacy-policy-page-desc') }}</p>
         </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 font_icon_color pb-4">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
@@ -23,7 +23,7 @@
 
                         <div class="row form-group">
 
-                            <div class="col-md-4">
+                            <div class="col-md-6 col-lg-6 col-xl-6">
 
                                 <div class="custom-control custom-checkbox">
                                     <input value="1" name="setting_page_privacy_policy_enable" type="checkbox" class="custom-control-input" id="setting_page_privacy_policy_enable" {{ $all_page_privacy_policy_settings->setting_page_privacy_policy_enable == 1 ? 'checked' : '' }}>

@@ -295,15 +295,17 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="fourth_coach coach">
-                        <div class="coaches">
-                            <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                            <div class="coaches_detail">
-                                <h3>{{ __('Total Refferal') }}</h3>
-                                <p class="c-four">{{ count(Auth::user()->referrals)  ?? '0' }}</p>
+                    <a class="decoration-none" href="{{ route('user.referral.index') }}">
+                        <div class="fourth_coach coach">
+                            <div class="coaches">
+                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                <div class="coaches_detail">
+                                    <h3>{{ __('Total Referral') }}</h3>
+                                    <p class="c-four">{{ count(Auth::user()->referrals)  ?? '0' }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 @if(isset($All_visit_count) && !empty($All_visit_count))
                 <div class="col-md-6">
