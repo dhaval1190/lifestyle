@@ -718,6 +718,7 @@ $chk_post = Auth::user()->phone;
                     <div class="col-12 p-0 ">
                         <div class="row border_set_row">
                             <div class="col-md-6 col-9">
+                                <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
                                 <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
                                     : {{ $video_media_value->media_url }}</span>
 
@@ -725,10 +726,12 @@ $chk_post = Auth::user()->phone;
                             <div class="col-md-6 col-3">
                                 <div class="edit_delete_btn">
                                     <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
-                                        <i class="far fa-edit"></i>
+                                        {{-- <i class="far fa-edit"></i> --}}
+                                        <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
                                     </a>
                                     <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
-                                        <i class='far fa-trash-alt'></i>
+                                        {{-- <i class='far fa-trash-alt'></i> --}}
+                                        <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
                                     </a>
                                 </div>
                             </div>
@@ -738,7 +741,7 @@ $chk_post = Auth::user()->phone;
                 </div>
             </div>
 
-            <div class="row mt-3 mb-5 break_line_section">
+            {{-- <div class="row mt-3 mb-5 break_line_section">
                 <div class="col-12">
                     <div>
                         <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
@@ -810,9 +813,9 @@ $chk_post = Auth::user()->phone;
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="row mt-3 mb-5 break_line_section">
+            {{-- <div class="row mt-3 mb-5 break_line_section">
                 <div class="col-12">
                     <div>
                         <h3 class="h3 mb-2 font-set-sm text-orange-700">Podcast Details</h3>
@@ -820,13 +823,13 @@ $chk_post = Auth::user()->phone;
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-4">
                             <label class="text-black">Podcast</label>
-                            {{-- <select id="podcast_type"
+                            <select id="podcast_type"
                                 class="form-control selectpicker @error('podcast_type') is-invalid @enderror"
                                 name="podcast_type" title="Select Type">
                                 @foreach(\App\MediaDetail::PODCAST_MEDIA_TYPE as $mkey => $mvalue)
                                 <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
                             @endforeach
-                            </select> --}}
+                            </select>
 
                             <input type="hidden" name="podcast_type" value="podcast">
                             <span class="podcast_type_err_media_url" style="color:red"></span>
@@ -852,7 +855,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        {{-- <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3" style="display:none">
+                        <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3" style="display:none">
                             <label class="text-black">Podcast MP3</label>
                             <input id="podcast_image" type="file"
                                 class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image"
@@ -862,7 +865,7 @@ $chk_post = Auth::user()->phone;
                                 <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                    </div> --}}
+                    </div>
                     <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
                         <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
                         <span class="podcast_err_media_url" style="color:red"></span>
@@ -881,7 +884,7 @@ $chk_post = Auth::user()->phone;
                         </span>
                         @endif
                     </div>
-                    {{-- <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_file" style="display:none">
+                    <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_file" style="display:none">
                             <label for="podcast_image" class="text-black">Podcast MP3 File</label>
                             <span class="podcast_err_media_url" style="color:red"></span>
                             <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
@@ -898,7 +901,7 @@ $chk_post = Auth::user()->phone;
                         <strong>{{ Session::get('podcast_error') }}</strong>
                     </span>
                     @endif
-                </div> --}}
+                </div>
                 <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
                     <label class="text-black">Podcast Cover</label>
                     <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
@@ -942,7 +945,7 @@ $chk_post = Auth::user()->phone;
                     </div>
                     @endforeach
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     @else
@@ -1040,7 +1043,7 @@ $chk_post = Auth::user()->phone;
             <div class="">
                 <div class="row">
                     <div class="col-md-6">
-                        <button type="submit" id="submit" class="btn btn-primary w-100 text-white first_btn ">
+                        <button type="submit" id="frmSubmit" class="btn btn-primary w-100 text-white first_btn ">
                             {{ __('backend.shared.update') }}
                         </button>
                     </div>
@@ -1053,6 +1056,221 @@ $chk_post = Auth::user()->phone;
             </div>
         </div>
     </div>
+</form>
+{{--  Ebook form --}}
+<form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
+    <div class="row mt-3 mb-5 break_line_section">
+        <div class="col-12">
+            <div>
+                <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-3">
+                    <label class="text-black">Ebook</label>
+                    <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                        @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
+                        <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                        @endforeach
+                    </select>
+                    @error('media_type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <span class="ebook_success_msg" style="color:green"></span>
+                </div>
+                <div class="col-12 col-md-12 col-lg-3">
+                    <label class="text-black">Ebook PDF Title</label>
+                    <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
+                    @error('media_name')
+                    <span class="invalid-tooltip" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <p class="error_color media_name"></p>
+                </div>
+                <div class="col-12 col-md-12 col-lg-3">
+                    <label class="text-black">Ebook PDF</label>
+                    <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image" accept=".pdf">
+                    @error('media_image')
+                    <span class="invalid-tooltip">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <p class="error_color media_image"></p>
+                </div>
+                <div class="col-12 col-md-12 col-lg-3">
+                    <label class="text-black">Ebook Cover</label>
+                    <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
+                    <small class="form-text text-muted">
+                        {{ __('backend.item.feature-image-help') }}
+                    </small>
+                    @error('media_cover')
+                    <span class="invalid-tooltip">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <p class="error_color media_cover"></p>
+                </div>
+                <div class="col-12 col-md-12 col-lg-3">
+                    <label for="podcast_url" class="text-black">&nbsp;</label>
+                    {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                        <i class="fas fa-plus"></i>
+                        {{ __('Add') }}
+                    </a> --}}
+                    <button type="submit" class="btn btn-primary  btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="ebookSubmitBtn">
+                        <i class="fas fa-plus"></i>{{ __('Add') }}
+                    </button>
+        
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="ebook_details_added">
+                    @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
+                    <div class="col-12 col-md-12 col-lg-12 p-0">
+                        <div class="row border_set_row">
+                            <div class="col-md-6 col-89">
+                                <span class="set_width">
+                                    {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
+                                    {{ $ebook_media_value->media_name }}</span>
+
+                            </div>
+                            <div class="col-md-6 col-3">
+                                <div class="edit_delete_btn">
+                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
+                                        {{-- <i class='far fa-trash-alt'></i> --}}
+                                        <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{--  Podcast form --}}
+<form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
+    <div class="row mt-3 mb-5 break_line_section">
+        <div class="col-12">
+            <div>
+                <h3 class="h3 mb-2 font-set-sm text-orange-700">Podcast Details</h3>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-4">
+                    <label class="text-black">Podcast</label>                    
+
+                    <input type="hidden" name="podcast_type" value="podcast">
+                    {{-- <span class="podcast_type_err_media_url" style="color:red"></span> --}}
+                    {{-- <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type"> --}}
+                        <select id="podcast_web_type" class="form-control @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
+                        <option name="apple_podcast" value="">--Select--</option>
+                        <option name="apple_podcast" value="apple_podcast">Apple Podcast</option>
+                        <option name="stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
+                        <option name="google_podcast" value="google_podcast">Google Podcast</option>
+                        <option name="spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
+                    </select>
+                    {{-- <span class="podcast_success_msg" style="color:green"></span> --}}
+                    @error('media_type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <p class="error_color podcast_web_type"></p>
+                </div>
+                <div class="col-12 col-md-12 col-lg-4" id="podcast_div_title" style="display:none">
+                    <label class="text-black">Podcast Title</label>
+                    <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
+                    @error('podcast_name')
+                    <span class="invalid-tooltip" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <p class="error_color podcast_name"></p>
+                </div>
+                
+            <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
+                <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
+                <span class="podcast_err_media_url" style="color:red"></span>
+                <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                <small id="linkHelpBlock" class="form-text text-muted">
+                    {{ __('Only URL allowed (include http:// or https://)') }}
+                </small>
+                @error('podcast_image')
+                <span class="invalid-tooltip" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @if(Session::has('podcast_error'))
+                <span class="invalid-tooltip" role="alert">
+                    <strong>{{ Session::get('podcast_error') }}</strong>
+                </span>
+                @endif
+                <p class="error_color podcast_image"></p>
+            </div>
+            
+        <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
+            <label class="text-black">Podcast Cover</label>
+            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
+            <small class="form-text text-muted">
+                {{ __('backend.item.feature-image-help') }}
+            </small>
+            @error('podcast_cover')
+            <span class="invalid-tooltip">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+            <p class="error_color podcast_cover"></p>
+        </div>
+        {{-- <div class="col-12 col-md-12 col-lg-4">
+            <label for="podcast_url" class="text-black">&nbsp;</label>
+            <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                <i class="fas fa-plus"></i>
+                {{ __('Add') }}
+            </a>
+        </div> --}}
+        <div class="col-12 col-md-12 col-lg-3">
+            <label for="podcast_url" class="text-black">&nbsp;</label>
+            {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                <i class="fas fa-plus"></i>
+                {{ __('Add') }}
+            </a> --}}
+            <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
+                <i class="fas fa-plus"></i>{{ __('Add') }}
+            </button>
+            <span class="podcast_success_msg" style="color:green"></span>
+
+        </div>
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="podcast_details_added">
+            @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+            <div class="col-12 col-md-12 col-lg-12 p-0 ">
+                <div class="row border_set_row">
+                    <div class="col-md-6 col-9">
+                        <span class="set_width">
+                            {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} :
+                            {{ $podcast_media_value->media_name }}</span>
+
+                    </div>
+                    <div class="col-md-6 col-3">
+                        <div class="edit_delete_btn">
+                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
+                                {{-- <i class="far fa-edit"></i> --}}
+                                <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                            </a>
+                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
+                                {{-- <i class='far fa-trash-alt'></i> --}}
+                                <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    
+    </form>
     @if($free_items->count() >0)
     <div class="row">
         <div class="col-md-12">
@@ -1194,7 +1412,7 @@ $chk_post = Auth::user()->phone;
 </div> --}}
 
 
-</form>
+{{-- </form> --}}
 </div>
 </div>
 </div>
@@ -1839,46 +2057,144 @@ $chk_post = Auth::user()->phone;
     });
 
 
-    //for podcast
-    $('#podcast_create_button').on('click', function() {
+//for podcast
+$('#podcastFrm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
         $('.podcast_err_media_url').html("");
         $('.podcast_success_msg').html('');
-        if ($("#podcast_web_type").val() == '') {
-            $('.podcast_type_err_media_url').html("Please select podcast type");
-            return false;
-        }
-        if ($("#podcast_image").val() == '') {
-            $('.podcast_err_media_url').html("Please enter Podcast URL");
-            return false;
-        }
-
-
-        var podcast_media_type_text = $("#podcast_web_type option:selected").text();
-        var podcast_web_type_value = $("#podcast_web_type").val();
-        var podcast_media_url_value = $("#podcast_image").val();
+        $('.podcast_image').text('');                
+        $('.podcast_web_type').text('');                
+        $('.podcast_cover').text('');                
+        $('.podcast_name').text('');
 
         var ajax_url = '/user/podcast/details';
         jQuery.ajax({
             url: ajax_url,
+            data: formData,
             method: 'post',
-            data: {
-                podcast_web_type: podcast_web_type_value,
-                podcast_image: podcast_media_url_value,
-                podcast_type: 'podcast'
-            },
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            
+
             success: function(result) {
+                
+                    
+                        
+
+                $('#podcastSubmitBtn').prop("disabled", false);
+                $('#frmSubmit').prop("disabled", false);
+                $('#ebookSubmitBtn').prop("disabled", false);
+                // $('#podcast_web_type').prop("disabled", false);
+                $('#podcast_web_type').removeAttr('disabled');
+                console.log("llllllllll")
 
                 if (result.status == 'success') {
                     let podcast_name = result.msg;
-                    console.log(podcast_name);
+                    // console.log(podcast_name);
                     $("#podcast_details_added").append("<div class='col-12'>" + podcast_name + "</div>");
                     // $("#podcast_web_type").val('');
                     $("#podcast_image").val('');
+                    $("#podcast_cover").val('');
+                    $("#podcast_name").val('');
                     $('.podcast_success_msg').html('Podcast added successfully!');
 
                 }
                 if (result.status == 'error') {
-                    console.log(result.msg)
+                    $.each(result.msg, function(key, val) {
+                        if (result.msg.podcast_image) {
+                            $('.podcast_image').text(result.msg.podcast_image);
+                        }
+                        if (result.msg.podcast_web_type) {
+                            $('.podcast_web_type').text(result.msg.podcast_web_type);
+                        }
+                        if (result.msg.podcast_cover) {
+                            $('.podcast_cover').text(result.msg.podcast_cover);
+                        }
+                        if (result.msg.podcast_name) {
+                            $('.podcast_name').text(result.msg.podcast_name);
+                        }
+                    });
+                }
+
+
+            }
+        });
+
+    });
+
+    //for Ebook
+    $('#ebookFrm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $('.ebook_success_msg').html('');
+        $("#media_name").val('');
+        $("#media_image").val('');
+        $("#media_cover").val('');
+        // $('.podcast_err_media_url').html("");
+        // $('.podcast_success_msg').html('');
+        // if ($("#podcast_web_type").val() == '') {
+        //     $('.podcast_type_err_media_url').html("Please select podcast type");
+        //     return false;
+        // }
+        // if ($("#podcast_image").val() == '') {
+        //     $('.podcast_err_media_url').html("Please enter Podcast URL");
+        //     return false;
+        // }
+
+
+
+        var ajax_url = '/user/ebook/details';
+        jQuery.ajax({
+            url: ajax_url,
+            data: formData,
+            method: 'post',
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            
+
+            success: function(result) {
+
+                // console.log(result);
+                $('#podcastSubmitBtn').prop( "disabled", false);
+                $('#frmSubmit').prop( "disabled", false);
+                $('#ebookSubmitBtn').prop( "disabled", false);
+                $('#podcast_web_type').prop( "disabled", false);
+
+                if (result.status == 'success') {
+                    let ebook_name = result.data.media_name;
+                    let ebook_id = result.data.ebook_id;
+                    let ebook_msg = result.data.msg;
+                    // console.log(result)
+
+                    // $('.media_cover').text(result.data.media_cover);
+                    // $('.media_image').text(result.data.media_image);
+                    // $('.media_name').text(result.data.media_name);
+
+                    $("#ebook_details_added").append("<div class='col-12'>" + ebook_name + "</div>");
+                    // $("#podcast_web_type").val('');
+                    
+                    $('.ebook_success_msg').html(ebook_msg);
+
+                }
+                if (result.status == 'error') {
+                    console.log(result);
+                    $.each(result.msg, function(key, val) {
+                        if (result.msg.media_cover) {
+                            $('.media_cover').text(result.msg.media_cover);
+                        }
+                        if (result.msg.media_image) {
+                            $('.media_image').text(result.msg.media_image);
+                        }
+                        if (result.msg.media_name) {
+                            $('.media_name').text(result.msg.media_name);
+                        }
+                    });
                 }
 
 
@@ -1890,7 +2206,18 @@ $chk_post = Auth::user()->phone;
 
     $('#podcast_web_type').on('change', function() {
         var podcast_web_type_value = $(this).val();
-        console.log(podcast_web_type_value);
+        // console.log(podcast_web_type_value);
+
+        $('.podcast_err_media_url').html("");
+        $('.podcast_success_msg').html('');
+        $('.podcast_image').text('');                
+        $('.podcast_web_type').text('');                
+        $('.podcast_cover').text('');                
+        $('.podcast_name').text('');
+        $('.ebook_success_msg').html('');
+        $("#media_name").val('');
+        $("#media_image").val('');
+        $("#media_cover").val('');
         if (podcast_web_type_value == 'stitcher_podcast') {
             $('#podcast_div_title').css("display", "block");
             $('#podcast_cover_image').css("display", "block");
