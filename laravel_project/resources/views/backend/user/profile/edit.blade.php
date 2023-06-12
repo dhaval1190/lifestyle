@@ -192,17 +192,18 @@ $chk_post = Auth::user()->phone;
                                         <input id="feature_image" type="hidden" name="user_image">
                                     </div>
                                 </div>
-                                @if(isset($login_user->user_image))
                                 <div class="row mt-1">
                                     <div class="col-xl-7 col-12">
                                         <button id="upload_image" type="button" class="btn btn-primary w-100 mb-2">{{ __('backend.user.select-image') }}</button>
                                     </div>
+                                    @if(isset($login_user->user_image))
                                     <div class="col-xl-5 col-12 pl-xl-0 ">
                                         <a class="btn btn-danger text-white w-100" id="delete_user_profile_image_button">
                                             <!-- <i class="fas fa-trash-alt"></i> -->
                                             {{ __('role_permission.user.delete-profile-image') }}
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-12">
@@ -213,7 +214,6 @@ $chk_post = Auth::user()->phone;
                                     </div>
                                 </div>
                             </div>
-                            @endif
 
                             @if(Auth::user()->isCoach())
                             <div class="col-lg-12 col-12 p-0 mt-2">
