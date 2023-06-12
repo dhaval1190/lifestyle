@@ -30,13 +30,12 @@
         <div data-youtube="{{ $site_homepage_header_background_youtube_video }}"></div>
     @endif
 
-    @php 
+    @php
         $user_detail = '';
         $userId = '';
         $user_detail = Auth::user();
-        if(isset($user_detail)){
+        if (isset($user_detail)) {
             $userId = $user_detail->id;
-
         }
     @endphp
 
@@ -86,9 +85,9 @@
 
         </div>
         <!-- End hero section mobile view-->
-    </div>
-    </div>
-    <div class="site-section bg-light">
+      </div>
+      </div>
+      <div class="site-section bg-light">
         <div class="container">
             <!-- Start categories section desktop view-->
             <div class="overlap-category pb-5">
@@ -209,254 +208,251 @@
                     </a>
                 </div>
             </div>
-            @if($all_coaches->count() > 0)
+            @if ($all_coaches->count() > 0)
                 <div class="row mb-4">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Featured Coaches') }}
                         </h2>
                     </div>
-                    <!-- @if($all_coaches->count() >= 8)
-                        <div class="col-md-5 text-right">
-                            <a href="{{ route('page.allcoaches') }}" class="btn btn-primary rounded text-white">
-                                {{ __('View All Coaches') }}
-                            </a>
-                        </div>
-                    @endif -->
+                           <!-- @if ($all_coaches->count() >= 8)
+                           <div class="col-md-5 text-right">
+                                <a href="{{ route('page.allcoaches') }}" class="btn btn-primary rounded text-white">
+                                    {{ __('View All Coaches') }}
+                                </a>
+                            </div>
+                            @endif -->
                 </div>
-                @endif
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        @if ($all_coaches->count() >= 5)
-                            <section class="card_texting container ptb-100-500">
-                                <div class="swiper-container-coaches ">
-                                    <div class="swiper-wrapper">
-                                        @php $count = 1; @endphp
-                                        @foreach ($all_coaches as $all_coaches_key => $coach)
-                                            @php
-                                                if ($count == 8) {
-                                                    break;
-                                                }
-                                            @endphp
-                                            <div class="swiper-slide">
-                                                <div class="profile-card js-profile-card">
-                                                    <div class="profile-card__img">
-                                                        <a href="{{ route('page.profile', encrypt($coach->id)) }}">
-                                                            @if (empty($coach->user_image))
-                                                                <img src="{{ asset('frontend/images/placeholder/profile-' . intval($coach->id % 10) . '.webp') }}"
-                                                                    alt="Image" />
-                                                            @else
-                                                                <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
-                                                                    alt="{{ $coach->name }}" />
-                                                            @endif
-                                                        </a>
-                                                    </div>
-
-                                                    <div class="profile-card__cnt js-profile-cnt">
-                                                        <div class="profile-card__name">
-                                                            <a
-                                                                href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
-                                                        </div>
-                                                        <div class="profile-card__txt">
-
-                                                            <div class="d-block d-md-flex listing vertical parent_set_listing"
-                                                                style="min-height:0px;">
-                                                                @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
-                                                                    @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
-                                                                        <span class="category">
-                                                                            @if (!empty($category->category_icon))
-                                                                                <i
-                                                                                    class="{{ $category->category_icon }}"></i>
-                                                                            @else
-                                                                                <i class="fa-solid fa-heart"></i>
-                                                                            @endif
-                                                                            {{ $category->category_name }}
-                                                                        </span>
-                                                                    @endforeach
-                                                                @endif
-                                                                @if (!empty($coach->category_icon_one))
-                                                                    <p>
-                                                                        @foreach ($coach->category_icon_one as $icon_key => $icon)
-                                                                            <a
-                                                                                href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
-                                                                                <span class="category_child">
-                                                                                    <i class="{{ $icon }}"></i>
-                                                                                    {{ $coach->category_name_one[$icon_key] }}
-                                                                                </span>
-                                                                            </a>
-                                                                        @endforeach
-                                                                    </p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="profile-card-loc">
-                                                            <span
-                                                                class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
-                                                        </div>
-
-                                                        <div class="social_content">
-                                                            <div class="shareButton main">
-                                                                <svg class="share" style="width: 24px; height: 24px"
-                                                                    viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                                </svg>
-                                                                <svg class="check" style="width: 24px; height: 24px"
-                                                                    viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                                </svg>
-                                                                <svg class="close" style="width: 24px; height: 24px"
-                                                                    viewBox="0 0 24 24">
-                                                                    <path
-                                                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                                </svg>
-                                                            </div>
-                                                            <div class="icons">
-                                                                @if ($coach->facebook)
-                                                                    <a href="{{ $coach->facebook }}" target="_blank">
-                                                                        <i
-                                                                            class="fa fa-facebook-f social_icon_design"></i></a>
-                                                                @endif
-                                                                @if ($coach->youtube)
-                                                                    <a href="{{ $coach->youtube }}" target="_blank">
-                                                                        <i
-                                                                            class="fa fa-youtube social_icon_design"></i></a>
-                                                                @endif
-                                                                @if ($coach->instagram)
-                                                                    <a href="https://instagram.com/_u/{{ $coach->instagram }}"
-                                                                        target="_blank">
-                                                                        <i
-                                                                            class="fa fa-instagram social_icon_design"></i></a>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @php $count++; @endphp
-                                        @endforeach
-                                    </div>
-                                    <div class="swiper-pagination"></div>
-                                </div>
-                            </section>
-                        @endif
-
-                        @if ($all_coaches->count() <= 4)
-                            <div class="row">
-                                @foreach ($all_coaches as $all_coaches_key => $coach)
-                                    <div class="col-md-6 col-lg-4 mb-5 mt-5">
-                                        <div class="profile-card js-profile-card profile-card-design">
-                                            <div class="profile-card__img">
-                                                <a href="{{ route('page.profile', encrypt($coach->id)) }}">
-                                                    @if (empty($coach->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-' . intval($coach->id % 10) . '.webp') }}"
-                                                            alt="Image" />
-                                                    @else
-                                                        <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
-                                                            alt="{{ $coach->name }}" />
-                                                    @endif
-                                                </a>
-                                            </div>
-
-                                            <div class="profile-card__cnt js-profile-cnt">
-                                                <div class="profile-card__name">
-                                                    <a
-                                                        href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
-                                                </div>
-                                                <div class="profile-card__txt">
-
-                                                    <div class="d-block d-md-flex listing vertical parent_set_listing"
-                                                        style="min-height:0px;">
-                                                        @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
-                                                            @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
-                                                                <span class="category">
-                                                                    @if (!empty($category->category_icon))
-                                                                        <i class="{{ $category->category_icon }}"></i>
-                                                                    @else
-                                                                        <i class="fa-solid fa-heart"></i>
-                                                                    @endif
-                                                                    {{ $category->category_name }}
-                                                                </span>
-                                                            @endforeach
+            @endif
+             <div class="row">
+                <div class="col-lg-12 ">
+                    @if ($all_coaches->count() >= 5)
+                        <section class="card_texting container ptb-100-500">
+                            <div class="swiper-container-coaches ">
+                                <div class="swiper-wrapper">
+                                    @php $count = 1; @endphp
+                                    @foreach ($all_coaches as $all_coaches_key => $coach)
+                                        @php
+                                            if ($count == 8) {
+                                                break;
+                                            }
+                                        @endphp
+                                        <div class="swiper-slide">
+                                            <div class="profile-card js-profile-card">
+                                                <div class="profile-card__img">
+                                                    <a href="{{ route('page.profile', encrypt($coach->id)) }}">
+                                                        @if (empty($coach->user_image))
+                                                            <img src="{{ asset('frontend/images/placeholder/profile-' . intval($coach->id % 10) . '.webp') }}"
+                                                                alt="Image" />
+                                                        @else
+                                                            <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
+                                                                alt="{{ $coach->name }}" />
                                                         @endif
-                                                        @if (!empty($coach->category_icon_one))
-                                                            <p>
-                                                                @foreach ($coach->category_icon_one as $icon_key => $icon)
-                                                                    <a
-                                                                        href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
-                                                                        <span class="category_child">
-                                                                            <i class="{{ $icon }}"></i>
-                                                                            {{ $coach->category_name_one[$icon_key] }}
-                                                                        </span>
-                                                                    </a>
+                                                    </a>
+                                                </div>
+
+                                                <div class="profile-card__cnt js-profile-cnt">
+                                                    <div class="profile-card__name">
+                                                        <a
+                                                            href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
+                                                    </div>
+                                                    <div class="profile-card__txt">
+
+                                                        <div class="d-block d-md-flex listing vertical parent_set_listing"
+                                                            style="min-height:0px;">
+                                                            @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
+                                                                @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
+                                                                    <span class="category">
+                                                                        @if (!empty($category->category_icon))
+                                                                            <i class="{{ $category->category_icon }}"></i>
+                                                                        @else
+                                                                            <i class="fa-solid fa-heart"></i>
+                                                                        @endif
+                                                                        {{ $category->category_name }}
+                                                                    </span>
                                                                 @endforeach
-                                                            </p>
-                                                        @endif
+                                                            @endif
+                                                            @if (!empty($coach->category_icon_one))
+                                                                <p>
+                                                                    @foreach ($coach->category_icon_one as $icon_key => $icon)
+                                                                        <a
+                                                                            href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
+                                                                            <span class="category_child">
+                                                                                <i class="{{ $icon }}"></i>
+                                                                                {{ $coach->category_name_one[$icon_key] }}
+                                                                            </span>
+                                                                        </a>
+                                                                    @endforeach
+                                                                </p>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="profile-card-loc">
-                                                    <span
-                                                        class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
-                                                </div>
+                                                    <div class="profile-card-loc">
+                                                        <span
+                                                            class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
+                                                    </div>
 
-                                                <div class="social_content">
-                                                    <div class="shareButton main">
-                                                        <svg class="share" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                        </svg>
-                                                        <svg class="check" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                        </svg>
-                                                        <svg class="close" style="width: 24px; height: 24px"
-                                                            viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="icons">
-                                                        @if ($coach->facebook)
-                                                            <a href="{{ $coach->facebook }}" target="_blank">
-                                                                <i class="fa fa-facebook-f social_icon_design"></i></a>
-                                                        @endif
-                                                        @if ($coach->youtube)
-                                                            <a href="{{ $coach->youtube }}" target="_blank">
-                                                                <i class="fa fa-youtube social_icon_design"></i></a>
-                                                        @endif
-                                                        @if ($coach->instagram)
-                                                            <a href="https://instagram.com/_u/{{ $coach->instagram }}"
-                                                                target="_blank">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                        @endif
+                                                    <div class="social_content">
+                                                        <div class="shareButton main">
+                                                            <svg class="share" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                            </svg>
+                                                            <svg class="check" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                            </svg>
+                                                            <svg class="close" style="width: 24px; height: 24px"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="icons">
+                                                            @if ($coach->facebook)
+                                                                <a href="{{ $coach->facebook }}" target="_blank">
+                                                                    <i class="fa fa-facebook-f social_icon_design"></i></a>
+                                                            @endif
+                                                            @if ($coach->youtube)
+                                                                <a href="{{ $coach->youtube }}" target="_blank">
+                                                                    <i class="fa fa-youtube social_icon_design"></i></a>
+                                                            @endif
+                                                            @if ($coach->instagram)
+                                                                <a href="https://instagram.com/_u/{{ $coach->instagram }}"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-instagram social_icon_design"></i></a>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        @php $count++; @endphp
+                                    @endforeach
+                                </div>
+                            </div>
+                        </section>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next id-one"></div>
+                        <div class="swiper-button-prev id-one"></div>
+                    @endif
+
+                    @if ($all_coaches->count() <= 4)
+                        <div class="row">
+                            @foreach ($all_coaches as $all_coaches_key => $coach)
+                                <div class="col-md-6 col-lg-4 mb-5 mt-5">
+                                    <div class="profile-card js-profile-card profile-card-design">
+                                        <div class="profile-card__img">
+                                            <a href="{{ route('page.profile', encrypt($coach->id)) }}">
+                                                @if (empty($coach->user_image))
+                                                    <img src="{{ asset('frontend/images/placeholder/profile-' . intval($coach->id % 10) . '.webp') }}"
+                                                        alt="Image" />
+                                                @else
+                                                    <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
+                                                        alt="{{ $coach->name }}" />
+                                                @endif
+                                            </a>
+                                        </div>
+
+                                        <div class="profile-card__cnt js-profile-cnt">
+                                            <div class="profile-card__name">
+                                                <a
+                                                    href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
+                                            </div>
+                                            <div class="profile-card__txt">
+
+                                                <div class="d-block d-md-flex listing vertical parent_set_listing"
+                                                    style="min-height:0px;">
+                                                    @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
+                                                        @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
+                                                            <span class="category">
+                                                                @if (!empty($category->category_icon))
+                                                                    <i class="{{ $category->category_icon }}"></i>
+                                                                @else
+                                                                    <i class="fa-solid fa-heart"></i>
+                                                                @endif
+                                                                {{ $category->category_name }}
+                                                            </span>
+                                                        @endforeach
+                                                    @endif
+                                                    @if (!empty($coach->category_icon_one))
+                                                        <p>
+                                                            @foreach ($coach->category_icon_one as $icon_key => $icon)
+                                                                <a
+                                                                    href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
+                                                                    <span class="category_child">
+                                                                        <i class="{{ $icon }}"></i>
+                                                                        {{ $coach->category_name_one[$icon_key] }}
+                                                                    </span>
+                                                                </a>
+                                                            @endforeach
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="profile-card-loc">
+                                                <span
+                                                    class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
+                                            </div>
+
+                                            <div class="social_content">
+                                                <div class="shareButton main">
+                                                    <svg class="share" style="width: 24px; height: 24px"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
+                                                    </svg>
+                                                    <svg class="check" style="width: 24px; height: 24px"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                    </svg>
+                                                    <svg class="close" style="width: 24px; height: 24px"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                                    </svg>
+                                                </div>
+                                                <div class="icons">
+                                                    @if ($coach->facebook)
+                                                        <a href="{{ $coach->facebook }}" target="_blank">
+                                                            <i class="fa fa-facebook-f social_icon_design"></i></a>
+                                                    @endif
+                                                    @if ($coach->youtube)
+                                                        <a href="{{ $coach->youtube }}" target="_blank">
+                                                            <i class="fa fa-youtube social_icon_design"></i></a>
+                                                    @endif
+                                                    @if ($coach->instagram)
+                                                        <a href="https://instagram.com/_u/{{ $coach->instagram }}"
+                                                            target="_blank">
+                                                            <i class="fa fa-instagram social_icon_design"></i></a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endforeach
-                          </div>
-                        @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    <div class="">
-        <div class="container">
-            @if($all_trainding_items->count() > 0)
+      </div>
+     <div class="second_carousel_home">
+        <div class="container position-relative">
+            @if ($all_trainding_items->count() > 0)
                 <div class="row mt-5 mb-3 align-items-center">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Trending Topics') }}</h2>
                     </div>
-                    @if($all_trainding_items->count() >= 8)
+                    @if ($all_trainding_items->count() >= 8)
                         <!-- <div class="col-md-5 text-right">
-                            <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
-                                {{ __('all_latest_listings.view-all-latest') }}
-                            </a>
-                        </div> -->
+                                <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
+                                    {{ __('all_latest_listings.view-all-latest') }}
+                                </a>
+                            </div> -->
                     @endif
                 </div>
             @endif
@@ -508,8 +504,8 @@
                                                 </h3>
 
                                                 @if ($trainding_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                    @if(isset($user_detail->id))
-                                                        @if($user_detail->id == $trainding_item->user_id)
+                                                    @if (isset($user_detail->id))
+                                                        @if ($user_detail->id == $trainding_item->user_id)
                                                             <address>
                                                                 <a
                                                                     href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
@@ -517,7 +513,7 @@
                                                                     href="{{ route('page.state', ['state_slug' => $trainding_item->state->state_slug]) }}">{{ $trainding_item->state->state_name }}</a>
                                                             </address>
                                                         @endif
-                                                    @endif                                                    
+                                                    @endif
                                                 @endif
 
                                                 @php
@@ -598,19 +594,20 @@
                                 @endforeach
                             @endif
                         </div>
-                        <div class="swiper-pagination"></div>
                     </div>
                 </section>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next id"></div>
+                <div class="swiper-button-prev id"></div>
             @endif
 
-            @if($all_trainding_items->count() <= 4)
+            @if ($all_trainding_items->count() <= 4)
                 <div class="container">
                     <div class="row">
                         @foreach ($all_trainding_items as $trainding_items_key => $trainding_item)
                             <div class="col-md-3">
                                 <div class="listing list_test">
-                                    <a href="{{ route('page.item', $trainding_item->item_slug) }}"
-                                        class="img d-block"
+                                    <a href="{{ route('page.item', $trainding_item->item_slug) }}" class="img d-block"
                                         style="background-image: url({{ !empty($trainding_item->item_image_medium) ? Storage::disk('public')->url('item/' . $trainding_item->item_image_medium) : (!empty($trainding_item->item_image) ? Storage::disk('public')->url('item/' . $trainding_item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
                                     <div class="lh-content">
 
@@ -643,8 +640,8 @@
                                         </h3>
 
                                         @if ($trainding_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            @if(isset($user_detail->id))
-                                                @if($user_detail->id == $trainding_item->user_id)
+                                            @if (isset($user_detail->id))
+                                                @if ($user_detail->id == $trainding_item->user_id)
                                                     <address>
                                                         <a
                                                             href="{{ route('page.city', ['state_slug' => $trainding_item->state->state_slug, 'city_slug' => $trainding_item->city->city_slug]) }}">{{ $trainding_item->city->city_name }}</a>,
@@ -687,8 +684,7 @@
                                                             href="{{ route('page.profile', encrypt($trainding_item->user->id)) }}">
                                                             @if (empty($item->user->user_image))
                                                                 <img src="{{ asset('frontend/images/placeholder/profile-' . intval($trainding_item->user->id % 10) . '.webp') }}"
-                                                                    alt="Image"
-                                                                    class="img-fluid rounded-circle">
+                                                                    alt="Image" class="img-fluid rounded-circle">
                                                             @else
                                                                 <img src="{{ Storage::disk('public')->url('user/' . $trainding_item->user->user_image) }}"
                                                                     alt="{{ $trainding_item->user->name }}"
@@ -725,7 +721,7 @@
         </div>
     </div>
 
-    
+
 
     @if ($paid_items->count() > 0)
         <div class="site-section bg-light">
@@ -782,8 +778,8 @@
                                             </h3>
 
                                             @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                @if(isset($user_detail->id))
-                                                    @if($user_detail->id == $item->user_id)
+                                                @if (isset($user_detail->id))
+                                                    @if ($user_detail->id == $item->user_id)
                                                         <address>
                                                             <a
                                                                 href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
@@ -913,8 +909,8 @@
                                         </h3>
 
                                         @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            @if(isset($user_detail->id))
-                                                @if($user_detail->id == $item->user_id)
+                                            @if (isset($user_detail->id))
+                                                @if ($user_detail->id == $item->user_id)
                                                     <address>
                                                         <a
                                                             href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
@@ -994,250 +990,264 @@
     @endif
 
     @if ($latest_items->count() > 0)
-    <div class="bg-light">
-        <div class="container">
-            <div class="row mt-5 mb-3 align-items-center">
-                <div class="col-md-7 text-left border-primary">
-                    <h2 class="font-weight-light text-primary mt-5">{{ __('frontend.homepage.recent-listings') }}</h2>
+        <div class="bg-light">
+            <div class="container">
+                <div class="row mt-5 mb-3 align-items-center">
+                    <div class="col-md-7 text-left border-primary">
+                        <h2 class="font-weight-light text-primary mt-5">{{ __('frontend.homepage.recent-listings') }}
+                        </h2>
+                    </div>
+                    @if ($latest_items->count() >= 8)
+                        <!-- <div class="col-md-5 text-right">
+                            <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
+                                {{ __('all_latest_listings.view-all-latest') }}
+                            </a>
+                        </div> -->
+                    @endif
                 </div>
-                @if($latest_items->count() >= 8)
-                    <!-- <div class="col-md-5 text-right">
-                        <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
-                            {{ __('all_latest_listings.view-all-latest') }}
-                        </a>
-                    </div> -->
-                @endif
             </div>
-        </div>
-      
-    @endif
+           @endif
 
-    @if ($latest_items->count() >= 5)
-        <section class="card_texting container ptb-100-500 ptb-sm-50-50">
-            <div class="swiper-container-latest swiper_topics_carousel_set">
-                <div class="swiper-wrapper">
-                    @php $count = 1; @endphp
+          @if ($latest_items->count() >= 5)
+          <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <section class="card_texting container ptb-100-500 ptb-sm-50-50">
+                        <div class="swiper-container-latest swiper_topics_carousel_set">
+                            <div class="swiper-wrapper">
+                                @php $count = 1; @endphp
+                                @foreach ($latest_items as $latest_items_key => $item)
+                                    @php
+                                        if ($count == 8) {
+                                            break;
+                                        }
+                                    @endphp
+                                    <div class="swiper-slide">
+                                        <div class="listing">
+                                            <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block"
+                                                style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
+                                            <div class="lh-content">
+                                                @php
+                                                    $latest_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
+                                                @endphp
+                                                @foreach ($latest_item_getAllCategories as $item_all_categories_key => $category)
+                                                    <a href="{{ route('page.category', $category->category_slug) }}">
+                                                        <span class="category">
+                                                            @if (!empty($category->category_icon))
+                                                                <i class="{{ $category->category_icon }}"></i>
+                                                            @else
+                                                                <i class="fa-solid fa-heart"></i>
+                                                            @endif
+                                                            {{ $category->category_name }}
+                                                        </span>
+                                                    </a>
+                                                @endforeach
+                                                @php
+                                                    $latest_item_allCategories_count = $item->allCategories()->count();
+                                                @endphp
+                                                @if ($latest_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
+                                                    <span
+                                                        class="category">{{ __('categories.and') . ' ' . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . ' ' . __('categories.more') }}</span>
+                                                @endif
+                                                <h3 class="pt-2" style="word-break: break-all;"><a
+                                                        href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a>
+                                                </h3>
+            
+                                                @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                    @if (isset($user_detail->id))
+                                                        @if ($user_detail->id == $item->user_id)
+                                                            <address>
+                                                                <a
+                                                                    href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>
+                                                                <a
+                                                                    href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                            </address>
+                                                        @endif
+                                                    @endif
+                                                @endif
+            
+                                                @php
+                                                    $latest_item_getCountRating = $item->getCountRating();
+                                                @endphp
+                                                @if ($latest_item_getCountRating > 0)
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}"
+                                                                data-id="rating_stars_{{ $item->item_slug }}"
+                                                                data-rating="{{ $item->item_average_rating }}"></div>
+                                                            <address class="mt-1">
+                                                                @if ($latest_item_getCountRating == 1)
+                                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
+                                                                @else
+                                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
+                                                                @endif
+                                                            </address>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <hr class="item-box-hr">
+            
+                                                <div class="row align-items-center">
+            
+                                                    <div class="col-12 col-md-7 pr-0">
+                                                        <div class="row align-items-center item-box-user-div">
+                                                            <div class="col-3 item-box-user-img-div">
+                                                                <a class="decoration-none"
+                                                                    href="{{ route('page.profile', encrypt($item->user->id)) }}">
+                                                                    @if (empty($item->user->user_image))
+                                                                        <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
+                                                                            alt="Image" class="img-fluid rounded-circle">
+                                                                    @else
+                                                                        <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"
+                                                                            alt="{{ $item->user->name }}"
+                                                                            class="img-fluid rounded-circle">
+                                                                    @endif
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                                                <div class="row pb-1">
+                                                                    <div class="col-12">
+                                                                        <a class="decoration-none"
+                                                                            href="{{ route('page.profile', encrypt($item->user->id)) }}"><span
+                                                                                class="font-size-13">{{ $item->user->name }}</span></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row line-height-1-0">
+                                                                    <div class="col-12">
+                                                                        <span
+                                                                            class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $count++; @endphp
+                                @endforeach
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+            
+                     </section>
+                     <div class="swiper-pagination"></div>
+                     <div class="swiper-button-next id"></div>
+                     <div class="swiper-button-prev id"></div>
+                    
+                   @endif
+                </div>
+              </div>
+          </div>
+          
+        
+
+
+        @if ($latest_items->count() <= 4)
+            <div class="container">
+                <div class="row">
                     @foreach ($latest_items as $latest_items_key => $item)
-                        @php
-                        if ($count == 8) {
-                            break;
-                        }
-                        @endphp
-                        <div class="swiper-slide">
+                        <div class="col-md-3">
                             <div class="listing">
                                 <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block"
                                     style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
-                                    <div class="lh-content">
-                                        @php
-                                            $latest_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
-                                        @endphp
-                                        @foreach ($latest_item_getAllCategories as $item_all_categories_key => $category)
-                                            <a href="{{ route('page.category', $category->category_slug) }}">
-                                                <span class="category">
-                                                    @if (!empty($category->category_icon))
-                                                        <i class="{{ $category->category_icon }}"></i>
-                                                    @else
-                                                        <i class="fa-solid fa-heart"></i>
-                                                    @endif
-                                                    {{ $category->category_name }}
-                                                </span>
-                                            </a>
-                                        @endforeach
-                                        @php
-                                            $latest_item_allCategories_count = $item->allCategories()->count();
-                                        @endphp
-                                        @if ($latest_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
-                                            <span
-                                                class="category">{{ __('categories.and') . ' ' . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . ' ' . __('categories.more') }}</span>
-                                        @endif
-                                        <h3 class="pt-2" style="word-break: break-all;"><a
-                                            href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a>
-                                        </h3>
+                                <div class="lh-content">
 
-                                        @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                            @if(isset($user_detail->id))
-                                                @if($user_detail->id == $item->user_id)
-                                                    <address>
-                                                        <a href="{{ route('page.city',['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>
-                                                        <a href="{{ route('page.state',['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                                    </address>
+                                    @php
+                                        $latest_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
+                                    @endphp
+                                    @foreach ($latest_item_getAllCategories as $item_all_categories_key => $category)
+                                        <a href="{{ route('page.category', $category->category_slug) }}">
+                                            <span class="category">
+                                                @if (!empty($category->category_icon))
+                                                    <i class="{{ $category->category_icon }}"></i>
+                                                @else
+                                                    <i class="fa-solid fa-heart"></i>
                                                 @endif
+                                                {{ $category->category_name }}
+                                            </span>
+                                        </a>
+                                    @endforeach
+
+                                    @php
+                                        $latest_item_allCategories_count = $item->allCategories()->count();
+                                    @endphp
+                                    @if ($latest_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
+                                        <span
+                                            class="category">{{ __('categories.and') . ' ' . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . ' ' . __('categories.more') }}</span>
+                                    @endif
+
+                                    <h3 class="pt-2" style="word-break: break-all;"><a
+                                            href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a>
+                                    </h3>
+
+                                    @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                        @if (isset($user_detail->id))
+                                            @if ($user_detail->id == $item->user_id)
+                                                <address>
+                                                    <a
+                                                        href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
+                                                    <a
+                                                        href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
+                                                </address>
                                             @endif
-                                        @endif
-
-                                        @php
-                                            $latest_item_getCountRating = $item->getCountRating();
-                                        @endphp
-                                        @if ($latest_item_getCountRating > 0)
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}"
-                                                        data-id="rating_stars_{{ $item->item_slug }}"
-                                                        data-rating="{{ $item->item_average_rating }}"></div>
-                                                    <address class="mt-1">
-                                                        @if ($latest_item_getCountRating == 1)
-                                                            {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
-                                                        @else
-                                                            {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
-                                                        @endif
-                                                    </address>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        <hr class="item-box-hr">
-
-                                        <div class="row align-items-center">
-
-                                            <div class="col-12 col-md-7 pr-0">
-                                                <div class="row align-items-center item-box-user-div">
-                                                    <div class="col-3 item-box-user-img-div">
-                                                        <a class="decoration-none"
-                                                            href="{{ route('page.profile', encrypt($item->user->id)) }}">
-                                                            @if (empty($item->user->user_image))
-                                                                <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
-                                                                    alt="Image" class="img-fluid rounded-circle">
-                                                            @else
-                                                                <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"
-                                                                    alt="{{ $item->user->name }}"
-                                                                    class="img-fluid rounded-circle">
-                                                            @endif
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-9 line-height-1-2 item-box-user-name-div">
-                                                        <div class="row pb-1">
-                                                            <div class="col-12">
-                                                                <a class="decoration-none"
-                                                                    href="{{ route('page.profile', encrypt($item->user->id)) }}"><span
-                                                                        class="font-size-13">{{ $item->user->name }}</span></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row line-height-1-0">
-                                                            <div class="col-12">
-                                                                <span
-                                                                    class="review">{{ $item->created_at->diffForHumans() }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>                                   
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                        @php $count++; @endphp
-                    @endforeach
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
-
-        </section>
-    </div>
-    @endif
-
-
-    @if($latest_items->count() <= 4)
-        <div class="container">
-            <div class="row">
-                @foreach ($latest_items as $latest_items_key => $item)
-                    <div class="col-md-3">
-                        <div class="listing">
-                            <a href="{{ route('page.item', $item->item_slug) }}" class="img d-block"
-                                style="background-image: url({{ !empty($item->item_image_medium) ? Storage::disk('public')->url('item/' . $item->item_image_medium) : (!empty($item->item_image) ? Storage::disk('public')->url('item/' . $item->item_image) : asset('frontend/images/placeholder/full_item_feature_image_medium.webp')) }})"></a>
-                            <div class="lh-content">
-
-                                @php
-                                    $latest_item_getAllCategories = $item->getAllCategories(\App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE);
-                                @endphp
-                                @foreach ($latest_item_getAllCategories as $item_all_categories_key => $category)
-                                    <a href="{{ route('page.category', $category->category_slug) }}">
-                                        <span class="category">
-                                            @if (!empty($category->category_icon))
-                                                <i class="{{ $category->category_icon }}"></i>
-                                            @else
-                                                <i class="fa-solid fa-heart"></i>
-                                            @endif
-                                            {{ $category->category_name }}
-                                        </span>
-                                    </a>
-                                @endforeach
-
-                                @php
-                                    $latest_item_allCategories_count = $item->allCategories()->count();
-                                @endphp
-                                @if ($latest_item_allCategories_count > \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE)
-                                    <span
-                                        class="category">{{ __('categories.and') . ' ' . strval($latest_item_allCategories_count - \App\Item::ITEM_TOTAL_SHOW_CATEGORY_HOMEPAGE) . ' ' . __('categories.more') }}</span>
-                                @endif
-
-                                <h3 class="pt-2" style="word-break: break-all;"><a
-                                        href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a>
-                                </h3>
-
-                                @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                    @if(isset($user_detail->id))
-                                        @if($user_detail->id == $item->user_id)
-                                            <address>
-                                                <a
-                                                    href="{{ route('page.city', ['state_slug' => $item->state->state_slug, 'city_slug' => $item->city->city_slug]) }}">{{ $item->city->city_name }}</a>,
-                                                <a
-                                                    href="{{ route('page.state', ['state_slug' => $item->state->state_slug]) }}">{{ $item->state->state_name }}</a>
-                                            </address>
                                         @endif
                                     @endif
-                                @endif
 
-                                @php
-                                    $latest_item_getCountRating = $item->getCountRating();
-                                @endphp
-                                @if ($latest_item_getCountRating > 0)
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}"
-                                                data-id="rating_stars_{{ $item->item_slug }}"
-                                                data-rating="{{ $item->item_average_rating }}"></div>
-                                            <address class="mt-1">
-                                                @if ($latest_item_getCountRating == 1)
-                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
-                                                @else
-                                                    {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
-                                                @endif
-                                            </address>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                <hr class="item-box-hr">
-
-                                <div class="row align-items-center">
-
-                                    <div class="col-12 col-md-7 pr-0">
-                                        <div class="row align-items-center item-box-user-div">
-                                            <div class="col-3 item-box-user-img-div">
-                                                <a class="decoration-none"
-                                                    href="{{ route('page.profile', encrypt($item->user->id)) }}">
-                                                    @if (empty($item->user->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
-                                                            alt="Image" class="img-fluid rounded-circle">
+                                    @php
+                                        $latest_item_getCountRating = $item->getCountRating();
+                                    @endphp
+                                    @if ($latest_item_getCountRating > 0)
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="pl-0 rating_stars rating_stars_{{ $item->item_slug }}"
+                                                    data-id="rating_stars_{{ $item->item_slug }}"
+                                                    data-rating="{{ $item->item_average_rating }}"></div>
+                                                <address class="mt-1">
+                                                    @if ($latest_item_getCountRating == 1)
+                                                        {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.review') . ')' }}
                                                     @else
-                                                        <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"
-                                                            alt="{{ $item->user->name }}"
-                                                            class="img-fluid rounded-circle">
+                                                        {{ '(' . $latest_item_getCountRating . ' ' . __('review.frontend.reviews') . ')' }}
                                                     @endif
-                                                </a>
+                                                </address>
                                             </div>
-                                            <div class="col-9 line-height-1-2 item-box-user-name-div">
-                                                <div class="row pb-1">
-                                                    <div class="col-12">
-                                                        {{-- <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a> --}}
-                                                        <a class="decoration-none"
-                                                            href="{{ route('page.profile', encrypt($item->user->id)) }}"><span
-                                                                class="font-size-13">{{ $item->user->name }}</span></a>
-                                                    </div>
+                                        </div>
+                                    @endif
+
+                                    <hr class="item-box-hr">
+
+                                    <div class="row align-items-center">
+
+                                        <div class="col-12 col-md-7 pr-0">
+                                            <div class="row align-items-center item-box-user-div">
+                                                <div class="col-3 item-box-user-img-div">
+                                                    <a class="decoration-none"
+                                                        href="{{ route('page.profile', encrypt($item->user->id)) }}">
+                                                        @if (empty($item->user->user_image))
+                                                            <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
+                                                                alt="Image" class="img-fluid rounded-circle">
+                                                        @else
+                                                            <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"
+                                                                alt="{{ $item->user->name }}"
+                                                                class="img-fluid rounded-circle">
+                                                        @endif
+                                                    </a>
                                                 </div>
-                                                <div class="row line-height-1-0">
-                                                    <div class="col-12">
-                                                        <span
-                                                            class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                <div class="col-9 line-height-1-2 item-box-user-name-div">
+                                                    <div class="row pb-1">
+                                                        <div class="col-12">
+                                                            {{-- <a class="decoration-none" href="{{ route('page.profile', encrypt($item->user->id)) }}"><span class="font-size-13">{{ str_limit($item->user->name, 14, '.') }}</span></a> --}}
+                                                            <a class="decoration-none"
+                                                                href="{{ route('page.profile', encrypt($item->user->id)) }}"><span
+                                                                    class="font-size-13">{{ $item->user->name }}</span></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row line-height-1-0">
+                                                        <div class="col-12">
+                                                            <span
+                                                                class="review">{{ $item->created_at->diffForHumans() }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1246,12 +1256,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                    
-                @endforeach
+                    @endforeach
+                </div>
             </div>
+              @endif
         </div>
-    @endif
-
 
     @if ($all_testimonials->count() > 0)
         <div class="site-section ">
@@ -1476,19 +1485,20 @@
 
     <script>
         $(document).ready(function() {
-            
-            var enabled = true;
-                $('.swiper-slide').click(function() {
-                    if (enabled) {
-                    $("swiper-slide a").fadeTo("fast", 0.5).removeAttr("href");
-                    } else {
-                    $(".swiper-slide.swiper-slide-visible.swiper-slide-active a").fadeIn("fast").prop("href");
-                    }
-                    enabled = !enabled;
-                })
-            
 
-          
+            var enabled = true;
+            $('.swiper-slide').click(function() {
+                if (enabled) {
+                    $("swiper-slide a").fadeTo("fast", 0.5).removeAttr("href");
+                } else {
+                    $(".swiper-slide.swiper-slide-visible.swiper-slide-active a").fadeIn("fast").prop(
+                        "href");
+                }
+                enabled = !enabled;
+            })
+
+
+
             // if($('.swiper-slide').hasClass('swiper-slide-visible swiper-slide-active')){
             //     $('.swiper-slide-active').addClass('clickable');
             //     $('.swiper-slide-active .listing').removeClass('list_test');
@@ -1503,7 +1513,7 @@
             //     //$('.swiper-slide-visible').attr("disabled", "disabled");
             // }
 
-            
+
             "use strict";
 
             /**
@@ -1663,6 +1673,14 @@
                     slideShadows: true,
                 },
                 loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                }
             });
         </script>
     @endif
@@ -1683,6 +1701,7 @@
                     slideShadows: true,
                 },
                 loop: true,
+
             });
         </script>
     @elseif($all_trainding_items->count() > 6)
@@ -1700,6 +1719,10 @@
                     slideShadows: true,
                 },
                 loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                }
             });
         </script>
     @endif
@@ -1720,6 +1743,7 @@
                     slideShadows: true,
                 },
                 loop: true,
+
             });
         </script>
     @elseif($paid_items->count() > 6)
@@ -1737,6 +1761,10 @@
                     slideShadows: true,
                 },
                 loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                }
             });
         </script>
     @endif
@@ -1774,8 +1802,11 @@
                     slideShadows: true,
                 },
                 loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                }
             });
         </script>
-        
     @endif
 @endsection
