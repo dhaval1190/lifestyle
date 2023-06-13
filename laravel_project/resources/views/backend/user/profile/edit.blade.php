@@ -2199,6 +2199,7 @@ $('#podcastFrm').on('submit', function(e) {
                 // $('#podcast_web_type').prop("disabled", false);
                 $('#podcast_web_type').removeAttr('disabled');
 
+                // console.log(result.status);
                 if (result.status == 'success') {
                     let podcast_id = result.data.podcast_id;
                     let podcast_name = result.data.podcast_name;
@@ -2228,8 +2229,9 @@ $('#podcastFrm').on('submit', function(e) {
                         }
                     });
                 }
-
-
+                if (result.status == 'url_error') {                                           
+                    $('.podcast_image').text(result.msg);                       
+                }
             }
         });
 

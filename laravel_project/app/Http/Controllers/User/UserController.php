@@ -841,10 +841,10 @@ class UserController extends Controller
             if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
                 if($request->podcast_web_type == 'spotify_podcast'){
                     if(stripos($request->podcast_image,'spotify') == false){
-                        return response()->json(['status'=>'error','msg'=>'Podcast type and URL not matching']);
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
                     }
                     if(stripos($request->podcast_image,'iframe') !== false){
-                        return response()->json(['status'=>'error','msg'=>'Please enter proper URL']);
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter proper URL']);
         
                     // }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
                     }elseif(stripos($request->podcast_image,'spotify') !== false){
@@ -892,7 +892,7 @@ class UserController extends Controller
                             $seconds = floor($spotify_podcast_duration_millisec / 1000);
                             $podcast_duration = gmdate("i:s", $seconds);
                         }else{
-                            return response()->json(['status'=>'error','msg'=>'Non existing episode id']);
+                            return response()->json(['status'=>'url_error','msg'=>'Non existing episode id']);
                         }
     
                         // dd($podcast_duration);
@@ -901,10 +901,10 @@ class UserController extends Controller
     
                 if($request->podcast_web_type == 'apple_podcast'){
                     if(stripos($request->podcast_image,'apple') == false){
-                        return response()->json(['status'=>'error','msg'=>'Podcast type and URL not matching']);
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
                     }
                     if(stripos($request->podcast_image,'apple') !== false && stripos($request->podcast_image,'embed') !== false){
-                        return response()->json(['status'=>'error','msg'=>'Please enter valid URL']);
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter valid URL']);
                     }else{
                         $podcast_url = $request->podcast_image;
                         $exp_podcast_url = explode("podcasts.apple.com",$podcast_url); 
@@ -943,7 +943,7 @@ class UserController extends Controller
                 }
                 if($request->podcast_web_type == 'google_podcast'){
                     if(stripos($request->podcast_image,'redcircle') == false){
-                        return response()->json(['status'=>'error','msg'=>'Podcast type and URL not matching']);
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
                     }else{
                         $embed_podcast_url = $request->podcast_image;
                         $podcast_ep_id = explode('ep/',$embed_podcast_url)[1];
@@ -1011,9 +1011,11 @@ class UserController extends Controller
                         // $filename = time().'.'.$request->podcast_cover->extension();
                         // return response()->json(['status'=>'successsss','msg'=>$filename]);
                     }elseif(stripos($request->podcast_image,'iframe') !== false){
-                        return response()->json(['status'=>'error','msg'=>'Iframe URL is not allowed']);
+                        return response()->json(['status'=>'url_error','msg'=>'Iframe URL is not allowed']);
+                    }elseif($request->podcast_web_type == 'stitcher_podcast' && stripos($request->podcast_image,'stitcher') !== false){
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter proper URL']);
                     }else{
-                        return response()->json(['status'=>'error','msg'=>'Please enter embed URL']);
+                        return response()->json(['status'=>'url_error','msg'=>'Please type and URL not matching']);
                     }
                     
                 }

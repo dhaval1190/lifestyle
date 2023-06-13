@@ -7,6 +7,7 @@
             height: 800px;
             overflow-y: scroll;
         }
+     
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @endsection
@@ -224,7 +225,7 @@
                 </div>
             @endif
              <div class="row">
-                <div class="col-lg-12 ">
+                <div class="col-lg-12 padding-0-set-sm">
                     @if ($all_coaches->count() >= 5)
                         <section class="card_texting container ptb-100-500">
                             <div class="swiper-container-coaches ">
@@ -332,10 +333,15 @@
                                     @endforeach
                                 </div>
                             </div>
+                            <div class="overlay_effect">
+                                <div class="handswipe">
+                                    <img src="{{ asset('frontend/images/hand-move.gif') }}" />
+                                </div>
+                        </div>
                         </section>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next id-one"></div>
-                        <div class="swiper-button-prev id-one"></div>
+                        <div class="swiper-button-prev id-two"></div>
                     @endif
 
                     @if ($all_coaches->count() <= 4)
@@ -595,10 +601,15 @@
                             @endif
                         </div>
                     </div>
+                    <div class="overlay_effect">
+                                <div class="handswipe">
+                                    <img src="{{ asset('frontend/images/hand-move.gif') }}" />
+                                </div>
+                        </div>
                 </section>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-next id"></div>
-                <div class="swiper-button-prev id"></div>
+                 <div class="swiper-button-next id-three"></div>
+            <div class="swiper-button-prev id-four"></div>
             @endif
 
             @if ($all_trainding_items->count() <= 4)
@@ -1011,7 +1022,7 @@
           @if ($latest_items->count() >= 5)
           <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 padding-0-set-sm">
                     <section class="card_texting container ptb-100-500 ptb-sm-50-50">
                         <div class="swiper-container-latest swiper_topics_carousel_set">
                             <div class="swiper-wrapper">
@@ -1128,13 +1139,16 @@
                                     @php $count++; @endphp
                                 @endforeach
                             </div>
-                            <div class="swiper-pagination"></div>
                         </div>
-            
+                        <div class="overlay_effect">
+                        <div class="handswipe">
+                             <img src="{{ asset('frontend/images/hand-move.gif') }}" />
+                        </div>
+                        </div>
                      </section>
                      <div class="swiper-pagination"></div>
-                     <div class="swiper-button-next id"></div>
-                     <div class="swiper-button-prev id"></div>
+                    <div class="swiper-button-next id-five"></div>
+                    <div class="swiper-button-prev id-six"></div>
                     
                    @endif
                 </div>
@@ -1677,10 +1691,14 @@
                     el: '.swiper-pagination',
                     clickable: true,
                 },
+                // autoplay: 
+                // {
+                // delay: 1000,
+                // },
                 navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                }
+                nextEl: '.swiper-button-next.id-one',
+                prevEl: '.swiper-button-prev.id-two',
+            }
             });
         </script>
     @endif
@@ -1720,9 +1738,9 @@
                 },
                 loop: true,
                 navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                }
+                nextEl: '.swiper-button-next.id-three',
+                prevEl: '.swiper-button-prev.id-four',
+            }
             });
         </script>
     @endif
@@ -1761,10 +1779,10 @@
                     slideShadows: true,
                 },
                 loop: true,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                }
+                 navigation: {
+                nextEl: '.swiper-button-next.id-five',
+                prevEl: '.swiper-button-prev.id-six',
+            }
             });
         </script>
     @endif
@@ -1802,11 +1820,16 @@
                     slideShadows: true,
                 },
                 loop: true,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                }
+                 navigation: {
+                nextEl: '.swiper-button-next.id-five',
+                prevEl: '.swiper-button-prev.id-six',
+            }
             });
         </script>
     @endif
+    <script>
+        $(function() {
+      setTimeout(function() { $(".overlay_effect").fadeOut(1500); }, 5000)
+       })
+    </script>
 @endsection
