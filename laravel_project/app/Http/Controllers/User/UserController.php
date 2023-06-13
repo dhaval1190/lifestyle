@@ -1025,7 +1025,7 @@ class UserController extends Controller
                     $podcast_file_name = $embed_podcast_url;
                 }
     
-                $insert_podcast = MediaDetail::updateOrCreate([
+                $podcast_data = MediaDetail::updateOrCreate([
                     'user_id' => $login_user->id,
                     // 'media_name' => $request->podcast_name,
                     'media_name' => $podcast_track_name,
@@ -1039,9 +1039,13 @@ class UserController extends Controller
                     'media_type' => $request->podcast_type,
                     'media_image' => $podcast_file_name
                 ]);
+
+                $data['podcast_name'] = $podcast_data->media_name;
+                $data['msg'] = 'Ebook added successfully';
+                $data['podcast_id'] = $podcast_data->id;
     
-                if($insert_podcast){
-                    return response()->json(['status'=>'success','msg'=>$podcast_track_name]);
+                if($podcast_data){
+                    return response()->json(['status'=>'success','data'=>$data]);
                 }else{
                     return response()->json(['status'=>'error','msg'=>'Something went wrong!']);
                 }

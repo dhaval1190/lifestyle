@@ -1078,7 +1078,7 @@ $chk_post = Auth::user()->phone;
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                    <span class="ebook_success_msg" style="color:green"></span>
+                    {{-- <span class="ebook_success_msg" style="color:green"></span> --}}
                 </div>
                 <div class="col-12 col-md-12 col-lg-3">
                     <label class="text-black">Ebook PDF Title</label>
@@ -1113,8 +1113,8 @@ $chk_post = Auth::user()->phone;
                     @enderror
                     <p class="error_color media_cover"></p>
                 </div>
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label for="podcast_url" class="text-black">&nbsp;</label>
+                <div class="col-12 col-md-12 col-lg-3 mb-5">
+                    <label for="podcast_url" class="text-black"></label>
                     {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
                         <i class="fas fa-plus"></i>
                         {{ __('Add') }}
@@ -1122,6 +1122,7 @@ $chk_post = Auth::user()->phone;
                     <button type="submit" class="btn btn-primary  btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="ebookSubmitBtn">
                         <i class="fas fa-plus"></i>{{ __('Add') }}
                     </button>
+                    <strong><span class="ebook_success_msg" style="color:green"></span></strong>
         
                 </div>
                 <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="ebook_details_added">
@@ -1240,7 +1241,7 @@ $chk_post = Auth::user()->phone;
             <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
                 <i class="fas fa-plus"></i>{{ __('Add') }}
             </button>
-            <span class="podcast_success_msg" style="color:green"></span>
+            <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
 
         </div>
         <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="podcast_details_added">
@@ -1566,7 +1567,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1592,7 +1593,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Podcast') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: #292b2c">{{ __('Edit Podcast') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1641,7 +1642,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2186,25 +2187,24 @@ $('#podcastFrm').on('submit', function(e) {
             dataType: 'JSON',
             contentType: false,
             cache: false,
-            processData: false,
-            
+            processData: false,            
 
-            success: function(result) {
+            success: function(result) {  
                 
-                    
-                        
+                console.log(result);
 
                 $('#podcastSubmitBtn').prop("disabled", false);
                 $('#frmSubmit').prop("disabled", false);
                 $('#ebookSubmitBtn').prop("disabled", false);
                 // $('#podcast_web_type').prop("disabled", false);
                 $('#podcast_web_type').removeAttr('disabled');
-                console.log("llllllllll")
 
                 if (result.status == 'success') {
-                    let podcast_name = result.msg;
+                    let podcast_id = result.data.podcast_id;
+                    let podcast_name = result.data.podcast_name;
                     // console.log(podcast_name);
-                    $("#podcast_details_added").append("<div class='col-12'>" + podcast_name + "</div>");
+                    $("#podcast_details_added").append('<div class="col-12 col-md-12 col-lg-12 p-0 "><div class="row border_set_row"><div class="col-md-6 col-9"><span class="set_width">Podcast : '+podcast_name+'</span></div><div class="col-md-6 col-3"><div class="edit_delete_btn"><a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_'+podcast_id+'" data-id="'+podcast_name+'"><img src="{{ asset("frontend/images/edit_icon.png") }}" alt="Edit" height="25px"></a><a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_'+podcast_id+'"><img src="{{ asset("frontend/images/delete_icon.png") }}" alt="Delete" height="25px"></a></div></div></div></div>');
+                    location.reload();
                     // $("#podcast_web_type").val('');
                     $("#podcast_image").val('');
                     $("#podcast_cover").val('');
@@ -2270,7 +2270,7 @@ $('#podcastFrm').on('submit', function(e) {
 
             success: function(result) {
 
-                // console.log(result);
+                console.log(result);
                 $('#podcastSubmitBtn').prop( "disabled", false);
                 $('#frmSubmit').prop( "disabled", false);
                 $('#ebookSubmitBtn').prop( "disabled", false);
@@ -2286,7 +2286,8 @@ $('#podcastFrm').on('submit', function(e) {
                     // $('.media_image').text(result.data.media_image);
                     // $('.media_name').text(result.data.media_name);
 
-                    $("#ebook_details_added").append("<div class='col-12'>" + ebook_name + "</div>");
+                    $("#ebook_details_added").append('<div class="col-12 col-md-12 col-lg-12 p-0"><div class="row border_set_row"><div class="col-md-6 col-89"><span class="set_width">E Book '+ ebook_name +'</span></div><div class="col-md-6 col-3"><div class="edit_delete_btn"><a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_'+ ebook_id +'"><img src="{{ asset("frontend/images/delete_icon.png") }}" alt="" height="25px"></a></div></div></div></div>');
+                    location.reload();
                     // $("#podcast_web_type").val('');
                     
                     $('.ebook_success_msg').html(ebook_msg);
@@ -2312,6 +2313,10 @@ $('#podcastFrm').on('submit', function(e) {
         });
 
     });
+
+    // $('.edit_delete_btn').on('click',function(){
+    //     alert("skjlls");
+    // })
 
 
     $('#podcast_web_type').on('change', function() {
