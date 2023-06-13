@@ -53,7 +53,7 @@
             <div class="col-md-4">
                 <div class="see_coach_btn_set">
                     <a href="{{ route('page.profile', encrypt($contact_lead->sender_id)) }}">
-                        <button type="button" class="btn btn-primary">See Coach</button>
+                        <button type="button" class="btn btn-primary">See Lead</button>
 
                     </a>
                 </div>

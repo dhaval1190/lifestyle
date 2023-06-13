@@ -498,17 +498,10 @@
                                                     style="background-image: @if(str_contains($image['monthly']['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($image['monthly']['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $image['monthly']['media_image'] }}">
                                                     <div class="bt-play" id="bt-play_{{ $image['monthly']['id'] }}"></div>
                                                 </a> --}}
-                                                @if($image['monthly']['podcast_web_type'] == 'stitcher_podcast')
-                                                    <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $image['monthly']['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                                        style="background-image: url('{{ Storage::disk('public')->url('media_files/'. $image['monthly']['media_cover']) }}'); opacity: 1;" data-src="{{ $image['monthly']['media_image'] }}">
-                                                        <div class="bt-play" id="bt-play_{{ $image['monthly']['id'] }}"></div>
-                                                    </a>
-                                                @else
-                                                    <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $image['monthly']['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                                        style="background-image: url('{{ $image['monthly']['media_cover'] }}'); opacity: 1;" data-src="{{ $image['monthly']['media_image'] }}">
-                                                        <div class="bt-play" id="bt-play_{{ $image['monthly']['id'] }}"></div>
-                                                    </a>
-                                                @endif
+                                                <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $image['monthly']['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                                    style="background-image: url('{{ $image['monthly']['media_cover'] }}'); opacity: 1;" data-src="{{ $image['monthly']['media_image'] }}">
+                                                    <div class="bt-play" id="bt-play_{{ $image['monthly']['id'] }}"></div>
+                                                </a>
                                                 <div class="video-container">
                                                     <iframe width="590" height="100%"
                                                     src="{{ $image['monthly']['media_image'] }}" frameborder="0"
@@ -1509,8 +1502,8 @@
                             if(referrals >= 6){
                                 referrals = 5;
                                 $('#referrals').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
-                                $('#referal_count').text('(5/'+referrals +')')
                             }
+                            $('#referal_count').text('(5/'+referrals +')')
                             if(all_content_count >= 10){
                                 all_content_count = 10;
                                 $('#ten_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");

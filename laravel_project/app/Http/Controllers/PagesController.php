@@ -10008,6 +10008,8 @@ class PagesController extends Controller
     {
         $settings = app('site_global_settings');
 
+        $referral_link = encrypt($referral_link);
+        // return response()->json(['status'=>"successsss",'msg'=>$referral_link]);
         if(Auth::check())
         {
             // $request->validate([
