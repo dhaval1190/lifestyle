@@ -383,6 +383,21 @@ class PagesController extends Controller
         print_r($progress_data);exit;
         
     }
+
+    public function profileCompletedData(Request $request,$user_id){
+        //$user_data = User::find($user_id);
+        $user_obj = new User();
+        $all_coaches = User::where('role_id', 2)->where('user_suspended', User::USER_NOT_SUSPENDED)->where('id',$user_id)->first();
+        // foreach($all_coaches as $user){
+            $user_data = User::find($user_id);
+            $progress_data = $user_obj->userProfileCompletedData($request,$user_data);
+        // }
+
+        return response()->json(['status'=>'success','data'=>$progress_data]);
+        echo "<pre>";
+        print_r($progress_data);exit;
+        
+    }
     public function profileReviewsStore(Request $request)
     {
         $login_user = Auth::user();         
