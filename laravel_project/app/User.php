@@ -642,7 +642,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $data['percentage'] = 0;
 
         // if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['awards']) && !empty($user['certifications']) && !empty($user['experience_year'])){
-            if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['experience_year'])){
+        if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['experience_year'])){
             $data['basic_profile']  = true;
             $data['profile']        = 'Basic';
             $data['percentage']     = 20;
@@ -733,6 +733,43 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         $data['remaining_detail'] = $remaining_detail;
         return $data;
+    }
+
+
+    public function userProfileCompletedData(Request $request,$user_data)
+    {
+        $data               = array();
+        $completed_details   = array();
+        $data['id']         = $user_data['id'];
+        $data['name']       = $user_data['name'];
+        $data['email']      = $user_data['email'];
+        $data['profile']    = '';
+        $data['percentage'] = 0;
+
+        $referral_count = User::where('referrer_id',$user_data->id)->count();
+
+        $article_count          = Item::where('user_id', $user_data->id)->count();
+        $video_media_count      = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'video')->count();
+        $podcast_media_count    = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'podcast')->count();
+        $ebook_media_count      = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'ebook')->count();
+        
+        $blog_count             = \Canvas\Models\Post::where('user_id', $user_data->id)->count();
+        // $referral_count         = count($user_data->referrals);
+        $all_content_count = $article_count + $video_media_count + $podcast_media_count + $ebook_media_count;
+        $review_count = DB::table('reviews')->where('author_id', $user_data->id)->count();
+
+        $completed_details['user_detail'] =$user_data;
+        $completed_details['article_count'] = $article_count;
+        $completed_details['all_content_count'] = $all_content_count;
+        $completed_details['referrals'] = $referral_count;
+        $completed_details['review_count'] = $review_count;
+        $completed_details['categories'] = $user_data->categories()->count();
+
+        
+        // if($user->categories()->count() > 0 && !empty($user['user_image']) && !empty($user['name']) && !empty($user['company_name']) && !empty($user['phone']) && !empty($user['email']) && !empty($user['hourly_rate_type']) && !empty($user['preferred_pronouns']) && !empty($user['working_type']) && !empty($user['state_id']) && !empty($user['post_code']) && !empty($user['country_id']) && !empty($user['city_id']) && !empty($user['address']) && !empty($user['awards']) && !empty($user['certifications']) && !empty($user['experience_year'])){
+        
+        $data['completed_details'] = $completed_details;
+        return $completed_details;
     }
     
     public function emailReminderForProfileCompletion(Request $request)

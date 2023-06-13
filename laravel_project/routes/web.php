@@ -569,6 +569,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
 
         Route::get('/dashboard','PagesController@index')->name('index')->middleware('check_coach_details');
         Route::get('/profile-progress/{user_id}','PagesController@profileProgressData')->name('profile.progress');
+        Route::get('/profile-completed/{user_id}','PagesController@profileCompletedData')->name('profile.completed');
         Route::resource('/items', 'ItemController');
 
         Route::post('/items/bulk/delete', 'ItemController@bulkDeleteItem')->name('items.bulk.delete');
