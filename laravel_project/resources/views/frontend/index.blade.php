@@ -337,7 +337,7 @@
                                 <div class="handswipe">
                                     <img src="{{ asset('frontend/images/hand-move.gif') }}" />
                                 </div>
-                        </div>
+                            </div>
                         </section>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next id-one"></div>
@@ -601,11 +601,11 @@
                             @endif
                         </div>
                     </div>
-                    <div class="overlay_effect">
-                                <div class="handswipe">
-                                    <img src="{{ asset('frontend/images/hand-move.gif') }}" />
-                                </div>
+                    {{-- <div class="overlay_effect">
+                        <div class="handswipe">
+                            <img src="{{ asset('frontend/images/hand-move.gif') }}" />
                         </div>
+                    </div> --}}
                 </section>
                 <div class="swiper-pagination"></div>
                  <div class="swiper-button-next id-three"></div>
@@ -1140,11 +1140,11 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="overlay_effect">
-                        <div class="handswipe">
-                             <img src="{{ asset('frontend/images/hand-move.gif') }}" />
-                        </div>
-                        </div>
+                        {{-- <div class="overlay_effect">
+                            <div class="handswipe">
+                                <img src="{{ asset('frontend/images/hand-move.gif') }}" />
+                            </div>
+                        </div> --}}
                      </section>
                      <div class="swiper-pagination"></div>
                     <div class="swiper-button-next id-five"></div>
@@ -1828,8 +1828,30 @@
         </script>
     @endif
     <script>
-        $(function() {
-      setTimeout(function() { $(".overlay_effect").fadeOut(1500); }, 5000)
-       })
+        $(document).ready(function(){
+            $(".overlay_effect").hide();
+            $(window).on("scroll", function() {
+                const expDate = new Date();
+                expDate.setTime(expDate.getTime() + (24 * 60 * 60 * 1000));
+                const cookieValue  = $.cookie('index_modal_cookie');
+                console.log(cookieValue)
+                if($(window).scrollTop() > 1000) {
+                    
+
+                    if(cookieValue  !== "INDEXFEATUREDHANDMOVE")
+                    {
+                        $(".overlay_effect").show();
+                        $.cookie("index_modal_cookie", "INDEXFEATUREDHANDMOVE",{ expires: expDate });
+                            setTimeout (function () {
+                                $(".overlay_effect").fadeOut()
+                            }, 4000)
+                    }
+                }               
+
+            });
+        });
+            // $(function() {
+            //     setTimeout(function() { $(".overlay_effect").fadeOut(1500); }, 5000)
+            // });
     </script>
 @endsection

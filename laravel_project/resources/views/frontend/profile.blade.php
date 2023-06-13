@@ -386,7 +386,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('Contact This Coach') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -636,7 +636,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('frontend.item.share-listing') }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -841,7 +841,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Select Your Rating</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Select Your Rating</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1710,7 +1710,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Share a Referral Link') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Share a Referral Link') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
