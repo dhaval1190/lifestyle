@@ -195,10 +195,18 @@
                                       <div class="box-video play" data-id="{{ $podcast->id }}" data-testid="play-pause-button" data-vid="box-video_{{ $podcast['id'] }}" id="#js-fitvideo_{{ $podcast->id }}">
                                         {{-- <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
                                           style="background-image: @if(str_contains($podcast['media_image'],'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}"> --}}
-                                          <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
-                                          style="background-image: url('{{ $podcast['media_cover'] }}') ; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
-                                          <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
-                                        </a>
+
+                                        @if($podcast['podcast_web_type'] == 'stitcher_podcast')
+                                            <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                                style="background-image: url('{{ Storage::disk('public')->url('media_files/' . $podcast['media_cover']) }}') ; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
+                                                <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
+                                            </a>
+                                        @else
+                                            <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
+                                                style="background-image: url('{{ $podcast['media_cover'] }}') ; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
+                                                <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
+                                            </a>
+                                        @endif
                                         <div class="video-container">
                                           <iframe width="590" height="100%"
                                             src="{{ $podcast['media_image'] }}" id="vid-reveal_{{ $podcast->id }}" frameborder="0"
