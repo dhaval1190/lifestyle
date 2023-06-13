@@ -40,53 +40,45 @@
         }
     @endphp
 
-    <div class="container">
-        <!-- Start hero section desktop view-->
-        <div class="row align-items-center justify-content-center text-center ">
-            <div class="col-md-12">
-                <div class="row justify-content-center mb-1">
-                    <div class="col-md-12 text-center">
-                        <h1 class="" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
-                            {{ __('frontend.homepage.title') }}</h1>
-                        <p data-aos="fade-up" data-aos-delay="100"
-                            style="color: {{ $site_homepage_header_paragraph_font_color }};">
-                            {{ __('frontend.homepage.description') }}</p>
+        <div class="container">
+            <div class="row align-items-center justify-content-center text-center ">
+                <div class="col-md-12">
+                    <div class="row justify-content-center mb-1">
+                        <div class="col-md-12 text-center">
+                            <h1 class="" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
+                                {{ __('frontend.homepage.title') }}</h1>
+                            <p data-aos="fade-up" data-aos-delay="100"
+                                style="color: {{ $site_homepage_header_paragraph_font_color }};">
+                                {{ __('frontend.homepage.description') }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
-                    @include('frontend.partials.search.head')
-                </div>
-                <div class="row justify-content-center mt-5">
-                    <div class="col-md-10 col-lg-6 text-center">
-                        <a href="{{ route('page.coaches') }}"
-                            class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:30px">
-                            {{ __('I want to find a great fit coach!') }}
-                        </a>
+                    <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                        @include('frontend.partials.search.head')
+                    </div>
+                    <div class="row justify-content-center mt-5">
+                        <div class="col-md-10 col-lg-6 text-center">
+                            <a href="{{ route('page.coaches') }}"
+                                class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:30px">
+                                {{ __('I want to find a great fit coach!') }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End hero section desktop view-->
 
-        <!-- Start hero section mobile view-->
-        {{-- <div class="row align-items-center justify-content-center text-center d-md-none mt-5"> --}}
-        <div class="row align-items-center justify-content-center text-center d-none mt-5">
-
-            <div class="col-md-12">
-                <div class="row justify-content-center mb-1">
-                    <div class="col-md-10 text-center">
-                        <h1 class="" data-aos="fade-up">{{ __('frontend.homepage.title') }}</h1>
-                        <p data-aos="fade-up" data-aos-delay="100">{{ __('frontend.homepage.description') }}</p>
+            <div class="row align-items-center justify-content-center text-center d-none mt-5">
+                <div class="col-md-12">
+                    <div class="row justify-content-center mb-1">
+                        <div class="col-md-10 text-center">
+                            <h1 class="" data-aos="fade-up">{{ __('frontend.homepage.title') }}</h1>
+                            <p data-aos="fade-up" data-aos-delay="100">{{ __('frontend.homepage.description') }}</p>
+                        </div>
+                    </div>
+                    <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                        @include('frontend.partials.search.head')
                     </div>
                 </div>
-                <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
-                    @include('frontend.partials.search.head')
-                </div>
             </div>
-
-        </div>
-        <!-- End hero section mobile view-->
-      </div>
       </div>
       <div class="site-section bg-light">
         <div class="container">
@@ -1834,8 +1826,9 @@
                 const expDate = new Date();
                 expDate.setTime(expDate.getTime() + (24 * 60 * 60 * 1000));
                 const cookieValue  = $.cookie('index_modal_cookie');
-                console.log(cookieValue)
-                if($(window).scrollTop() > 1000) {
+                console.log(cookieValue);
+                console.log(window.scrollY);
+                if($(window).scrollTop() > 1400) {
                     
 
                     if(cookieValue  !== "INDEXFEATUREDHANDMOVE")

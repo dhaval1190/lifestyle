@@ -16,6 +16,7 @@ use DateInterval;
 use App\Mail\Notification;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Cashier\Billable;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -151,7 +152,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getReferralLinkAttribute()
     {
-        return $this->referral_link = route('register', ['ref' => $this->id]);
+        return $this->referral_link = route('register', ['ref' => encrypt($this->id)]);
     }
 
     /**
