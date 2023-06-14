@@ -340,6 +340,11 @@
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
                                                             @enderror
+                                                            @if(Session::has('event_end_error'))
+                                                                <span class="error_color">
+                                                                    <strong>{{ Session::get('event_end_error') }}</strong>
+                                                                </span>                                                                
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
