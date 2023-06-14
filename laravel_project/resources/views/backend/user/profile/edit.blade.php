@@ -1253,8 +1253,20 @@ $chk_post = Auth::user()->phone;
                 <div class="row border_set_row">
                     <div class="col-md-6 col-9">
                         <span class="set_width">
-                            {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} :
-                            {{ $podcast_media_value->media_name }}</span>
+                            {{-- {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : --}}
+                            <div class="row">
+                                <div class="col-md-1">
+                                    @if($podcast_media_value->podcast_web_type == 'stitcher_podcast')
+                                        <img src="{{ Storage::disk('public')->url('media_files/' . $podcast_media_value->media_cover) }}" alt="" width="30px">
+                                    @else
+                                        <img src="{{ $podcast_media_value->media_cover }}" alt="" width="30px">
+                                    @endif
+                                </div>
+                                <div class="col-md-11">
+                                    {{ $podcast_media_value->media_name }}</span> 
+                                </div>
+                            </div>
+                          
 
                     </div>
                     <div class="col-md-6 col-3">
