@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use App\Rules\Base64Image;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class EventController extends Controller
 {
@@ -88,20 +89,40 @@ class EventController extends Controller
             'draft_publish.required' => 'Please check draft or publish'
         ]);
 
-        $event_start_hour = explode(" ",$request->event_start_hour)[0];
+        // $event_start_hour = explode(" ",$request->event_start_hour)[0];
         // $event_start_min = $request->event_start_min;
-        $event_end_hour = explode(" ",$request->event_end_hour)[0];
+        // $event_end_hour = explode(" ",$request->event_end_hour)[0];
         // $event_end_min = $request->event_end_min;
 
         // echo $event_start_hour." <> ".$event_end_hour;exit;
+        $incoming_start_datetime = $request->event_start_date.' '.$request->event_start_hour;
+        $incoming_end_datetime = $request->event_start_date.' '.$request->event_end_hour;
+        
+        $tz_from = 'America/New_York'; 
+        $newStartDateTime = new DateTime($incoming_start_datetime, new \DateTimeZone($tz_from)); 
+        $newStartDateTime->setTimezone(new \DateTimeZone("UTC")); 
+        $startDateTimeUTC = $newStartDateTime->format("Y-m-d H:i:s");
+
+        $newEndDateTime = new DateTime($incoming_end_datetime, new \DateTimeZone($tz_from)); 
+        $newEndDateTime->setTimezone(new \DateTimeZone("UTC")); 
+        $endDateTimeUTC = $newEndDateTime->format("Y-m-d H:i:s");
+        // exit;
+
+        $event_start_date = explode(" ",$startDateTimeUTC)[0];
+        $event_start_hour = explode(" ",$startDateTimeUTC)[1];
+
+        $event_end_date = explode(" ",$endDateTimeUTC)[0];
+        $event_end_hour = explode(" ",$endDateTimeUTC)[1];
+        
+
 
         $eventObj = new Event;
 
         $eventObj->event_name = $request->event_name;
-        $eventObj->event_start_date = $request->event_start_date;
+        $eventObj->event_start_date = $event_start_date;
         $eventObj->event_start_hour = $event_start_hour;
         // $eventObj->event_start_min = $request->event_start_min;
-        $eventObj->event_end_date = $request->event_start_date;
+        $eventObj->event_end_date = $event_end_date;
         $eventObj->event_end_hour = $event_end_hour;
         // $eventObj->event_end_min = $request->event_end_min;
         $eventObj->event_description = isset($request->event_description) ? $request->event_description : null;
@@ -133,7 +154,38 @@ class EventController extends Controller
     public function edit(Request $request,$id)
     {
         $event = Event::find($id);
-        return view('backend.admin.event.edit',compact('event'));
+
+        $event_start_date_time = $event->event_start_date.' '.$event->event_start_hour;
+        $event_end_date_time = $event->event_end_date.' '.$event->event_end_hour;
+        
+        $newStartDatetime = strtotime(date($event_start_date_time));
+        date_default_timezone_set('America/New_York');
+        $newStartDatetime = date('Y-m-d H:i:s', $newStartDatetime);
+        date_default_timezone_set('UTC');
+        // echo $newStartDatetime ;//EST time
+        // echo "<br>";       
+
+
+        $exp_event_start_date = explode(" ",$newStartDatetime);
+        $event_start_date = $exp_event_start_date[0];
+        $event_start_hour = $exp_event_start_date[1];
+        
+        
+        $event_end_date_time = $event->event_end_date.' '.$event->event_end_hour;
+        
+        $newEndDatetime = strtotime(date($event_end_date_time));
+        date_default_timezone_set('America/New_York');
+        $newEndDatetime = date('Y-m-d H:i:s', $newEndDatetime);
+        date_default_timezone_set('UTC');
+        //echo $newEndDatetime ;//EST time
+
+        $exp_event_end_date = explode(" ",$newEndDatetime);
+        $event_end_date = $exp_event_end_date[0];        
+        $event_end_hour = $exp_event_end_date[1];
+        
+        
+        
+        return view('backend.admin.event.edit',compact('event','event_start_date','event_start_hour','event_end_date','event_end_hour'));
     }
 
     public function update(Request $request,$id)
@@ -163,19 +215,37 @@ class EventController extends Controller
             'draft_publish.required' => 'Please check draft or publish'
         ]);
 
-        $event_start_hour = explode(" ",$request->event_start_hour)[0];
+        $incoming_start_datetime = $request->event_start_date.' '.$request->event_start_hour;
+        $incoming_end_datetime = $request->event_start_date.' '.$request->event_end_hour;
+        
+        $tz_from = 'America/New_York'; 
+        $newStartDateTime = new DateTime($incoming_start_datetime, new \DateTimeZone($tz_from)); 
+        $newStartDateTime->setTimezone(new \DateTimeZone("UTC")); 
+        $startDateTimeUTC = $newStartDateTime->format("Y-m-d H:i:s");
+
+        $newEndDateTime = new DateTime($incoming_end_datetime, new \DateTimeZone($tz_from)); 
+        $newEndDateTime->setTimezone(new \DateTimeZone("UTC")); 
+        $endDateTimeUTC = $newEndDateTime->format("Y-m-d H:i:s");
+        // exit;
+
+        $event_start_date = explode(" ",$startDateTimeUTC)[0];
+        $event_start_hour = explode(" ",$startDateTimeUTC)[1];
+        
+        $event_end_date = explode(" ",$endDateTimeUTC)[0];
+        $event_end_hour = explode(" ",$endDateTimeUTC)[1];
+
         // $event_start_min = $request->event_start_min;
-        $event_end_hour = explode(" ",$request->event_end_hour)[0];
+        // $event_end_hour = explode(" ",$request->event_end_hour)[0];
         // $event_end_min = $request->event_end_min;
 
         $eventObj = Event::find($id);
         // dd($id);
 
         $eventObj->event_name = $request->event_name;
-        $eventObj->event_start_date = $request->event_start_date;
+        $eventObj->event_start_date = $event_start_date;
         $eventObj->event_start_hour = $event_start_hour;
         // $eventObj->event_start_min = $request->event_start_min;
-        $eventObj->event_end_date = $request->event_start_date;
+        $eventObj->event_end_date = $event_end_date;
         $eventObj->event_end_hour = $event_end_hour;
         // $eventObj->event_end_min = $request->event_end_min;
         $eventObj->event_description = isset($request->event_description) ? $request->event_description : null;

@@ -295,7 +295,7 @@
                                                                 </div>
                                                                 <input type="date" name="event_start_date"
                                                                     class="form_time"
-                                                                    value="{{ $event->event_start_date ? $event->event_start_date : old('event_start_date') }}">
+                                                                    value="{{ $event_start_date ? $event_start_date : old('event_start_date') }}">
                                                             </div>
                                                             @error('event_start_date')
                                                                 <span class="error_color">
@@ -307,7 +307,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">Start
-                                                                    <span>(UTC)</span></label>
+                                                                    <span>(EST)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
@@ -315,7 +315,7 @@
                                                                 </div>
                                                                 <div class="input-group time" id="timepicker1">
                                                                     <input class="form-control" name="event_start_hour"
-                                                                        placeholder="HH:mm:ss" value="{{ $event->event_start_hour }}"/><span
+                                                                        placeholder="HH:mm:ss" value="{{ $event_start_hour }}"/><span
                                                                         class="input-group-append input-group-addon"><span
                                                                             class="input-group-text"><i
                                                                                 class="fa fa-clock"></i></span></span>
@@ -330,7 +330,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">End
-                                                                    <span>(UTC)</span></label>
+                                                                    <span>(EST)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
@@ -338,7 +338,7 @@
                                                                 </div>
                                                                 <div class="input-group time" id="timepicker2">
                                                                     <input class="form-control" name="event_end_hour"
-                                                                        placeholder="HH:mm:ss"  value="{{ $event->event_end_hour }}"/><span
+                                                                        placeholder="HH:mm:ss"  value="{{ $event_end_hour }}"/><span
                                                                         class="input-group-append input-group-addon"><span
                                                                             class="input-group-text"><i
                                                                                 class="fa fa-clock"></i></span></span>

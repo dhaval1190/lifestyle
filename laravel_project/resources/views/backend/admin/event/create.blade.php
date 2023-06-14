@@ -305,7 +305,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">Start
-                                                                    <span>(UTC)</span></label>
+                                                                    <span>(EST)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
@@ -328,7 +328,7 @@
                                                         <div class="col-md-4 col-lg-4 col-xl-4">
                                                             <div class="d_block_element">
                                                                 <label class="element_heading">End
-                                                                    <span>(UTC)</span></label>
+                                                                    <span>(EST)</span></label>
                                                             </div>
                                                             <div class="d-flex">
                                                                 <div class="icon">
