@@ -57,14 +57,7 @@
         padding: 15px 0;
     }
 
-    h1 {
-        color: #333;
-        font-family: "Pacifico", cursive;
-        font-size: 28px;
-        line-height: 42px;
-        margin: 0 0 15px;
-        text-align: center;
-    }
+   
 
     .content {
         background: #fff;

@@ -121,7 +121,7 @@
                                                             <button type="submit" class="btn btn-danger"><i
                                                                     class="fas fa-trash"></i></button>
                                                         </form> --}}
-                                                        <button type="button" class="btn btn-danger deleteEventBtn" value="{{ $event->id }}"><i
+                                                        <button type="button" class="btn btn-danger deleteEventBtn mt-3" value="{{ $event->id }}"><i
                                                             class="fas fa-trash"></i></button>
                                                     </td>
                                                 </tr>
