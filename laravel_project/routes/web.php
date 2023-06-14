@@ -569,6 +569,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
 
         Route::get('/dashboard','PagesController@index')->name('index')->middleware('check_coach_details');
         Route::get('/profile-progress/{user_id}','PagesController@profileProgressData')->name('profile.progress');
+        Route::get('/profile-completed/{user_id}','PagesController@profileCompletedData')->name('profile.completed');
         Route::resource('/items', 'ItemController');
 
         Route::post('/items/bulk/delete', 'ItemController@bulkDeleteItem')->name('items.bulk.delete');
@@ -739,6 +740,8 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::post('/profile', 'UserController@updateProfile')->name('profile.update');
         Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit')->middleware('check_coach_details');
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
+        Route::post('/podcast/details', 'UserController@addPodcastDetails');
+        Route::post('/ebook/details', 'UserController@addEbookDetails');
 
         Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');
         // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');
@@ -747,7 +750,8 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
 
         // item leads routes
         Route::resource('/item-leads', 'ItemLeadController');
-        Route::resource('/contact-leads', 'ContactLeadController');
+        Route::resource('/contact-leads', 'ContactLeadController')->middleware('check_coach_details');
+        Route::get('/referral', 'ReferralController@index')->name('referral.index')->middleware('check_coach_details');
         
     });
 

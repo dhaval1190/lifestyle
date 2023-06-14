@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class RegisterController extends Controller
 {
@@ -428,7 +429,8 @@ class RegisterController extends Controller
         }
 
         if($validator->passes()){
-            $referrer = User::find(session()->pull('referrer'));
+            $referrer = User::find(decrypt(session()->pull('referrer')));
+            // return response()->json(['status'=>"successsss",'data'=>$referrer]);
             $verify_token = Str::random(40);;
 
                 $user =  User::create([

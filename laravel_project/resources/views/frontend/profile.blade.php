@@ -386,7 +386,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('Contact This Coach') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -636,7 +636,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}
+                    <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('frontend.item.share-listing') }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -841,7 +841,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Select Your Rating</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Select Your Rating</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1312,6 +1312,15 @@
                                                 {{-- <a href="" target="_blank" class="bg-video" id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal" data-target="#podcastModal"
                                             style="background-image: @if (str_contains($podcast['media_image'], 'spotify')) url('{{ asset('frontend/images/spotify_logo.png') }}') @elseif(str_contains($podcast['media_image'],'apple')) url('{{ asset('frontend/images/apple_logo.png') }}') @elseif(str_contains($podcast['media_image'],'stitcher')) url('{{ asset('frontend/images/stitcher_logo.png') }}') @elseif(str_contains($podcast['media_image'],'redcircle')) url('{{ asset('frontend/images/redcircle_logo.png') }}') @endif; opacity: 1;" data-src="{{ $podcast['media_image'] }}">
                                              --}}
+                                             @if($podcast['podcast_web_type'] == 'stitcher_podcast')
+                                                <a href="" target="_blank" class="bg-video"
+                                                    id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal"
+                                                    data-target="#podcastModal"
+                                                    style="background-image: url('{{ Storage::disk('public')->url('media_files/' . $podcast['media_cover']) }} '); opacity: 1;"
+                                                    data-src="{{ $podcast['media_image'] }}">
+                                                    <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
+                                                </a>
+                                            @else
                                                 <a href="" target="_blank" class="bg-video"
                                                     id="podcast_id_{{ $podcast['id'] }}" data-toggle="modal"
                                                     data-target="#podcastModal"
@@ -1319,6 +1328,8 @@
                                                     data-src="{{ $podcast['media_image'] }}">
                                                     <div class="bt-play" id="bt-play_{{ $podcast->id }}"></div>
                                                 </a>
+
+                                            @endif
                                                 <div class="video-container">
                                                     <iframe width="590" height="100%"
                                                         src="{{ $podcast['media_image'] }}"
@@ -1699,7 +1710,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Share a Referral Link') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Share a Referral Link') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

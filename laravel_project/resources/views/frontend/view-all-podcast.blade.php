@@ -70,14 +70,25 @@
                                                             <div class="bt-play"
                                                                 id="bt-play_{{ $image['monthly']['id'] }}"></div>
                                                         </a> --}}
-                                                        <a href="" target="_blank" class="bg-video"
-                                                            id="podcast_id_{{ $image['monthly']['id'] }}"
-                                                            data-toggle="modal" data-target="#podcastModal"
-                                                            style="background-image: url('{{ $image['monthly']['media_cover'] }}'); opacity: 1;"
-                                                            data-src="{{ $image['monthly']['media_image'] }}">
-                                                            <div class="bt-play"
-                                                                id="bt-play_{{ $image['monthly']['id'] }}"></div>
-                                                        </a>
+                                                        @if($image['monthly']['podcast_web_type'] == 'stitcher_podcast')
+                                                            <a href="" target="_blank" class="bg-video"
+                                                                id="podcast_id_{{ $image['monthly']['id'] }}"
+                                                                data-toggle="modal" data-target="#podcastModal"
+                                                                style="background-image: url('{{ Storage::disk('public')->url('media_files/' . $image['monthly']['media_cover']) }}'); opacity: 1;"
+                                                                data-src="{{ $image['monthly']['media_image'] }}">
+                                                                <div class="bt-play"
+                                                                    id="bt-play_{{ $image['monthly']['id'] }}"></div>
+                                                            </a>
+                                                        @else
+                                                            <a href="" target="_blank" class="bg-video"
+                                                                id="podcast_id_{{ $image['monthly']['id'] }}"
+                                                                data-toggle="modal" data-target="#podcastModal"
+                                                                style="background-image: url('{{ $image['monthly']['media_cover'] }}'); opacity: 1;"
+                                                                data-src="{{ $image['monthly']['media_image'] }}">
+                                                                <div class="bt-play"
+                                                                    id="bt-play_{{ $image['monthly']['id'] }}"></div>
+                                                            </a>
+                                                        @endif
                                                         <div class="video-container">
                                                             <iframe width="590" height="100%"
                                                                 src="{{ $image['monthly']['media_image'] }}"

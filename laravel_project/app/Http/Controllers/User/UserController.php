@@ -25,6 +25,7 @@ use App\Item;
 use App\Rules\Base64Image;
 use App\MediaDetailsVisits;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Validator;
 
 
 
@@ -529,38 +530,38 @@ class UserController extends Controller
                 }
             }
 
-            if(isset($input['media_image']) && !empty($input['media_image']) && $input['media_type']=='ebook'){
-                if(!Storage::disk('public')->exists('media_files')){
-                    Storage::disk('public')->makeDirectory('media_files');
-                }
-                if(!empty($input['media_image'])) {
-                    $ebook_file_name = $request->file('media_image')->getClientOriginalName();
-                    $request->media_image->storeAs('public/media_files', $ebook_file_name);
-                }
-                if(!empty($input['media_cover'])) {
-                    // $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
-                    // $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+            // if(isset($input['media_image']) && !empty($input['media_image']) && $input['media_type']=='ebook'){
+            //     if(!Storage::disk('public')->exists('media_files')){
+            //         Storage::disk('public')->makeDirectory('media_files');
+            //     }
+            //     if(!empty($input['media_image'])) {
+            //         $ebook_file_name = $request->file('media_image')->getClientOriginalName();
+            //         $request->media_image->storeAs('public/media_files', $ebook_file_name);
+            //     }
+            //     if(!empty($input['media_cover'])) {
+            //         // $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+            //         // $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
 
-                    $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
-                    $destinationPath = public_path('/storage/media_files');
-                    $img = Image::make($request->file('media_cover')->getRealPath());
-                    $img->resize(200, 200, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath.'/'.$ebook_cover_file_name);
-                }
+            //         $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+            //         $destinationPath = public_path('/storage/media_files');
+            //         $img = Image::make($request->file('media_cover')->getRealPath());
+            //         $img->resize(200, 200, function ($constraint) {
+            //             $constraint->aspectRatio();
+            //         })->save($destinationPath.'/'.$ebook_cover_file_name);
+            //     }
 
-                MediaDetail::updateOrCreate([
-                    'user_id' => $login_user->id,
-                    'media_name' => $request->media_name,
-                    'media_type' => $request->media_type,
-                    'media_cover' => !empty($ebook_cover_file_name) ? $ebook_cover_file_name : null,
-                    'media_image' => !empty($ebook_file_name) ? $ebook_file_name : null,
-                ],[
-                    'user_id' => $login_user->id,
-                    'media_type' => $request->media_type,
-                    'media_image' => $ebook_file_name
-                ]);
-            }
+            //     MediaDetail::updateOrCreate([
+            //         'user_id' => $login_user->id,
+            //         'media_name' => $request->media_name,
+            //         'media_type' => $request->media_type,
+            //         'media_cover' => !empty($ebook_cover_file_name) ? $ebook_cover_file_name : null,
+            //         'media_image' => !empty($ebook_file_name) ? $ebook_file_name : null,
+            //     ],[
+            //         'user_id' => $login_user->id,
+            //         'media_type' => $request->media_type,
+            //         'media_image' => $ebook_file_name
+            //     ]);
+            // }
 
             // if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
             //     if(!Storage::disk('public')->exists('media_files')){
@@ -597,115 +598,254 @@ class UserController extends Controller
             //     ]);
             // }
 
-            if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
-                // if(!Storage::disk('public')->exists('media_files')){
-                //     Storage::disk('public')->makeDirectory('media_files');
-                // }
-                if($request->podcast_web_type == 'apple_podcast'){
-                    if(stripos($request->podcast_image,'apple') == false){
-                        return back()->with('podcast_error','Podcast type and URL not matching');
-                    }
-                    if(stripos($request->podcast_image,'apple') !== false && stripos($request->podcast_image,'embed') !== false){
-                        return back()->with('podcast_error','Please enter valid URL');
-                    }else{
-                        $podcast_url = $request->podcast_image;
-                        $exp_podcast_url = explode("podcasts.apple.com",$podcast_url); 
-                        $exp_exp_podcast_url = explode('/id',$exp_podcast_url[1]);
-                        $exp_exp_exp_podcast_url = explode('?i=',$exp_exp_podcast_url[1]);
-                        $playlist_id = $exp_exp_exp_podcast_url[0];
-                        $playlist_episode_id = $exp_exp_exp_podcast_url[1];
-                        // echo $playlist_id;
-                        // echo $playlist_episode_id;
-                        // exit;                       
-                        $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];  
+            // if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
+            //     // if(!Storage::disk('public')->exists('media_files')){
+            //     //     Storage::disk('public')->makeDirectory('media_files');
+            //     // }
+            //     if($request->podcast_web_type == 'apple_podcast'){
+            //         if(stripos($request->podcast_image,'apple') == false){
+            //             return back()->with('podcast_error','Podcast type and URL not matching');
+            //         }
+            //         if(stripos($request->podcast_image,'apple') !== false && stripos($request->podcast_image,'embed') !== false){
+            //             return back()->with('podcast_error','Please enter valid URL');
+            //         }else{
+            //             $podcast_url = $request->podcast_image;
+            //             $exp_podcast_url = explode("podcasts.apple.com",$podcast_url); 
+            //             $exp_exp_podcast_url = explode('/id',$exp_podcast_url[1]);
+            //             $exp_exp_exp_podcast_url = explode('?i=',$exp_exp_podcast_url[1]);
+            //             $playlist_id = $exp_exp_exp_podcast_url[0];
+            //             $playlist_episode_id = $exp_exp_exp_podcast_url[1];
+            //             // echo $playlist_id;
+            //             // echo $playlist_episode_id;
+            //             // exit;                       
+            //             $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];  
                         
-                        $ch = curl_init("https://itunes.apple.com/lookup?id=".$playlist_id."&country=US&media=podcast&entity=podcastEpisode&limit=100");
-                        $options = array(
-                                CURLOPT_RETURNTRANSFER => true,
-                                CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
-                        );
-                        curl_setopt_array( $ch, $options );
+            //             $ch = curl_init("https://itunes.apple.com/lookup?id=".$playlist_id."&country=US&media=podcast&entity=podcastEpisode&limit=100");
+            //             $options = array(
+            //                     CURLOPT_RETURNTRANSFER => true,
+            //                     CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
+            //             );
+            //             curl_setopt_array( $ch, $options );
 
-                        $results = curl_exec($ch);
-                        $results_data = json_decode($results,true);
+            //             $results = curl_exec($ch);
+            //             $results_data = json_decode($results,true);
                         
-                        curl_close($ch);                        
-                        foreach($results_data['results'] as $result){
-                            // print_r($result);
-                            if($result['trackId'] == $playlist_episode_id){
-                                $podcast_track_name = $result['trackName'];                                
-                                $podcast_duration_millisec =  $result['trackTimeMillis'];
-                                $seconds = floor($podcast_duration_millisec / 1000);
-                                $podcast_duration = gmdate("i:s", $seconds);
-                                $podcast_cover_file_name =  $result['artworkUrl160'];         
+            //             curl_close($ch);                        
+            //             foreach($results_data['results'] as $result){
+            //                 // print_r($result);
+            //                 if($result['trackId'] == $playlist_episode_id){
+            //                     $podcast_track_name = $result['trackName'];                                
+            //                     $podcast_duration_millisec =  $result['trackTimeMillis'];
+            //                     $seconds = floor($podcast_duration_millisec / 1000);
+            //                     $podcast_duration = gmdate("i:s", $seconds);
+            //                     $podcast_cover_file_name =  $result['artworkUrl160'];         
             
-                            }
-                        }
-                    }
-                }
-                if($request->podcast_web_type == 'stitcher_podcast'){
-                    if(stripos($request->podcast_image,'stitcher') !== false && stripos($request->podcast_image,'embed') !== false){
-                        $embed_podcast_url = $request->podcast_image;
-                    }elseif(stripos($request->podcast_image,'iframe') !== false){
-                        return back()->with('podcast_error','Please enter proper URL');
-                    }else{
-                        return back()->with('podcast_error','Please enter proper URL');
-                    }
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     if($request->podcast_web_type == 'stitcher_podcast'){
+            //         if(stripos($request->podcast_image,'stitcher') !== false && stripos($request->podcast_image,'embed') !== false){
+            //             $embed_podcast_url = $request->podcast_image;
+            //         }elseif(stripos($request->podcast_image,'iframe') !== false){
+            //             return back()->with('podcast_error','Please enter proper URL');
+            //         }else{
+            //             return back()->with('podcast_error','Please enter proper URL');
+            //         }
                     
-                }
-                if($request->podcast_web_type == 'google_podcast'){
-                    if(stripos($request->podcast_image,'redcircle') == false){
-                        return back()->with('podcast_error','Podcast type and URL not matching');
-                    }else{
-                        $embed_podcast_url = $request->podcast_image;
-                        $podcast_ep_id = explode('ep/',$embed_podcast_url)[1];
+            //     }
+            //     if($request->podcast_web_type == 'google_podcast'){
+            //         if(stripos($request->podcast_image,'redcircle') == false){
+            //             return back()->with('podcast_error','Podcast type and URL not matching');
+            //         }else{
+            //             $embed_podcast_url = $request->podcast_image;
+            //             $podcast_ep_id = explode('ep/',$embed_podcast_url)[1];
                         
-                        $html = $this->file_get_contents_curl($embed_podcast_url);
+            //             $html = $this->file_get_contents_curl($embed_podcast_url);
 
-                        $doc = new \DOMDocument();
-                        @$doc->loadHTML($html);
-                        $nodes = $doc->getElementsByTagName('title');
-                        //get and display what you need:
-                        $title = $nodes->item(0)->nodeValue;
-                        $metas = $doc->getElementsByTagName('meta');
+            //             $doc = new \DOMDocument();
+            //             @$doc->loadHTML($html);
+            //             $nodes = $doc->getElementsByTagName('title');
+            //             //get and display what you need:
+            //             $title = $nodes->item(0)->nodeValue;
+            //             $metas = $doc->getElementsByTagName('meta');
 
-                        $podcast_cover_file_name = '';
-                        for ($i = 0; $i < $metas->length; $i++)
-                        {
-                            $meta = $metas->item($i);
-                            if($meta->getAttribute('name') == 'twitter:image')
-                                $podcast_cover_file_name = $meta->getAttribute('content');
-                            if($meta->getAttribute('property') == 'og:url')
-                                $podcast_web_url = $meta->getAttribute('content');
-                        }
-                        $exp_podcast_web_url = explode('/',$podcast_web_url);
-                        $podcast_url_key = $exp_podcast_web_url[4];
-                        // echo "https://feeds.redcircle.com/".$podcast_url_key;exit;
+            //             $podcast_cover_file_name = '';
+            //             for ($i = 0; $i < $metas->length; $i++)
+            //             {
+            //                 $meta = $metas->item($i);
+            //                 if($meta->getAttribute('name') == 'twitter:image')
+            //                     $podcast_cover_file_name = $meta->getAttribute('content');
+            //                 if($meta->getAttribute('property') == 'og:url')
+            //                     $podcast_web_url = $meta->getAttribute('content');
+            //             }
+            //             $exp_podcast_web_url = explode('/',$podcast_web_url);
+            //             $podcast_url_key = $exp_podcast_web_url[4];
+            //             // echo "https://feeds.redcircle.com/".$podcast_url_key;exit;
 
-                        $xml = simplexml_load_file("https://feeds.redcircle.com/".$podcast_url_key);
-                        // print_r($xml);exit;
-                        $json = json_encode($xml);
-                        $podcast_array = json_decode($json,TRUE);
-                        // print_r($podcast_array);exit;                            
+            //             $xml = simplexml_load_file("https://feeds.redcircle.com/".$podcast_url_key);
+            //             // print_r($xml);exit;
+            //             $json = json_encode($xml);
+            //             $podcast_array = json_decode($json,TRUE);
+            //             // print_r($podcast_array);exit;                            
 
-                        $podcast_track_name = '';
-                        $podcast_duration = null;
-                        foreach($podcast_array['channel']['item'] as $result){
-                            if(str_contains($result['enclosure']['@attributes']['url'],$podcast_ep_id)){
-                                $podcast_track_name =  $result['title'];
-                                break;
-                            }
-                        }
+            //             $podcast_track_name = '';
+            //             $podcast_duration = null;
+            //             foreach($podcast_array['channel']['item'] as $result){
+            //                 if(str_contains($result['enclosure']['@attributes']['url'],$podcast_ep_id)){
+            //                     $podcast_track_name =  $result['title'];
+            //                     break;
+            //                 }
+            //             }
 
 
-                    }
-                }
+            //         }
+            //     }
+            //     if($request->podcast_web_type == 'spotify_podcast'){
+            //         if(stripos($request->podcast_image,'spotify') == false){
+            //             return back()->with('podcast_error','Podcast type and URL not matching');
+            //         }
+            //         if(stripos($request->podcast_image,'iframe') !== false){
+            //             return back()->with('podcast_error','Please enter proper URL');
+            //         // }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
+            //         }elseif(stripos($request->podcast_image,'spotify') !== false){
+            //             $podcast_url = $request->podcast_image;
+            //             $exp_podcast_url = explode("open.spotify.com",$podcast_url);
+            //             $exp_podcast_url_2 = explode("?",$exp_podcast_url[1])[0];
+            //             $exp2_exp_podcast_url_2 = explode("/",$exp_podcast_url_2);
+            //             $spotify_epi_id = $exp2_exp_podcast_url_2[2];
+            //             $embed_podcast_url = $exp_podcast_url[0]."open.spotify.com/embed".$exp_podcast_url_2."/?utm_source=generator";  
+            //             // dd($embed_podcast_url);
+                        
+            //             //call API to get podcast details like name,image,duration
+            //             $headers  = ['Authorization: Basic '.base64_encode('1b82aa6d520c43dba5c52d8874ce2f5d:3bb76a5092ec4691bf208260ea612350')];
+            //             $url      = 'https://accounts.spotify.com/api/token';
+            //             $options  = [CURLOPT_URL            => $url,
+            //                         CURLOPT_RETURNTRANSFER => TRUE,
+            //                         CURLOPT_POST           => TRUE,
+            //                         CURLOPT_POSTFIELDS     => 'grant_type=client_credentials',
+            //                         CURLOPT_HTTPHEADER     => $headers];
+            //             $credentials = $this->callSpotifyApi($options); 
+            //             // dd($credentials);
+            //             $token = $credentials->access_token;
+
+
+
+            //             $headers  = ['Content-Type: application/json','Authorization: Bearer '.$token];
+            //             // $url      = 'https://api.spotify.com/v1/playlists/37i9dQZF1DXdMbUSbTOEeW';
+            //             $url      = 'https://api.spotify.com/v1/episodes/'.$spotify_epi_id.'?market=US';
+            //             $options  = [CURLOPT_URL            => $url,
+            //                         CURLOPT_RETURNTRANSFER => TRUE,
+            //                         CURLOPT_FOLLOWLOCATION => TRUE,
+            //                         CURLOPT_ENCODING       => '',
+            //                         CURLOPT_MAXREDIRS      => 10,
+            //                         CURLOPT_TIMEOUT        => 30,
+            //                         CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            //                         CURLOPT_CUSTOMREQUEST  => 'GET',
+            //                         CURLOPT_HTTPHEADER     => $headers];
+            //             $spotify_podcast_details = $this->callSpotifyApi($options); 
+            //             // print_r($spotify_podcast_details);exit;
+            //             if(isset($spotify_podcast_details->name)){
+            //                 $podcast_track_name = $spotify_podcast_details->name;
+            //                 $podcast_cover_file_name = $spotify_podcast_details->images[1]->url;
+            //                 $spotify_podcast_duration_millisec = $spotify_podcast_details->duration_ms;
+    
+            //                 $seconds = floor($spotify_podcast_duration_millisec / 1000);
+            //                 $podcast_duration = gmdate("i:s", $seconds);
+            //             }else{
+            //                 return back()->with('podcast_error','Non existing episode id');
+            //             }
+
+            //             // dd($podcast_duration);
+            //         }
+            //     }
+            //     if(!empty($input['podcast_image'])) {
+            //         // $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
+            //         // $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
+            //         // $podcast_file_name = $request->podcast_image;
+            //         $podcast_file_name = $embed_podcast_url;
+            //     }
+            //     if(!empty($input['podcast_cover'])) {
+            //         $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                    
+            //         // $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+            //         // $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();                    
+                
+            //         $destinationPath = public_path('/storage/media_files');
+            //         $img = Image::make($request->file('podcast_cover')->getRealPath());
+            //         $img->resize(200, 200, function ($constraint) {
+            //             $constraint->aspectRatio();
+            //         })->save($destinationPath.'/'.$podcast_cover_file_name);
+
+            //     }
+
+            //     // dd($podcast_duration);
+            //     MediaDetail::updateOrCreate([
+            //         'user_id' => $login_user->id,
+            //         // 'media_name' => $request->podcast_name,
+            //         'media_name' => $podcast_track_name,
+            //         'media_type' => $request->podcast_type,
+            //         'media_cover' => !empty($podcast_cover_file_name) ? $podcast_cover_file_name : null,
+            //         'media_image' => !empty($podcast_file_name) ? $podcast_file_name : null,
+            //         'podcast_web_type' => !empty($request->podcast_web_type) ? $request->podcast_web_type : null,
+            //         'media_duration' => $podcast_duration
+            //     ],[
+            //         'user_id' => $login_user->id,
+            //         'media_type' => $request->podcast_type,
+            //         'media_image' => $podcast_file_name
+            //     ]);
+            // }
+
+            \Session::flash('flash_message', __('alert.user-profile-updated'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+        }
+    }
+
+    public function addPodcastDetails(Request $request)
+    {
+        // return response()->json(['status'=>'successsss','msg'=>$request->all()]);
+
+        $validator = Validator::make($request->all(),[
+            'podcast_web_type' => 'required', 
+            'podcast_image' => 'required'      
+
+        ],[
+            'podcast_web_type.required' => 'Please select Podcast web type',
+            'podcast_image.required' => 'Podcast URl is required'            
+        ]);
+        if($request->podcast_web_type == 'stitcher_podcast'){
+            
+            $validator = Validator::make($request->all(),[
+                'podcast_web_type' => 'required', 
+                'podcast_image' => 'required' ,
+                'podcast_name' => 'required',
+                'podcast_cover' => 'required|file|mimes:jpg,jpeg,png|max:5120'     
+    
+            ],[
+                'podcast_web_type.required' => 'Please select Podcast web type',
+                'podcast_image.required' => 'Podcast URL is required',
+                'podcast_name.required' => 'Title is required',
+                'podcast_cover.required' => 'Cover image is required',
+                'podcast_cover.file' =>  'Cover must be a file' ,
+                'podcast_cover.max' => 'Cover image must not more than 5mb'       
+            ]);
+        }
+
+        if($validator->passes()){
+            $input = $request->all();
+    
+            $login_user = Auth::user();
+    
+            if(isset($input['podcast_image']) && !empty($input['podcast_image']) && $input['podcast_type']=='podcast'){
                 if($request->podcast_web_type == 'spotify_podcast'){
                     if(stripos($request->podcast_image,'spotify') == false){
-                        return back()->with('podcast_error','Podcast type and URL not matching');
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
                     }
                     if(stripos($request->podcast_image,'iframe') !== false){
-                        return back()->with('podcast_error','Please enter proper URL');
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter proper URL']);
+        
                     // }elseif(stripos($request->podcast_image,'spotify') !== false && stripos($request->podcast_image,'episode') !== false){
                     }elseif(stripos($request->podcast_image,'spotify') !== false){
                         $podcast_url = $request->podcast_image;
@@ -727,9 +867,9 @@ class UserController extends Controller
                         $credentials = $this->callSpotifyApi($options); 
                         // dd($credentials);
                         $token = $credentials->access_token;
-
-
-
+    
+    
+    
                         $headers  = ['Content-Type: application/json','Authorization: Bearer '.$token];
                         // $url      = 'https://api.spotify.com/v1/playlists/37i9dQZF1DXdMbUSbTOEeW';
                         $url      = 'https://api.spotify.com/v1/episodes/'.$spotify_epi_id.'?market=US';
@@ -752,34 +892,142 @@ class UserController extends Controller
                             $seconds = floor($spotify_podcast_duration_millisec / 1000);
                             $podcast_duration = gmdate("i:s", $seconds);
                         }else{
-                            return back()->with('podcast_error','Non existing episode id');
+                            return response()->json(['status'=>'url_error','msg'=>'Non existing episode id']);
                         }
-
+    
                         // dd($podcast_duration);
                     }
                 }
+    
+                if($request->podcast_web_type == 'apple_podcast'){
+                    if(stripos($request->podcast_image,'apple') == false){
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
+                    }
+                    if(stripos($request->podcast_image,'apple') !== false && stripos($request->podcast_image,'embed') !== false){
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter valid URL']);
+                    }else{
+                        $podcast_url = $request->podcast_image;
+                        $exp_podcast_url = explode("podcasts.apple.com",$podcast_url); 
+                        $exp_exp_podcast_url = explode('/id',$exp_podcast_url[1]);
+                        $exp_exp_exp_podcast_url = explode('?i=',$exp_exp_podcast_url[1]);
+                        $playlist_id = $exp_exp_exp_podcast_url[0];
+                        $playlist_episode_id = $exp_exp_exp_podcast_url[1];
+                        // echo $playlist_id;
+                        // echo $playlist_episode_id;
+                        // exit;                       
+                        $embed_podcast_url = $exp_podcast_url[0]."embed.podcasts.apple.com".$exp_podcast_url[1];  
+                        
+                        $ch = curl_init("https://itunes.apple.com/lookup?id=".$playlist_id."&country=US&media=podcast&entity=podcastEpisode&limit=100");
+                        $options = array(
+                                CURLOPT_RETURNTRANSFER => true,
+                                CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
+                        );
+                        curl_setopt_array( $ch, $options );
+    
+                        $results = curl_exec($ch);
+                        $results_data = json_decode($results,true);
+                        
+                        curl_close($ch);                        
+                        foreach($results_data['results'] as $result){
+                            // print_r($result);
+                            if($result['trackId'] == $playlist_episode_id){
+                                $podcast_track_name = $result['trackName'];                                
+                                $podcast_duration_millisec =  $result['trackTimeMillis'];
+                                $seconds = floor($podcast_duration_millisec / 1000);
+                                $podcast_duration = gmdate("i:s", $seconds);
+                                $podcast_cover_file_name =  $result['artworkUrl160'];         
+            
+                            }
+                        }
+                    }
+                }
+                if($request->podcast_web_type == 'google_podcast'){
+                    if(stripos($request->podcast_image,'redcircle') == false){
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
+                    }else{
+                        $embed_podcast_url = $request->podcast_image;
+                        $podcast_ep_id = explode('ep/',$embed_podcast_url)[1];
+                        
+                        $html = $this->file_get_contents_curl($embed_podcast_url);
+    
+                        $doc = new \DOMDocument();
+                        @$doc->loadHTML($html);
+                        $nodes = $doc->getElementsByTagName('title');
+                        //get and display what you need:
+                        $title = $nodes->item(0)->nodeValue;
+                        $metas = $doc->getElementsByTagName('meta');
+    
+                        $podcast_cover_file_name = '';
+                        for ($i = 0; $i < $metas->length; $i++)
+                        {
+                            $meta = $metas->item($i);
+                            if($meta->getAttribute('name') == 'twitter:image')
+                                $podcast_cover_file_name = $meta->getAttribute('content');
+                            if($meta->getAttribute('property') == 'og:url')
+                                $podcast_web_url = $meta->getAttribute('content');
+                        }
+                        $exp_podcast_web_url = explode('/',$podcast_web_url);
+                        $podcast_url_key = $exp_podcast_web_url[4];
+                        // echo "https://feeds.redcircle.com/".$podcast_url_key;exit;
+    
+                        $xml = simplexml_load_file("https://feeds.redcircle.com/".$podcast_url_key);
+                        // print_r($xml);exit;
+                        $json = json_encode($xml);
+                        $podcast_array = json_decode($json,TRUE);
+                        // print_r($podcast_array);exit;                            
+    
+                        $podcast_track_name = '';
+                        $podcast_duration = null;
+                        foreach($podcast_array['channel']['item'] as $result){
+                            if(str_contains($result['enclosure']['@attributes']['url'],$podcast_ep_id)){
+                                $podcast_track_name =  $result['title'];
+                                break;
+                            }
+                        }
+    
+    
+                    }
+                }
+                if($request->podcast_web_type == 'stitcher_podcast'){
+                    if(stripos($request->podcast_image,'stitcher') !== false && stripos($request->podcast_image,'embed') !== false){
+                        $embed_podcast_url = $request->podcast_image;
+                        $podcast_track_name = $request->podcast_name;
+                        $podcast_duration = null;
+    
+                        if(!empty($input['podcast_cover'])) {
+                            $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
+                            
+                            // $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
+                            // $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();                    
+                        
+                            $destinationPath = public_path('/storage/media_files');
+                            $img = Image::make($request->file('podcast_cover')->getRealPath());
+                            $img->resize(200, 200, function ($constraint) {
+                                $constraint->aspectRatio();
+                            })->save($destinationPath.'/'.$podcast_cover_file_name);
+            
+                        }
+    
+                        // $filename = time().'.'.$request->podcast_cover->extension();
+                        // return response()->json(['status'=>'successsss','msg'=>$filename]);
+                    }elseif(stripos($request->podcast_image,'iframe') !== false){
+                        return response()->json(['status'=>'url_error','msg'=>'Iframe URL is not allowed']);
+                    }elseif($request->podcast_web_type == 'stitcher_podcast' && stripos($request->podcast_image,'stitcher') !== false){
+                        return response()->json(['status'=>'url_error','msg'=>'Please enter proper URL']);
+                    }else{
+                        return response()->json(['status'=>'url_error','msg'=>'Please type and URL not matching']);
+                    }
+                    
+                }
+                
                 if(!empty($input['podcast_image'])) {
                     // $podcast_file_name = $request->file('podcast_image')->getClientOriginalName();
                     // $request->podcast_image->storeAs('public/media_files', $podcast_file_name);
                     // $podcast_file_name = $request->podcast_image;
                     $podcast_file_name = $embed_podcast_url;
                 }
-                if(!empty($input['podcast_cover'])) {
-                    $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();
-                    
-                    // $request->podcast_cover->storeAs('public/media_files', $podcast_cover_file_name);
-                    // $podcast_cover_file_name = $request->file('podcast_cover')->getClientOriginalName();                    
-                
-                    $destinationPath = public_path('/storage/media_files');
-                    $img = Image::make($request->file('podcast_cover')->getRealPath());
-                    $img->resize(200, 200, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath.'/'.$podcast_cover_file_name);
-
-                }
-
-                // dd($podcast_duration);
-                MediaDetail::updateOrCreate([
+    
+                $podcast_data = MediaDetail::updateOrCreate([
                     'user_id' => $login_user->id,
                     // 'media_name' => $request->podcast_name,
                     'media_name' => $podcast_track_name,
@@ -793,13 +1041,93 @@ class UserController extends Controller
                     'media_type' => $request->podcast_type,
                     'media_image' => $podcast_file_name
                 ]);
+
+                $data['podcast_name'] = $podcast_data->media_name;
+                $data['msg'] = 'Ebook added successfully';
+                $data['podcast_id'] = $podcast_data->id;
+    
+                if($podcast_data){
+                    return response()->json(['status'=>'success','data'=>$data]);
+                }else{
+                    return response()->json(['status'=>'error','msg'=>'Something went wrong!']);
+                }
+            }
+            
+        }else{
+            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
+        }
+
+    }
+
+    public function addEbookDetails(Request $request)
+    {
+
+        $validator = Validator::make($request->all(),[
+            'media_name' => 'required',
+            'media_image' => 'required',
+            'media_cover' => 'required|file|mimes:jpg,jpeg,png|max:5120'
+
+        ],[
+            'media_name.required' => 'Ebook title is required',
+            'media_image.required' => 'Ebook PDF is required',
+            'media_cover.required' => 'Ebook Cover is required',
+            'media_cover.file' => 'Ebook cover must be a file',
+            'media_cover.max' => 'Ebook cover must not more than 5mb'
+        ]);
+
+        
+        if($validator->passes()){
+            $input = $request->all();
+            $login_user = Auth::user();
+
+            if(isset($input['media_image']) && !empty($input['media_image']) && $input['media_type']=='ebook'){
+                if(!Storage::disk('public')->exists('media_files')){
+                    Storage::disk('public')->makeDirectory('media_files');
+                }
+                if(!empty($input['media_image'])) {
+                    $ebook_file_name = $request->file('media_image')->getClientOriginalName();
+                    $request->media_image->storeAs('public/media_files', $ebook_file_name);
+                }
+                if(!empty($input['media_cover'])) {
+                    // $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                    // $request->media_cover->storeAs('public/media_files', $ebook_cover_file_name);
+
+                    $ebook_cover_file_name = $request->file('media_cover')->getClientOriginalName();
+                    $destinationPath = public_path('/storage/media_files');
+                    $img = Image::make($request->file('media_cover')->getRealPath());
+                    $img->resize(200, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath.'/'.$ebook_cover_file_name);
+                }
+
+                $ebook_data = MediaDetail::updateOrCreate([
+                    'user_id' => $login_user->id,
+                    'media_name' => $request->media_name,
+                    'media_type' => $request->media_type,
+                    'media_cover' => !empty($ebook_cover_file_name) ? $ebook_cover_file_name : null,
+                    'media_image' => !empty($ebook_file_name) ? $ebook_file_name : null,
+                ],[
+                    'user_id' => $login_user->id,
+                    'media_type' => $request->media_type,
+                    'media_image' => $ebook_file_name
+                ]);
+
+                $data['media_name'] = $input['media_name'];
+                $data['msg'] = 'Ebook added successfully';
+                $data['ebook_id'] = $ebook_data->id;
+
+
+                return response()->json(['status'=>'success','data'=>$data]);
+            }else{
+                return response()->json(['status'=>'error','msg'=>'Something went wrong!']);
             }
 
-            \Session::flash('flash_message', __('alert.user-profile-updated'));
-            \Session::flash('flash_type', 'success');
-
-            return redirect()->route('user.profile.edit');
+        }else{
+            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
         }
+
+
+
     }
 
     /**
@@ -854,7 +1182,7 @@ class UserController extends Controller
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('user.profile.edit');
-    }
+    }    
 
     public function showEmailtemplate($param)
     {
