@@ -97,6 +97,13 @@ class EventController extends Controller
         // echo $event_start_hour." <> ".$event_end_hour;exit;
         $incoming_start_datetime = $request->event_start_date.' '.$request->event_start_hour;
         $incoming_end_datetime = $request->event_start_date.' '.$request->event_end_hour;
+
+        $incoming_start_datetime_str = strtotime($incoming_start_datetime);
+        $incoming_end_datetime_str = strtotime($incoming_end_datetime);
+
+        if($incoming_end_datetime_str < $incoming_start_datetime_str){
+            return back()->with('event_end_error',"End time must be greater than start time");
+        }
         
         $tz_from = 'America/New_York'; 
         $newStartDateTime = new DateTime($incoming_start_datetime, new \DateTimeZone($tz_from)); 
@@ -217,6 +224,13 @@ class EventController extends Controller
 
         $incoming_start_datetime = $request->event_start_date.' '.$request->event_start_hour;
         $incoming_end_datetime = $request->event_start_date.' '.$request->event_end_hour;
+
+        $incoming_start_datetime_str = strtotime($incoming_start_datetime);
+        $incoming_end_datetime_str = strtotime($incoming_end_datetime);
+
+        if($incoming_end_datetime_str < $incoming_start_datetime_str){
+            return back()->with('event_end_error',"End time must be greater than start time");
+        }
         
         $tz_from = 'America/New_York'; 
         $newStartDateTime = new DateTime($incoming_start_datetime, new \DateTimeZone($tz_from)); 

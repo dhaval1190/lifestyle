@@ -340,6 +340,11 @@
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
                                                             @enderror
+                                                            @if(Session::has('event_end_error'))
+                                                                <span class="error_color">
+                                                                    <strong>{{ Session::get('event_end_error') }}</strong>
+                                                                </span>                                                                
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -390,7 +395,7 @@
                                                     <input type="hidden" name="event_image" class="input_control"
                                                         id="event_image">
                                                     <label class="upload_media" for="file_upload">
-                                                        <img src="" id="image_preview" class="img-responsive">
+                                                        <img src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" id="image_preview" class="img-responsive">
                                                     </label>
                                                 </div>
 
