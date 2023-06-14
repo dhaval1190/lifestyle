@@ -51,14 +51,14 @@
      <div class="site-section">
         <div class="container">
                 @if ($all_events->count() > 0)
-                <div class="row justify-content-center mb-5">
+                {{-- <div class="row justify-content-center mb-5">
                     <div class="col-md-7 text-center border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Events') }}</h2>
                         <p class="color-black-opacity-5"></p>
                     </div>
                     <div class="col-md-7 text-center border-primary">
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-lg-12">
@@ -72,7 +72,7 @@
                                             <div class="col-md-12">
                                                 <div class="event_bg mt-5">
                                                     <div class="row">
-                                                        <div class="col-md-3 col-xl-3 ">
+                                                        <div class="col-md-3 col-xl-3 pr-0">
                                                             <div class="main_event_image">
                                                                 @if (empty($event->event_image))
                                                                     <img src="{{ asset('frontend/images/placeholder/category-image.webp') }}"
@@ -83,7 +83,7 @@
                                                                 @endif
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 col-xl-7">
+                                                        <div class="col-md-6 col-xl-7 pl-0">
                                                             <div class="event_information_set">
                                                                 <span>{{ $event->event_name }}</span>
                                                             </div>
@@ -166,7 +166,7 @@
                             @endforeach                        
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mt-5">
                     {!! $all_events->links('pagination::bootstrap-4') !!}
                 </div>
                 @else
