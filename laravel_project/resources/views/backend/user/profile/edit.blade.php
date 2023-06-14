@@ -1164,7 +1164,7 @@ $chk_post = Auth::user()->phone;
             </div>
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-4">
-                    <label class="text-black">Podcast</label>                    
+                    <label class="text-black">Podcast Type</label>                    
 
                     <input type="hidden" name="podcast_type" value="podcast">
                     {{-- <span class="podcast_type_err_media_url" style="color:red"></span> --}}

@@ -121,7 +121,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-envelope"></i>
                 <span>{{ __('Email Templates') }}</span>
             </a>
             <div id="collapse_email" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
@@ -133,7 +133,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_contact_lead" aria-expanded="true" aria-controls="collapse_contact_lead">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-address-book"></i>
                 <span>{{ __('Contact Leads') }}</span>
             </a>
             <div id="collapse_contact_lead" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
@@ -145,7 +145,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_referral" aria-expanded="true" aria-controls="collapse_referral">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-user-plus"></i>
                 <span>{{ __('Referral') }}</span>
             </a>
             <div id="collapse_referral" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">

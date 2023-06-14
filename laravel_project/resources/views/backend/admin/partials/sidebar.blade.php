@@ -133,7 +133,7 @@
     @if(auth()->user()->isAdmin())
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-envelope"></i>
                 <span>{{ __('Email Template') }}</span>
             </a>
             <div id="collapse_email" class="collapse" aria-labelledby="collapse_email" data-parent="#accordionSidebar">
@@ -168,7 +168,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.events.index') }}">
-            <i class="fas fa-external-link-alt"></i>
+            <i class="fas fa-calendar"></i>
             <span>{{ __('Events') }}</span></a>
     </li>
 
