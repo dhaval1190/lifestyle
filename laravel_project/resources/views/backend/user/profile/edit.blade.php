@@ -197,11 +197,11 @@ $chk_post = Auth::user()->phone;
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-xl-7 col-12">
+                                    <div class="col-xl-12 col-12">
                                         <button id="upload_image" type="button" class="btn btn-primary w-100 mb-2">{{ __('backend.user.select-image') }}</button>
                                     </div>
                                     @if(isset($login_user->user_image))
-                                    <div class="col-xl-5 col-12 pl-xl-0 ">
+                                    <div class="col-xl-12 col-12">
                                         <a class="btn btn-danger text-white w-100" id="delete_user_profile_image_button">
                                             <!-- <i class="fas fa-trash-alt"></i> -->
                                             {{ __('role_permission.user.delete-profile-image') }}
