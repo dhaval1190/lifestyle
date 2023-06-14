@@ -647,9 +647,15 @@
                                         @php $count++; @endphp
                                     @endforeach
                                 </div>
-                                <div class="swiper-pagination"></div>
                             </div>
+                            {{-- <div class="overlay_effect">
+                                <div class="handswipe">
+                                    <img src="{{ asset('frontend/images/hand-move.gif') }}" />
+                                </div>
+                            </div>  --}}
                         </section>
+                 <div class="swiper-button-next id-seven"></div>
+            <div class="swiper-button-prev id-eight"></div>
                     @endif
 
                     @if ($all_coaches->count() <= 4)
@@ -1310,6 +1316,15 @@
                     slideShadows: true,
                 },
                 loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+               
+                navigation: {
+                nextEl: '.swiper-button-next.id-seven',
+                prevEl: '.swiper-button-prev.id-eight',
+            }
             });
         </script>
     @elseif($all_coaches->count() > 6)
@@ -1327,6 +1342,15 @@
                     slideShadows: true,
                 },
                 loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+               
+                navigation: {
+                    nextEl: '.swiper-button-next.id-seven',
+                prevEl: '.swiper-button-prev.id-eight',
+            }
             });
         </script>
     @endif

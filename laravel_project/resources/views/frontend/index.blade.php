@@ -1662,6 +1662,18 @@
                     slideShadows: true,
                 },
                 loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                // autoplay: 
+                // {
+                // delay: 1000,
+                // },
+                navigation: {
+                nextEl: '.swiper-button-next.id-one',
+                prevEl: '.swiper-button-prev.id-two',
+            }
             });
         </script>
     @elseif($all_coaches->count() > 6)
@@ -1683,10 +1695,7 @@
                     el: '.swiper-pagination',
                     clickable: true,
                 },
-                // autoplay: 
-                // {
-                // delay: 1000,
-                // },
+               
                 navigation: {
                 nextEl: '.swiper-button-next.id-one',
                 prevEl: '.swiper-button-prev.id-two',

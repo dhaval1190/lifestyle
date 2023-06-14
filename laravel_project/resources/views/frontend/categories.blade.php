@@ -477,9 +477,10 @@
                                         @php $count++; @endphp
                                     @endforeach
                                 </div>
-                                <div class="swiper-pagination"></div>
                             </div>
                         </section>
+                        {{-- <div class="swiper-button-next id-nine"></div>
+                        <div class="swiper-button-prev id-ten"></div> --}}
                     @endif
 
                     @if ($ads_after_content->count() > 0)
@@ -614,9 +615,11 @@
                                     @endforeach
                                 @endif
                             </div>
-                            <div class="swiper-pagination"></div>
+                            {{-- <div class="swiper-pagination"></div> --}}
                         </div>
                     </section>
+                    <div class="swiper-button-next id-nine"></div>
+                    <div class="swiper-button-prev id-ten"></div>
 
                     @if ($free_items->count() <= 4)
                         <div class="row">
@@ -1292,6 +1295,10 @@
                     slideShadows: true,
                 },
                 loop: true,
+                navigation: {
+                nextEl: '.swiper-button-next.id-nine',
+                prevEl: '.swiper-button-prev.id-ten',
+            }
             });
         </script>
     @endif
@@ -1329,6 +1336,10 @@
                     slideShadows: true,
                 },
                 loop: true,
+                navigation: {
+                nextEl: '.swiper-button-next.id-nine',
+                prevEl: '.swiper-button-prev.id-ten',
+            }
             });
         </script>
     @endif
