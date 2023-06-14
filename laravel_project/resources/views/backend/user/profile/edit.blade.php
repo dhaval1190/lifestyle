@@ -633,23 +633,23 @@ $chk_post = Auth::user()->phone;
                         {{-- <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}"
                         style="width:100%;"> --}}
                         @endif
-                        <input id="feature_cover_image" type="hidden" name="user_cover_image">
-                        @if(!empty($login_user->user_cover_image))
+                        <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
                         <div class="mt-1">
                             <div class="row">
                                 <div class="col-md-6">
                                     <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-cover-image') }}</button>
 
                                 </div>
-                                <div class="col-md-6">
-                                    <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
-                                        <!-- <i class="fas fa-trash-alt"></i> -->
-                                        {{ __('role_permission.user.delete-profile-image') }}
-                                    </a>
-                                </div>
+                                @if(!empty($login_user->user_cover_image))
+                                    <div class="col-md-6">
+                                        <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
+                                            <!-- <i class="fas fa-trash-alt"></i> -->
+                                            {{ __('role_permission.user.delete-profile-image') }}
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
-                        @endif
+                        </div>                        
                     </div>
                 </div>
                 <div class="col-12 col-md-12 col-lg-5 col-xl-6">
