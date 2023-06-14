@@ -143,8 +143,11 @@ $chk_post = Auth::user()->phone;
         <p class="mb-2">{{ __('backend.user.edit-profile-desc') }}</p>
         @if(Auth::user()->isCoach())
         <p class="mb-4 ">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+        <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
+            <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}
+            </button></a>
+        </p>
         @endif
-        <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >{{ __('See Profile Progress') }}</a></p>
     </div>
 
 </div>
@@ -1666,7 +1669,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">How it works?</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -1746,7 +1749,7 @@ $chk_post = Auth::user()->phone;
                         <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
                         <ul class="list_design_ptb-30">
                             <div class="d-flex">
-                                <li id="thirty_content ">30 Pieces of content</li>&nbsp;<span id="thirty_content_count"></span>
+                                <li id="thirty_content">30 Pieces of content</li>&nbsp;<span id="thirty_content_count"></span>
                             </div>
                               <div class="d-flex">
                                   <li id="seven_client_review">7 Client Reviews</li>&nbsp;<span id="seven_client_review_count"></span>
@@ -2478,7 +2481,7 @@ $('#podcastFrm').on('submit', function(e) {
                     type: 'GET',                    
                     url: '/user/profile-completed/'+user_id,                    
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
                         if(response.status == 'success'){
                             $.each(response.data.user_detail, function(key, val) {
                                 if(val !== null){
@@ -2503,36 +2506,41 @@ $('#podcastFrm').on('submit', function(e) {
                                 $('#one_client_referral').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                                 // $('#referal_count').text('(5/'+referrals +')')
                             }
-                            if(referrals >= 6){
-                                referrals = 5;
+                            if(referrals >= 5){
+                                // referrals = 5;
                                 $('#referrals').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('#referal_count').text('(5/'+referrals +')').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                            }else{
                                 $('#referal_count').text('(5/'+referrals +')')
                             }
                             if(all_content_count >= 10){
-                                all_content_count = 10;
+                                // all_content_count = 10;
                                 $('#ten_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                                 $('#ten_content_count').text('(10/'+all_content_count +')')
                             }
                             if(all_content_count >= 20){
-                                all_content_count = 20;
+                                // all_content_count = 20;
                                 $('#twenty_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
                             $('#twenty_content_count').text('(20/'+all_content_count +')');
 
                             if(all_content_count >= 30){
-                                all_content_count = 30;
+                                // all_content_count = 30;
                                 $('#thirty_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('#thirty_content_count').text('(30/'+all_content_count +')').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                            }else{
+                                $('#thirty_content_count').text('(30/'+all_content_count +')');
                             }
-                            $('#thirty_content_count').text('(30/'+all_content_count +')');
+                            
 
                             if(review_count >= 3){
-                                review_count = 3;
+                                // review_count = 3;
                                 $('#three_client_review').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
                             $('#three_client_review_count').text('(3/'+review_count +')');
 
                             if(review_count >= 7){
-                                review_count = 7;
+                                // review_count = 7;
                                 $('#seven_client_review').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
                             $('#seven_client_review_count').text('(7/'+review_count +')');
