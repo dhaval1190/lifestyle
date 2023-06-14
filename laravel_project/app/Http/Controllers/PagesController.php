@@ -4568,6 +4568,23 @@ class PagesController extends Controller
             return redirect()->route('user.profile.edit');
         }
     }
+
+    public function updatePodcastMedia(Request $request)
+    {
+
+        if(isset($request->podcast_media_id)){
+            $media_details = MediaDetail::where('id',$request->podcast_media_id)->first();
+            
+            $media_details->media_name = $request->podcast_name;            
+            $media_details->save();
+
+            \Session::flash('flash_message', __('alert.media-updated'));
+            \Session::flash('flash_type', 'success');
+
+            return redirect()->route('user.profile.edit');
+
+        }
+    }
     public function addMedia(Request $request){
        
         $login_user = Auth::user();
