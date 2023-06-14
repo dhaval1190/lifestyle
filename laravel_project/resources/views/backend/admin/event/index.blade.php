@@ -80,9 +80,28 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $event->event_name }}</td>
-                                                    <td>{{ $event->event_start_date . ' ' . $event->event_start_hour. ':00' }}
+                                                    @php
+                                                        $event_start_date_time = $event->event_start_date . ' ' . $event->event_start_hour;
+                                                        $newStartDatetime = strtotime(date($event_start_date_time));
+                                                        date_default_timezone_set('America/New_York');
+                                                        $newStartDatetime = date('Y-m-d H:i:s', $newStartDatetime);
+                                                        date_default_timezone_set('UTC');                                                             
+                                                        $exp_event_start_date = explode(" ",$newStartDatetime);
+                                                        $event_start_date = $exp_event_start_date[0];
+                                                        $event_start_hour = $exp_event_start_date[1];
+
+                                                        $event_end_date_time = $event->event_end_date . ' ' . $event->event_end_hour;
+                                                        $newEndDatetime = strtotime(date($event_end_date_time));
+                                                        date_default_timezone_set('America/New_York');
+                                                        $newEndDatetime = date('Y-m-d H:i:s', $newEndDatetime);
+                                                        date_default_timezone_set('UTC');                                                       
+                                                        $exp_event_end_date = explode(" ",$newEndDatetime);
+                                                        $event_end_date = $exp_event_end_date[0];        
+                                                        $event_end_hour = $exp_event_end_date[1];
+                                                    @endphp
+                                                    <td>{{ $event_start_date . ' ' . $event_start_hour }}
                                                     </td>
-                                                    <td>{{ $event->event_end_date . ' ' . $event->event_end_hour . ':00' }}
+                                                    <td>{{ $event_end_date . ' ' . $event_end_hour }}
                                                     </td>
                                                     <td>{{ $event->event_description }}</td>
                                                     <td>{{ $event->event_social_url }}</td>

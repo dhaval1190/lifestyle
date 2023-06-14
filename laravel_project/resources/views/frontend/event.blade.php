@@ -46,7 +46,7 @@
 
             </div>
         </div>
-     </div>
+    </div>
 
      <div class="site-section">
         <div class="container">
@@ -95,6 +95,7 @@
                                                                 <p>{{ $event->event_start_hour }}
                                                                     To
                                                                     {{ $event->event_end_hour }}
+                                                                    (UTC)
                                                                 </p>
                                                             </div>
                                                             <div class="event_schedule_date" id="join_event">
