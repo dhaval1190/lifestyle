@@ -647,7 +647,25 @@ class User extends Authenticatable implements MustVerifyEmail
             $data['basic_profile']  = true;
             $data['profile']        = 'Basic';
             $data['percentage']     = 20;
-            if(!empty($user['website']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube'])){
+            $count = 0;
+            if(isset($user['website'])){
+                $count = $count +1;
+            }
+            if(isset($user['instagram'])){
+                $count = $count +1;
+            }
+            if(isset($user['facebook'])){
+                $count = $count +1;
+            }
+            if(isset($user['linkedin'])){
+                $count = $count +1;
+            }
+            if(isset($user['youtube'])){
+                $count = $count +1;
+            }
+            
+            // if(!empty($user['website']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube'])){
+                if($count >= 3){
                 $data['social_profile'] = true;
                 $data['profile']        = 'Social';
                 $data['percentage']     = 30;
