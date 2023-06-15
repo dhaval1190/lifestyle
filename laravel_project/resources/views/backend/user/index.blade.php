@@ -1507,41 +1507,41 @@
                             if(referrals >= 5){
                                 // referrals = 5;
                                 $('#referrals').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
-                                $('#referal_count').text('(5/'+referrals +')').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('#referal_count').text('('+referrals+'/5)').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }else{
-                                $('#referal_count').text('(5/'+referrals +')')
+                                $('#referal_count').text('('+referrals+'/5)');
                             }
                             if(all_content_count >= 10){
                                 // all_content_count = 10;
                                 $('#ten_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
-                                $('#ten_content_count').text('(10/'+all_content_count +')')
+                                $('#ten_content_count').text('('+all_content_count +'/10)');
                             }
                             if(all_content_count >= 20){
                                 // all_content_count = 20;
                                 $('#twenty_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
-                            $('#twenty_content_count').text('(20/'+all_content_count +')');
+                            $('#twenty_content_count').text('('+all_content_count +'/20)');
 
                             if(all_content_count >= 30){
                                 // all_content_count = 30;
                                 $('#thirty_content').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
-                                $('#thirty_content_count').text('(30/'+all_content_count +')').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('#thirty_content_count').text('('+all_content_count +'/30)').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
 
                             }else{
-                                $('#thirty_content_count').text('(30/'+all_content_count +')');
+                                $('#thirty_content_count').text('('+all_content_count +'/30)');
                             }
 
                             if(review_count >= 3){
                                 // review_count = 3;
                                 $('#three_client_review').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
-                            $('#three_client_review_count').text('(3/'+review_count +')');
+                            $('#three_client_review_count').text('('+review_count +'/3)');
 
                             if(review_count >= 7){
                                 // review_count = 7;
                                 $('#seven_client_review').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
-                            $('#seven_client_review_count').text('(7/'+review_count +')');
+                            $('#seven_client_review_count').text('('+review_count +'/7)');
 
 
 
