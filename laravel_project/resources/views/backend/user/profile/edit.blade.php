@@ -2408,15 +2408,15 @@ $('#podcastFrm').on('submit', function(e) {
         var matchUrl = "facebook";
         if (facebookUrl.indexOf(matchUrl) == -1) {
             $('.err_facebook_url').html("Please enter Facebook URL Only");
-            $('#submit').attr("disabled", true);
+            $('#frmSubmit').attr("disabled", true);
             if (facebookUrl.length == 0) {
-                $('#submit').attr("disabled", false);
+                $('#frmSubmit').attr("disabled", false);
                 $('.err_facebook_url').html('');
             }
             return false;
         } else {
             $('.err_facebook_url').html('');
-            $('#submit').attr("disabled", false);
+            $('#frmSubmit').attr("disabled", false);
 
         }
     });
@@ -2427,15 +2427,15 @@ $('#podcastFrm').on('submit', function(e) {
         var matchUrl = "linkedin";
         if (linkedinUrl.indexOf(matchUrl) == -1) {
             $('.err_linkedin_url').html("Please enter Linkedin URL Only");
-            $('#submit').attr("disabled", true);
+            $('#frmSubmit').attr("disabled", true);
             if (linkedinUrl.length == 0) {
-                $('#submit').attr("disabled", false);
+                $('#frmSubmit').attr("disabled", false);
                 $('.err_linkedin_url').html('');
             }
             return false;
         } else {
             $('.err_linkedin_url').html('');
-            $('#submit').attr("disabled", false);
+            $('#frmSubmit').attr("disabled", false);
 
         }
     });
@@ -2447,9 +2447,9 @@ $('#podcastFrm').on('submit', function(e) {
         if (youtubeinUrl.indexOf(matchUrl) == -1 && youtubeinUrl.indexOf(matchUrl1) == -1) {
             console.log("dkslkdlsjkl");
             $('.err_youtube_url').html("Please enter Youtube URL Only");
-            $('#submit').attr("disabled", true);
+            $('#frmSubmit').attr("disabled", true);
             if (youtubeinUrl.length == 0) {
-                $('#submit').attr("disabled", false);
+                $('#frmSubmit').attr("disabled", false);
                 $('.err_youtube_url').html('');
             }
             return false;
@@ -2483,11 +2483,11 @@ $('#podcastFrm').on('submit', function(e) {
         if (instaurl || instaurl1.indexOf(matchUrl_insta_www) > -1 || instaurl1.indexOf('https') > -1 || instaurl1
             .indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1) {
             $('.err_instagram_url').html("Please enter valid instagram user name Only");
-            $('#submit').attr("disabled", true);
+            $('#frmSubmit').attr("disabled", true);
             return false;
         } else {
             $('.err_instagram_url').html('');
-            $('#submit').attr("disabled", false);
+            $('#frmSubmit').attr("disabled", false);
 
         }
 
