@@ -110,17 +110,7 @@
                                                         <a href="{{ route('admin.events.edit', ['event' => $event->id]) }}"
                                                             class="btn btn-primary btn-circle btn-xs">
                                                             <i class="fas fa-cog"></i>
-                                                        </a>
-                                                        {{-- <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEventModal" data-id = {{ $event->id }}>
-                                                            {{ __('backend.shared.delete') }}
-                                                        </a> --}}
-                                                        {{-- <form action="{{ route('admin.events.destroy', $event->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            <input name="_method" type="hidden" value="DELETE">
-                                                            <button type="submit" class="btn btn-danger"><i
-                                                                    class="fas fa-trash"></i></button>
-                                                        </form> --}}
+                                                        </a>                                                        
                                                         <button type="button" class="btn btn-danger deleteEventBtn mt-3" value="{{ $event->id }}"><i
                                                             class="fas fa-trash"></i></button>
                                                     </td>
@@ -256,7 +246,7 @@
                     @method('DELETE')
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.shared.delete-confirm') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -284,7 +274,7 @@
     <script>
         $(document).ready(function () {
             $('.deleteEventBtn').on('click',function(e){
-                console.log("jdjkdkjsh")
+                // console.log("jdjkdkjsh")
                 e.preventDefault();
                 var event_id = $(this).val();
                 $('#event_id').val(event_id);

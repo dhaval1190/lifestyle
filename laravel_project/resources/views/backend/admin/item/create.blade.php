@@ -42,90 +42,12 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pb-4 font_icon_color">
-        <div class="col-12">
-
-            {{-- @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif --}}
-
-            {{-- <div class="row border-left-info mb-4 pt-3 pb-3">
-                <div class="col-12">
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <span class="text-lg text-gray-800">{{ __('backend.item.select-category') }}</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <form action="{{ route('admin.items.create') }}" method="GET">
-                                <div class="form-row">
-                                    <div class="col-6 col-sm-8 col-md-9 col-lg-10">
-                                        <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control @error('category') is-invalid @enderror" name="category[]" onchange="$('#item-create-form').remove();" data-live-search="true" data-actions-box="true">
-                                            @foreach($all_categories as $key => $category)
-                                                <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], empty($category_ids) ? array() : $category_ids) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('category')
-                                        <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                                        <button type="submit" class="btn btn-primary">{{ __('backend.item.load-form') }}</button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
+        <div class="col-12">          
             <div class="row">
-                <div class="col-12">
-                    {{-- @if(is_array($category_ids) && count($category_ids) > 0) --}}
+                <div class="col-12">                    
                     <form method="POST" action="{{ route('admin.items.store') }}" id="item-create-form">
                         @csrf
-
-                        <!-- <div class="row border-left-primary mb-4">
-                            <div class="col-12">
-                                <div class="form-row">
-                                    <div class="col-12 col-md-6 mb-3 mb-md-0">
-                                        <div class="form-check">
-                                            <input checked class="form-check-input" type="radio" name="item_type" id="item_type_regular" value="{{ \App\Item::ITEM_TYPE_REGULAR }}" aria-describedby="item_type_regularHelpBlock">
-                                            <label class="form-check-label" for="item_type_regular">
-                                                {{ __('theme_directory_hub.online-listing.regular-listing') }}
-                                            </label>
-                                            <small id="item_type_regularHelpBlock" class="form-text text-muted">
-                                                {{ __('theme_directory_hub.online-listing.regular-listing-help') }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="item_type" id="item_type_online" value="{{ \App\Item::ITEM_TYPE_ONLINE }}" aria-describedby="item_type_onlineHelpBlock">
-                                            <label class="form-check-label" for="item_type_online">
-                                                {{ __('theme_directory_hub.online-listing.online-listing') }}
-                                            </label>
-                                            <small id="item_type_onlineHelpBlock" class="form-text text-muted">
-                                                {{ __('theme_directory_hub.online-listing.online-listing-help') }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <input type="hidden" name="item_type" value="1">
-
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
@@ -346,33 +268,10 @@
                                         <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') }}" onkeypress="validatePostalCode(event)">
                                         @error('item_phone')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    {{-- <div class="col-md-3">
-                                        <label for="item_youtube_id" class="text-black">{{ __('customization.item.youtube-id') }}</label>
-                                        <input id="item_youtube_id" type="text" class="form-control @error('item_youtube_id') is-invalid @enderror" name="item_youtube_id" value="{{ old('item_youtube_id') }}">
-                                        @error('item_youtube_id')
-                                        <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> --}}
-
-                                    <!-- <div class="col-md-3">
-                                        <label for="item_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
-                                        <input id="item_video_urls" type="url" class="form-control @error('item_video_urls') is-invalid @enderror" name="item_video_urls[]">
-                                        <small id="videoHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('item_video_urls')
-                                        <span class="invalid-feedback">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div> -->
+                                    </div>                                   
 
                                 </div>
 

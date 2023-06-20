@@ -34,36 +34,22 @@
 
     <div class="container">
         <div class="row align-items-center justify-content-center text-center">
-
             <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
-
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-9 text-center">
                         <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Events') }}</h1>
                         <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.contact.description') }}</p> -->
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
      <div class="site-section">
         <div class="container">
                 @if ($all_events->count() > 0)
-                {{-- <div class="row justify-content-center mb-5">
-                    <div class="col-md-7 text-center border-primary">
-                        <h2 class="font-weight-light text-primary">{{ __('Events') }}</h2>
-                        <p class="color-black-opacity-5"></p>
-                    </div>
-                    <div class="col-md-7 text-center border-primary">
-                    </div>
-                </div> --}}
-
                 <div class="row">
                     <div class="col-lg-12">
-                        <span id="span"></span>
-                        {{-- {{ date('Y-m-d H:i:s') }} --}}                        
+                        <span id="span"></span>                                              
                             @php $count=1; @endphp
                             @foreach ($all_events as $event)
                                 <div class="tab_section">
@@ -158,7 +144,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div><!-- /container -->
@@ -203,41 +188,6 @@
                  */
             @endif
 
-            // $('#join_btn').on('click',function(e){
-            //     e.preventDefault();
-            //     const currentDate = new Date();
-            //     const isoDate = currentDate.toISOString();
-            //     const formattedDate = isoDate.slice(0, 19).replace('T', ' ');
-
-            //     console.log(formattedDate);
-            //     //console.log("kkkkkkkkkk");
-            // })
-
         });
-    </script>
-    <script>
-        // var span = document.getElementById('span');
-
-        // function time() {
-        // var d = new Date();
-        // var s = d.getSeconds();
-        // var m = d.getMinutes();
-        // var h = d.getHours();
-        // span.textContent = 
-        //     ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2);
-        // }
-
-        // setInterval(time, 1000);
-        // function loadlink(){
-        // location.reload();
-        // console.log('TESTING!!!!');
-        //     }
-
-        //     loadlink();
-        //     setInterval(function(){
-        //         loadlink()
-        //     }, 100000);
-    </script>
-
-
+    </script>  
 @endsection

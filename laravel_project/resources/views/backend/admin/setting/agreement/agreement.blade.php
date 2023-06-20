@@ -29,13 +29,7 @@
                                 <div class="custom-control custom-checkbox">
                                     {{-- <input value="1" name="setting_page_about_enable" type="checkbox" class="custom-control-input" id="setting_page_about_enable"> --}}
                                     <p>Last Updated on : <b>{{ $agreement_data->setting_page_agreement_updated_date }}</b></p>
-                                </div>
-                                
-                                {{-- @error('setting_page_about_enable')
-                                <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                @enderror --}}
+                                </div>                              
                             </div>
 
                         </div>

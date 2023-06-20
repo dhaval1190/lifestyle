@@ -32,28 +32,20 @@
 
     <div class="container">
         <div class="row align-items-center justify-content-center text-center">
-
             <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
-
-
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-8 text-center">
                         <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
                         <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p> -->
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
     </div>
 
-
     <div class="site-section">
         <div class="container">
-
-
             @if ($categories->count() > 0)
                 <div class="overlap-category mb-5">
                     <div class="text-center">
@@ -96,11 +88,9 @@
                                             class="caption d-block image-category-caption">{{ $category->category_name }}</span>
                                     </a>
                                 @endif
-
                             </div>
                         @endforeach
                     </div>
-
                 </div>
             @endif
 
@@ -108,7 +98,6 @@
             <form method="GET" action="{{ route('page.allcoaches') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
-
                         @if ($ads_before_breadcrumb->count() > 0)
                             @foreach ($ads_before_breadcrumb as $ads_before_breadcrumb_key => $ad_before_breadcrumb)
                                 <div class="row mb-5">
@@ -172,19 +161,11 @@
                                             </div>
                                         </div>
                                     @endif
-
                                 </div>
                             @endforeach
                         @endif
 
                         <div class="row form-group align-items-center">
-                            {{-- <div class="col-12 col-md-2">
-                                <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }}
-                            </div>
-                            <div class="col-12 col-md-1 text-right pl-0">
-                                {{ __('theme_directory_hub.filter-filter-by') }}
-                            </div> --}}
                             <div class="col-12 col-md-3 mt-2">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror"
                                     name="filter_sort_by" id="filter_sort_by">
@@ -229,7 +210,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-
                                 @error('filter_preferred_pronouns')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
@@ -332,7 +312,6 @@
                         <hr>
 
                         <div class="row">
-
                             @foreach ($all_printable_categories as $key => $all_printable_category)
                                 @php
                                     if (empty($all_printable_category['is_parent'])) {
@@ -369,7 +348,6 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="row">
                             <div class="col-12 text-right">
                                 <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.allcoaches') }}">
@@ -380,7 +358,6 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
@@ -404,9 +381,7 @@
                                     <button class="btn btn-primary btn-sm">
                                         View All
                                     </button>
-                                </a>
-                                {{-- <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }} --}}
+                                </a>                                
                             </div>
                         @endif
                     </div>
@@ -437,116 +412,7 @@
                             </div>
                         @endforeach
                     @endif
-
-                    {{-- <div class="row">
-                        <div class="col-lg-12 margin-top-bottom-set-slider">
-                            <section class="carousel-wrap">
-                                <ul class="carousel">
-                                    @php $count = 1; @endphp
-                                    @foreach ($all_coaches as $all_coaches_key => $coach)
-                                    @php if($count == 7 ) break; @endphp
-                                        <li class="items @if ($count == 1) main-pos @elseif($count == 2) right-pos @elseif($count == 3) back-pos @elseif($count == 4) back-pos
-                                         @elseif($count == 5) back-pos @elseif($count == 6) left-pos @endif" id="{{ $count }}">
-                                            <div class="profile-card js-profile-card">
-                                                <div class="profile-card__img">
-                                                <a href="{{ route('page.profile', encrypt($coach->id)) }}">
-                                                    @if (empty($coach->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}"
-                                                        alt="Image" />
-                                                    @else
-                                                    <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}"
-                                                    alt="{{ $coach->name }}" />
-                                                    @endif
-                                                    </a>
-                                                </div>
-
-                                                <div class="profile-card__cnt js-profile-cnt">
-                                                    <div class="profile-card__name">
-                                                        <a href="{{ route('page.profile', encrypt($coach->id)) }}">{{ $coach->name }}</a>
-                                                    </div>
-                                                    <div class="profile-card__txt">
-                                                        
-                                                        <div class="d-block d-md-flex listing vertical parent_set_listing" style="min-height:0px;">
-                                                                @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
-                                                                    @foreach ($coach->category_parent_name as $item_all_categories_key => $category) 
-                                                                                                                      
-                                                                        <span class="category">
-                                                                            @if (!empty($category->category_icon))
-                                                                                <i class="{{ $category->category_icon }}"></i>
-                                                                            @else
-                                                                                <i class="fa-solid fa-heart"></i>
-                                                                            @endif
-                                                                            {{ $category->category_name }}
-                                                                        </span>
-                                                                    
-                                                                    @endforeach
-                                                                @endif
-                                                                @if (!empty($coach->category_icon_one))
-                                                                    <p>
-                                                                    @foreach ($coach->category_icon_one as $icon_key => $icon)
-                                                                    <a href="{{ route('page.category', $coach->category_slug_one[$icon_key]) }}">
-                                                                    <span class="category_child">
-                                                                        <i class="{{$icon}}"></i>  {{$coach->category_name_one[$icon_key]}}
-                                                                    </span>
-                                                                    </a>
-                                                                    @endforeach
-                                                                    </p>
-                                                                @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-card-loc">
-                                                        <span class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
-                                                    </div>                                                  
-
-                                                    <div class="social_content">
-                                                        <div class="shareButton main">
-                                                            <svg class="share" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-                                                            </svg>
-                                                            <svg class="check" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                                                            </svg>
-                                                            <svg class="close" style="width: 24px; height: 24px"
-                                                                viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="icons">
-                                                            @if ($coach->facebook)
-                                                                <a href="{{ $coach->facebook }}" target="_blank">
-                                                                <i class="fa fa-facebook-f social_icon_design"></i></a>
-                                                            @endif
-                                                            @if ($coach->youtube)
-                                                                <a href="{{ $coach->youtube }}" target="_blank">
-                                                                <i class="fa fa-youtube social_icon_design"></i></a>
-                                                            @endif
-                                                            @if ($coach->instagram)
-                                                                <a href="https://instagram.com/_u/{{ $coach->instagram }}" target="_blank">
-                                                                <i class="fa fa-instagram social_icon_design"></i></a>
-                                                                @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @php $count++; @endphp
-                                    @endforeach
-                                </ul>
-                                <span class="slider">
-                                    <a href="javascript:void(0);" value="Prev" id="prev"><i
-                                            class="material-icons">&#xE314;</i></a>
-                                    <a href="javascript:void(0);" value="Next" id="next"><i
-                                            class="material-icons">&#xE315;</i></a>
-
-                                </span>
-                            </section>
-                        </div>
-                    </div> --}}
+                    
                     @if ($all_coaches->count() >= 5)
                         <section class="card_texting container ptb-100-500">
                             <div class="swiper-container-coaches">
@@ -606,7 +472,6 @@
                                                         <span
                                                             class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
                                                     </div>
-
                                                     <div class="social_content">
                                                         <div class="shareButton main">
                                                             <svg class="share" style="width: 24px; height: 24px"
@@ -654,8 +519,8 @@
                                 </div>
                             </div>  --}}
                         </section>
-                 <div class="swiper-button-next id-seven"></div>
-            <div class="swiper-button-prev id-eight"></div>
+                        <div class="swiper-button-next id-seven"></div>
+                        <div class="swiper-button-prev id-eight"></div>
                     @endif
 
                     @if ($all_coaches->count() <= 4)
@@ -713,7 +578,6 @@
                                                 <span
                                                     class="profile-card-loc__txt">{{ str_limit($coach->company_name, 45, '...') }}</span>
                                             </div>
-
                                             <div class="social_content">
                                                 <div class="shareButton main">
                                                     <svg class="share" style="width: 24px; height: 24px"
@@ -787,38 +651,13 @@
                             </div>
                         @endforeach
                     @endif
-
                 </div>
-
                 <div class="col-lg-6" style="display:none;">
                     <div class="sticky-top" id="mapid-box"></div>
                 </div>
-
             </div>
-
         </div>
-    </div>
-
-    @if ($all_states->count() > 0)
-        <!-- <div class="site-section bg-light">
-                    <div class="container">
-                        <div class="row mb-5">
-                            <div class="col-md-7 text-left border-primary">
-                                <h2 class="font-weight-light text-primary">{{ __('All Coaches by states') }}</h2>
-                            </div>
-                        </div>
-                        <div class="row mt-5">
-
-                            @foreach ($all_states as $all_states_key => $state)
-    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                                    <a href="{{ route('page.state', ['state_slug' => $state->state_slug]) }}">{{ $state->state_name }}</a>
-                                </div>
-    @endforeach
-
-                        </div>
-                    </div>
-                </div> -->
-    @endif
+    </div>   
 
 @endsection
 
@@ -1354,5 +1193,4 @@
             });
         </script>
     @endif
-
 @endsection

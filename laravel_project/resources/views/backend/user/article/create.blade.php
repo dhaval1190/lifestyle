@@ -52,18 +52,6 @@
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
         <div class="col-12">
-
-           {{-- @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif --}}
-
             <div class="row font_icon_color">
                 <div class="col-12">
                     @if(Session::has('required_field_error'))
@@ -80,36 +68,7 @@
                     @endif
                     <form method="POST" action="{{ route('user.articles.store') }}" id="article-create-form">
                         @csrf
-                        <!-- <div class="row border-left-primary mb-4">
-                            <div class="col-12">
-                                <div class="form-row">
-                                    <div class="col-12 col-md-6 mb-3 mb-md-0">
-                                        <div class="form-check">
-                                            <input checked class="form-check-input" type="radio" name="article_type" id="article_type_regular" value="{{ \App\Item::ITEM_TYPE_REGULAR }}" aria-describedby="article_type_regularHelpBlock">
-                                            <label class="form-check-label" for="article_type_regular">
-                                                {{ __('theme_directory_hub.online-listing.regular-listing') }}
-                                            </label>
-                                            <small id="article_type_regularHelpBlock" class="form-text text-muted">
-                                                {{ __('theme_directory_hub.online-listing.regular-listing-help') }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="article_type" id="article_type_online" value="{{ \App\Item::ITEM_TYPE_ONLINE }}" aria-describedby="article_type_onlineHelpBlock">
-                                            <label class="form-check-label" for="article_type_online">
-                                                {{ __('theme_directory_hub.online-listing.online-listing') }}
-                                            </label>
-                                            <small id="article_type_onlineHelpBlock" class="form-text text-muted">
-                                                {{ __('theme_directory_hub.online-listing.online-listing-help') }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <input type="hidden" name="article_type" value="1">
-
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
@@ -123,7 +82,6 @@
                                         </small>
                                     </div>
                                 </div>
-
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
@@ -143,7 +101,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
                                         <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
@@ -164,9 +121,7 @@
                                         @enderror
                                     </div>
                                 </div>
-
                                 <div class="form-row mb-3">
-
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" required>
@@ -183,7 +138,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
@@ -195,7 +149,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
@@ -207,7 +160,6 @@
                                         </span>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-4 col-lg-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" required>
@@ -464,7 +416,7 @@
                                         @endif
                                     </div>
 
-                                    <!-- <div class="col-md-3">
+                                    {{-- <div class="col-md-3">
                                         <label for="article_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
                                         <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]">
                                         <small id="videoHelpBlock" class="form-text text-muted">
@@ -475,7 +427,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> -->
+                                    </div> --}}
 
                                 </div>
                             </div>

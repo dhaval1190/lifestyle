@@ -10,16 +10,7 @@
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('All referral list') }}</h1>
-            {{-- <p class="mb-4 font-sm-14">{{ __('role_permission.item-leads.admin-index-desc') }}</p> --}}
         </div>
-        {{-- <div class="col-3 text-right">
-            <a href="{{ route('user.item-leads.create') }}" class="btn btn-info btn-icon-split">
-                <span class="icon text-white-50">
-                  <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">{{ __('role_permission.item-leads.add-a-lead') }}</span>
-            </a>
-        </div> --}}
     </div>
 
     <!-- Content Row -->
@@ -32,42 +23,28 @@
                         <thead>
                             <tr>
                                 <th>{{ __('backend.city.id') }}</th>
-                                {{-- <th>{{ __('role_permission.item-leads.listing') }}</th> --}}
                                 <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
                                 <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
-                                {{-- <th>{{ __('Mail Page') }}</th> --}}
                                 <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>
-                                {{-- <th>{{ __('View') }}</th> --}}
                             </tr>
-                        </thead>
-                        {{-- <tfoot>
-                            <tr>
-                                <th>{{ __('backend.city.id') }}</th>                                
-                                <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-subject') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>                                
-                                <th>{{ __('View') }}</th>
-                            </tr>
-                            </tfoot> --}}
+                        </thead>                        
                         <tbody>
                             @foreach ($all_referrals as $all_referrals_key => $referral)
                                 <tr>
                                     <td>{{ $referral->id }}</td>
                                     <td>{{ $referral->name }}</td>
                                     <td>{{ $referral->email }}</td>
-                                    {{-- <td>{{ $referral->profile_article }}</td> --}}
                                     <td>{{ $referral->created_at }}</td>
-                                    {{-- <td>
-                                        <a href="{{ route('user.contact-leads.edit', ['contact_lead' => $contact_lead]) }}"
-                                            class="btn btn-primary btn-circle">
-                                            <i class="fas fa-cog"></i>
-                                        </a>
-                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        {{ $all_referrals->links() }}
+                    </div>
                 </div>
             @else
                 <p class="text-center">No Record Found!</p>

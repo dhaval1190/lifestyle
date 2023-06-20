@@ -9,30 +9,19 @@
 @section('content')
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
-            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact coach mail list') }}</h1>
-            {{-- <p class="mb-4 font-sm-14">{{ __('role_permission.item-leads.admin-index-desc') }}</p> --}}
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact coach mail list') }}</h1>            
         </div>
-        {{-- <div class="col-3 text-right">
-            <a href="{{ route('user.item-leads.create') }}" class="btn btn-info btn-icon-split">
-                <span class="icon text-white-50">
-                  <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">{{ __('role_permission.item-leads.add-a-lead') }}</span>
-            </a>
-        </div> --}}
     </div>
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pb-4">
         <div class="col-12">
-
             @if ($all_contact_leads->count() > 0)
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>{{ __('backend.city.id') }}</th>
-                                {{-- <th>{{ __('role_permission.item-leads.listing') }}</th> --}}
+                                <th>{{ __('backend.city.id') }}</th>                                
                                 <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
                                 <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
                                 <th>{{ __('Mail Page') }}</th>
@@ -40,16 +29,6 @@
                                 <th>{{ __('View') }}</th>
                             </tr>
                         </thead>
-                        {{-- <tfoot>
-                            <tr>
-                                <th>{{ __('backend.city.id') }}</th>                                
-                                <th>{{ __('role_permission.item-leads.item-lead-name') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-subject') }}</th>
-                                <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>                                
-                                <th>{{ __('View') }}</th>
-                            </tr>
-                            </tfoot> --}}
                         <tbody>
                             @foreach ($all_contact_leads as $all_contact_leads_key => $contact_lead)
                                 <tr>
@@ -68,6 +47,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        {{ $all_contact_leads->links() }}
+                    </div>
                 </div>
             @else
                 <p class="text-center">No Record Found!</p>

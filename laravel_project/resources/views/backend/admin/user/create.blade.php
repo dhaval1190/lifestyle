@@ -368,8 +368,6 @@
                         @else
                             <div class="row">
                                 <div class="col-lg-2 col-md-4">
-                                    {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
-                                    {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                     @error('user_image')
                                     <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>

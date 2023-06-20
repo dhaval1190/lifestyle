@@ -40,10 +40,7 @@
 
     <div class="container">
         <div class="row align-items-center justify-content-center text-center">
-
             <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
-
-
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-8 text-center">
                         <h1 style="color: {{ $site_innerpage_header_title_font_color }};">
@@ -55,18 +52,13 @@
                 <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
                     @include('frontend.partials.search.head')
                 </div>
-
-
             </div>
         </div>
     </div>
     </div>
 
-
     <div class="site-section">
         <div class="container">
-
-
             @if ($categories->count() > 0)
                 <div class="overlap-category mb-5">
                     <div class="text-center">
@@ -88,7 +80,6 @@
                                                 @endif
                                             </span>
                                         </span>
-
                                         <span class="caption d-block">{{ $category->category_name }}</span>
                                     </a>
                                 @elseif($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_IMAGE)
@@ -109,11 +100,9 @@
                                             class="caption d-block image-category-caption">{{ $category->category_name }}</span>
                                     </a>
                                 @endif
-
                             </div>
                         @endforeach
                     </div>
-
                 </div>
             @endif
 
@@ -121,7 +110,6 @@
             <form method="GET" action="{{ route('page.all.recenttopics') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
-
                         @if ($ads_before_breadcrumb->count() > 0)
                             @foreach ($ads_before_breadcrumb as $ads_before_breadcrumb_key => $ad_before_breadcrumb)
                                 <div class="row mb-5">
@@ -185,19 +173,11 @@
                                             </div>
                                         </div>
                                     @endif
-
                                 </div>
                             @endforeach
                         @endif
 
                         <div class="row form-group align-items-center">
-                            {{-- <div class="col-12 col-md-2">
-                                <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }}
-                            </div>
-                            <div class="col-12 col-md-1 text-right pl-0">
-                                {{ __('theme_directory_hub.filter-filter-by') }}
-                            </div> --}}
                             <div class="col-12 col-md-3 mt-2 pl-0 pl-sm-3">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror"
                                     name="filter_sort_by" id="filter_sort_by">
@@ -340,12 +320,10 @@
                                     </span>
                                 @enderror
                             </div>
-
                         </div>
                         <hr>
 
                         <div class="row">
-
                             @foreach ($all_printable_categories as $key => $all_printable_category)
                                 @php
                                     if (empty($all_printable_category['is_parent'])) {
@@ -353,8 +331,7 @@
                                     }
                                     if ($all_printable_category['category_name'] == 'Entrepreneurial' || $all_printable_category['category_name'] == 'Productivity') {
                                         continue;
-                                    }
-                                    
+                                    }                                    
                                 @endphp
                                 <div class="col-12 col-sm-4 col-md-3">
                                     <div class="form-check filter_category_div">
@@ -383,7 +360,6 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="row">
                             <div class="col-12 text-right">
                                 <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.categories') }}">
@@ -394,22 +370,18 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
             <!-- End Filter -->
             <div class="row">
-
                 <div class="col-lg-12 block-13">
-
                     @if ($paid_items->count() > 0)
                         <div class="row mb-4">
                             <div class="col-md-12 text-left border-primary">
                                 <h2 class="font-weight-light text-primary">{{ __('Featured Topics') }}</h2>
                             </div>
                         </div>
-
                         <div class="row mb-4">
                             <div class="col-md-6 text-left">
                                 <strong>{{ number_format($paid_items->count()) }}</strong>
@@ -451,7 +423,6 @@
                                         </div>
                                     </div>
                                 @endif
-
                             </div>
                         @endforeach
                     @endif
@@ -478,9 +449,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                        </section>
-                        {{-- <div class="swiper-button-next id-nine"></div>
-                        <div class="swiper-button-prev id-ten"></div> --}}
+                        </section>                        
                     @endif
 
                     @if ($ads_after_content->count() > 0)
@@ -505,32 +474,22 @@
                                         </div>
                                     </div>
                                 @endif
-
                             </div>
                         @endforeach
                     @endif
-
                 </div>
-
                 <div class="col-lg-6" style="display:none;">
                     <div class="sticky-top" id="mapid-box"></div>
                 </div>
-
-
-
-
             </div>
 
             <div class="row">
-
                 <div class="col-lg-12 block-13">
-
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
                             <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-1') }}</h2>
                         </div>
                     </div>
-
                     <div class="row mb-4">
                         <div class="col-md-6 text-left">
                             <strong>{{ number_format($total_results) }}</strong>
@@ -570,7 +529,6 @@
                                         </div>
                                     </div>
                                 @endif
-
                             </div>
                         @endforeach
                     @endif
@@ -578,40 +536,13 @@
                     {{-- <div class="@if ($free_items->count() > 4)owl-carousel nonloop-block-13 @else row @endif"> --}}
                     <section class="card_texting container ptb-100-500">
                         <div class="swiper-container-free swiper_topics_carousel_set ">
-                            <div class="swiper-wrapper">
-                                {{-- @php $count = 1; @endphp --}}
-                                {{-- @if ($paid_items->count() > 0)
-                            @foreach ($paid_items as $paid_items_key => $item)
-                                @php 
-                                    if($count == 5) break;
-                                @endphp                                
-                                    @include('frontend.partials.paid-item-block')                                
-                                @php $count++; @endphp
-                            @endforeach
-                        @endif --}}
-
-                                {{-- 16-05 --}}
-                                {{-- @if ($free_items->count() > 0)
-                            @foreach ($free_items as $free_items_key => $item)                            
-                                @php 
-                                    if($count == 10) break;
-                                @endphp
-                                @if ($free_items->count() > 4)
-                                    @include('frontend.partials.free-item-block')
-                                @else
-                                    <div class="col-lg-3">
-                                        @include('frontend.partials.free-item-block')
-                                    </div>
-                                @endif
-                                @php $count++; @endphp
-                            @endforeach
-                        @endif --}}
+                            <div class="swiper-wrapper">                               
                                 @if ($free_items->count() >= 5)
-                                @php $count = 1; @endphp
+                                    @php $count = 1; @endphp
                                     @foreach ($free_items as $free_items_key => $item)
-                                    @php if($count == 8) break; @endphp
-                                        @include('frontend.partials.free-item-block')
-                                @php $count++; @endphp
+                                        @php if($count == 8) break; @endphp
+                                            @include('frontend.partials.free-item-block')
+                                        @php $count++; @endphp
                                     @endforeach
                                 @endif
                             </div>
@@ -630,16 +561,13 @@
                             @endforeach
                         </div>
                     @endif
-
                 </div>
-
                 {{-- <div class="row">
                         <div class="col-12">
 
                             {{ $pagination->links() }}
                         </div>
                     </div> --}}
-
                 @if ($ads_after_content->count() > 0)
                     @foreach ($ads_after_content as $ads_after_content_key => $ad_after_content)
                         <div class="row mt-5">
@@ -662,43 +590,17 @@
                                     </div>
                                 </div>
                             @endif
-
                         </div>
                     @endforeach
                 @endif
 
             </div>
-
             <div class="col-lg-6" style="display:none;">
                 <div class="sticky-top" id="mapid-box"></div>
             </div>
-
         </div>
-
     </div>
     </div>
-
-    @if ($all_states->count() > 0)
-        <!-- <div class="site-section bg-light">
-                            <div class="container">
-                                <div class="row mb-5">
-                                    <div class="col-md-7 text-left border-primary">
-                                        <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-2') }}</h2>
-                                    </div>
-                                </div>
-                                <div class="row mt-5">
-
-                                    @foreach ($all_states as $all_states_key => $state)
-    <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                                            <a href="{{ route('page.state', ['state_slug' => $state->state_slug]) }}">{{ $state->state_name }}</a>
-                                        </div>
-    @endforeach
-
-                                </div>
-                            </div>
-                        </div> -->
-    @endif
-
 @endsection
 
 @section('scripts')

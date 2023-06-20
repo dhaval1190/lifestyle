@@ -386,8 +386,8 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         // setting agreement page
         Route::get('/settings/agreement', 'SettingController@agreementPageSetting')->name('settings.page.agreement');
         Route::post('/settings/agreement', 'SettingController@updateAgreementPageSetting')->name('settings.page.agreement.update');
-        Route::get('/email-template/{param?}', 'SettingController@showEmailtemplate')->name('settings.page.email-template');
-        Route::post('/email-template', 'SettingController@updateEmailtemplate')->name('settings.page.email-template.update');
+        // Route::get('/email-template/{param?}', 'SettingController@showEmailtemplate')->name('settings.page.email-template');
+        // Route::post('/email-template', 'SettingController@updateEmailtemplate')->name('settings.page.email-template.update');
 
         //Events
         Route::resource('/events', 'EventController');
@@ -759,77 +759,3 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
     Route::post('/coach-signUp', 'Auth\RegisterController@coachSignUp')->name('coachSignUp');
     Route::get('/email-verificaltion/{id}', 'Auth\RegisterController@verifyEmail')->name('verifyEmail');
 });
-/**
- * End website routes
- */
-
-
-
-// Route::prefix('canvas-ui')->group(function () {
-//     Route::prefix('api')->group(function () {
-//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
-//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
-//              ->middleware('Canvas\Http\Middleware\Session');
-
-//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
-//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
-//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
-
-//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
-//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
-//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
-
-//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
-//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
-//     });
-
-//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
-//          ->where('view', '(.*)')
-//          ->name('canvas-ui');
-// });
-
-// Route::prefix('canvas-ui')->group(function () {
-//     Route::prefix('api')->group(function () {
-//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
-//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
-//              ->middleware('Canvas\Http\Middleware\Session');
-
-//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
-//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
-//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
-
-//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
-//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
-//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
-
-//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
-//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
-//     });
-
-//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
-//          ->where('view', '(.*)')
-//          ->name('canvas-ui');
-// });
-
-// Route::prefix('canvas-ui')->group(function () {
-//     Route::prefix('api')->group(function () {
-//         Route::get('posts', [\App\Http\Controllers\CanvasUiController::class, 'getPosts']);
-//         Route::get('posts/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showPost'])
-//              ->middleware('Canvas\Http\Middleware\Session');
-
-//         Route::get('tags', [\App\Http\Controllers\CanvasUiController::class, 'getTags']);
-//         Route::get('tags/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTag']);
-//         Route::get('tags/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTag']);
-
-//         Route::get('topics', [\App\Http\Controllers\CanvasUiController::class, 'getTopics']);
-//         Route::get('topics/{slug}', [\App\Http\Controllers\CanvasUiController::class, 'showTopic']);
-//         Route::get('topics/{slug}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForTopic']);
-
-//         Route::get('users/{id}', [\App\Http\Controllers\CanvasUiController::class, 'showUser']);
-//         Route::get('users/{id}/posts', [\App\Http\Controllers\CanvasUiController::class, 'getPostsForUser']);
-//     });
-
-//     Route::get('/{view?}', [\App\Http\Controllers\CanvasUiController::class, 'index'])
-//          ->where('view', '(.*)')
-//          ->name('canvas-ui');
-// });

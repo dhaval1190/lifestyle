@@ -225,11 +225,7 @@ $login_user = Auth::user();
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
-                                                </div>
-                                            {{-- </div>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <div class="row mt-3"> --}}
+                                                </div>                                            
                                                 <div class="col-lg-3 col-md-6 col-12">
                                                     <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
                                                     <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
@@ -268,9 +264,7 @@ $login_user = Auth::user();
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
-                                                </div>
-                                            {{-- </div>
-                                        </div> --}}
+                                                </div>                                            
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-5 col-12">
