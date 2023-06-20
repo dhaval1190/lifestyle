@@ -113,6 +113,17 @@
         text-shadow: 0 1px 0 #fff;
         opacity: 0.8;
     }
+    
+    canvas{
+        cursor: pointer !important;
+    }
+    .align_set_flex{
+        display: flex;
+        align-items: center;
+    }
+    .padding-20{
+        padding-left: 20px;
+    }
 </style>
 @endsection
 
@@ -911,9 +922,9 @@
                     <div class="progress_info">
                         <p>{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank">{{ __('Learn Here') }}</a>                                                   
                         </p>
-                        <p class="mb-4"><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
+                        {{-- <p class="mb-4"><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
                             <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}</button></a></p>
-                        <p>
+                        <p> --}}
                             {{  str_limit($login_user['user_about'],800,'...')}} 
                             @php 
                             $length = strlen($login_user['user_about']);
@@ -941,7 +952,11 @@
                 <div class="modal-body">
                     <div class="row" id="basic_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic Profile complete includes</span>
+                           <div class="align_set_flex">
+                                <img src="" alt="" id="basic_profile_img">
+                                <span class="bold pl-1" id="basic_profile">Basic</span>
+                           </div>
+                            <span class="padding-20">Basic Profile complete includes</span>
                         </div>
                         <div class="col-md-6">
                             <ul class="list_design_ptb-30">
@@ -971,7 +986,11 @@
                     </div>
                     <div class="row" id="social_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social Profile complete includes</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="social_profile_img">
+                                <span class="bold pl-1" id="social_profile">Social</span>
+                            </div>
+                                <span class="padding-20">Basic + Social Profile complete includes</span>
                             <ul class="list_design_ptb-30">
                                 <li id="website">Website</li>
                                 <li id="instagram">IG Handle*</li>
@@ -984,7 +1003,11 @@
                     </div>
                     <div class="row" id="bronze_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social + Bronze Level complete includes</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="bronze_profile_img">
+                                <span class="bold pl-1" id="bronze_profile">Bronze</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze Level complete includes</span>
                             <ul class="list_design_ptb-30 d-flex">
                                 <li id="ten_content">10 pieces of content uploaded</li>&nbsp;<span id="ten_content_count"></span>
                             </ul>
@@ -992,7 +1015,11 @@
                     </div>
                     <div class="row" id="silver_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social + Bronze + Silver Level complete includes</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="silver_profile_img">
+                                <span class="bold pl-1" id="silver_profile">Silver</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze + Silver Level complete includes</span>
                             <ul class="list_design_ptb-30">
                                 <div class="">
                                     <li id="twenty_content">20 Pieces of content AND must include at least one from each type (Video, Podcast, Ebook)</li>&nbsp;<span id="twenty_content_count"></span>
@@ -1002,7 +1029,11 @@
                     </div>
                     <div class="row" id="gold_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social + Bronze + Silver + Gold Level complete</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="gold_profile_img">
+                                <span class="bold pl-1" id="gold_profile">Gold</span>
+                            </div>
+                            <span class="padding-20">Basic + Social + Bronze + Silver + Gold Level complete</span>
                             <ul class="list_design_ptb-30 d-flex">
                                 <li id="three_client_review">3 Client Reviews </li>&nbsp;<span id="three_client_review_count"></span>
                             </ul>
@@ -1010,7 +1041,11 @@
                     </div>
                     <div class="row" id="platinum_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="platinum_profile_img">
+                                <span class="bold pl-1" id="platinum_profile">Platinum</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
                             <ul class="list_design_ptb-30">
                                 <div class="d-flex">
                                     <li id="thirty_content">30 Pieces of content</li>&nbsp;<span id="thirty_content_count"></span>
@@ -1024,9 +1059,14 @@
                     </div>
                     <div class="row" id="rhodium_content">
                         <div class="col-md-12">
-                            <span class="bold">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="rhodium_profile_img">
+                                <span class="bold pl-1" id="rhodium_profile">Rhodium</span>
+                            </div>
+                            <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
+
                             <ul class="list_design_ptb-30 d-flex">
-                                <li id="referrals">5 Client referrals</li>&nbsp;<span id="referal_count"></span>
+                                <li id="referrals_5">5 Client referrals</li>&nbsp;<span id="referal_count"></span>
                             </ul>
                         </div>
                     </div>
@@ -1471,7 +1511,7 @@
     </script>
     <script>
         $(document).ready(function(){
-            $('#profileCompleteModalBtn').on('click',function(){
+            $('#chartContainer').on('click',function(){
                 //console.log("kskdklskldlksdlk");
                 let user_id = '<?php echo $login_user['id']; ?>';
                 //console.log(user_id);
@@ -1480,22 +1520,20 @@
                     type: 'GET',                    
                     url: '/user/profile-completed/'+user_id,                    
                     success: function(response) {
-                        // console.log(response);
+                        console.log(response);
                         if(response.status == 'success'){
                             $.each(response.data.user_detail, function(key, val) {
                                 if(val !== null){
-                                    $('#'+key).css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
-                                    // key = null;
-                                    // console.log(key);
-                                    // console.log(val);
+                                    $('#'+key).css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");                                    
                                 }
-
                             });
+
                             let referrals = response.data.referrals;
                             let all_content_count = response.data.all_content_count;
                             let review_count = response.data.review_count;
                             let category = response.data.categories;
-                            // console.log(referrals);
+                            let profile_level = response.data.profile;
+                            console.log(profile_level);
                             if(category >= 1){
                                 $('#category').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                                 // $('#referal_count').text('(5/'+referrals +')')
@@ -1506,7 +1544,7 @@
                             }
                             if(referrals >= 5){
                                 // referrals = 5;
-                                $('#referrals').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('#referrals_5').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                                 $('#referal_count').text('('+referrals+'/5)').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }else{
                                 $('#referal_count').text('('+referrals+'/5)');
@@ -1542,6 +1580,46 @@
                                 $('#seven_client_review').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                             }
                             $('#seven_client_review_count').text('('+review_count +'/7)');
+
+                            if(profile_level == undefined){
+                                // $('#basic_profile').css('color','green');
+                                // $('#basic_profile,#social_profile,#bronze_profile,#silver_profile,#gold_profile,#platinum_profile,#rhodium_profile').css('color','grey'); 
+                                $('#basic_profile_img,#social_profile_img,#bronze_profile_img,#silver_profile_img,#gold_profile_img,#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+
+                            if(profile_level == "Basic"){
+                                // $('#basic_profile').css('color','green');
+                                // $('#social_profile,#bronze_profile,#silver_profile,#gold_profile,#platinum_profile,#rhodium_profile').css('color','grey'); 
+                                $('#social_profile_img,#bronze_profile_img,#silver_profile_img,#gold_profile_img,#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Social"){
+                                // $('#basic_profile,#social_profile').css('color','green');
+                                // $('#bronze_profile,#silver_profile,#gold_profile,#platinum_profile,#rhodium_profile').css('color','grey');   
+                                $('#bronze_profile_img,#silver_profile_img,#gold_profile_img,#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Bronze"){
+                                // $('#basic_profile,#social_profile,#bronze_profile').css('color','green');
+                                // $('#silver_profile,#gold_profile,#platinum_profile,#rhodium_profile').css('color','grey'); 
+                                $('#silver_profile_img,#gold_profile_img,#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Silver"){
+                                // $('#basic_profile,#social_profile,#bronze_profile,#silver_profile').css('color','green');
+                                // $('#gold_profile,#platinum_profile,#rhodium_profile').css('color','grey');
+                                $('#gold_profile_img,#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Gold"){
+                                // $('#basic_profile,#social_profile,#bronze_profile,#silver_profile,#gold_profile').css('color','green');
+                                // $('#platinum_profile,#rhodium_profile').css('color','grey');
+                                $('#platinum_profile_img,#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Platinum"){
+                                // $('#basic_profile,#social_profile,#bronze_profile,#silver_profile,#gold_profile,#platinum_profile').css('color','green');
+                                // $('#rhodium_profile').css('color','grey');
+                                $('#rhodium_profile_img').attr('src', "{{ asset('frontend/images/redcross_icon.png') }}");
+                            }
+                            if(profile_level == "Rhodium"){                                
+                                $('#basic_profile,#social_profile,#bronze_profile,#silver_profile,#gold_profile,#platinum_profile,#rhodium_profile');                              
+                            }
 
 
 

@@ -665,7 +665,7 @@ class User extends Authenticatable implements MustVerifyEmail
             }
             
             // if(!empty($user['website']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube']) && ($user['instagram'] || $user['facebook'] || $user['linkedin'] || $user['youtube'])){
-                if($count >= 3){
+            if($count >= 3){
                 $data['social_profile'] = true;
                 $data['profile']        = 'Social';
                 $data['percentage']     = 30;
@@ -764,6 +764,78 @@ class User extends Authenticatable implements MustVerifyEmail
         $data['email']      = $user_data['email'];
         $data['profile']    = '';
         $data['percentage'] = 0;
+
+        if($user_data->categories()->count() > 0 && !empty($user_data['user_image']) && !empty($user_data['name']) && !empty($user_data['company_name']) && !empty($user_data['phone']) && !empty($user_data['email']) && !empty($user_data['hourly_rate_type']) && !empty($user_data['preferred_pronouns']) && !empty($user_data['working_type']) && !empty($user_data['state_id']) && !empty($user_data['post_code']) && !empty($user_data['country_id']) && !empty($user_data['city_id']) && !empty($user_data['address']) && !empty($user_data['experience_year'])){
+            $completed_details['basic_profile']  = true;
+            $completed_details['profile']        = 'Basic';
+            $completed_details['percentage']     = 20;
+            $count = 0;
+            if(isset($user_data['website'])){
+                $count = $count +1;
+            }
+            if(isset($user_data['instagram'])){
+                $count = $count +1;
+            }
+            if(isset($user_data['facebook'])){
+                $count = $count +1;
+            }
+            if(isset($user_data['linkedin'])){
+                $count = $count +1;
+            }
+            if(isset($user_data['youtube'])){
+                $count = $count +1;
+            }
+            if($count >= 3){
+                $completed_details['social_profile'] = true;
+                $completed_details['profile']        = 'Social';
+                $completed_details['percentage']     = 30;
+                $article_count          = Item::where('user_id', $user_data->id)->count();
+                $video_media_count      = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'video')->count();
+                $podcast_media_count    = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'podcast')->count();
+                $ebook_media_count      = MediaDetail::where('user_id', $user_data->id)->where('media_type', 'ebook')->count();
+                $blog_count             = \Canvas\Models\Post::where('user_id', $user_data->id)->count();
+                $referral_count         = count($user_data->referrals);
+                $total_content_count = $article_count + $video_media_count + $podcast_media_count + $ebook_media_count;
+                if($article_count >= 10 || $total_content_count >= 10){
+                    $completed_details['bronze_profile'] = true;
+                    $completed_details['profile']        = 'Bronze';
+                    $completed_details['percentage']     = 50;
+                    if(($article_count >= 20 || $total_content_count >= 20) && $video_media_count >= 1 && $podcast_media_count >= 1 && $ebook_media_count >= 1 /*&& $blog_count >= 1*/){
+                        $completed_details['silver_profile'] = true;
+                        $completed_details['profile']        = 'Silver';
+                        $completed_details['percentage']     = 60;
+                        $review_count = DB::table('reviews')->where('author_id', $user_data->id)->count();
+                        if($review_count >= 3){
+                            $completed_details['gold_profile']   = true;
+                            $completed_details['profile']        = 'Gold';
+                            $completed_details['percentage']     = 70;
+                            if(($article_count >= 30 || $total_content_count >= 30) && $review_count >= 7 && $referral_count >= 1){
+                                $completed_details['platinum_profile']   = true;
+                                $completed_details['profile']            = 'Platinum';
+                                $completed_details['percentage']         = 90;
+                                if($referral_count >= 5){
+                                    $completed_details['rhodiumm_profile']   = true;
+                                    $completed_details['profile']            = 'Rhodium';
+                                    $completed_details['percentage']         = 100;
+                                }else{
+                                    $completed_details['rhodiumm_profile'] = false;
+                                }
+                            }else{
+                                $completed_details['platinum_profile'] = false;                                
+                            }
+                        }else{
+                            $completed_details['gold_profile'] = false;
+                        }
+                    }else{
+                        $completed_details['silver_profile'] = false;                        
+                    }
+                }else{
+                    $completed_details['bronze_profile'] = false;
+                }
+            }
+        }else{
+            $completed_details['basic_profile'] = false;
+        }
 
         $referral_count = User::where('referrer_id',$user_data->id)->count();
 
