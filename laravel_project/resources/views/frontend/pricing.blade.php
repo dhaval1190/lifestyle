@@ -238,7 +238,8 @@
                                                     </a>
                                                 @endif --}}
                                             @else
-                                                <a class="btn btn-block btn-primary rounded text-white" href="{{ route('user.subscriptions.edit', ['subscription' => $login_user->subscription->id]) }}">
+                                                {{-- <a class="btn btn-block btn-primary rounded text-white" href="{{ route('user.subscriptions.edit', ['subscription' => $login_user->subscription->id]) }}"> --}}
+                                                    <a class="btn btn-block btn-primary rounded text-white" href="{{ url('user/plan/upgrade/' . $plan->slug) }}">
                                                     <i class="fas fa-shopping-cart"></i>
                                                     {{ __('theme_directory_hub.pricing.upgrade') }}
                                                 </a>
