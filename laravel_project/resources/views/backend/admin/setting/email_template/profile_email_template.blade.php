@@ -33,22 +33,6 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- <div class="fv-row form-group">
-                            <div class="col-md-12">
-                                <label class="text-black" for="setting_page_email_template">{{ __('backend.shared.page-editor') }}</label>
-                                <textarea id="setting_page_email_template" type="text" class="form-control @error('setting_page_email_template') is-invalid @enderror" name="setting_page_email_template">{{ $email_template_data->email_template }}</textarea>
-                                @error('setting_page_email_template')
-                                <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="mt-1 pl-2">
-                                @foreach(emailTemplateConstants() as $snippets)
-                                    <a href="javascript:void(0)" class="text-hover-primary snippest badge badge-light-primary me-2 my-1" data-tag="{{$snippets}}">{{str_replace(['[', ']'], ['',''], $snippets)}}</a>
-                                @endforeach
-                            </div>
-                        </div> --}}
                         <div class="fv-row mb-10">
                             <label class="form-label mb-3">{{ __('Message') }}:</label>
                             <div class="fv-row fv-plugins-icon-container">
@@ -110,20 +94,6 @@
 
             "use strict";
 
-            //     ClassicEditor
-            //     .create( document.querySelector('#setting_page_email_template'),{
-            //         // removePlugins: ['MediaEmbed'],
-            //         ckfinder:{
-            //             uploadUrl:'{{ route('admin.article.description.image').'?_token='.csrf_token() }}'
-            //         }
-            //     } )
-            //     .then(editor => {
-            //         // console.log(editor);
-            //     })
-            //     .catch( error => {
-			//     // console.error( error );
-		    // });
-
             var quill = new Quill('.quill', {
             modules: {
                 toolbar: [
@@ -151,23 +121,7 @@
                 var html = quill.root.innerHTML;
                 $('#hidden-message').val(html);
             });
-            $('.snippest').on('click', function() {
-                               
-                // var caretPos =document.getElementById("setting_page_email_template").selectionStart;
-                // // console.log(caretPos);
-                // var caretEnd = document.getElementById("setting_page_email_template").selectionEnd;
-                // // console.log(caretEnd);
-
-                // var textAreaTxt = $("#setting_page_email_template").val();
-                // console.log(textAreaTxt)
-                // var txtToAdd = $(this).data('tag');
-                // $("#setting_page_email_template").val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring( caretEnd ) );
-                
-                // $('#setting_page_email_template').focus();
-                // document.getElementById('setting_page_email_template').selectionStart = caretPos + txtToAdd.length
-                // document.getElementById('setting_page_email_template').selectionEnd = caretPos + txtToAdd.length
-                // FCKEditor.insertHTML(document.getElementByClass('snippest').value)
-                
+            $('.snippest').on('click', function() {                
                     var selection = null;
                     var cursorPosition = null;
                     var selection = quill.getSelection();

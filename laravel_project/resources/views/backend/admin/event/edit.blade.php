@@ -348,21 +348,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <hr>
-
-                                                <!-- <div class="form_group">
-                                                                            <label class="group_title">Location
-                                                                                <span>(Required)</span></label>
-                                                                                <div class="select">
-                                                                            <select class="input_control select__field">
-                                                                                <option>Select Location</option>
-                                                                                <option>Select Location</option>
-                                                                                <option>Select Location</option>
-                                                                                <option>Select Location</option>
-                                                                            </select>
-                                                                            </div>
-                                                                        </div> -->
+                                                <hr>                                           
 
                                                 <div class="form_group">
                                                     <label class="group_title">URL
@@ -499,95 +485,23 @@
 
 @section('scripts')
     <!-- Image Crop Plugin Js -->
-    {{-- <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script> --}}
     <script src="{{ asset('backend/vendor/spectrum/spectrum.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
 
     <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    {{-- @include('backend.admin.partials.bootstrap-select-locale') --}}
-
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-
-    {{-- <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> --}}
-    {{-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> --}}
-  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
-  </script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
-  </script> --}}
-
-{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"> --}}
-{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
-
-
-<script>
-    
-</script>
-  <!-- Include Moment.js CDN -->
-  {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
-  </script> --}}
-
-  <!-- Include Bootstrap DateTimePicker CDN -->
-  {{-- <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
-    rel="stylesheet">
-
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-    </script> --}}
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
     <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
-
-<script>
-
-    // $('#datetime1').datetimepicker({
-    //   format: 'HH:mm:ss'
-    // });
-    // $('#datetime2').datetimepicker({
-    //   format: 'HH:mm:ss'
-    // });
-  </script>
 
     <script>
         $(document).ready(function() {
 
             "use strict";
 
-            /**
-             * Start color picker
-             */
-            // $('#category_header_background_color').spectrum({
-            //     type: "component",
-            //     togglePaletteOnly: "true",
-            //     showInput: "true",
-            //     showInitial: "true",
-            //     showAlpha: "false"
-            // });
-            /**
-             * End color picker
-             */
-
-            /**
-             * Start the croppie image plugin
-             */
-            // $('.selectpicker').selectpicker();
             var image_crop = null;
 
             $('#upload_image').on('click', function() {
@@ -735,56 +649,43 @@
 
             $("#category_header_background_image_selector").change(function() {
                 readURL(this, "img-upload-homepage", "category_header_background_image");
-            });
-            /**
-             * End image file upload preview
-             */
-
-            // $('#event_start_date').datepicker({
-            //     format: 'yyyy-mm-dd',
-            // });
-            // $('#event_end_date').datepicker({
-            //     format: 'yyyy-mm-dd',
-            // });
+            });            
         });
     </script>
-    {{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> --}}
-    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
     <script>
         if (/Mobi/.test(navigator.userAgent)) {
-  // if mobile device, use native pickers
-  $(".date input").attr("type", "date");
-  $(".time input").attr("type", "time");
-} else {
-  // if desktop device, use DateTimePicker
-  $("#datepicker").datetimepicker({
-    useCurrent: false,
-    format: "DD-MMM-YYYY",
-    showTodayButton: true,
-    icons: {
-      next: "fa fa-chevron-right",
-      previous: "fa fa-chevron-left",
-      today: 'todayText',
-    }
-  });
-  $("#timepicker1").datetimepicker({
-    format: 'HH:mm:ss',
-    icons: {
-      up: "fa fa-chevron-up",
-      down: "fa fa-chevron-down"
-    }
-  });
-  $("#timepicker2").datetimepicker({
-    format: 'HH:mm:ss',
-    icons: {
-      up: "fa fa-chevron-up",
-      down: "fa fa-chevron-down"
-    }
-  });
-}
+            // if mobile device, use native pickers
+            $(".date input").attr("type", "date");
+            $(".time input").attr("type", "time");
+        } else {
+        // if desktop device, use DateTimePicker
+            $("#datepicker").datetimepicker({
+                useCurrent: false,
+                format: "DD-MMM-YYYY",
+                showTodayButton: true,
+                icons: {
+                next: "fa fa-chevron-right",
+                previous: "fa fa-chevron-left",
+                today: 'todayText',
+                }
+            });
+            $("#timepicker1").datetimepicker({
+                format: 'HH:mm:ss',
+                icons: {
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down"
+                }
+            });
+            $("#timepicker2").datetimepicker({
+                format: 'HH:mm:ss',
+                icons: {
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down"
+                }
+            });
+        }
 
     </script>  
 @endsection

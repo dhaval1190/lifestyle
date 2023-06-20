@@ -118,73 +118,6 @@
                             </div>
                         </div>
 
-
-                        <!-- <div class="form-row mb-3">
-                            <div class="col-md-3 col-6">
-                                <label for="customer_service_rating" class="text-black">{{ __('review.backend.customer-service') }}</label><br>
-                                <select class="rating_stars" name="customer_service_rating">
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_TWO ? 'selected' : '' }}>{{ __('rating_summary.2-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_THREE ? 'selected' : '' }}>{{ __('rating_summary.3-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_FOUR ? 'selected' : '' }}>{{ __('rating_summary.4-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}" {{ $review->customer_service_rating == \App\Item::ITEM_REVIEW_RATING_FIVE ? 'selected' : '' }}>{{ __('rating_summary.5-stars') }}</option>
-                                </select>
-                                @error('customer_service_rating')
-                                <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3 col-6">
-                                <label for="quality_rating" class="text-black">{{ __('review.backend.quality') }}</label><br>
-                                <select class="rating_stars" name="quality_rating">
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_TWO ? 'selected' : '' }}>{{ __('rating_summary.2-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_THREE ? 'selected' : '' }}>{{ __('rating_summary.3-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_FOUR ? 'selected' : '' }}>{{ __('rating_summary.4-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}" {{ $review->quality_rating == \App\Item::ITEM_REVIEW_RATING_FIVE ? 'selected' : '' }}>{{ __('rating_summary.5-stars') }}</option>
-                                </select>
-                                @error('quality_rating')
-                                <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3 col-6">
-                                <label for="friendly_rating" class="text-black">{{ __('review.backend.friendly') }}</label><br>
-                                <select class="rating_stars" name="friendly_rating">
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_TWO ? 'selected' : '' }}>{{ __('rating_summary.2-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_THREE ? 'selected' : '' }}>{{ __('rating_summary.3-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_FOUR ? 'selected' : '' }}>{{ __('rating_summary.4-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}" {{ $review->friendly_rating == \App\Item::ITEM_REVIEW_RATING_FIVE ? 'selected' : '' }}>{{ __('rating_summary.5-stars') }}</option>
-                                </select>
-                                @error('friendly_rating')
-                                <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3 col-6">
-                                <label for="pricing_rating" class="text-black">{{ __('review.backend.pricing') }}</label><br>
-                                <select class="rating_stars" name="pricing_rating">
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_ONE }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_ONE ? 'selected' : '' }}>{{ __('rating_summary.1-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_TWO }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_TWO ? 'selected' : '' }}>{{ __('rating_summary.2-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_THREE }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_THREE ? 'selected' : '' }}>{{ __('rating_summary.3-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FOUR }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_FOUR ? 'selected' : '' }}>{{ __('rating_summary.4-stars') }}</option>
-                                    <option value="{{ \App\Item::ITEM_REVIEW_RATING_FIVE }}" {{ $review->pricing_rating == \App\Item::ITEM_REVIEW_RATING_FIVE ? 'selected' : '' }}>{{ __('rating_summary.5-stars') }}</option>
-                                </select>
-                                @error('pricing_rating')
-                                <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> -->
-
                         <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <span class="text-lg text-gray-800">{{ __('review.backend.tell-experience') }}</span>
@@ -192,19 +125,6 @@
                                 </small>
                             </div>
                         </div>
-
-                        <!-- <div class="form-row mb-3">
-                            <div class="col-md-12">
-                                <label for="title" class="text-black">{{ __('review.backend.title') }}</label>
-                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') ? old('title') : $review->title }}">
-                                @error('title')
-                                <span class="invalid-tooltip">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> -->
-
                         <div class="form-row mb-3">
                             <div class="col-md-12">
                                 <label for="body" class="text-black">{{ __('review.backend.description') }}</label>
@@ -232,37 +152,7 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <!-- <div class="form-row mb-3">
-                            <div class="col-md-12">
-                                <span class="text-lg text-gray-800">{{ __('review_galleries.upload-photos') }}</span>
-                                <small class="form-text text-muted">
-                                    {{ __('review_galleries.upload-photos-help') }}
-                                </small>
-                                @error('review_image_galleries')
-                                <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="alert alert-danger alert-dismissible fade show" id="gallery_image_error_div" role="alert" style="display: none;">
-                                            <strong id="gallery_img_error"></strong>
-                                        </div>
-                                        <button id="upload_gallery" type="button" class="btn btn-primary mb-2">{{ __('review_galleries.choose-photo') }}</button>
-                                        <div class="row" id="selected-images">
-                                            @foreach($review_image_galleries as $key => $review_gallery)
-                                                <div class="col-lg-3 col-md-4 col-sm-6 mb-2 col-12 gallery_set_width_mobile" id="review_image_gallery_{{ $review_gallery->id }}">
-                                                    <img class="review_image_gallery_img" src="{{ Storage::disk('public')->url('item/review/'. $review_gallery->review_image_gallery_thumb_name) }}">
-                                                    <br/><button class="btn btn-danger btn-sm text-white mt-1" onclick="$(this).attr('disabled', true); deleteGallery({{ $review_gallery->id }});">{{ __('backend.shared.delete') }}</button>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                        </div>                       
 
                         <div class="form-row mb-3">
                             <div class="col-md-8 col-8">

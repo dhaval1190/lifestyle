@@ -84,12 +84,7 @@ $login_user = Auth::user();
                     </div>
 
                     <div class="row">
-                        <div class="col-12">
-                            {{-- <a class="btn btn-sm btn-primary" href="{{ route('user.articles.sections.index', ['article' => $article]) }}">
-                                <i class="fas fa-bars"></i>
-                                {{ __('article_section.manage-sections') }}
-                            </a> --}}
-
+                        <div class="col-12">                           
                             <a class="btn btn-sm btn-outline-danger" href="#" data-toggle="modal" data-target="#deleteModal">
                                 <i class="far fa-trash-alt"></i>
                                 {{ __('backend.article.delete-article') }}
@@ -125,7 +120,6 @@ $login_user = Auth::user();
                                         <i class="far fa-edit"></i>
                                         {{ __('categories.update-cat') }}
                                     </a>
-
                                 </div>
                             </div>
                         </div>
@@ -140,7 +134,7 @@ $login_user = Auth::user();
                         @csrf
                         @method('PUT')
 
-                        <!-- <div class="row border-left-primary mb-4">
+                        {{-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -167,7 +161,7 @@ $login_user = Auth::user();
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div> --}}
                         <input type="hidden" name="article_type" value="1">
 
                         <div class="row border-left-primary mb-4">
@@ -485,7 +479,7 @@ $login_user = Auth::user();
                                             </span>
                                         @endif
                                     </div>
-                                    <!-- <div class="col-md-3">
+                                    {{-- <div class="col-md-3">
                                         @php
                                             $article_video_url = '';
                                             if($article->medias && count($article->medias) > 0) {
@@ -507,7 +501,7 @@ $login_user = Auth::user();
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> -->
+                                    </div> --}}
                                 </div>
                                 <!-- End web & social media -->
                             </div>
@@ -1678,12 +1672,7 @@ $login_user = Auth::user();
                     for (var a = 0; a < event.files.length; a++) {
 
                         if(a == 12) {break;}
-                        selectedImages.push(event.files[a]);
-                        // html += "<div class='col-12 col-md-6 col-lg-4 col-xl-3 mb-2' id='article_image_gallery_" + a + "'>" +
-                        //     "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "' id='gallery_img_0'>" +
-                        //     "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
-                        //     "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
-                        //     "</div>";
+                        selectedImages.push(event.files[a]);                       
 
                             var img_str = event.files[a].content;
                             var img_str_split = img_str.split(";base64")[0];

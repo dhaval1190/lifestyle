@@ -28,13 +28,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="pricing_plan">
-                                <h1 class="p_heading">Pricing Plan</h1>
-                                {{-- <p class="p_description">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip
-                    </p> --}}
+                                <h1 class="p_heading">Pricing Plan</h1>                                
                             </div>
                         </div>
 
@@ -141,22 +135,18 @@
                                                                     Active</a>
                                                                 @elseif($active_plan->id == $plan->id && $subscription_status == 'canceled')
                                                                     <button type="button" class="pay_btn"
-                                                                        disabled>Canceled</a>
-                                                                    {{-- @elseif($subscription_status == 'canceled')
-                                                                        <a href="{{ url('user/plans/' . $plan->slug) }}"
-                                                                            class="pay_btn">Choose</a> --}}
-                                                                    @elseif($subscription_status !== 'canceled' && $subscription_status !== 'active')
-                                                                        <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
-                                                                            class="pay_btn">Upgrade Plan</a>
-                                                                    @elseif($subscription_status == 'active' && $active_plan->slug != 'yearly-premium')
-                                                                        <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
-                                                                            class="pay_btn">Upgrade Plan</a>
+                                                                        disabled>Canceled</a>                                                                    
+                                                                @elseif($subscription_status !== 'canceled' && $subscription_status !== 'active')
+                                                                    <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
+                                                                        class="pay_btn">Upgrade Plan</a>
+                                                                @elseif($subscription_status == 'active' && $active_plan->slug != 'yearly-premium')
+                                                                    <a href="{{ url('user/plan/upgrade/' . $plan->slug) }}"
+                                                                        class="pay_btn">Upgrade Plan</a>
                                                             @endif
                                                         @else
                                                             <a href="{{ url('user/plans/' . $plan->slug) }}"
                                                                 class="pay_btn">Choose</a>
-                                                        @endif
-                                                        {{-- <a href="#" class="pay_btn">Pay with Stripe</a> --}}
+                                                        @endif                                                        
                                                     </div>
                                                     @if (isset($active_plan->id) && $active_plan->id == $plan->id)
                                                         <div class="ribbon ribbon-top-left">

@@ -213,7 +213,7 @@ $login_user = Auth::user();
                         @csrf
                         @method('PUT')
 
-                        <!-- <div class="row border-left-primary mb-4">
+                        {{-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row">
                                     <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -240,7 +240,7 @@ $login_user = Auth::user();
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div> --}}
                         <input type="hidden" name="item_type" value="1">
 
                         <div class="row border-left-primary mb-4">
@@ -435,48 +435,11 @@ $login_user = Auth::user();
                                         <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') ? old('item_phone') : $item->item_phone }}" aria-describedby="lngHelpBlock" onkeypress="validatePostalCode(event)">
                                         @error('item_phone')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- <div class="col-md-3">
-                                        @php
-                                            $item_video_url = '';
-                                            if($item->medias && count($item->medias) > 0) {
-                                                foreach($item->medias()->orderBy('item_media.id','desc')->get() as $media) {
-                                                    if($media->media_type == \App\ItemMedia::MEDIA_TYPE_VIDEO && !empty($media->media_url)) {
-                                                        $item_video_url = $media->media_url;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        @endphp
-                                        <label for="item_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
-                                        <input id="item_video_urls" type="url" class="form-control @error('item_video_urls') is-invalid @enderror" name="item_video_urls[]" value="{{ $item_video_url }}">
-                                        <small id="videoHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
-                                        </small>
-                                        @error('item_video_urls')
-                                        <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div> -->
-
-
-                                    {{-- <div class="col-md-3">
-                                        <label for="item_youtube_id" class="text-black">{{ __('customization.item.youtube-id') }}</label>
-                                        <input id="item_youtube_id" type="text" class="form-control @error('item_youtube_id') is-invalid @enderror" name="item_youtube_id" value="{{ old('item_youtube_id') ? old('item_youtube_id') : $item->item_youtube_id }}">
-                                        @error('item_youtube_id')
-                                        <span class="invalid-tooltip">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div> --}}
-
+                                    </div>                                    
                                 </div>
-
                                 <div class="form-row mb-3">
 
                                     <div class="col-md-12">
@@ -1790,74 +1753,6 @@ $login_user = Auth::user();
                 }
 
             });
-
-            // @if(old('country_id'))
-            //     var ajax_url_initial_states = '/ajax/states/{{ old('country_id') }}';
-
-            //     $.ajaxSetup({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         }
-            //     });
-            //     jQuery.ajax({
-            //         url: ajax_url_initial_states,
-            //         method: 'get',
-            //         data: {
-            //         },
-            //         success: function(result){
-            //             $('#select_state_id').empty();
-            //             // $('#select_state_id').html("<option selected value='0'>{{ __('backend.item.select-state') }}</option>");
-            //             $.each(JSON.parse(result), function(key, value) {
-            //                 var state_id = value.id;
-            //                 var state_name = value.state_name;
-
-            //                 if(state_id === {{ old('state_id') }})
-            //                 {
-            //                     $('#select_state_id').append('<option value="'+ state_id +'" selected>' + state_name + '</option>');
-            //                 }
-            //                 else
-            //                 {
-            //                     $('#select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
-            //                 }
-
-            //             });
-            //             $('#select_state_id').selectpicker('refresh');
-            //     }});
-            // @endif
-
-            // @if(old('state_id'))
-            //     var ajax_url_initial_cities = '/ajax/cities/{{ old('state_id') }}';
-
-            //     $.ajaxSetup({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         }
-            //     });
-            //     jQuery.ajax({
-            //         url: ajax_url_initial_cities,
-            //         method: 'get',
-            //         data: {
-            //         },
-            //         success: function(result){
-            //             $('#select_city_id').empty();
-            //             // $('#select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
-            //             $.each(JSON.parse(result), function(key, value) {
-            //                 var city_id = value.id;
-            //                 var city_name = value.city_name;
-
-            //                 if(city_id === {{ old('city_id') }})
-            //                 {
-            //                     $('#select_city_id').append('<option value="'+ city_id +'" selected>' + city_name + '</option>');
-            //                 }
-            //                 else
-            //                 {
-            //                     $('#select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
-            //                 }
-            //             });
-            //             $('#select_city_id').selectpicker('refresh');
-            //     }});
-            // @endif
-           
 
             /**
              * Start image gallery uplaod

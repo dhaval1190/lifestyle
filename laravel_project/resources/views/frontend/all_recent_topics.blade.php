@@ -57,8 +57,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="site-section">
         <div class="container">
             @php 
@@ -70,49 +68,45 @@
 
                 }
             @endphp
-
-
             @if($categories->count() > 0)
                 <div class="overlap-category mb-5">
                     <div class="text-center">
                         <h2 class="font-weight-light text-primary">I'm looking for information that will help me with...</h2>
                     </div>
                     <div class="row align-items-stretch no-gutters justify-content-center">
-                    @foreach( $categories as $categories_key => $category )
-                            <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
-                                @if($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
-                                    <a href="{{ route('page.category', $category->category_slug) }}" class="popular-category h-100 decoration-none">
-                                    <span class="icon">
-                                        <span>
-                                            @if($category->category_icon)
-                                                <i class="{{ $category->category_icon }}"></i>
-                                            @else
-                                                <i class="fa-solid fa-heart"></i>
-                                            @endif
+                        @foreach( $categories as $categories_key => $category )
+                                <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
+                                    @if($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
+                                        <a href="{{ route('page.category', $category->category_slug) }}" class="popular-category h-100 decoration-none">
+                                            <span class="icon">
+                                                <span>
+                                                    @if($category->category_icon)
+                                                        <i class="{{ $category->category_icon }}"></i>
+                                                    @else
+                                                        <i class="fa-solid fa-heart"></i>
+                                                    @endif
+                                                </span>
+                                            </span>
+                                            <span class="caption d-block">{{ $category->category_name }}</span>
+                                        </a>
+                                    @elseif($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_IMAGE)
+                                        <a href="{{ route('page.category', $category->category_slug) }}" class="popular-category h-100 decoration-none image-category">
+                                        <span class="icon image-category-span">
+                                            <span>
+                                                @if($category->category_image)
+                                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url('category/'. $category->category_image) }}" alt="Image" class="img-fluid rounded image-category-img">
+                                                @else
+                                                    <img src="{{ asset('frontend/images/placeholder/category-image.webp') }}" alt="Image" class="img-fluid rounded image-category-img">
+                                                @endif
+                                            </span>
                                         </span>
-                                    </span>
+                                            <span class="caption d-block image-category-caption">{{ $category->category_name }}</span>
+                                        </a>
+                                    @endif
 
-                                        <span class="caption d-block">{{ $category->category_name }}</span>
-                                    </a>
-                                @elseif($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_IMAGE)
-                                    <a href="{{ route('page.category', $category->category_slug) }}" class="popular-category h-100 decoration-none image-category">
-                                    <span class="icon image-category-span">
-                                        <span>
-                                            @if($category->category_image)
-                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url('category/'. $category->category_image) }}" alt="Image" class="img-fluid rounded image-category-img">
-                                            @else
-                                                <img src="{{ asset('frontend/images/placeholder/category-image.webp') }}" alt="Image" class="img-fluid rounded image-category-img">
-                                            @endif
-                                        </span>
-                                    </span>
-                                        <span class="caption d-block image-category-caption">{{ $category->category_name }}</span>
-                                    </a>
-                                @endif
-
-                            </div>
-                    @endforeach
+                                </div>
+                        @endforeach
                     </div>
-
                 </div>
             @endif
 
@@ -120,7 +114,6 @@
             <form method="GET" action="{{ route('page.all.recenttopics') }}" id="filter_form">
                 <div class="row pt-3 pb-3 ml-1 mr-1 mb-5 rounded border">
                     <div class="col-12">
-
                         @if($ads_before_breadcrumb->count() > 0)
                             @foreach($ads_before_breadcrumb as $ads_before_breadcrumb_key => $ad_before_breadcrumb)
                                 <div class="row mb-5">
@@ -187,15 +180,7 @@
                                     </div>
                                 @endforeach
                             @endif
-
-                        <div class="row form-group align-items-center">
-                            {{-- <div class="col-12 col-md-2">
-                                <strong>{{ number_format($total_results) }}</strong>
-                                {{ __('theme_directory_hub.filter-results') }}
-                            </div>
-                            <div class="col-12 col-md-1 text-right pl-0">
-                                {{ __('theme_directory_hub.filter-filter-by') }}
-                            </div> --}}
+                        <div class="row form-group align-items-center"> 
                             <div class="col-12 col-md-3 mt-2 pl-0 pl-sm-3">
                                 <select class="selectpicker form-control @error('filter_sort_by') is-invalid @enderror" name="filter_sort_by" id="filter_sort_by">
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_NEWEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEWEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-newest') }}</option>
@@ -304,7 +289,6 @@
                         <hr>
 
                         <div class="row">
-
                             @foreach($all_printable_categories as $key => $all_printable_category)
                                 @php
                                     if(empty($all_printable_category["is_parent"])) continue;
@@ -333,7 +317,6 @@
                             </div>
                         </div>
                         <hr>
-
                         <div class="row">
                             <div class="col-12 text-right">
                                 <a class="btn btn-sm btn-outline-primary rounded" href="{{ route('page.all.recenttopics') }}">
@@ -344,36 +327,24 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
             <!-- End Filter -->
 
             <div class="row">
-
                 <div class="col-lg-12 block-13">
-
                     <div class="row mb-4">
                         <div class="col-md-12 text-left border-primary">
                             <h2 class="font-weight-light text-primary">{{ __('All Latest Topics') }}</h2>
                         </div>
                     </div>
-
                     <div class="row mb-4">
                         <div class="col-md-12 text-left">
                             <strong>{{ number_format($total_results) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
-                        {{-- <div class="col-md-6 text-right">
-                            <a href="{{ route('page.all.recenttopics') }}">
-                                View All
-                            </a>
-                            <strong>{{ number_format($total_results) }}</strong>
-                            {{ __('theme_directory_hub.filter-results') }}
-                        </div> --}}
                     </div>
-
                     @if($ads_before_content->count() > 0)
                         @foreach($ads_before_content as $ads_before_content_key => $ad_before_content)
                             <div class="row mb-5">
@@ -402,7 +373,6 @@
                     @endif
 
                     <div class="row">
-
                         @if($paid_items->count() > 0)
                             @foreach($paid_items as $paid_items_key => $item)
                                 <div class="col-lg-4 col-md-6 mb-5 mb-sm-0">
@@ -418,9 +388,7 @@
                                 </div>
                             @endforeach
                         @endif
-
                     </div>
-
                     <div class="row">
                         <div class="col-12">
                           <div class="pagination_set_sm_center">
@@ -455,38 +423,13 @@
                             </div>
                         @endforeach
                     @endif
-
                 </div>
-
                 <div class="col-lg-6" style="display:none;">
                     <div class="sticky-top" id="mapid-box"></div>
                 </div>
-
             </div>
-
         </div>
     </div>
-
-    @if($all_states->count() > 0)
-        <!-- <div class="site-section bg-light">
-            <div class="container">
-                <div class="row mb-5">
-                    <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary">{{ __('frontend.categories.sub-title-2') }}</h2>
-                    </div>
-                </div>
-                <div class="row mt-5">
-
-                    @foreach($all_states as $all_states_key => $state)
-                        <div class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                            <a href="{{ route('page.state', ['state_slug' => $state->state_slug]) }}">{{ $state->state_name }}</a>
-                        </div>
-                    @endforeach
-
-                </div>
-            </div>
-        </div> -->
-    @endif
 
 @endsection
 

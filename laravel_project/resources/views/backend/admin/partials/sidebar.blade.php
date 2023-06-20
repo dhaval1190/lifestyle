@@ -130,7 +130,7 @@
         </div>
     </li>
 
-    @if(auth()->user()->isAdmin())
+    {{-- @if(auth()->user()->isAdmin())
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
                 <i class="fas fa-envelope"></i>
@@ -138,13 +138,12 @@
             </a>
             <div id="collapse_email" class="collapse" aria-labelledby="collapse_email" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    {{-- <a class="collapse-item" href="{{ route('admin.settings.page.email-template') }}">{{ __('Email Template') }}</a> --}}
                     <a class="collapse-item" href="{{ route('admin.settings.page.email-template','profile') }}">{{ __('Profile Template') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.page.email-template','coach') }}">{{ __('Contact Coach Template') }}</a>
                 </div>
             </div>
         </li>
-    @endif
+    @endif --}}
 
     <li class="nav-item d-none">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_product" aria-expanded="true" aria-controls="collapse_product">

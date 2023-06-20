@@ -40,7 +40,6 @@
                             <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.contact.description') }}</p> -->
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -55,8 +54,6 @@
                     <p class="color-black-opacity-5"></p>
                 </div>
             </div>
-
-
             <div class="row justify-content-center">
                 <div class="col-md-8 col-12">
 
@@ -80,9 +77,7 @@
                         </div>
                     @endforeach
                 </div>
-
             </div>
-
         </div>
     </div>
     @endif

@@ -29,8 +29,6 @@
 
                         <div class="row">
                             <div class="col-sm-2">
-                                {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
-                                {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
                                 @error('user_image')
                                 <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>

@@ -30,7 +30,8 @@ class ReferralController extends Controller
          * End SEO
          */
 
-         $all_referrals = Auth::user()->referrals;
+         $all_referrals = Auth::user()->referrals()->orderBy('created_at','DESC')->paginate(10);
+        //  $all_referrals = $all_referrals->paginate(10);
         //  dd($all_referrals->count());
         return response()->view('backend.user.item.referral.index',compact('all_referrals'));
     }

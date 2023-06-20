@@ -32,7 +32,7 @@ class ContactLeadController extends Controller
 
         $login_user = Auth::user();
         // dd($login_user);
-        $all_contact_leads = ContactLead::where('receiver_id',$login_user->id)->orderBy('id','DESC')->get();
+        $all_contact_leads = ContactLead::where('receiver_id',$login_user->id)->orderBy('id','DESC')->paginate(10);
 
         
 
