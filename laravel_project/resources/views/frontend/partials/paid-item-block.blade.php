@@ -53,7 +53,7 @@
                 data-map-feature-image-link="{{ !empty($item->item_image_small) ? \Illuminate\Support\Facades\Storage::disk('public')->url('item/' . $item->item_image_small) : asset('frontend/images/placeholder/full_item_feature_image_small.webp') }}">
                 <a href="{{ route('page.item', $item->item_slug) }}">{{ $item->item_title }}</a></h3>
 
-            @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+            {{-- @if ($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
                 @if(isset($user_detail->id))
                     @if($user_detail->id == $item->user_id)
                         <address>
@@ -66,7 +66,7 @@
                         </address>
                     @endif
                 @endif
-            @endif
+            @endif --}}
 
             <div class="row">
                 <div class="col-12">
