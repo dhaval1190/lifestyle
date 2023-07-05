@@ -3,8 +3,13 @@
 @section('styles')
 <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
+<link href="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
 <style type="text/css">
     .bootstrap-select.form-control {
         border: 1px solid #ced4da;
@@ -12,7 +17,7 @@
 
     .dropdown-toggle.btn-default {
         color: #292b2c;
-        background-color: #fff;
+        background-color: #fff !important;
         border-color: #ccc;
     }
 
@@ -241,6 +246,38 @@ $chk_post = Auth::user()->phone;
                                 </div>
                             </div>
                             @endif
+                            <div class="border_bg_set mt-3">
+                                @error('user_cover_image')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                <p>Cover Image</p>
+                                @if(empty($login_user->user_cover_image))
+                                <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%; min-height:100px;">
+                                @else
+                                <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%; min-height:100px;">
+                                {{-- <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}"
+                                style="width:100%;"> --}}
+                                @endif
+                                <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
+                                <div class="mt-1">
+                                    <div class="row mt-2">
+                                        <div class="col-md-6">
+                                            <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('Select') }}</button>
+        
+                                        </div>
+                                        @if(!empty($login_user->user_cover_image))
+                                            <div class="col-md-6">
+                                                <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
+                                                    <!-- <i class="fas fa-trash-alt"></i> -->
+                                                    {{ __('role_permission.user.delete-profile-image') }}
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>                        
+                            </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-xl-10 col-lg-8">
                             <div class="row mb-3">
@@ -395,7 +432,7 @@ $chk_post = Auth::user()->phone;
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                                <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="14">{{ old('user_about', $login_user->user_about) }}</textarea>
+                                <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="24">{{ old('user_about', $login_user->user_about) }}</textarea>
                                 @error('user_about')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
@@ -628,42 +665,10 @@ $chk_post = Auth::user()->phone;
                         <h3 class="h3 mb-4 font-set-sm text-orange-700">YouTube Details</h3>
                     </div>
                 </div>
-                <div class="col-12 col-md-12 col-lg-7 col-xl-6">
-                    <div class="border_bg_set">
-                        @error('user_cover_image')
-                        <span class="invalid-tooltip">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                        @if(empty($login_user->user_cover_image))
-                        <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%;">
-                        @else
-                        <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%;">
-                        {{-- <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}"
-                        style="width:100%;"> --}}
-                        @endif
-                        <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
-                        <div class="mt-1">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-cover-image') }}</button>
-
-                                </div>
-                                @if(!empty($login_user->user_cover_image))
-                                    <div class="col-md-6">
-                                        <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
-                                            <!-- <i class="fas fa-trash-alt"></i> -->
-                                            {{ __('role_permission.user.delete-profile-image') }}
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-                <div class="col-12 col-md-12 col-lg-5 col-xl-6">
+               
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
                             <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
                             <small id="linkHelpBlock" class="form-text text-muted">
@@ -675,7 +680,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        <div class="col-md-12 mt-3">
+                        <div class="col-sm-6 ">
                             <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
                             <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
                             @error('youtube_intro_description')
@@ -692,7 +697,7 @@ $chk_post = Auth::user()->phone;
 
                 <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
                     <label class="text-black">Youtube</label>
-                    <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                    <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
                         @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
                         <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
                         @endforeach
@@ -962,92 +967,92 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
     @else
-    <div class="row">
-        <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-4 col-xl-2">
-            {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
-            {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
-            @error('user_image')
-            <span class="invalid-tooltip">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-            <div class="row mt-3">
-                <div class="col-12">
-                    <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-image') }}</button>
-                    @if(empty($login_user->user_image))
-                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="img-responsive">
-                    @else
-                    <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="img-responsive">
-                    @endif
-                    <input id="feature_image" type="hidden" name="user_image">
+        <div class="row">
+            <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-4 col-xl-2">
+                {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
+                {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small> --}}
+                @error('user_image')
+                <span class="invalid-tooltip">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-image') }}</button>
+                        @if(empty($login_user->user_image))
+                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="img-responsive">
+                        @else
+                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="img-responsive">
+                        @endif
+                        <input id="feature_image" type="hidden" name="user_image">
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-12">
+                        <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
+                            <i class="fas fa-trash-alt"></i>
+                            {{ __('role_permission.user.delete-profile-image') }}
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="row mt-1">
-                <div class="col-12">
-                    <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
-                        <i class="fas fa-trash-alt"></i>
-                        {{ __('role_permission.user.delete-profile-image') }}
-                    </a>
+            <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
+                <div class="row mt-3">
+                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                        <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
+                        @error('name')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                        <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
+                        @error('email')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                        <label for="phone" class="text-black labet_set">Phone</label>
+                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
+                        @error('phone')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                        <label for="gender" class="text-black labet_set">Gender</label>
+                        <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
+                            @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
+                            <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('gender')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
+                        <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="8">{{ old('user_about', $login_user->user_about) }}</textarea>
+                        @error('user_about')
+                        <span class="invalid-tooltip">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
-            <div class="row mt-3">
-                <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                    <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
-                    @error('name')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                    <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
-                    @error('email')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                    <label for="phone" class="text-black labet_set">Phone</label>
-                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
-                    @error('phone')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                    <label for="gender" class="text-black labet_set">Gender</label>
-                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
-                        @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
-                        <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('gender')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                    <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="8">{{ old('user_about', $login_user->user_about) }}</textarea>
-                    @error('user_about')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-    </div>
     @endif
     <!-- <hr class="mt-5"> -->
 
@@ -1070,102 +1075,102 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
 </form>
-{{--  Ebook form --}}
-<form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
-    <div class="row mt-3 mb-5 break_line_section">
-        <div class="col-12">
-            <div>
-                <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label class="text-black">Ebook</label>
-                    <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
-                        @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
-                        <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
-                        @endforeach
-                    </select>
-                    @error('media_type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    {{-- <span class="ebook_success_msg" style="color:green"></span> --}}
+    {{--  Ebook form --}}
+    <form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
+        <div class="row mt-3 mb-5 break_line_section">
+            <div class="col-12">
+                <div>
+                    <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
                 </div>
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label class="text-black">Ebook PDF Title</label>
-                    <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
-                    @error('media_name')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    <p class="error_color media_name"></p>
-                </div>
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label class="text-black">Ebook PDF</label>
-                    <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image" accept=".pdf">
-                    @error('media_image')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    <p class="error_color media_image"></p>
-                </div>
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label class="text-black">Ebook Cover</label>
-                    <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
-                    <small class="form-text text-muted">
-                        {{ __('backend.item.feature-image-help') }}
-                    </small>
-                    @error('media_cover')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    <p class="error_color media_cover"></p>
-                </div>
-                <div class="col-12 col-md-12 col-lg-3 mb-5">
-                    <label for="podcast_url" class="text-black"></label>
-                    {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                        <i class="fas fa-plus"></i>
-                        {{ __('Add') }}
-                    </a> --}}
-                    <button type="submit" class="btn btn-primary  btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="ebookSubmitBtn">
-                        <i class="fas fa-plus"></i>{{ __('Add') }}
-                    </button>
-                    <strong><span class="ebook_success_msg" style="color:green"></span></strong>
-        
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="ebook_details_added">
-                    @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
-                    <div class="col-12 col-md-12 col-lg-12 p-0">
-                        <div class="row border_set_row">
-                            <div class="col-md-6 col-89">
-                                <span class="set_width">
-                                    {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
-                                    {{ $ebook_media_value->media_name }}</span>
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-3">
+                        <label class="text-black">Ebook</label>
+                        <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                            @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
+                            <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                            @endforeach
+                        </select>
+                        @error('media_type')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        {{-- <span class="ebook_success_msg" style="color:green"></span> --}}
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-3">
+                        <label class="text-black">Ebook PDF Title</label>
+                        <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
+                        @error('media_name')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        <p class="error_color media_name"></p>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-3">
+                        <label class="text-black">Ebook PDF</label>
+                        <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image" accept=".pdf">
+                        @error('media_image')
+                        <span class="invalid-tooltip">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        <p class="error_color media_image"></p>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-3">
+                        <label class="text-black">Ebook Cover</label>
+                        <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
+                        <small class="form-text text-muted">
+                            {{ __('backend.item.feature-image-help') }}
+                        </small>
+                        @error('media_cover')
+                        <span class="invalid-tooltip">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        <p class="error_color media_cover"></p>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-3 mb-5">
+                        <label for="podcast_url" class="text-black"></label>
+                        {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                            <i class="fas fa-plus"></i>
+                            {{ __('Add') }}
+                        </a> --}}
+                        <button type="submit" class="btn btn-primary  btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="ebookSubmitBtn">
+                            <i class="fas fa-plus"></i>{{ __('Add') }}
+                        </button>
+                        <strong><span class="ebook_success_msg" style="color:green"></span></strong>
+            
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="ebook_details_added">
+                        @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
+                        <div class="col-12 col-md-12 col-lg-12 p-0">
+                            <div class="row border_set_row">
+                                <div class="col-md-6 col-89">
+                                    <span class="set_width">
+                                        {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
+                                        {{ $ebook_media_value->media_name }}</span>
 
-                            </div>
-                            <div class="col-md-6 col-3">
-                                <div class="edit_delete_btn">
-                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
-                                        {{-- <i class='far fa-trash-alt'></i> --}}
-                                        <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                                    </a>
+                                </div>
+                                <div class="col-md-6 col-3">
+                                    <div class="edit_delete_btn">
+                                        <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
+                                            {{-- <i class='far fa-trash-alt'></i> --}}
+                                            <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
-{{--  Podcast form --}}
-<form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
+    {{--  Podcast form --}}
+    <form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
     <div class="row mt-3 mb-5 break_line_section">
         <div class="col-12">
             <div>
@@ -1297,152 +1302,716 @@ $chk_post = Auth::user()->phone;
     </div>
     
     </form>
-    @if($free_items->count() >0)
-    <div class="row">
-        <div class="col-md-12">
-            <div class="below_info p-2">
-                <h3>Topics</h3>
-                @if(isset($free_items) && !empty($free_items) && $free_items->count() >=4 )
-                <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
-                @endif
-            </div>
-        </div>
-        <div class="col-lg-12 ">
 
-            <div class="row">
+  {{-- Add article section start --}}
+
+  <div class="row font_icon_color">
+    <div class="col-12">
+        @if(Session::has('required_field_error'))
+            <div class="row mb-4">
                 <div class="col-12">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr class="bg-info text-white">
-                                    <!-- <th>{{ __('importer_csv.select') }}</th> -->
-                                    <th>{{ __('backend.article.article') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($free_items as $items_key => $item)
-                                <tr>
-                                    <!-- <td>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input items_table_index_checkbox" type="checkbox" id="item_index_data_checkbox_{{ $item->id }}" value="{{ $item->id }}">
-                                                </div>
-                                            </td> -->
-                                    <td>
-
-                                        <div class="row">
-                                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 img_width_set_100">
-                                                @if(!empty($item->item_image_tiny))
-                                                <img src="{{ Storage::disk('public')->url('item/' . $item->item_image_tiny) }}" alt="Image" class="img-fluid rounded">
-                                                @elseif(!empty($item->item_image))
-                                                <img src="{{ Storage::disk('public')->url('item/' . $item->item_image) }}" alt="Image" class="img-fluid rounded">
-                                                @else
-                                                <img src="{{ asset('backend/images/placeholder/full_item_feature_image_tiny.webp') }}" alt="Image" class="img-fluid rounded">
-                                                @endif
-                                            </div>
-                                            <div class="col-12 col-md-8 col-lg-9 col-xl-10">
-                                                @if($item->item_status == \App\Item::ITEM_SUBMITTED)
-                                                <span class="text-warning"><i class="fas fa-exclamation-circle"></i></span>
-                                                @elseif($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                                <span class="text-success"><i class="fas fa-check-circle"></i></span>
-                                                @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
-                                                <span class="text-danger"><i class="fas fa-ban"></i></span>
-                                                @endif
-                                                <span class="text-gray-800">{{ $item->item_title }}</span>
-                                                @if($item->item_featured == \App\Item::ITEM_FEATURED)
-                                                <span class="text-white bg-info pl-1 pr-1 rounded">{{ __('prefer_country.featured') }}</span>
-                                                @endif
-                                                <div class="pt-1 pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ empty($item->item_average_rating) ? 0 : $item->item_average_rating }}">
-                                                </div>
-                                                <span>
-                                                    {{ '(' . $item->getCountRating() . ' ' . __('review.frontend.reviews') . ')' }}
-                                                </span>
-
-                                                <br>
-
-                                                @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                                                <div class="d-flex align-items-baseline border_set_sm">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    {{ $item->item_address }},
-                                                    {{ $item->city->city_name }},
-                                                    {{ $item->state->state_name }},
-                                                    {{ $item->country->country_name }}
-                                                    {{ $item->item_postal_code }}
-                                                </div>
-                                                @else
-
-                                                <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
-                                                @endif
-
-                                                <div class="pt-2 sub_set_btn">
-                                                    @foreach($item->allCategories()->get() as $categories_key =>
-                                                    $category)
-                                                    <span class="border border-info text-info pl-1 pr-1 rounded">{{ $category->category_name }}</span>
-                                                    @endforeach
-                                                </div>
-                                                <hr class="mt-3 mb-2">
-                                                <div class="two_btn_set">
-                                                    @if($item->item_status == \App\Item::ITEM_PUBLISHED)
-                                                    <a href="{{ route('page.item', $item->item_slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-external-link-alt"></i>
-                                                        {{ __('prefer_country.view-item') }}
-                                                    </a>
-                                                    @endif
-                                                    <a href="{{ route('user.articles.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
-                                                        <i class="far fa-edit"></i>
-                                                        {{ __('backend.shared.edit') }}
-                                                    </a>
-                                                </div>
-                                                <hr class="mt-2 mb-2">
-                                                <div class="two_btn_set_bottom">
-                                                    <span class="text-info">
-                                                        <i class="far fa-plus-square"></i>
-                                                        {{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
-                                                    </span>
-                                                    @if($item->created_at != $item->updated_at)
-                                                    <span class="text-info">
-                                                        |
-                                                        <i class="far fa-edit"></i>
-                                                        {{ __('review.backend.updated-at') . ' ' . \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
-                                                    </span>
-                                                    @endif
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ Session::get('required_field_error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                </div>
+            </div>
+        @endif
+        <form method="POST" action="{{ route('user.articles.store') }}" id="article-create-form">
+            @csrf
+            <input type="hidden" name="article_type" value="1">
+            <div class="border-left-primary mb-4">
+                <div class="col-12">
+                    <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                        <div class="col-md-12">
+                            <span class="text-lg text-white">
+                                <i class="fas fa-store"></i>
+                                {{ __('backend.article.general-info') }}
+                            </span>
+                            <small class="form-text text-white">
+                                {{ __('article_hour.article-general-info-help') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
+                            {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
+                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple required>
+                                    @foreach($all_categories as $key => $category)
+                                        @php
+                                            if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
+                                        @endphp
+                                    <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
+                                    @endforeach
+                            </select>
+                            @error('category')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-6">
+                            <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
+                            <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}" required>
+                            @error('article_title')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
+                            <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}" required>
+                            @error('article_address')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-4 col-lg-2">
+                            <label for="article_select_country_id" class="text-black">{{ __('Country') }}<span class="text-danger">*</span></label>
+                            <select id="article_select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" required>
+                                {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
+                                @foreach($all_countries as $all_countries_key => $country)
+                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
+                                <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                            @error('country_id')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label for="article_select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
+                            <select id="article_select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
+                                {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
+                            </select>
+                            @error('state_id')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label for="article_select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
+                            <select id="article_select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
+                                {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
+                            </select>
+                            @error('city_id')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 col-lg-2">
+                            <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
+                            <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" required>
+                            @error('article_postal_code')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-8 col-lg-4">
+                            <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                            <div class="input-group">
+                                <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
+                                <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <div class="form-check form-check-inline align_base grid_set">
+                                <input {{ old('article_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="1">
+                                <label class="form-check-label" for="article_address_hide">
+                                    {{ __('backend.article.hide-address') }}
+                                    <small class="text-muted text_hide_sm">
+                                        {{ __('backend.article.hide-address-help') }}
+                                    </small>
+                                </label>
+                            </div>
+                            @error('article_address_hide')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
+                            <textarea id="article_description" type="text" class="form-control @error('article_description') is-invalid @enderror" name="article_description">{{ old('article_description') }}</textarea>
+                            @error('article_description')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-3">
+                        <label class="text-black" for="item_keywords">{{ __('backend.article.keyword') }}</label>
+                        <input id="item_keywords" type="text" class="form-control @error('item_keywords') is-invalid @enderror" name="item_keywords" value="{{ old('item_keywords') ? old('item_keywords') : $login_user->item_keywords }}">
+                        <small class="form-text text-muted">
+                            Separate by comma
+                        </small>
+                        @error('item_keywords')
+                        <span class="invalid-tooltip">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-row mb-3">
+                        <input type="hidden" name="article_featured" value="{{ \App\Item::ITEM_NOT_FEATURED }}">                        
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_phone" class="text-black">
+                                <i class="fa-solid fa-phone-square"></i>
+                                 {{ __('backend.article.phone') }}</label>
+                            <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
+                            @error('article_phone')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_social_whatsapp" class="text-black">
+                                <i class="fa-brands fa-whatsapp-square"></i>
+                                {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
+                            </label>
+                            <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
+                            </small>
+                            @error('article_social_whatsapp')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_website" class="text-black">
+                                <i class="fa-solid fa-globe"></i>
+                                {{ __('backend.article.website') }}
+                            </label>
+                            <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('backend.shared.url-help') }}
+                            </small>
+                            @error('article_website')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_social_facebook" class="text-black">
+                                <i class="fa-brands fa-facebook-square"></i>
+                                {{ __('backend.article.facebook') }}
+                            </label>
+                            <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
+                            <span class="err_media_url" style="color:red"></span>
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('backend.shared.url-help') }}
+                            </small>
+                            @error('article_social_facebook')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            @if(Session::has('facebook_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('facebook_error') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-3">
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_social_twitter" class="text-black">
+                                <i class="fa-brands fa-twitter-square"></i>
+                                {{ __('backend.article.twitter') }}
+                            </label>
+                            <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
+                            <span class="err_twitter_url" style="color:red"></span>
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('backend.shared.url-help') }}
+                            </small>
+                            @error('article_social_twitter')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            @if(Session::has('twitter_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('twitter_error') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_social_linkedin" class="text-black">
+                                <i class="fa-brands fa-linkedin"></i>
+                                {{ __('backend.article.linkedin') }}
+                            </label>
+                            <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
+                            <span class="err_linkedin_url" style="color:red"></span>
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('backend.shared.url-help') }}
+                            </small>
+                            @error('article_social_linkedin')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            @if(Session::has('linkedin_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('linkedin_error') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="col-md-3 col-lg-3">
+                            <label for="article_social_instagram" class="text-black">
+                                <i class="fa-brands fa-instagram-square"></i>
+                                {{ __('article_whatsapp_instagram.article-social-instagram') }}
+                            </label>
+                            <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
+                            <span class="err_instagram_url" style="color:red"></span>
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                            </small>
+                            @error('article_social_instagram')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            @if(Session::has('instagram_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('instagram_error') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-left-primary mb-4">
+                <div class="col-12">
+                    <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 ">
+                        <div class="col-md-12">
+                            <span class="text-lg text-white">
+                                <i class="fas fa-clock"></i>
+                                {{ __('article_hour.open-hour') }}
+                            </span>
+                            <small class="form-text text-white">
+                                {{ __('article_hour.open-hour-help') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-12 col-md-6">
+                            <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
+                            <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
+                                @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
+                                <option value="{{ $time_zone_identifier }}" {{ old('article_hour_time_zone') == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">
+                                {{ __('article_hour.timezone-help') }}
+                            </small>
+                            @error('article_hour_time_zone')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="article_hour_show_hours" class="text-black">{{ __('article_hour.show-open-hour') }}</label>
+                            <select id="article_hour_show_hours" class="selectpicker form-control @error('article_hour_show_hours') is-invalid @enderror" name="article_hour_show_hours" data-live-search="true">
+                                <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('article_hour.show-hour') }}</option>
+                                <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('article_hour.not-show-hour') }}</option>
+                            </select>
+                            <small class="form-text text-muted">
+                                {{ __('article_hour.show-open-hour-help') }}
+                            </small>
+                            @error('article_hour_show_hours')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- <div class="form-row mb-3">
+                        <div class="col-12">
+                            <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
+                            <small class="form-text text-muted">
+                                {{ __('article_hour.open-hour-hours-help') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3 align-articles-end align-items-center">
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
+                            <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('article_hour.monday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('article_hour.tuesday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('article_hour.wednesday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('article_hour.thursday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('article_hour.friday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('article_hour.saturday') }}</option>
+                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
+                            </select>
+                        </div>
+                        @php
+                        $item_hour_open_time = isset($items_hours->item_hour_open_time) && !empty($items_hours->item_hour_open_time) ? explode(':',$items_hours->item_hour_open_time) : [0=>0,1=>0];
+                        $item_hour_close_time = isset($items_hours->item_hour_close_time) && !empty($items_hours->item_hour_close_time) ? explode(':',$items_hours->item_hour_close_time) : [0=>0,1=>0];
+                        $item_hour_exception_open_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_open_time) : [0=>0,1=>0];
+                        $item_hour_exception_close_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_close_time) : [0=>0,1=>0];
+                        @endphp
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                            <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
+                                @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                            <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
+                                @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                            <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
+                                @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                @endfor
+                            </select>
+                            <div id="message" style="color:red"></div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                            <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
+                                @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                <option value="{{ $full_minute }} {{ $full_minute == $item_hour_close_time[0] ? 'selected' :'' }}">{{ $full_minute }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_create_button">
+                                <i class="fas fa-plus"></i>
+                                {{ __('article_hour.add-open-hour') }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3" id="open_hour_added_hours">
+                    </div>
+
+                    <div class="form-row mb-3">
+                        <div class="col-12">
+                            <span class="text-gray-800">{{ __('article_hour.open-hour-exceptions') }}</span>
+                            <small class="form-text text-muted">
+                                {{ __('article_hour.open-hour-exceptions-help') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3 align-articles-end align-items-center">
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
+                            <input id="article_hour_exception_date" type="text" class="form-control" name="article_hour_exception_date" value="{{!empty($items_hours_exceptions->item_hour_exception_date) ? $items_hours_exceptions->item_hour_exception_date : ''}}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                            <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
+                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                            <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
+                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                            <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
+                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                @endfor
+                            </select>
+                            <div id="exception_close_hour" style="color:red"></div>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                            <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
+                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_close_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                            <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_exception_create_button">
+                                <i class="fas fa-plus"></i>
+                                {{ __('article_hour.add-open-hour-exception') }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3" id="open_hour_added_exceptions">
+                    </div> --}}
+                </div>
+            </div>
+            <div class="border-left-primary mb-4">
+                <div class="col-12">
+                    <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                        <div class="col-md-12">
+                            <span class="text-lg text-white">
+                                <i class="fas fa-images"></i>
+                                {{ __('article_hour.article-photos') }}
+                            </span>
+                            <small class="form-text text-white">
+                                {{ __('article_hour.article-photos-help') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-6 col-lg-6">
+                            <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
+                            <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                            <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                            <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                            @error('feature_image')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                        <strong id="img_error"></strong>
+                                    </div>
+                                    <button id="article_upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
+                                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
+                                    <img id="article_image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
+                                    <input id="article_feature_image" type="hidden" name="feature_image">
+                                </div>
+                            </div>
+                            @if(isset($article->item_image))
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
+                                            <i class="fas fa-trash-alt"></i>
+                                            {{ __('role_permission.article.delete-feature-image') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
+                            <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
+                            <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
+                            <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                            {{-- <small class="form-text text-muted">
+                                {{ __('theme_directory_hub.listing.max-upload', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
+                            </small> --}}
+                            @error('image_gallery')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display:none">
+                                <strong id="article_gallery_img_error"></strong>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display: none;">
+                                        <strong id="article_gallery_img_error"></strong>
+                                    </div>
+                                    <button id="article_upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
+                                    <div class="row" id="selected-images"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="form-row mb-3">
+                <div class="col-md-12">
+                    <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
+                        {{ __('backend.shared.create') }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+  {{-- Add article section End --}}
+    
+    @if($free_items->count() >0)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="below_info p-2">
+                    <h3>Articles</h3>
+                    @if(isset($free_items) && !empty($free_items) && $free_items->count() >=5 )
+                    <a href="{{ route('user.articles.index', $user_detail['id']) }}">View all</a>
                     @endif
                 </div>
             </div>
+            <div class="col-lg-12 ">
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr class="bg-info text-white">
+                                        <!-- <th>{{ __('importer_csv.select') }}</th> -->
+                                        <th>{{ __('backend.article.article') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($free_items as $items_key => $item)
+                                    <tr>                                    
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-12 col-md-4 col-lg-3 col-xl-2 img_width_set_100">
+                                                    @if(!empty($item->item_image_tiny))
+                                                    <img src="{{ Storage::disk('public')->url('item/' . $item->item_image_tiny) }}" alt="Image" class="img-fluid rounded">
+                                                    @elseif(!empty($item->item_image))
+                                                    <img src="{{ Storage::disk('public')->url('item/' . $item->item_image) }}" alt="Image" class="img-fluid rounded">
+                                                    @else
+                                                    <img src="{{ asset('backend/images/placeholder/full_item_feature_image_tiny.webp') }}" alt="Image" class="img-fluid rounded">
+                                                    @endif
+                                                </div>
+                                                <div class="col-12 col-md-8 col-lg-9 col-xl-10">
+                                                    @if($item->item_status == \App\Item::ITEM_SUBMITTED)
+                                                    <span class="text-warning"><i class="fas fa-exclamation-circle"></i></span>
+                                                    @elseif($item->item_status == \App\Item::ITEM_PUBLISHED)
+                                                    <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                                                    @elseif($item->item_status == \App\Item::ITEM_SUSPENDED)
+                                                    <span class="text-danger"><i class="fas fa-ban"></i></span>
+                                                    @endif
+                                                    <span class="text-gray-800">{{ $item->item_title }}</span>
+                                                    @if($item->item_featured == \App\Item::ITEM_FEATURED)
+                                                    <span class="text-white bg-info pl-1 pr-1 rounded">{{ __('prefer_country.featured') }}</span>
+                                                    @endif
+                                                    <div class="pt-1 pl-0 rating_stars rating_stars_{{ $item->item_slug }}" data-id="rating_stars_{{ $item->item_slug }}" data-rating="{{ empty($item->item_average_rating) ? 0 : $item->item_average_rating }}">
+                                                    </div>
+                                                    <span>
+                                                        {{ '(' . $item->getCountRating() . ' ' . __('review.frontend.reviews') . ')' }}
+                                                    </span>
+
+                                                    <br>
+
+                                                    @if($item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                                    <div class="d-flex align-items-baseline border_set_sm">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        {{ $item->item_address }},
+                                                        {{ $item->city->city_name }},
+                                                        {{ $item->state->state_name }},
+                                                        {{ $item->country->country_name }}
+                                                        {{ $item->item_postal_code }}
+                                                    </div>
+                                                    @else
+
+                                                    <span class="bg-primary text-white pl-1 pr-1 rounded">{{ __('theme_directory_hub.online-listing.online-listing') }}</span>
+                                                    @endif
+
+                                                    <div class="pt-2 sub_set_btn">
+                                                        @foreach($item->allCategories()->get() as $categories_key =>
+                                                        $category)
+                                                        <span class="border border-info text-info pl-1 pr-1 rounded">{{ $category->category_name }}</span>
+                                                        @endforeach
+                                                    </div>
+                                                    <hr class="mt-3 mb-2">
+                                                    <div class="two_btn_set">
+                                                        @if($item->item_status == \App\Item::ITEM_PUBLISHED)
+                                                        <a href="{{ route('page.item', $item->item_slug) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                            <i class="fas fa-external-link-alt"></i>
+                                                            {{ __('prefer_country.view-item') }}
+                                                        </a>
+                                                        @endif
+                                                        <a href="{{ route('user.articles.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
+                                                            <i class="far fa-edit"></i>
+                                                            {{ __('backend.shared.edit') }}
+                                                        </a>
+                                                    </div>
+                                                    <hr class="mt-2 mb-2">
+                                                    <div class="two_btn_set_bottom">
+                                                        <span class="text-info">
+                                                            <i class="far fa-plus-square"></i>
+                                                            {{ __('review.backend.posted-at') . ' ' . \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                                        </span>
+                                                        @if($item->created_at != $item->updated_at)
+                                                        <span class="text-info">
+                                                            |
+                                                            <i class="far fa-edit"></i>
+                                                            {{ __('review.backend.updated-at') . ' ' . \Carbon\Carbon::parse($item->updated_at)->diffForHumans() }}
+                                                        </span>
+                                                        @endif
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
-
-    </div>
-
-    {{-- <hr class="mt-5">
-
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-success m-2 text-white">
-                                    {{ __('backend.shared.update') }}
-    </button>
-    <a class="btn btn-warning m-2 text-white" href="{{ route('user.profile.password.edit') }}">
-        {{ __('backend.user.change-password') }}
-    </a>
+    @endif
 </div>
-</div> --}}
 
-
-{{-- </form> --}}
 </div>
 </div>
-</div>
-</div>
+
 
 <!-- Croppie Modal -->
 <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
@@ -1474,6 +2043,39 @@ $chk_post = Auth::user()->phone;
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
                 <button id="crop_image" type="button" class="btn btn-primary">{{ __('backend.user.crop-image') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Article Modal - feature image -->
+<div class="modal fade" id="image-crop-modal-article" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.crop-feature-image') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div id="article_image_demo"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="custom-file">
+                            <input id="article_upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                            <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                <button id="article_crop_image" type="button" class="btn btn-primary">{{ __('backend.article.crop-image') }}</button>
             </div>
         </div>
     </div>
@@ -1513,327 +2115,351 @@ $chk_post = Auth::user()->phone;
 </div>
 
 @foreach($video_media_array as $video_media_key => $video_media_value)
-<div class="modal fade" id="editMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Media') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="update-article-slug-form" action="{{ route('media.update', ['media_detail' => $video_media_value]) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-3">
-                            <label for="media_type" class="text-black">Type</label>
-                            <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
-                                @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
-                                <option value="{{ $mkey }}" {{ $video_media_value->media_type == $mkey ? 'selected' : '' }}>{{ $mvalue }}
-                                </option>
-                                @endforeach
-                            </select>
-                            @error('media_type')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-9">
-                            <label for="media_url" class="text-black">URL</label>
-                            <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ $video_media_value->media_url }}">
-                            @error('media_url')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+    <div class="modal fade" id="editMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Media') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="update-article-slug-form" action="{{ route('media.update', ['media_detail' => $video_media_value]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="media_type" class="text-black">Type</label>
+                                <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                    @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                                    <option value="{{ $mkey }}" {{ $video_media_value->media_type == $mkey ? 'selected' : '' }}>{{ $mvalue }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('media_type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-9">
+                                <label for="media_url" class="text-black">URL</label>
+                                <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ $video_media_value->media_url }}">
+                                @error('media_url')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] . ' : ' . $video_media_value->media_url }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                <form action="{{ route('media.destroy', ['media_detail' => $video_media_value]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" id="deleteMediaModal_{{ $video_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteMediaModal_{{ $video_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] . ' : ' . $video_media_value->media_url }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <form action="{{ route('media.destroy', ['media_detail' => $video_media_value]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endforeach
 
 @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
-<div class="modal fade" id="deleteEbookMediaModal_{{ $ebook_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteEbookMediaModal_{{ $ebook_media_value->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal fade" id="deleteEbookMediaModal_{{ $ebook_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteEbookMediaModal_{{ $ebook_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] . ' : ' . $ebook_media_value->media_name }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <form action="{{ route('ebookmedia.destroy', ['media_detail' => $ebook_media_value]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] . ' : ' . $ebook_media_value->media_name }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                <form action="{{ route('ebookmedia.destroy', ['media_detail' => $ebook_media_value]) }}" method="POST">
+        </div>
+    </div>
+@endforeach
+
+@foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+    <div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: #292b2c">{{ __('Edit Podcast') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="update-article-slug-form" action="{{ route('podcastmedia.update', ['podcate_detail' => $podcast_media_value]) }}" method="POST">
                     @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="media_type" class="text-black">Type</label>
+                                <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
+                                    <option name="apple_podcast" value="apple_podcast" {{ $podcast_media_value->podcast_web_type == 'apple_podcast' ? 'selected' : '' }} disabled>Apple Podcast</option>
+                                    <option name="spotify_podcast" value="spotify_podcast" {{ $podcast_media_value->podcast_web_type == 'spotify_podcast' ? 'selected' : '' }} disabled>Spotify Podcast</option>
+                                    <option name="stitcher_podcast" value="stitcher_podcast" {{ $podcast_media_value->podcast_web_type == 'stitcher_podcast' ? 'selected' : '' }} disabled>Stitcher Podcast</option>
+                                    <option name="google_podcast" value="google_podcast" {{ $podcast_media_value->podcast_web_type == 'google_podcast' ? 'selected' : '' }} disabled>Google Podcast</option>
+                                </select>
+                                @error('media_type')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-9">
+                                <label for="media_url" class="text-black">Podcast Title</label>
+                                <input type="hidden" name="podcast_media_id" value="{{ $podcast_media_value->id }}">
+                                <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ $podcast_media_value->media_name }}">
+                                @error('media_url')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
-@endforeach
 
-@foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-<div class="modal fade" id="editPodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="editPodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle" style="color: #292b2c">{{ __('Edit Podcast') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="update-article-slug-form" action="{{ route('podcastmedia.update', ['podcate_detail' => $podcast_media_value]) }}" method="POST">
-                @csrf
-                @method('PUT')
+    <div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-3">
-                            <label for="media_type" class="text-black">Type</label>
-                            <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
-                                <option name="apple_podcast" value="apple_podcast" {{ $podcast_media_value->podcast_web_type == 'apple_podcast' ? 'selected' : '' }} disabled>Apple Podcast</option>
-                                <option name="spotify_podcast" value="spotify_podcast" {{ $podcast_media_value->podcast_web_type == 'spotify_podcast' ? 'selected' : '' }} disabled>Spotify Podcast</option>
-                                <option name="stitcher_podcast" value="stitcher_podcast" {{ $podcast_media_value->podcast_web_type == 'stitcher_podcast' ? 'selected' : '' }} disabled>Stitcher Podcast</option>
-                                <option name="google_podcast" value="google_podcast" {{ $podcast_media_value->podcast_web_type == 'google_podcast' ? 'selected' : '' }} disabled>Google Podcast</option>
-                            </select>
-                            @error('media_type')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                    {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] . ' : ' . $podcast_media_value->media_name }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <form action="{{ route('podcastmedia.destroy', ['media_detail' => $podcast_media_value]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @endforeach
+    
+    <div class="modal fade" id="earn_points_detail" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="basic_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="basic_profile_img">
+                                <span class="bold pl-1" id="basic_profile">Basic</span>                            
+                            </div>
+                            <span class="padding-20">Basic Profile complete includes</span>
                         </div>
-                        <div class="col-9">
-                            <label for="media_url" class="text-black">Podcast Title</label>
-                            <input type="hidden" name="podcast_media_id" value="{{ $podcast_media_value->id }}">
-                            <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ $podcast_media_value->media_name }}">
-                            @error('media_url')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                        <div class="col-md-6">
+                            <ul class="list_design_ptb-30">
+                                <li class="user_image">Picture</li>
+                                <li class="category">Category</li>
+                                <li class="name">Name</li>
+                                <li class="company_name">Company Name</li>
+                                <li class="phone">Phone</li>
+                                <li class="email">Email</li>
+                                <li class="working_type">Working Method</li>
+                                <li class="preferred_pronouns">Pronouns</li>
+                                <li class="hourly_rate_type">Rate</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list_design_ptb-30">
+                                <li class="experience_year">Years Exp.</li>
+                                {{-- <li>Certifications</li>
+                                <li>Awards</li> --}}
+                                <li class="address">Address</li>
+                                <li class="country_id">Country</li>
+                                <li class="state_id">State</li>
+                                <li class="city_id">City</li>
+                                <li class="post_code">Zip Code</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row" id="social_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="social_profile_img">
+                                <span class="bold pl-1" id="social_profile">Social</span>                            
+                            </div>
+                            <span class="padding-20">Basic + Social Profile complete includes</span>
+                            <ul class="list_design_ptb-30">
+                                <li class="website">Website</li>
+                                <li class="instagram">IG Handle*</li>
+                                <li class="facebook">Facebook*</li>
+                                <li class="linkedin">LinkedIn*</li>
+                                <li class="youtube">YouTube*</li>
+                            </ul>
+                            <p class="content">*Must use /have a min of 3 platforms</p>
+                        </div>
+                    </div>
+                    <div class="row" id="bronze_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="bronze_profile_img">
+                                <span class="bold pl-1" id="bronze_profile">Bronze</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze Level complete includes</span>
+                            <ul class="list_design_ptb-30 d-flex">
+                                <li id="ten_content">10 pieces of content uploaded</li>&nbsp;<span id="ten_content_count"></span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row" id="silver_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="silver_profile_img">
+                                <span class="bold pl-1" id="silver_profile">Silver</span>
+                            </div>
+                            <span class="padding-20">Basic + Social + Bronze + Silver Level complete includes</span>
+                            <ul class="list_design_ptb-30">
+                                <div class="">
+                                    <li id="twenty_content">20 Pieces of content AND must include at least one from each type (Video, Podcast, Ebook)</li>&nbsp;<span id="twenty_content_count"></span>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row" id="gold_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="gold_profile_img">
+                                <span class="bold pl-1" id="gold_profile">Gold</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze + Silver + Gold Level complete</span>
+                            <ul class="list_design_ptb-30 d-flex">
+                                <li id="three_client_review">3 Client Reviews </li>&nbsp;<span id="three_client_review_count"></span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row" id="platinum_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="platinum_profile_img">
+                                <span class="bold pl-1" id="platinum_profile">Platinum</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
+
+                            <ul class="list_design_ptb-30">
+                                <div class="d-flex">
+                                    <li id="thirty_content">30 Pieces of content</li>&nbsp;<span id="thirty_content_count"></span>
+                                </div>
+                                <div class="d-flex">
+                                    <li id="seven_client_review">7 Client Reviews</li>&nbsp;<span id="seven_client_review_count"></span>
+                                </div>
+                                <li id="one_client_referral">1 Client Referral</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row" id="rhodium_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">                            
+                                <img src="" alt="" id="rhodium_profile_img">
+                                <span class="bold pl-1" id="rhodium_profile">Rhodium</span>
+                            </div>
+                                <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
+                            <ul class="list_design_ptb-30 d-flex">
+                                <li id="referrals">5 Client referrals</li>&nbsp;<span id="referal_count"></span>
+                            </ul>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                    <button type="submit" class="btn btn-success">{{ __('backend.shared.update') }}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deletePodcastMediaModal_{{ $podcast_media_value->id }}" tabindex="-1" role="dialog" aria-labelledby="deletePodcastMediaModal_{{ $podcast_media_value->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] . ' : ' . $podcast_media_value->media_name }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
-                <form action="{{ route('podcastmedia.destroy', ['media_detail' => $podcast_media_value]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
-                </form>
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade" id="earn_points_detail" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row" id="basic_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="basic_profile_img">
-                            <span class="bold pl-1" id="basic_profile">Basic</span>                            
-                        </div>
-                        <span class="padding-20">Basic Profile complete includes</span>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list_design_ptb-30">
-                            <li class="user_image">Picture</li>
-                            <li class="category">Category</li>
-                            <li class="name">Name</li>
-                            <li class="company_name">Company Name</li>
-                            <li class="phone">Phone</li>
-                            <li class="email">Email</li>
-                            <li class="working_type">Working Method</li>
-                            <li class="preferred_pronouns">Pronouns</li>
-                            <li class="hourly_rate_type">Rate</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list_design_ptb-30">
-                            <li class="experience_year">Years Exp.</li>
-                            {{-- <li>Certifications</li>
-                            <li>Awards</li> --}}
-                            <li class="address">Address</li>
-                            <li class="country_id">Country</li>
-                            <li class="state_id">State</li>
-                            <li class="city_id">City</li>
-                            <li class="post_code">Zip Code</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row" id="social_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="social_profile_img">
-                            <span class="bold pl-1" id="social_profile">Social</span>                            
-                        </div>
-                        <span class="padding-20">Basic + Social Profile complete includes</span>
-                        <ul class="list_design_ptb-30">
-                            <li class="website">Website</li>
-                            <li class="instagram">IG Handle*</li>
-                            <li class="facebook">Facebook*</li>
-                            <li class="linkedin">LinkedIn*</li>
-                            <li class="youtube">YouTube*</li>
-                        </ul>
-                        <p class="content">*Must use /have a min of 3 platforms</p>
-                    </div>
-                </div>
-                <div class="row" id="bronze_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="bronze_profile_img">
-                            <span class="bold pl-1" id="bronze_profile">Bronze</span>
-                        </div>
-                            <span class="padding-20">Basic + Social + Bronze Level complete includes</span>
-                        <ul class="list_design_ptb-30 d-flex">
-                            <li id="ten_content">10 pieces of content uploaded</li>&nbsp;<span id="ten_content_count"></span>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row" id="silver_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="silver_profile_img">
-                            <span class="bold pl-1" id="silver_profile">Silver</span>
-                        </div>
-                        <span class="padding-20">Basic + Social + Bronze + Silver Level complete includes</span>
-                        <ul class="list_design_ptb-30">
-                            <div class="">
-                                <li id="twenty_content">20 Pieces of content AND must include at least one from each type (Video, Podcast, Ebook)</li>&nbsp;<span id="twenty_content_count"></span>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row" id="gold_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="gold_profile_img">
-                            <span class="bold pl-1" id="gold_profile">Gold</span>
-                        </div>
-                            <span class="padding-20">Basic + Social + Bronze + Silver + Gold Level complete</span>
-                        <ul class="list_design_ptb-30 d-flex">
-                            <li id="three_client_review">3 Client Reviews </li>&nbsp;<span id="three_client_review_count"></span>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row" id="platinum_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">
-                            <img src="" alt="" id="platinum_profile_img">
-                            <span class="bold pl-1" id="platinum_profile">Platinum</span>
-                        </div>
-                            <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum Level complete</span>
-
-                        <ul class="list_design_ptb-30">
-                            <div class="d-flex">
-                                <li id="thirty_content">30 Pieces of content</li>&nbsp;<span id="thirty_content_count"></span>
-                            </div>
-                              <div class="d-flex">
-                                  <li id="seven_client_review">7 Client Reviews</li>&nbsp;<span id="seven_client_review_count"></span>
-                             </div>
-                            <li id="one_client_referral">1 Client Referral</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row" id="rhodium_content">
-                    <div class="col-md-12">
-                        <div class="align_set_flex">                            
-                            <img src="" alt="" id="rhodium_profile_img">
-                            <span class="bold pl-1" id="rhodium_profile">Rhodium</span>
-                        </div>
-                            <span class="padding-20">Basic + Social + Bronze + Silver + Gold + Platinum + Rhodium Level complete</span>
-                        <ul class="list_design_ptb-30 d-flex">
-                            <li id="referrals">5 Client referrals</li>&nbsp;<span id="referal_count"></span>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
 
 @endsection
 
 @section('scripts')
-<!-- <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="{{ asset('backend/vendor/leaflet/leaflet.js') }}"></script>
+    @endif
 
-@include('backend.user.partials.bootstrap-select-locale')
-<script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
+    <!-- Image Crop Plugin Js -->
+    <script src="{{ asset('backend/vendor/croppie/croppie.js') }}"></script>
+
+    <!-- Bootstrap Fd Plugin Js-->
+    <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    @include('backend.user.partials.bootstrap-select-locale')
+
+    <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/fontfamily/trumbowyg.fontfamily.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         @error('state_id')
@@ -1856,6 +2482,9 @@ $chk_post = Auth::user()->phone;
             maximumSelectionLength: 5
         });
 
+        $('.category').select2({           
+        });
+
         $('.selectpicker-category').selectpicker({
             maxOptions: 5
         });
@@ -1866,6 +2495,12 @@ $chk_post = Auth::user()->phone;
         var image_crop = null;
         $('#upload_image').on('click', function() {
             $('#image-crop-modal').modal('show');
+            $('#image_error_div').hide();
+            $('#img_error').text('');
+        });
+
+        $('#article_upload_image').on('click', function(){
+            $('#image-crop-modal-article').modal('show');
             $('#image_error_div').hide();
             $('#img_error').text('');
         });
@@ -1914,15 +2549,61 @@ $chk_post = Auth::user()->phone;
             }
         });
 
-        $('#crop_image').on("click", function(event) {
+        //For Article 
+        var fileTypes = ['jpg', 'jpeg', 'png'];
+        $('#article_upload_image_input').on('change', function() {
+            if (!image_crop) {
+                image_crop = $('#article_image_demo').croppie({
+                    enableExif: true,
+                    viewport: {
+                        width: 200,
+                        height: 200,
+                        type: 'square'
+                    },
+                    boundary: {
+                        width: 300,
+                        height: 300
+                    },
+                    enableOrientation: true
+                });
+            }
+            var reader = new FileReader();
+            var file = this.files[0]; // Get your file here
+            var fileExt = file.type.split('/')[1]; // Get the file extension
+            // console.log(fileExt);
+
+            if (fileTypes.indexOf(fileExt) !== -1) {
+
+                reader.onload = function(event) {
+                    image_crop.croppie('bind', {
+                        url: event.target.result
+                    }).then(function() {
+                        // console.log('jQuery bind complete');
+                    });
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                // alert('Please choose only .jpg,.jpeg,.png file');
+                $('#image-crop-modal-article').trigger('reset');
+                $('#image-crop-modal-article').modal('hide');
+                $('#article_upload_image_input').val('');
+                image_crop = null;
+                $('#article_image_demo').croppie('destroy');
+                $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                $('#image_error_div').show();
+            }
+        });
+
+
+        $('#article_crop_image').on("click", function(event) {
             image_crop.croppie('result', {
                 type: 'base64',
                 size: 'viewport'
             }).then(function(response) {
-                $('#feature_image').val(response);
-                $('#image_preview').attr("src", response);
+                $('#article_feature_image').val(response);
+                $('#article_image_preview').attr("src", response);
             });
-            $('#image-crop-modal').modal('hide')
+            $('#image-crop-modal-article').modal('hide')
         });
 
         var cover_image_crop = null;
@@ -1986,6 +2667,43 @@ $chk_post = Auth::user()->phone;
         });
         /* End the croppie image plugin */
 
+        $('#article_upload_gallery').on('click', function(){
+                $('#article_gallery_image_error_div').hide();
+                $('#article_gallery_img_error').text('');
+                window.selectedImages = [];
+                $.FileDialog({
+                    // accept: "image/jpeg",
+                    accept: ".jpeg,.jpg,.png",
+                }).on("files.bs.filedialog", function (event) {
+                    var html = "";
+                    for (var a = 0; a < event.files.length; a++) {
+                        if(a == 12) {break;}
+                        selectedImages.push(event.files[a]);
+                        // html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
+                        //     "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
+                        //     "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
+                        //     "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
+                        //     "</div>";
+
+                            var img_str = event.files[a].content;
+                            var img_str_split = img_str.split(";base64")[0];
+                            var img_ext = img_str_split.split("/")[1];
+                            if (img_ext != 'jpeg' && img_ext != 'png' && img_ext != 'jpg') {
+                                $('#article_gallery_img_error').text('Files other than extensions .jpg,.jpeg,.png are skipped');
+                                $('#article_gallery_image_error_div').show();
+                                // return false;
+                            }else{
+                                html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
+                                    "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
+                                    "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
+                                    "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
+                                    "</div>";
+                            }
+                    }
+                    document.getElementById("selected-images").innerHTML += html;
+                });
+            });
+
         /* Start delete feature image button */
         $('#delete_user_profile_image_button').on('click', function() {
             $('#delete_user_profile_image_button').attr("disabled", true);
@@ -2035,6 +2753,7 @@ $chk_post = Auth::user()->phone;
 
         /* Start country, state, city selector */
         $('#select_country_id').on('change', function() {
+            console.log("ddddddddddddd");
             $('#select_state_id').html(
                 "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
             $('#select_city_id').html(
@@ -2644,6 +3363,60 @@ $('#podcastFrm').on('submit', function(e) {
                 });
             })
         })    
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#article_select_country_id').on('change', function() {
+                $('#article_select_state_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#article_select_city_id').html(
+                    "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                //  $('#article_select_city_id').html("<option selected value='0'>{{ __('backend.item.select-city') }}</option>");
+                $('#article_select_state_id').selectpicker('refresh');
+                $('#article_select_city_id').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/states/' + this.value;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        success: function(result){
+                            $('#article_select_state_id').empty();
+                            $('#article_select_city_id').empty();
+
+                            // $('#article_select_state_id').html("<option selected value='0'>{{ __('backend.article.select-state') }}</option>");
+                            $.each(JSON.parse(result), function(key, value) {
+                                var state_id = value.id;
+                                var state_name = value.state_name;
+                                $('#article_select_state_id').append('<option value="'+ state_id +'">' + state_name + '</option>');
+                            });
+                            $('#article_select_state_id').selectpicker('refresh');
+                        }
+                    });
+                }
+            });
+
+            $('#article_select_state_id').on('change', function() {
+                $('#article_select_city_id').html("<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
+                $('#article_select_city_id').selectpicker('refresh');
+                if(this.value > 0) {
+                    var ajax_url = '/ajax/cities/' + this.value;
+                    jQuery.ajax({
+                        url: ajax_url,
+                        method: 'get',
+                        success: function(result){
+                            $('#article_select_city_id').empty();
+                            // $('#article_select_city_id').html("<option selected value='0'>{{ __('backend.article.select-city') }}</option>");
+                            $.each(JSON.parse(result), function(key, value) {
+                                var city_id = value.id;
+                                var city_name = value.city_name;
+                                $('#article_select_city_id').append('<option value="'+ city_id +'">' + city_name + '</option>');
+                            });
+                            $('#article_select_city_id').selectpicker('refresh');
+                        }
+                    });
+                }
+            });
+        })
     </script>
 
 @endsection

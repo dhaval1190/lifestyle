@@ -399,7 +399,7 @@
                                             <i class="fa-brands fa-instagram-square"></i>
                                             {{ __('article_whatsapp_instagram.article-social-instagram') }}
                                         </label>
-                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') }}">
+                                        <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
                                         <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
@@ -481,7 +481,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-12">
                                         <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
                                         <small class="form-text text-muted">
@@ -609,7 +609,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3" id="open_hour_added_exceptions">
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 
@@ -830,7 +830,7 @@
             $('#article_social_facebook').on('input', function(){
                 $('.err_media_url').html('');
                 var facebookUrl = $("#article_social_facebook").val();
-                console.log(facebookUrl)
+                // console.log(facebookUrl)
                 var matchUrl = "facebook";                
                 if(facebookUrl.indexOf(matchUrl) == -1){
                     $('.err_media_url').html("Please enter Facebook URL Only");

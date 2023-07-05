@@ -26,6 +26,7 @@ use App\Rules\Base64Image;
 use App\MediaDetailsVisits;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Validator;
+use DateTimeZone;
 
 
 
@@ -80,6 +81,11 @@ class UserController extends Controller
         }])
         ->where('category_parent_id', null)
         ->orderBy('all_items_count', 'desc')->get();
+
+        $all_categories = [];
+        if($login_user->categories->count() > 0) {
+            $all_categories = $login_user->categories()->select('categories.id as category_id','categories.category_name','categories.category_parent_id as is_parent')->get()->map->only(['category_id', 'category_name','is_parent'])->values()->toArray();
+        }
 
         /**
          * Do listing query
@@ -211,13 +217,14 @@ class UserController extends Controller
 
        
            
-            $free_items = $free_items_query->paginate(4);
+            $free_items = $free_items_query->paginate(5);
 
            
             
       
         
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+        $time_zone_identifiers = DateTimeZone::listIdentifiers();
 
         // $all_states = Country::find($site_prefer_country_id)
         //     ->states()
@@ -239,7 +246,7 @@ class UserController extends Controller
         $total_results = $total_free_items;
 
         return response()->view('backend.user.profile.edit',
-            compact('user_detail','free_items','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points'));
+            compact('user_detail','free_items','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points','all_categories','time_zone_identifiers'));
     }
 
     /**

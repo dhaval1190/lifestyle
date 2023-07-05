@@ -556,7 +556,7 @@ $login_user = Auth::user();
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-12">
                                         <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
                                         <small class="form-text text-muted">
@@ -720,7 +720,7 @@ $login_user = Auth::user();
                                             </a>
                                         </div>
                                     @endforeach
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <!-- end opening hour section -->
