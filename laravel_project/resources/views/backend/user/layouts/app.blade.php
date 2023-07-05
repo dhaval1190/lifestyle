@@ -125,11 +125,11 @@
         /**
          * The front-end form disable submit button UI
          */
-        $("form").on("submit", function () {
-            $("form :submit").attr("disabled", true);
-            $("button").attr("disabled", true);
-            return true;
-        });
+        // $("form").on("submit", function () {
+        //     $("form :submit").attr("disabled", true);
+        //     $("button").attr("disabled", true);
+        //     return true;
+        // });
 
     });
 

@@ -27,7 +27,7 @@ class VerifySubscription
         $subscription = $user->subscription()->orderBy('id','DESC')->first();
         // dd($subscription);
 
-        if(isset($subscription->stripe_id)){
+        if(!empty($subscription->stripe_id)){
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET')); 
             $subscriptionData = \Stripe\Subscription::retrieve($subscription->stripe_id);
             // dd($subscriptionData->status);

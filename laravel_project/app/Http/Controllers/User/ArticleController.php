@@ -456,8 +456,8 @@ class ArticleController extends Controller
             'article_video_urls' => 'nullable|array',
             'article_video_urls.*' => 'url|max:255',
             'article_type' => 'required|numeric|in:1,2',
-            'article_hour_time_zone' => 'required|max:255',
-            'article_hour_show_hours' => 'required|numeric|in:1,2',
+            // 'article_hour_time_zone' => 'required|max:255',
+            // 'article_hour_show_hours' => 'required|numeric|in:1,2',
             'article_social_instagram' => 'nullable|string|max:255',
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
@@ -896,7 +896,8 @@ class ArticleController extends Controller
         \Session::flash('flash_message', __('alert.article-created'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.articles.edit', ['article' => $new_item]);
+        // return redirect()->route('user.articles.edit', ['article' => $new_item]);
+        return back();
     }
 
     /**
