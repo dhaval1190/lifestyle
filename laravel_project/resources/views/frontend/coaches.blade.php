@@ -56,7 +56,8 @@
                         @foreach ($categories as $categories_key => $category)
                             <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
                                 @if ($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
-                                    <a href="{{ route('page.category', $category->category_slug) }}"
+                                    {{-- <a href="{{ route('page.category', $category->category_slug) }}" --}}
+                                        <a href="{{ route('page.coaches.category', $category->category_slug) }}"
                                         class="popular-category h-100 decoration-none">
                                         <span class="icon">
                                             <span>
@@ -71,7 +72,8 @@
                                         <span class="caption d-block">{{ $category->category_name }}</span>
                                     </a>
                                 @elseif($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_IMAGE)
-                                    <a href="{{ route('page.category', $category->category_slug) }}"
+                                    {{-- <a href="{{ route('page.category', $category->category_slug) }}" --}}
+                                        <a href="{{ route('page.coaches.category', $category->category_slug) }}"
                                         class="popular-category h-100 decoration-none image-category">
                                         <span class="icon image-category-span">
                                             <span>

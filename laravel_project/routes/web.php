@@ -84,6 +84,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
     Route::put('/podcastmedia/update/{podcast_detail?}', 'PagesController@updatePodcastMedia')->name('podcastmedia.update');
     Route::delete('/podcastmedia/destroy/{media_detail}', 'PagesController@destroyPodcastMedia')->name('podcastmedia.destroy');
     Route::get('/coaches', 'PagesController@coaches')->name('page.coaches');
+    Route::get('/coaches/category/{category_slug}', 'PagesController@coachesCategory')->name('page.coaches.category');
     Route::get('/all-coaches', 'PagesController@allCoaches')->name('page.allcoaches');
     Route::get('/earn-points', 'PagesController@earnPointsDetail')->name('page.earn.points');
     Route::get('/all-podcast-detail/{id}', 'PagesController@ViewAllPodcastDetail')->name('page.profile.allpodcast');
