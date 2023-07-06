@@ -3024,6 +3024,381 @@ class PagesController extends Controller
             ));
     }
 
+    public function coachesCategory(Request $request,string $category_slug)
+    {
+
+        // dd($request->all());
+        $category = Category::where('category_slug', $category_slug)->first();
+        
+        $category_id_arr = [];
+        $user = new User;
+        if($category->category_parent_id == null){
+            $children_categories = $category->children()->orderBy('category_name')->get();
+            foreach($children_categories as $children_category){
+                $category_id_arr[] = $children_category->id;
+            }
+            // print_r($category_id_arr);exit;            
+            $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')->whereIn('categories.id',$category_id_arr)
+            ->groupBy('users.id');
+            
+            // dd($all_coaches);            
+            
+        }else{
+            // $all_coaches = $category->users;
+
+            $category_id_arr[] = $category->id;
+            $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')->whereIn('categories.id',$category_id_arr)
+            ->groupBy('users.id');
+            // dd($category_id_arr);
+            // dd($all_coaches);
+            
+            
+        }
+        
+        // dd($all_coaches->get());exit;
+
+        if($category)
+        {
+            $settings = app('site_global_settings');
+            $site_prefer_country_id = app('site_prefer_country_id');
+
+            /**
+             * Start SEO
+             */
+            SEOMeta::setTitle($category->category_name . ' - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
+            SEOMeta::setDescription($category->category_description);
+            SEOMeta::setCanonical(URL::current());
+            SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+            /**
+             * End SEO
+             */
+
+            /**
+             * Get parent and children categories
+             */
+            $parent_categories = $category->allParents();
+
+            // get one level down sub-categories
+            $children_categories = $category->children()->orderBy('category_name')->get();
+
+            // need to give a root category for each item in a category listing page
+            $parent_category_id = $category->id;
+
+            /**
+             * Do listing query
+             * 1. get paid listings and free listings.
+             * 2. decide how many paid and free listings per page and total pages.
+             * 3. decide the pagination to paid or free listings
+             * 4. run query and render
+             */
+
+            // paid listing
+            $paid_items_query = Item::query();
+
+            /**
+             * Start filter for paid listing
+             */
+            // categories
+            $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+            // dd($filter_categories);
+            $category_obj = new Category();
+
+            if(count($filter_categories) > 0)
+            {
+                // $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+                $all_coaches = $all_coaches->whereIn('user_categories.category_id',$filter_categories);
+                $user_category_arr = $filter_categories;
+            }
+            else
+            {
+                $user_category_arr = $category_id_arr;
+                // Get all child categories of this category
+                // $all_child_categories = collect();
+                // $all_child_categories_ids = array();
+                // $category->allChildren($category, $all_child_categories);
+                // foreach($all_child_categories as $key => $all_child_category)
+                // {
+                //     $all_child_categories_ids[] = $all_child_category->id;
+                // }
+
+                // $item_ids = $category_obj->getItemIdsByCategoryIds($all_child_categories_ids);
+            }
+
+            // state & city
+            $filter_country = empty($request->filter_country) ? null : $request->filter_country;
+            $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+            $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+            
+
+            $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
+                // $free_items_query->leftJoin('users', function($join) {
+                //     $join->on('users.id', '=', 'items.user_id');
+                // });
+                if($filter_gender_type) {
+                    $all_coaches = $all_coaches->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $all_coaches = $all_coaches->where('users.preferred_pronouns', $filter_preferred_pronouns);
+                    // dd("dsdjjsk");
+                }
+                if($filter_working_type) {
+                    $all_coaches = $all_coaches->where('users.working_type', $filter_working_type);
+                }
+                if($filter_hourly_rate) {
+                    $all_coaches = $all_coaches->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+                if(!empty($filter_country)) {
+                    $all_coaches = $all_coaches->where('users.country_id', $filter_country);
+                }
+                // filter free listings state
+                if(!empty($filter_state))
+                {
+                    $all_coaches = $all_coaches->where('users.state_id', $filter_state);
+                }
+    
+                // filter free listings city
+                if(!empty($filter_city))
+                {
+                    $all_coaches = $all_coaches->where('users.city_id', $filter_city);
+                }
+            }
+            
+        /**
+         * End filter gender type, working type, price range
+        */
+
+            /**
+             * Start filter sort by for free listing
+             */
+            $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+            if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'ASC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'ASC');
+            }
+            // elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+            // {
+            //     $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+            //         ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            //         ->orderBy('distance', 'ASC');
+            //         // $all_coaches = $all_coaches->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+            //         // ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+            //         // ->orderBy('distance', 'ASC');
+            // }
+            /**
+             * End filter sort by for free listing
+             */
+
+
+            $querystringArray = [
+                'filter_categories' => $filter_categories,
+                'filter_sort_by' => $filter_sort_by,
+                'filter_country' => $filter_country,
+                'filter_state' => $filter_state,
+                'filter_city' => $filter_city,
+                'filter_gender_type' => $filter_gender_type,
+                'filter_preferred_pronouns' => $filter_preferred_pronouns,
+                'filter_working_type' => $filter_working_type,
+                'filter_hourly_rate' => $filter_hourly_rate,
+            ];
+
+            /**
+             * Start fetch ads blocks
+             */
+            $advertisement = new Advertisement();
+
+            $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+                Advertisement::AD_STATUS_ENABLE
+            );
+
+            $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+                Advertisement::AD_STATUS_ENABLE
+            );
+
+            $ads_before_content = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_BEFORE_CONTENT,
+                Advertisement::AD_STATUS_ENABLE
+            );
+
+            $ads_after_content = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_AFTER_CONTENT,
+                Advertisement::AD_STATUS_ENABLE
+            );
+
+            $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+                Advertisement::AD_STATUS_ENABLE
+            );
+
+            $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+                Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+                Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+                Advertisement::AD_STATUS_ENABLE
+            );
+            /**
+             * End fetch ads blocks
+             */
+
+
+            /**
+             * Start initial filter
+             */
+            $all_countries = Country::orderBy('country_name')->get();
+            $all_states = collect([]);        
+        
+            if(!empty($filter_country))
+            {
+                $country = Country::find($filter_country);
+                $all_states = $country->states()->orderBy('state_name')->get();
+            }
+
+            // $all_states = Country::find($site_prefer_country_id)
+            //     ->states()
+            //     ->orderBy('state_name')
+            //     ->get();
+
+            $all_cities = collect([]);
+            if(!empty($filter_state))
+            {
+                $state = State::find($filter_state);
+                $all_cities = $state->cities()->orderBy('city_name')->get();
+            }                   
+
+            /**
+             * End initial filter
+             */
+
+
+            /**
+             * Start inner page header customization
+             */
+            if($category->category_header_background_type == Category::CATEGORY_HEADER_BACKGROUND_TYPE_INHERITED)
+            {
+                $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+                    ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+                $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+                    ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+                $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+                    ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+                $site_innerpage_header_background_image = Storage::disk('public')->url('customization/' . $site_innerpage_header_background_image);
+
+                $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+                    ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            }
+            else
+            {
+                if($category->category_header_background_type == Category::CATEGORY_HEADER_BACKGROUND_TYPE_COLOR)
+                {
+                    $site_innerpage_header_background_type = Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_COLOR;
+                }
+                elseif($category->category_header_background_type == Category::CATEGORY_HEADER_BACKGROUND_TYPE_IMAGE)
+                {
+                    $site_innerpage_header_background_type = Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_IMAGE;
+                }
+                elseif($category->category_header_background_type == Category::CATEGORY_HEADER_BACKGROUND_TYPE_VIDEO)
+                {
+                    $site_innerpage_header_background_type = Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO;
+                }
+
+                $site_innerpage_header_background_color = $category->category_header_background_color;
+
+                $site_innerpage_header_background_image = $category->category_header_background_image;
+                $site_innerpage_header_background_image = Storage::disk('public')->url('category/' . $site_innerpage_header_background_image);
+
+                $site_innerpage_header_background_youtube_video = $category->category_header_background_youtube_video;
+            }
+
+            $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+            $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+                ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+            /**
+             * End inner page header customization
+             */
+
+            /**
+             * Start initial blade view file path
+             */
+            $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+            $theme_view_path = $theme_view_path->getViewPath();
+            /**
+             * End initial blade view file path
+             */
+            $all_coaches_data = $all_coaches->get();
+            $all_coaches_count = $all_coaches_data->count();
+            $all_coaches = $all_coaches->paginate(9);
+            $all_coaches->appends($querystringArray);
+            // $all_coaches = $all_coaches->get();
+            // $all_coaches = $all_coaches->paginate(9);
+            
+// print_r($category->id);exit;
+            foreach($all_coaches as $category_coach){
+                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+                ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)->whereIn('user_categories.category_id',$user_category_arr)
+                ->where('users.role_id', Role::COACH_ROLE_ID)->where('users.user_suspended', User::USER_NOT_SUSPENDED)->get();
+                $category_1=[];
+                $parent_category=[];
+                $category_icon=[];
+                $category_slug=[];
+                foreach($coach_categorys as $category_name){
+                    $category_1[] = $category_name['category_name'];
+                    $parent_category[] = $category_name['category_parent_id'];
+                    $category_icon[] = $category_name['category_icon'];
+                    $category_slug[] = $category_name['category_slug'];
+                }
+                $parent_category_name =Category::whereIn('id',$parent_category)->select('categories.*','category_name','category_icon','category_slug')->get();
+                $category_coach['category_name_one'] = $category_1;
+                $category_coach['category_icon_one'] = $category_icon;
+                $category_coach['category_slug_one'] = $category_slug;
+                $category_coach['category_parent_name'] = $parent_category_name;
+            }
+
+            // print_r($all_coaches);exit;
+
+            return response()->view($theme_view_path . 'coach_category',
+                compact('category', 'all_states',
+                    'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                    'ads_before_sidebar_content', 'ads_after_sidebar_content', 'parent_categories', 'children_categories',
+                    'parent_category_id', 'site_innerpage_header_background_type', 'site_innerpage_header_background_color',
+                    'site_innerpage_header_background_image', 'site_innerpage_header_background_youtube_video',
+                    'site_innerpage_header_title_font_color', 'site_innerpage_header_paragraph_font_color', 'filter_sort_by',
+                    'filter_categories', 'filter_state', 'filter_city', 'all_cities',
+                    'filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_countries','filter_country','all_coaches','all_coaches_count'
+                ));
+        }
+        else
+        {
+            abort(404);
+        }
+    }
+
     public function allCoaches(Request $request)
     {
         $settings = app('site_global_settings');

@@ -259,4 +259,9 @@ class Category extends Model
 
         return $children_categories_array;
     }
+
+    public function users(){
+
+        return $this->belongsToMany('App\User','user_categories');
+    }
 }
