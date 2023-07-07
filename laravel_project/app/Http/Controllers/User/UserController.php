@@ -1022,7 +1022,7 @@ class UserController extends Controller
                     }elseif($request->podcast_web_type == 'stitcher_podcast' && stripos($request->podcast_image,'stitcher') !== false){
                         return response()->json(['status'=>'url_error','msg'=>'Please enter proper URL']);
                     }else{
-                        return response()->json(['status'=>'url_error','msg'=>'Please type and URL not matching']);
+                        return response()->json(['status'=>'url_error','msg'=>'Podcast type and URL not matching']);
                     }
                     
                 }

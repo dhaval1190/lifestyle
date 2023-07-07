@@ -724,7 +724,7 @@ $chk_post = Auth::user()->phone;
                 <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
                     <label for="media_url" class="text-black">&nbsp;</label>
                     <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-plus" style="color: white !important"></i>
                         {{ __('Add') }}
                     </a>
                 </div>
@@ -1378,11 +1378,10 @@ $chk_post = Auth::user()->phone;
                         <div class="col-md-4 col-lg-2">
                             <label for="article_select_country_id" class="text-black">{{ __('Country') }}<span class="text-danger">*</span></label>
                             <select id="article_select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" required>
-                                {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                 @foreach($all_countries as $all_countries_key => $country)
-                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
-                                <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
-                                @endif
+                                    @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
+                                        <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                             @error('country_id')
@@ -1395,6 +1394,19 @@ $chk_post = Auth::user()->phone;
                             <label for="article_select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                             <select id="article_select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                 {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
+                                @if($all_states)
+                                    @foreach($all_states as $key => $state)
+                                        @error('state_id')
+                                            <option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
+                                                {{ $state->state_name }}
+                                            </option>
+                                        @else
+                                            <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
+                                                {{ $state->state_name }}
+                                            </option>
+                                        @enderror
+                                    @endforeach
+                                @endif
                             </select>
                             @error('state_id')
                             <span class="invalid-feedback">
@@ -1406,6 +1418,19 @@ $chk_post = Auth::user()->phone;
                             <label for="article_select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                             <select id="article_select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                 {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
+                                @if($all_cities)
+                                    @foreach($all_cities as $key => $city)
+                                        @error('state_id') 
+                                            <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
+                                                {{ $city->state_name }}
+                                            </option>
+                                        @else
+                                            <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
+                                                {{ $city->city_name }}
+                                            </option>
+                                        @enderror
+                                    @endforeach
+                                @endif
                             </select>
                             @error('city_id')
                             <span class="invalid-feedback">
@@ -1528,7 +1553,7 @@ $chk_post = Auth::user()->phone;
                                 {{ __('backend.article.facebook') }}
                             </label>
                             <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
-                            <span class="err_media_url" style="color:red"></span>
+                            <span class="article_err_media_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
                                 {{ __('backend.shared.url-help') }}
                             </small>
@@ -1552,7 +1577,7 @@ $chk_post = Auth::user()->phone;
                                 {{ __('backend.article.twitter') }}
                             </label>
                             <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
-                            <span class="err_twitter_url" style="color:red"></span>
+                            <span class="article_err_twitter_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
                                 {{ __('backend.shared.url-help') }}
                             </small>
@@ -1574,7 +1599,7 @@ $chk_post = Auth::user()->phone;
                                 {{ __('backend.article.linkedin') }}
                             </label>
                             <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
-                            <span class="err_linkedin_url" style="color:red"></span>
+                            <span class="article_err_linkedin_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
                                 {{ __('backend.shared.url-help') }}
                             </small>
@@ -1596,7 +1621,7 @@ $chk_post = Auth::user()->phone;
                                 {{ __('article_whatsapp_instagram.article-social-instagram') }}
                             </label>
                             <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
-                            <span class="err_instagram_url" style="color:red"></span>
+                            <span class="article_err_instagram_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
                                 {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
                             </small>
@@ -2963,7 +2988,7 @@ $('#podcastFrm').on('submit', function(e) {
 
             success: function(result) {  
                 
-                console.log(result);
+                // console.log(result);
 
                 $('#podcastSubmitBtn').prop("disabled", false);
                 $('#frmSubmit').prop("disabled", false);
@@ -3068,7 +3093,7 @@ $('#podcastFrm').on('submit', function(e) {
 
                 }
                 if (result.status == 'error') {
-                    console.log(result);
+                    // console.log(result);
                     $.each(result.msg, function(key, val) {
                         if (result.msg.media_cover) {
                             $('.media_cover').text(result.msg.media_cover);
@@ -3211,6 +3236,88 @@ $('#podcastFrm').on('submit', function(e) {
         }
 
     });
+
+    //For article social validations
+    $('#article_social_facebook').on('input', function(){
+                $('.article_err_media_url').html('');
+                var facebookUrl = $("#article_social_facebook").val();
+                // console.log(facebookUrl)
+                var matchUrl = "facebook";                
+                if(facebookUrl.indexOf(matchUrl) == -1){
+                    $('.article_err_media_url').html("Please enter Facebook URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(facebookUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.article_err_media_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.article_err_media_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#article_social_twitter').on('input', function(){
+                $('.article_err_twitter_url').html('');
+                var twitterUrl = $("#article_social_twitter").val();
+                var matchUrl = "twitter";                
+                if(twitterUrl.indexOf(matchUrl) == -1){
+                    $('.article_err_twitter_url').html("Please enter Twitter URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(twitterUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.article_err_twitter_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.article_err_twitter_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+            $('#article_social_linkedin').on('input', function(){
+                $('.article_err_linkedin_url').html('');
+                var linkedinUrl = $("#article_social_linkedin").val();
+                var matchUrl = "linkedin";                
+                if(linkedinUrl.indexOf(matchUrl) == -1){
+                    $('.article_err_linkedin_url').html("Please enter Linkedin URL Only");
+                    $('#submit').attr("disabled", true);
+                    if(linkedinUrl.length == 0){
+                        $('#submit').attr("disabled", false);
+                        $('.article_err_linkedin_url').html('');
+                    }
+                    return false;
+                }else{
+                    $('.article_err_linkedin_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+            });
+
+            function articleIsUrl(s) {
+            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            return regexp.test(s);
+            }
+            $('#article_social_instagram').on('input', function(){  
+                $('.article_err_instagram_url').html('');             
+               var instaurl =  articleIsUrl($("#article_social_instagram").val());  
+               var instaurl1 =  $("#article_social_instagram").val();
+               matchUrl_insta = 'www.';
+            //    if(instaurl){
+               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+                    $('.article_err_instagram_url').html("Please enter valid instagram user name Only");
+                    $('#submit').attr("disabled", true);
+                    return false;
+                }else{
+                    $('.article_err_instagram_url').html('');
+                    $('#submit').attr("disabled", false);
+
+                }
+              
+            });
+
+
+    //End article social validations
     window.onload = function() {
         var chartData = {
             "Profile Progress": [{
