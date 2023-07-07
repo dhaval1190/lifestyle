@@ -301,7 +301,6 @@
                 // var id = $(this).val();
             
             // alert(id);
-            // url = 'http://localhost/coach_directory/ajax/profile/podcast/' + id;
             url = '/ajax/profile/podcast/' + id;
                 if (type == 'pause') {
                     start_loader();

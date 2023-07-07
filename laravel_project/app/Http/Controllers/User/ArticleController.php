@@ -1676,7 +1676,8 @@ class ArticleController extends Controller
         \Session::flash('flash_message', __('alert.item-updated'));
         \Session::flash('flash_type', 'success');
 
-        return redirect()->route('user.articles.edit', ['article' => $article]);
+        // return redirect()->route('user.articles.edit', ['article' => $article]);
+        return back();
     }
 
     /**

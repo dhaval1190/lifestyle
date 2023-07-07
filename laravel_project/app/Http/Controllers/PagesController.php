@@ -3358,7 +3358,7 @@ class PagesController extends Controller
             // $all_coaches = $all_coaches->get();
             // $all_coaches = $all_coaches->paginate(9);
             
-// print_r($category->id);exit;
+            // print_r($category->id);exit;
             foreach($all_coaches as $category_coach){
                 $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
                 ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)->whereIn('user_categories.category_id',$user_category_arr)
@@ -3399,12 +3399,360 @@ class PagesController extends Controller
         }
     }
 
+    // public function allCoaches(Request $request)
+    // {
+    //     $settings = app('site_global_settings');
+    //     $site_prefer_country_id = app('site_prefer_country_id');
+        
+    //     $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
+
+    //     /**
+    //      * Start SEO
+    //      */
+    //     SEOMeta::setTitle(__('seo.frontend.coaches', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+    //     SEOMeta::setDescription('');
+    //     SEOMeta::setCanonical(URL::current());
+    //     SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+    //     /**
+    //      * End SEO
+    //      */
+    //     $subscription_obj = new Subscription();
+
+    //     $active_user_ids = $subscription_obj->getActiveCoachUserIds();
+
+        
+    //     $categories = Category::withCount(['allItems' => function ($query) use ($active_user_ids, $site_prefer_country_id) {
+    //         $query->whereIn('items.user_id', $active_user_ids)
+    //         ->where('items.item_status', Item::ITEM_PUBLISHED);
+    //         // ->where(function ($query) use ($site_prefer_country_id) {
+    //         //     $query->where('items.country_id', $site_prefer_country_id)
+    //         //     ->orWhereNull('items.country_id');
+    //         // });
+    //     }])
+    //     ->where('category_parent_id', null)
+    //     ->orderBy('all_items_count', 'desc')->get();
+
+    //     /**
+    //      * Start filter for paid listing
+    //      */
+    //     // categories
+    //     $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
+
+    //     $category_obj = new Category();
+    //     $item_ids = $category_obj->getItemIdsByCategoryIds($filter_categories);
+
+    //     // state & city
+    //     $filter_country = empty($request->filter_country) ? null : $request->filter_country;
+    //     $filter_state = empty($request->filter_state) ? null : $request->filter_state;
+    //     $filter_city = empty($request->filter_city) ? null : $request->filter_city;
+    //     /**
+    //      * End filter for paid listing
+    //      */
+
+    //     // free listing
+    //     $free_items_query = Item::query();
+
+    //     // get free users id array
+    //     //$free_user_ids = $subscription_obj->getFreeUserIds();
+    //     //$free_user_ids = $subscription_obj->getActiveUserIds();
+    //     $free_user_ids = $active_user_ids;
+
+    //     if(count($item_ids) > 0)
+    //     {
+    //         $free_items_query->whereIn('items.id', $item_ids);
+    //     }
+
+    //     $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+    //         // ->where(function ($query) use ($site_prefer_country_id) {
+    //         //     $query->where('items.country_id', $site_prefer_country_id)
+    //         //         ->orWhereNull('items.country_id');
+    //         // })
+    //         ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+    //         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+    //         ->whereIn('items.user_id', $free_user_ids);
+
+    //     /**
+    //      * Start filter gender type, working type, price range
+    //      */
+    //     $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+    //     $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
+    //     $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+    //     $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+    //     if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns) {
+    //         $free_items_query->leftJoin('users', function($join) {
+    //             $join->on('users.id', '=', 'items.user_id');
+    //         });
+    //         if($filter_gender_type) {
+    //             $free_items_query->where('users.gender', $filter_gender_type);
+    //         }
+    //         if($filter_preferred_pronouns) {
+    //             $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
+    //         }
+    //         if($filter_working_type) {
+    //             $free_items_query->where('users.working_type', $filter_working_type);
+    //         }
+    //         if($filter_hourly_rate) {
+    //             $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
+    //         }
+    //         // filter paid listings country
+    //         if(!empty($filter_country)) {
+    //             $free_items_query->where('users.country_id', $filter_country);
+    //         }
+    //         // filter free listings state
+    //         if(!empty($filter_state))
+    //         {
+    //             $free_items_query->where('users.state_id', $filter_state);
+    //         }
+
+    //         // filter free listings city
+    //         if(!empty($filter_city))
+    //         {
+    //             $free_items_query->where('users.city_id', $filter_city);
+    //         }
+    //     }
+    //     /**
+    //      * End filter gender type, working type, price range
+    //     */
+
+    //     /**
+    //      * Start filter sort by for free listing
+    //      */
+    //     $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
+    //     if($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+    //     {
+    //         $free_items_query->orderBy('items.item_average_rating', 'DESC');
+    //     }
+    //     elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+    //     {
+    //         $free_items_query->orderBy('items.item_average_rating', 'ASC');
+    //     }
+    //     elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
+    //     {
+    //         $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
+    //         ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
+    //         ->orderBy('distance', 'ASC');
+    //     }
+        
+    //     /**
+    //      * End filter sort by for free listing
+    //      */
+
+    //     $free_items_query->distinct('items.id')
+    //         ->with('country')
+    //         ->with('state')
+    //         ->with('city')
+    //         ->with('user');
+
+    //     $querystringArray = [
+    //         'filter_categories' => $filter_categories,
+    //         'filter_sort_by' => $filter_sort_by,
+    //         'filter_country' => $filter_country,
+    //         'filter_state' => $filter_state,
+    //         'filter_city' => $filter_city,
+    //         'filter_gender_type' => $filter_gender_type,
+    //         'filter_preferred_pronouns' => $filter_preferred_pronouns,
+    //         'filter_working_type' => $filter_working_type,
+    //         'filter_hourly_rate' => $filter_hourly_rate,
+    //     ];
+
+    //     // $free_items = $free_items_query->paginate(10);
+    //     $free_items = $free_items_query;
+    //     //$pagination = $free_items->appends($querystringArray);
+
+    //     /**
+    //      * End do listing query
+    //      */
+
+    //     /**
+    //      * Start fetch ads blocks
+    //      */
+    //     $advertisement = new Advertisement();
+
+    //     $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+    //         Advertisement::AD_STATUS_ENABLE
+    //         );
+
+    //     $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+    //         Advertisement::AD_STATUS_ENABLE
+    //     );
+
+    //     $ads_before_content = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_BEFORE_CONTENT,
+    //         Advertisement::AD_STATUS_ENABLE
+    //     );
+
+    //     $ads_after_content = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_AFTER_CONTENT,
+    //         Advertisement::AD_STATUS_ENABLE
+    //     );
+
+    //     $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+    //         Advertisement::AD_STATUS_ENABLE
+    //     );
+
+    //     $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+    //         Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+    //         Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+    //         Advertisement::AD_STATUS_ENABLE
+    //     );
+    //     /**
+    //      * End fetch ads blocks
+    //      */
+
+    //     /**
+    //      * Start inner page header customization
+    //      */
+    //     $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+    //     $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+    //     $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+    //     $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+    //     $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+    //     $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+    //         ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+    //     /**
+    //      * End inner page header customization
+    //      */
+
+    //     /**
+    //      * Start initial filter
+    //      */
+    //     $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
+    //     usort($all_printable_categories, function($a, $b) {
+    //         return $a['category_name'] <=> $b['category_name'];
+    //     });
+    //     $all_countries = Country::orderBy('country_name')->get();
+    //     $all_states = collect([]);        
+       
+    //     if(!empty($filter_country))
+    //     {
+    //         $country = Country::find($filter_country);
+    //         $all_states = $country->states()->orderBy('state_name')->get();
+    //     }
+
+    //     // $all_states = Country::find($site_prefer_country_id)
+    //     //     ->states()
+    //     //     ->orderBy('state_name')
+    //     //     ->get();
+
+    //     $all_cities = collect([]);
+    //     if(!empty($filter_state))
+    //     {
+    //         $state = State::find($filter_state);
+    //         $all_cities = $state->cities()->orderBy('city_name')->get();
+    //     }
+        
+    //     $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
+
+    //    if($filter_sort_by && ($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns ||$filter_categories)) {
+    //     $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+    //         ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+    //         ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+    //         ->whereIn('items.user_id', $free_items_user_ids)
+    //         ->distinct('items.user_id')
+    //         ->count();
+
+    //     }else{
+    //         $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
+    //             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
+    //             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
+    //             ->whereIn('items.user_id', $free_user_ids)
+    //             ->distinct('items.user_id')
+    //             ->count();
+    //     }
+        
+    //     $all_coaches = new User;
+    //     if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
+    //         // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(9);
+    //         $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC');
+    //     }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
+    //         // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(9);
+    //         $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC');
+    //     }elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING){
+    //         $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','DESC');
+    //     }elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING){
+    //         $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','ASC');
+    //     }else{
+    //         // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
+    //         $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids);
+    //     }
+    //     $all_coaches = $all_coaches->paginate(9);
+    //     $all_coaches->appends($querystringArray); 
+    //     $total_results = $all_coaches->count();
+    //     foreach($all_coaches as $category_coach){
+    //         $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+    //         ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
+    //         ->get();
+    //         $category=[];
+    //         $parent_category=[];
+    //         $category_icon=[];
+    //         $category_slug=[];
+    //         foreach($coach_categorys as $category_name){
+    //             $category[] = $category_name['category_name'];
+    //             $parent_category[] = $category_name['category_parent_id'];
+    //             $category_icon[] = $category_name['category_icon'];
+    //             $category_slug[] = $category_name['category_slug'];
+    //         }
+    //         $parent_category_name =Category::whereIn('id',$parent_category)->select('categories.*','category_name','category_icon','category_slug')->get();
+    //         $category_coach['category_name_one'] = $category;
+    //         $category_coach['category_icon_one'] = $category_icon;
+    //         $category_coach['category_slug_one'] = $category_slug;
+    //         $category_coach['category_parent_name'] = $parent_category_name;
+    //     }
+    //     // dd($total_results);
+    //     /**
+    //      * End initial filter
+    //      */
+
+    //     /**
+    //      * Start initial blade view file path
+    //      */
+    //     $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+    //     $theme_view_path = $theme_view_path->getViewPath();
+    //     /**
+    //      * End initial blade view file path
+    //      */
+    //     return response()->view($theme_view_path . 'all_coaches',
+    //         compact('categories', 'free_items','all_states',
+    //             'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+    //             'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+    //             'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+    //             'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+    //             'site_innerpage_header_paragraph_font_color', 'filter_sort_by', 'all_printable_categories',
+    //             'filter_categories', 'site_prefer_country_id', 'filter_state', 'filter_city', 'all_cities',
+    //             'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_coaches','all_countries','filter_country','coach_count'
+    //         ));
+    // }
+
     public function allCoaches(Request $request)
     {
         $settings = app('site_global_settings');
         $site_prefer_country_id = app('site_prefer_country_id');
         
-        $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
+        // $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
+
+        $user = new User;
+        $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')
+            ->groupBy('users.id');
+            // dd($all_coaches);
 
         /**
          * Start SEO
@@ -3457,59 +3805,54 @@ class PagesController extends Controller
         //$free_user_ids = $subscription_obj->getActiveUserIds();
         $free_user_ids = $active_user_ids;
 
+        $category_id_arr = [];
         if(count($item_ids) > 0)
         {
-            $free_items_query->whereIn('items.id', $item_ids);
+            $all_coaches = $all_coaches->whereIn('user_categories.category_id',$filter_categories);
+            $user_category_arr = $filter_categories;
+        }else{
+            $user_category_arr = $category_id_arr;
         }
-
-        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
-            // ->where(function ($query) use ($site_prefer_country_id) {
-            //     $query->where('items.country_id', $site_prefer_country_id)
-            //         ->orWhereNull('items.country_id');
-            // })
-            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
-            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
-            ->whereIn('items.user_id', $free_user_ids);
 
         /**
          * Start filter gender type, working type, price range
          */
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
-        $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
-        $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
-        $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns) {
-            $free_items_query->leftJoin('users', function($join) {
-                $join->on('users.id', '=', 'items.user_id');
-            });
-            if($filter_gender_type) {
-                $free_items_query->where('users.gender', $filter_gender_type);
+            $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
+            $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
+            $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
+            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
+                // $free_items_query->leftJoin('users', function($join) {
+                //     $join->on('users.id', '=', 'items.user_id');
+                // });
+                if($filter_gender_type) {
+                    $all_coaches = $all_coaches->where('users.gender', $filter_gender_type);
+                }
+                if($filter_preferred_pronouns) {
+                    $all_coaches = $all_coaches->where('users.preferred_pronouns', $filter_preferred_pronouns);
+                    // dd("dsdjjsk");
+                }
+                if($filter_working_type) {
+                    $all_coaches = $all_coaches->where('users.working_type', $filter_working_type);
+                }
+                if($filter_hourly_rate) {
+                    $all_coaches = $all_coaches->where('users.hourly_rate_type', $filter_hourly_rate);
+                }
+                if(!empty($filter_country)) {
+                    $all_coaches = $all_coaches->where('users.country_id', $filter_country);
+                }
+                // filter free listings state
+                if(!empty($filter_state))
+                {
+                    $all_coaches = $all_coaches->where('users.state_id', $filter_state);
+                }
+    
+                // filter free listings city
+                if(!empty($filter_city))
+                {
+                    $all_coaches = $all_coaches->where('users.city_id', $filter_city);
+                }
             }
-            if($filter_preferred_pronouns) {
-                $free_items_query->where('users.preferred_pronouns', $filter_preferred_pronouns);
-            }
-            if($filter_working_type) {
-                $free_items_query->where('users.working_type', $filter_working_type);
-            }
-            if($filter_hourly_rate) {
-                $free_items_query->where('users.hourly_rate_type', $filter_hourly_rate);
-            }
-            // filter paid listings country
-            if(!empty($filter_country)) {
-                $free_items_query->where('users.country_id', $filter_country);
-            }
-            // filter free listings state
-            if(!empty($filter_state))
-            {
-                $free_items_query->where('users.state_id', $filter_state);
-            }
-
-            // filter free listings city
-            if(!empty($filter_city))
-            {
-                $free_items_query->where('users.city_id', $filter_city);
-            }
-        }
         /**
          * End filter gender type, working type, price range
         */
@@ -3518,31 +3861,28 @@ class PagesController extends Controller
          * Start filter sort by for free listing
          */
         $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
-        if($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
-        {
-            $free_items_query->orderBy('items.item_average_rating', 'DESC');
-        }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
-        {
-            $free_items_query->orderBy('items.item_average_rating', 'ASC');
-        }
-        elseif($filter_sort_by == Item::ITEMS_SORT_BY_NEARBY_FIRST)
-        {
-            $free_items_query->selectRaw('*, ( 6367 * acos( cos( radians( ? ) ) * cos( radians( item_lat ) ) * cos( radians( item_lng ) - radians( ? ) ) + sin( radians( ? ) ) * sin( radians( item_lat ) ) ) ) AS distance', [$this->getLatitude(), $this->getLongitude(), $this->getLatitude()])
-            ->where('items.item_type', Item::ITEM_TYPE_REGULAR)
-            ->orderBy('distance', 'ASC');
-        }
+            if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'ASC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'ASC');
+            }
         
         /**
          * End filter sort by for free listing
          */
 
-        $free_items_query->distinct('items.id')
-            ->with('country')
-            ->with('state')
-            ->with('city')
-            ->with('user');
-
+        
         $querystringArray = [
             'filter_categories' => $filter_categories,
             'filter_sort_by' => $filter_sort_by,
@@ -3554,14 +3894,6 @@ class PagesController extends Controller
             'filter_working_type' => $filter_working_type,
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
-
-        // $free_items = $free_items_query->paginate(10);
-        $free_items = $free_items_query;
-        //$pagination = $free_items->appends($querystringArray);
-
-        /**
-         * End do listing query
-         */
 
         /**
          * Start fetch ads blocks
@@ -3659,47 +3991,42 @@ class PagesController extends Controller
             $all_cities = $state->cities()->orderBy('city_name')->get();
         }
         
-        $free_items_user_ids = $free_items_query->pluck('user_id')->toArray();
 
-       if($filter_sort_by && ($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_country || $filter_state || $filter_city || $filter_preferred_pronouns ||$filter_categories)) {
-        $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
-            ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
-            ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
-            ->whereIn('items.user_id', $free_items_user_ids)
-            ->distinct('items.user_id')
-            ->count();
-
-        }else{
-            $coach_count = \DB::table('items')->where("items.item_status", Item::ITEM_PUBLISHED)
-                ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
-                ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
-                ->whereIn('items.user_id', $free_user_ids)
-                ->distinct('items.user_id')
-                ->count();
-        }
         
-        $all_coaches = new User;
-        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
-            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(9);
-            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC');
-        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
-            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(9);
-            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC');
-        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING){
-            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','DESC');
-        }elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING){
-            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.profile_average_rating','ASC');
-        }else{
-            // $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->paginate(9);
-            $all_coaches = $all_coaches->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids);
-        }
+        // $all_coaches = new User;
+            if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED)
+            {
+                $all_coaches = $all_coaches->orderBy('users.created_at', 'ASC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_HIGHEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'DESC');
+            }
+            elseif($filter_sort_by == Item::ITEMS_SORT_BY_LOWEST_RATING)
+            {
+                $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'ASC');
+            }
+        $all_coaches_data = $all_coaches->get();
+        $coach_count = $all_coaches_data->count();
         $all_coaches = $all_coaches->paginate(9);
         $all_coaches->appends($querystringArray); 
         $total_results = $all_coaches->count();
+        // print_r($user_category_arr);exit;
         foreach($all_coaches as $category_coach){
-            $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
-            ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
-            ->get();
+            if(empty($user_category_arr)){
+                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+                ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
+                ->get();
+            }else{
+                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
+                ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)->whereIn('user_categories.category_id',$user_category_arr)
+                ->get();
+            }
+            
             $category=[];
             $parent_category=[];
             $category_icon=[];
@@ -3730,7 +4057,7 @@ class PagesController extends Controller
          * End initial blade view file path
          */
         return response()->view($theme_view_path . 'all_coaches',
-            compact('categories', 'free_items','all_states',
+            compact('categories','all_states',
                 'ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
                 'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
                 'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
