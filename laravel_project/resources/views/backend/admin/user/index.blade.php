@@ -44,6 +44,9 @@
                         </div>
 
                         <div class="row form-group">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                                <input type="text" data-kt-customer-table-filter="search" value="{{request()->get('search')}}" id="search" name="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search">
+                            </div>
 
                             <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="user_email_verified">
@@ -70,7 +73,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-1 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <select class="custom-select" name="count_per_page">
                                     <option value="{{ \App\User::COUNT_PER_PAGE_10 }}" {{ $count_per_page == \App\User::COUNT_PER_PAGE_10 ? 'selected' : '' }}>{{ __('admin_users_table.shared.count-per-page-10') }}</option>
                                     <option value="{{ \App\User::COUNT_PER_PAGE_25 }}" {{ $count_per_page == \App\User::COUNT_PER_PAGE_25 ? 'selected' : '' }}>{{ __('admin_users_table.shared.count-per-page-25') }}</option>
@@ -81,9 +84,25 @@
                                     <option value="{{ \App\User::COUNT_PER_PAGE_1000 }}" {{ $count_per_page == \App\User::COUNT_PER_PAGE_1000 ? 'selected' : '' }}>{{ __('admin_users_table.shared.count-per-page-1000') }}</option>
                                 </select>
                             </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-1 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                                <select class="custom-select" name="role_search" value="{{request()->get('role_search')}}">
+                                            <option value="">Select</option>
+                                            @foreach($role as $key =>$value)
+                                            @php $selected = '';
+                                            if (request()->get('role_search') == $key) {
+                                            $selected = 'selected';
+                                            }
+                                            @endphp
+                                            <option {{$selected}} value="{{$value->id}}">{{$value->name}}</option>
+                                            @endforeach
+                                </select>
+                            </div>
 
-                            <div class="col-12  col-md-4 col-lg-3 col-xl-2 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                            <div class="col-12 col-md-2 col-lg-3 col-xl-1 mt-2 mt-lg-0 mb-2 mb-sm-0">
                                 <button type="submit" class="btn btn-primary btn-100-width-sm mr-2">{{ __('backend.shared.update') }}</button>
+                            </div>
+                            <div class="col-12 col-md-2 col-lg-3 col-xl-1 mt-2 mt-lg-0 mb-2 mb-sm-0">
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-info btn-100-width-sm mr-2">{{ __('Reset') }}</a>
                             </div>
 
                         </div>

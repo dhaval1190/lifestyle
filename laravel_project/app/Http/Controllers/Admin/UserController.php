@@ -34,6 +34,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $settings = app('site_global_settings');
+        $role = Role::all();
 
         /**
          * Start SEO
@@ -52,11 +53,16 @@ class UserController extends Controller
         $user_suspended = $request->user_suspended == User::USER_SUSPENDED ? User::USER_SUSPENDED : User::USER_NOT_SUSPENDED;
         $order_by = empty($request->order_by) ? User::ORDER_BY_USER_NEWEST : $request->order_by;
         $count_per_page = empty($request->count_per_page) ? User::COUNT_PER_PAGE_10 : $request->count_per_page;
+        $role_search =$request->role_search; 
 
         $all_users_query = User::query();
         $all_users_query->whereIn('role_id', [Role::USER_ROLE_ID, Role::COACH_ROLE_ID, Role::EDITOR_ROLE_ID]);
 
         // email verification query
+        if(isset($role_search) && !empty($role_search))
+        {
+            $all_users_query->where('role_id',$role_search);
+        }
         if($user_email_verified == User::USER_EMAIL_VERIFIED)
         {
             $all_users_query->where('email_verified_at', '!=', null);
@@ -105,12 +111,19 @@ class UserController extends Controller
         $all_users_count = $all_users_query->count();
         $all_users = $all_users_query->paginate($count_per_page);
 
+        if(isset($request->search) && !empty($request->search)){
+            $all_users = User::where('.name', 'LIKE', '%' . $request->search . '%')
+            ->orwhere('email', 'LIKE', '%' . $request->search . '%')           
+            ->select('users.*');
+            $all_users = $all_users->paginate($count_per_page);
+        }
+
         // show all users except self (admin)
         //$all_users = User::where('role_id', Role::USER_ROLE_ID)->orderBy('created_at', 'DESC')->get();
 
         return response()->view('backend.admin.user.index',
             compact('all_users', 'all_users_count', 'user_email_verified', 'user_suspended',
-                'order_by', 'count_per_page', 'request_query_array'));
+                'order_by', 'count_per_page', 'request_query_array','role'));
     }
 
     /**
