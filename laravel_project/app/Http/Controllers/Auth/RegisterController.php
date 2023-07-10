@@ -429,7 +429,16 @@ class RegisterController extends Controller
         }
 
         if($validator->passes()){
-            $referrer = User::find(decrypt(session()->pull('referrer')));
+            // $referrer = User::find(decrypt(session()->pull('referrer')));
+            $referrer_user = session()->pull('referrer');
+            try {
+                $session_referrer = decrypt($referrer_user);
+                $referrer = User::find($session_referrer);
+
+            } catch (DecryptException $e) {
+                $referrer = null;
+            }
+            
             // return response()->json(['status'=>"successsss",'data'=>$referrer]);
             $verify_token = Str::random(40);;
 
