@@ -2335,8 +2335,8 @@ $chk_post = Auth::user()->phone;
                         </div>
                         <div class="col-md-6">
                             <ul class="list_design_ptb-30">
-                                <li class="user_image">Picture</li>
-                                <li class="category">Category</li>
+                                <li class="user_image">Pictureee</li>
+                                <li class="category_p">Category</li>
                                 <li class="name">Name</li>
                                 <li class="company_name">Company Name</li>
                                 <li class="phone">Phone</li>
@@ -3376,7 +3376,7 @@ $('#podcastFrm').on('submit', function(e) {
                             // console.log(profile_level);
 
                             if(category >= 1){
-                                $('.category').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
+                                $('.category_p').css("list-style-image","url({{ asset('frontend/images/green_tick.png') }})");
                                 // $('#referal_count').text('(5/'+referrals +')')
                             }
                             if(referrals >= 1){
