@@ -44,13 +44,15 @@ class VerifySubscription
         }
 
         $today = date('Y-m-d');
-        $plan_details = Plan::where('id',$subscription->plan_id)->first();
-
-        if($subscription && ($plan_details->plan_type == \App\Plan::PLAN_TYPE_PAID) && $subscription->subscription_end_date < $today) {
-            if(str_contains(url()->current(),"user/plans")){
-                return $next($request);
+        if(!empty($subscription)){
+            $plan_details = Plan::where('id',$subscription->plan_id)->first();
+            if($plan_details->plan_type == \App\Plan::PLAN_TYPE_PAID && $subscription->subscription_end_date < $today){
+                if(str_contains(url()->current(),"user/plans")){
+                    return $next($request);
+                }
+                return redirect()->route('user.subscription.verify', $subscription->id);
             }
-            return redirect()->route('user.subscription.verify', $subscription->id);
+            return $next($request);
         } else {
             return $next($request);
         }
