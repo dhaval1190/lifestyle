@@ -3318,6 +3318,9 @@ class ItemController extends Controller
 
                 \Session::flash('flash_message', __('review.alert.review-posted-success'));
                 \Session::flash('flash_type', 'success');
+
+                return response()->json(['status'=>"success",'msg'=>'Review Add SuccessFull']);
+
             }else{
                 return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
                 }
@@ -3451,7 +3454,9 @@ class ItemController extends Controller
             $review_count = new Item();		
             $review_count->syncProfileverageRating($data->reviewrateable_id);		
             \Session::flash('flash_message', __('review.alert.review-updated-success'));		
-            \Session::flash('flash_type', 'success');		
+            \Session::flash('flash_type', 'success');	
+            
+            return response()->json(['status'=>"success",'msg'=>'Review updated successfully']);
         }else{		
             return response()->json(['status'=>"error",'msg'=>$validator->errors()]);		
             }		

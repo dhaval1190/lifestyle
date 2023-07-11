@@ -447,13 +447,15 @@ class PagesController extends Controller
                     'reviewrateable_id'=>$profile_user_id
                 ], $login_user);
                 $new_item->save();
-                return response()->json(['status'=>"success",'msg'=>'Review Add SuccessFull']);
                 
                 // $review_count = new Item();
                 // $review_count->syncProfileverageRating($profile_user_id);
 
                 \Session::flash('flash_message', __('review.alert.review-posted-success'));
                 \Session::flash('flash_type', 'success');
+
+                return response()->json(['status'=>"success",'msg'=>'Review Add SuccessFull']);
+
             }else{
                 return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
                 }

@@ -53,6 +53,8 @@ class UserController extends Controller
         /**
          * End SEO
          */
+        $setting_site_location_lat = $settings->setting_site_location_lat;
+        $setting_site_location_lng = $settings->setting_site_location_lng;
 
         $login_user = Auth::user();
         $user_detail = User::where('id', $login_user->id)->first();
@@ -246,7 +248,7 @@ class UserController extends Controller
         $total_results = $total_free_items;
 
         return response()->view('backend.user.profile.edit',
-            compact('user_detail','free_items','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points','all_categories','time_zone_identifiers'));
+            compact('user_detail','free_items','total_results','login_user', 'printable_categories', 'all_countries', 'all_states', 'all_cities', 'media_detail', 'video_media_array', 'podcast_media_array', 'ebook_media_array','progress_data','data_points','all_categories','time_zone_identifiers','setting_site_location_lat', 'setting_site_location_lng'));
     }
 
     /**

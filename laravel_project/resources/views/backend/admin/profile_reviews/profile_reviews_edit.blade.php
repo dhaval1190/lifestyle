@@ -207,7 +207,7 @@
                             // console.log(response)
                             $(".error_color").text("");
                             $('.please_wait').text('');
-                            // location.reload(); 
+                            location.reload(); 
                             // window.location.href = "{{ route('login') }}";
 
                         }
