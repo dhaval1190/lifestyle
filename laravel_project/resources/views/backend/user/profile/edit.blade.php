@@ -2596,7 +2596,7 @@ $chk_post = Auth::user()->phone;
         $('.selectpicker').selectpicker();
 
         /* Start the croppie image plugin */
-        var image_crop = null;
+        var image_crop_profile = null;
         $('#upload_image').on('click', function() {
             $('#image-crop-modal').modal('show');
             $('#image_error_div').hide();
@@ -2609,10 +2609,10 @@ $chk_post = Auth::user()->phone;
             $('#img_error').text('');
         });
 
-        var fileTypes = ['jpg', 'jpeg', 'png'];
+        var fileTypes_profile = ['jpg', 'jpeg', 'png'];
         $('#upload_image_input').on('change', function() {
-            if (!image_crop) {
-                image_crop = $('#image_demo').croppie({
+            if (!image_crop_profile) {
+                image_crop_profile = $('#image_demo').croppie({
                     enableExif: true,
                     viewport: {
                         width: 200,
@@ -2626,34 +2626,35 @@ $chk_post = Auth::user()->phone;
                     enableOrientation: true
                 });
             }
-            var reader = new FileReader();
-            var file = this.files[0]; // Get your file here
-            var fileExt = file.type.split('/')[1]; // Get the file extension
+            var reader_profile = new FileReader();
+            var file_profile = this.files[0]; // Get your file here
+            var fileExt_profile = file_profile.type.split('/')[1]; // Get the file extension
             // console.log(fileExt);
 
-            if (fileTypes.indexOf(fileExt) !== -1) {
+            if (fileTypes_profile.indexOf(fileExt_profile) !== -1) {
 
-                reader.onload = function(event) {
-                    image_crop.croppie('bind', {
+                reader_profile.onload = function(event) {
+                    image_crop_profile.croppie('bind', {
                         url: event.target.result
                     }).then(function() {
                         // console.log('jQuery bind complete');
                     });
                 };
-                reader.readAsDataURL(this.files[0]);
+                reader_profile.readAsDataURL(this.files[0]);
             } else {
                 // alert('Please choose only .jpg,.jpeg,.png file');
                 $('#image-crop-modal').trigger('reset');
                 $('#image-crop-modal').modal('hide');
                 $('#upload_image_input').val('');
-                image_crop = null;
+                image_crop_profile = null;
                 $('#image_demo').croppie('destroy');
                 $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
                 $('#image_error_div').show();
             }
         });
 
-        //For Article 
+        //For Article
+        var image_crop = null;
         var fileTypes = ['jpg', 'jpeg', 'png'];
         $('#article_upload_image_input').on('change', function() {
             if (!image_crop) {
@@ -2699,7 +2700,7 @@ $chk_post = Auth::user()->phone;
         });
 
         $('#crop_image').on("click", function(event) {
-            image_crop.croppie('result', {
+            image_crop_profile.croppie('result', {
                 type: 'base64',
                 size: 'viewport'
             }).then(function(response) {
