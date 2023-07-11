@@ -136,6 +136,10 @@ class EventController extends Controller
         $eventObj->event_social_url = $request->event_social_url;
         $eventObj->status = $request->draft_publish;
 
+        if($request->coach_chk == 1){
+            $eventObj->for_coach = $request->coach_chk;
+        }
+
         
         if(!empty($request->event_image))
         {
@@ -284,6 +288,11 @@ class EventController extends Controller
 
             $eventObj->event_image = $event_image_file_name;
         }
+
+        if($request->coach_chk == 1){
+            $eventObj->for_coach = $request->coach_chk;
+        }
+        
         $eventObj->save();
 
         return redirect()->route('admin.events.index')->with('success','Event updated successfully');
