@@ -3351,6 +3351,8 @@ class PagesController extends Controller
             /**
              * End initial blade view file path
              */
+
+            $all_coaches = $all_coaches->where('users.role_id', Role::COACH_ROLE_ID)->where('users.user_suspended', User::USER_NOT_SUSPENDED);
             $all_coaches_data = $all_coaches->get();
             $all_coaches_count = $all_coaches_data->count();
             $all_coaches = $all_coaches->paginate(9);
@@ -4010,6 +4012,7 @@ class PagesController extends Controller
             {
                 $all_coaches = $all_coaches->orderBy('users.profile_average_rating', 'ASC');
             }
+        $all_coaches = $all_coaches->where('users.role_id', Role::COACH_ROLE_ID)->where('users.user_suspended', User::USER_NOT_SUSPENDED);
         $all_coaches_data = $all_coaches->get();
         $coach_count = $all_coaches_data->count();
         $all_coaches = $all_coaches->paginate(9);
