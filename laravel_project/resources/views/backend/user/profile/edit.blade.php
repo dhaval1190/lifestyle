@@ -1,6 +1,9 @@
 @extends('backend.user.layouts.app')
 
 @section('styles')
+@if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
+    <link href="{{ asset('backend/vendor/leaflet/leaflet.css') }}" rel="stylesheet" />
+@endif
 <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
 <link href="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.css') }}" rel="stylesheet" />
@@ -2335,7 +2338,7 @@ $chk_post = Auth::user()->phone;
                         </div>
                         <div class="col-md-6">
                             <ul class="list_design_ptb-30">
-                                <li class="user_image">Pictureee</li>
+                                <li class="user_image">Picture</li>
                                 <li class="category_p">Category</li>
                                 <li class="name">Name</li>
                                 <li class="company_name">Company Name</li>
@@ -2453,12 +2456,42 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
 
+    <!-- Modal - map -->
+    <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" aria-labelledby="map-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.select-map-title') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="map-modal-body"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span id="lat_lng_span"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <button id="lat_lng_confirm" type="button" class="btn btn-primary">{{ __('backend.shared.confirm') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
-@if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="{{ asset('backend/vendor/leaflet/leaflet.js') }}"></script>
+    @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="{{ asset('backend/vendor/leaflet/leaflet.js') }}"></script>
     @endif
 
     <!-- Image Crop Plugin Js -->
@@ -2502,6 +2535,52 @@ $chk_post = Auth::user()->phone;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
+            /**
+             * Start map modal
+             */
+            var map = L.map('map-modal-body', {
+                //center: [37.0902, -95.7129],
+                center: [{{ $setting_site_location_lat }}, {{ $setting_site_location_lng }}],
+                zoom: 5,
+            });
+
+            var layerGroup = L.layerGroup().addTo(map);
+            var current_lat = 0;
+            var current_lng = 0;
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            map.on('click', function(e) {
+
+                // remove all the markers in one go
+                layerGroup.clearLayers();
+                L.marker([e.latlng.lat, e.latlng.lng]).addTo(layerGroup);
+
+                current_lat = e.latlng.lat;
+                current_lng = e.latlng.lng;
+
+                $('#lat_lng_span').text("Lat, Lng : " + e.latlng.lat + ", " + e.latlng.lng);
+            });
+
+            $('#lat_lng_confirm').on('click', function(){
+                $('#article_lat').val(current_lat);
+                $('#article_lng').val(current_lng);
+                $('#map-modal').modal('hide')
+            });
+            $('.lat_lng_select_button').on('click', function(){
+                $('#map-modal').modal('show');
+                setTimeout(function(){ map.invalidateSize()}, 500);
+            });
+            /**
+             * End map modal
+             */
+            @endif
+
+        
 
         $('.category_ids').select2({
             maximumSelectionLength: 5
@@ -2619,6 +2698,16 @@ $chk_post = Auth::user()->phone;
             }
         });
 
+        $('#crop_image').on("click", function(event) {
+            image_crop.croppie('result', {
+                type: 'base64',
+                size: 'viewport'
+            }).then(function(response) {
+                $('#feature_image').val(response);
+                $('#image_preview').attr("src", response);
+            });
+            $('#image-crop-modal').modal('hide')
+        });
 
         $('#article_crop_image').on("click", function(event) {
             image_crop.croppie('result', {
@@ -2778,7 +2867,7 @@ $chk_post = Auth::user()->phone;
 
         /* Start country, state, city selector */
         $('#select_country_id').on('change', function() {
-            console.log("ddddddddddddd");
+            //console.log("ddddddddddddd");
             $('#select_state_id').html(
                 "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
             $('#select_city_id').html(
@@ -3523,7 +3612,65 @@ $('#podcastFrm').on('submit', function(e) {
                     });
                 }
             });
-        })
+        });
     </script>
+
+        @if($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_GOOGLE_MAP)
+
+        <script>
+            function initMap()
+            {
+                const myLatlng = { lat: {{ $site_global_settings->setting_site_location_lat }}, lng: {{ $site_global_settings->setting_site_location_lng }} };
+                const map = new google.maps.Map(document.getElementById('map-modal-body'), {
+                    zoom: 4,
+                    center: myLatlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+
+                let infoWindow = new google.maps.InfoWindow({
+                    content: "{{ __('google_map.select-lat-lng-on-map') }}",
+                    position: myLatlng,
+                });
+                infoWindow.open(map);
+
+                var current_lat = 0;
+                var current_lng = 0;
+
+                google.maps.event.addListener(map, 'click', function( event ){
+
+                    // Close the current InfoWindow.
+                    infoWindow.close();
+                    // Create a new InfoWindow.
+                    infoWindow = new google.maps.InfoWindow({
+                        position: event.latLng,
+                    });
+                    infoWindow.setContent(
+                        JSON.stringify(event.latLng.toJSON(), null, 2)
+                    );
+                    infoWindow.open(map);
+
+                    current_lat = event.latLng.lat();
+                    current_lng = event.latLng.lng();
+                    console.log( "Latitude: "+current_lat+" "+", longitude: "+current_lng );
+                    $('#lat_lng_span').text("Lat, Lng : " + current_lat + ", " + current_lng);
+                });
+
+                $('#lat_lng_confirm').on('click', function(){
+
+                    $('#article_lat').val(current_lat);
+                    $('#article_lng').val(current_lng);
+                    $('#map-modal').modal('hide');
+                });
+                $('.lat_lng_select_button').on('click', function(){
+                    console.log("aaaaaaaaaaaa")
+                    $('#map-modal').modal('show');
+                    //setTimeout(function(){ map.invalidateSize()}, 500);
+                });
+            }
+        </script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js??v=quarterly&key={{ $site_global_settings->setting_site_map_google_api_key }}&callback=initMap"></script>
+    @endif
+    
 
 @endsection
