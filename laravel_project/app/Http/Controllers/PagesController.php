@@ -940,7 +940,27 @@ class PagesController extends Controller
         /**	
          * End SEO	
          */	
-         $all_events = Event::whereDate('event_start_date','<=',now())->where('status',1)->orderBy('event_start_date','DESC')->orderBy('event_start_hour','DESC')->orderBy('event_start_min','DESC')->paginate(10);	
+        $user = Auth::user();
+
+        // $all_events = Event::whereDate('event_start_date','>=',now())->where('status',1)->orderBy('event_start_date','ASC')->orderBy('event_start_hour','DESC')->orderBy('event_start_min','DESC')->paginate(10);
+        if(isset($user)){
+            if($user->isCoach() || $user->isAdmin() || $user->isEditor())
+            {
+                $all_events = Event::whereDate('event_start_date','>=',now());                                
+                                
+            }elseif($user->isUser()){
+                $all_events = Event::whereDate('event_start_date','>=',now())                                
+                                ->where('for_coach',0);                                
+            }
+
+        }else{
+            $all_events = Event::whereDate('event_start_date','>=',now())
+                            ->where('for_coach',0);                                
+        }
+        
+        $all_events = $all_events->where('status',1)->orderBy('event_start_date','ASC')->orderBy('event_start_hour','DESC')->orderBy('event_start_min','DESC')->paginate(10);
+        
+        
         /**	
          * Start inner page header customization	
          */	

@@ -38,7 +38,7 @@ class PagesController extends Controller
         $post_count = \Canvas\Models\Post::published()->count();
         $user_count = User::where('role_id', Role::USER_ROLE_ID)->count();
 
-        $recent_threads = Thread::forUser($admin_user->id)->latest('updated_at')->take(5)->get();
+        // $recent_threads = Thread::forUser($admin_user->id)->latest('updated_at')->take(5)->get();
         $recent_comments = Comment::orderBy('created_at', 'DESC')->take(5)->get();
 
         $warning_smtp = $settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED ? false : true;
@@ -49,6 +49,6 @@ class PagesController extends Controller
 
         return response()->view('backend.admin.index',
             compact('admin_user','category_count', 'item_count', 'post_count', 'user_count',
-                'recent_threads', 'recent_comments', 'warning_smtp','all_messages_count','pending_users_count','comments_count'));
+                'recent_comments', 'warning_smtp','all_messages_count','pending_users_count','comments_count'));
     }
 }

@@ -361,6 +361,12 @@
                                                         </span>
                                                     @enderror
                                                 </div>
+                                                <div class="form_group d-flex">
+                                                    <label class="group_title">Only for Coach?
+                                                        <span>(Tick if this event is only for coach)</span></label>
+                                                    <input name="coach_chk" type="checkbox" class="ml-3 mb-2" value="1" @if($event->for_coach == 1) checked @endif
+                                                        value="{{ old('coach_chk') }}">
+                                                </div>
 
 
                                             </div>

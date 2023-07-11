@@ -57,7 +57,7 @@
         padding: 15px 0;
     }
 
-   
+
 
     .content {
         background: #fff;
@@ -340,15 +340,15 @@
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
                                                             @enderror
-                                                            @if(Session::has('event_end_error'))
+                                                            @if (Session::has('event_end_error'))
                                                                 <span class="error_color">
                                                                     <strong>{{ Session::get('event_end_error') }}</strong>
-                                                                </span>                                                                
+                                                                </span>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <hr>                                              
+                                                <hr>
 
                                                 <div class="form_group">
                                                     <label class="group_title">URL
@@ -362,7 +362,12 @@
                                                     @enderror
                                                 </div>
 
-
+                                                <div class="form_group d-flex">
+                                                    <label class="group_title">Only for Coach?
+                                                        <span>(Tick if this event is only for coach)</span></label>
+                                                    <input name="coach_chk" type="checkbox" class="ml-3 mb-2"
+                                                        value="1" value="{{ old('coach_chk') }}">
+                                                </div>
                                             </div>
                                             <div class="form_column_right_right">
                                                 <div class="form_group input_file">
@@ -381,7 +386,8 @@
                                                     <input type="hidden" name="event_image" class="input_control"
                                                         id="event_image">
                                                     <label class="upload_media" for="file_upload">
-                                                        <img src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" id="image_preview" class="img-responsive">
+                                                        <img src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}"
+                                                            id="image_preview" class="img-responsive">
                                                     </label>
                                                 </div>
 
@@ -489,7 +495,7 @@
         $(document).ready(function() {
 
             "use strict";
-            
+
             var image_crop = null;
 
             $('#upload_image').on('click', function() {
@@ -637,7 +643,7 @@
 
             $("#category_header_background_image_selector").change(function() {
                 readURL(this, "img-upload-homepage", "category_header_background_image");
-            });            
+            });
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
