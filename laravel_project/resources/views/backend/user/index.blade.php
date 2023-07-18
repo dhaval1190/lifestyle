@@ -404,8 +404,8 @@
                                         <button class="btn btn-primary btn-sm">Add Article</button>
                                     </a>
                                     @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
-                                        <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View
-                                            all
+                                        <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">
+                                            <button class="btn btn-success btn-sm">View all</button>
                                         </a>
                                     @endif
                               </div>
@@ -463,7 +463,9 @@
                                         <button class="btn btn-primary btn-sm">Add Podcast</button>
                                     </a>
                                     @if(isset($AllPodcast) && !empty($AllPodcast) && count($AllPodcast) >= 5)
-                                    <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
+                                    <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">
+                                        <button class="btn btn-success btn-sm">View all</button>
+                                    </a>
                                     @endif
                                 </div>
                             </div>
@@ -590,7 +592,9 @@
                                         <button class="btn btn-primary btn-sm">Add Ebook</button>
                                     </a>
                                     @if(isset($AllEbooks) && !empty($AllEbooks)&& count($AllEbooks) >= 5 )
-                                    <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
+                                    <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">
+                                        <button class="btn btn-success btn-sm">View all</button>
+                                    </a>
                                     @endif
                                 </div>
                             </div>
@@ -645,7 +649,9 @@
                                         <button class="btn btn-primary btn-sm">Add Youtube Video</button>
                                     </a>
                                     @if(isset($AllMedia) && !empty($AllMedia) && (count($AllMedia) + count($AllYoutube)) >= 4)
-                                    <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
+                                    <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">
+                                        <button class="btn btn-success btn-sm">View all</button>
+                                    </a>
                                     @endif
                                 </div>
                             </div>
