@@ -399,10 +399,17 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.article-details') }}</h3>
-                                @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
-                                <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View
-                                    all</a>
-                                @endif
+                              <div>
+                                    <a class="decoration-none pr-2" href="{{ route('user.articles.create') }}">
+                                        <button class="btn btn-primary btn-sm">Add Article</button>
+                                    </a>
+                                    @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
+                                        <a class="decoration-none" href="{{ route('page.profile.allarticle',encrypt($login_user['id'])) }}">View
+                                            all
+                                        </a>
+                                    @endif
+                              </div>
+                                    
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
@@ -451,9 +458,14 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.podcast-details') }}</h3>
-                                @if(isset($AllPodcast) && !empty($AllPodcast) && count($AllPodcast) >= 5)
-                                <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
-                                @endif
+                                <div>
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                        <button class="btn btn-primary btn-sm">Add Podcast</button>
+                                    </a>
+                                    @if(isset($AllPodcast) && !empty($AllPodcast) && count($AllPodcast) >= 5)
+                                    <a href="{{ route('page.profile.allpodcast',encrypt($login_user['id'])) }}">View all</a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
@@ -573,9 +585,14 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.ebook-details') }}</h3>
-                                @if(isset($AllEbooks) && !empty($AllEbooks)&& count($AllEbooks) >= 5 )
-                                <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
-                                @endif
+                                <div>
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                        <button class="btn btn-primary btn-sm">Add Ebook</button>
+                                    </a>
+                                    @if(isset($AllEbooks) && !empty($AllEbooks)&& count($AllEbooks) >= 5 )
+                                    <a href="{{ route('page.profile.allebook',encrypt($login_user['id'])) }}">View all</a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 plr-45">
@@ -623,9 +640,14 @@
                         <div class="col-md-12">
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.youtube-details') }}</h3>
-                                @if(isset($AllMedia) && !empty($AllMedia) && (count($AllMedia) + count($AllYoutube)) >= 4)
-                                <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
-                                @endif
+                                <div>
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                        <button class="btn btn-primary btn-sm">Add Youtube Video</button>
+                                    </a>
+                                    @if(isset($AllMedia) && !empty($AllMedia) && (count($AllMedia) + count($AllYoutube)) >= 4)
+                                    <a href="{{ route('page.profile.allyoutube',encrypt($login_user['id'])) }}">View all</a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         {{-- <div class="col-md-12 plr-45">
