@@ -1333,14 +1333,16 @@ $(document).ready(function(){
                 $('.article_postal_code_error').text('');
                 $('.article_social_whatsapp_error').text('');
 
-                let url = "{{ route('user.articles.update', 0) }}";
-                url = url.replace('0', @json($article->id));
+                let url = "/user/articles";
+                let article_id = @json($article->id);
+                // url = url.replace('0', @json($article->id));
+                
 
                 var formData = new FormData(this);
 
                 jQuery.ajax({
                     type: 'POST',
-                    url: url,
+                    url: url+'/'+article_id,
                     data: formData,
                     dataType: 'JSON',
                     contentType: false,
