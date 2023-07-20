@@ -36,6 +36,8 @@ use Mail;
 use App\Mail\Notification;
 use App\Setting;
 use Exception;
+use Illuminate\Support\Facades\Validator;
+
 
 class ArticleController extends Controller
 {
@@ -346,6 +348,8 @@ class ArticleController extends Controller
          * Start initial country selector
          */
         $all_countries = Country::orderBy('country_name')->get();
+        $all_states = $login_user->country ? $login_user->country()->first()->states()->orderBy('state_name')->get() : null;
+        $all_cities = $login_user->state ? $login_user->state()->first()->cities()->orderBy('city_name')->get() : null;
         // $all_states = State::orderBy('state_name')->get();
         // $all_cities = City::orderBy('city_name')->get();
         /**
@@ -388,7 +392,7 @@ class ArticleController extends Controller
 
         return response()->view('backend.user.article.create',
             compact('login_user', 'all_categories', 'setting_article_max_gallery_photos', 'setting_site_location_lat', 'setting_site_location_lng', 'all_countries', 'show_article_featured_selector',
-                'time_zone_identifiers','items_hours_exceptions','items_hours'));
+                'time_zone_identifiers','items_hours_exceptions','items_hours','all_states','all_cities'));
     }
 
     /**
@@ -402,6 +406,7 @@ class ArticleController extends Controller
     {
 
         // dd($request->all());
+        // return response()->json(['status'=>'success','data'=>$request->all()]);
         $settings = app('site_global_settings');
 
         /**
@@ -462,441 +467,449 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
 
-        if($request->category == '' || $request->article_title == '' || $request->article_address == '' || $request->country_id == '' || $request->state_id == '' || $request->city_id == '' || $request->article_postal_code == '' ){
-            return back()->with('required_field_error','Please fill the required fields');
-        }
+        // if($request->category == '' || $request->article_title == '' || $request->article_address == '' || $request->country_id == '' || $request->state_id == '' || $request->city_id == '' || $request->article_postal_code == '' ){
+        //     return back()->with('required_field_error','Please fill the required fields');
+        // }
 
-        $instagram_username = $request->article_social_instagram;
-        if($instagram_username){
-            if(stripos($instagram_username,'@') !== false){   
-                $instagram_username = explode('@',$instagram_username)[1];
-            }
-            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                return back()->with('instagram_error','Please enter valid instagram user name Only');
-            }
-        } 
-        if($request->article_social_facebook){
-            if(stripos($request->article_social_facebook,'facebook') == false){
-                return back()->with('facebook_error','Please enter facebook URL only');
-            }
-        }
-        if($request->article_social_twitter){
-            if(stripos($request->article_social_twitter,'twitter') == false){
-                return back()->with('twitter_error','Please enter twitter URL only');
-            }
-        }        
-        if($request->article_social_linkedin){
-            if(stripos($request->article_social_linkedin,'linkedin') == false){
-                return back()->with('linkedin_error','Please enter linkedin URL only');
-            }
-        }
-        // validate request
-        $request->validate($validate_rule);
-        $select_categories = $request->category;
-
-        /**
-         * Start validate location (city, state, country, lat, lng)
-         */
-        $item_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
-
-        $select_country_id = null;
-        $select_state_id = null;
-        $select_city_id = null;
-        $select_item_lat = null;
-        $select_item_lng = null;
-        $item_location_str = "";
-
-        $item_postal_code = $request->article_postal_code;
-
-        if($item_type == Item::ITEM_TYPE_REGULAR)
+        $validator = Validator::make($request->all(),$validate_rule);
+        if($validator->passes())
         {
-            // validate country_id
-            $select_country = Country::find($request->country_id);
-            if(!$select_country)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'country_id' => __('prefer_country.country-not-found'),
-                    ]);
-            }
-
-            // validate state_id
-            $select_state = State::find($request->state_id);
-            if(!$select_state)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'state_id' => __('prefer_country.state-not-found'),
-                    ]);
-            }
-            // validate city_id
-            $select_city = City::find($request->city_id);
-            if(!$select_city)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'city_id' => __('prefer_country.city-not-found'),
-                    ]);
-            }
-
-            $select_country_id = $select_country->id;
-            $select_state_id = $select_state->id;
-            $select_city_id = $select_city->id;
-
-            if(empty($request->article_lat) || empty($request->article_lng))
-            {
-                $select_item_lat = $select_city->city_lat;
-                $select_item_lng = $select_city->city_lng;
-            }
-            else
-            {
-                $select_item_lat = $request->article_lat;
-                $select_item_lng = $request->article_lng;
-            }
-
-            $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
-        }
-        /**
-         * End validate location (city, state, country, lat, lng)
-         */
-
-        // prepare new item data
-        $user_id = $login_user->id;
-
-        $item_status = $settings->settingItem->setting_item_auto_approval_enable == SettingItem::SITE_ITEM_AUTO_APPROVAL_ENABLED ? Item::ITEM_PUBLISHED : Item::ITEM_SUBMITTED;
-
-        $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
-        $item_title = $request->article_title;
-
-        // generate item slug based on combination of uniq id and item_title slug
-        $item_slug = str_slug($item_title);
-        $item_slug_exist = Item::where('item_slug', $item_slug)->count();
-        if($item_slug_exist > 0)
-        {
-            $item_slug = $item_slug . '-' . uniqid();
-        }
-
-        $item_description = empty($request->article_description) ? null : $request->article_description;
-        $item_address = $request->article_address;
-        $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
-
-        $city_id = $select_city_id;
-        $state_id = $select_state_id;
-        $country_id = $select_country_id;
-
-        $item_lat = $select_item_lat;
-        $item_lng = $select_item_lng;
-
-        $item_youtube_id = $request->article_youtube_id;
-
-        $item_phone = empty($request->article_phone) ? null : $request->article_phone;
-        $item_website = $request->article_website;
-        $item_social_facebook = $request->article_social_facebook;
-        $item_social_twitter = $request->article_social_twitter;
-        $item_social_linkedin = $request->article_social_linkedin;
-        // $item_social_instagram = $request->article_social_instagram;
-        $item_social_instagram = $instagram_username;
-        $item_keywords = $request->item_keywords;
-        $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
-
-        $item_hour_time_zone = $request->article_hour_time_zone;
-        $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
-
-        // start upload feature image
-        $feature_image = $request->feature_image;
-        $item_feature_image_name = null;
-        $item_feature_image_name_medium = null;
-        $item_feature_image_name_small = null;
-        $item_feature_image_name_tiny = null;
-        $item_feature_image_name_blur = null;
-        if(!empty($feature_image)){
-
-            $currentDate = Carbon::now()->toDateString();
-
-            $item_feature_image_name = $item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
-            $item_feature_image_name_medium = $item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
-            $item_feature_image_name_small = $item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
-            $item_feature_image_name_tiny = $item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
-
-            // blur feature image name
-            $item_feature_image_name_blur = $item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
-
-            if(!Storage::disk('public')->exists('item')){
-                Storage::disk('public')->makeDirectory('item');
-            }
-
-            $item_feature_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name, $item_feature_image);
-
-            // medium size
-            $item_feature_image_medium = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(350, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_medium = $item_feature_image_medium->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_medium, $item_feature_image_medium);
-
-            // small size
-            $item_feature_image_small = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(230, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_small = $item_feature_image_small->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_small, $item_feature_image_small);
-
-            // tiny size
-            $item_feature_image_tiny = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(160, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_tiny = $item_feature_image_tiny->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_tiny, $item_feature_image_tiny);
-
-            // blur feature image
-            $item_feature_image_blur = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)));
-            $item_feature_image_blur->blur(50);
-            $item_feature_image_blur->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_blur, $item_feature_image_blur);
-        }
-
-        // start saving category string to item_categories_string column of items table
-        $item_categories_string = "";
-        foreach($select_categories as $select_categories_key => $select_category)
-        {
-            $item_categories_string = $item_categories_string . " " . Category::find($select_category)->category_name;
-        }
-
-        // fill new item data
-        $new_item = new Item(array(
-            'user_id' => $user_id,
-            'item_status' => $item_status,
-            'item_featured' => $item_featured,
-            'item_title' => $item_title,
-            'item_slug' => $item_slug,
-            'item_description' => $item_description,
-            'item_image' => $item_feature_image_name,
-            'item_image_medium' => $item_feature_image_name_medium,
-            'item_image_small' => $item_feature_image_name_small,
-            'item_image_tiny' => $item_feature_image_name_tiny,
-            'item_image_blur' => $item_feature_image_name_blur,
-            'item_address' => $item_address,
-            'item_address_hide' => $item_address_hide,
-            'city_id' => $city_id,
-            'state_id' => $state_id,
-            'country_id' => $country_id,
-            'item_postal_code' => $item_postal_code,
-            'item_lat' => $item_lat,
-            'item_lng' => $item_lng,
-            'item_youtube_id' => $item_youtube_id,
-            'item_phone' => $item_phone,
-            'item_website' => $item_website,
-            'item_social_facebook' => $item_social_facebook,
-            'item_social_twitter' => $item_social_twitter,
-            'item_social_linkedin' => $item_social_linkedin,
-            'item_categories_string' => $item_categories_string,
-            'item_location_str' => $item_location_str,
-            'item_type' => $item_type,
-            'item_hour_time_zone' => $item_hour_time_zone,
-            'item_hour_show_hours' => $item_hour_show_hours,
-            'item_social_instagram' => $item_social_instagram,
-            'item_keywords' => $item_keywords,
-            'item_social_whatsapp' => $item_social_whatsapp,
-        ));
-        $new_item->save();
-
-        $article_video_urls = $request->article_video_urls;
-        if($article_video_urls && !empty($article_video_urls)) {
-            foreach($article_video_urls as $article_video_url) {
-                ItemMedia::updateOrCreate([
-                    'item_id' => $new_item->id,
-                    'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
-                ],[
-                    'media_url' => $article_video_url
-                ]);
-            }
-        }
-
-        $new_item->allCategories()->sync($select_categories);
-
-        // start to upload image galleries
-        $image_gallary = $request->image_gallery;
-        if(is_array($image_gallary) && count($image_gallary) > 0)
-        {
-            foreach($image_gallary as $image_gallary_key => $image)
-            {
-                // check if the listing's gallery images reach the max number of gallery images
-                if($image_gallary_key < $settings->settingItem->setting_item_max_gallery_photos)
-                {
-                    $currentDate = Carbon::now()->toDateString();
-                    $item_image_gallery_uniqid = uniqid();
-
-                    $item_image_gallery['item_image_gallery_name'] = 'gallary-'.$currentDate.'-'.$item_image_gallery_uniqid.'.jpg';;
-                    $item_image_gallery['item_image_gallery_thumb_name'] = 'gallary-'.$currentDate.'-'.$item_image_gallery_uniqid.'-thumb.jpg';
-
-                    if(!Storage::disk('public')->exists('item/gallery')){
-                        Storage::disk('public')->makeDirectory('item/gallery');
-                    }
-
-                    // original
-                    $one_gallery_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))->stream('jpg', 80);
-                    Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_name'], $one_gallery_image);
-
-                    // thumb size
-                    $one_gallery_image_thumb = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))
-                        ->resize(null, 180, function($constraint) {
-                            $constraint->aspectRatio();
-                        });
-                    $one_gallery_image_thumb = $one_gallery_image_thumb->stream('jpg', 70);
-                    Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_thumb_name'], $one_gallery_image_thumb);
-
-                    $created_item_image_gallery = $new_item->galleries()->create($item_image_gallery);
+            $instagram_username = $request->article_social_instagram;
+            if($instagram_username){
+                if(stripos($instagram_username,'@') !== false){   
+                    $instagram_username = explode('@',$instagram_username)[1];
+                }
+                if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
+                    return back()->with('instagram_error','Please enter valid instagram user name Only');
+                }
+            } 
+            if($request->article_social_facebook){
+                if(stripos($request->article_social_facebook,'facebook') == false){
+                    return back()->with('facebook_error','Please enter facebook URL only');
                 }
             }
-        }
-
-        /**
-         * Start save item hours
-         */
-        $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
-
-        foreach($item_hours as $item_hours_key => $item_hour)
-        {
-            $item_hour_record = explode(' ', $item_hour);
-
-            if(count($item_hour_record) == 3)
-            {
-                $item_hour_day_of_week = intval($item_hour_record[0]);
-
-                if($item_hour_day_of_week >= ItemHour::DAY_OF_WEEK_MONDAY && $item_hour_day_of_week <= ItemHour::DAY_OF_WEEK_SUNDAY)
-                {
-                    $item_hour_open_hour = intval(substr($item_hour_record[1], 0, 2));
-                    $item_hour_close_hour = intval(substr($item_hour_record[2], 0, 2));
-
-                    if($item_hour_open_hour <= $item_hour_close_hour)
-                    {
-                        $item_hour_open_time = $item_hour_record[1] . ':00';
-                        $item_hour_close_time = $item_hour_record[2] . ':00';
-
-                        if($item_hour_open_hour == 24)
-                        {
-                            $item_hour_open_time = '24:00:00';
-                        }
-
-                        if($item_hour_close_hour == 24)
-                        {
-                            $item_hour_close_time = '24:00:00';
-                        }
-
-                        if($item_hour_open_time != $item_hour_close_time)
-                        {
-                            $create_item_hour = new ItemHour(array(
-                                'item_id' => $new_item->id,
-                                'item_hour_day_of_week' => $item_hour_day_of_week,
-                                'item_hour_open_time' => $item_hour_open_time,
-                                'item_hour_close_time' => $item_hour_close_time,
-                            ));
-                            $create_item_hour->save();
-                        }
-                    }
+            if($request->article_social_twitter){
+                if(stripos($request->article_social_twitter,'twitter') == false){
+                    return back()->with('twitter_error','Please enter twitter URL only');
+                }
+            }        
+            if($request->article_social_linkedin){
+                if(stripos($request->article_social_linkedin,'linkedin') == false){
+                    return back()->with('linkedin_error','Please enter linkedin URL only');
                 }
             }
-        }
-        /**
-         * End save item hours
-         */
-
-        /**
-         * Start save item hour exceptions
-         */
-        $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
-
-        foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
-        {
-            $item_hour_exception_record = explode(' ', $item_hour_exception);
-
-            $item_hour_exception_date = $item_hour_exception_record[0];
-
-            if(DateTime::createFromFormat('Y-m-d', $item_hour_exception_date) !== false)
-            {
-                $item_hour_exception_open_time = null;
-                $item_hour_exception_close_time = null;
-
-                if(count($item_hour_exception_record) == 3)
-                {
-                    $item_hour_exception_open_time = $item_hour_exception_record[1] . ':00';
-                    $item_hour_exception_close_time = $item_hour_exception_record[2] . ':00';
-
-                    $item_hour_exception_open_hour = intval(substr($item_hour_exception_record[1], 0, 2));
-                    $item_hour_exception_close_hour = intval(substr($item_hour_exception_record[2], 0, 2));
-
-                    if($item_hour_exception_open_hour == 24)
-                    {
-                        $item_hour_exception_open_time = '24:00:00';
-                    }
-
-                    if($item_hour_exception_close_hour == 24)
-                    {
-                        $item_hour_exception_close_time = '24:00:00';
-                    }
-
-                    if($item_hour_exception_open_hour > $item_hour_exception_close_hour || $item_hour_exception_open_time == $item_hour_exception_close_time)
-                    {
-                        continue;
-                    }
-                }
-
-                $create_item_hour_exception = new ItemHourException(array(
-                    'item_id' => $new_item->id,
-                    'item_hour_exception_date' => $item_hour_exception_date,
-                    'item_hour_exception_open_time' => $item_hour_exception_open_time,
-                    'item_hour_exception_close_time' => $item_hour_exception_close_time,
-                ));
-                $create_item_hour_exception->save();
-              
-            }
-        }
+            // validate request
+            // $request->validate($validate_rule);
         
-           
-                    $data["article_by"] = Auth::user()->name;
-                    $data["date"] = date('Y-m-d');                   
-                    $data["subject"] = 'New Article Create At: ' .$data["date"].' ('.$data["article_by"].')';
-                    /**
-         * Start initial SMTP settings
-         */
-        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
-        {
-            // config SMTP
-            config_smtp(
-                $settings->settings_site_smtp_sender_name,
-                $settings->settings_site_smtp_sender_email,
-                $settings->settings_site_smtp_host,
-                $settings->settings_site_smtp_port,
-                $settings->settings_site_smtp_encryption,
-                $settings->settings_site_smtp_username,
-                $settings->settings_site_smtp_password
-            );
+            $select_categories = $request->category;
+
+            /**
+             * Start validate location (city, state, country, lat, lng)
+             */
+            $item_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
+
+            $select_country_id = null;
+            $select_state_id = null;
+            $select_city_id = null;
+            $select_item_lat = null;
+            $select_item_lng = null;
+            $item_location_str = "";
+
+            $item_postal_code = $request->article_postal_code;
+
+            if($item_type == Item::ITEM_TYPE_REGULAR)
+            {
+                // validate country_id
+                $select_country = Country::find($request->country_id);
+                if(!$select_country)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'country_id' => __('prefer_country.country-not-found'),
+                        ]);
+                }
+
+                // validate state_id
+                $select_state = State::find($request->state_id);
+                if(!$select_state)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'state_id' => __('prefer_country.state-not-found'),
+                        ]);
+                }
+                // validate city_id
+                $select_city = City::find($request->city_id);
+                if(!$select_city)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'city_id' => __('prefer_country.city-not-found'),
+                        ]);
+                }
+
+                $select_country_id = $select_country->id;
+                $select_state_id = $select_state->id;
+                $select_city_id = $select_city->id;
+
+                if(empty($request->article_lat) || empty($request->article_lng))
+                {
+                    $select_item_lat = $select_city->city_lat;
+                    $select_item_lng = $select_city->city_lng;
+                }
+                else
+                {
+                    $select_item_lat = $request->article_lat;
+                    $select_item_lng = $request->article_lng;
+                }
+
+                $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
+            }
+            /**
+             * End validate location (city, state, country, lat, lng)
+             */
+
+            // prepare new item data
+            $user_id = $login_user->id;
+
+            $item_status = $settings->settingItem->setting_item_auto_approval_enable == SettingItem::SITE_ITEM_AUTO_APPROVAL_ENABLED ? Item::ITEM_PUBLISHED : Item::ITEM_SUBMITTED;
+
+            $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
+            $item_title = $request->article_title;
+
+            // generate item slug based on combination of uniq id and item_title slug
+            $item_slug = str_slug($item_title);
+            $item_slug_exist = Item::where('item_slug', $item_slug)->count();
+            if($item_slug_exist > 0)
+            {
+                $item_slug = $item_slug . '-' . uniqid();
+            }
+
+            $item_description = empty($request->article_description) ? null : $request->article_description;
+            $item_address = $request->article_address;
+            $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
+
+            $city_id = $select_city_id;
+            $state_id = $select_state_id;
+            $country_id = $select_country_id;
+
+            $item_lat = $select_item_lat;
+            $item_lng = $select_item_lng;
+
+            $item_youtube_id = $request->article_youtube_id;
+
+            $item_phone = empty($request->article_phone) ? null : $request->article_phone;
+            $item_website = $request->article_website;
+            $item_social_facebook = $request->article_social_facebook;
+            $item_social_twitter = $request->article_social_twitter;
+            $item_social_linkedin = $request->article_social_linkedin;
+            // $item_social_instagram = $request->article_social_instagram;
+            $item_social_instagram = $instagram_username;
+            $item_keywords = $request->item_keywords;
+            $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
+
+            $item_hour_time_zone = $request->article_hour_time_zone;
+            $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
+
+            // start upload feature image
+            $feature_image = $request->feature_image;
+            $item_feature_image_name = null;
+            $item_feature_image_name_medium = null;
+            $item_feature_image_name_small = null;
+            $item_feature_image_name_tiny = null;
+            $item_feature_image_name_blur = null;
+            if(!empty($feature_image)){
+
+                $currentDate = Carbon::now()->toDateString();
+
+                $item_feature_image_name = $item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
+                $item_feature_image_name_medium = $item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
+                $item_feature_image_name_small = $item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
+                $item_feature_image_name_tiny = $item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
+
+                // blur feature image name
+                $item_feature_image_name_blur = $item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
+
+                if(!Storage::disk('public')->exists('item')){
+                    Storage::disk('public')->makeDirectory('item');
+                }
+
+                $item_feature_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name, $item_feature_image);
+
+                // medium size
+                $item_feature_image_medium = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(350, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_medium = $item_feature_image_medium->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_medium, $item_feature_image_medium);
+
+                // small size
+                $item_feature_image_small = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(230, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_small = $item_feature_image_small->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_small, $item_feature_image_small);
+
+                // tiny size
+                $item_feature_image_tiny = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(160, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_tiny = $item_feature_image_tiny->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_tiny, $item_feature_image_tiny);
+
+                // blur feature image
+                $item_feature_image_blur = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)));
+                $item_feature_image_blur->blur(50);
+                $item_feature_image_blur->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_blur, $item_feature_image_blur);
+            }
+
+            // start saving category string to item_categories_string column of items table
+            $item_categories_string = "";
+            foreach($select_categories as $select_categories_key => $select_category)
+            {
+                $item_categories_string = $item_categories_string . " " . Category::find($select_category)->category_name;
+            }
+
+            // fill new item data
+            $new_item = new Item(array(
+                'user_id' => $user_id,
+                'item_status' => $item_status,
+                'item_featured' => $item_featured,
+                'item_title' => $item_title,
+                'item_slug' => $item_slug,
+                'item_description' => $item_description,
+                'item_image' => $item_feature_image_name,
+                'item_image_medium' => $item_feature_image_name_medium,
+                'item_image_small' => $item_feature_image_name_small,
+                'item_image_tiny' => $item_feature_image_name_tiny,
+                'item_image_blur' => $item_feature_image_name_blur,
+                'item_address' => $item_address,
+                'item_address_hide' => $item_address_hide,
+                'city_id' => $city_id,
+                'state_id' => $state_id,
+                'country_id' => $country_id,
+                'item_postal_code' => $item_postal_code,
+                'item_lat' => $item_lat,
+                'item_lng' => $item_lng,
+                'item_youtube_id' => $item_youtube_id,
+                'item_phone' => $item_phone,
+                'item_website' => $item_website,
+                'item_social_facebook' => $item_social_facebook,
+                'item_social_twitter' => $item_social_twitter,
+                'item_social_linkedin' => $item_social_linkedin,
+                'item_categories_string' => $item_categories_string,
+                'item_location_str' => $item_location_str,
+                'item_type' => $item_type,
+                'item_hour_time_zone' => $item_hour_time_zone,
+                'item_hour_show_hours' => $item_hour_show_hours,
+                'item_social_instagram' => $item_social_instagram,
+                'item_keywords' => $item_keywords,
+                'item_social_whatsapp' => $item_social_whatsapp,
+            ));
+            $new_item->save();
+
+            $article_video_urls = $request->article_video_urls;
+            if($article_video_urls && !empty($article_video_urls)) {
+                foreach($article_video_urls as $article_video_url) {
+                    ItemMedia::updateOrCreate([
+                        'item_id' => $new_item->id,
+                        'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                    ],[
+                        'media_url' => $article_video_url
+                    ]);
+                }
+            }
+
+            $new_item->allCategories()->sync($select_categories);
+
+            // start to upload image galleries
+            $image_gallary = $request->image_gallery;
+            if(is_array($image_gallary) && count($image_gallary) > 0)
+            {
+                foreach($image_gallary as $image_gallary_key => $image)
+                {
+                    // check if the listing's gallery images reach the max number of gallery images
+                    if($image_gallary_key < $settings->settingItem->setting_item_max_gallery_photos)
+                    {
+                        $currentDate = Carbon::now()->toDateString();
+                        $item_image_gallery_uniqid = uniqid();
+
+                        $item_image_gallery['item_image_gallery_name'] = 'gallary-'.$currentDate.'-'.$item_image_gallery_uniqid.'.jpg';;
+                        $item_image_gallery['item_image_gallery_thumb_name'] = 'gallary-'.$currentDate.'-'.$item_image_gallery_uniqid.'-thumb.jpg';
+
+                        if(!Storage::disk('public')->exists('item/gallery')){
+                            Storage::disk('public')->makeDirectory('item/gallery');
+                        }
+
+                        // original
+                        $one_gallery_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))->stream('jpg', 80);
+                        Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_name'], $one_gallery_image);
+
+                        // thumb size
+                        $one_gallery_image_thumb = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))
+                            ->resize(null, 180, function($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        $one_gallery_image_thumb = $one_gallery_image_thumb->stream('jpg', 70);
+                        Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_thumb_name'], $one_gallery_image_thumb);
+
+                        $created_item_image_gallery = $new_item->galleries()->create($item_image_gallery);
+                    }
+                }
+            }
+
+            /**
+             * Start save item hours
+             */
+            $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
+
+            foreach($item_hours as $item_hours_key => $item_hour)
+            {
+                $item_hour_record = explode(' ', $item_hour);
+
+                if(count($item_hour_record) == 3)
+                {
+                    $item_hour_day_of_week = intval($item_hour_record[0]);
+
+                    if($item_hour_day_of_week >= ItemHour::DAY_OF_WEEK_MONDAY && $item_hour_day_of_week <= ItemHour::DAY_OF_WEEK_SUNDAY)
+                    {
+                        $item_hour_open_hour = intval(substr($item_hour_record[1], 0, 2));
+                        $item_hour_close_hour = intval(substr($item_hour_record[2], 0, 2));
+
+                        if($item_hour_open_hour <= $item_hour_close_hour)
+                        {
+                            $item_hour_open_time = $item_hour_record[1] . ':00';
+                            $item_hour_close_time = $item_hour_record[2] . ':00';
+
+                            if($item_hour_open_hour == 24)
+                            {
+                                $item_hour_open_time = '24:00:00';
+                            }
+
+                            if($item_hour_close_hour == 24)
+                            {
+                                $item_hour_close_time = '24:00:00';
+                            }
+
+                            if($item_hour_open_time != $item_hour_close_time)
+                            {
+                                $create_item_hour = new ItemHour(array(
+                                    'item_id' => $new_item->id,
+                                    'item_hour_day_of_week' => $item_hour_day_of_week,
+                                    'item_hour_open_time' => $item_hour_open_time,
+                                    'item_hour_close_time' => $item_hour_close_time,
+                                ));
+                                $create_item_hour->save();
+                            }
+                        }
+                    }
+                }
+            }
+            /**
+             * End save item hours
+             */
+
+            /**
+             * Start save item hour exceptions
+             */
+            $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
+
+            foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
+            {
+                $item_hour_exception_record = explode(' ', $item_hour_exception);
+
+                $item_hour_exception_date = $item_hour_exception_record[0];
+
+                if(DateTime::createFromFormat('Y-m-d', $item_hour_exception_date) !== false)
+                {
+                    $item_hour_exception_open_time = null;
+                    $item_hour_exception_close_time = null;
+
+                    if(count($item_hour_exception_record) == 3)
+                    {
+                        $item_hour_exception_open_time = $item_hour_exception_record[1] . ':00';
+                        $item_hour_exception_close_time = $item_hour_exception_record[2] . ':00';
+
+                        $item_hour_exception_open_hour = intval(substr($item_hour_exception_record[1], 0, 2));
+                        $item_hour_exception_close_hour = intval(substr($item_hour_exception_record[2], 0, 2));
+
+                        if($item_hour_exception_open_hour == 24)
+                        {
+                            $item_hour_exception_open_time = '24:00:00';
+                        }
+
+                        if($item_hour_exception_close_hour == 24)
+                        {
+                            $item_hour_exception_close_time = '24:00:00';
+                        }
+
+                        if($item_hour_exception_open_hour > $item_hour_exception_close_hour || $item_hour_exception_open_time == $item_hour_exception_close_time)
+                        {
+                            continue;
+                        }
+                    }
+
+                    $create_item_hour_exception = new ItemHourException(array(
+                        'item_id' => $new_item->id,
+                        'item_hour_exception_date' => $item_hour_exception_date,
+                        'item_hour_exception_open_time' => $item_hour_exception_open_time,
+                        'item_hour_exception_close_time' => $item_hour_exception_close_time,
+                    ));
+                    $create_item_hour_exception->save();
+                
+                }
+            }
+            
+            
+                        $data["article_by"] = Auth::user()->name;
+                        $data["date"] = date('Y-m-d');                   
+                        $data["subject"] = 'New Article Create At: ' .$data["date"].' ('.$data["article_by"].')';
+                        /**
+             * Start initial SMTP settings
+             */
+            if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+            {
+                // config SMTP
+                config_smtp(
+                    $settings->settings_site_smtp_sender_name,
+                    $settings->settings_site_smtp_sender_email,
+                    $settings->settings_site_smtp_host,
+                    $settings->settings_site_smtp_port,
+                    $settings->settings_site_smtp_encryption,
+                    $settings->settings_site_smtp_username,
+                    $settings->settings_site_smtp_password
+                );
+            }
+            /**
+             * End initial SMTP settings
+             */
+                        
+            
+                    Mail::send('backend.user.article.mail', $data, function($message)use($data) {
+                        $message->to('harsh.modi@pranshtech.com')
+                        // ->cc('rohit@pranshtech.com')
+                        // ->bcc($bccArr)
+                        ->subject($data["subject"]);
+                            
+                    });
+            /**
+             * End save item hour exceptions
+             */
+
+            // success, flash message
+            \Session::flash('flash_message', __('alert.article-created'));
+            \Session::flash('flash_type', 'success');
+
+            // return redirect()->route('user.articles.edit', ['article' => $new_item]);
+            return response()->json(['status'=>'success','msg'=>'Article Created Successfully']);
+        }else{
+            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
         }
-        /**
-         * End initial SMTP settings
-         */
-                     
-          
-                Mail::send('backend.user.article.mail', $data, function($message)use($data) {
-                    $message->to('harsh.modi@pranshtech.com')
-                    // ->cc('rohit@pranshtech.com')
-                    // ->bcc($bccArr)
-                    ->subject($data["subject"]);
-                         
-                });
-        /**
-         * End save item hour exceptions
-         */
-
-        // success, flash message
-        \Session::flash('flash_message', __('alert.article-created'));
-        \Session::flash('flash_type', 'success');
-
-        // return redirect()->route('user.articles.edit', ['article' => $new_item]);
         return back();
     }
 
@@ -1143,6 +1156,7 @@ class ArticleController extends Controller
         // Gate::authorize('update-item', $article);
 
         // dd($request->all());
+        // return response()->json(['status'=>'success','msg'=>$request->all()]);
         $settings = app('site_global_settings');
 
         /**
@@ -1203,481 +1217,487 @@ class ArticleController extends Controller
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
 
-
-        // prepare validate rule for custom fields
-        $select_categories = $article->allCategories()->get();
-
-        foreach($select_categories as $select_categories_key => $select_category)
+        $validator = Validator::make($request->all(),$validate_rule);
+        if($validator->passes())
         {
-            $custom_field_validation = array();
-            $custom_field_link = $select_category->allCustomFields()
-                ->where('custom_field_type', CustomField::TYPE_LINK)
-                ->get();
+            // prepare validate rule for custom fields
+            $select_categories = $article->allCategories()->get();
 
-            if($custom_field_link->count() > 0)
+            foreach($select_categories as $select_categories_key => $select_category)
             {
-                foreach($custom_field_link as $custom_field_link_key => $a_link)
+                $custom_field_validation = array();
+                $custom_field_link = $select_category->allCustomFields()
+                    ->where('custom_field_type', CustomField::TYPE_LINK)
+                    ->get();
+
+                if($custom_field_link->count() > 0)
                 {
-                    $custom_field_validation[str_slug($a_link->custom_field_name . $a_link->id)] = 'nullable|url';
-                }
-            }
-
-            $validate_rule = array_merge($validate_rule, $custom_field_validation);
-        }
-
-        $instagram_username = $request->article_social_instagram;
-        if($instagram_username){
-            if(stripos($instagram_username,'@') !== false){   
-                $instagram_username = explode('@',$instagram_username)[1];
-            }
-            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                return back()->with('instagram_error','Please enter valid instagram user name Only');
-            }
-        }
-        if($request->article_social_facebook){
-            if(stripos($request->article_social_facebook,'facebook') == false){
-                return back()->with('facebook_error','Please enter facebook URL only');
-            }
-        }
-        if($request->article_social_twitter){
-            if(stripos($request->article_social_twitter,'twitter') == false){
-                return back()->with('twitter_error','Please enter twitter URL only');
-            }
-        }        
-        if($request->article_social_linkedin){
-            if(stripos($request->article_social_linkedin,'linkedin') == false){
-                return back()->with('linkedin_error','Please enter linkedin URL only');
-            }
-        }
-        // validate request
-        $request->validate($validate_rule);
-
-        /**
-         * Start validate location (city, state, country, lat, lng)
-         */
-        $article_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
-
-        $select_country_id = null;
-        $select_state_id = null;
-        $select_city_id = null;
-        $select_item_lat = null;
-        $select_item_lng = null;
-        $item_location_str = "";
-
-        $item_postal_code = $request->article_postal_code;
-
-        if($article_type == Item::ITEM_TYPE_REGULAR)
-        {
-            // validate country_id
-            $select_country = Country::find($request->country_id);
-            if(!$select_country)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'country_id' => __('prefer_country.country-not-found'),
-                    ]);
-            }
-
-            // validate state_id
-            $select_state = State::find($request->state_id);
-            if(!$select_state)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'state_id' => __('prefer_country.state-not-found'),
-                    ]);
-            }
-            // validate city_id
-            $select_city = City::find($request->city_id);
-            if(!$select_city)
-            {
-                throw ValidationException::withMessages(
-                    [
-                        'city_id' => __('prefer_country.city-not-found'),
-                    ]);
-            }
-
-            $select_country_id = $select_country->id;
-            $select_state_id = $select_state->id;
-            $select_city_id = $select_city->id;
-
-            if(empty($request->article_lat) || empty($request->article_lng))
-            {
-                $select_item_lat = $select_city->city_lat;
-                $select_item_lng = $select_city->city_lng;
-            }
-            else
-            {
-                $select_item_lat = $request->article_lat;
-                $select_item_lng = $request->article_lng;
-            }
-
-            $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
-        }
-        /**
-         * End validate location (city, state, country, lat, lng)
-         */
-
-        // prepare new item data
-        $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
-        $item_title = $request->article_title;
-
-        $item_description = empty($request->article_description) ? null : $request->article_description;
-        $item_address = $request->article_address;
-        $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
-
-        $city_id = $select_city_id;
-        $state_id = $select_state_id;
-        $country_id = $select_country_id;
-
-        $item_lat = $select_item_lat;
-        $item_lng = $select_item_lng;
-
-        $item_youtube_id = $request->article_youtube_id;
-
-        $item_phone = empty($request->article_phone) ? null : $request->article_phone;
-        $item_website = $request->article_website;
-        $item_social_facebook = $request->article_social_facebook;
-        $item_social_twitter = $request->article_social_twitter;
-        $item_social_linkedin = $request->article_social_linkedin;
-        $item_social_instagram = $instagram_username;
-        $item_keywords = $request->item_keywords;
-        $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
-
-        $item_hour_time_zone = $request->article_hour_time_zone;
-        $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
-
-        // start upload feature image
-        $feature_image = $request->feature_image;
-        $item_feature_image_name = $article->item_image;
-        $item_feature_image_name_medium = $article->item_image_medium;
-        $item_feature_image_name_small = $article->item_image_small;
-        $item_feature_image_name_tiny = $article->item_image_tiny;
-        $item_feature_image_name_blur = $article->item_image_blur;
-
-        if(!empty($feature_image)){
-
-            $currentDate = Carbon::now()->toDateString();
-
-            $item_feature_image_name = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
-            $item_feature_image_name_medium = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
-            $item_feature_image_name_small = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
-            $item_feature_image_name_tiny = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
-
-            // blur feature image name
-            $item_feature_image_name_blur = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
-
-            if(!Storage::disk('public')->exists('item')){
-                Storage::disk('public')->makeDirectory('item');
-            }
-            if(Storage::disk('public')->exists('item/' . $article->item_image)){
-
-                Storage::disk('public')->delete('item/' . $article->item_image);
-                Storage::disk('public')->delete('item/' . $article->item_image_medium);
-                Storage::disk('public')->delete('item/' . $article->item_image_small);
-                Storage::disk('public')->delete('item/' . $article->item_image_tiny);
-                Storage::disk('public')->delete('item/' . $article->item_image_blur);
-            }
-
-            // original size
-            $item_feature_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name, $item_feature_image);
-
-            // medium size
-            $item_feature_image_medium = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(350, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_medium = $item_feature_image_medium->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_medium, $item_feature_image_medium);
-
-            // small size
-            $item_feature_image_small = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(230, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_small = $item_feature_image_small->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_small, $item_feature_image_small);
-
-            // tiny size
-            $item_feature_image_tiny = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
-                ->resize(160, null, function($constraint) {
-                    $constraint->aspectRatio();
-                });
-            $item_feature_image_tiny = $item_feature_image_tiny->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_tiny, $item_feature_image_tiny);
-
-            // blur feature image
-            $item_feature_image_blur = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)));
-            $item_feature_image_blur->blur(50);
-            $item_feature_image_blur->stream('jpg', 70);
-            Storage::disk('public')->put('item/'.$item_feature_image_name_blur, $item_feature_image_blur);
-        }
-
-        // start saving category string to item_categories_string column of items table
-        $item_categories_string = "";
-        foreach($select_categories as $select_categories_key => $select_category)
-        {
-            $item_categories_string = $item_categories_string . " " . $select_category->category_name;
-        }
-
-        // do not change the item status for an update request
-        // $article->item_status = Item::ITEM_SUBMITTED;
-
-        $article->item_featured = $item_featured;
-        $article->item_title = $item_title;
-
-        $article->item_description = $item_description;
-
-        $article->item_image = $item_feature_image_name;
-        $article->item_image_medium = $item_feature_image_name_medium;
-        $article->item_image_small = $item_feature_image_name_small;
-        $article->item_image_tiny = $item_feature_image_name_tiny;
-        $article->item_image_blur = $item_feature_image_name_blur;
-
-        $article->item_address = $item_address;
-        $article->item_address_hide = $item_address_hide;
-        $article->city_id = $city_id;
-        $article->state_id = $state_id;
-        $article->country_id = $country_id;
-        $article->item_postal_code = $item_postal_code;
-        $article->item_lat = $item_lat;
-        $article->item_lng = $item_lng;
-        $article->item_youtube_id = $item_youtube_id;
-
-        $article->item_phone = $item_phone;
-        $article->item_website = $item_website;
-        $article->item_social_facebook = $item_social_facebook;
-        $article->item_social_twitter = $item_social_twitter;
-        $article->item_social_linkedin = $item_social_linkedin;
-        $article->item_social_instagram = $item_social_instagram;
-        $article->item_keywords = $item_keywords;
-        $article->item_social_whatsapp = $item_social_whatsapp;
-
-        $article->item_features_string = null;
-        $article->item_categories_string = $item_categories_string;
-        $article->item_location_str = $item_location_str;
-
-        $article->item_type = $article_type;
-
-        $article->item_hour_time_zone = $item_hour_time_zone;
-        $article->item_hour_show_hours = $item_hour_show_hours;
-
-        $article->save();
-
-        $article_video_urls = $request->article_video_urls;
-        if($article_video_urls && !empty($article_video_urls)) {
-            foreach($article_video_urls as $article_video_url) {
-                if(empty($article_video_url)) {
-                    ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
-                } else {
-                    ItemMedia::updateOrCreate([
-                        'item_id' => $article->id,
-                        'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
-                    ],[
-                        'media_url' => $article_video_url
-                    ]);
-                }
-            }
-        } else {
-            ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
-        }
-
-        // start to save custom fields data
-        $article->features()->delete();
-
-        $item_categories = $article->allCategories()->get();
-        $select_categories = array();
-        foreach($item_categories as $item_categories_key => $item_category)
-        {
-            $select_categories[] = $item_category->id;
-        }
-
-        $category_custom_fields = new CustomField();
-        $category_custom_fields = $category_custom_fields->getDistinctCustomFieldsByCategories($select_categories);
-
-        if($category_custom_fields->count() > 0)
-        {
-            foreach($category_custom_fields as $category_custom_fields_key => $custom_field)
-            {
-                if($custom_field->custom_field_type == CustomField::TYPE_MULTI_SELECT)
-                {
-                    $multi_select_values = $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), '');
-                    $multi_select_str = '';
-                    if(is_array($multi_select_values))
+                    foreach($custom_field_link as $custom_field_link_key => $a_link)
                     {
-                        foreach($multi_select_values as $multi_select_values_key => $value)
-                        {
-                            $multi_select_str .= $value . ', ';
-                        }
+                        $custom_field_validation[str_slug($a_link->custom_field_name . $a_link->id)] = 'nullable|url';
                     }
-                    $new_item_feature = new ItemFeature(array(
-                        'custom_field_id' => $custom_field->id,
-                        'item_feature_value' => empty($multi_select_str) ? '' : substr(trim($multi_select_str), 0, -1),
-                    ));
+                }
+
+                $validate_rule = array_merge($validate_rule, $custom_field_validation);
+            }
+
+            $instagram_username = $request->article_social_instagram;
+            if($instagram_username){
+                if(stripos($instagram_username,'@') !== false){   
+                    $instagram_username = explode('@',$instagram_username)[1];
+                }
+                if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
+                    return back()->with('instagram_error','Please enter valid instagram user name Only');
+                }
+            }
+            if($request->article_social_facebook){
+                if(stripos($request->article_social_facebook,'facebook') == false){
+                    return back()->with('facebook_error','Please enter facebook URL only');
+                }
+            }
+            if($request->article_social_twitter){
+                if(stripos($request->article_social_twitter,'twitter') == false){
+                    return back()->with('twitter_error','Please enter twitter URL only');
+                }
+            }        
+            if($request->article_social_linkedin){
+                if(stripos($request->article_social_linkedin,'linkedin') == false){
+                    return back()->with('linkedin_error','Please enter linkedin URL only');
+                }
+            }
+            // validate request
+            $request->validate($validate_rule);
+
+            /**
+             * Start validate location (city, state, country, lat, lng)
+             */
+            $article_type = $request->article_type == Item::ITEM_TYPE_REGULAR ? Item::ITEM_TYPE_REGULAR : Item::ITEM_TYPE_ONLINE;
+
+            $select_country_id = null;
+            $select_state_id = null;
+            $select_city_id = null;
+            $select_item_lat = null;
+            $select_item_lng = null;
+            $item_location_str = "";
+
+            $item_postal_code = $request->article_postal_code;
+
+            if($article_type == Item::ITEM_TYPE_REGULAR)
+            {
+                // validate country_id
+                $select_country = Country::find($request->country_id);
+                if(!$select_country)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'country_id' => __('prefer_country.country-not-found'),
+                        ]);
+                }
+
+                // validate state_id
+                $select_state = State::find($request->state_id);
+                if(!$select_state)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'state_id' => __('prefer_country.state-not-found'),
+                        ]);
+                }
+                // validate city_id
+                $select_city = City::find($request->city_id);
+                if(!$select_city)
+                {
+                    throw ValidationException::withMessages(
+                        [
+                            'city_id' => __('prefer_country.city-not-found'),
+                        ]);
+                }
+
+                $select_country_id = $select_country->id;
+                $select_state_id = $select_state->id;
+                $select_city_id = $select_city->id;
+
+                if(empty($request->article_lat) || empty($request->article_lng))
+                {
+                    $select_item_lat = $select_city->city_lat;
+                    $select_item_lng = $select_city->city_lng;
                 }
                 else
                 {
-                    $new_item_feature = new ItemFeature(array(
-                        'custom_field_id' => $custom_field->id,
-                        'item_feature_value' => $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), ''),
+                    $select_item_lat = $request->article_lat;
+                    $select_item_lng = $request->article_lng;
+                }
+
+                $item_location_str = $select_city->city_name . ' ' . $select_state->state_name . ' ' . $select_country->country_name . ' ' . $item_postal_code;
+            }
+            /**
+             * End validate location (city, state, country, lat, lng)
+             */
+
+            // prepare new item data
+            $item_featured = $request->article_featured == Item::ITEM_FEATURED ? Item::ITEM_FEATURED : Item::ITEM_NOT_FEATURED;
+            $item_title = $request->article_title;
+
+            $item_description = empty($request->article_description) ? null : $request->article_description;
+            $item_address = $request->article_address;
+            $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
+
+            $city_id = $select_city_id;
+            $state_id = $select_state_id;
+            $country_id = $select_country_id;
+
+            $item_lat = $select_item_lat;
+            $item_lng = $select_item_lng;
+
+            $item_youtube_id = $request->article_youtube_id;
+
+            $item_phone = empty($request->article_phone) ? null : $request->article_phone;
+            $item_website = $request->article_website;
+            $item_social_facebook = $request->article_social_facebook;
+            $item_social_twitter = $request->article_social_twitter;
+            $item_social_linkedin = $request->article_social_linkedin;
+            $item_social_instagram = $instagram_username;
+            $item_keywords = $request->item_keywords;
+            $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
+
+            $item_hour_time_zone = $request->article_hour_time_zone;
+            $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
+
+            // start upload feature image
+            $feature_image = $request->feature_image;
+            $item_feature_image_name = $article->item_image;
+            $item_feature_image_name_medium = $article->item_image_medium;
+            $item_feature_image_name_small = $article->item_image_small;
+            $item_feature_image_name_tiny = $article->item_image_tiny;
+            $item_feature_image_name_blur = $article->item_image_blur;
+
+            if(!empty($feature_image)){
+
+                $currentDate = Carbon::now()->toDateString();
+
+                $item_feature_image_name = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '.jpg';
+                $item_feature_image_name_medium = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-medium.jpg';
+                $item_feature_image_name_small = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-small.jpg';
+                $item_feature_image_name_tiny = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-tiny.jpg';
+
+                // blur feature image name
+                $item_feature_image_name_blur = $article->item_slug . '-' . $currentDate . '-' . uniqid() . '-blur.jpg';
+
+                if(!Storage::disk('public')->exists('item')){
+                    Storage::disk('public')->makeDirectory('item');
+                }
+                if(Storage::disk('public')->exists('item/' . $article->item_image)){
+
+                    Storage::disk('public')->delete('item/' . $article->item_image);
+                    Storage::disk('public')->delete('item/' . $article->item_image_medium);
+                    Storage::disk('public')->delete('item/' . $article->item_image_small);
+                    Storage::disk('public')->delete('item/' . $article->item_image_tiny);
+                    Storage::disk('public')->delete('item/' . $article->item_image_blur);
+                }
+
+                // original size
+                $item_feature_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name, $item_feature_image);
+
+                // medium size
+                $item_feature_image_medium = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(350, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_medium = $item_feature_image_medium->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_medium, $item_feature_image_medium);
+
+                // small size
+                $item_feature_image_small = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(230, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_small = $item_feature_image_small->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_small, $item_feature_image_small);
+
+                // tiny size
+                $item_feature_image_tiny = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)))
+                    ->resize(160, null, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                $item_feature_image_tiny = $item_feature_image_tiny->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_tiny, $item_feature_image_tiny);
+
+                // blur feature image
+                $item_feature_image_blur = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$feature_image)));
+                $item_feature_image_blur->blur(50);
+                $item_feature_image_blur->stream('jpg', 70);
+                Storage::disk('public')->put('item/'.$item_feature_image_name_blur, $item_feature_image_blur);
+            }
+
+            // start saving category string to item_categories_string column of items table
+            $item_categories_string = "";
+            foreach($select_categories as $select_categories_key => $select_category)
+            {
+                $item_categories_string = $item_categories_string . " " . $select_category->category_name;
+            }
+
+            // do not change the item status for an update request
+            // $article->item_status = Item::ITEM_SUBMITTED;
+
+            $article->item_featured = $item_featured;
+            $article->item_title = $item_title;
+
+            $article->item_description = $item_description;
+
+            $article->item_image = $item_feature_image_name;
+            $article->item_image_medium = $item_feature_image_name_medium;
+            $article->item_image_small = $item_feature_image_name_small;
+            $article->item_image_tiny = $item_feature_image_name_tiny;
+            $article->item_image_blur = $item_feature_image_name_blur;
+
+            $article->item_address = $item_address;
+            $article->item_address_hide = $item_address_hide;
+            $article->city_id = $city_id;
+            $article->state_id = $state_id;
+            $article->country_id = $country_id;
+            $article->item_postal_code = $item_postal_code;
+            $article->item_lat = $item_lat;
+            $article->item_lng = $item_lng;
+            $article->item_youtube_id = $item_youtube_id;
+
+            $article->item_phone = $item_phone;
+            $article->item_website = $item_website;
+            $article->item_social_facebook = $item_social_facebook;
+            $article->item_social_twitter = $item_social_twitter;
+            $article->item_social_linkedin = $item_social_linkedin;
+            $article->item_social_instagram = $item_social_instagram;
+            $article->item_keywords = $item_keywords;
+            $article->item_social_whatsapp = $item_social_whatsapp;
+
+            $article->item_features_string = null;
+            $article->item_categories_string = $item_categories_string;
+            $article->item_location_str = $item_location_str;
+
+            $article->item_type = $article_type;
+
+            $article->item_hour_time_zone = $item_hour_time_zone;
+            $article->item_hour_show_hours = $item_hour_show_hours;
+
+            $article->save();
+
+            $article_video_urls = $request->article_video_urls;
+            if($article_video_urls && !empty($article_video_urls)) {
+                foreach($article_video_urls as $article_video_url) {
+                    if(empty($article_video_url)) {
+                        ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
+                    } else {
+                        ItemMedia::updateOrCreate([
+                            'item_id' => $article->id,
+                            'media_type' => ItemMedia::MEDIA_TYPE_VIDEO
+                        ],[
+                            'media_url' => $article_video_url
+                        ]);
+                    }
+                }
+            } else {
+                ItemMedia::where('item_id', $article->id)->where('media_type', ItemMedia::MEDIA_TYPE_VIDEO)->delete();
+            }
+
+            // start to save custom fields data
+            $article->features()->delete();
+
+            $item_categories = $article->allCategories()->get();
+            $select_categories = array();
+            foreach($item_categories as $item_categories_key => $item_category)
+            {
+                $select_categories[] = $item_category->id;
+            }
+
+            $category_custom_fields = new CustomField();
+            $category_custom_fields = $category_custom_fields->getDistinctCustomFieldsByCategories($select_categories);
+
+            if($category_custom_fields->count() > 0)
+            {
+                foreach($category_custom_fields as $category_custom_fields_key => $custom_field)
+                {
+                    if($custom_field->custom_field_type == CustomField::TYPE_MULTI_SELECT)
+                    {
+                        $multi_select_values = $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), '');
+                        $multi_select_str = '';
+                        if(is_array($multi_select_values))
+                        {
+                            foreach($multi_select_values as $multi_select_values_key => $value)
+                            {
+                                $multi_select_str .= $value . ', ';
+                            }
+                        }
+                        $new_item_feature = new ItemFeature(array(
+                            'custom_field_id' => $custom_field->id,
+                            'item_feature_value' => empty($multi_select_str) ? '' : substr(trim($multi_select_str), 0, -1),
+                        ));
+                    }
+                    else
+                    {
+                        $new_item_feature = new ItemFeature(array(
+                            'custom_field_id' => $custom_field->id,
+                            'item_feature_value' => $request->get(str_slug($custom_field->custom_field_name . $custom_field->id), ''),
+                        ));
+                    }
+
+                    $created_item_feature = $article->features()->save($new_item_feature);
+
+                    $article->item_features_string = $article->item_features_string . $created_item_feature->item_feature_value . " ";
+                    $article->save();
+                }
+            }
+
+            // start to upload image galleries
+            $image_gallery = $request->image_gallery;
+            if(is_array($image_gallery) && count($image_gallery) > 0)
+            {
+                $total_item_image_gallery = $article->galleries()->count();
+                foreach($image_gallery as $image_gallery_key => $image)
+                {
+                    // check if the listing's gallery images reach the max number of gallery images
+                    if($total_item_image_gallery + $image_gallery_key < $settings->settingItem->setting_item_max_gallery_photos)
+                    {
+                        $currentDate = Carbon::now()->toDateString();
+                        $item_image_gallery_uniqid = uniqid();
+
+                        $item_image_gallery['item_image_gallery_name'] = 'gallery-'.$currentDate.'-'.$item_image_gallery_uniqid.'.jpg';
+                        $item_image_gallery['item_image_gallery_thumb_name'] = 'gallery-'.$currentDate.'-'.$item_image_gallery_uniqid.'-thumb.jpg';
+
+                        if(!Storage::disk('public')->exists('item/gallery')){
+                            Storage::disk('public')->makeDirectory('item/gallery');
+                        }
+
+                        // original
+                        $one_gallery_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))->stream('jpg', 80);
+                        Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_name'], $one_gallery_image);
+
+                        // thumb size
+                        $one_gallery_image_thumb = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))
+                            ->resize(null, 180, function($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        $one_gallery_image_thumb = $one_gallery_image_thumb->stream('jpg', 70);
+                        Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_thumb_name'], $one_gallery_image_thumb);
+
+                        $created_item_image_gallery = $article->galleries()->create($item_image_gallery);
+                    }
+                }
+            }
+
+            /**
+             * Start save item hours
+             */
+            $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
+
+            foreach($item_hours as $item_hours_key => $item_hour)
+            {
+                $item_hour_record = explode(' ', $item_hour);
+
+                if(count($item_hour_record) == 3)
+                {
+                    $item_hour_day_of_week = intval($item_hour_record[0]);
+
+                    if($item_hour_day_of_week >= ItemHour::DAY_OF_WEEK_MONDAY && $item_hour_day_of_week <= ItemHour::DAY_OF_WEEK_SUNDAY)
+                    {
+                        $item_hour_open_hour = intval(substr($item_hour_record[1], 0, 2));
+                        $item_hour_close_hour = intval(substr($item_hour_record[2], 0, 2));
+
+                        if($item_hour_open_hour <= $item_hour_close_hour)
+                        {
+                            $item_hour_open_time = $item_hour_record[1] . ':00';
+                            $item_hour_close_time = $item_hour_record[2] . ':00';
+
+                            if($item_hour_open_hour == 24)
+                            {
+                                $item_hour_open_time = '24:00:00';
+                            }
+
+                            if($item_hour_close_hour == 24)
+                            {
+                                $item_hour_close_time = '24:00:00';
+                            }
+
+                            if($item_hour_open_time != $item_hour_close_time)
+                            {
+                                $create_item_hour = new ItemHour(array(
+                                    'item_id' => $article->id,
+                                    'item_hour_day_of_week' => $item_hour_day_of_week,
+                                    'item_hour_open_time' => $item_hour_open_time,
+                                    'item_hour_close_time' => $item_hour_close_time,
+                                ));
+                                $create_item_hour->save();
+                            }
+                        }
+                    }
+                }
+            }
+            /**
+             * End save item hours
+             */
+
+            /**
+             * Start save item hour exceptions
+             */
+            $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
+
+            foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
+            {
+                $item_hour_exception_record = explode(' ', $item_hour_exception);
+
+                $item_hour_exception_date = $item_hour_exception_record[0];
+
+                if(DateTime::createFromFormat('Y-m-d', $item_hour_exception_date) !== false)
+                {
+                    $item_hour_exception_open_time = null;
+                    $item_hour_exception_close_time = null;
+
+                    if(count($item_hour_exception_record) == 3)
+                    {
+                        $item_hour_exception_open_time = $item_hour_exception_record[1] . ':00';
+                        $item_hour_exception_close_time = $item_hour_exception_record[2] . ':00';
+
+                        $item_hour_exception_open_hour = intval(substr($item_hour_exception_record[1], 0, 2));
+                        $item_hour_exception_close_hour = intval(substr($item_hour_exception_record[2], 0, 2));
+
+                        if($item_hour_exception_open_hour == 24)
+                        {
+                            $item_hour_exception_open_time = '24:00:00';
+                        }
+
+                        if($item_hour_exception_close_hour == 24)
+                        {
+                            $item_hour_exception_close_time = '24:00:00';
+                        }
+
+                        if($item_hour_exception_open_hour > $item_hour_exception_close_hour || $item_hour_exception_open_time == $item_hour_exception_close_time)
+                        {
+                            continue;
+                        }
+                    }
+
+                    $create_item_hour_exception = new ItemHourException(array(
+                        'item_id' => $article->id,
+                        'item_hour_exception_date' => $item_hour_exception_date,
+                        'item_hour_exception_open_time' => $item_hour_exception_open_time,
+                        'item_hour_exception_close_time' => $item_hour_exception_close_time,
                     ));
-                }
-
-                $created_item_feature = $article->features()->save($new_item_feature);
-
-                $article->item_features_string = $article->item_features_string . $created_item_feature->item_feature_value . " ";
-                $article->save();
-            }
-        }
-
-        // start to upload image galleries
-        $image_gallery = $request->image_gallery;
-        if(is_array($image_gallery) && count($image_gallery) > 0)
-        {
-            $total_item_image_gallery = $article->galleries()->count();
-            foreach($image_gallery as $image_gallery_key => $image)
-            {
-                // check if the listing's gallery images reach the max number of gallery images
-                if($total_item_image_gallery + $image_gallery_key < $settings->settingItem->setting_item_max_gallery_photos)
-                {
-                    $currentDate = Carbon::now()->toDateString();
-                    $item_image_gallery_uniqid = uniqid();
-
-                    $item_image_gallery['item_image_gallery_name'] = 'gallery-'.$currentDate.'-'.$item_image_gallery_uniqid.'.jpg';
-                    $item_image_gallery['item_image_gallery_thumb_name'] = 'gallery-'.$currentDate.'-'.$item_image_gallery_uniqid.'-thumb.jpg';
-
-                    if(!Storage::disk('public')->exists('item/gallery')){
-                        Storage::disk('public')->makeDirectory('item/gallery');
-                    }
-
-                    // original
-                    $one_gallery_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))->stream('jpg', 80);
-                    Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_name'], $one_gallery_image);
-
-                    // thumb size
-                    $one_gallery_image_thumb = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$image)))
-                        ->resize(null, 180, function($constraint) {
-                            $constraint->aspectRatio();
-                        });
-                    $one_gallery_image_thumb = $one_gallery_image_thumb->stream('jpg', 70);
-                    Storage::disk('public')->put('item/gallery/'.$item_image_gallery['item_image_gallery_thumb_name'], $one_gallery_image_thumb);
-
-                    $created_item_image_gallery = $article->galleries()->create($item_image_gallery);
+                    $create_item_hour_exception->save();
                 }
             }
+            /**
+             * End save item hour exceptions
+             */
+
+            // success, flash message
+            \Session::flash('flash_message', __('alert.item-updated'));
+            \Session::flash('flash_type', 'success');
+
+            return response()->json(['status'=>'success','msg'=>'Article updated successfully']);
+            // return redirect()->route('user.articles.edit', ['article' => $article]);
+        }else{
+            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
         }
-
-        /**
-         * Start save item hours
-         */
-        $item_hours = empty($request->article_hours) ? array() : $request->article_hours;
-
-        foreach($item_hours as $item_hours_key => $item_hour)
-        {
-            $item_hour_record = explode(' ', $item_hour);
-
-            if(count($item_hour_record) == 3)
-            {
-                $item_hour_day_of_week = intval($item_hour_record[0]);
-
-                if($item_hour_day_of_week >= ItemHour::DAY_OF_WEEK_MONDAY && $item_hour_day_of_week <= ItemHour::DAY_OF_WEEK_SUNDAY)
-                {
-                    $item_hour_open_hour = intval(substr($item_hour_record[1], 0, 2));
-                    $item_hour_close_hour = intval(substr($item_hour_record[2], 0, 2));
-
-                    if($item_hour_open_hour <= $item_hour_close_hour)
-                    {
-                        $item_hour_open_time = $item_hour_record[1] . ':00';
-                        $item_hour_close_time = $item_hour_record[2] . ':00';
-
-                        if($item_hour_open_hour == 24)
-                        {
-                            $item_hour_open_time = '24:00:00';
-                        }
-
-                        if($item_hour_close_hour == 24)
-                        {
-                            $item_hour_close_time = '24:00:00';
-                        }
-
-                        if($item_hour_open_time != $item_hour_close_time)
-                        {
-                            $create_item_hour = new ItemHour(array(
-                                'item_id' => $article->id,
-                                'item_hour_day_of_week' => $item_hour_day_of_week,
-                                'item_hour_open_time' => $item_hour_open_time,
-                                'item_hour_close_time' => $item_hour_close_time,
-                            ));
-                            $create_item_hour->save();
-                        }
-                    }
-                }
-            }
-        }
-        /**
-         * End save item hours
-         */
-
-        /**
-         * Start save item hour exceptions
-         */
-        $item_hour_exceptions = empty($request->article_hour_exceptions) ? array() : $request->article_hour_exceptions;
-
-        foreach($item_hour_exceptions as $item_hour_exceptions_key => $item_hour_exception)
-        {
-            $item_hour_exception_record = explode(' ', $item_hour_exception);
-
-            $item_hour_exception_date = $item_hour_exception_record[0];
-
-            if(DateTime::createFromFormat('Y-m-d', $item_hour_exception_date) !== false)
-            {
-                $item_hour_exception_open_time = null;
-                $item_hour_exception_close_time = null;
-
-                if(count($item_hour_exception_record) == 3)
-                {
-                    $item_hour_exception_open_time = $item_hour_exception_record[1] . ':00';
-                    $item_hour_exception_close_time = $item_hour_exception_record[2] . ':00';
-
-                    $item_hour_exception_open_hour = intval(substr($item_hour_exception_record[1], 0, 2));
-                    $item_hour_exception_close_hour = intval(substr($item_hour_exception_record[2], 0, 2));
-
-                    if($item_hour_exception_open_hour == 24)
-                    {
-                        $item_hour_exception_open_time = '24:00:00';
-                    }
-
-                    if($item_hour_exception_close_hour == 24)
-                    {
-                        $item_hour_exception_close_time = '24:00:00';
-                    }
-
-                    if($item_hour_exception_open_hour > $item_hour_exception_close_hour || $item_hour_exception_open_time == $item_hour_exception_close_time)
-                    {
-                        continue;
-                    }
-                }
-
-                $create_item_hour_exception = new ItemHourException(array(
-                    'item_id' => $article->id,
-                    'item_hour_exception_date' => $item_hour_exception_date,
-                    'item_hour_exception_open_time' => $item_hour_exception_open_time,
-                    'item_hour_exception_close_time' => $item_hour_exception_close_time,
-                ));
-                $create_item_hour_exception->save();
-            }
-        }
-        /**
-         * End save item hour exceptions
-         */
-
-        // success, flash message
-        \Session::flash('flash_message', __('alert.item-updated'));
-        \Session::flash('flash_type', 'success');
-
-        // return redirect()->route('user.articles.edit', ['article' => $article]);
-        return back();
+            return back();
     }
 
     /**

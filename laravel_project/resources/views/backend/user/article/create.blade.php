@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     @endif
-                    <form method="POST" action="{{ route('user.articles.store') }}" id="article-create-form">
+                    <form method="POST" action="" id="articleCreateForm" name="articleCreateForm">
                         @csrf
                         <input type="hidden" name="article_type" value="1">
                         <div class="row border-left-primary mb-4">
@@ -86,7 +86,7 @@
                                     <div class="col-md-12">
                                         <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
                                         {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
-                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" multiple required>
+                                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" id="category_id" multiple>
                                             @foreach($all_categories as $key => $category)
                                                 @php
                                                     if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
@@ -94,6 +94,7 @@
                                             <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
                                             @endforeach
                                         </select>
+                                        <p class="category_id_error error_color"></p>
                                         @error('category')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -104,7 +105,8 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-6">
                                         <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
-                                        <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}" required>
+                                        <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}">
+                                        <p class="article_title_error error_color"></p>
                                         @error('article_title')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -113,7 +115,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
-                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}" required>
+                                        <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
+                                        <p class="article_address_error error_color"></p>
                                         @error('article_address')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -132,6 +135,7 @@
                                             @endif
                                             @endforeach
                                         </select>
+                                        <p class="article_country_id_error error_color"></p>
                                         @error('country_id')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -143,6 +147,7 @@
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
                                         </select>
+                                        <p class="article_state_id_error error_color"></p>
                                         @error('state_id')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -154,6 +159,7 @@
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
                                         </select>
+                                        <p class="article_city_id_error error_color"></p>
                                         @error('city_id')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -162,7 +168,8 @@
                                     </div>
                                     <div class="col-md-4 col-lg-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}" required>
+                                        <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
+                                        <p class="article_postal_code_error error_color"></p>
                                         @error('article_postal_code')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -303,6 +310,7 @@
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
                                         </small>
+                                        <p class="article_social_whatsapp_error error_color"></p>
                                         @error('article_social_whatsapp')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -696,6 +704,17 @@
                                 <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
                                     {{ __('backend.shared.create') }}
                                 </button>
+                                <span class="please_wait"></span>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
+                                            There are some error in your input. Please check above.
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -802,7 +821,80 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
-         $(document).ready(function(){
+        $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#category_id').on('change',function(){ $('.category_id_error').text(''); });
+            $('#article_title').on('input',function(e){ $('.article_title_error').text('') });
+            $('#article_address').on('input',function(e){ $('.article_address_error').text('') });
+            $('#select_country_id').on('change',function(e){ $('.article_country_id_error').text('') });
+            $('#select_state_id').on('change',function(e){ $('.article_state_id_error').text('') });
+            $('#select_city_id').change(function(e){ $('.article_city_id_error').text('') });
+            $('#article_postal_code').on('input',function(e){ $('.article_postal_code_error').text('') });
+            $('#article_social_whatsapp').change(function(e){ $('.article_social_whatsapp_error').text('') });
+            $('.please_wait').text('');
+
+            $('#articleCreateForm').on('submit',function(e){
+                e.preventDefault();
+                $('#submit').attr("disabled", true);
+                $('.please_wait').text('Please Wait..');
+
+                $('.category_id_error').text('');
+                $('.article_title_error').text('');
+                $('.article_address_error').text('');
+                $('.article_country_id_error').text('');
+                $('.article_state_id_error').text('')
+                $('.article_city_id_error').text('');
+                $('.article_postal_code_error').text('');
+                $('.article_social_whatsapp_error').text('');
+
+                var formData = new FormData(this);
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: "{{ route('user.articles.store') }}",
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+                    success: function(response) {
+                        console.log(response);
+
+                        if(response.status == 'success'){
+                            $('.please_wait').text('');
+                            $('#error_div').css('display','none');
+                            $('#submit').attr("disabled", false);
+                            location.reload();
+                        }
+                        if(response.status == 'error'){  
+                            $('.please_wait').text('');
+                            $('#submit').attr("disabled", false);
+                            $('#error_div').css('display','block')  ;                    
+                            let resp_data = response.msg;
+                            $.each(resp_data, function (key, val) { 
+                                if(resp_data.category){$('.category_id_error').text(resp_data.category) }
+                                if(resp_data.article_title){$('.article_title_error').text(resp_data.article_title) }
+                                if(resp_data.article_address){$('.article_address_error').text(resp_data.article_address) }
+                                if(resp_data.country_id){$('.article_country_id_error').text(resp_data.country_id) }
+                                if(resp_data.state_id){$('.article_state_id_error').text(resp_data.state_id) }
+                                if(resp_data.city_id){$('.article_city_id_error').text(resp_data.city_id) }
+                                if(resp_data.article_postal_code){$('.article_postal_code_error').text(resp_data.article_postal_code) }
+                                if(resp_data.article_social_whatsapp){$('.article_social_whatsapp_error').text(resp_data.article_social_whatsapp) }
+                                
+                            });
+                        }                        
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function(){
 
             $('.category').select2({
                     maximumSelectionLength: 5

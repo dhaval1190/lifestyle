@@ -130,7 +130,7 @@ $login_user = Auth::user();
             {{-- <div class="row font_icon_color"> --}}
                 <div class="row">
                 <div class="col-12">
-                    <form method="POST" action="{{ route('user.articles.update', $article) }}" id="article-create-form">
+                    <form method="POST" id="articleUpdateForm" name="articleUpdateForm">
                         @csrf
                         @method('PUT')
 
@@ -181,6 +181,7 @@ $login_user = Auth::user();
                                     <div class="col-md-6">
                                         <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
                                         <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') ? old('article_title') : $article->item_title }}">
+                                        <p class="article_title_error error_color"></p>
                                         @error('article_title')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -191,6 +192,7 @@ $login_user = Auth::user();
                                     <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') ? old('article_address') : $article->item_address }}">
+                                        <p class="article_address_error error_color"></p>
                                         @error('article_address')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -209,6 +211,7 @@ $login_user = Auth::user();
                                                 @endif
                                             @endforeach
                                         </select>
+                                        <p class="article_country_id_error error_color"></p>
                                         @error('country_id')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -227,6 +230,7 @@ $login_user = Auth::user();
                                                 @enderror
                                             @endforeach
                                         </select>
+                                        <p class="article_state_id_error error_color"></p>
                                         @error('state_id')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -245,6 +249,7 @@ $login_user = Auth::user();
                                                 @enderror
                                             @endforeach
                                         </select>
+                                        <p class="article_city_id_error error_color"></p>
                                         @error('city_id')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -254,6 +259,7 @@ $login_user = Auth::user();
                                     <div class="col-md-4 col-lg-2">
                                         <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code') ? old('article_postal_code') : $article->item_postal_code }}">
+                                        <p class="article_postal_code_error error_color"></p>
                                         @error('article_postal_code')
                                         <span class="invalid-tooltip">
                                             <strong>{{ $message }}</strong>
@@ -367,6 +373,7 @@ $login_user = Auth::user();
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
                                         </label>
                                         <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') ? old('article_social_whatsapp') : $article->item_social_whatsapp }}" onkeypress="validatePostalCode(event)">
+                                        <p class="article_social_whatsapp_error error_color"></p>
                                         <small id="linkHelpBlock" class="form-text text-muted">
                                             {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
                                         </small>
@@ -820,6 +827,17 @@ $login_user = Auth::user();
                                 <button type="submit" id="submit"  class="btn btn-primary py-2 px-4 text-white width_set_100">
                                     {{ __('backend.shared.update') }}
                                 </button>
+                                <span class="please_wait"></span>
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
+                                            There are some error in your input. Please check above.
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1281,6 +1299,91 @@ $login_user = Auth::user();
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
     <script>
+
+$(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            $('#category_id').on('change',function(){ $('.category_id_error').text(''); });
+            $('#article_title').on('input',function(e){ $('.article_title_error').text('') });
+            $('#article_address').on('input',function(e){ $('.article_address_error').text('') });
+            $('#select_country_id').on('change',function(e){ $('.article_country_id_error').text('') });
+            $('#select_state_id').on('change',function(e){ $('.article_state_id_error').text('') });
+            $('#select_city_id').change(function(e){ $('.article_city_id_error').text('') });
+            $('#article_postal_code').on('input',function(e){ $('.article_postal_code_error').text('') });
+            $('#article_social_whatsapp').change(function(e){ $('.article_social_whatsapp_error').text('') });
+
+            $('.please_wait').text('');
+
+            $('#articleUpdateForm').on('submit',function(e){
+                e.preventDefault();
+
+                $('.please_wait').text('Please Wait..');
+                $('#submit').attr("disabled", true);
+
+                $('.category_id_error').text('');
+                $('.article_title_error').text('');
+                $('.article_address_error').text('');
+                $('.article_country_id_error').text('');
+                $('.article_state_id_error').text('')
+                $('.article_city_id_error').text('');
+                $('.article_postal_code_error').text('');
+                $('.article_social_whatsapp_error').text('');
+
+                let url = "{{ route('user.articles.update', 0) }}";
+                url = url.replace('0', @json($article->id));
+
+                var formData = new FormData(this);
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'JSON',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+
+                    success: function(response) {
+                        console.log(response);
+
+                        if(response.status == 'success'){
+                            $('.please_wait').text('');
+                            $('#error_div').css('display','none');
+                            $('#submit').attr("disabled", false);
+                            location.reload();
+                        }
+                        if(response.status == 'error'){  
+                            $('.please_wait').text('');
+                            $('#submit').attr("disabled", false);
+                            $('#error_div').css('display','block')  ;                    
+                            let resp_data = response.msg;
+                            $.each(resp_data, function (key, val) { 
+                                if(resp_data.category){$('.category_id_error').text(resp_data.category) }
+                                if(resp_data.article_title){$('.article_title_error').text(resp_data.article_title) }
+                                if(resp_data.article_address){$('.article_address_error').text(resp_data.article_address) }
+                                if(resp_data.country_id){$('.article_country_id_error').text(resp_data.country_id) }
+                                if(resp_data.state_id){$('.article_state_id_error').text(resp_data.state_id) }
+                                if(resp_data.city_id){$('.article_city_id_error').text(resp_data.city_id) }
+                                if(resp_data.article_postal_code){$('.article_postal_code_error').text(resp_data.article_postal_code) }
+                                if(resp_data.article_social_whatsapp){$('.article_social_whatsapp_error').text(resp_data.article_social_whatsapp) }
+                                
+                            });
+                        }
+
+                                              
+                    }
+                });
+
+                
+            });
+        });
+
+
+
         $(document).ready(function(){
             @error('state_id')
             $('#select_country_id').val(0);
