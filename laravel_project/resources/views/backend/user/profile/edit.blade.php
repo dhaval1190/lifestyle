@@ -1065,7 +1065,7 @@ $chk_post = Auth::user()->phone;
                 <div class="row">
                     <div class="col-md-6">
                         <button type="submit" id="frmSubmit" class="btn btn-primary w-100 text-white first_btn ">
-                            {{ __('backend.shared.update') }}
+                            {{ __('Update Profile') }}
                         </button>
                     </div>
                     <div class="col-md-6">
@@ -1307,6 +1307,15 @@ $chk_post = Auth::user()->phone;
     </form>
 
   {{-- Add article section start --}}
+@php
+$login_user = auth()->user();
+@endphp
+  @if(($login_user->categories()->count() > 0) && isset($login_user->hourly_rate_type) && isset($login_user->experience_year) && isset($login_user->preferred_pronouns))
+    <div class="row">
+        <div class="col-lg-12 co-12">
+            <h1 class="h3 mb-2 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
+        </div>
+    </div>
 
   <div class="row font_icon_color">
     <div class="col-12">
@@ -1854,7 +1863,7 @@ $chk_post = Auth::user()->phone;
                                 </span>
                             @enderror
                             <div class="row mt-3">
-                                <div class="col-12">
+                                <div class="col-6">
                                     <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
                                         <strong id="img_error"></strong>
                                     </div>
@@ -1910,7 +1919,7 @@ $chk_post = Auth::user()->phone;
             <div class="form-row mb-3">
                 <div class="col-md-12">
                     <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
-                        {{ __('backend.shared.create') }}
+                        {{ __('Create Article') }}
                     </button>
                     <span class="please_wait"></span>
                 </div>
@@ -1928,6 +1937,7 @@ $chk_post = Auth::user()->phone;
         </form>
     </div>
 </div>
+@endif
 
 
 
@@ -2975,7 +2985,7 @@ $chk_post = Auth::user()->phone;
             $('#select_city_id').selectpicker('refresh');
 
             if (this.value > 0) {
-                var ajax_url = '/ajax/states/' + this.value;
+                var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
                 // var id = this.value;
                 // var url = "{{route('json.state', 0)}}";
                 // url = url.replace('0', id);
@@ -3006,7 +3016,7 @@ $chk_post = Auth::user()->phone;
                 "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
             $('#select_city_id').selectpicker('refresh');
             if (this.value > 0) {
-                var ajax_url = '/ajax/cities/' + this.value;
+                var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
                 // var id = this.value;
                 // var url = "{{route('json.city', 0)}}";
                 // url = url.replace('0', id);
