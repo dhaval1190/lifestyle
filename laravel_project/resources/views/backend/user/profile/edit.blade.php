@@ -2985,7 +2985,7 @@ $login_user = auth()->user();
             $('#select_city_id').selectpicker('refresh');
 
             if (this.value > 0) {
-                var ajax_url = 'http://localhost/coach_directory/ajax/states/' + this.value;
+                var ajax_url = '/ajax/states/' + this.value;
                 // var id = this.value;
                 // var url = "{{route('json.state', 0)}}";
                 // url = url.replace('0', id);
@@ -3016,7 +3016,7 @@ $login_user = auth()->user();
                 "<option selected value='0'>{{ __('prefer_country.loading-wait') }}</option>");
             $('#select_city_id').selectpicker('refresh');
             if (this.value > 0) {
-                var ajax_url = 'http://localhost/coach_directory/ajax/cities/' + this.value;
+                var ajax_url = '/ajax/cities/' + this.value;
                 // var id = this.value;
                 // var url = "{{route('json.city', 0)}}";
                 // url = url.replace('0', id);
