@@ -1264,7 +1264,7 @@ $chk_post = Auth::user()->phone;
             <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
 
         </div>
-        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="podcast_details_added">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4 border-bottom-primary" id="podcast_details_added">
             @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
             <div class="col-12 col-md-12 col-lg-12 p-0 ">
                 <div class="row border_set_row">
@@ -1311,7 +1311,7 @@ $chk_post = Auth::user()->phone;
 $login_user = auth()->user();
 @endphp
   @if(($login_user->categories()->count() > 0) && isset($login_user->hourly_rate_type) && isset($login_user->experience_year) && isset($login_user->preferred_pronouns))
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-lg-12 co-12">
             <h1 class="h3 mb-2 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
         </div>
@@ -1852,7 +1852,7 @@ $login_user = auth()->user();
                         </div>
                     </div>
                     <div class="form-row mb-3">
-                        <div class="col-md-6 col-lg-6">
+                        <div class="col-md-6 col-lg-3">
                             <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                             <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
                             <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
@@ -1863,7 +1863,7 @@ $login_user = auth()->user();
                                 </span>
                             @enderror
                             <div class="row mt-3">
-                                <div class="col-6">
+                                <div class="col-12">
                                     <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
                                         <strong id="img_error"></strong>
                                     </div>
@@ -1884,7 +1884,7 @@ $login_user = auth()->user();
                                 </div>
                             @endif
                         </div>
-                        <div class="col-md-6 col-lg-6">
+                        <div class="col-md-6 col-lg-9">
                             <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                             <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
                             <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
