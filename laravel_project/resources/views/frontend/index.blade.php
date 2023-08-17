@@ -1244,7 +1244,7 @@
     @endif
     </div>
 
-    @if ($all_testimonials->count() > 0)
+    {{-- @if ($all_testimonials->count() > 0)
         <div class="site-section ">
             <div class="container">
                 <div class="row justify-content-center mb-5">
@@ -1283,10 +1283,10 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 
     @if ($recent_blog->count() > 0)
-        <div class="site-section bg-light">
+        <div class="site-section">
             <div class="container">
                 <div class="row justify-content-center mb-5">
                     <div class="col-md-7 text-center border-primary">

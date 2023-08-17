@@ -406,13 +406,14 @@ class ArticleController extends Controller
     {
 
         // dd($request->all());
-        // return response()->json(['status'=>'success','data'=>$request->all()]);
+        
         $settings = app('site_global_settings');
 
         /**
          * Start check plan quota
          */
         $login_user = Auth::user();
+        // return response()->json(['status'=>'successss','data'=>$request->all()]);
 
         // if($request->article_featured == Item::ITEM_FEATURED)
         // {
@@ -442,15 +443,16 @@ class ArticleController extends Controller
             'category.*' => 'exists:categories,id', // check each item in the array
             'article_featured' => 'required|numeric',
             'article_title' => 'required|max:150',
-            'article_address' => 'required',
+            // 'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
             // 'state_id' => 'nullable|numeric',
             // 'country_id' => 'nullable|numeric',
-            'city_id' => 'required|numeric',
-            'state_id' => 'required|numeric',
-            'country_id' => 'required|numeric',
-            'article_postal_code' => 'required|regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/|max:10',
+
+            // 'city_id' => 'required|numeric',
+            // 'state_id' => 'required|numeric',
+            // 'country_id' => 'required|numeric',
+            // 'article_postal_code' => 'required|regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/|max:10',
             //'article_phone' => 'nullable|numeric|digits_between:10,20',
             'article_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
             'article_website' => 'nullable|url|max:255',
@@ -515,12 +517,13 @@ class ArticleController extends Controller
             $select_item_lng = null;
             $item_location_str = "";
 
-            $item_postal_code = $request->article_postal_code;
+            // $item_postal_code = $request->article_postal_code;
+            $item_postal_code = $login_user->post_code;
 
             if($item_type == Item::ITEM_TYPE_REGULAR)
             {
                 // validate country_id
-                $select_country = Country::find($request->country_id);
+                $select_country = Country::find($login_user->country_id);
                 if(!$select_country)
                 {
                     throw ValidationException::withMessages(
@@ -530,7 +533,7 @@ class ArticleController extends Controller
                 }
 
                 // validate state_id
-                $select_state = State::find($request->state_id);
+                $select_state = State::find($login_user->state_id);
                 if(!$select_state)
                 {
                     throw ValidationException::withMessages(
@@ -539,7 +542,7 @@ class ArticleController extends Controller
                         ]);
                 }
                 // validate city_id
-                $select_city = City::find($request->city_id);
+                $select_city = City::find($login_user->city_id);
                 if(!$select_city)
                 {
                     throw ValidationException::withMessages(
@@ -586,12 +589,17 @@ class ArticleController extends Controller
             }
 
             $item_description = empty($request->article_description) ? null : $request->article_description;
-            $item_address = $request->article_address;
+            // $item_address = $request->article_address;
+            $item_address = $login_user->address;
             $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
 
-            $city_id = $select_city_id;
-            $state_id = $select_state_id;
-            $country_id = $select_country_id;
+            // $city_id = $select_city_id;
+            // $state_id = $select_state_id;
+            // $country_id = $select_country_id;
+
+            $city_id = $login_user->city_id;
+            $state_id = $login_user->state_id;
+            $country_id = $login_user->country_id;
 
             $item_lat = $select_item_lat;
             $item_lng = $select_item_lng;
@@ -608,7 +616,8 @@ class ArticleController extends Controller
             $item_keywords = $request->item_keywords;
             $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
-            $item_hour_time_zone = $request->article_hour_time_zone;
+            // $item_hour_time_zone = $request->article_hour_time_zone;
+            $item_hour_time_zone = "America/New_York";
             $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
             // start upload feature image
@@ -1192,16 +1201,17 @@ class ArticleController extends Controller
         $validate_rule = [
             'article_featured' => 'required|numeric',
             'article_title' => 'required|max:150',
-            'article_address' => 'required',
+            // 'article_address' => 'required',
             'article_description' => 'nullable',
             // 'city_id' => 'nullable|numeric',
             // 'state_id' => 'nullable|numeric',
             // 'country_id' => 'nullable|numeric',
-            'city_id' => 'required|numeric',
-            'state_id' => 'required|numeric',
-            'country_id' => 'required|numeric',
+
+            // 'city_id' => 'required|numeric',
+            // 'state_id' => 'required|numeric',
+            // 'country_id' => 'required|numeric',
             // 'article_postal_code' => 'required|regex:/^[0-9]+$/|min:3|max:20',
-            'article_postal_code' => 'required|regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/|max:10',
+            // 'article_postal_code' => 'required|regex:/^[a-zA-Z0-9]+([- ]?[a-zA-Z0-9]+)*$/|max:10',
             'article_phone' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
             'article_website' => 'nullable|url|max:255',
             'article_social_facebook' => 'nullable|url|max:255',
@@ -1211,8 +1221,8 @@ class ArticleController extends Controller
             'article_video_urls' => 'nullable|array',
             'article_video_urls.*' => 'nullable|url|max:255',
             'article_type' => 'required|numeric|in:1,2',
-            'article_hour_time_zone' => 'required|max:255',
-            'article_hour_show_hours' => 'required|numeric|in:1,2',
+            'article_hour_time_zone' => 'max:255',
+            // 'article_hour_show_hours' => 'required|numeric|in:1,2',
             'article_social_instagram' => 'nullable|string|max:255',
             'article_social_whatsapp' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:20',
         ];
@@ -1280,12 +1290,12 @@ class ArticleController extends Controller
             $select_item_lng = null;
             $item_location_str = "";
 
-            $item_postal_code = $request->article_postal_code;
+            $item_postal_code = $login_user->post_code;
 
             if($article_type == Item::ITEM_TYPE_REGULAR)
             {
                 // validate country_id
-                $select_country = Country::find($request->country_id);
+                $select_country = Country::find($login_user->country_id);
                 if(!$select_country)
                 {
                     throw ValidationException::withMessages(
@@ -1295,7 +1305,7 @@ class ArticleController extends Controller
                 }
 
                 // validate state_id
-                $select_state = State::find($request->state_id);
+                $select_state = State::find($login_user->state_id);
                 if(!$select_state)
                 {
                     throw ValidationException::withMessages(
@@ -1304,7 +1314,7 @@ class ArticleController extends Controller
                         ]);
                 }
                 // validate city_id
-                $select_city = City::find($request->city_id);
+                $select_city = City::find($login_user->city_id);
                 if(!$select_city)
                 {
                     throw ValidationException::withMessages(
@@ -1342,9 +1352,9 @@ class ArticleController extends Controller
             $item_address = $request->article_address;
             $item_address_hide = $request->article_address_hide == Item::ITEM_ADDR_HIDE ? Item::ITEM_ADDR_HIDE : Item::ITEM_ADDR_NOT_HIDE;
 
-            $city_id = $select_city_id;
-            $state_id = $select_state_id;
-            $country_id = $select_country_id;
+            // $city_id = $select_city_id;
+            // $state_id = $select_state_id;
+            // $country_id = $select_country_id;
 
             $item_lat = $select_item_lat;
             $item_lng = $select_item_lng;
@@ -1360,7 +1370,8 @@ class ArticleController extends Controller
             $item_keywords = $request->item_keywords;
             $item_social_whatsapp = ltrim($request->article_social_whatsapp, '0');
 
-            $item_hour_time_zone = $request->article_hour_time_zone;
+            // $item_hour_time_zone = $request->article_hour_time_zone;
+            $item_hour_time_zone = "America/New_York";
             $item_hour_show_hours = $request->article_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
             // start upload feature image
@@ -1453,10 +1464,10 @@ class ArticleController extends Controller
 
             $article->item_address = $item_address;
             $article->item_address_hide = $item_address_hide;
-            $article->city_id = $city_id;
-            $article->state_id = $state_id;
-            $article->country_id = $country_id;
-            $article->item_postal_code = $item_postal_code;
+            $article->city_id = $login_user->city_id;
+            $article->state_id = $login_user->state_id;
+            $article->country_id = $login_user->country_id;
+            $article->item_postal_code = $login_user->post_code;
             $article->item_lat = $item_lat;
             $article->item_lng = $item_lng;
             $article->item_youtube_id = $item_youtube_id;

@@ -113,7 +113,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
                                         <p class="article_address_error error_color"></p>
@@ -122,13 +122,22 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                    </div> --}}
+                                    <div class="col-md-8 col-lg-4">
+                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                        <div class="input-group">
+                                            <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
+                                            <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" required>
-                                            {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
                                             @foreach($all_countries as $all_countries_key => $country)
                                             @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
                                             <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
@@ -145,7 +154,6 @@
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
-                                            {{-- <option selected value="0">{{ __('backend.article.select-state') }}</option> --}}
                                         </select>
                                         <p class="article_state_id_error error_color"></p>
                                         @error('state_id')
@@ -157,7 +165,6 @@
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
-                                            {{-- <option selected value="0">{{ __('backend.article.select-city') }}</option> --}}
                                         </select>
                                         <p class="article_city_id_error error_color"></p>
                                         @error('city_id')
@@ -187,9 +194,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline align_base grid_set">
                                             <input {{ old('article_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="1">
@@ -206,7 +213,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- <div class="form-row mb-3">
                                     <div class="col-md-3">
@@ -250,7 +257,7 @@
                                 <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
-                                        <textarea id="article_description" type="text" class="form-control @error('article_description') is-invalid @enderror" name="article_description">{{ old('article_description') }}</textarea>
+                                        <textarea id="article_description_text" type="text" class="form-control @error('article_description') is-invalid @enderror" name="article_description">{{ old('article_description') }}</textarea>
                                         @error('article_description')
                                         <span class="invalid-feedback">
                                             <strong>{{ $message }}</strong>
@@ -441,9 +448,9 @@
                             </div>
                         </div>
 
-                        <div class="row border-left-primary mb-4">
-                            <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 ">
+                        {{-- <div class="row border-left-primary mb-4">
+                            <div class="col-12"> --}}
+                                {{-- <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 ">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-clock"></i>
@@ -453,8 +460,8 @@
                                             {{ __('article_hour.open-hour-help') }}
                                         </small>
                                     </div>
-                                </div>
-                                <div class="form-row mb-3">
+                                </div> --}}
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-12 col-md-6">
                                         <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
                                         <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
@@ -487,7 +494,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- <div class="form-row mb-3">
                                     <div class="col-12">
@@ -618,8 +625,8 @@
                                 </div>
                                 <div class="form-row mb-3" id="open_hour_added_exceptions">
                                 </div> --}}
-                            </div>
-                        </div>
+                            {{-- </div>
+                        </div> --}}
 
                         <div class="row border-left-primary mb-4">
                             <div class="col-12">
@@ -820,6 +827,21 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
 
+    <script>
+        ClassicEditor
+                .create(document.querySelector('#article_description_text'),{
+                    removePlugins: ['MediaEmbed'],
+                    ckfinder:{
+                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
+                    }
+                } )
+                .then(editor => {
+                    // console.log(editor);
+                })
+                .catch( error => {
+			    // console.error( error );
+		    });
+    </script>
     <script>
         $(document).ready(function(){
             $.ajaxSetup({
@@ -1391,7 +1413,7 @@
              * End open hour exception add button
              */
 
-            // $('#article_description').trumbowyg({
+            // $('#article_description_text').trumbowyg({
             //     plugins: {
             //         resizimg: {
             //             minSize: 32,
@@ -1425,19 +1447,7 @@
             //     ]
             // });
 
-            ClassicEditor
-                .create( document.querySelector( '#article_description' ),{
-                    removePlugins: ['MediaEmbed'],
-                    ckfinder:{
-                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
-                    }
-                } )
-                .then(editor => {
-                    // console.log(editor);
-                })
-                .catch( error => {
-			    // console.error( error );
-		    });
+            
 
         });
     </script>

@@ -129,6 +129,11 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
     Route::get('/privacy-policy', 'PagesController@privacyPolicy')->name('page.privacy-policy');
     Route::get('/agreement', 'PagesController@agreement')->name('page.agreement');
 
+    //Schedule cron for events and coach,user listing
+    Route::get('mail-coaches-user-list','PagesController@mailCoachesUserList');
+    Route::get('send-event-mail-coach','PagesController@sendEventEmailToCoach');
+    Route::get('send-event-mail-user','PagesController@sendEventEmailToUser');
+
     /**
      * Blog routes
      */

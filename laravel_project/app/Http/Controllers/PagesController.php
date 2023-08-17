@@ -11019,4 +11019,126 @@ class PagesController extends Controller
             }
         }
     }
+
+    public function mailCoachesUserList()
+    {
+        $settings = app('site_global_settings');
+
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            // config SMTP
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+
+        $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->get();
+        $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->get();
+
+        $data = [
+            'coaches'=>$coaches,
+            'users'=>$users,
+        ];
+
+        $email_to = "shubham@pranshtech.com,rohit@pranshtech.com";
+        $recipients = explode(',', $email_to);
+        $email_subject = 'Coaches & Users list';
+
+        Mail::send('frontend.email_coaches_user_list',$data,function($messages) use ($recipients,$email_subject){
+            $messages->to($recipients);
+            $messages->subject($email_subject);
+        });
+
+        return "Mail sent successfully";
+    }
+
+    public function sendEventEmailToCoach()
+    {
+        $settings = app('site_global_settings');
+
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            // config SMTP
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+        
+        $today = date('Y-m-d');
+        $today_events = Event::where('event_start_date',$today)->where('status',1)->where('for_coach',1)->get();
+        
+        if($today_events->isNotEmpty()){
+        
+            $data = [
+                'today_events'=>$today_events,
+            ];
+
+            $email_to = "shubham@pranshtech.com,rohit@pranshtech.com";
+            $recipients = explode(',', $email_to);
+            $email_subject = "Today's Events";
+
+            Mail::send('frontend.email_today_event',$data,function($messages) use ($recipients,$email_subject){
+                $messages->to($recipients);
+                $messages->subject($email_subject);
+            });
+
+            return "Mail sent successfully";
+        }
+            return "No event scheduled today";
+
+    }
+
+    public function sendEventEmailToUser()
+    {
+        $settings = app('site_global_settings');
+
+        if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+        {
+            // config SMTP
+            config_smtp(
+                $settings->settings_site_smtp_sender_name,
+                $settings->settings_site_smtp_sender_email,
+                $settings->settings_site_smtp_host,
+                $settings->settings_site_smtp_port,
+                $settings->settings_site_smtp_encryption,
+                $settings->settings_site_smtp_username,
+                $settings->settings_site_smtp_password
+            );
+        }
+        
+        $today = date('Y-m-d');
+        $today_events = Event::where('event_start_date',$today)->where('status',1)->where('for_coach',0)->get();
+        
+        if($today_events->isNotEmpty()){
+        
+            $data = [
+                'today_events'=>$today_events,
+            ];
+
+            $email_to = "shubham@pranshtech.com,rohit@pranshtech.com";
+            $recipients = explode(',', $email_to);
+            $email_subject = "Today's Events";
+
+            Mail::send('frontend.email_today_event',$data,function($messages) use ($recipients,$email_subject){
+                $messages->to($recipients);
+                $messages->subject($email_subject);
+            });
+
+            return "Mail sent successfully";
+        }
+            return "No event scheduled today";
+
+    }
 }

@@ -189,7 +189,7 @@ $login_user = Auth::user();
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
                                         <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address') ? old('article_address') : $article->item_address }}">
                                         <p class="article_address_error error_color"></p>
@@ -198,10 +198,20 @@ $login_user = Auth::user();
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
+                                    </div> --}}
+                                    <div class="col-md-8 col-lg-4">
+                                        <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                        <div class="input-group">
+                                            <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
+                                            <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') ? old('article_lng') : $article->item_lng }}"aria-describedby="lngHelpBlock">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-md-4 col-lg-2">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}">
@@ -277,9 +287,9 @@ $login_user = Auth::user();
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="form-row mb-3">
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline align_base grid_set">
                                             <input {{ $article->item_address_hide == \App\Item::ITEM_ADDR_HIDE ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="{{ \App\Item::ITEM_ADDR_HIDE }}">
@@ -296,7 +306,7 @@ $login_user = Auth::user();
                                         </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- <div class="form-row mb-3">
                                     <div class="col-md-3">
@@ -515,9 +525,9 @@ $login_user = Auth::user();
                         </div>
 
                         <!-- start opening hour section -->
-                        <div class="row border-left-primary mb-4">
-                            <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 font_set_sm_head_para">
+                        {{-- <div class="row border-left-primary mb-4">
+                            <div class="col-12"> --}}
+                                {{-- <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 font_set_sm_head_para">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-clock"></i>
@@ -527,8 +537,8 @@ $login_user = Auth::user();
                                             {{ __('article_hour.open-hour-help') }}
                                         </small>
                                     </div>
-                                </div>
-                                <div class="form-row mb-3">
+                                </div> --}}
+                                {{-- <div class="form-row mb-3">
                                     <div class="col-12 col-md-6">
                                         <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
                                         <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
@@ -557,11 +567,11 @@ $login_user = Auth::user();
                                         </small>
                                         @error('article_hour_show_hours')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                        <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- <div class="form-row mb-3">
                                     <div class="col-12">
@@ -728,8 +738,8 @@ $login_user = Auth::user();
                                         </div>
                                     @endforeach
                                 </div> --}}
-                            </div>
-                        </div>
+                            {{-- </div>
+                        </div> --}}
                         <!-- end opening hour section -->
 
                         <!-- Start feature image and gallery image -->
@@ -1297,6 +1307,22 @@ $login_user = Auth::user();
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
+
+    <script>
+        ClassicEditor
+                .create( document.querySelector( '#article_description' ),{
+                    removePlugins: ['MediaEmbed'],
+                    ckfinder:{
+                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
+                    }
+                } )
+                .then(editor => {
+                    // console.log(editor);
+                })
+                .catch( error => {
+			    // console.error( error );
+		    });
+    </script>
 
     <script>
 
@@ -2036,19 +2062,7 @@ $(document).ready(function(){
             //     ]
             // });
 
-            ClassicEditor
-                .create( document.querySelector( '#article_description' ),{
-                    removePlugins: ['MediaEmbed'],
-                    ckfinder:{
-                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
-                    }
-                } )
-                .then(editor => {
-                    // console.log(editor);
-                })
-                .catch( error => {
-			    // console.error( error );
-		    });
+            
             
 
         });

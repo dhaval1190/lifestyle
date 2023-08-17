@@ -131,7 +131,7 @@
                                                                             alt="" />
                                                                     </div>
                                                                     <p class="date">
-                                                                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $event->event_start_date)->format('d/m') }}
+                                                                        {{ Str::limit(\Carbon\Carbon::parse($event->event_start_date)->format('d F'), 6, ',') }}
                                                                     </p>
 
                                                                     {{-- <p class="time">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }}</p> --}}
