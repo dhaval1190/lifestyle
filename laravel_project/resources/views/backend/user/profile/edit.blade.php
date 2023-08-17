@@ -2555,7 +2555,22 @@ $login_user = auth()->user();
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
-<script>
+    <script>
+        ClassicEditor
+                .create( document.querySelector( '#article_description' ),{
+                    removePlugins: ['MediaEmbed'],
+                    ckfinder:{
+                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
+                    }
+                } )
+                .then(editor => {
+                    // console.log(editor);
+                })
+                .catch( error => {
+			    // console.error( error );
+		    });
+    </script>
+    <script>
 
     $(document).ready(function(){
             $.ajaxSetup({
@@ -3046,19 +3061,7 @@ $login_user = auth()->user();
             }
         });
 
-        ClassicEditor
-                .create( document.querySelector( '#article_description' ),{
-                    removePlugins: ['MediaEmbed'],
-                    ckfinder:{
-                        uploadUrl:'{{ route('user.article.description.image').'?_token='.csrf_token() }}'
-                    }
-                } )
-                .then(editor => {
-                    // console.log(editor);
-                })
-                .catch( error => {
-			    // console.error( error );
-		    });
+        
 
         // @if(old('country_id'))
         // var ajax_url_initial_states = '/ajax/states/{{ old('
