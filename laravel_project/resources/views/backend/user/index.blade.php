@@ -234,9 +234,9 @@
             </div> -->
     <div class="row firstBlur">
         @if($login_user->isCoach())
-        @php $main_div_class = 'col-lg-12 col-xl-9 order-xl-0 order-1'; @endphp
+            @php $main_div_class = 'col-lg-12 col-xl-9 order-xl-0 order-1'; @endphp
         @else
-        @php $main_div_class = 'col-lg-12 col-xl-12 order-xl-0 order-1'; @endphp
+            @php $main_div_class = 'col-lg-12 col-xl-12 order-xl-0 order-1'; @endphp
         @endif
         <div class="{{ $main_div_class }}">
             <div class="row">
@@ -267,88 +267,116 @@
                     </a>
                 </div>
                 @if($login_user->isCoach())
-                <div class="col-md-6">
-                    <a href="{{ route('user.comments.index') }}" class="decoration-none">
-                        <div class="third_coach coach">
-                            <div class="coaches">
-                                <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
-                                <div class="coaches_detail">
-                                    <h3>{{ __('backend.homepage.all-comments') }}</h3>
-                                    <p class="c-three">{{ number_format($comment_count) }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>                    
-                </div>
-
-                {{-- <div class="col-md-6">
-                    <a class="decoration-none" href="{{ route('user.articles.index') }}">
-                        <div class="fourth_coach coach">
-                            <div class="coaches">
-                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                                <div class="coaches_detail">
-                                    <h3>{{ __('backend.homepage.all-articles') }}</h3>
-                                    <p class="c-four">{{ number_format($item_count) }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>                    
-                </div> --}}
-
-                <div class="col-md-6">
-                    <a class="decoration-none" href="{{ route('user.contact-leads.index') }}">
-                        <div class="fourth_coach coach">
-                            <div class="coaches">
-                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                                <div class="coaches_detail">
-                                    <h3>{{ __('Contact Leads') }}</h3>
-                                    <p class="c-four">{{ number_format($contact_lead_count) }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>                    
-                </div>
-
-                <div class="col-md-6">
-                    <a class="decoration-none" href="{{ route('user.referral.index') }}">
-                        <div class="fourth_coach coach">
-                            <div class="coaches">
-                                <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
-                                <div class="coaches_detail">
-                                    <h3>{{ __('Total Referral') }}</h3>
-                                    <p class="c-four">{{ count(Auth::user()->referrals)  ?? '0' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                @if(isset($All_visit_count) && !empty($All_visit_count))
-                <div class="col-md-6">
-                    <a class="decoration-none" href="{{route('page.profile', encrypt($login_user['id'])) }}">
-                        <div class="first_coach coach">
-                            <div class="coaches">
-                                <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
-                                <div class="coaches_detail">
-                                    <h3>{{ __('Profile Visitors') }}</h3>    
-                                    <div class="view_eye_post">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                        <p class="views">All</p>
-                                        <span class="article_section_number">:
-                                            {{ $All_visit_count }} </span>
+                    <div class="col-md-6">
+                        <a href="{{ route('user.comments.index') }}" class="decoration-none">
+                            <div class="third_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/meeting.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('backend.homepage.all-comments') }}</h3>
+                                        <p class="c-three">{{ number_format($comment_count) }}</p>
                                     </div>
-                                    <div class="view_calander_post">
-                                        <i class="fa fa-calendar"></i>
-                                        <p class="calander">Today</p>
-                                        <span class="article_section_number">: {{ $Today_Visits_count }}
-                                        </span>
-                                    </div>
-                                    <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
                                 </div>
                             </div>
+                        </a>                    
+                    </div>
+
+                    {{-- <div class="col-md-6">
+                        <a class="decoration-none" href="{{ route('user.articles.index') }}">
+                            <div class="fourth_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('backend.homepage.all-articles') }}</h3>
+                                        <p class="c-four">{{ number_format($item_count) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>                    
+                    </div> --}}
+
+                    <div class="col-md-6">
+                        <a class="decoration-none" href="{{ route('user.contact-leads.index') }}">
+                            <div class="fourth_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('Contact Leads') }}</h3>
+                                        <p class="c-four">{{ number_format($contact_lead_count) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>                    
+                    </div>
+
+                    <div class="col-md-6">
+                        <a class="decoration-none" href="{{ route('user.referral.index') }}">
+                            <div class="fourth_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('Total Referral') }}</h3>
+                                        <p class="c-four">{{ count(Auth::user()->referrals)  ?? '0' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    @if(isset($All_visit_count) && !empty($All_visit_count))
+                        <div class="col-md-6">
+                            <a class="decoration-none" href="{{route('page.profile', encrypt($login_user['id'])) }}">
+                                <div class="first_coach coach">
+                                    <div class="coaches">
+                                        <img src="{{ asset('frontend/images/Svg/client.svg') }}" alt="" />
+                                        <div class="coaches_detail">
+                                            <h3>{{ __('Profile Visitors') }}</h3>    
+                                            <div class="view_eye_post">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                <p class="views">All</p>
+                                                <span class="article_section_number">:
+                                                    {{ $All_visit_count }} </span>
+                                            </div>
+                                            <div class="view_calander_post">
+                                                <i class="fa fa-calendar"></i>
+                                                <p class="calander">Today</p>
+                                                <span class="article_section_number">: {{ $Today_Visits_count }}
+                                                </span>
+                                            </div>
+                                            <!-- <a href="{{ route('user.comments.index') }}">{{ __('backend.homepage.view-all-comment') }}</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>                    
                         </div>
-                    </a>                    
-                </div>
+                    @endif
                 @endif
+                @if($login_user->isCoach() && ($login_user->email == "admin@bunnyyoung.com" || $login_user->email == "Chris@refuseordinary.com"))
+                    <div class="col-md-6">
+                        {{-- <a href="{{ route('admin.users.index',['user_email_verified'=>1,'user_suspended'=>0,'order_by'=>1,'count_per_page'=>10]) }}" class="decoration-none"> --}}
+                            <div class="third_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('backend.homepage.all-coaches') }}</h3>
+                                        <p class="c-three">{{ number_format($coaches_count) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {{-- </a>                     --}}
+                    </div>
+                    <div class="col-md-6">
+                        {{-- <a href="{{ route('admin.users.index',['user_email_verified'=>1,'user_suspended'=>0,'order_by'=>1,'count_per_page'=>10]) }}" class="decoration-none"> --}}
+                            <div class="second_coach coach">
+                                <div class="coaches">
+                                    <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
+                                    <div class="coaches_detail">
+                                        <h3>{{ __('backend.homepage.all-users') }}</h3>
+                                        <p class="c-two">{{ number_format($users_count) }}</p>
+                                    </div>
+                                </div>
+                            </div>  
+                        {{-- </a> --}}
+                    </div>
                 @endif
                 <div class="col-lg-12">
                     <div class="coach_messages">

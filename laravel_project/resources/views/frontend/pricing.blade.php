@@ -122,6 +122,7 @@
             @endif
 
             <div class="row justify-content-center">
+                @php $count = 0; @endphp
                 @foreach($plans as $plans_key => $plan)
                     <div class="col-10 col-md-6 col-lg-3">
                         <div class="card mb-4 box-shadow text-center" style="min-height: 300px;">
@@ -161,6 +162,7 @@
                                         @endif
                                     </small> --}}
                                 </h1>
+                                @if($count == 2) <span>({{ "39% off" }})</span> @endif
                                 <ul class="list-unstyled mt-3 mb-4">
                                     @if(is_null($plan->plan_max_free_listing))
                                         <li>{{ __('theme_directory_hub.plan.unlimited') . ' ' . __('theme_directory_hub.plan.free-listing') }}</li>
@@ -250,6 +252,7 @@
                             </div>
                         </div>
                     </div>
+                    @php $count ++; @endphp
                 @endforeach
             </div>
 
