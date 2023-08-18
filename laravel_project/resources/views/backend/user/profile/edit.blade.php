@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
+
 <style type="text/css">
     .bootstrap-select.form-control {
         border: 1px solid #ced4da;
@@ -143,7 +145,73 @@
     .padding-20{
         padding-left: 20px;
     }
+
+    .back_ground_image_set{
+        background-image: url("https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/user/user-harsh-modi-2023-07-21-64ba1c7232a26.jpg");
+        min-height: 375px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    .back_ground_image_set i {
+        position: absolute;
+bottom: -20px;
+right: 5px;
+border: 1px solid;
+border-radius: 50%;
+padding: 11px;
+height: 40px;
+width: 40px;
+display: flex !important;
+align-items: center;
+justify-content: center;
+background-color: white;
+color: cornflowerblue;
+box-shadow: 0 0 8px 3px #ECECEC;
+}
+    .main-profile-img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border-style: solid;
+        border-color: #FFFFFF;
+    }
+    .profile_image_set {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 8px 3px #B8B8B8;
+  position: absolute;
+bottom: -50px;
+left: 10px;
+}
+
+.profile_image_set img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.profile_image_set i {
+  position: absolute;
+  top: 20px;
+  right: -7px;
+  /* border: 1px solid; */
+  border-radius: 50%;
+  /* padding: 11px; */
+  height: 30px;
+  width: 30px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: cornflowerblue;
+  box-shadow: 0 0 8px 3px #B8B8B8;
+}
 </style>
+
 @endsection
 
 @section('content')
@@ -155,11 +223,24 @@ $chk_post = Auth::user()->phone;
 
 
 <div class="row">
+    <div class="col-lg-12 p-0">
+    <div class="back_ground_image_set">
+    <a href="#"><i class="fa fa-edit"></i></a>
+    <a href="#" class="profile_image_set">
+     <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img ">
+     <i class="fa fa-edit"></i>
+     <a>
+</a>
+    </a>
+    
+    </div>
     <div class="col-lg-12 co-12">
-        <h1 class="h3 mb-2 font-set-sm text-orange-800">{{ __('backend.user.edit-profile') }}</h1>
-        <p class="mb-2">{{ __('backend.user.edit-profile-desc') }}</p>
-        @if(Auth::user()->isCoach())
-        <p class="mb-4 ">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+        <div class="display_center">
+            <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
+            <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p>
+            @if(Auth::user()->isCoach())
+            <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+        </div>
         {{-- <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
             <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}
             </button></a>
@@ -174,7 +255,7 @@ $chk_post = Auth::user()->phone;
 
 <!-- Content Row -->
 <div class="row pt-4 pl-3 pr-3 pb-4">
-    <div class="col-12 p-0">
+    <div class="col-12 p-0 pl-3">
         <div class="row font_icon_color">
             <div class="col-12">
                 @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) &&
@@ -206,9 +287,9 @@ $chk_post = Auth::user()->phone;
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         @if(empty($login_user->user_image))
-                                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="img-responsive">
+                                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
                                         @else
-                                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="img-responsive">
+                                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
                                         @endif
                                         <input id="feature_image" type="hidden" name="user_image">
                                     </div>
@@ -662,7 +743,7 @@ $chk_post = Auth::user()->phone;
                 <strong id="cover_img_error"></strong>
             </div>
 
-            <div class="row mt-3">
+            <div class="row mt-3" id="YouTube_sec">
                 <div class="col-12">
                     <div>
                         <h3 class="h3 mb-4 font-set-sm text-orange-700">YouTube Details</h3>
@@ -983,9 +1064,9 @@ $chk_post = Auth::user()->phone;
                     <div class="col-12">
                         <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-image') }}</button>
                         @if(empty($login_user->user_image))
-                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="img-responsive">
+                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
                         @else
-                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="img-responsive">
+                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
                         @endif
                         <input id="feature_image" type="hidden" name="user_image">
                     </div>
@@ -1174,7 +1255,7 @@ $chk_post = Auth::user()->phone;
 
     {{--  Podcast form --}}
     <form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
-    <div class="row mt-3 mb-5 break_line_section">
+    <div class="row mt-3 mb-5 break_line_section" id="podcastsec">
         <div class="col-12">
             <div>
                 <h3 class="h3 mb-2 font-set-sm text-orange-700">Podcast Details</h3>
@@ -1876,8 +1957,8 @@ $login_user = auth()->user();
                                         <strong id="img_error"></strong>
                                     </div>
                                     <button id="article_upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
-                                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
-                                    <img id="article_image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
+                                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class=""> --}}
+                                    <img id="article_image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="">
                                     <input id="article_feature_image" type="hidden" name="feature_image">
                                 </div>
                             </div>

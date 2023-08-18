@@ -50,7 +50,7 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4">
+    <div class="row bg-white pt-4 pl-3 pr-3 pb-4" id="article_sec">
         <div class="col-12">
             <div class="row font_icon_color">
                 <div class="col-12">

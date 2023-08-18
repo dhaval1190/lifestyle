@@ -428,7 +428,7 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.article-details') }}</h3>
                               <div>
-                                    <a class="decoration-none pr-2" href="{{ route('user.articles.create') }}">
+                                    <a class="decoration-none pr-2" href="{{ route('user.articles.create') }}#article_sec">
                                         <button class="btn btn-primary btn-sm">Add Article</button>
                                     </a>
                                     @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)
@@ -487,7 +487,7 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.podcast-details') }}</h3>
                                 <div>
-                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}#podcastsec">
                                         <button class="btn btn-primary btn-sm">Add Podcast</button>
                                     </a>
                                     @if(isset($AllPodcast) && !empty($AllPodcast) && count($AllPodcast) >= 5)
@@ -616,7 +616,7 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.ebook-details') }}</h3>
                                 <div>
-                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}#ebookFrm">
                                         <button class="btn btn-primary btn-sm">Add Ebook</button>
                                     </a>
                                     @if(isset($AllEbooks) && !empty($AllEbooks)&& count($AllEbooks) >= 5 )
@@ -673,7 +673,7 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.youtube-details') }}</h3>
                                 <div>
-                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit') }}">
+                                    <a class="decoration-none pr-2" href="{{ route('user.profile.edit')}}#YouTube_sec">
                                         <button class="btn btn-primary btn-sm">Add Youtube Video</button>
                                     </a>
                                     @if(isset($AllMedia) && !empty($AllMedia) && (count($AllMedia) + count($AllYoutube)) >= 4)
