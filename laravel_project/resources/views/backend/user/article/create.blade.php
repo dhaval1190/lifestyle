@@ -659,7 +659,7 @@
                                                 </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
                                                 {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class="img-responsive"> --}}
-                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="img-responsive">
+                                                <img id="image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="">
                                                 <input id="feature_image" type="hidden" name="feature_image">
                                             </div>
                                         </div>
@@ -1258,13 +1258,13 @@
                         enableExif: true,
                         mouseWheelZoom: false,
                         viewport: {
-                            width: 600,
-                            height: 600,
-                            type: 'square'
+                        width: 200,
+                        height: 200,
+                        type: 'square'
                         },
                         boundary: {
-                            width: 700,
-                            height: 700
+                            width: 300,
+                            height: 300
                         },
                         enableOrientation: true
                     });
