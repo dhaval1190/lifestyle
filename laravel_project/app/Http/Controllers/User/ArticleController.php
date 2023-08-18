@@ -430,7 +430,8 @@ class ArticleController extends Controller
             {
                 \Session::flash('flash_message', __('theme_directory_hub.plan.alert.free-plan-quota-reached'));
                 \Session::flash('flash_type', 'danger');
-                return redirect()->back()->withInput($request->input());
+                return response()->json(['status'=>'error','msg'=>__('theme_directory_hub.plan.alert.free-plan-quota-reached')]);
+                // return redirect()->back()->withInput($request->input());
             }
         // }
         /**
@@ -482,22 +483,27 @@ class ArticleController extends Controller
                     $instagram_username = explode('@',$instagram_username)[1];
                 }
                 if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                    return back()->with('instagram_error','Please enter valid instagram user name Only');
+                    // return back()->with('instagram_error','Please enter valid instagram user name Only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
+                    
                 }
             } 
             if($request->article_social_facebook){
                 if(stripos($request->article_social_facebook,'facebook') == false){
-                    return back()->with('facebook_error','Please enter facebook URL only');
+                    // return back()->with('facebook_error','Please enter facebook URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter facebook URL only in facebook field']);
                 }
             }
             if($request->article_social_twitter){
                 if(stripos($request->article_social_twitter,'twitter') == false){
-                    return back()->with('twitter_error','Please enter twitter URL only');
+                    // return back()->with('twitter_error','Please enter twitter URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter twitter URL only in twitter field']);
                 }
             }        
             if($request->article_social_linkedin){
                 if(stripos($request->article_social_linkedin,'linkedin') == false){
-                    return back()->with('linkedin_error','Please enter linkedin URL only');
+                    // return back()->with('linkedin_error','Please enter linkedin URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter linkedin URL only in linked field']);
                 }
             }
             // validate request
@@ -917,7 +923,7 @@ class ArticleController extends Controller
             // return redirect()->route('user.articles.edit', ['article' => $new_item]);
             return response()->json(['status'=>'success','msg'=>'Article Created Successfully']);
         }else{
-            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
+            return response()->json(['status'=>'validation_error','msg'=>$validator->errors()]);
         }
         return back();
     }
@@ -1190,7 +1196,8 @@ class ArticleController extends Controller
             {
                 \Session::flash('flash_message', __('theme_directory_hub.plan.alert.free-plan-quota-reached'));
                 \Session::flash('flash_type', 'danger');
-                return redirect()->back()->withInput($request->input());
+                return response()->json(['status'=>'error','msg'=>__('theme_directory_hub.plan.alert.free-plan-quota-reached')]);
+                // return redirect()->back()->withInput($request->input());
             }
         // }
         /**
@@ -1257,22 +1264,26 @@ class ArticleController extends Controller
                     $instagram_username = explode('@',$instagram_username)[1];
                 }
                 if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                    return back()->with('instagram_error','Please enter valid instagram user name Only');
+                    // return back()->with('instagram_error','Please enter valid instagram user name Only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
                 }
             }
             if($request->article_social_facebook){
                 if(stripos($request->article_social_facebook,'facebook') == false){
-                    return back()->with('facebook_error','Please enter facebook URL only');
+                    // return back()->with('facebook_error','Please enter facebook URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter facebook URL only in facebook field']);
                 }
             }
             if($request->article_social_twitter){
                 if(stripos($request->article_social_twitter,'twitter') == false){
-                    return back()->with('twitter_error','Please enter twitter URL only');
+                    // return back()->with('twitter_error','Please enter twitter URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter twitter URL only in twitter field']);
                 }
             }        
             if($request->article_social_linkedin){
                 if(stripos($request->article_social_linkedin,'linkedin') == false){
-                    return back()->with('linkedin_error','Please enter linkedin URL only');
+                    // return back()->with('linkedin_error','Please enter linkedin URL only');
+                    return response()->json(['status'=>'error','msg'=>'Please enter linkedin URL only in linked field']);
                 }
             }
             // validate request
@@ -1706,7 +1717,7 @@ class ArticleController extends Controller
             return response()->json(['status'=>'success','msg'=>'Article updated successfully']);
             // return redirect()->route('user.articles.edit', ['article' => $article]);
         }else{
-            return response()->json(['status'=>'error','msg'=>$validator->errors()]);
+            return response()->json(['status'=>'validation_error','msg'=>$validator->errors()]);
         }
             return back();
     }

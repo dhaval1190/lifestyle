@@ -509,6 +509,7 @@ class UserController extends Controller
             $login_user->post_code            = isset($input['post_code']) ? $input['post_code'] : null;
             $login_user->state_id             = isset($input['state_id']) ? $input['state_id'] : null;
             $login_user->country_id           = isset($input['country_id']) ? $input['country_id'] : null;
+            $login_user->time_zone           = isset($input['hour_time_zone']) ? $input['hour_time_zone'] : null;
 
             $login_user->user_about = $user_about;
             $login_user->awards = $awards;

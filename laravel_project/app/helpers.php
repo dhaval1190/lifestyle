@@ -315,4 +315,21 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
             '[QUESTIONS]'
         ];
     }
+
+    function authUserEventTimezone($utcDatetime)
+    {
+        // $utcDatetime = '2023-08-17 18:00:00'; // UTC datetime
+        $timezone = 'America/New_York'; // Target timezone
+
+        // Create a DateTime object for the UTC datetime
+        $utcDateTimeObject = new \DateTime($utcDatetime, new \DateTimeZone('UTC'));
+
+        // Set the target timezone
+        $targetTimezone = new \DateTimeZone($timezone);
+
+        // Convert the UTC datetime to the target timezone
+        $convertedDateTime = $utcDateTimeObject->setTimezone($targetTimezone);
+
+        return $convertedDateTime->format('Y-m-d H:i:s');
+    }
 }

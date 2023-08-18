@@ -715,7 +715,7 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
-                                            There are some error in your input. Please check above.
+                                            
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -864,6 +864,8 @@
                 e.preventDefault();
                 $('#submit').attr("disabled", true);
                 $('.please_wait').text('Please Wait..');
+                $('#error_div').css('display','none');
+                $('#error_div').text('');
 
                 $('.category_id_error').text('');
                 $('.article_title_error').text('');
@@ -894,10 +896,11 @@
                             $('#submit').attr("disabled", false);
                             location.reload();
                         }
-                        if(response.status == 'error'){  
+                        if(response.status == 'validation_error'){  
                             $('.please_wait').text('');
                             $('#submit').attr("disabled", false);
-                            $('#error_div').css('display','block')  ;                    
+                            $('#error_div').css('display','block');
+                            $('#error_div').text('There are some error in your input. Please check above.');
                             let resp_data = response.msg;
                             $.each(resp_data, function (key, val) { 
                                 if(resp_data.category){$('.category_id_error').text(resp_data.category) }
@@ -910,7 +913,14 @@
                                 if(resp_data.article_social_whatsapp){$('.article_social_whatsapp_error').text(resp_data.article_social_whatsapp) }
                                 
                             });
-                        }                        
+                        }
+                        if(response.status == 'error')
+                        {
+                            $('.please_wait').text('');
+                            $('#submit').attr("disabled", false);
+                            $('#error_div').text(response.msg);
+                            $('#error_div').css('display','block');
+                        }
                     }
                 });
             });

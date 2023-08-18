@@ -428,7 +428,7 @@
                             <div class="below_info padding-tb-30-lr-45">
                                 <h3>{{ __('backend.homepage.article-details') }}</h3>
                               <div>
-                                    <a class="decoration-none pr-2" href="{{ route('user.articles.create') }}#article_sec">
+                                    <a class="decoration-none pr-2" href="{{ route('user.articles.create') }}">
                                         <button class="btn btn-primary btn-sm">Add Article</button>
                                     </a>
                                     @if(isset($Articledetail) && !empty($Articledetail) && count($Articledetail) >= 5)

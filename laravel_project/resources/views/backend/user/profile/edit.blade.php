@@ -147,7 +147,7 @@
     }
 
     .back_ground_image_set{
-        background-image: url("https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/user/user-harsh-modi-2023-07-21-64ba1c7232a26.jpg");
+        /* background-image: url("https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/user/user-harsh-modi-2023-07-21-64ba1c7232a26.jpg"); */
         min-height: 375px;
         background-size: cover;
         background-position: center;
@@ -224,31 +224,39 @@ $chk_post = Auth::user()->phone;
 
 <div class="row">
     <div class="col-lg-12 p-0">
-    <div class="back_ground_image_set">
-    <a href="#"><i class="fa fa-edit"></i></a>
-    <a href="#" class="profile_image_set">
-     <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img ">
-     <i class="fa fa-edit"></i>
-     <a>
-</a>
-    </a>
-    
-    </div>
-    <div class="col-lg-12 co-12">
-        <div class="display_center">
-            <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
-            <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p>
-            @if(Auth::user()->isCoach())
-            <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+        <div class="back_ground_image_set" id="cover_image_preview" @if(!empty($user_detail['user_cover_image'])) style="background-image: url( {{ Storage::disk('public')->url('user/' . $user_detail['user_cover_image']) }});" @else style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});"@endif>
+            <a href="javascript:void(0)" id="upload_cover_image"><i class="fa fa-edit"></i></a>
+            @if(!empty($user_detail['user_cover_image']))
+                <a href="javascript:void(0)" id="delete_user_cover_image_button"><i class="fa fa-trash"></i></a>
+            @endif
+            <a href="javascript:void(0)" id="upload_image" class="profile_image_set">
+                @if(empty($login_user->user_image))        
+                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img ">
+                @else
+                    <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
+                @endif
+                <i class="fa fa-edit"></i>
+            </a>
+            @if(!empty($login_user->user_image))  
+                <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"><i class="fa fa-trash"></i></a>
+            @endif
+        
         </div>
-        {{-- <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
-            <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}
-            </button></a>
-        </p> --}}
-        @endif
-    </div>
+        <div class="col-lg-12 co-12">
+            <div class="display_center">
+                <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
+                <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p>
+                @if(Auth::user()->isCoach())
+                <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+            </div>
+            {{-- <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
+                <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}
+                </button></a>
+            </p> --}}
+            @endif
+        </div>
 
-</div>
+    </div>
 
 
 
@@ -283,7 +291,8 @@ $chk_post = Auth::user()->phone;
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            <div class="border_bg_set">
+                            <input id="feature_image" type="hidden" name="user_image">
+                            {{-- <div class="border_bg_set">
                                 <div class="row mt-3">
                                     <div class="col-12">
                                         @if(empty($login_user->user_image))
@@ -291,13 +300,9 @@ $chk_post = Auth::user()->phone;
                                         @else
                                         <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
                                         @endif
-                                        <input id="feature_image" type="hidden" name="user_image">
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-xl-12 col-12">
-                                        <button id="upload_image" type="button" class="btn btn-primary w-100 mb-2">{{ __('backend.user.select-image') }}</button>
-                                    </div>
                                     @if(isset($login_user->user_image))
                                     <div class="col-xl-12 col-12">
                                         <a class="btn btn-danger text-white w-100" id="delete_user_profile_image_button">
@@ -315,7 +320,7 @@ $chk_post = Auth::user()->phone;
                                         <small class="form-text text-muted">{{ __('Accepts only JPG,JPEG and PNG image type') }}</small>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             @if(Auth::user()->isCoach())
                             <div class="col-lg-12 col-12 p-0 mt-2">
@@ -330,7 +335,8 @@ $chk_post = Auth::user()->phone;
                                 </div>
                             </div>
                             @endif
-                            <div class="border_bg_set mt-3">
+                            <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
+                            {{-- <div class="border_bg_set mt-3">
                                 @error('user_cover_image')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
@@ -341,14 +347,10 @@ $chk_post = Auth::user()->phone;
                                 <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%; min-height:100px;">
                                 @else
                                 <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%; min-height:100px;">
-                                {{-- <img id="cover_image_preview" src="{{ Storage::url('user/'. $login_user->user_cover_image) }}"
-                                style="width:100%;"> --}}
                                 @endif
-                                <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
                                 <div class="mt-1">
                                     <div class="row mt-2">
                                         <div class="col-md-6">
-                                            <button id="upload_cover_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('Select') }}</button>
         
                                         </div>
                                         @if(!empty($login_user->user_cover_image))
@@ -361,7 +363,7 @@ $chk_post = Auth::user()->phone;
                                         @endif
                                     </div>
                                 </div>                        
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="col-sm-12 col-md-12 col-xl-10 col-lg-8">
                             <div class="row mb-3">
@@ -516,7 +518,7 @@ $chk_post = Auth::user()->phone;
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                                <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="24">{{ old('user_about', $login_user->user_about) }}</textarea>
+                                <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="10">{{ old('user_about', $login_user->user_about) }}</textarea>
                                 @error('user_about')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
@@ -713,6 +715,22 @@ $chk_post = Auth::user()->phone;
                     <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
                     @error('post_code')
                     <span class="invalid-tooltip" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                    <label for="hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
+                    <select id="hour_time_zone" class="selectpicker form-control @error('hour_time_zone') is-invalid @enderror" name="hour_time_zone" data-live-search="true">
+                        @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
+                        <option value="{{ $time_zone_identifier }}" {{ $login_user->time_zone == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
+                        @endforeach
+                    </select>
+                    <small class="form-text text-muted">
+                        {{ __('Time zone for event') }}
+                    </small>
+                    @error('hour_time_zone')
+                    <span class="invalid-feedback">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
@@ -1064,9 +1082,9 @@ $chk_post = Auth::user()->phone;
                     <div class="col-12">
                         <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-image') }}</button>
                         @if(empty($login_user->user_image))
-                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
+                            <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
                         @else
-                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
+                            <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
                         @endif
                         <input id="feature_image" type="hidden" name="user_image">
                     </div>
@@ -2016,7 +2034,7 @@ $login_user = auth()->user();
             <div class="row mt-2">
                 <div class="col-12">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
-                        There are some error in your input. Please check above.
+                        
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -2675,6 +2693,8 @@ $login_user = auth()->user();
                 e.preventDefault();
                 $('.please_wait').text('Please Wait..');
                 $('#submit').attr("disabled", true);
+                $('#error_div').css('display','none');
+                $('#error_div').text('');
 
                 $('.category_id_error').text('');
                 $('.article_title_error').text('');
@@ -2705,10 +2725,11 @@ $login_user = auth()->user();
                             $('#submit').attr("disabled", false);
                             location.reload();
                         }
-                        if(response.status == 'error'){  
+                        if(response.status == 'validation_error'){  
                             $('.please_wait').text('');
                             $('#submit').attr("disabled", false);
-                            $('#error_div').css('display','block')  ;                    
+                            $('#error_div').css('display','block');
+                            $('#error_div').text('There are some error in your input. Please check above.');
                             let resp_data = response.msg;
                             $.each(resp_data, function (key, val) { 
                                 if(resp_data.category){$('.category_id_error').text(resp_data.category) }
@@ -2721,7 +2742,14 @@ $login_user = auth()->user();
                                 if(resp_data.article_social_whatsapp){$('.article_social_whatsapp_error').text(resp_data.article_social_whatsapp) }
                                 
                             });
-                        }                        
+                        }
+                        if(response.status == 'error')
+                        {
+                            $('.please_wait').text('');
+                            $('#submit').attr("disabled", false);
+                            $('#error_div').text(response.msg);
+                            $('#error_div').css('display','block');
+                        }
                     }
                 });
             });
@@ -2987,7 +3015,8 @@ $login_user = auth()->user();
                 quality: 1
             }).then(function(response) {
                 $('#feature_cover_image').val(response);
-                $('#cover_image_preview').attr("src", response);
+                // $('#cover_image_preview').attr("src", response);
+                $('#cover_image_preview').css('background-image', 'url(' + response + ')');
             });
             $('#cover-image-crop-modal').modal('hide')
         });
