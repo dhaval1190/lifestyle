@@ -1140,6 +1140,58 @@ class UserController extends Controller
 
     }
 
+    public function addYoutubeDetails(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'media_type' => 'required',
+            'youtube_media_url' => 'required|url',
+
+        ],[
+            'media_type.required' => 'Please select media type',
+            'youtube_media_url.required' => 'Youtube URL is required',
+            'youtube_media_url.url' => 'The field must be type of URL',
+        ]);
+        
+        if($validator->passes()){
+            $media_type = $request->media_type;
+            $youtube_media_url = $request->youtube_media_url;
+
+            if((strpos($youtube_media_url, "?v=") !== false || strpos($youtube_media_url, "youtu.be") !== false) && strpos($youtube_media_url, "embed") == false)
+            {
+                if (strpos($youtube_media_url, "?v=") !== false) {
+                    $youtube_url_id = explode("?v=",$youtube_media_url)[1];
+                    $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+                    
+                }elseif(strpos($youtube_media_url, "youtu.be") !== false){
+                    $youtube_url_id = explode(".be/",$youtube_media_url)[1];
+                    $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+    
+                }
+
+                $login_user = Auth::user()->id;
+    
+                $media_detailObj = new MediaDetail;
+                $media_detailObj->user_id = $login_user;
+                $media_detailObj->media_type = $media_type;
+                $media_detailObj->media_url = $embed_url;
+    
+                $media_detailObj->save();
+                \Session::flash('flash_message', __('alert.media-updated'));
+                \Session::flash('flash_type', 'success');
+
+                $request->session()->flash('added','Youtube video added successfully');
+    
+                return response()->json(['status'=>'success','msg'=>'Youtube video added successfully']);
+
+            }else{
+                return response()->json(['status'=>'error','msg'=>'Please enter proper youtube video URL only']);
+            }
+            
+        }else{
+            return response()->json(['status'=>'validation_error','msg'=>$validator->errors()]);
+        }
+    }
+
     /**
      * @param Request $request
      * @return Response

@@ -5278,6 +5278,26 @@ class PagesController extends Controller
                 $media->media_name = $request->media_name;
                 $media->media_type = $request->media_type;
                 $media->save();
+            }elseif($request['media_type'] == 'video'){
+                $youtube_media_url = $request['media_url'];
+                if((strpos($youtube_media_url, "?v=") !== false || strpos($youtube_media_url, "youtu.be") !== false) && strpos($youtube_media_url, "embed") == false)
+                {
+                    if (strpos($youtube_media_url, "?v=") !== false) {
+                        $youtube_url_id = explode("?v=",$youtube_media_url)[1];
+                        $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+                        
+                    }elseif(strpos($youtube_media_url, "youtu.be") !== false){
+                        $youtube_url_id = explode(".be/",$youtube_media_url)[1];
+                        $embed_url = "https://www.youtube.com/embed/".$youtube_url_id;
+        
+                    }
+                $media->media_type = $request['media_type'];
+                $media->media_url = $embed_url;
+                $media->save();
+                }else{
+                    return back()->with('url_error','Please enter proper youtube video URL only');
+                }
+
             } else {
                 $media->media_type = $request->media_type;
                 $media->media_url = $request->media_url;
