@@ -758,6 +758,10 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::resource('/item-leads', 'ItemLeadController');
         Route::resource('/contact-leads', 'ContactLeadController')->middleware('check_coach_details');
         Route::get('/referral', 'ReferralController@index')->name('referral.index')->middleware('check_coach_details');
+
+        //User coach listing for only Chris and Bunny login
+        Route::get('/user-coach-listing', 'UserController@userCoachListing')->name('users.coach.list');
+
         
     });
 

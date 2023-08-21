@@ -316,16 +316,23 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
         ];
     }
 
-    function authUserEventTimezone($utcDatetime)
+    function getUserEventTimezone($utcDatetime)
     {
+        if(Auth::check())
+        {
+            $time_zone =  Auth::user()->time_zone;
+        }else{
+            $time_zone = 'UTC';
+        }
+        
         // $utcDatetime = '2023-08-17 18:00:00'; // UTC datetime
-        $timezone = 'America/New_York'; // Target timezone
+        // $time_zone = 'America/New_York'; // Target timezone
 
         // Create a DateTime object for the UTC datetime
         $utcDateTimeObject = new \DateTime($utcDatetime, new \DateTimeZone('UTC'));
 
         // Set the target timezone
-        $targetTimezone = new \DateTimeZone($timezone);
+        $targetTimezone = new \DateTimeZone($time_zone);
 
         // Convert the UTC datetime to the target timezone
         $convertedDateTime = $utcDateTimeObject->setTimezone($targetTimezone);

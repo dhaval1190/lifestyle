@@ -136,9 +136,10 @@ class EventController extends Controller
         $eventObj->event_social_url = $request->event_social_url;
         $eventObj->status = $request->draft_publish;
 
-        if($request->coach_chk == 1){
-            $eventObj->for_coach = $request->coach_chk;
-        }
+        // if($request->coach_chk == 1){
+        //     $eventObj->for_coach = $request->coach_chk;
+        // }
+        $eventObj->for_coach = $request->coach_chk ? $request->coach_chk : 0;
 
         
         if(!empty($request->event_image))
@@ -289,9 +290,10 @@ class EventController extends Controller
             $eventObj->event_image = $event_image_file_name;
         }
 
-        if($request->coach_chk == 1){
-            $eventObj->for_coach = $request->coach_chk;
-        }
+        // if($request->coach_chk == 1){
+        //     $eventObj->for_coach = $request->coach_chk;
+        // }
+        $eventObj->for_coach = $request->coach_chk ? $request->coach_chk : 0;
         
         $eventObj->save();
 

@@ -78,10 +78,14 @@
                                                                 <img src="{{ asset('frontend/images/time.png') }}"
                                                                     alt="" />
                                                                 {{-- <p>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }} To {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_end_date.' '.$event->event_end_hour.':'.$event->event_end_min)->format('h:i A') }}</p> --}}
-                                                                <p>{{ $event->event_start_hour }}
+                                                                {{-- <p>{{ $event->event_start_hour }}
                                                                     To
                                                                     {{ $event->event_end_hour }}
                                                                     (UTC)
+                                                                </p> --}}
+                                                                <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                    To
+                                                                    {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
                                                                 </p>
                                                             </div>
                                                             <div class="event_schedule_date" id="join_event">
@@ -131,12 +135,23 @@
                                                                             alt="" />
                                                                     </div>
                                                                     <p class="date">
-                                                                        {{ Str::limit(\Carbon\Carbon::parse($event->event_start_date)->format('d F'), 6, ',') }}
+                                                                        {{-- {{ Str::limit(\Carbon\Carbon::parse($event->event_start_date)->format('d F'), 6, ',') }} --}}
+                                                                        @php
+                                                                            $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
+                                                                            $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('d F'), 6, ',');
+                                                                        @endphp
+                                                                        {{ $event_date_format }}
                                                                     </p>
 
                                                                     {{-- <p class="time">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }}</p> --}}
                                                                     <p class="date">
-                                                                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $event->event_start_date)->format('Y') }}
+                                                                        {{-- {{ \Carbon\Carbon::createFromFormat('Y-m-d', $event->event_start_date)->format('Y') }} --}}
+                                                                        @php
+                                                                            $event_start_year = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-8);
+                                                                            $event_year = \Carbon\Carbon::createFromFormat('Y-m-d', $event_start_date)->format('Y');
+                                                                        @endphp
+                                                                        
+                                                                        {{ $event_year }}
                                                                     </p>
 
                                                                 </div>

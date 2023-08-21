@@ -352,7 +352,7 @@
                 @endif
                 @if($login_user->isCoach() && ($login_user->email == "admin@bunnyyoung.com" || $login_user->email == "Chris@refuseordinary.com"))
                     <div class="col-md-6">
-                        {{-- <a href="{{ route('admin.users.index',['user_email_verified'=>1,'user_suspended'=>0,'order_by'=>1,'count_per_page'=>10]) }}" class="decoration-none"> --}}
+                        <a href="{{ route('user.users.coach.list',['user_email_verified'=>2,'user_suspended'=>0,'role_search'=>2,'page'=>1]) }}" class="decoration-none">
                             <div class="third_coach coach">
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
@@ -362,10 +362,10 @@
                                     </div>
                                 </div>
                             </div>
-                        {{-- </a>                     --}}
+                        </a>                    
                     </div>
                     <div class="col-md-6">
-                        {{-- <a href="{{ route('admin.users.index',['user_email_verified'=>1,'user_suspended'=>0,'order_by'=>1,'count_per_page'=>10]) }}" class="decoration-none"> --}}
+                        <a href="{{ route('user.users.coach.list',['user_email_verified'=>2,'user_suspended'=>0,'role_search'=>3,'page'=>1]) }}" class="decoration-none">
                             <div class="second_coach coach">
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
@@ -375,7 +375,7 @@
                                     </div>
                                 </div>
                             </div>  
-                        {{-- </a> --}}
+                        </a>
                     </div>
                 @endif
                 <div class="col-lg-12">
