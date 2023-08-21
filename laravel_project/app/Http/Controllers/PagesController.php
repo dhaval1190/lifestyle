@@ -11046,7 +11046,7 @@ class PagesController extends Controller
             'users'=>$users,
         ];
 
-        $email_to = "shubham@pranshtech.com,rohit@pranshtech.com";
+        $email_to = "shubham@pranshtech.com,navdeep@pranshtech.com,mansi@pranshtech.com";
         $recipients = explode(',', $email_to);
         $email_subject = 'Coaches & Users list';
 
@@ -11085,7 +11085,7 @@ class PagesController extends Controller
                 'today_events'=>$today_events,
             ];
 
-            $email_to = "shubham@pranshtech.com,rohit@pranshtech.com";
+            $email_to = "shubham@pranshtech.com,navdeep@pranshtech.com,mansi@pranshtech.com";
             $recipients = explode(',', $email_to);
             $email_subject = "Today's Events";
 

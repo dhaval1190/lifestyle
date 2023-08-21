@@ -72,8 +72,8 @@ class PagesController extends Controller
         );
         $profile_visit = ProfileVisit::where('user_id', $login_user->id)->get();
         $contact_lead_count = ContactLead::where('receiver_id', $login_user->id)->count();
-        $coaches_count = User::where('role_id', 2)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
-        $users_count = User::where('role_id', 3)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
+        $coaches_count = User::where('role_id', 2)->where('email_verified_at','!=','null')->where('user_suspended',0)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
+        $users_count = User::where('role_id', 3)->where('email_verified_at','!=','null')->where('user_suspended',0)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
         // dd($coaches_count);
         
         $currentMonthlyVisits = $profile_visit->whereBetween('created_at', [

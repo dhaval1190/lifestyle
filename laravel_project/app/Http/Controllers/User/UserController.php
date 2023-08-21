@@ -1320,6 +1320,7 @@ class UserController extends Controller
     
             $all_users_query = User::query();
             $all_users_query->whereIn('role_id', [Role::USER_ROLE_ID, Role::COACH_ROLE_ID, Role::EDITOR_ROLE_ID]);
+            $all_users_query->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com']);
     
             // email verification query
             if(isset($role_search) && !empty($role_search))

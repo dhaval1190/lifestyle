@@ -167,18 +167,18 @@ align-items: center;
 justify-content: center;
 background-color: white;
 color: cornflowerblue;
-box-shadow: 0 0 8px 3px #ECECEC;
+/* box-shadow: 0 0 8px 3px #ECECEC; */
 }
     .main-profile-img {
-        width: 140px;
-        height: 140px;
+        width: 240px;
+        height: 2400px;
         border-radius: 50%;
         border-style: solid;
         border-color: #FFFFFF;
     }
     .profile_image_set {
-  width: 140px;
-  height: 140px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   border-style: solid;
   border-color: #FFFFFF;
@@ -208,7 +208,19 @@ left: 10px;
   justify-content: center;
   background-color: white;
   color: cornflowerblue;
-  box-shadow: 0 0 8px 3px #B8B8B8;
+  /* box-shadow: 0 0 8px 3px #B8B8B8; */
+}
+.youtube_bg{
+    background: #FFEEF9 0% 0% no-repeat padding-box;
+}
+.ebook_bg{
+    background: #E0F5CA 0% 0% no-repeat padding-box;
+}
+.article_bg{
+    background: #D2EDFF 0% 0% no-repeat padding-box;
+}
+.podcast_bg{
+    background: #FFE8B9 0% 0% no-repeat padding-box;
 }
 </style>
 
@@ -761,10 +773,11 @@ $chk_post = Auth::user()->phone;
                 <strong id="cover_img_error"></strong>
             </div>
 
+           <div class="youtube_bg">
             <div class="row mt-3" id="YouTube_sec">
                 <div class="col-12">
                     <div>
-                        <h3 class="h3 mb-4 font-set-sm text-orange-700">YouTube Details</h3>
+                        <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
                     </div>
                 </div>
                
@@ -832,7 +845,7 @@ $chk_post = Auth::user()->phone;
                 </div>
             </div>
 
-            <div class="row mt-3 font_icon_color_diff bg-white mb-5 break_line_section">
+            <div class="row mt-3 font_icon_color_diff mb-5 break_line_section">
                 <div class="col-12 pt-md-4 pb-md-4" id="media_details_added">
                     @foreach($video_media_array as $video_media_key => $video_media_value)
                     <div class="col-12 p-0 ">
@@ -864,7 +877,7 @@ $chk_post = Auth::user()->phone;
             {{-- <div class="row mt-3 mb-5 break_line_section">
                 <div class="col-12">
                     <div>
-                        <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
+                        <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">Ebook Details</h3>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-3">
@@ -910,7 +923,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4">
                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
                             <div class="col-12 col-md-12 col-lg-12 p-0">
                                 <div class="row border_set_row">
@@ -938,7 +951,7 @@ $chk_post = Auth::user()->phone;
             {{-- <div class="row mt-3 mb-5 break_line_section">
                 <div class="col-12">
                     <div>
-                        <h3 class="h3 mb-2 font-set-sm text-orange-700">Podcast Details</h3>
+                        <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">Podcast Details</h3>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-4">
@@ -1041,7 +1054,7 @@ $chk_post = Auth::user()->phone;
                         {{ __('Add') }}
                     </a>
                 </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="podcast_details_added">
+                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4" id="podcast_details_added">
                     @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
                     <div class="col-12 col-md-12 col-lg-12 p-0 ">
                         <div class="row border_set_row">
@@ -1066,6 +1079,7 @@ $chk_post = Auth::user()->phone;
                     @endforeach
                 </div>
             </div> --}}
+           </div>
         </div>
     </div>
     @else
@@ -1179,10 +1193,10 @@ $chk_post = Auth::user()->phone;
 </form>
     {{--  Ebook form --}}
     <form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
-        <div class="row mt-3 mb-5 break_line_section">
+        <div class="row mt-3 mb-5 break_line_section ebook_bg ">
             <div class="col-12">
                 <div>
-                    <h3 class="h3 mb-4 font-set-sm text-orange-700">Ebook Details</h3>
+                    <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">Ebook Details</h3>
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-3">
@@ -1244,7 +1258,7 @@ $chk_post = Auth::user()->phone;
                         <strong><span class="ebook_success_msg" style="color:green"></span></strong>
             
                     </div>
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4" id="ebook_details_added">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4" id="ebook_details_added">
                         @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
                         <div class="col-12 col-md-12 col-lg-12 p-0">
                             <div class="row border_set_row">
@@ -1273,139 +1287,140 @@ $chk_post = Auth::user()->phone;
 
     {{--  Podcast form --}}
     <form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
-    <div class="row mt-3 mb-5 break_line_section" id="podcastsec">
-        <div class="col-12">
-            <div>
-                <h3 class="h3 mb-2 font-set-sm text-orange-700">Podcast Details</h3>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-4">
-                    <label class="text-black">Podcast Type</label>                    
-
-                    <input type="hidden" name="podcast_type" value="podcast">
-                    {{-- <span class="podcast_type_err_media_url" style="color:red"></span> --}}
-                    {{-- <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type"> --}}
-                        <select id="podcast_web_type" class="form-control @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
-                        <option name="apple_podcast" value="">--Select--</option>
-                        <option name="apple_podcast" value="apple_podcast">Apple Podcast</option>
-                        <option name="stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
-                        <option name="google_podcast" value="google_podcast">Google Podcast</option>
-                        <option name="spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
-                    </select>
-                    {{-- <span class="podcast_success_msg" style="color:green"></span> --}}
-                    @error('media_type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    <p class="error_color podcast_web_type"></p>
+        <div class="row mt-3 mb-5 break_line_section podcast_bg" id="podcastsec">
+            <div class="col-12">
+                <div>
+                    <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">Podcast Details</h3>
                 </div>
-                <div class="col-12 col-md-12 col-lg-4" id="podcast_div_title" style="display:none">
-                    <label class="text-black">Podcast Title</label>
-                    <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
-                    @error('podcast_name')
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-4">
+                        <label class="text-black">Podcast Type</label>                    
+
+                        <input type="hidden" name="podcast_type" value="podcast">
+                        {{-- <span class="podcast_type_err_media_url" style="color:red"></span> --}}
+                        {{-- <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type"> --}}
+                            <select id="podcast_web_type" class="form-control @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
+                            <option name="apple_podcast" value="">--Select--</option>
+                            <option name="apple_podcast" value="apple_podcast">Apple Podcast</option>
+                            <option name="stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
+                            <option name="google_podcast" value="google_podcast">Google Podcast</option>
+                            <option name="spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
+                        </select>
+                        {{-- <span class="podcast_success_msg" style="color:green"></span> --}}
+                        @error('media_type')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        <p class="error_color podcast_web_type"></p>
+                    </div>
+                    <div class="col-12 col-md-12 col-lg-4" id="podcast_div_title" style="display:none">
+                        <label class="text-black">Podcast Title</label>
+                        <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
+                        @error('podcast_name')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        <p class="error_color podcast_name"></p>
+                    </div>
+                    
+                <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
+                    <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
+                    <span class="podcast_err_media_url" style="color:red"></span>
+                    <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                    <small id="linkHelpBlock" class="form-text text-muted">
+                        {{ __('Only URL allowed (include http:// or https://)') }}
+                    </small>
+                    @error('podcast_image')
                     <span class="invalid-tooltip" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                    <p class="error_color podcast_name"></p>
+                    @if(Session::has('podcast_error'))
+                    <span class="invalid-tooltip" role="alert">
+                        <strong>{{ Session::get('podcast_error') }}</strong>
+                    </span>
+                    @endif
+                    <p class="error_color podcast_image"></p>
                 </div>
                 
-            <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
-                <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
-                <span class="podcast_err_media_url" style="color:red"></span>
-                <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
-                <small id="linkHelpBlock" class="form-text text-muted">
-                    {{ __('Only URL allowed (include http:// or https://)') }}
+            <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
+                <label class="text-black">Podcast Cover</label>
+                <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
+                <small class="form-text text-muted">
+                    {{ __('backend.item.feature-image-help') }}
                 </small>
-                @error('podcast_image')
-                <span class="invalid-tooltip" role="alert">
+                @error('podcast_cover')
+                <span class="invalid-tooltip">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                @if(Session::has('podcast_error'))
-                <span class="invalid-tooltip" role="alert">
-                    <strong>{{ Session::get('podcast_error') }}</strong>
-                </span>
-                @endif
-                <p class="error_color podcast_image"></p>
+                <p class="error_color podcast_cover"></p>
             </div>
-            
-        <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
-            <label class="text-black">Podcast Cover</label>
-            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
-            <small class="form-text text-muted">
-                {{ __('backend.item.feature-image-help') }}
-            </small>
-            @error('podcast_cover')
-            <span class="invalid-tooltip">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-            <p class="error_color podcast_cover"></p>
-        </div>
-        {{-- <div class="col-12 col-md-12 col-lg-4">
-            <label for="podcast_url" class="text-black">&nbsp;</label>
-            <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                <i class="fas fa-plus"></i>
-                {{ __('Add') }}
-            </a>
-        </div> --}}
-        <div class="col-12 col-md-12 col-lg-3">
-            <label for="podcast_url" class="text-black">&nbsp;</label>
-            {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                <i class="fas fa-plus"></i>
-                {{ __('Add') }}
-            </a> --}}
-            <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
-                <i class="fas fa-plus"></i>{{ __('Add') }}
-            </button>
-            <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
+            {{-- <div class="col-12 col-md-12 col-lg-4">
+                <label for="podcast_url" class="text-black">&nbsp;</label>
+                <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                    <i class="fas fa-plus"></i>
+                    {{ __('Add') }}
+                </a>
+            </div> --}}
+            <div class="col-12 col-md-12 col-lg-3">
+                <label for="podcast_url" class="text-black">&nbsp;</label>
+                {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                    <i class="fas fa-plus"></i>
+                    {{ __('Add') }}
+                </a> --}}
+                <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
+                    <i class="fas fa-plus"></i>{{ __('Add') }}
+                </button>
+                <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
 
-        </div>
-        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff bg-white pt-md-4 pb-md-4 border-bottom-primary" id="podcast_details_added">
-            @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-            <div class="col-12 col-md-12 col-lg-12 p-0 ">
-                <div class="row border_set_row">
-                    <div class="col-md-6 col-9">
-                        <span class="set_width">
-                            {{-- {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : --}}
-                            <div class="row">
-                                <div class="col-md-1">
-                                    @if($podcast_media_value->podcast_web_type == 'stitcher_podcast')
-                                        <img src="{{ Storage::disk('public')->url('media_files/' . $podcast_media_value->media_cover) }}" alt="" width="30px">
-                                    @else
-                                        <img src="{{ $podcast_media_value->media_cover }}" alt="" width="30px">
-                                    @endif
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff  pt-md-4 pb-md-4 border-bottom-primary" id="podcast_details_added">
+                @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+                <div class="col-12 col-md-12 col-lg-12 p-0 ">
+                    <div class="row border_set_row">
+                        <div class="col-md-6 col-9">
+                            <span class="set_width">
+                                {{-- {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : --}}
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        @if($podcast_media_value->podcast_web_type == 'stitcher_podcast')
+                                            <img src="{{ Storage::disk('public')->url('media_files/' . $podcast_media_value->media_cover) }}" alt="" width="30px">
+                                        @else
+                                            <img src="{{ $podcast_media_value->media_cover }}" alt="" width="30px">
+                                        @endif
+                                    </div>
+                                    <div class="col-md-11">
+                                        {{ $podcast_media_value->media_name }}</span> 
+                                    </div>
                                 </div>
-                                <div class="col-md-11">
-                                    {{ $podcast_media_value->media_name }}</span> 
-                                </div>
+                            
+
+                        </div>
+                        <div class="col-md-6 col-3">
+                            <div class="edit_delete_btn">
+                                <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
+                                    {{-- <i class="far fa-edit"></i> --}}
+                                    <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                                </a>
+                                <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
+                                    {{-- <i class='far fa-trash-alt'></i> --}}
+                                    <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                </a>
                             </div>
-                          
-
-                    </div>
-                    <div class="col-md-6 col-3">
-                        <div class="edit_delete_btn">
-                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
-                                {{-- <i class="far fa-edit"></i> --}}
-                                <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
-                            </a>
-                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
-                                {{-- <i class='far fa-trash-alt'></i> --}}
-                                <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                            </a>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
-    </div>
     
     </form>
 
   {{-- Add article section start --}}
+<div class="article_bg">
 @php
 $login_user = auth()->user();
 @endphp
@@ -1416,635 +1431,635 @@ $login_user = auth()->user();
         </div>
     </div>
 
-  <div class="row font_icon_color">
-    <div class="col-12">
-        @if(Session::has('required_field_error'))
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ Session::get('required_field_error') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
-        <form method="POST" id="articleCreateForm" name="articleCreateForm">
-            @csrf
-            <input type="hidden" name="article_type" value="1">
-            <div class="border-left-primary mb-4">
-                <div class="col-12">
-                    <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
-                        <div class="col-md-12">
-                            <span class="text-lg text-white">
-                                <i class="fas fa-store"></i>
-                                {{ __('backend.article.general-info') }}
-                            </span>
-                            <small class="form-text text-white">
-                                {{ __('article_hour.article-general-info-help') }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3">
-                        <div class="col-md-12">
-                            <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
-                            {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
-                            <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" id="category_id" multiple>
-                                    @foreach($all_categories as $key => $category)
-                                        @php
-                                            if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
-                                        @endphp
-                                    <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
-                                    @endforeach
-                            </select>
-                            <p class="category_id_error error_color"></p>
-                            @error('category')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-row mb-3">
-                        <div class="col-md-6">
-                            <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
-                            <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}">
-                            <p class="article_title_error error_color"></p>
-                            @error('article_title')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        {{-- <div class="col-md-6">
-                            <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
-                            <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
-                            <p class="article_address_error error_color"></p>
-                            @error('article_address')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div> --}}
-                        <div class="col-md-8 col-lg-4">
-                            <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
-                            <div class="input-group">
-                                <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
-                                <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <div class="form-row mb-3">
-                        <div class="col-md-4 col-lg-2">
-                            <label for="article_select_country_id" class="text-black">{{ __('Country') }}<span class="text-danger">*</span></label>
-                            <select id="article_select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
-                                @foreach($all_countries as $all_countries_key => $country)
-                                    @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
-                                        <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            <p class="article_country_id_error error_color"></p>
-                            @error('country_id')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-4 col-lg-2">
-                            <label for="article_select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
-                            <select id="article_select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
-                                @if($all_states)
-                                    @foreach($all_states as $key => $state)
-                                        @error('state_id')
-                                            <option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
-                                                {{ $state->state_name }}
-                                            </option>
-                                        @else
-                                            <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
-                                                {{ $state->state_name }}
-                                            </option>
-                                        @enderror
-                                    @endforeach
-                                @endif
-                            </select>
-                            <p class="article_state_id_error error_color"></p>
-                            @error('state_id')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-4 col-lg-2">
-                            <label for="article_select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
-                            <select id="article_select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
-                                @if($all_cities)
-                                    @foreach($all_cities as $key => $city)
-                                        @error('state_id') 
-                                            <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
-                                                {{ $city->state_name }}
-                                            </option>
-                                        @else
-                                            <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
-                                                {{ $city->city_name }}
-                                            </option>
-                                        @enderror
-                                    @endforeach
-                                @endif
-                            </select>
-                            <p class="article_city_id_error error_color"></p>
-                            @error('city_id')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-4 col-lg-2">
-                            <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                            <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
-                            <p class="article_postal_code_error error_color"></p>
-                            @error('article_postal_code')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-8 col-lg-4">
-                            <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
-                            <div class="input-group">
-                                <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
-                                <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-                    {{-- <div class="form-row mb-3">
-                        <div class="col-md-12">
-                            <div class="form-check form-check-inline align_base grid_set">
-                                <input {{ old('article_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="1">
-                                <label class="form-check-label" for="article_address_hide">
-                                    {{ __('backend.article.hide-address') }}
-                                    <small class="text-muted text_hide_sm">
-                                        {{ __('backend.article.hide-address-help') }}
-                                    </small>
-                                </label>
-                            </div>
-                            @error('article_address_hide')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div> --}}
-                    <div class="form-row mb-3">
-                        <div class="col-md-12">
-                            <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
-                            <textarea id="article_description" type="text" class="form-control @error('article_description') is-invalid @enderror" name="article_description">{{ old('article_description') }}</textarea>
-                            @error('article_description')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-row mb-3">
-                        <label class="text-black" for="item_keywords">{{ __('backend.article.keyword') }}</label>
-                        <input id="item_keywords" type="text" class="form-control @error('item_keywords') is-invalid @enderror" name="item_keywords" value="{{ old('item_keywords') ? old('item_keywords') : $login_user->item_keywords }}">
-                        <small class="form-text text-muted">
-                            Separate by comma
-                        </small>
-                        @error('item_keywords')
-                        <span class="invalid-tooltip">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="form-row mb-3">
-                        <input type="hidden" name="article_featured" value="{{ \App\Item::ITEM_NOT_FEATURED }}">                        
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_phone" class="text-black">
-                                <i class="fa-solid fa-phone-square"></i>
-                                 {{ __('backend.article.phone') }}</label>
-                            <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
-                            @error('article_phone')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_social_whatsapp" class="text-black">
-                                <i class="fa-brands fa-whatsapp-square"></i>
-                                {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
-                            </label>
-                            <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
-                            <p class="article_social_whatsapp_error error_color"></p>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
-                            </small>
-                            @error('article_social_whatsapp')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_website" class="text-black">
-                                <i class="fa-solid fa-globe"></i>
-                                {{ __('backend.article.website') }}
-                            </label>
-                            <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('backend.shared.url-help') }}
-                            </small>
-                            @error('article_website')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_social_facebook" class="text-black">
-                                <i class="fa-brands fa-facebook-square"></i>
-                                {{ __('backend.article.facebook') }}
-                            </label>
-                            <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
-                            <span class="article_err_media_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('backend.shared.url-help') }}
-                            </small>
-                            @error('article_social_facebook')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('facebook_error'))
-                                <span class="invalid-tooltip">
-                                    <strong>{{ Session::get('facebook_error') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="form-row mb-3">
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_social_twitter" class="text-black">
-                                <i class="fa-brands fa-twitter-square"></i>
-                                {{ __('backend.article.twitter') }}
-                            </label>
-                            <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
-                            <span class="article_err_twitter_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('backend.shared.url-help') }}
-                            </small>
-                            @error('article_social_twitter')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('twitter_error'))
-                                <span class="invalid-tooltip">
-                                    <strong>{{ Session::get('twitter_error') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_social_linkedin" class="text-black">
-                                <i class="fa-brands fa-linkedin"></i>
-                                {{ __('backend.article.linkedin') }}
-                            </label>
-                            <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
-                            <span class="article_err_linkedin_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('backend.shared.url-help') }}
-                            </small>
-                            @error('article_social_linkedin')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('linkedin_error'))
-                                <span class="invalid-tooltip">
-                                    <strong>{{ Session::get('linkedin_error') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="col-md-3 col-lg-3">
-                            <label for="article_social_instagram" class="text-black">
-                                <i class="fa-brands fa-instagram-square"></i>
-                                {{ __('article_whatsapp_instagram.article-social-instagram') }}
-                            </label>
-                            <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
-                            <span class="article_err_instagram_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
-                            </small>
-                            @error('article_social_instagram')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('instagram_error'))
-                                <span class="invalid-tooltip">
-                                    <strong>{{ Session::get('instagram_error') }}</strong>
-                                </span>
-                            @endif
+   <div class="row font_icon_color">
+        <div class="col-12">
+            @if(Session::has('required_field_error'))
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ Session::get('required_field_error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            {{-- <div class="border-left-primary mb-4">
-                <div class="col-12"> --}}
-                    {{-- <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 ">
-                        <div class="col-md-12">
-                            <span class="text-lg text-white">
-                                <i class="fas fa-clock"></i>
-                                {{ __('article_hour.open-hour') }}
-                            </span>
-                            <small class="form-text text-white">
-                                {{ __('article_hour.open-hour-help') }}
-                            </small>
+            @endif
+            <form method="POST" id="articleCreateForm" name="articleCreateForm">
+                @csrf
+                <input type="hidden" name="article_type" value="1">
+                <div class="border-left-primary mb-4">
+                    <div class="col-12">
+                        <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                            <div class="col-md-12">
+                                <span class="text-lg text-white">
+                                    <i class="fas fa-store"></i>
+                                    {{ __('backend.article.general-info') }}
+                                </span>
+                                <small class="form-text text-white">
+                                    {{ __('article_hour.article-general-info-help') }}
+                                </small>
+                            </div>
                         </div>
-                    </div> --}}
-                    {{-- <div class="form-row mb-3">
-                        <div class="col-12 col-md-6">
-                            <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
-                            <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
-                                @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
-                                <option value="{{ $time_zone_identifier }}" {{ old('article_hour_time_zone') == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
-                                @endforeach
-                            </select>
-                            <small class="form-text text-muted">
-                                {{ __('article_hour.timezone-help') }}
-                            </small>
-                            @error('article_hour_time_zone')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="col-12 col-md-6">
-                            <label for="article_hour_show_hours" class="text-black">{{ __('article_hour.show-open-hour') }}</label>
-                            <select id="article_hour_show_hours" class="selectpicker form-control @error('article_hour_show_hours') is-invalid @enderror" name="article_hour_show_hours" data-live-search="true">
-                                <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('article_hour.show-hour') }}</option>
-                                <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('article_hour.not-show-hour') }}</option>
-                            </select>
-                            <small class="form-text text-muted">
-                                {{ __('article_hour.show-open-hour-help') }}
-                            </small>
-                            @error('article_hour_show_hours')
-                            <span class="invalid-feedback">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div> --}}
-
-                    {{-- <div class="form-row mb-3">
-                        <div class="col-12">
-                            <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
-                            <small class="form-text text-muted">
-                                {{ __('article_hour.open-hour-hours-help') }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3 align-articles-end align-items-center">
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
-                            <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('article_hour.monday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('article_hour.tuesday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('article_hour.wednesday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('article_hour.thursday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('article_hour.friday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('article_hour.saturday') }}</option>
-                                <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
-                            </select>
-                        </div>
-                        @php
-                        $item_hour_open_time = isset($items_hours->item_hour_open_time) && !empty($items_hours->item_hour_open_time) ? explode(':',$items_hours->item_hour_open_time) : [0=>0,1=>0];
-                        $item_hour_close_time = isset($items_hours->item_hour_close_time) && !empty($items_hours->item_hour_close_time) ? explode(':',$items_hours->item_hour_close_time) : [0=>0,1=>0];
-                        $item_hour_exception_open_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_open_time) : [0=>0,1=>0];
-                        $item_hour_exception_close_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_close_time) : [0=>0,1=>0];
-                        @endphp
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
-                            <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
-                                @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
-                            <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
-                                @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
-                            <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
-                                @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
-                                @endfor
-                            </select>
-                            <div id="message" style="color:red"></div>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
-                            <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
-                                @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                <option value="{{ $full_minute }} {{ $full_minute == $item_hour_close_time[0] ? 'selected' :'' }}">{{ $full_minute }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_create_button">
-                                <i class="fas fa-plus"></i>
-                                {{ __('article_hour.add-open-hour') }}
-                            </a>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3" id="open_hour_added_hours">
-                    </div>
-
-                    <div class="form-row mb-3">
-                        <div class="col-12">
-                            <span class="text-gray-800">{{ __('article_hour.open-hour-exceptions') }}</span>
-                            <small class="form-text text-muted">
-                                {{ __('article_hour.open-hour-exceptions-help') }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3 align-articles-end align-items-center">
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
-                            <input id="article_hour_exception_date" type="text" class="form-control" name="article_hour_exception_date" value="{{!empty($items_hours_exceptions->item_hour_exception_date) ? $items_hours_exceptions->item_hour_exception_date : ''}}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
-                            <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
-                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
-                                @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
-                            <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
-                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
-                                @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
-                            <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
-                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
-                                @for($full_hour=0; $full_hour<=24; $full_hour++)
-                                <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
-                                @endfor
-                            </select>
-                            <div id="exception_close_hour" style="color:red"></div>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
-                            <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
-                                <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
-                                @for($full_minute=0; $full_minute<=59; $full_minute++)
-                                <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_close_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4 col-lg-3 col-xl-2">
-                            <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_exception_create_button">
-                                <i class="fas fa-plus"></i>
-                                {{ __('article_hour.add-open-hour-exception') }}
-                            </a>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3" id="open_hour_added_exceptions">
-                    </div> --}}
-                {{-- </div>
-            </div> --}}
-            <div class="border-left-primary mb-4">
-                <div class="col-12">
-                    <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
-                        <div class="col-md-12">
-                            <span class="text-lg text-white">
-                                <i class="fas fa-images"></i>
-                                {{ __('article_hour.article-photos') }}
-                            </span>
-                            <small class="form-text text-white">
-                                {{ __('article_hour.article-photos-help') }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="form-row mb-3">
-                        <div class="col-md-6 col-lg-3">
-                            <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
-                            <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
-                            <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
-                            <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
-                            @error('feature_image')
+                        <div class="form-row mb-3">
+                            <div class="col-md-12">
+                                <label for="input_category_id" class="text-black">{{ __('backend.article.select-category') }}<span class="text-danger">*</span></label>
+                                {{-- <select multiple size="{{ count($all_categories) }}" class="selectpicker form-control input_category_id @error('category') is-invalid @enderror" name="category[]" data-live-search="true" data-actions-box="true" data-size="10" id="input_category_id"> --}}
+                                <select class="form-control form-select category @error('category') is-invalid @enderror" name="category[]" id="category_id" multiple>
+                                        @foreach($all_categories as $key => $category)
+                                            @php
+                                                if($category["category_name"] == 'Entrepreneurial' || $category["category_name"] == 'Productivity') continue;
+                                            @endphp
+                                        <option value="{{ $category['category_id'] }}" {{ in_array($category['category_id'], old('category', [])) ? 'selected' : '' }}>{{ $category['category_name'] }}</option>
+                                        @endforeach
+                                </select>
+                                <p class="category_id_error error_color"></p>
+                                @error('category')
                                 <span class="invalid-feedback">
                                     <strong>{{ $message }}</strong>
                                 </span>
-                            @enderror
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
-                                        <strong id="img_error"></strong>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-row mb-3">
+                            <div class="col-md-6">
+                                <label for="article_title" class="text-black">{{ __('backend.article.title') }}<span class="text-danger">*</span></label>
+                                <input id="article_title" type="text" class="form-control @error('article_title') is-invalid @enderror" name="article_title" value="{{ old('article_title') }}">
+                                <p class="article_title_error error_color"></p>
+                                @error('article_title')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            {{-- <div class="col-md-6">
+                                <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
+                                <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
+                                <p class="article_address_error error_color"></p>
+                                @error('article_address')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div> --}}
+                            <div class="col-md-8 col-lg-4">
+                                <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                <div class="input-group">
+                                    <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
+                                    <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
                                     </div>
-                                    <button id="article_upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
-                                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class=""> --}}
-                                    <img id="article_image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="">
-                                    <input id="article_feature_image" type="hidden" name="feature_image">
                                 </div>
                             </div>
-                            @if(isset($article->item_image))
-                                <div class="row mt-2">
-                                    <div class="col-12">
-                                        <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
-                                            <i class="fas fa-trash-alt"></i>
-                                            {{ __('role_permission.article.delete-feature-image') }}
-                                        </a>
+                        </div>
+                        {{-- <div class="form-row mb-3">
+                            <div class="col-md-4 col-lg-2">
+                                <label for="article_select_country_id" class="text-black">{{ __('Country') }}<span class="text-danger">*</span></label>
+                                <select id="article_select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
+                                    @foreach($all_countries as $all_countries_key => $country)
+                                        @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
+                                            <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                <p class="article_country_id_error error_color"></p>
+                                @error('country_id')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 col-lg-2">
+                                <label for="article_select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
+                                <select id="article_select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
+                                    @if($all_states)
+                                        @foreach($all_states as $key => $state)
+                                            @error('state_id')
+                                                <option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
+                                                    {{ $state->state_name }}
+                                                </option>
+                                            @else
+                                                <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
+                                                    {{ $state->state_name }}
+                                                </option>
+                                            @enderror
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <p class="article_state_id_error error_color"></p>
+                                @error('state_id')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 col-lg-2">
+                                <label for="article_select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
+                                <select id="article_select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
+                                    @if($all_cities)
+                                        @foreach($all_cities as $key => $city)
+                                            @error('state_id') 
+                                                <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
+                                                    {{ $city->state_name }}
+                                                </option>
+                                            @else
+                                                <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
+                                                    {{ $city->city_name }}
+                                                </option>
+                                            @enderror
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <p class="article_city_id_error error_color"></p>
+                                @error('city_id')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-4 col-lg-2">
+                                <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
+                                <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
+                                <p class="article_postal_code_error error_color"></p>
+                                @error('article_postal_code')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-8 col-lg-4">
+                                <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
+                                <div class="input-group">
+                                    <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
+                                    <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
+                        </div> --}}
+
+                        {{-- <div class="form-row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check form-check-inline align_base grid_set">
+                                    <input {{ old('article_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="1">
+                                    <label class="form-check-label" for="article_address_hide">
+                                        {{ __('backend.article.hide-address') }}
+                                        <small class="text-muted text_hide_sm">
+                                            {{ __('backend.article.hide-address-help') }}
+                                        </small>
+                                    </label>
+                                </div>
+                                @error('article_address_hide')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div> --}}
+                        <div class="form-row mb-3">
+                            <div class="col-md-12">
+                                <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
+                                <textarea id="article_description" type="text" class="form-control @error('article_description') is-invalid @enderror" name="article_description">{{ old('article_description') }}</textarea>
+                                @error('article_description')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="col-md-6 col-lg-9">
-                            <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
-                            <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
-                            <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
-                            <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
-                            {{-- <small class="form-text text-muted">
-                                {{ __('theme_directory_hub.listing.max-upload', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
-                            </small> --}}
-                            @error('image_gallery')
-                            <span class="invalid-feedback">
+
+                        <div class="form-row mb-3">
+                            <label class="text-black" for="item_keywords">{{ __('backend.article.keyword') }}</label>
+                            <input id="item_keywords" type="text" class="form-control @error('item_keywords') is-invalid @enderror" name="item_keywords" value="{{ old('item_keywords') ? old('item_keywords') : $login_user->item_keywords }}">
+                            <small class="form-text text-muted">
+                                Separate by comma
+                            </small>
+                            @error('item_keywords')
+                            <span class="invalid-tooltip">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display:none">
-                                <strong id="article_gallery_img_error"></strong>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <input type="hidden" name="article_featured" value="{{ \App\Item::ITEM_NOT_FEATURED }}">                        
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_phone" class="text-black">
+                                    <i class="fa-solid fa-phone-square"></i>
+                                    {{ __('backend.article.phone') }}</label>
+                                <input id="article_phone" type="text" class="form-control @error('article_phone') is-invalid @enderror" name="article_phone" value="{{ old('article_phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
+                                @error('article_phone')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display: none;">
-                                        <strong id="article_gallery_img_error"></strong>
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_social_whatsapp" class="text-black">
+                                    <i class="fa-brands fa-whatsapp-square"></i>
+                                    {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
+                                </label>
+                                <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
+                                <p class="article_social_whatsapp_error error_color"></p>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
+                                </small>
+                                @error('article_social_whatsapp')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_website" class="text-black">
+                                    <i class="fa-solid fa-globe"></i>
+                                    {{ __('backend.article.website') }}
+                                </label>
+                                <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('backend.shared.url-help') }}
+                                </small>
+                                @error('article_website')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_social_facebook" class="text-black">
+                                    <i class="fa-brands fa-facebook-square"></i>
+                                    {{ __('backend.article.facebook') }}
+                                </label>
+                                <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
+                                <span class="article_err_media_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('backend.shared.url-help') }}
+                                </small>
+                                @error('article_social_facebook')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('facebook_error'))
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ Session::get('facebook_error') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_social_twitter" class="text-black">
+                                    <i class="fa-brands fa-twitter-square"></i>
+                                    {{ __('backend.article.twitter') }}
+                                </label>
+                                <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
+                                <span class="article_err_twitter_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('backend.shared.url-help') }}
+                                </small>
+                                @error('article_social_twitter')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('twitter_error'))
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ Session::get('twitter_error') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_social_linkedin" class="text-black">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                    {{ __('backend.article.linkedin') }}
+                                </label>
+                                <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
+                                <span class="article_err_linkedin_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('backend.shared.url-help') }}
+                                </small>
+                                @error('article_social_linkedin')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('linkedin_error'))
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ Session::get('linkedin_error') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="col-md-3 col-lg-3">
+                                <label for="article_social_instagram" class="text-black">
+                                    <i class="fa-brands fa-instagram-square"></i>
+                                    {{ __('article_whatsapp_instagram.article-social-instagram') }}
+                                </label>
+                                <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
+                                <span class="article_err_instagram_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                </small>
+                                @error('article_social_instagram')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('instagram_error'))
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ Session::get('instagram_error') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- <div class="border-left-primary mb-4">
+                    <div class="col-12"> --}}
+                        {{-- <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1 ">
+                            <div class="col-md-12">
+                                <span class="text-lg text-white">
+                                    <i class="fas fa-clock"></i>
+                                    {{ __('article_hour.open-hour') }}
+                                </span>
+                                <small class="form-text text-white">
+                                    {{ __('article_hour.open-hour-help') }}
+                                </small>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="form-row mb-3">
+                            <div class="col-12 col-md-6">
+                                <label for="article_hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
+                                <select id="article_hour_time_zone" class="selectpicker form-control @error('article_hour_time_zone') is-invalid @enderror" name="article_hour_time_zone" data-live-search="true">
+                                    @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
+                                    <option value="{{ $time_zone_identifier }}" {{ old('article_hour_time_zone') == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">
+                                    {{ __('article_hour.timezone-help') }}
+                                </small>
+                                @error('article_hour_time_zone')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="article_hour_show_hours" class="text-black">{{ __('article_hour.show-open-hour') }}</label>
+                                <select id="article_hour_show_hours" class="selectpicker form-control @error('article_hour_show_hours') is-invalid @enderror" name="article_hour_show_hours" data-live-search="true">
+                                    <option value="{{ \App\Item::ITEM_HOUR_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_SHOW ? 'selected' : '' }}>{{ __('article_hour.show-hour') }}</option>
+                                    <option value="{{ \App\Item::ITEM_HOUR_NOT_SHOW }}" {{ old('article_hour_show_hours') == \App\Item::ITEM_HOUR_NOT_SHOW ? 'selected' : '' }}>{{ __('article_hour.not-show-hour') }}</option>
+                                </select>
+                                <small class="form-text text-muted">
+                                    {{ __('article_hour.show-open-hour-help') }}
+                                </small>
+                                @error('article_hour_show_hours')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div> --}}
+
+                        {{-- <div class="form-row mb-3">
+                            <div class="col-12">
+                                <span class="text-gray-800">{{ __('article_hour.open-hour-hours') }}</span>
+                                <small class="form-text text-muted">
+                                    {{ __('article_hour.open-hour-hours-help') }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3 align-articles-end align-items-center">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_day_of_week" class="text-black">{{ __('article_hour.day-of-week') }}</label>
+                                <select id="article_hour_day_of_week" class="selectpicker form-control" name="article_hour_day_of_week" data-live-search="true">
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_MONDAY ? 'selected' :'' }}>{{ __('article_hour.monday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_TUESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_TUESDAY ? 'selected' :'' }}>{{ __('article_hour.tuesday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_WEDNESDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_WEDNESDAY ? 'selected' :'' }}>{{ __('article_hour.wednesday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_THURSDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_THURSDAY ? 'selected' :'' }}>{{ __('article_hour.thursday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_FRIDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_FRIDAY ? 'selected' :'' }}>{{ __('article_hour.friday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_SATURDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SATURDAY ? 'selected' :'' }}>{{ __('article_hour.saturday') }}</option>
+                                    <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}" {{ !empty($items_hours->item_hour_day_of_week) && $items_hours->item_hour_day_of_week == \App\ItemHour::DAY_OF_WEEK_SUNDAY ? 'selected' :'' }}>{{ __('article_hour.sunday') }}</option>
+                                </select>
+                            </div>
+                            @php
+                            $item_hour_open_time = isset($items_hours->item_hour_open_time) && !empty($items_hours->item_hour_open_time) ? explode(':',$items_hours->item_hour_open_time) : [0=>0,1=>0];
+                            $item_hour_close_time = isset($items_hours->item_hour_close_time) && !empty($items_hours->item_hour_close_time) ? explode(':',$items_hours->item_hour_close_time) : [0=>0,1=>0];
+                            $item_hour_exception_open_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_open_time) : [0=>0,1=>0];
+                            $item_hour_exception_close_time = isset($items_hours_exceptions->item_hour_exception_open_time) && !empty($items_hours_exceptions->item_hour_exception_open_time) ? explode(':',$items_hours_exceptions->item_hour_exception_close_time) : [0=>0,1=>0];
+                            @endphp
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                <select id="article_hour_open_time_open_hour" class="selectpicker form-control" name="article_hour_open_time_open_hour" data-live-search="true">
+                                    @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                    <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                <select id="article_hour_open_time_open_minute" class="selectpicker form-control" name="article_hour_open_time_open_minute" data-live-search="true">
+                                    @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                    <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                <select id="article_hour_open_time_close_hour" class="selectpicker form-control" name="article_hour_open_time_close_hour" data-live-search="true">
+                                    @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                    <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                    @endfor
+                                </select>
+                                <div id="message" style="color:red"></div>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                <select id="article_hour_open_time_close_minute" class="selectpicker form-control" name="article_hour_open_time_close_minute" data-live-search="true">
+                                    @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                    <option value="{{ $full_minute }} {{ $full_minute == $item_hour_close_time[0] ? 'selected' :'' }}">{{ $full_minute }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_create_button">
+                                    <i class="fas fa-plus"></i>
+                                    {{ __('article_hour.add-open-hour') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3" id="open_hour_added_hours">
+                        </div>
+
+                        <div class="form-row mb-3">
+                            <div class="col-12">
+                                <span class="text-gray-800">{{ __('article_hour.open-hour-exceptions') }}</span>
+                                <small class="form-text text-muted">
+                                    {{ __('article_hour.open-hour-exceptions-help') }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3 align-articles-end align-items-center">
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_exception_date" class="text-black">{{ __('article_hour.open-hour-exception-date') }}</label>
+                                <input id="article_hour_exception_date" type="text" class="form-control" name="article_hour_exception_date" value="{{!empty($items_hours_exceptions->item_hour_exception_date) ? $items_hours_exceptions->item_hour_exception_date : ''}}" placeholder="{{ __('article_hour.open-hour-exception-date-placeholder') }}">
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_exception_open_time_open_hour" class="text-black">{{ __('article_hour.article-hour-open-hour') }}</label>
+                                <select id="article_hour_exception_open_time_open_hour" class="selectpicker form-control" name="article_hour_exception_open_time_open_hour" data-live-search="true">
+                                    <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                    @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                    <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_open_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_exception_open_time_open_minute" class="text-black">{{ __('article_hour.article-hour-open-minute') }}</label>
+                                <select id="article_hour_exception_open_time_open_minute" class="selectpicker form-control" name="article_hour_exception_open_time_open_minute" data-live-search="true">
+                                    <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                    @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                    <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_open_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_exception_open_time_close_hour" class="text-black">{{ __('article_hour.article-hour-close-hour') }}</label>
+                                <select id="article_hour_exception_open_time_close_hour" class="selectpicker form-control" name="article_hour_exception_open_time_close_hour" data-live-search="true">
+                                    <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                    @for($full_hour=0; $full_hour<=24; $full_hour++)
+                                    <option value="{{ $full_hour }}" {{ $full_hour == $item_hour_exception_close_time[0] ? 'selected' :'' }}>{{ $full_hour }}</option>
+                                    @endfor
+                                </select>
+                                <div id="exception_close_hour" style="color:red"></div>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <label for="article_hour_exception_open_time_close_minute" class="text-black">{{ __('article_hour.article-hour-close-minute') }}</label>
+                                <select id="article_hour_exception_open_time_close_minute" class="selectpicker form-control" name="article_hour_exception_open_time_close_minute" data-live-search="true">
+                                    <option value="">{{ __('article_hour.open-hour-exception-close-all-day') }}</option>
+                                    @for($full_minute=0; $full_minute<=59; $full_minute++)
+                                    <option value="{{ $full_minute }}" {{ $full_minute == $item_hour_exception_close_time[1] ? 'selected' :'' }}>{{ $full_minute }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3 col-xl-2">
+                                <a class="btn btn-sm btn-block btn-primary rounded text-white mtop_set align_set_center_all" id="article_hour_exception_create_button">
+                                    <i class="fas fa-plus"></i>
+                                    {{ __('article_hour.add-open-hour-exception') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3" id="open_hour_added_exceptions">
+                        </div> --}}
+                    {{-- </div>
+                </div> --}}
+                <div class="border-left-primary mb-4">
+                    <div class="col-12">
+                        <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                            <div class="col-md-12">
+                                <span class="text-lg text-white">
+                                    <i class="fas fa-images"></i>
+                                    {{ __('article_hour.article-photos') }}
+                                </span>
+                                <small class="form-text text-white">
+                                    {{ __('article_hour.article-photos-help') }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-row mb-3">
+                            <div class="col-md-6 col-lg-3">
+                                <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
+                                <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                                <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                @error('feature_image')
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                            <strong id="img_error"></strong>
+                                        </div>
+                                        <button id="article_upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-image') }}</button>
+                                        {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/full_article_feature_image.webp') }}" class=""> --}}
+                                        <img id="article_image_preview" src="{{ asset('backend/images/placeholder/full_item_feature_image.webp') }}" class="">
+                                        <input id="article_feature_image" type="hidden" name="feature_image">
                                     </div>
-                                    <button id="article_upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
-                                    <div class="row" id="selected-images"></div>
+                                </div>
+                                @if(isset($article->item_image))
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <a class="btn btn-danger btn-block text-white" id="delete_feature_image_button">
+                                                <i class="fas fa-trash-alt"></i>
+                                                {{ __('role_permission.article.delete-feature-image') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-md-6 col-lg-9">
+                                <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
+                                <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
+                                <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
+                                <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                {{-- <small class="form-text text-muted">
+                                    {{ __('theme_directory_hub.listing.max-upload', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
+                                </small> --}}
+                                @error('image_gallery')
+                                <span class="invalid-feedback">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display:none">
+                                    <strong id="article_gallery_img_error"></strong>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="alert alert-danger alert-dismissible fade show" id="article_gallery_image_error_div" role="alert" style="display: none;">
+                                            <strong id="article_gallery_img_error"></strong>
+                                        </div>
+                                        <button id="article_upload_gallery" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.article.select-images') }}</button>
+                                        <div class="row" id="selected-images"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <hr/>
+                <hr/>
 
-            <div class="form-row mb-3">
-                <div class="col-md-12">
-                    <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
-                        {{ __('Create Article') }}
-                    </button>
-                    <span class="please_wait"></span>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
-                        
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                <div class="form-row mb-3">
+                    <div class="col-md-12">
+                        <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
+                            {{ __('Create Article') }}
                         </button>
+                        <span class="please_wait"></span>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</div>
-@endif
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_div" style="display: none;">
+                            
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+   </div>
+ @endif
 
 
 
@@ -2171,6 +2186,7 @@ $login_user = auth()->user();
             </div>
         </div>
     @endif
+</div>
 </div>
 
 </div>
