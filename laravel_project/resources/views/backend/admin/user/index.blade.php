@@ -89,7 +89,7 @@
                                             <option value="">Select</option>
                                             @foreach($role as $key =>$value)
                                             @php $selected = '';
-                                            if (request()->get('role_search') == $key) {
+                                            if (request()->get('role_search') == $value->id) {
                                             $selected = 'selected';
                                             }
                                             @endphp
@@ -252,10 +252,14 @@
                     </div>
                 </div>
             </div>
+            @php
+                $search_keyword = request()->get('search') ? request()->get('search') : '';
+                $role_id = request()->get('role_search') ? request()->get('role_search') : '';
+            @endphp
 
             <div class="row mb-3">
                 <div class="col-12">
-                    {{ $all_users->appends(['user_email_verified' => $user_email_verified, 'user_suspended' => $user_suspended, 'order_by' => $order_by])->links() }}
+                    {{ $all_users->appends(['search'=>$search_keyword,'user_email_verified' => $user_email_verified, 'user_suspended' => $user_suspended,'role_search'=>$role_id, 'order_by' => $order_by])->links() }}
                 </div>
             </div>
 

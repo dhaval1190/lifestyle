@@ -531,13 +531,13 @@
                         enableExif: true,
                         mouseWheelZoom: false,
                         viewport: {
-                            width: 600,
-                            height: 600,
-                            type: 'square'
+                        width: 200,
+                        height: 200,
+                        type: 'square'
                         },
                         boundary: {
-                            width: 700,
-                            height: 700
+                            width: 300,
+                            height: 300
                         },
                         enableOrientation: true
                     });
