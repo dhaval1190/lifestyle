@@ -862,7 +862,7 @@ $login_user = Auth::user();
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.crop-feature-image') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.article.crop-feature-image') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -897,7 +897,7 @@ $login_user = Auth::user();
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.shared.delete-confirm') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -922,7 +922,7 @@ $login_user = Auth::user();
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.select-map-title') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.article.select-map-title') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -954,7 +954,7 @@ $login_user = Auth::user();
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('categories.update-cat') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('categories.update-cat') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -991,7 +991,7 @@ $login_user = Auth::user();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_slug.update-url') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('article_slug.update-url') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1036,7 +1036,7 @@ $login_user = Auth::user();
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-edit-hours-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('article_hour.modal-edit-hours-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -1120,7 +1120,7 @@ $login_user = Auth::user();
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-delete-hours-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('article_hour.modal-delete-hours-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -1167,7 +1167,7 @@ $login_user = Auth::user();
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-edit-hour-exceptions-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('article_hour.modal-edit-hour-exceptions-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -1246,7 +1246,7 @@ $login_user = Auth::user();
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{ __('article_hour.modal-delete-hour-exception-title') }}</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('article_hour.modal-delete-hour-exception-title') }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

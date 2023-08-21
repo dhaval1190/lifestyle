@@ -747,6 +747,7 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::get('/profile/password', 'UserController@editProfilePassword')->name('profile.password.edit')->middleware('check_coach_details');
         Route::post('/profile/password', 'UserController@updateProfilePassword')->name('profile.password.update');
         Route::post('/podcast/details', 'UserController@addPodcastDetails');
+        Route::post('/youtube/details', 'UserController@addYoutubeDetails');
         Route::post('/ebook/details', 'UserController@addEbookDetails');
 
         Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');

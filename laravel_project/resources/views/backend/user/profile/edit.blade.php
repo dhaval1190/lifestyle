@@ -211,7 +211,7 @@ left: 10px;
   /* box-shadow: 0 0 8px 3px #B8B8B8; */
 }
 .youtube_bg{
-    background: #f6daec 0% 0% no-repeat padding-box;
+    background: #FFEEF9 0% 0% no-repeat padding-box;
 }
 .ebook_bg{
     background: #E0F5CA 0% 0% no-repeat padding-box;
@@ -233,7 +233,14 @@ $chk_post = Auth::user()->phone;
 
 @endphp
 
-
+@if(Session::has('url_error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ Session::get('url_error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
 <div class="row">
     <div class="col-lg-12 p-0">
         <div class="back_ground_image_set" id="cover_image_preview" @if(!empty($user_detail['user_cover_image'])) style="background-image: url( {{ Storage::disk('public')->url('user/' . $user_detail['user_cover_image']) }});" @else style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});"@endif>
@@ -276,7 +283,7 @@ $chk_post = Auth::user()->phone;
 <!-- Content Row -->
 <div class="row pt-4 pl-3 pr-3 pb-4">
     <div class="col-12 p-0 pl-3">
-        <div class="row font_icon_color youtube_bg">
+        <div class="row font_icon_color">
             <div class="col-12">
                 @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) &&
                 !isset(Auth::user()->hourly_rate_type) && !isset(Auth::user()->experience_year) && !isset(Auth::user()
@@ -773,347 +780,111 @@ $chk_post = Auth::user()->phone;
                 <strong id="cover_img_error"></strong>
             </div>
 
-           <div class="">
-            <div class="row mt-3" id="YouTube_sec">
-                <div class="col-12">
-                    <div>
-                        <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
-                    </div>
-                </div>
-               
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
-                            <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
-                            </small>
-                            @error('youtube_intro_title')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6 ">
-                            <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
-                            <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
-                            @error('youtube_intro_description')
-                            <span class="invalid-tooltip">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+           {{-- <div class="">
+                <div class="row mt-3" id="YouTube_sec">
+                    <div class="col-12">
+                        <div>
+                            <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="row mt-3">
-
-                <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
-                    <label class="text-black">Youtube</label>
-                    <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
-                        @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
-                        <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
-                        @endforeach
-                    </select>
-                    @error('media_type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
-                    <label for="media_url" class="text-black">Youtube Video URL</label>
-                    <span class="err_media_url" style="color:red"></span>
-                    <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
-                    <small id="linkHelpBlock" class="form-text text-muted">
-                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
-                    </small>
-                    @error('media_url')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
-                    <label for="media_url" class="text-black">&nbsp;</label>
-                    <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
-                        <i class="fas fa-plus" style="color: white !important"></i>
-                        {{ __('Add') }}
-                    </a>
-                </div>
-            </div>
-
-            <div class="row mt-3 font_icon_color_diff mb-5 break_line_section">
-                <div class="col-12 pt-md-4 pb-md-4" id="media_details_added">
-                    @foreach($video_media_array as $video_media_key => $video_media_value)
-                    <div class="col-12 p-0 ">
-                        <div class="row border_set_row">
-                            <div class="col-md-6 col-9">
-                                <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
-                                <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
-                                    : {{ $video_media_value->media_url }}</span>
-
+                
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
+                                <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                </small>
+                                @error('youtube_intro_title')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
-                            <div class="col-md-6 col-3">
-                                <div class="edit_delete_btn">
-                                    <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
-                                        {{-- <i class="far fa-edit"></i> --}}
-                                        <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
-                                    </a>
-                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
-                                        {{-- <i class='far fa-trash-alt'></i> --}}
-                                        <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                                    </a>
-                                </div>
+                            <div class="col-sm-6 ">
+                                <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
+                                <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
+                                @error('youtube_intro_description')
+                                <span class="invalid-tooltip">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
 
-            {{-- <div class="row mt-3 mb-5 break_line_section">
-                <div class="col-12">
-                    <div>
-                        <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">Ebook Details</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-md-12 col-lg-3">
-                            <label class="text-black">Ebook</label>
-                            <select id="media_type" class="form-control selectpicker @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
-                                @foreach(\App\MediaDetail::EBOOK_MEDIA_TYPE as $mkey => $mvalue)
-                                <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
-                                @endforeach
-                            </select>
-                            @error('media_type')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-3">
-                            <label class="text-black">Ebook PDF Title</label>
-                            <input id="media_name" type="text" class="form-control @error('media_name') is-invalid @enderror" name="media_name" value="{{ old('media_name', $login_user->media_name) }}" placeholder="Book Title">
-                            @error('media_name')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-3">
-                            <label class="text-black">Ebook PDF</label>
-                            <input id="media_image" type="file" class="form-control @error('media_image') is-invalid @enderror" name="media_image" accept=".pdf">
-                            @error('media_image')
-                            <span class="invalid-tooltip">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-3">
-                            <label class="text-black">Ebook Cover</label>
-                            <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
-                            <small class="form-text text-muted">
-                                {{ __('backend.item.feature-image-help') }}
-                            </small>
-                            @error('media_cover')
-                            <span class="invalid-tooltip">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4">
-                            @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
-                            <div class="col-12 col-md-12 col-lg-12 p-0">
-                                <div class="row border_set_row">
-                                    <div class="col-md-6 col-89">
-                                        <span class="set_width">
-                                            {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
-                                            {{ $ebook_media_value->media_name }}</span>
+                <div class="row mt-3">
 
-                                    </div>
-                                    <div class="col-md-6 col-3">
-                                        <div class="edit_delete_btn">
-                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
-                                                <i class='far fa-trash-alt'></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
+                        <label class="text-black">Youtube</label>
+                        <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                            @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                            <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
                             @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
-            {{-- <div class="row mt-3 mb-5 break_line_section">
-                <div class="col-12">
-                    <div>
-                        <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">Podcast Details</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-md-12 col-lg-4">
-                            <label class="text-black">Podcast</label>
-                            <select id="podcast_type"
-                                class="form-control selectpicker @error('podcast_type') is-invalid @enderror"
-                                name="podcast_type" title="Select Type">
-                                @foreach(\App\MediaDetail::PODCAST_MEDIA_TYPE as $mkey => $mvalue)
-                                <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
-                            @endforeach
-                            </select>
-
-                            <input type="hidden" name="podcast_type" value="podcast">
-                            <span class="podcast_type_err_media_url" style="color:red"></span>
-                            <select id="podcast_web_type" class="form-control selectpicker @error('podcast_web_type') is-invalid @enderror" name="podcast_web_type" title="Select Type">
-                                <option name="apple_podcast" value="apple_podcast">Apple Podcast</option>
-                                <option name="stitcher_podcast" value="stitcher_podcast">Stitcher Podcast</option>
-                                <option name="google_podcast" value="google_podcast">Google Podcast</option>
-                                <option name="spotify_podcast" value="spotify_podcast">Spotify Podcast</option>
-                            </select>
-                            <span class="podcast_success_msg" style="color:green"></span>
-                            @error('media_type')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-4" id="podcast_div_title" style="display:none">
-                            <label class="text-black">Podcast Title</label>
-                            <input id="podcast_name" type="text" class="form-control @error('podcast_name') is-invalid @enderror" name="podcast_name" value="{{ old('podcast_name', $login_user->podcast_name) }}" placeholder="Podcast Title">
-                            @error('podcast_name')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3" style="display:none">
-                            <label class="text-black">Podcast MP3</label>
-                            <input id="podcast_image" type="file"
-                                class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image"
-                                accept=".mp3">
-                            @error('podcast_image')
-                            <span class="invalid-tooltip">
-                                <strong>{{ $message }}</strong>
+                        </select>
+                        @error('media_type')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
-                    <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
-                        <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
-                        <span class="podcast_err_media_url" style="color:red"></span>
-                        <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
+                        <label for="media_url" class="text-black">Youtube Video URL</label>
+                        <span class="err_media_url" style="color:red"></span>
+                        <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
                         <small id="linkHelpBlock" class="form-text text-muted">
-                            {{ __('Only URL allowed (include http:// or https://)') }}
+                            {{ __('Only youtube URL allowed (include http:// or https://)') }}
                         </small>
-                        @error('podcast_image')
+                        @error('media_url')
                         <span class="invalid-tooltip" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                        @if(Session::has('podcast_error'))
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ Session::get('podcast_error') }}</strong>
-                        </span>
-                        @endif
                     </div>
-                    <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_file" style="display:none">
-                            <label for="podcast_image" class="text-black">Podcast MP3 File</label>
-                            <span class="podcast_err_media_url" style="color:red"></span>
-                            <input id="podcast_image" type="file" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
-                    <small id="linkHelpBlock" class="form-text text-muted">
-                        {{ __('Only URL allowed (include http:// or https://)') }}
-                    </small>
-                    @error('podcast_image')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    @if(Session::has('podcast_error'))
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ Session::get('podcast_error') }}</strong>
-                    </span>
-                    @endif
+                    <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
+                        <label for="media_url" class="text-black">&nbsp;</label>
+                        <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
+                            <i class="fas fa-plus" style="color: white !important"></i>
+                            {{ __('Add') }}
+                        </a>
+                    </div>
                 </div>
-                <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
-                    <label class="text-black">Podcast Cover</label>
-                    <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
-                    <small class="form-text text-muted">
-                        {{ __('backend.item.feature-image-help') }}
-                    </small>
-                    @error('podcast_cover')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-12 col-md-12 col-lg-4">
-                    <label for="podcast_url" class="text-black">&nbsp;</label>
-                    <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                        <i class="fas fa-plus"></i>
-                        {{ __('Add') }}
-                    </a>
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4" id="podcast_details_added">
-                    @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-                    <div class="col-12 col-md-12 col-lg-12 p-0 ">
-                        <div class="row border_set_row">
-                            <div class="col-md-6 col-9">
-                                <span class="set_width">
-                                    {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} :
-                                    {{ $podcast_media_value->media_name }}</span>
 
-                            </div>
-                            <div class="col-md-6 col-3">
-                                <div class="edit_delete_btn">
-                                    <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
-                                        <i class="far fa-edit"></i>
-                                    </a>
-                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
-                                        <i class='far fa-trash-alt'></i>
-                                    </a>
+                <div class="row mt-3 font_icon_color_diff mb-5 break_line_section">
+                    <div class="col-12 pt-md-4 pb-md-4" id="media_details_added">
+                        @foreach($video_media_array as $video_media_key => $video_media_value)
+                        <div class="col-12 p-0 ">
+                            <div class="row border_set_row">
+                                <div class="col-md-6 col-9">
+                                    <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
+                                    <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
+                                        : {{ $video_media_value->media_url }}</span>
+
+                                </div>
+                                <div class="col-md-6 col-3">
+                                    <div class="edit_delete_btn">
+                                        <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
+                                            <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                                        </a>
+                                        <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
+                                            <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
-            </div> --}}
-           </div>
+           </div> --}}
         </div>
     </div>
     @else
         <div class="row">
             <input id="feature_image" type="hidden" name="user_image">
             <input id="feature_cover_image" type="hidden" name="user_cover_image"> 
-
-            {{-- <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-4 col-xl-2">
-                <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span>
-                <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small>
-                @error('user_image')
-                <span class="invalid-tooltip">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <button id="upload_image" type="button" class="btn btn-primary btn-block mb-2">{{ __('backend.user.select-image') }}</button>
-                        @if(empty($login_user->user_image))
-                            <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
-                        @else
-                            <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
-                        @endif
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-12">
-                        <a class="btn btn-danger btn-block text-white" id="delete_user_profile_image_button">
-                            <i class="fas fa-trash-alt"></i>
-                            {{ __('role_permission.user.delete-profile-image') }}
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
             <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
                 <div class="row mt-3">
                     <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
@@ -1209,8 +980,83 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
 </form>
+@if(Auth::user()->isCoach())
+        {{--  Youtube form --}}
+        <form method="POST" action="" class="" enctype="multipart/form-data" name="youtubeVideoFrm" id="youtubeVideoFrm">    
+            <div class="row mt-3 mb-5 youtube_bg" id="podcastsec">
+                <div class="col-12">
+                    <div>
+                        <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-4">
+                            <label class="text-black">Youtube</label>
+                            <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                                <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                                @endforeach
+                            </select>
+                            <p class="error_color youtube_video_error"></p>
+                        </div>
+                        
+                        <div class="col-12 col-md-12 col-lg-4">
+                            <label for="youtube_media_url" class="text-black">Youtube Video URL</label>
+                            <span class="err_youtube_media_url" style="color:red"></span>
+                            <input id="youtube_media_url" type="url" class="form-control @error('youtube_media_url') is-invalid @enderror" name="youtube_media_url" value="{{ old('youtube_media_url', $login_user->media_url) }}">
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                            </small>
+                            <p class="error_color youtube_url_error"></p>
+                            @if(Session::has('added'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Youtube video added successfully
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-3">
+                            <label for="youtube_media_url" class="text-black">&nbsp;</label>
+                            <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="addYoutubeBtn">
+                                <i class="fas fa-plus"></i>{{ __('Add') }}
+                            </button>
+                            <strong><span class="youtube_success_msg" style="color:green;font"></span></strong>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff  pt-md-4 pb-md-4" id="youtube_details_added">
+                            @foreach($video_media_array as $video_media_key => $video_media_value)
+                                <div class="col-12 p-0 ">
+                                    <div class="row border_set_row">
+                                        <div class="col-md-6 col-9">
+                                            <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
+                                            <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
+                                                : {{ $video_media_value->media_url }}</span>
+            
+                                        </div>
+                                        <div class="col-md-6 col-3">
+                                            <div class="edit_delete_btn">
+                                                <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
+                                                    {{-- <i class="far fa-edit"></i> --}}
+                                                    <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                                                </a>
+                                                <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
+                                                    {{-- <i class='far fa-trash-alt'></i> --}}
+                                                    <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </form>
+        
+        
         {{--  Ebook form --}}
-    @if(Auth::user()->isCoach())
         <form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
             <div class="row mt-3 mb-5 break_line_section ebook_bg ">
                 <div class="col-12">
@@ -1267,10 +1113,6 @@ $chk_post = Auth::user()->phone;
                         </div>
                         <div class="col-12 col-md-12 col-lg-3 mb-5">
                             <label for="podcast_url" class="text-black"></label>
-                            {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                                <i class="fas fa-plus"></i>
-                                {{ __('Add') }}
-                            </a> --}}
                             <button type="submit" class="btn btn-primary  btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="ebookSubmitBtn">
                                 <i class="fas fa-plus"></i>{{ __('Add') }}
                             </button>
@@ -1279,24 +1121,24 @@ $chk_post = Auth::user()->phone;
                         </div>
                         <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff pt-md-4 pb-md-4" id="ebook_details_added">
                             @foreach($ebook_media_array as $ebook_media_key => $ebook_media_value)
-                            <div class="col-12 col-md-12 col-lg-12 p-0">
-                                <div class="row border_set_row">
-                                    <div class="col-md-6 col-89">
-                                        <span class="set_width">
-                                            {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
-                                            {{ $ebook_media_value->media_name }}</span>
+                                <div class="col-12 col-md-12 col-lg-12 p-0">
+                                    <div class="row border_set_row">
+                                        <div class="col-md-6 col-89">
+                                            <span class="set_width">
+                                                {{ \App\MediaDetail::MEDIA_TYPE[$ebook_media_value->media_type] }} :
+                                                {{ $ebook_media_value->media_name }}</span>
 
-                                    </div>
-                                    <div class="col-md-6 col-3">
-                                        <div class="edit_delete_btn">
-                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
-                                                {{-- <i class='far fa-trash-alt'></i> --}}
-                                                <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                                            </a>
+                                        </div>
+                                        <div class="col-md-6 col-3">
+                                            <div class="edit_delete_btn">
+                                                <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteEbookMediaModal_{{ $ebook_media_value->id }}">
+                                                    {{-- <i class='far fa-trash-alt'></i> --}}
+                                                    <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -1344,95 +1186,88 @@ $chk_post = Auth::user()->phone;
                             <p class="error_color podcast_name"></p>
                         </div>
                         
-                    <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
-                        <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
-                        <span class="podcast_err_media_url" style="color:red"></span>
-                        <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
-                        <small id="linkHelpBlock" class="form-text text-muted">
-                            {{ __('Only URL allowed (include http:// or https://)') }}
-                        </small>
-                        @error('podcast_image')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                        @if(Session::has('podcast_error'))
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ Session::get('podcast_error') }}</strong>
-                        </span>
-                        @endif
-                        <p class="error_color podcast_image"></p>
-                    </div>
+                        <div class="col-12 col-md-12 col-lg-4" id="podcast_div_mp3_url">
+                            <label for="podcast_image" class="text-black">Podcast MP3 URL</label>
+                            <span class="podcast_err_media_url" style="color:red"></span>
+                            <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                {{ __('Only URL allowed (include http:// or https://)') }}
+                            </small>
+                            @error('podcast_image')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            @if(Session::has('podcast_error'))
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ Session::get('podcast_error') }}</strong>
+                            </span>
+                            @endif
+                            <p class="error_color podcast_image"></p>
+                        </div>
                     
-                <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
-                    <label class="text-black">Podcast Cover</label>
-                    <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
-                    <small class="form-text text-muted">
-                        {{ __('backend.item.feature-image-help') }}
-                    </small>
-                    @error('podcast_cover')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    <p class="error_color podcast_cover"></p>
-                </div>
-                {{-- <div class="col-12 col-md-12 col-lg-4">
-                    <label for="podcast_url" class="text-black">&nbsp;</label>
-                    <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                        <i class="fas fa-plus"></i>
-                        {{ __('Add') }}
-                    </a>
-                </div> --}}
-                <div class="col-12 col-md-12 col-lg-3">
-                    <label for="podcast_url" class="text-black">&nbsp;</label>
-                    {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
-                        <i class="fas fa-plus"></i>
-                        {{ __('Add') }}
-                    </a> --}}
-                    <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
-                        <i class="fas fa-plus"></i>{{ __('Add') }}
-                    </button>
-                    <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
+                        <div class="col-12 col-md-12 col-lg-4" id="podcast_cover_image" style="display:none">
+                            <label class="text-black">Podcast Cover</label>
+                            <input id="podcast_cover" type="file" class="form-control @error('podcast_cover') is-invalid @enderror" name="podcast_cover" accept=".jpg,.jpeg,.png">
+                            <small class="form-text text-muted">
+                                {{ __('backend.item.feature-image-help') }}
+                            </small>
+                            @error('podcast_cover')
+                            <span class="invalid-tooltip">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            <p class="error_color podcast_cover"></p>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-3">
+                            <label for="podcast_url" class="text-black">&nbsp;</label>
+                            {{-- <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcast_create_button">
+                                <i class="fas fa-plus"></i>
+                                {{ __('Add') }}
+                            </a> --}}
+                            <button type="submit" class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="podcastSubmitBtn">
+                                <i class="fas fa-plus"></i>{{ __('Add') }}
+                            </button>
+                            <strong><span class="podcast_success_msg" style="color:green;font"></span></strong>
 
-                </div>
-                <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff  pt-md-4 pb-md-4 border-bottom-primary" id="podcast_details_added">
-                    @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
-                    <div class="col-12 col-md-12 col-lg-12 p-0 ">
-                        <div class="row border_set_row">
-                            <div class="col-md-6 col-9">
-                                <span class="set_width">
-                                    {{-- {{ \App\MediaDetail::MEDIA_TYPE[$podcast_media_value->media_type] }} : --}}
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            @if($podcast_media_value->podcast_web_type == 'stitcher_podcast')
-                                                <img src="{{ Storage::disk('public')->url('media_files/' . $podcast_media_value->media_cover) }}" alt="" width="30px">
-                                            @else
-                                                <img src="{{ $podcast_media_value->media_cover }}" alt="" width="30px">
-                                            @endif
-                                        </div>
-                                        <div class="col-md-11">
-                                            {{ $podcast_media_value->media_name }}</span> 
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12 font_icon_color_diff  pt-md-4 pb-md-4 border-bottom-primary" id="podcast_details_added">
+                            @foreach($podcast_media_array as $podcast_media_key => $podcast_media_value)
+                            <div class="col-12 col-md-12 col-lg-12 p-0 ">
+                                <div class="row border_set_row">
+                                    <div class="col-md-6 col-9">
+                                        <span class="set_width">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        @if($podcast_media_value->podcast_web_type == 'stitcher_podcast')
+                                                            <img src="{{ Storage::disk('public')->url('media_files/' . $podcast_media_value->media_cover) }}" alt="" width="30px">
+                                                        @else
+                                                            <img src="{{ $podcast_media_value->media_cover }}" alt="" width="30px">
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        {{ $podcast_media_value->media_name }}
+                                                    </div>
+                                                </div>
+                                        </span>                                      
+                                    </div>
+                                    <div class="col-md-6 col-3">
+                                        <div class="edit_delete_btn">
+                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
+                                                {{-- <i class="far fa-edit"></i> --}}
+                                                <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                                            </a>
+                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
+                                                {{-- <i class='far fa-trash-alt'></i> --}}
+                                                <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                            </a>
                                         </div>
                                     </div>
-                                
-
-                            </div>
-                            <div class="col-md-6 col-3">
-                                <div class="edit_delete_btn">
-                                    <a class="text-primary" href="#" data-toggle="modal" data-target="#editPodcastMediaModal_{{ $podcast_media_value->id }}" data-id="{{ $podcast_media_value->media_name }}">
-                                        {{-- <i class="far fa-edit"></i> --}}
-                                        <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
-                                    </a>
-                                    <a class="text-danger" href="#" data-toggle="modal" data-target="#deletePodcastMediaModal_{{ $podcast_media_value->id }}">
-                                        {{-- <i class='far fa-trash-alt'></i> --}}
-                                        <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                                    </a>
                                 </div>
                             </div>
+                            @endforeach
                         </div>
                     </div>
-                    @endforeach
                 </div>
             </div>
         
@@ -1452,13 +1287,13 @@ $chk_post = Auth::user()->phone;
     $login_user = auth()->user();
     @endphp
       @if(($login_user->categories()->count() > 0) && isset($login_user->hourly_rate_type) && isset($login_user->experience_year) && isset($login_user->preferred_pronouns))
-        <div class="row mt-5">
+        <div class="row mt-1">
             <div class="col-lg-12 co-12">
                 <h1 class="h3 mb-2 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
             </div>
         </div>
     
-       <div class="row font_icon_color">
+       <div class="row">
             <div class="col-12">
                 @if(Session::has('required_field_error'))
                     <div class="row mb-4">
@@ -1477,8 +1312,8 @@ $chk_post = Auth::user()->phone;
                     <input type="hidden" name="article_type" value="1">
                     <div class="border-left-primary mb-4">
                         <div class="col-12">
-                            <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
-                                <div class="col-md-12">
+                            <div class="form-row mb-4 pl-1 pt-1 pb-1">
+                                <div class="col-md-12" style="background-color: #0069D980;">
                                     <span class="text-lg text-white">
                                         <i class="fas fa-store"></i>
                                         {{ __('backend.article.general-info') }}
@@ -1519,16 +1354,6 @@ $chk_post = Auth::user()->phone;
                                     </span>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-md-6">
-                                    <label for="article_address" class="text-black">{{ __('backend.article.address') }}<span class="text-danger">*</span></label>
-                                    <input id="article_address" type="text" class="form-control @error('article_address') is-invalid @enderror" name="article_address" value="{{ old('article_address', $login_user->address) }}">
-                                    <p class="article_address_error error_color"></p>
-                                    @error('article_address')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div> --}}
                                 <div class="col-md-8 col-lg-4">
                                     <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
                                     <div class="input-group">
@@ -1540,112 +1365,6 @@ $chk_post = Auth::user()->phone;
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="form-row mb-3">
-                                <div class="col-md-4 col-lg-2">
-                                    <label for="article_select_country_id" class="text-black">{{ __('Country') }}<span class="text-danger">*</span></label>
-                                    <select id="article_select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
-                                        @foreach($all_countries as $all_countries_key => $country)
-                                            @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE)
-                                                <option value="{{ $country->id }}" {{ $country->id == $login_user->country_id ? 'selected' : '' }}>{{ $country->country_name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    <p class="article_country_id_error error_color"></p>
-                                    @error('country_id')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4 col-lg-2">
-                                    <label for="article_select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
-                                    <select id="article_select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
-                                        @if($all_states)
-                                            @foreach($all_states as $key => $state)
-                                                @error('state_id')
-                                                    <option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
-                                                        {{ $state->state_name }}
-                                                    </option>
-                                                @else
-                                                    <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
-                                                        {{ $state->state_name }}
-                                                    </option>
-                                                @enderror
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <p class="article_state_id_error error_color"></p>
-                                    @error('state_id')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4 col-lg-2">
-                                    <label for="article_select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
-                                    <select id="article_select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
-                                        @if($all_cities)
-                                            @foreach($all_cities as $key => $city)
-                                                @error('state_id') 
-                                                    <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
-                                                        {{ $city->state_name }}
-                                                    </option>
-                                                @else
-                                                    <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
-                                                        {{ $city->city_name }}
-                                                    </option>
-                                                @enderror
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <p class="article_city_id_error error_color"></p>
-                                    @error('city_id')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-4 col-lg-2">
-                                    <label for="article_postal_code" class="text-black">{{ __('backend.article.postal-code') }}<span class="text-danger">*</span></label>
-                                    <input id="article_postal_code" type="text" class="form-control @error('article_postal_code') is-invalid @enderror" name="article_postal_code" value="{{ old('article_postal_code', $login_user->post_code) }}">
-                                    <p class="article_postal_code_error error_color"></p>
-                                    @error('article_postal_code')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-    
-                                <div class="col-md-8 col-lg-4">
-                                    <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
-                                    <div class="input-group">
-                                        <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
-                                        <input id="article_lng" type="text" class="form-control @error('article_lng') is-invalid @enderror" name="article_lng" value="{{ old('article_lng') }}" aria-describedby="lngHelpBlock">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-    
-                            {{-- <div class="form-row mb-3">
-                                <div class="col-md-12">
-                                    <div class="form-check form-check-inline align_base grid_set">
-                                        <input {{ old('article_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="article_address_hide" name="article_address_hide" value="1">
-                                        <label class="form-check-label" for="article_address_hide">
-                                            {{ __('backend.article.hide-address') }}
-                                            <small class="text-muted text_hide_sm">
-                                                {{ __('backend.article.hide-address-help') }}
-                                            </small>
-                                        </label>
-                                    </div>
-                                    @error('article_address_hide')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div> --}}
                             <div class="form-row mb-3">
                                 <div class="col-md-12">
                                     <label for="article_description" class="text-black">{{ __('backend.article.description') }}</label>
@@ -2221,7 +1940,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2256,7 +1975,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.article.crop-feature-image') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.article.crop-feature-image') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2288,7 +2007,7 @@ $chk_post = Auth::user()->phone;
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="width: 1000px !important;">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('backend.user.crop-profile-image') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2322,7 +2041,7 @@ $chk_post = Auth::user()->phone;
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Edit Media') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Edit Media') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -2370,7 +2089,7 @@ $chk_post = Auth::user()->phone;
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Delete Media') }}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Delete Media') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -3336,9 +3055,55 @@ $chk_post = Auth::user()->phone;
 
     });
 
+    //For youtube videos
+    $('#youtubeVideoFrm').on('submit', function(e) {
+        e.preventDefault();
+        $('#addYoutubeBtn').prop("disabled", true);
+        $('.youtube_video_error').text(''); 
+        $('.youtube_url_error').text(''); 
+        var formData = new FormData(this);
+        
+        var ajax_url = '/user/youtube/details';
+        jQuery.ajax({
+            url: ajax_url,
+            data: formData,
+            method: 'post',
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,            
 
-//for podcast
-$('#podcastFrm').on('submit', function(e) {
+            success: function(result) {  
+                
+                console.log(result);
+
+                $('#addYoutubeBtn').prop("disabled", false);
+                // console.log(result.status);
+                if (result.status == 'success') {                    
+                    $('.youtube_success_msg').html('Youtube video added successfully!');
+                    location.reload();
+                }
+                if (result.status == 'validation_error') {
+                    $.each(result.msg, function(key, val) {
+                        if (result.msg.media_type) {
+                            $('.youtube_video_error').text(result.msg.media_type);
+                        }
+                        if (result.msg.youtube_media_url) {
+                            $('.youtube_url_error').text(result.msg.youtube_media_url);
+                        }
+                    });
+                }
+                if (result.status == 'error') {                                           
+                    $('.youtube_url_error').text(result.msg);                       
+                }
+            }
+        });
+
+    });
+
+
+    //for podcast
+    $('#podcastFrm').on('submit', function(e) {
         e.preventDefault();
         var formData = new FormData(this);
         $('.podcast_err_media_url').html("");
