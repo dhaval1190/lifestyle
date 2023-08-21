@@ -123,8 +123,6 @@
                                     <th>{{ __('backend.user.email-verified') }}</th>
                                     <th>{{ __('backend.user.status') }}</th>
                                     <th>{{ __('backend.user.created-at') }}</th>
-                                    {{-- <th>{{ __('backend.shared.action') }}</th>
-                                <th>{{ __('Login') }}</th> --}}
                                 </tr>
                             </thead>
                             <tfoot>
@@ -138,8 +136,6 @@
                                     <th>{{ __('backend.user.email-verified') }}</th>
                                     <th>{{ __('backend.user.status') }}</th>
                                     <th>{{ __('backend.user.created-at') }}</th>
-                                    {{-- <th>{{ __('backend.shared.action') }}</th>
-                                <th>{{ __('Login') }}</th> --}}
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -147,9 +143,6 @@
                                     <tr>
                                         <td>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input users_table_index_checkbox" type="checkbox"
-                                                    id="users_table_index_checkbox_{{ $user->id }}"
-                                                    value="{{ $user->id }}">
                                                 @if (empty($user->user_image))
                                                     <img id="image_preview"
                                                         src="{{ asset('backend/images/placeholder/profile-' . intval($user->id % 10) . '.webp') }}"
@@ -186,16 +179,6 @@
                                             @endif
                                         </td>
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
-                                        {{-- <td>
-                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary btn-circle mb-1">
-                                            <i class="fas fa-cog"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.users.login', $user->id) }}" class="btn btn-primary btn-circle mb-1">
-                                            <i class="fas fa-user"></i>
-                                        </a>
-                                    </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
