@@ -47,6 +47,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Illuminate\Support\Facades\File;
+
 
 use Spatie\OpeningHours\OpeningHours;
 use Illuminate\Support\Collection;
@@ -63,6 +65,8 @@ use App\ProfileReviews;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Event;
 use App\UserCategory;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class PagesController extends Controller
@@ -11058,24 +11062,93 @@ class PagesController extends Controller
             );
         }
 
+        try{
+
+            if(!file_exists(storage_path('public/users_coaches_list'))) {
+                File::makeDirectory(storage_path('public/users_coaches_list'), 0777, true, true);
+            }
+
+            $time = time();
+            $headerColumns = [
+                'Name', 'Email', 'Created on', 'Is email verified'
+            ];
+
+        }catch(\Exception $e){
+            return $return['message'] = $e->getMessage();
+        }
+
         $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->get();
         $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->get();
 
-        $data = [
-            'coaches'=>$coaches,
-            'users'=>$users,
-        ];
+        //Coaches
+        $coach_tmp =  storage_path('public/users_coaches_list/coaches_list_'.$time.'.csv');
+        $coach_handle = fopen($coach_tmp, 'w+');
+        fputcsv($coach_handle, $headerColumns);
+        foreach($coaches as $coach)
+        {
+            $data_array = [];
+            $data_array['name'] = $coach->name;
+            $data_array['email'] = $coach->email;
+            $data_array['created_on'] = \Carbon\Carbon::parse($coach->created_at)->format('d F Y');
+            $data_array['is_email_verified'] = $coach->email_verified_at == null ? 'Not verified' : 'Verified';
 
-        $email_to = "shubham@pranshtech.com,navdeep@pranshtech.com,mansi@pranshtech.com";
-        $recipients = explode(',', $email_to);
-        $email_subject = 'Coaches & Users list';
+            fputcsv($coach_handle, $data_array);
+        }
+        fclose($coach_handle);
 
-        Mail::send('frontend.email_coaches_user_list',$data,function($messages) use ($recipients,$email_subject){
-            $messages->to($recipients);
-            $messages->subject($email_subject);
-        });
+        $exported_coach_csv_path = storage_path('public/users_coaches_list/coaches_list_'.$time.'.csv');
 
-        return "Mail sent successfully";
+        //Users
+        $user_tmp =  storage_path('public/users_coaches_list/users_list_'.$time.'.csv');
+        $user_handle = fopen($user_tmp, 'w+');
+        fputcsv($user_handle, $headerColumns);
+        foreach($users as $user)
+        {
+            $data_array = [];
+            $data_array['name'] = $user->name;
+            $data_array['email'] = $user->email;
+            $data_array['created_on'] = \Carbon\Carbon::parse($user->created_at)->format('d F Y');
+            $data_array['is_email_verified'] = $user->email_verified_at == null ? 'Not verified' : 'Verified';
+
+            fputcsv($user_handle, $data_array);
+        }
+        fclose($user_handle);
+
+        $exported_user_csv_path = storage_path('public/users_coaches_list/users_list_'.$time.'.csv');
+
+        if($exported_coach_csv_path && $exported_user_csv_path) {
+
+            try {
+                // $email_to = "shubham@pranshtech.com,navdeep@pranshtech.com,mansi@pranshtech.com";
+                $email_to = "shubham@pranshtech.com,harsh.modi@pranshtech.com,bansari@pranshtech.com";
+                $recipients = explode(',', $email_to);
+                $email_subject = 'Coaches & Users list';
+                $data = [];
+
+                Mail::send('frontend.email_coaches_user_list',$data,function($messages) use ($recipients,$email_subject,$exported_coach_csv_path,$exported_user_csv_path){
+                    $messages->to($recipients);
+                    $messages->subject($email_subject);
+                    $messages->attach($exported_coach_csv_path);
+                    $messages->attach($exported_user_csv_path);
+                });
+                
+            } catch (\Throwable $th) {
+                echo $th->getMessage();
+                return true;
+                exit;
+            }
+            if(file_exists(storage_path('public/users_coaches_list'))) {
+                chmod($exported_coach_csv_path,0777);
+            }
+            unlink($exported_coach_csv_path);
+            unlink($exported_user_csv_path);
+            $return['status'] = true;
+            $return['message'] = "Users coaches daily list has been generated and successfully sent to the mail.";
+        } else {
+            $return['message'] = 'Users coaches daily list could not generated!';
+        }
+
+        return $return;
     }
 
     public function sendEventEmailToCoach()
