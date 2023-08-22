@@ -464,6 +464,7 @@ return array (
     'general' => 'General',
     'interface' => 'Interface',
     'listing' => 'Coach',
+    'email_id' => 'Email ID',
     'articles' => 'Topics',
     'location' => 'Location',
     'main-content' => 'Main Content',

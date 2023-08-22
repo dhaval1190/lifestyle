@@ -432,6 +432,10 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::get('/settings/item', 'SettingController@editItemSetting')->name('settings.item.edit');
         Route::post('/settings/item', 'SettingController@updateItemSetting')->name('settings.item.update');
 
+        // setting email for daily user/coach list
+        Route::get('/settings/emails', 'SettingController@editEmailIdSetting')->name('settings.email.edit');
+        Route::post('/settings/emails', 'SettingController@updateEmailIdSetting')->name('settings.email.update');
+
         // maintenance mode
         Route::get('/settings/maintenance', 'SettingController@editMaintenanceSetting')->name('settings.maintenance.edit');
         Route::post('/settings/maintenance', 'SettingController@updateMaintenanceSetting')->name('settings.maintenance.update');
