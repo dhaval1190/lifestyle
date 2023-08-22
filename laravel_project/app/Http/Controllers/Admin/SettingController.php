@@ -29,6 +29,7 @@ use Intervention\Image\Facades\Image;
 use DateTime;
 use App\EmailTemplate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SettingController extends Controller
 {
@@ -1541,6 +1542,43 @@ class SettingController extends Controller
         \Session::flash('flash_type', 'success');
 
         return redirect()->route('admin.settings.item.edit');
+    }
+
+    public function editEmailIdSetting(Request $request)
+    {
+        $email_ids = DB::table('email_ids')->first();
+
+        /**
+         * Start SEO
+         */
+        // SEOMeta::setTitle(__('theme_directory_hub.setting.seo.edit-item', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        // SEOMeta::setDescription('');
+        // SEOMeta::setCanonical(URL::current());
+        // SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        return response()->view('backend.admin.setting.email.edit',compact('email_ids'));
+    }
+
+    public function updateEmailIdSetting(Request $request)
+    {
+
+        $request->validate([
+            'email_id' => 'required',
+        ]);
+
+        $email_ids = $request->email_id;
+
+        DB::table('email_ids')->where('id',1)->update(['email_id'=>$email_ids]);
+
+        
+
+        \Session::flash('flash_message', __('Email ID updated successfully'));
+        \Session::flash('flash_type', 'success');
+
+        return redirect()->route('admin.settings.email.edit');
     }
 
     public function editProductSetting(Request $request)

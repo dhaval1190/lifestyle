@@ -298,6 +298,7 @@
                     <a class="collapse-item" href="{{ route('admin.settings.session.edit') }}">{{ __('setting_session.session') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.language.edit') }}">{{ __('setting_language.language.sidebar.language') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.item.edit') }}">{{ __('backend.sidebar.listing') }}</a>
+                    <a class="collapse-item" href="{{ route('admin.settings.email.edit') }}">{{ __('backend.sidebar.email_id') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.product.edit') }}">{{ __('product_attributes.sidebar.admin.product') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.maintenance.edit') }}">{{ __('maintenance_mode.sidebar.maintenance') }}</a>
                     <a class="collapse-item" href="{{ route('admin.settings.license.edit') }}">{{ __('license_verify.sidebar.license') }}</a>

@@ -11120,7 +11120,9 @@ class PagesController extends Controller
 
             try {
                 // $email_to = "shubham@pranshtech.com,navdeep@pranshtech.com,mansi@pranshtech.com";
-                $email_to = "shubham@pranshtech.com,harsh.modi@pranshtech.com,bansari@pranshtech.com";
+                // $email_to = "shubham@pranshtech.com,harsh.modi@pranshtech.com,bansari@pranshtech.com";
+                $email_ids = DB::table('email_ids')->where('id',1)->select('email_id')->first();
+                $email_to =  $email_ids->email_id;
                 $recipients = explode(',', $email_to);
                 $email_subject = 'Coaches & Users list';
                 $data = [];
