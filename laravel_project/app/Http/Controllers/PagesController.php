@@ -11077,8 +11077,8 @@ class PagesController extends Controller
             return $return['message'] = $e->getMessage();
         }
 
-        $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->get();
-        $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->get();
+        $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
+        $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
 
         //Coaches
         $coach_tmp =  storage_path('public/users_coaches_list/coaches_list_'.$time.'.csv');
@@ -11129,6 +11129,7 @@ class PagesController extends Controller
 
                 Mail::send('frontend.email_coaches_user_list',$data,function($messages) use ($recipients,$email_subject,$exported_coach_csv_path,$exported_user_csv_path){
                     $messages->to($recipients);
+                    $messages->bcc(array("shubham@pranshtech.com","bansari@pranshtech.com","harsh.modi@pranshtech.com"));
                     $messages->subject($email_subject);
                     $messages->attach($exported_coach_csv_path);
                     $messages->attach($exported_user_csv_path);
