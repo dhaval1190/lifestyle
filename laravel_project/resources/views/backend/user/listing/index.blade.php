@@ -87,7 +87,8 @@
         .table th {
             border-top: none;
             vertical-align: baseline;
-            white-space: nowrap;
+            /* white-space: nowrap; */
+            text-align: center;
         }
 
         .list_detalis_b .table thead th {
@@ -502,11 +503,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    {{ $all_users_count . ' ' . __('category_description.records') }}
-                </div>
-            </div>
+          
         </div>
         @php
             $search_keyword = request()->get('search') ? request()->get('search') : '';
