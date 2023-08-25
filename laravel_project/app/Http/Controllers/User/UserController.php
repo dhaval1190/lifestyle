@@ -1424,16 +1424,27 @@ class UserController extends Controller
                 $all_users_query->orderBy('email', 'DESC');
             }
     
+            // $all_users_count = $all_users_query->count();
+            // $all_users = $all_users_query->paginate($count_per_page);
+    
+            // if(isset($request->search) && !empty($request->search)){
+            //     $all_users = User::where('.name', 'LIKE', '%' . $request->search . '%')
+            //     ->orwhere('email', 'LIKE', '%' . $request->search . '%')           
+            //     ->select('users.*');
+            //     $all_users = $all_users->paginate($count_per_page);
+            // }
+
+            $search_keyword = $request->search ? $request->search : null;
+            if(isset($search_keyword) && !empty($search_keyword)){
+                $all_users = $all_users_query->where(function($q) use($search_keyword){
+                    $q->where('name', 'LIKE', '%' . $search_keyword . '%')
+                      ->orWhere('email', 'LIKE', '%' . $search_keyword . '%')
+                      ->select('users.*');
+                });
+            }
+            
             $all_users_count = $all_users_query->count();
             $all_users = $all_users_query->paginate($count_per_page);
-    
-            if(isset($request->search) && !empty($request->search)){
-                $all_users = User::where('.name', 'LIKE', '%' . $request->search . '%')
-                ->orwhere('email', 'LIKE', '%' . $request->search . '%')           
-                ->select('users.*');
-                $all_users = $all_users->paginate($count_per_page);
-            }
-    
             // show all users except self (admin)
             //$all_users = User::where('role_id', Role::USER_ROLE_ID)->orderBy('created_at', 'DESC')->get();
     
