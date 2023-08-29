@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use App\Theme;
 use App\Customization;
@@ -26,6 +27,14 @@ class VerifySubscription
         // }
         $subscription = $user->subscription()->orderBy('id','DESC')->first();
         // dd($subscription);
+        if($subscription == null || $subscription == '')
+        {
+            DB::table('subscriptions')->insert([
+                'user_id' => $user->id,
+                'plan_id' => 1,
+                'subscription_start_date' => date("Y-m-d")
+            ]);
+        }
 
         if(!empty($subscription->stripe_id)){
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET')); 
