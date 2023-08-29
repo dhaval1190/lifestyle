@@ -29,15 +29,7 @@ class SubscriptionController extends Controller
     public function index()
     {
 
-
         $auth_user = Auth::user();
-        // $aa = $auth_user->paymentMethods();
-        // if ($auth_user->subscribed('default')) {
-        //     echo "ksdkljlskd";
-        // }
-
-        // dd($aa);
-        // dd($auth_user->subscribed('yearly-premium'));
         $settings = app('site_global_settings');
 
         /**
@@ -53,35 +45,29 @@ class SubscriptionController extends Controller
          */
 
         // show subscription information for current user
-        $login_user = Auth::user();
-        // $subscription = $login_user->subscription()->orderBy('id','desc')->first();
-        $subscription = Subscription::first();
-        $user = User::where('id',auth()->user()->id)->orderBY('id','DESC')->first();
-        
-        // dd($subscription);
-        // dd($subscription->plan->plan_name);
+        try{        
+            $login_user = Auth::user();
+            $subscription = Subscription::first();
+            $user = User::where('id',auth()->user()->id)->orderBY('id','DESC')->first();
 
-        //$invoices = $subscription->invoices()->orderBy('created_at', 'DESC')->get();
-        // $invoices = $subscription->invoices()->latest('created_at')->get();
-
-        // $paid_subscription_days_left = $login_user->subscriptionDaysLeft();
-
-        // return response()->view('backend.user.subscription.index',
-        //     compact('subscription', 'invoices', 'paid_subscription_days_left'));
-
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-        // dd($stripe);
-        if($user->stripe_id) {
-            $invoices = $stripe->invoices->all(['customer'=>$user->stripe_id, 'limit'=>100, 'status'=>'paid']);
-        } else {
-            $invoices = array();
-        }
-        
-        $current_subscription = $login_user->subscriptions()->first();
-        $plan_details = Plan::where('id',$current_subscription->plan_id)->first();
-        // dd($current_subscription);
+            $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+            if($user->stripe_id) {
+                $invoices = $stripe->invoices->all(['customer'=>$user->stripe_id, 'limit'=>100, 'status'=>'paid']);
+            } else {
+                $invoices = array();
+            }
+            
+            $current_subscription = $login_user->subscriptions()->first();
+            $plan_details = Plan::where('id',$current_subscription->plan_id)->first();
+            // dd($current_subscription);
 
             return response()->view('backend.user.subscription.index',compact('subscription','invoices','current_subscription','plan_details'));
+
+        }catch(\Exception $e){
+            
+            printErrorLogs($e->getMessage());
+            return redirect()->route('user.error');
+        }
     }
 
     /**

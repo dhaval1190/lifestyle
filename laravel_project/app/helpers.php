@@ -339,4 +339,14 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
 
         return $convertedDateTime->format('Y-m-d H:i:s');
     }
+
+    function printErrorLogs($error_txt)
+    {
+        $txt = print_r($error_txt, true);
+        $all_txt = date("Y-m-d H:i:s").':- '.$txt;
+        
+        $file=fopen(base_path().'/'.'public/storage/error_log/check_log.log','a');
+        fwrite($file,$all_txt."\r\n");
+        fclose($file);
+    }
 }

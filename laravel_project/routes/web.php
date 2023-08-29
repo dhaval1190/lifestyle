@@ -767,6 +767,10 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         //User coach listing for only Chris and Bunny login
         Route::get('/user-coach-listing', 'UserController@userCoachListing')->name('users.coach.list');
 
+        Route::get('/error', function(){
+            return view('backend.user.error_log_page');
+        })->name('error');
+
         
     });
 
