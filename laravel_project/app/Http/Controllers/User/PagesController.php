@@ -49,18 +49,21 @@ class PagesController extends Controller
 
         $paid_subscription_days_left = $login_user->subscriptionDaysLeft();
 
-        $subscription_details = $login_user->subscription()->where('user_id', $login_user->id)->orderBY('id','DESC')->first();
-        $plan_details = Plan::where('id',$subscription_details->plan_id)->first();
-        $plan_name = $plan_details->plan_name;
+        try{
+            $subscription_details = $login_user->subscription()->where('user_id', $login_user->id)->orderBY('id','DESC')->first();
+            $plan_details = Plan::where('id',$subscription_details->plan_id)->first();
+            $plan_name = $plan_details->plan_name;
+        }catch(\Exception $e){
+            printErrorLogs($e->getMessage());
+            return redirect()->route('user.error');
+        }
 
         $pending_item_count = $login_user->items()->where('item_status', Item::ITEM_SUBMITTED)->count();
         $item_count = $login_user->items()->count();
         // $message_count = Message::where('user_id', $login_user->id)->count();
         // $message_count = Message::where('user_id', $login_user->id)->distinct()->count('thread_id');
         $message_count = Thread::forUser($login_user->id)->latest('updated_at')->count();
-        // dd($message_count);
         $comment_count = Comment::where('commenter_id', $login_user->id)->count();
-
         $recent_threads = Thread::forUser($login_user->id)->latest('updated_at')->take(3)->get();
         $recent_comments = Comment::where('commenter_id', $login_user->id)->orderBy('created_at', 'DESC')->take(5)->get();
 
