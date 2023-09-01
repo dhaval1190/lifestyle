@@ -59,6 +59,9 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-7 mb-5">
+                    <div class="alert alert-success alert-dismissible fade show" id="register_success_error_div" role="alert" style="display:none;margin:4px;">
+                        <strong id="register_success"></strong>
+                    </div>
 
                     <form method="POST" class="p-5 bg-white" name="signUpForm" id="signUpForm">
                         @csrf
@@ -312,8 +315,11 @@
                                 // console.log(response)
                                 $(".error_color").text("");
                                 $('.please_wait').text('');
+                                $('#register_success').text('A verification link is sent to your mail,please click to verify');
+                                $('#register_success_error_div').show();
+                                $('#signUpForm').trigger('reset');
                                 // location.reload(); 
-                                window.location.href = "{{ route('login') }}";                                                      
+                                // window.location.href = "{{ route('login') }}";                                                      
 
                             }
                             if(response.status == 'email_reg'){

@@ -134,7 +134,14 @@
                                                                         <img src="{{ asset('frontend/images/time.png') }}"
                                                                             alt="" />
                                                                     </div>
-                                                                    <p class="date">
+                                                                    <p class="date" style="font-size:22px !important;">
+                                                                        @php
+                                                                            $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
+                                                                            $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('m/d/Y'));
+                                                                        @endphp
+                                                                        {{ $event_date_format }}
+                                                                    </p>
+                                                                    <!-- <p class="date">
                                                                         {{-- {{ Str::limit(\Carbon\Carbon::parse($event->event_start_date)->format('d F'), 6, ',') }} --}}
                                                                         @php
                                                                             $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
@@ -152,7 +159,7 @@
                                                                         @endphp
                                                                         
                                                                         {{ $event_year }}
-                                                                    </p>
+                                                                    </p>-->
 
                                                                 </div>
                                                             </div>

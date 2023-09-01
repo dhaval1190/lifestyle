@@ -35,7 +35,7 @@
             <div class="col-md-10" data-aos="fade-up" data-aos-delay="400">
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-8 text-center">
-                        <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('All Coaches') }}</h1>
+                        <h1 style="color: {{ $site_innerpage_header_title_font_color }};">{{ __('Find your perfect coach today!') }}</h1>
                         <!-- <p class="mb-0" style="color: {{ $site_innerpage_header_paragraph_font_color }};">{{ __('frontend.categories.description') }}</p> -->
                     </div>
                 </div>
@@ -377,7 +377,7 @@
                             <strong>{{ number_format($coach_count) }}</strong>
                             {{ __('theme_directory_hub.filter-results') }}
                         </div>
-                        @if ($all_coaches->count() >= 8)
+                        {{-- @if ($all_coaches->count() >= 8) --}}
                             <div class="col-md-6 text-right">
                                 <a href="{{ route('page.allcoaches') }}">
                                     <button class="btn btn-primary btn-sm">
@@ -385,7 +385,7 @@
                                     </button>
                                 </a>                                
                             </div>
-                        @endif
+                        {{-- @endif --}}
                     </div>
 
                     @if ($ads_before_content->count() > 0)
@@ -445,6 +445,7 @@
                                                             style="min-height:0px;">
                                                             @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
                                                                 @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
+                                                                <a href="{{ route('page.coaches.category', $category->category_slug) }}">
                                                                     <span class="category">
                                                                         @if (!empty($category->category_icon))
                                                                             <i class="{{ $category->category_icon }}"></i>
@@ -453,6 +454,7 @@
                                                                         @endif
                                                                         {{ $category->category_name }}
                                                                     </span>
+                                                                </a>
                                                                 @endforeach
                                                             @endif
                                                             @if (!empty($coach->category_icon_one))
@@ -551,6 +553,7 @@
                                                     style="min-height:0px;">
                                                     @if (isset($coach->category_parent_name) && !empty($coach->category_parent_name))
                                                         @foreach ($coach->category_parent_name as $item_all_categories_key => $category)
+                                                        <a href="{{ route('page.coaches.category', $category->category_slug) }}">
                                                             <span class="category">
                                                                 @if (!empty($category->category_icon))
                                                                     <i class="{{ $category->category_icon }}"></i>
@@ -559,6 +562,7 @@
                                                                 @endif
                                                                 {{ $category->category_name }}
                                                             </span>
+                                                        </a>
                                                         @endforeach
                                                     @endif
                                                     @if (!empty($coach->category_icon_one))

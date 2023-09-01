@@ -255,7 +255,7 @@ class CategoryController extends Controller
                 Storage::disk('public')->makeDirectory('category');
             }
 
-            $category_image_obj = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$category_image)))->stream('jpg', 100);
+            $category_image_obj = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$category_image)))->stream('png', 100);
             Storage::disk('public')->put('category/'.$category_image_file_name, $category_image_obj);
         }
         /**
@@ -465,7 +465,7 @@ class CategoryController extends Controller
                 Storage::disk('public')->delete('category/' . $category->category_image);
             }
 
-            $category_image_obj = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$category_image)))->stream('jpg', 100);
+            $category_image_obj = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$category_image)))->stream('png', 100);
             Storage::disk('public')->put('category/'.$category_image_file_name, $category_image_obj);
         }
         /**

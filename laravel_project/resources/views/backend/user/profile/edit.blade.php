@@ -586,7 +586,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                                 <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
                                     <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
-                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
+                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)" required>
                                     @error('phone')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -791,7 +791,7 @@ $chk_post = Auth::user()->phone;
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-lg-6 col-xl-10 col-md-6">
+                <div class="col-lg-6 col-xl-12 col-md-6">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12 col-xl-12 col-12">
                             <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
@@ -802,35 +802,28 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-
                     </div>
-                </div>
-                <div class="col-xl-2 col-lg-6 col-md-6">
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-12 col-xl-12 col-12">
-                            <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
-                            <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}">
-                                @foreach($all_countries as $all_countries_key => $country)
-                                @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status
-                                == \App\Country::COUNTRY_STATUS_DISABLE && $login_user->country_id == $country->id))
-                                <option value="{{ $country->id }}" {{ $country->id == old('country_id', $login_user->country_id) ? 'selected' : '' }}>
-                                    {{ $country->country_name }}
-                                </option>
-                                @endif
-                                @endforeach
-                            </select>
-                            @error('country_id')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                    </div>
-                </div>
-
+                </div>                
             </div>
             <div class="row mt-3">
+                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
+                    <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
+                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}" required>
+                        @foreach($all_countries as $all_countries_key => $country)
+                        @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status
+                        == \App\Country::COUNTRY_STATUS_DISABLE && $login_user->country_id == $country->id))
+                        <option value="{{ $country->id }}" {{ $country->id == old('country_id', $login_user->country_id) ? 'selected' : '' }}>
+                            {{ $country->country_name }}
+                        </option>
+                        @endif
+                        @endforeach
+                    </select>
+                    @error('country_id')
+                    <span class="invalid-tooltip" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
                 <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
                     <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
                     <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
@@ -875,16 +868,16 @@ $chk_post = Auth::user()->phone;
                     </span>
                     @enderror
                 </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
                     <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
-                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}">
+                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" required>
                     @error('post_code')
                     <span class="invalid-tooltip" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
                     <label for="hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
                     <select id="hour_time_zone" class="selectpicker form-control @error('hour_time_zone') is-invalid @enderror" name="hour_time_zone" data-live-search="true">
                         @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
