@@ -206,6 +206,17 @@
                         </h2>
                     </div>                    
                 </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 text-left">
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a href="{{ route('page.allcoaches') }}">
+                            <button class="btn btn-primary btn-sm">
+                                View All
+                            </button>
+                        </a>                                
+                    </div>
+                </div>
             @endif
             <div class="row">
                 <div class="col-lg-12 padding-0-set-sm">
