@@ -259,7 +259,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $input = $request->all();
-        dd($input);
+        // dd($input);
         $login_user = Auth::user();
         if(empty($youtube_url['youtube'])){
            

@@ -63,7 +63,7 @@
                             continue;
                         }
                     ?>
-                        <div class="col-sm-6 col-md-4 mb-4 mb-lg-0 col-lg-2">
+                        <div class="col-sm-6 col-md-4 mb-4 mb-lg-3 col-lg-2">
 
                             @if($children_category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
                                 <a href="{{ route('page.category', $children_category->category_slug) }}" class="popular-category h-100 decoration-none">
@@ -80,11 +80,11 @@
                                     <span class="caption d-block">{{ $children_category->category_name }}</span>
                                 </a>
                             @elseif($children_category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_IMAGE)
-                                <a href="{{ route('page.category', $children_category->category_slug) }}" class="popular-category h-100 decoration-none image-category">
+                                <a href="{{ route('page.category', $children_category->category_slug) }}" class="popular-category h-100 decoration-none image-category d-grid-set-center">
                                     <span class="icon image-category-span">
                                         <span>
                                             @if($children_category->category_image)
-                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url('category/'. $children_category->category_image) }}" alt="Image" class="img-fluid rounded image-category-img">
+                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url('category/'. $children_category->category_image) }}" alt="Image" class="img-fluid img-height rounded image-category-img">
                                             @else
                                                 <img src="{{ asset('frontend/images/placeholder/category-image.webp') }}" alt="Image" class="img-fluid rounded image-category-img">
                                             @endif
