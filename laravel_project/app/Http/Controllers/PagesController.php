@@ -8652,8 +8652,8 @@ class PagesController extends Controller
             
         if($item)
         {
-            if(Auth::check())
-            {
+            // if(Auth::check())
+            // {
                     /**
                      * Start initial SMTP settings
                      */
@@ -8792,14 +8792,14 @@ class PagesController extends Controller
                 }else{
                     return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
                 }
-            }
-            else
-            {
-                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
-                \Session::flash('flash_type', 'danger');
+            // }
+            // else
+            // {
+            //     \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+            //     \Session::flash('flash_type', 'danger');
 
-                return redirect()->route('page.item', $item->item_slug);
-            }
+            //     return redirect()->route('page.item', $item->item_slug);
+            // }
         }
         else
         {
@@ -8810,12 +8810,6 @@ class PagesController extends Controller
 
     public function emailProfile(string $profileId, Request $request)
     {
-
-        // return response()->json(['status'=>"successssssss",'msg'=>$request->userId]);
-        // print_r($profileId);
-        //     echo "<br>";
-        //     print_r($request->all());
-        //     exit;
 
         $settings = app('site_global_settings');
 
@@ -8830,8 +8824,8 @@ class PagesController extends Controller
 
         // if($item)
         // {
-            if(Auth::check())
-            {
+            // if(Auth::check())
+            // {
                 // $request->validate([
                 //     'profile_share_email_name' => 'required|regex:/^[\pL\s]+$/u|max:30',
                 //     'profile_share_email_from_email' => 'required|email|max:255',
@@ -8988,17 +8982,17 @@ class PagesController extends Controller
                         return response()->json(['status'=>"success",'msg'=>"Mail sent successfully!"]);
 
                         // return redirect()->route('page.profile', $profileId);
-            }else{
-                return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
-            }
-            }
-            else
-            {
-                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
-                \Session::flash('flash_type', 'danger');
+                }else{
+                    return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+                }
+            // }
+            // else
+            // {
+            //     \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+            //     \Session::flash('flash_type', 'danger');
 
-                return redirect()->route('page.profile', $profileId);
-            }
+            //     return redirect()->route('page.profile', $profileId);
+            // }
         // }
         // else
         // {
@@ -9020,8 +9014,8 @@ class PagesController extends Controller
 
         if($item)
         {
-            if(Auth::check())
-            {
+            // if(Auth::check())
+            // {
                 // $request->validate([
                 //     'item_conntact_email_name' => 'required|max:255',
                 //     'item_contact_email_from_email' => 'required|email|max:255',
@@ -9052,6 +9046,8 @@ class PagesController extends Controller
 
                 if($validator->passes())
                 {
+
+                    $authUserId = $request->authUserId ? $request->authUserId : null;
                     /**
                          * Start initial SMTP settings
                          */
@@ -9081,7 +9077,7 @@ class PagesController extends Controller
                             ]);
                         }
 
-                        $authUser = User::where('id',$request->authUserId)->first();
+                        $authUser = User::where('id',$authUserId)->first();
 
                         $question_2_val = '';	
                         foreach($request->question2 as $question_2){	
@@ -9099,7 +9095,7 @@ class PagesController extends Controller
                         $contact_data_id = DB::table('contact_coach')->insertGetId([
                             'name' => $request->item_conntact_email_name,
                             'email' => $request->item_contact_email_from_email,
-                            'sender_id' => $request->authUserId,
+                            'sender_id' => $authUserId,
                             'receiver_id' => $request->userId,
                             'profile_article' => $profile_or_article,
                             'question1' =>  $request->question1,
@@ -9128,14 +9124,21 @@ class PagesController extends Controller
                         {
                             $template_body = $user_template->email_template; 
                             $email_subject = $user_template->subject; 
-                            if(auth()->user()->role_id == 3){
+                            if($authUserId == null){
                                 $template_body = str_replace('[URL]','',$template_body);
                                 $profile_url = '';
                             }else{
-                                $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
-                                $profile_url = route('page.profile', encrypt($request->authUserId));
+                                if(auth()->user()->role_id == 3){
+                                    $template_body = str_replace('[URL]','',$template_body);
+                                    $profile_url = '';
+                                }else{
+                                    $template_body = str_replace('[URL]',route('page.profile', encrypt($authUserId)),$template_body);
+                                    $profile_url = route('page.profile', encrypt($authUserId));
+                                }
+                                $template_body = str_replace('[URL]',route('page.profile', encrypt($authUserId)),$template_body);
+
                             }
-                            $template_body = str_replace('[URL]',route('page.profile', encrypt($request->authUserId)),$template_body);
+                            
                             $email_to = $user->email;                                   
                             $email_from_name = $request->item_conntact_email_name;
                             $item_contact_email = $request->item_contact_email_from_email;
@@ -9254,7 +9257,7 @@ class PagesController extends Controller
 
                                 $notification = [
                                     'user_id' => $user->id,
-                                    'visitor_id' => Auth::user()->id,
+                                    'visitor_id' => $authUserId,
                                     'notification'=>$data['notification']['title'],
                                     'is_read'=>'0',                    
                                 ];           
@@ -9269,12 +9272,16 @@ class PagesController extends Controller
                                 // $email_note = $request->question1."<br>".$request->question2."<br>".$request->question3."<br>".$request->question4."<br>".$request->question5."<br>".$request->question6;
                                 $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
     
-                                if($authUser->role_id == 3){
+                                if($authUserId == null){
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
-                                    // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
                                 }else{
-                                    // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
-                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-desc', ['from_name' => $email_from_name]);
+                                    if($authUser->role_id == 3){
+                                        $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                        // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                                    }else{
+                                        // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', encrypt($request->authUserId))]);
+                                        $from_name_abd_url = __('frontend.item.send-email-contact-body-desc', ['from_name' => $email_from_name]);
+                                    }
                                 }
 
                                 $question2_val = '';	
@@ -9312,12 +9319,16 @@ class PagesController extends Controller
                                 // $email_note = $request->item_contact_email_note;
                                 $email_subject = __('frontend.item.send-email-contact-subject', ['name' => $email_from_name]);
     
-                                if($authUser->role_id == 3){
+                                if($authUserId == null){
                                     $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
-                                    // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
-                                }else{
-                                    // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
-                                    $from_name_abd_url = __('frontend.item.send-email-contact-body-desc-article', ['from_name' => $email_from_name]);
+                                }else{                                
+                                    if($authUser->role_id == 3){
+                                        $from_name_abd_url = __('frontend.item.send-email-contact-body-user', ['from_name' => $email_from_name]);
+                                        // return response()->json(['status'=>"sssssssssss",'msg'=>$from_name_abd_url]);
+                                    }else{
+                                        // $from_name_abd_url = __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.item', $item->item_slug)]);
+                                        $from_name_abd_url = __('frontend.item.send-email-contact-body-desc-article', ['from_name' => $email_from_name]);
+                                    }
                                 }
 
                                 $question2_val = '';	
@@ -9421,7 +9432,7 @@ class PagesController extends Controller
                             }                               
                             $notification = [
                                 'user_id' => $user->id,
-                                'visitor_id' => Auth::user()->id,
+                                'visitor_id' => $authUserId,
                                 'notification'=>$data['notification']['title'],
                                 'is_read'=>'0',                    
                             ];           
@@ -9443,21 +9454,21 @@ class PagesController extends Controller
                 else{
                     return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
                 }
-            }
-            else
-            {
-                \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
-                \Session::flash('flash_type', 'danger');
+            // }
+            // else
+            // {
+            //     \Session::flash('flash_message', __('frontend.item.send-email-error-login'));
+            //     \Session::flash('flash_type', 'danger');
 
 
-               if($request->contact_profile){
+            //    if($request->contact_profile){
 
-                     return redirect()->route('page.profile', $request->hexId);
-                 }else{
+            //          return redirect()->route('page.profile', $request->hexId);
+            //      }else{
 
-                     return redirect()->route('page.item', $item->item_slug);
-                 }
-            }
+            //          return redirect()->route('page.item', $item->item_slug);
+            //      }
+            // }
         }
         else
         {

@@ -349,9 +349,9 @@
     <!-- Modal - category image -->
     <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 1000px !important;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{ __('category_image_option.modal-category-image-crop-title') }}</h5>
+                    <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{ __('category_image_option.modal-category-image-crop-title') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -442,14 +442,15 @@
                         enableExif: true,
                         mouseWheelZoom: false,
                         viewport: {
-                            width:viewport_width,
-                            height:viewport_height,
-                            type:'square',
+                            width: 200,
+                            height: 200,
+                            type: 'square'
                         },
-                        boundary:{
-                            width:viewport_width + 5,
-                            height:viewport_width + 5,
-                        }
+                        boundary: {
+                            width: 300,
+                            height: 300
+                        },
+                        enableOrientation: true
                     });
 
                     $('#image-crop-modal .modal-dialog').css({

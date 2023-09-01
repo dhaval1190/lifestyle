@@ -2852,7 +2852,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
+                <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -2936,7 +2936,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p>{{ __('frontend.item.share-listing-email') }}</p>
-                        @if(!Auth::check())
+                        {{-- @if(!Auth::check())
                         <div class="row mb-2">
                             <div class="col-12">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -2944,13 +2944,13 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
                         <form action="{{ route('page.item.email', ['item_slug' => $item->item_slug]) }}" method="POST" name="shareProfileModal" id="shareProfileModal">
                             @csrf
                             <div class="form-row mb-3">
                                 <div class="col-md-4">
                                     <label for="item_share_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
-                                    <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_share_email_name') }}" readonly>
+                                    <input id="item_share_email_name" type="text" class="form-control @error('item_share_email_name') is-invalid @enderror" name="item_share_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_share_email_name') }}">
                                     <p class="profile_name_error error_color" role="alert"></p>
                                     @error('item_share_email_name')
                                     <span class="invalid-tooltip">
@@ -2960,7 +2960,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="item_share_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
-                                    <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_share_email_from_email') }}" readonly>
+                                    <input id="item_share_email_from_email" type="email" class="form-control @error('item_share_email_from_email') is-invalid @enderror" name="item_share_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_share_email_from_email') }}">
                                     <p class="profile_from_email_error error_color" role="alert"></p>
                                     @error('item_share_email_from_email')
                                     <span class="invalid-tooltip">
@@ -2970,7 +2970,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="item_share_email_to_email" class="text-black">{{ __('frontend.item.email-to') }}<span class="text-danger">*</span></label>
-                                    <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <input id="item_share_email_to_email" type="email" class="form-control @error('item_share_email_to_email') is-invalid @enderror" name="item_share_email_to_email" value="{{ old('item_share_email_to_email') }}">
                                     <p class="profile_to_error error_color" role="alert"></p>
                                     @error('item_share_email_to_email')
                                     <span class="invalid-tooltip">
@@ -2982,7 +2982,7 @@
                             <div class="form-row mb-3">
                                 <div class="col-md-12">
                                     <label for="item_share_email_note" class="text-black">{{ __('frontend.item.add-note') }}<span class="text-danger">*</span></label>
-                                    <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note" {{ Auth::check() ? '' : 'disabled' }}>{{ old('item_share_email_note') }}</textarea>
+                                    <textarea class="form-control @error('item_share_email_note') is-invalid @enderror" id="item_share_email_note" rows="3" name="item_share_email_note">{{ old('item_share_email_note') }}</textarea>
                                     <p class="profile_note_error error_color" role="alert"></p>
                                     @error('item_share_email_note')
                                     <span class="invalid-tooltip">
@@ -2993,15 +2993,15 @@
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
-                                    <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded" {{ Auth::check() ? '' : 'disabled' }}>
+                                    <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded">
                                         {{ __('frontend.item.send-email') }}
                                     </button>
                                     <span class="please_wait">Please Wait..</span>
-                                        @if(!Auth::user())
+                                        {{-- @if(!Auth::user())
                                             <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right">
                                                 {{ __('Login') }}                                            
                                             </a>
-                                        @endif
+                                        @endif --}}
                                 </div>
                             </div>
                         </form>
@@ -3022,7 +3022,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
+                <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -3032,15 +3032,15 @@
                     <div class="col-md-12">
                         <h5>{{ __('frontend.item.share-listing-email') }}</h5>
                         <p>{{ __('Please answer the following question so this coach can determine if they are uniquely qualified to best help you and to better prepare them for a potential initial conversation.') }}</p>
-                        @if(!Auth::check())
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {{ __('frontend.item.login-require') }}
+                        {{-- @if(!Auth::check())
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ __('frontend.item.login-require') }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endif
+                        @endif --}}
                         <div class="nav nav-fill my-3">
                             <label class="nav-link shadow-sm step0 steps  border ml-2 ">Step One</label>
                             <label class="nav-link shadow-sm step1 steps  border ml-2 " >Step Two</label>
@@ -3059,7 +3059,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="item_conntact_email_name" class="text-black">{{ __('frontend.item.name') }}<span class="text-danger">*</span></label>
-                                            <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            <input id="item_conntact_email_name" type="text" class="form-control @error('item_conntact_email_name') is-invalid @enderror" name="item_conntact_email_name" value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" required>
                                             <p class="name_error error_color" role="alert"></p>
                                             @error('item_conntact_email_name')
                                             <span class="invalid-tooltip">
@@ -3069,7 +3069,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="item_contact_email_from_email" class="text-black">{{ __('frontend.item.email') }}<span class="text-danger">*</span></label>
-                                            <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" {{ Auth::check() ? '' : 'disabled' }} readonly>
+                                            <input id="item_contact_email_from_email" type="email" class="form-control @error('item_contact_email_from_email') is-invalid @enderror" name="item_contact_email_from_email" value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" required>
                                             <p class="email_error error_color" role="alert"></p>
                                             @error('item_contact_email_from_email')
                                             <span class="invalid-tooltip">
@@ -3082,7 +3082,7 @@
                                         <label for="Question 1"
                                             class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span class="text-danger">*</span></label>
                                         <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt"
-                                            rows="3" name="question1" required {{ Auth::check() ? '' : 'disabled' }}>{{ old('question1') }}</textarea>
+                                            rows="3" name="question1" required>{{ old('question1') }}</textarea>
                                             <p class="question1_error error_color_modal" role="alert"></p>
                                             <p class="question1_desc_char_count count_error"></p>
                                         @error('question1')
@@ -3187,19 +3187,19 @@
                             </div>                            
                             <div class="form-row">
                                 <div class="col-md-12 form-navigation">
-                                    @if(Auth::check())
+                                    {{-- @if(Auth::check()) --}}
                                         <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>
                                         <button type="button" class="next btn btn-primary float-right mt-2">Next &gt;</button>
-                                        <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2" {{ Auth::check() ? '' : 'disabled' }}>
+                                        <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2">
                                             {{ __('frontend.item.send-email') }}
                                         </button>
-                                    @endif
+                                    {{-- @endif --}}
                                     <span class="please_wait">Please Wait..</span>
-                                        @if(!Auth::user())
+                                        {{-- @if(!Auth::user())
                                             <a href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
                                                 {{ __('Login') }}                                            
                                             </a>
-                                        @endif 
+                                        @endif  --}}
                                 </div>
                             </div>
                         </form>
