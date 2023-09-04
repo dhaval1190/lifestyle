@@ -193,9 +193,9 @@
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_LOWEST_RATING }}"
                                         {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_LOWEST_RATING ? 'selected' : '' }}>
                                         {{ __('listings_filter.sort-by-lowest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}"
+                                    {{-- <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}"
                                         {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEARBY_FIRST ? 'selected' : '' }}>
-                                        {{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option>
+                                        {{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option> --}}
                                 </select>
                                 @error('filter_sort_by')
                                     <span class="invalid-tooltip">

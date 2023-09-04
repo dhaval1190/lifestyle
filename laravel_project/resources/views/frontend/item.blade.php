@@ -1567,7 +1567,8 @@
                                             <div class="row align-items-center mb-3">
                                                 <div class="col-4">
                                                     @if(empty(\App\User::find($review->author_id)->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                        {{-- <img src="{{ asset('frontend/images/placeholder/profile-'. intval($review->author_id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle"> --}}
+                                                        <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                                     @else
                                                         <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}" alt="{{ \App\User::find($review->author_id)->name }}" class="img-fluid rounded-circle">
                                                     @endif
@@ -2599,7 +2600,8 @@
                                     <div class="row align-items-center item-box-user-div">
                                         <div class="col-2 col-md-2 col-lg-3 item-box-user-img-div">
                                             @if(empty($similar_coach_item->user->user_image))
-                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_coach_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                {{-- <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_coach_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle"> --}}
+                                                <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                             @else
                                                 <img src="{{ Storage::disk('public')->url('user/' . $similar_coach_item->user->user_image) }}" alt="{{ $similar_coach_item->user->name }}" class="img-fluid rounded-circle">
                                             @endif
@@ -2671,12 +2673,12 @@
 
                             <h3 class="pt-2"><a href="{{ route('page.item', $similar_item->item_slug) }}">{{ $similar_item->item_title }}</a></h3>
 
-                            @if($similar_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                            <address>
-                                <a href="{{ route('page.city', ['state_slug'=>$similar_item->state->state_slug, 'city_slug'=>$similar_item->city->city_slug]) }}">{{ $similar_item->city->city_name }}</a>,
-                                <a href="{{ route('page.state', ['state_slug'=>$similar_item->state->state_slug]) }}">{{ $similar_item->state->state_name }}</a>
-                            </address>
-                            @endif
+                            {{-- @if($similar_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                <address>
+                                    <a href="{{ route('page.city', ['state_slug'=>$similar_item->state->state_slug, 'city_slug'=>$similar_item->city->city_slug]) }}">{{ $similar_item->city->city_name }}</a>,
+                                    <a href="{{ route('page.state', ['state_slug'=>$similar_item->state->state_slug]) }}">{{ $similar_item->state->state_name }}</a>
+                                </address>
+                            @endif --}}
 
                             @if($similar_item->getCountRating() > 0)
                                 <div class="row">
@@ -2701,7 +2703,8 @@
                                     <div class="row align-items-center item-box-user-div">
                                         <div class="col-3 item-box-user-img-div">
                                             @if(empty($similar_item->user->user_image))
-                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                {{-- <img src="{{ asset('frontend/images/placeholder/profile-'. intval($similar_item->user->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle"> --}}
+                                                <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                             @else
                                                 <img src="{{ Storage::disk('public')->url('user/' . $similar_item->user->user_image) }}" alt="{{ $similar_item->user->name }}" class="img-fluid rounded-circle">
                                             @endif

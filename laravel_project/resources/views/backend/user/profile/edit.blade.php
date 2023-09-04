@@ -396,7 +396,8 @@ $chk_post = Auth::user()->phone;
             @endif
             <a href="javascript:void(0)" id="upload_image" class="profile_image_set">
                 @if(empty($login_user->user_image))        
-                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img ">
+                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img "> --}}
+                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" class=" main-profile-img ">
                 @else
                     <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
                 @endif
@@ -1498,7 +1499,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-8 col-lg-4">
+                                        {{-- <div class="col-md-8 col-lg-4">
                                             <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
                                             <div class="input-group">
                                                 <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') }}" aria-describedby="latHelpBlock">
@@ -1507,7 +1508,7 @@ $chk_post = Auth::user()->phone;
                                                     <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="form-row mb-3">
                                         <div class="col-md-12">
@@ -2643,7 +2644,7 @@ $chk_post = Auth::user()->phone;
                             $('.please_wait').text('');
                             $('#submit').attr("disabled", false);
                             $('#error_div').css('display','block');
-                            $('#error_div').text('There are some error in your input. Please check above.');
+                            $('#error_div').text('There are some errors in your input. Please check above.');
                             let resp_data = response.msg;
                             $.each(resp_data, function (key, val) { 
                                 if(resp_data.category){$('.category_id_error').text(resp_data.category) }

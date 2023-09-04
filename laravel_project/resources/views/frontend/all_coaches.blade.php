@@ -166,7 +166,7 @@
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_OLDEST_CREATED }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_OLDEST_CREATED ? 'selected' : '' }}>{{ __('listings_filter.sort-by-oldest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_HIGHEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_HIGHEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-highest') }}</option>
                                     <option value="{{ \App\Item::ITEMS_SORT_BY_LOWEST_RATING }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_LOWEST_RATING ? 'selected' : '' }}>{{ __('listings_filter.sort-by-lowest') }}</option>
-                                    <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEARBY_FIRST ? 'selected' : '' }}>{{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option>
+                                    {{-- <option value="{{ \App\Item::ITEMS_SORT_BY_NEARBY_FIRST }}" {{ $filter_sort_by == \App\Item::ITEMS_SORT_BY_NEARBY_FIRST ? 'selected' : '' }}>{{ __('theme_directory_hub.filter-sort-by-nearby-first') }}</option> --}}
                                 </select>
                                 @error('filter_sort_by')
                                 <span class="invalid-tooltip">
@@ -303,6 +303,9 @@
                                 <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit">
                                     {{ __('theme_directory_hub.filter-button-filter-results') }}
                                 </a>
+                                <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit_all">
+                                    {{ __('View All') }}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -359,7 +362,8 @@
                                         <div class="profile-card__img">
                                         <a href="{{ route('page.profile', encrypt($coach->id)) }}">
                                             @if(empty($coach->user_image))
-                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                {{-- <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle"> --}}
+                                                <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                             @else
                                                 <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
                                             @endif
@@ -661,7 +665,7 @@
             /**
              * Start filter form submit
              */
-            $("#filter_form_submit").on('click', function() {
+            $("#filter_form_submit,#filter_form_submit_all").on('click', function() {
                 $("#filter_form").submit();
             });
             /**

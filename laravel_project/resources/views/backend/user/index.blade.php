@@ -175,7 +175,8 @@
                                 @foreach($notifications as $key_notification=>$notification)
                                 <div class="notification_message_details profile_img_{{$notification->id}}" data-id="{{$notification->id}}">
                                     @if(empty($notification->user_image))
-                                    <img class="profile_img_{{$notification->id}}" data-id="{{$notification->id}}" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:50px; height:50px;">
+                                    {{-- <img class="profile_img_{{$notification->id}}" data-id="{{$notification->id}}" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:50px; height:50px;"> --}}
+                                    <img class="profile_img_{{$notification->id}}" data-id="{{$notification->id}}" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" style="border-radius:50%; width:50px; height:50px;">
                                     @else
                                     <img class="profile_img_{{$notification->id}}"data-id="{{$notification->id}}" src="{{ Storage::disk('public')->url('user/'. $notification->user_image) }}" style="border-radius:50%; width:50px; height:50px;">
                                     @endif
@@ -389,7 +390,8 @@
                         @foreach($recent_threads as $recent_threads_key => $thread)
                         <div class="coach_message_details">
                             @if(empty($thread->creator()->user_image))
-                            <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:100px; height:100px;">
+                            {{-- <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}" style="border-radius:50%; width:100px; height:100px;"> --}}
+                            <img src="{{ asset('backend/images/placeholder/profile_default.webp') }}" style="border-radius:50%; width:100px; height:100px;">
                             @else
                             <img src="{{ Storage::disk('public')->url('user/'. $thread->creator()->user_image) }}" style="border-radius:50%; width:100px; height:100px;">
                             @endif
@@ -883,7 +885,8 @@
                     <div class="sidebar_flex">
                         <div class="sidebar_align">
                             @if(empty($login_user['user_image']))
-                            <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}">
+                            {{-- <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}"> --}}
+                            <img src="{{ asset('backend/images/placeholder/profile_default.webp') }}" style="width: 40%" class="img-fluid rounded-circle">
                             @else
                             <img src="{{ Storage::disk('public')->url('user/'. $login_user['user_image']) }}">
                             @endif
