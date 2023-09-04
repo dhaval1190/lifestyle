@@ -199,7 +199,7 @@ $login_user = Auth::user();
                                         </span>
                                         @enderror
                                     </div> --}}
-                                    <div class="col-md-8 col-lg-4">
+                                    {{-- <div class="col-md-8 col-lg-4">
                                         <label for="article_lat" class="text-black">{{ __('backend.article.lat') }} / {{ __('backend.article.lng') }}</label>
                                         <div class="input-group">
                                             <input id="article_lat" type="text" class="form-control @error('article_lat') is-invalid @enderror" name="article_lat" value="{{ old('article_lat') ? old('article_lat') : $article->item_lat }}" aria-describedby="latHelpBlock">
@@ -208,7 +208,7 @@ $login_user = Auth::user();
                                                 <button class="btn btn-sm btn-primary lat_lng_select_button" type="button">{{ __('backend.article.select-map') }}</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                                 {{-- <div class="form-row mb-3">
@@ -1390,7 +1390,7 @@ $(document).ready(function(){
                             $('.please_wait').text('');
                             $('#submit').attr("disabled", false);
                             $('#error_div').css('display','block');
-                            $('#error_div').text('There are some error in your input. Please check above.');
+                            $('#error_div').text('There are some errors in your input. Please check above.');
                             let resp_data = response.msg;
                             $.each(resp_data, function (key, val) { 
                                 if(resp_data.category){$('.category_id_error').text(resp_data.category) }

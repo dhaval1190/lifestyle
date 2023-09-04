@@ -303,6 +303,9 @@
                                 <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit">
                                     {{ __('theme_directory_hub.filter-button-filter-results') }}
                                 </a>
+                                <a class="btn btn-sm btn-primary text-white rounded" id="filter_form_submit_all">
+                                    {{ __('View All') }}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -662,7 +665,7 @@
             /**
              * Start filter form submit
              */
-            $("#filter_form_submit").on('click', function() {
+            $("#filter_form_submit,#filter_form_submit_all").on('click', function() {
                 $("#filter_form").submit();
             });
             /**
