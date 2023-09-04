@@ -32,7 +32,8 @@
                 @if(Auth::user()->user_image)
                     <img class="img-profile rounded-circle" src="{{ Storage::disk('public')->url('user/'. Auth::user()->user_image) }}">
                 @else
-                    <img class="img-profile rounded-circle" src="{{ asset('backend/images/placeholder/profile-' . intval(Auth::user()->id % 10) . '.webp') }}">
+                    {{-- <img class="img-profile rounded-circle" src="{{ asset('backend/images/placeholder/profile-' . intval(Auth::user()->id % 10) . '.webp') }}"> --}}
+                    <img class="img-profile rounded-circle" src="{{ asset('backend/images/placeholder/profile_default.webp') }}">
                 @endif
             </a>
             <!-- Dropdown - User Information -->

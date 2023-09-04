@@ -92,7 +92,9 @@
                         <div class="col-3 item-box-user-img-div">
                             <a href="{{ route('page.profile', encrypt($item->user->id)) }}">
                                 @if (empty($item->user->user_image))
-                                    <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
+                                    {{-- <img src="{{ asset('frontend/images/placeholder/profile-' . intval($item->user->id % 10) . '.webp') }}"
+                                        alt="Image" class="img-fluid rounded-circle"> --}}
+                                    <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}"
                                         alt="Image" class="img-fluid rounded-circle">
                                 @else
                                     <img src="{{ Storage::disk('public')->url('user/' . $item->user->user_image) }}"

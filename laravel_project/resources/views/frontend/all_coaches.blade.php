@@ -359,7 +359,8 @@
                                         <div class="profile-card__img">
                                         <a href="{{ route('page.profile', encrypt($coach->id)) }}">
                                             @if(empty($coach->user_image))
-                                                <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle">
+                                                {{-- <img src="{{ asset('frontend/images/placeholder/profile-'. intval($coach->id % 10) . '.webp') }}" alt="Image" class="img-fluid rounded-circle"> --}}
+                                                <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}" alt="Image" class="img-fluid rounded-circle">
                                             @else
                                                 <img src="{{ Storage::disk('public')->url('user/' . $coach->user_image) }}" alt="{{ $coach->name }}" class="img-fluid rounded-circle">
                                             @endif

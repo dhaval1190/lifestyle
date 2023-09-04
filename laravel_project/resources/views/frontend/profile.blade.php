@@ -230,7 +230,9 @@
                             <div class="upper_logo">
                                 <div class="logo_star">
                                     @if (empty($user_detail['user_image']))
-                                        <img src="{{ asset('backend/images/placeholder/profile-' . intval($user_detail['id'] % 10) . '.webp') }}"
+                                        {{-- <img src="{{ asset('backend/images/placeholder/profile-' . intval($user_detail['id'] % 10) . '.webp') }}"
+                                            class="logo"> --}}
+                                        <img src="{{ asset('backend/images/placeholder/profile_default.webp') }}"
                                             class="logo">
                                     @else
                                         <img src="{{ Storage::disk('public')->url('user/' . $user_detail['user_image']) }}"
@@ -1651,7 +1653,9 @@
                                             <div class="row align-items-center mb-3">
                                                 <div class="col-4">
                                                     @if (empty(\App\User::find($review->author_id)->user_image))
-                                                        <img src="{{ asset('frontend/images/placeholder/profile-' . intval($review->author_id % 10) . '.webp') }}"
+                                                        {{-- <img src="{{ asset('frontend/images/placeholder/profile-' . intval($review->author_id % 10) . '.webp') }}"
+                                                            alt="Image" class="img-fluid rounded-circle"> --}}
+                                                        <img src="{{ asset('frontend/images/placeholder/profile_default.webp') }}"
                                                             alt="Image" class="img-fluid rounded-circle">
                                                     @else
                                                         <img src="{{ Storage::disk('public')->url('user/' . \App\User::find($review->author_id)->user_image) }}"

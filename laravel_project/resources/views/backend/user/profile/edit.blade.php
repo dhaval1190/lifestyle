@@ -396,7 +396,8 @@ $chk_post = Auth::user()->phone;
             @endif
             <a href="javascript:void(0)" id="upload_image" class="profile_image_set">
                 @if(empty($login_user->user_image))        
-                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img ">
+                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img "> --}}
+                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" class=" main-profile-img ">
                 @else
                     <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
                 @endif
