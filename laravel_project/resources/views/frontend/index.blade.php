@@ -544,7 +544,8 @@
                                                             <div class="col-3 item-box-user-img-div">
                                                                 <a class="decoration-none"
                                                                     href="{{ route('page.profile', encrypt($trainding_item->user->id)) }}">
-                                                                    @if (empty($item->user->user_image))
+                                                                    @if (empty($trainding_item->user->user_image))
+                                                                    
                                                                         {{-- <img src="{{ asset('frontend/images/placeholder/profile-' . intval($trainding_item->user->id % 10) . '.webp') }}"
                                                                             alt="Image"
                                                                             class="img-fluid rounded-circle"> --}}
@@ -687,7 +688,7 @@
                                                     <div class="col-3 item-box-user-img-div">
                                                         <a class="decoration-none"
                                                             href="{{ route('page.profile', encrypt($trainding_item->user->id)) }}">
-                                                            @if (empty($item->user->user_image))
+                                                            @if (empty($trainding_item->user->user_image))
                                                                 <img src="{{ asset('frontend/images/placeholder/profile-' . intval($trainding_item->user->id % 10) . '.webp') }}"
                                                                     alt="Image" class="img-fluid rounded-circle">
                                                             @else
