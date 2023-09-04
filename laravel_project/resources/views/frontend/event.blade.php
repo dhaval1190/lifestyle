@@ -70,23 +70,65 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-xl-7 pl-0">
-                                                            <div class="event_information_set">
-                                                                <span>{{ $event->event_name }}</span>
-                                                            </div>
-
+                                                            @if ($event->event_start_date < date('Y-m-d'))
+                                                                <div class="event_information_set">
+                                                                    <span>{{ $event->event_name }}</span>
+                                                                </div>
+                                                            @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                <a href="{{ $event->event_social_url }}" target="_blank"
+                                                                    id="join_btn">
+                                                                    <div class="event_information_set">
+                                                                        <span>{{ $event->event_name }}</span>
+                                                                    </div>
+                                                                </a>
+                                                            @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                    <div class="event_information_set">
+                                                                        <span>{{ $event->event_name }}</span>
+                                                                    </div>
+                                                            @else
+                                                                <a href="{{ $event->event_social_url }}" target="_blank"
+                                                                    id="join_btn">
+                                                                    <div class="event_information_set">
+                                                                        <span>{{ $event->event_name }}</span>
+                                                                    </div>
+                                                                </a>
+                                                            @endif
+                                                            
                                                             <div class="event_schedule_date">
                                                                 <img src="{{ asset('frontend/images/time.png') }}"
                                                                     alt="" />
-                                                                {{-- <p>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }} To {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_end_date.' '.$event->event_end_hour.':'.$event->event_end_min)->format('h:i A') }}</p> --}}
-                                                                {{-- <p>{{ $event->event_start_hour }}
-                                                                    To
-                                                                    {{ $event->event_end_hour }}
-                                                                    (UTC)
-                                                                </p> --}}
-                                                                <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
-                                                                    To
-                                                                    {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
-                                                                </p>
+                                                                @if ($event->event_start_date < date('Y-m-d'))
+                                                                    <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                        To
+                                                                        {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                    </p>
+                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                    date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                    <a href="{{ $event->event_social_url }}" target="_blank"
+                                                                        id="join_btn">
+                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                            To
+                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                        </p>
+                                                                    </a>
+                                                                @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                        date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                            To
+                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                        </p>
+                                                                @else
+                                                                    <a href="{{ $event->event_social_url }}" target="_blank"
+                                                                        id="join_btn">
+                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                            To
+                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                        </p>
+                                                                    </a>
+                                                                @endif
+
                                                             </div>
                                                             <div class="event_schedule_date" id="join_event">
                                                                 <img src="{{ asset('frontend/images/video.png') }}"
@@ -103,13 +145,15 @@
                                                                         date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
                                                                     <p class="info">Event Ended</p>
                                                                 @else
-                                                                    <p class="info">Not Started</p>
+                                                                    <a href="{{ $event->event_social_url }}" target="_blank"
+                                                                        id="join_btn">
+                                                                        <p class="info">Not Started</p>
+                                                                    </a>
                                                                 @endif
                                                             </div>
                                                             <div class="event_schedule_date_set">
                                                                 <img src="{{ asset('frontend/images/event_description.png') }}"
                                                                     alt="" />
-                                                                {{-- <p class="info">{{ $event->event_description }}</p> --}}
                                                                 <div class="read_more">
                                                                     @if (strlen($event->event_description) > 140)
                                                                         <input type="checkbox" class="read-more-state"
@@ -128,41 +172,65 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-xl-2">
-                                                            <div class="event_date_set">
-                                                                <div class="grid_set_event">
-                                                                    <div class="event_schedule_time">
-                                                                        <img src="{{ asset('frontend/images/time.png') }}"
-                                                                            alt="" />
+                                                            @php
+                                                                $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
+                                                                $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('m/d/Y'));
+                                                            @endphp
+                                                            @if ($event->event_start_date < date('Y-m-d'))
+                                                                <div class="event_date_set">
+                                                                    <div class="grid_set_event">
+                                                                        <div class="event_schedule_time">
+                                                                            <img src="{{ asset('frontend/images/time.png') }}"
+                                                                                alt="" />
+                                                                        </div>
+                                                                        <p class="date" style="font-size:22px !important;">                                                                            
+                                                                            {{ $event_date_format }}
+                                                                        </p>
                                                                     </div>
-                                                                    <p class="date" style="font-size:22px !important;">
-                                                                        @php
-                                                                            $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
-                                                                            $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('m/d/Y'));
-                                                                        @endphp
-                                                                        {{ $event_date_format }}
-                                                                    </p>
-                                                                    <!-- <p class="date">
-                                                                        {{-- {{ Str::limit(\Carbon\Carbon::parse($event->event_start_date)->format('d F'), 6, ',') }} --}}
-                                                                        @php
-                                                                            $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
-                                                                            $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('d F'), 6, ',');
-                                                                        @endphp
-                                                                        {{ $event_date_format }}
-                                                                    </p>
-
-                                                                    {{-- <p class="time">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i', $event->event_start_date.' '.$event->event_start_hour.':'.$event->event_start_min)->format('h:i A') }}</p> --}}
-                                                                    <p class="date">
-                                                                        {{-- {{ \Carbon\Carbon::createFromFormat('Y-m-d', $event->event_start_date)->format('Y') }} --}}
-                                                                        @php
-                                                                            $event_start_year = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-8);
-                                                                            $event_year = \Carbon\Carbon::createFromFormat('Y-m-d', $event_start_date)->format('Y');
-                                                                        @endphp
-                                                                        
-                                                                        {{ $event_year }}
-                                                                    </p>-->
-
                                                                 </div>
-                                                            </div>
+                                                            @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                    date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
+                                                                    <div class="event_date_set">
+                                                                        <div class="grid_set_event">
+                                                                            <div class="event_schedule_time">
+                                                                                <img src="{{ asset('frontend/images/time.png') }}"
+                                                                                    alt="" />
+                                                                            </div>
+                                                                            <p class="date" style="font-size:22px !important;">                                                                            
+                                                                                {{ $event_date_format }}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
+                                                                    date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
+                                                                <div class="event_date_set">
+                                                                    <div class="grid_set_event">
+                                                                        <div class="event_schedule_time">
+                                                                            <img src="{{ asset('frontend/images/time.png') }}"
+                                                                                alt="" />
+                                                                        </div>
+                                                                        <p class="date" style="font-size:22px !important;">                                                                            
+                                                                            {{ $event_date_format }}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            @else
+                                                                <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
+                                                                    <div class="event_date_set">
+                                                                        <div class="grid_set_event">
+                                                                            <div class="event_schedule_time">
+                                                                                <img src="{{ asset('frontend/images/time.png') }}"
+                                                                                    alt="" />
+                                                                            </div>
+                                                                            <p class="date" style="font-size:22px !important;">                                                                            
+                                                                                {{ $event_date_format }}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
