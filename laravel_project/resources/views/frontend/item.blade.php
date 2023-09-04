@@ -2673,12 +2673,12 @@
 
                             <h3 class="pt-2"><a href="{{ route('page.item', $similar_item->item_slug) }}">{{ $similar_item->item_title }}</a></h3>
 
-                            @if($similar_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
-                            <address>
-                                <a href="{{ route('page.city', ['state_slug'=>$similar_item->state->state_slug, 'city_slug'=>$similar_item->city->city_slug]) }}">{{ $similar_item->city->city_name }}</a>,
-                                <a href="{{ route('page.state', ['state_slug'=>$similar_item->state->state_slug]) }}">{{ $similar_item->state->state_name }}</a>
-                            </address>
-                            @endif
+                            {{-- @if($similar_item->item_type == \App\Item::ITEM_TYPE_REGULAR)
+                                <address>
+                                    <a href="{{ route('page.city', ['state_slug'=>$similar_item->state->state_slug, 'city_slug'=>$similar_item->city->city_slug]) }}">{{ $similar_item->city->city_name }}</a>,
+                                    <a href="{{ route('page.state', ['state_slug'=>$similar_item->state->state_slug]) }}">{{ $similar_item->state->state_name }}</a>
+                                </address>
+                            @endif --}}
 
                             @if($similar_item->getCountRating() > 0)
                                 <div class="row">
