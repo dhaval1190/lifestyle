@@ -100,31 +100,31 @@
                                                                 <img src="{{ asset('frontend/images/time.png') }}"
                                                                     alt="" />
                                                                 @if ($event->event_start_date < date('Y-m-d'))
-                                                                    <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                    <p>{{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10))) }}
                                                                         To
-                                                                        {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                        {{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10))) }}
                                                                     </p>
                                                                 @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
                                                                     date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
                                                                     <a href="{{ $event->event_social_url }}" target="_blank"
                                                                         id="join_btn">
-                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                        <p>{{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10))) }}
                                                                             To
-                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                            {{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10))) }}
                                                                         </p>
                                                                     </a>
                                                                 @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
                                                                         date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
-                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                        <p>{{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10))) }}
                                                                             To
-                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                            {{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10))) }}
                                                                         </p>
                                                                 @else
                                                                     <a href="{{ $event->event_social_url }}" target="_blank"
                                                                         id="join_btn">
-                                                                        <p>{{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10) }}
+                                                                        <p>{{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),10))) }}
                                                                             To
-                                                                            {{ Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10) }}
+                                                                            {{ date("h:i:s a",strtotime(Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_end_hour),10))) }}
                                                                         </p>
                                                                     </a>
                                                                 @endif
