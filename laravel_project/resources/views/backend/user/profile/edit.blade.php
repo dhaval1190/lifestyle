@@ -352,6 +352,15 @@ left: 10px;
     width: 100% !important;
 }
 
+.modal-height-set{
+    overflow: scroll;
+    height:500px;
+}
+
+
+@media
+
+
 @media (max-width:576px)
 {
     .profile_image_set {
@@ -363,6 +372,66 @@ left: 10px;
     display: -webkit-box;
 }
 }
+
+
+.bfd-dropfield-inner{
+    height: 250px !important;
+    display: grid;
+    min-height: 100%;
+    align-content: center;
+    padding-top: 0px !important;
+    margin-top: 10px;
+}
+
+/* .croppie-container .cr-boundary {    
+    width: 100% !important;    
+}
+
+.croppie-container .cr-overlay {
+    overflow: scroll;
+    width: 100% !important;
+}
+
+@media(min-width:1920px){
+    .croppie-container .cr-viewport, .croppie-container .cr-resizer {
+    width: 100% !important;
+    }
+} */
+
+
+/* @media (max-width:576px){
+    .croppie-container .cr-boundary {
+    width: 100% !important;
+    height: 100%;
+}
+} */
+
+/* @media (max-width:1800px)
+{
+    .croppie-container .cr-boundary {
+    width: 200% !important;
+    height: 100%;
+    overflow-x: scroll !important;
+}
+} */
+
+
+.cr-slider-wrap:active .modal-height-set{
+    overflow: hidden !important;
+}
+.cr-slider-wrap:focus .modal-height-set{
+    overflow: hidden !important;
+}
+.cr-slider-wrap:target .modal-height-set{
+    overflow: hidden !important;
+}
+.cr-slider-wrap:visited .modal-height-set{
+    overflow: hidden !important;
+}
+.cr-slider-wrap:checked .modal-height-set{
+    overflow: hidden !important;
+}
+
 </style>
 
 @endsection
@@ -702,7 +771,7 @@ $chk_post = Auth::user()->phone;
             <div class="row mt-3">
                 <div class="col-lg-10 col-md-8">
                     <div class="row">
-                        <div class="col-sm-6 col-12 col-lg-3">
+                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
                             <label for="website" class="text-black">Website</label>
                             <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
                             <small id="linkHelpBlock" class="form-text text-muted">
@@ -714,7 +783,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-3">
+                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
                             <label for="instagram" class="text-black">IG Handle</label>
                             <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                             <span class="err_instagram_url" style="color:red"></span>
@@ -732,7 +801,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-3">
+                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
                             <label for="linkedin" class="text-black">LinkedIn</label>
                             <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
                             <span class="err_linkedin_url" style="color:red"></span>
@@ -750,7 +819,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-3">
+                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
                             <label for="facebook" class="text-black">Facebook</label>
                             <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
                             <span class="err_facebook_url" style="color:red"></span>
@@ -768,33 +837,34 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                    </div>
-
-
-                </div>
-                <div class="col-lg-2 col-md-4">
-                    <div class="row">
-                        <div class="col-sm-12 col-12 col-lg-12">
-                            <label for="youtube" class="text-black">Youtube</label>
-                            <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
-                            <span class="err_youtube_url" style="color:red"></span>
-                            <span class="youtube_error" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
-                            </small>
-                            @error('youtube')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('youtube_error'))
-                            <span class="invalid-tooltip">
-                                <strong>{{ Session::get('youtube_error') }}</strong>
-                            </span>
-                            @endif
+                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                            <div class="row">
+                                <div class="col-sm-12 col-12 col-lg-12">
+                                    <label for="youtube" class="text-black">Youtube</label>
+                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
+                                    <span class="err_youtube_url" style="color:red"></span>
+                                    <span class="youtube_error" style="color:red"></span>
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                    </small>
+                                    @error('youtube')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                    @if(Session::has('youtube_error'))
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ Session::get('youtube_error') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
+               
             </div>
             <div class="row mt-3">
                 <div class="col-lg-6 col-xl-12 col-md-6">
@@ -2098,7 +2168,7 @@ $chk_post = Auth::user()->phone;
 <!-- Croppie Modal -->
 <div class="modal fade" id="profile-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content modal-height-set">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -2132,7 +2202,7 @@ $chk_post = Auth::user()->phone;
 
 <!-- Article Modal - feature image -->
 <div class="modal fade" id="image-crop-modal-article" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.article.crop-feature-image') }}</h5>
@@ -2165,7 +2235,7 @@ $chk_post = Auth::user()->phone;
 
 <div class="modal fade" id="profile-cover-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="cover-image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="width: 1000px !important;">
+        <div class="modal-content modal-height-set">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Crop cover image') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -3063,6 +3133,7 @@ $chk_post = Auth::user()->phone;
                 if (!image_crop_profile) {
                     image_crop_profile = $('#cover_image_demo').croppie({
                         enableExif: true,
+                        mouseWheelZoom: false,
                         viewport: {
                             width: 999,
                             height: 312,
@@ -3071,7 +3142,7 @@ $chk_post = Auth::user()->phone;
                             width: 950,
                             height: 650
                         },
-                        showZoomer: false,
+                        showZoomer: true,
                         enableOrientation: true
                     });
                 }
