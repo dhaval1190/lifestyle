@@ -886,9 +886,9 @@
                         <div class="sidebar_align">
                             @if(empty($login_user['user_image']))
                             {{-- <img src="{{ asset('backend/images/placeholder/profile-' . intval($login_user['id'] % 10) . '.webp') }}"> --}}
-                            <img src="{{ asset('backend/images/placeholder/profile_default.webp') }}" style="width: 40%" class="img-fluid rounded-circle">
+                            <img src="{{ asset('backend/images/placeholder/profile_default.webp') }}" style="width: 50%" class="img-fluid rounded-circle">
                             @else
-                            <img src="{{ Storage::disk('public')->url('user/'. $login_user['user_image']) }}">
+                            <img src="{{ Storage::disk('public')->url('user/'. $login_user['user_image']) }}" style="width: 50%" class="img-fluid rounded-circle">
                             @endif
                             <div>
                                 <h5>{{ $login_user['name'] }}</h5>

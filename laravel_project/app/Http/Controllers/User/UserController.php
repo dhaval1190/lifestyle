@@ -226,7 +226,9 @@ class UserController extends Controller
       
         
         $all_printable_categories = $category_obj->getPrintableCategoriesNoDash();
-        $time_zone_identifiers = DateTimeZone::listIdentifiers();
+        // $time_zone_identifiers = DateTimeZone::listIdentifiers();
+        $time_zone_identifiers = getAllTimezonesList();
+
 
         // $all_states = Country::find($site_prefer_country_id)
         //     ->states()
