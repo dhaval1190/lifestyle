@@ -47,6 +47,19 @@
      <div class="site-section">
         <div class="container">
                 @if ($all_events->count() > 0)
+                    @if(Auth::check())
+                        <div class="row">
+                            @if($g_auth)
+                                <a href="javascript:void(0)">
+                                    <button type="button" class="btn btn-danger disconnect">Disconnect From Google</button>
+                                </a>
+                            @else
+                                <a href="{{ $redirect_url }}">
+                                    <button type="button" class="btn btn-success">Google Authorize</button>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 <div class="row">
                     <div class="col-lg-12">
                         <span id="span"></span>                                              
@@ -217,8 +230,16 @@
                                                                     </div>
                                                                 </div>
                                                             @else
-                                                                <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
-                                                                    <div class="event_date_set">
+                                                                <div class="event_date_set">
+                                                                    @php
+                                                                        $remainder = DB::table('reminders')->where('user_id',auth()->user()->id)->where('event_id',$event->id)->first();
+                                                                    @endphp
+                                                                    @if($remainder)
+                                                                        <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" data-id={{ $event->id }}>Remove from g-calendar</button>
+                                                                    @else
+                                                                        <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" data-id={{ $event->id }}>Add to g-calendar</button>
+                                                                    @endif
+                                                                        <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
                                                                         <div class="grid_set_event">
                                                                             <div class="event_schedule_time">
                                                                                 <img src="{{ asset('frontend/images/time.png') }}"
@@ -228,8 +249,8 @@
                                                                                 {{ $event_date_format }}
                                                                             </p>
                                                                         </div>
-                                                                    </div>
-                                                                </a>
+                                                                    </a>
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -265,6 +286,11 @@
     @endif
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
             "use strict";
 
@@ -276,6 +302,58 @@
                 /**
                  * End Initial Youtube Background
                  */
+            @endif
+
+            @if(auth()->user())
+                $('.disconnect').on('click', function() {                   
+
+                    $.ajax({
+                        url: "{{ route('gmail.delete') }}",
+                        type: 'POST',
+                        data: {
+                            "id": {{ auth()->user()->id }},
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            alert("Gmail disconnected successfully")
+                            location.reload();
+                        }
+                    });
+                });
+
+                $('.add-to-calendar').on('click',function(){
+                    let event_id = $(this).data('id');
+
+                    $.ajax({
+                        url: "{{ route('event.store') }}",
+                        type: 'POST',
+                        data: {
+                            "event_id": event_id,
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // alert("Gmail disconnected successfully")
+                            location.reload();
+                        }
+                    });
+                });
+
+                $('.remove-from-calendar').on('click',function(){
+                    let event_id = $(this).data('id');
+
+                    $.ajax({
+                        url: "{{ route('event.remove') }}",
+                        type: 'POST',
+                        data: {
+                            "event_id": event_id,
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            // alert("Gmail disconnected successfully")
+                            location.reload();
+                        }
+                    });
+                });
             @endif
 
         });

@@ -64,6 +64,12 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
      */
     Route::get('/', 'PagesController@index')->name('page.home');
 
+    //for google calendar inregration with event
+    Route::get('/oauth2/google/callback','PagesController@googleCallbackAuthCode')->name('google.callback');
+    Route::post('/gmail-delete','PagesController@disconnectGmail')->name('gmail.delete');
+    Route::post('/store-event','PagesController@storeEvent')->name('event.store');
+    Route::post('/remove-event','PagesController@removeEvent')->name('event.remove');
+
     Route::get('/search', 'PagesController@search')->name('page.search');
 
     Route::get('/about', 'PagesController@about')->name('page.about');

@@ -64,9 +64,14 @@ use Illuminate\Support\Facades\Validator;
 use App\ProfileReviews;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Event;
+use App\Reminder;
 use App\UserCategory;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Google\Client;
+use Google\Service\Calendar;
+use Config;
+use Spatie\GoogleCalendar\Event as GoogleEvent;
 
 
 class PagesController extends Controller
@@ -930,7 +935,7 @@ class PagesController extends Controller
                     'site_innerpage_header_paragraph_font_color'));
     }
 
-    public function event()	
+    public function event(Request $request)	
     {	
         	
         $settings = app('site_global_settings');	
@@ -1001,12 +1006,201 @@ class PagesController extends Controller
         /**	
          * End initial Google reCAPTCHA version 2	
          */	
+
+        /* For authorize to google functionality */
+
+        $client = $client = $this->getClient($request);
+
+        $g_auth = false;
+        $redirect_url = '';
+        if($client['status'] == true) {
+            $g_auth = true;
+        } else {
+            $redirect_url = $client['redirect_link'];
+        }
+
         return response()->view($theme_view_path . 'event',	
             compact('all_events', 'site_innerpage_header_background_type',	
                     'site_innerpage_header_background_color', 'site_innerpage_header_background_image',	
                     'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',	
-                    'site_innerpage_header_paragraph_font_color'));	
-    }	
+                    'site_innerpage_header_paragraph_font_color','g_auth','redirect_url'));	
+    }
+
+    public function googleCallbackAuthCode(Request $request)
+    {
+        $this->getClient($request);
+        return redirect()->route('page.event');
+    }
+
+    function getClient(Request $request)
+    {
+        $auth_userId = Auth::user() ? Auth::user()->id : null;
+
+        $client = new Client();
+        $client->setApplicationName('Gmail API PHP Quickstart');
+        // $client->setScopes(['https://www.googleapis.com/auth/calendar.events']);
+        $client->setScopes(['https://www.googleapis.com/auth/calendar', Calendar::CALENDAR_EVENTS]);
+        $client->setAuthConfig(storage_path('app/public/google-calendar/service-account-credentials.json'));
+        $client->setAccessType('offline');
+        $client->setPrompt('select_account consent');
+
+        $user = User::select('token_json_file')->where('id',$auth_userId)->first();
+        if ($user) {
+            if (Storage::disk('public')->has($user->token_json_file)) {
+                $token_file = Storage::disk('public')->get($user->token_json_file);
+                $token_data = base64_decode($token_file);
+                $tokenPath = storage_path('app/public/google-calendar/'.str_replace('google/', '', $user->token_json_file));
+                File::put($tokenPath, $token_data);
+                Config::set('google-calendar.auth_profiles.oauth.token_json',$tokenPath);
+                $accessToken = json_decode($token_data, true);
+                if ($accessToken) {
+                    if (array_key_exists('refresh_token', $accessToken)) {
+                        $refresh_token = $accessToken['refresh_token'];
+                        $refresh = $client->fetchAccessTokenWithRefreshToken($refresh_token);
+                        Storage::disk('public')->put($user->token_json_file, base64_encode(json_encode($refresh)));
+                    }
+                    // if (!empty($accessToken['accessToken'])) {
+                    if (!empty($accessToken['access_token'])) {
+                        $client->setAccessToken($accessToken);
+                    }
+                    if (!empty($accessToken['error'])) {
+                        Storage::disk('public')->put($user->token_json_file, "");
+                        $authUrl = $client->createAuthUrl();
+                        return ['status'=>false, 'redirect_link'=>$authUrl];
+                        exit;
+                    }
+                }
+            }
+        }
+
+
+        //If there is no previous token or it's expired.
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            }else {
+                if($request->code) {
+                    $authCode = $request->code;
+                }
+                else {
+                    $authUrl = $client->createAuthUrl();
+                    // dd($authUrl);
+                    return ['status'=>false, 'redirect_link'=>$authUrl];
+                    exit;
+                }
+
+                $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+                // dd($accessToken);
+                $token_file_name = 'google/'.$auth_userId.'.json';
+                Storage::disk('public')->put($token_file_name, base64_encode(json_encode($accessToken)));
+                User::where('id',$auth_userId)->update(['token_json_file' => $token_file_name]);
+                $client->setAccessToken($accessToken);
+                if (array_key_exists('error', $accessToken)) {
+                    throw new Exception(join(', ', $accessToken));
+                }
+            }
+        }
+
+        return ['status'=>true, 'google_client'=>$client];
+    }
+
+    public function storeEvent(Request $request)
+    {
+
+        $google_client = $this->getClient($request);
+        $auth_user = Auth::user();
+        
+        $event_id = $request->event_id;
+        // return response()->json(['status'=>'success','data'=>$event_id]);
+
+        if($event_id !== null)
+        {
+            $event_details = Event::find($event_id);
+            $start_datetime = $event_details->event_start_date." ".$event_details->event_start_hour;    
+            $end_datetime = $event_details->event_end_date." ".$event_details->event_end_hour;
+            $auth_user_timezone = $auth_user->time_zone;
+
+            // return response()->json(['status'=>'success','start_datetime'=>$auth_user_timezone,'end_datetime'=>$end_datetime]);
+    
+            if($google_client['status']) {
+                try {
+                    $event = new GoogleEvent;
+                    $event->name = $event_details->event_name;
+                    $event->description = $event_details->body;
+                    $event->startDateTime = \Carbon\Carbon::parse($start_datetime.' '.$auth_user_timezone)->timezone('UTC');
+                    $event->endDateTime = \Carbon\Carbon::parse($end_datetime.' '.$auth_user_timezone)->timezone('UTC');
+                    $newEvent = $event->save();
+
+                    $add_event = Reminder::insert([
+                        'user_id' => $auth_user->id,
+                        'event_id' => $event_id,
+                        'g_event_id' => $newEvent->id,
+                    ]);
+
+                    // return response()->json(['status'=>'success','newEvent'=>$newEvent]);
+                    
+                } catch (\Throwable $th) {
+                    echo $th->getMessage();
+                    dd($google_client['google_client']);
+                    exit;
+                }    
+                
+                return response()->json(['status'=>'success','msg'=>'Event added to calendar successfully','data'=>$add_event]);
+
+            }
+        }
+    }
+
+    public function removeEvent(Request $request)
+    {
+
+        $google_client = $this->getClient($request);
+        $auth_user = Auth::user();
+        
+        $event_id = $request->event_id;
+        // return response()->json(['status'=>'success','data'=>$event_id]);
+
+        if($event_id !== null)
+        {
+            $reminder_details = Reminder::where('event_id',$event_id)->first();
+
+            // return response()->json(['status'=>'success','start_datetime'=>$reminder_details]);
+    
+            if($google_client['status']) {
+                if($reminder_details && !empty($reminder_details->event_id))
+                {
+                    try {
+                        $event = GoogleEvent::find($reminder_details->g_event_id);
+						$event->delete(); 
+
+                        Reminder::where('user_id',$auth_user->id)->where('g_event_id',$reminder_details->g_event_id)->where('event_id',$event_id)->delete();
+
+                        // return response()->json(['status'=>'success','event'=>$event]);
+                        
+                    } catch (\Throwable $th) {
+                        echo $th->getMessage();
+                        // dd($google_client['google_client']);
+                        exit;
+                    }
+                }
+                
+                return response()->json(['status'=>'success','msg'=>'Event removed successfully']);
+
+            }
+        }
+    }
+
+    public function disconnectGmail(Request $request) {
+        $id = $request->id;
+        // return response()->json(array('status'=>true,'data'=>$id), 200);
+
+        $user = User::select('token_json_file')->where('id', $id)->first();
+        $filename = $user->token_json_file;
+        User::where('id', $id)->update(['token_json_file'=>null]);
+        Storage::disk('public')->delete($filename);
+        unlink(storage_path('app/public/google-calendar/'.str_replace('google/', '', $filename)));
+        return response()->json(array('status'=>true), 200);
+    }
 
 
     public function doContact(Request $request)
