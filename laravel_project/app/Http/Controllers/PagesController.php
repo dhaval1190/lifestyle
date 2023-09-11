@@ -1120,15 +1120,19 @@ class PagesController extends Controller
             $end_datetime = $event_details->event_end_date." ".$event_details->event_end_hour;
             $auth_user_timezone = $auth_user->time_zone;
 
-            // return response()->json(['status'=>'success','start_datetime'=>$auth_user_timezone,'end_datetime'=>$end_datetime]);
+            // dd(\Carbon\Carbon::parse($start_datetime)->timezone($auth_user_timezone));
+            // return response()->json(['status'=>'successsss','start_datetime'=>$auth_user_timezone,'end_datetime'=>$start_datetime]);
     
             if($google_client['status']) {
                 try {
                     $event = new GoogleEvent;
                     $event->name = $event_details->event_name;
                     $event->description = $event_details->body;
-                    $event->startDateTime = \Carbon\Carbon::parse($start_datetime.' '.$auth_user_timezone)->timezone('UTC');
-                    $event->endDateTime = \Carbon\Carbon::parse($end_datetime.' '.$auth_user_timezone)->timezone('UTC');
+                    // $event->startDateTime = \Carbon\Carbon::parse($start_datetime)->timezone($auth_user_timezone);
+                    // $event->endDateTime = \Carbon\Carbon::parse($end_datetime)->timezone($auth_user_timezone);
+
+                    $event->startDateTime = \Carbon\Carbon::parse($start_datetime);
+                    $event->endDateTime = \Carbon\Carbon::parse($end_datetime);
                     $newEvent = $event->save();
 
                     $add_event = Reminder::insert([
@@ -1140,10 +1144,11 @@ class PagesController extends Controller
                     // return response()->json(['status'=>'success','newEvent'=>$newEvent]);
                     
                 } catch (\Throwable $th) {
-                    echo $th->getMessage();
-                    dd($google_client['google_client']);
-                    exit;
-                }    
+                    // echo $th->getMessage();
+                    // dd($google_client['google_client']);
+                    // exit;
+                }  
+                $request->session()->flash('success','Event added to calendar successfully');
                 
                 return response()->json(['status'=>'success','msg'=>'Event added to calendar successfully','data'=>$add_event]);
 
@@ -1178,13 +1183,14 @@ class PagesController extends Controller
                         // return response()->json(['status'=>'success','event'=>$event]);
                         
                     } catch (\Throwable $th) {
-                        echo $th->getMessage();
+                        // echo $th->getMessage();
                         // dd($google_client['google_client']);
-                        exit;
+                        // exit;
                     }
                 }
+                $request->session()->flash('success','Event removed from calendar successfully');
                 
-                return response()->json(['status'=>'success','msg'=>'Event removed successfully']);
+                return response()->json(['status'=>'success','msg'=>'Event removed from calendar successfully']);
 
             }
         }

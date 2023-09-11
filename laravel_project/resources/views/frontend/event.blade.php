@@ -46,18 +46,30 @@
     </div>
      <div class="site-section">
         <div class="container">
+            @if(Session::has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
                 @if ($all_events->count() > 0)
                     @if(Auth::check())
                         <div class="row">
-                            @if($g_auth)
-                                <a href="javascript:void(0)">
-                                    <button type="button" class="btn btn-danger disconnect">Disconnect From Google</button>
-                                </a>
-                            @else
-                                <a href="{{ $redirect_url }}">
-                                    <button type="button" class="btn btn-success">Google Authorize</button>
-                                </a>
-                            @endif
+                            <div class="col-lg-12 ml-3">
+                                @if($g_auth)
+                                    <a href="javascript:void(0)">
+                                        <button type="button" class="btn btn-danger disconnect">Disconnect From Google</button>
+                                    </a>
+                                    {{-- <span><i class="fa fa-question-circle" aria-hidden="true" title="You must have authorize to google to add events in calendar"></i></span> --}}
+                                @else
+                                    <a href="{{ $redirect_url }}">
+                                        <button type="button" class="btn btn-success">Google Authorize</button>
+                                    </a>
+                                    <i class="fa fa-question-circle" aria-hidden="true" title="You must have authorize to google to add events in calendar"></i>
+                                @endif
+                            </div>
                         </div>
                     @endif
                 <div class="row">
@@ -188,9 +200,16 @@
                                                             @php
                                                                 $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
                                                                 $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('m/d/Y'));
+
+                                                                $remainder = DB::table('reminders')->where('user_id',auth()->user()->id)->where('event_id',$event->id)->first();
                                                             @endphp
                                                             @if ($event->event_start_date < date('Y-m-d'))
                                                                 <div class="event_date_set">
+                                                                    @if($remainder)
+                                                                        <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" id="remove-from-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Remove from calendar</button>
+                                                                    @elseif($g_auth)
+                                                                        <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" id="add-to-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Add to calendar</button>
+                                                                    @endif
                                                                     <div class="grid_set_event">
                                                                         <div class="event_schedule_time">
                                                                             <img src="{{ asset('frontend/images/time.png') }}"
@@ -205,6 +224,11 @@
                                                                     date('Y-m-d H:i:s') < $event->event_start_date . ' ' . $event->event_end_hour)
                                                                 <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
                                                                     <div class="event_date_set">
+                                                                        @if($remainder)
+                                                                            <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" id="remove-from-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Remove from calendar</button>
+                                                                        @elseif($g_auth)
+                                                                            <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" id="add-to-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Add to calendar</button>
+                                                                        @endif
                                                                         <div class="grid_set_event">
                                                                             <div class="event_schedule_time">
                                                                                 <img src="{{ asset('frontend/images/time.png') }}"
@@ -219,6 +243,11 @@
                                                             @elseif(date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_start_hour &&
                                                                     date('Y-m-d H:i:s') > $event->event_start_date . ' ' . $event->event_end_hour)
                                                                 <div class="event_date_set">
+                                                                    @if($remainder)
+                                                                        <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" id="remove-from-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Remove from calendar</button>
+                                                                    @elseif($g_auth)
+                                                                        <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" id="add-to-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Add to calendar</button>
+                                                                    @endif
                                                                     <div class="grid_set_event">
                                                                         <div class="event_schedule_time">
                                                                             <img src="{{ asset('frontend/images/time.png') }}"
@@ -231,13 +260,10 @@
                                                                 </div>
                                                             @else
                                                                 <div class="event_date_set">
-                                                                    @php
-                                                                        $remainder = DB::table('reminders')->where('user_id',auth()->user()->id)->where('event_id',$event->id)->first();
-                                                                    @endphp
                                                                     @if($remainder)
-                                                                        <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" data-id={{ $event->id }}>Remove from g-calendar</button>
-                                                                    @else
-                                                                        <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" data-id={{ $event->id }}>Add to g-calendar</button>
+                                                                        <button type="button" class="btn btn-danger btn-sm mb-2 remove-from-calendar" id="remove-from-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Remove from calendar</button>
+                                                                    @elseif($g_auth)
+                                                                        <button type="button" class="btn btn-success btn-sm mb-2 add-to-calendar" id="add-to-calendar-{{ $event->id }}" data-cid={{ $event->id }}>Add to calendar</button>
                                                                     @endif
                                                                         <a href="{{ $event->event_social_url }}" target="_blank" id="join_btn">
                                                                         <div class="grid_set_event">
@@ -315,14 +341,15 @@
                         },
                         success: function(response) {
                             console.log(response);
-                            alert("Gmail disconnected successfully")
+                            // alert("Gmail disconnected successfully")
                             location.reload();
                         }
                     });
                 });
 
                 $('.add-to-calendar').on('click',function(){
-                    let event_id = $(this).data('id');
+                    let event_id = $(this).data('cid');
+                    $('#add-to-calendar-'+event_id).attr('disabled',true)
 
                     $.ajax({
                         url: "{{ route('event.store') }}",
@@ -332,14 +359,20 @@
                         },
                         success: function(response) {
                             console.log(response);
-                            // alert("Gmail disconnected successfully")
-                            location.reload();
+                            $('#add-to-calendar-'+event_id).attr('disabled',false);
+                            if(response.status == 'success'){
+                                // location.reload();
+                                window.location.href = "{{ route('page.event') }}";
+                            }else{
+                                console.log("Something went wrong");
+                            }
                         }
                     });
                 });
 
                 $('.remove-from-calendar').on('click',function(){
-                    let event_id = $(this).data('id');
+                    let event_id = $(this).data('cid');
+                    $('#remove-from-calendar-'+event_id).attr('disabled',true);
 
                     $.ajax({
                         url: "{{ route('event.remove') }}",
@@ -348,9 +381,14 @@
                             "event_id": event_id,
                         },
                         success: function(response) {
+                            $('#remove-from-calendar-'+event_id).attr('disabled',false)
                             console.log(response);
-                            // alert("Gmail disconnected successfully")
-                            location.reload();
+                            if(response.status == 'success'){
+                                // location.reload();
+                                window.location.href = "{{ route('page.event') }}";
+                            }else{
+                                console.log("Something went wrong");
+                            }
                         }
                     });
                 });
