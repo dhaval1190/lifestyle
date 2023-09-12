@@ -60,13 +60,13 @@ return array (
         'admin-create-desc' => "This page allows you manually create a listing lead and save it to the website.",
 
         'admin-edit' => "Edit a listing lead",
-        'admin-contact-lead' => "Showing contact lead",
+        'admin-contact-lead' => "Showing Prospective Client",
         'admin-edit-desc' => "This page allows you manually edit a listing lead and update it to the website.",
 
         'email' => [
             'subject' => "Business Listing Lead Received",
             'description-user' => "You received a new contact lead on your business listing page.",
-            'description-admin' => "You received a new contact lead on one of your business listing pages. Log in to your dashboard to view all business listing contact leads.",
+            'description-admin' => "You received a new contact lead on one of your business listing pages. Log in to your dashboard to view all business listing prospective clients.",
             'action-text' => "View All Leads",
         ],
     ],

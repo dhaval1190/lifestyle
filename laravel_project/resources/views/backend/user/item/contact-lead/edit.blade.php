@@ -8,7 +8,7 @@
     <div class="row justify-content-between">
         <div class="col-8 col-md-8 col-lg-9">
             <h1 class="h3 mb-2 text-gray-800 font-14">{{ __('role_permission.item-leads.admin-contact-lead') }}</h1>
-            <p class="mb-4">{{ __('This page shows you the listing of contact lead sent to you') }}</p>
+            <p class="mb-4">{{ __('This page shows you the listing of prospective clientsd sent to you') }}</p>
         </div>
         <div class="col-4 col-md-4 col-lg-3 back01 text-right">
             <a href="{{ route('user.contact-leads.index') }}" class="btn btn-info btn-icon-split">

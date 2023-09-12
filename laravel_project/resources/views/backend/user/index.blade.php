@@ -302,7 +302,7 @@
                                 <div class="coaches">
                                     <img src="{{ asset('frontend/images/Svg/group.svg') }}" alt="" />
                                     <div class="coaches_detail">
-                                        <h3>{{ __('Contact Leads') }}</h3>
+                                        <h3>{{ __('Prospective Clients') }}</h3>
                                         <p class="c-four">{{ number_format($contact_lead_count) }}</p>
                                     </div>
                                 </div>

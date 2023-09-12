@@ -134,7 +134,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_contact_lead" aria-expanded="true" aria-controls="collapse_contact_lead">
                 <i class="fas fa-address-book"></i>
-                <span>{{ __('Contact Leads') }}</span>
+                <span>{{ __('Prospective Clients') }}</span>
             </a>
             <div id="collapse_contact_lead" class="collapse" aria-labelledby="collapse_review" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">

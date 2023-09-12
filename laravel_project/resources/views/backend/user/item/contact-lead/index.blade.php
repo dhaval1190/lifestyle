@@ -9,7 +9,7 @@
 @section('content')
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
-            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Contact coach mail list') }}</h1>            
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Prospective Client List') }}</h1>            
         </div>
     </div>
 
@@ -26,7 +26,7 @@
                                 <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
                                 <th>{{ __('Mail Page') }}</th>
                                 <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>
-                                <th>{{ __('View') }}</th>
+                                <th>{{ __('View Prospects') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,7 +40,7 @@
                                     <td>
                                         <a href="{{ route('user.contact-leads.edit', ['contact_lead' => $contact_lead]) }}"
                                             class="btn btn-primary btn-circle">
-                                            <i class="fas fa-cog"></i>
+                                            <i class="fas fa-address-book"></i>
                                         </a>
                                     </td>
                                 </tr>
