@@ -55,7 +55,7 @@
                 </div>
             @endif
                 @if ($all_events->count() > 0)
-                    @if(Auth::check())
+                    @if(Auth::check() && Auth::user()->email == "harsh.modi@pranshtech.com")
                         <div class="row">
                             <div class="col-lg-12 ml-3">
                                 @if($g_auth)
