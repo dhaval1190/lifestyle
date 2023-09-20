@@ -9,6 +9,9 @@
 @endsection
 
 <style>
+    .upper_logo_padding_25 {
+    white-space: pre-wrap;
+}
     .listing .lh-content {
         text-align: left !important;
 
