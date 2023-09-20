@@ -6,7 +6,7 @@
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" /> -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/custom_style.css') }}" />
+    <!-- <link rel="stylesheet" href="{{ asset('frontend/css/custom_style.css') }}" /> -->
     <link rel="stylesheet" href="{{ asset('frontend/css/custom_media.css') }}">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -296,6 +296,8 @@
                     <div class="row">
                         @if(isset($show_all_video) && !empty($show_all_video))
                         @foreach($show_all_video as $video_key => $video)
+
+                        @if( $video['total_view']>0 )
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="post-slide">
 
@@ -320,18 +322,11 @@
                                 <br><br>
                             </div>
                         </div>
+                        @endif
+
                         @endforeach 
                         @endif
                     </div>
-
-                    <!-- <br><br>
-                    <div class="row">
-                        <div class="col-12">
-                             {{ $all_media_deatils_visit->links()  }}
-                        </div>
-                    </div> -->
-                   
-
                 
             </div>
         </section>
