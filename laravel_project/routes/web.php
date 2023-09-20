@@ -78,6 +78,9 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
     Route::get('/events', 'PagesController@event')->name('page.event');
     Route::post('/contact', 'PagesController@doContact')->name('page.contact.do');
 
+    // for trending video's page 
+    Route::get('/trending_videos_page', 'PagesController@trending_videos_page_all')->name('page.trending_videos');
+
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
     Route::get('/ajax/profile/podcast/{id}', 'PagesController@jsonProfilePodcastDetail')->name('json.profile.podcast');
     Route::get('/youtube-detail/{id}', 'PagesController@profileYoutubeDetail')->name('page.profile.youtube');
