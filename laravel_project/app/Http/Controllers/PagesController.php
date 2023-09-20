@@ -11581,10 +11581,11 @@ class PagesController extends Controller
         /**
          * End initial blade view file path
          */
+        
 
 
         //  for media video slider
-         $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->paginate(8);
+         $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->get();
          $show_all_video= array();
  
          if(isset($all_media_deatils_visit) && !empty($all_media_deatils_visit)){
