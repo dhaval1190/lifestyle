@@ -250,6 +250,7 @@ class PagesController extends Controller
         /**
          * End homepage header customization
          */
+        
 
         /**
          * Start initial blade view file path
@@ -312,11 +313,48 @@ class PagesController extends Controller
             }
            // print_r($trainding_items);exit;
         //  dd(gettype($setting_agreement_data));
-         
+
+        // ->where(function($cdn){
+        //     $cdn->select('media_details.*','media_details_visits.media_detail_id',DB::raw('COUNT(media_details_visits.media_detail_id) as totalcount'))
+        //     ->orderBy('totalcount', 'DESC');
+        // })
+
+
+        $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->get();
+        $AllMedia = array();
+        $AllMedia_data_count = array();
+        $AllMedia_view_arr = array();
+
+        if(isset($all_media_deatils_visit) && !empty($all_media_deatils_visit)){
+            foreach($all_media_deatils_visit as $allmediadetail){
+
+                $AllMedia[$allmediadetail->id]['video_data'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                ->select('media_details.*','media_details_visits.media_detail_id',
+                DB::raw('COUNT(media_details_visits.media_detail_id) as `totalcount`'))
+                ->where('media_details.id',$allmediadetail->id)
+                ->first();
+                }   
+
+                foreach($AllMedia as $video_key => $video)
+                {
+                    $AllMedia_view_arr[$video_key]['id']= $video['video_data']['id'];
+                    $AllMedia_view_arr[$video_key]['totalcount']= $video['video_data']['totalcount'];
+                    $AllMedia_view_arr[$video_key]['media_url']= $video['video_data']['media_url']; 
+
+                    // array for count the videos
+                    $AllMedia_data_count[]=$video['video_data']['id'];
+                }
+
+                // for sorting the posts as per view
+                $keys = array_column($AllMedia_view_arr, 'totalcount');
+                array_multisort($keys, SORT_DESC, $AllMedia_view_arr);
+
+                $post_count=count($AllMedia_data_count);
+            }
 
 
         return response()->view($theme_view_path . 'index',
-            compact('categories', 'paid_items', 'popular_items', 'latest_items',
+        compact('post_count','AllMedia_view_arr','categories', 'paid_items', 'popular_items', 'latest_items',
                 'all_testimonials', 'recent_blog',
                 'site_homepage_header_background_type', 'site_homepage_header_background_color',
                 'site_homepage_header_background_image', 'site_homepage_header_background_youtube_video',
@@ -11446,6 +11484,139 @@ class PagesController extends Controller
             return "Mail sent successfully";
         }
             return "No event scheduled today";
+    }
 
+    
+    public function trending_videos_page_all()
+    {
+
+        
+        $settings = app('site_global_settings');
+        $site_prefer_country_id = app('site_prefer_country_id');
+       
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('seo.frontend.view-youtube', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+
+        /**
+         * Start fetch ads blocks
+         */
+        $advertisement = new Advertisement();
+
+        $ads_before_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+            );
+
+        $ads_after_breadcrumb = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_BREADCRUMB,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_before_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_BEFORE_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+
+        $ads_after_sidebar_content = $advertisement->fetchAdvertisements(
+            Advertisement::AD_PLACE_LISTING_RESULTS_PAGES,
+            Advertisement::AD_POSITION_SIDEBAR_AFTER_CONTENT,
+            Advertisement::AD_STATUS_ENABLE
+        );
+        /**
+         * End fetch ads blocks
+         */
+
+        /**
+         * Start inner page header customization
+         */
+        $site_innerpage_header_background_type = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_image = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_IMAGE)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_background_youtube_video = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_BACKGROUND_YOUTUBE_VIDEO)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_title_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_TITLE_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+
+        $site_innerpage_header_paragraph_font_color = Customization::where('customization_key', Customization::SITE_INNERPAGE_HEADER_PARAGRAPH_FONT_COLOR)
+            ->where('theme_id', $settings->setting_site_active_theme_id)->first()->customization_value;
+        /**
+         * End inner page header customization
+         */
+
+        /**
+         * Start initial blade view file path
+         */
+        $theme_view_path = Theme::find($settings->setting_site_active_theme_id);
+        $theme_view_path = $theme_view_path->getViewPath();
+        /**
+         * End initial blade view file path
+         */
+
+
+        //  for media video slider
+         $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->paginate(8);
+         $show_all_video= array();
+ 
+         if(isset($all_media_deatils_visit) && !empty($all_media_deatils_visit)){
+             foreach($all_media_deatils_visit as $video_key => $allmediadetail){
+ 
+                 $allmediadetail['video_data'] = MediaDetail::Leftjoin('media_details_visits', 'media_details_visits.media_detail_id', '=', 'media_details.id')
+                 ->select('media_details.*','media_details_visits.media_detail_id',
+                 DB::raw('COUNT(media_details_visits.media_detail_id) as `totalcount`'))
+                 ->where('media_details.id',$allmediadetail->id)
+                 ->first();
+
+                 $show_all_video[$video_key]['id']= $allmediadetail['video_data']['id'];
+                 $show_all_video[$video_key]['total_view']= $allmediadetail['video_data']['totalcount'];
+                 $show_all_video[$video_key]['media_url']= $allmediadetail['video_data']['media_url'];
+                }   
+                
+                
+                 // for sorting the posts as per view
+                 $keys = array_column($show_all_video, 'total_view');
+                 array_multisort($keys, SORT_DESC, $show_all_video);
+                //  print_r($show_all_video);
+             }
+
+
+
+        return response()->view($theme_view_path .'trending_videos_page',
+            compact(  
+                'show_all_video','all_media_deatils_visit','ads_before_breadcrumb', 'ads_after_breadcrumb', 'ads_before_content', 'ads_after_content',
+                'ads_before_sidebar_content', 'ads_after_sidebar_content', 'site_innerpage_header_background_type',
+                'site_innerpage_header_background_color', 'site_innerpage_header_background_image',
+                'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
+                'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
+            ));   
     }
 }

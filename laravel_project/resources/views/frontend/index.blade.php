@@ -11,6 +11,218 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @endsection
 
+<style>
+       .box-video {
+        position: relative;
+        width: 100%;
+        margin: 0 auto 20px auto;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    /* Set Cover aka Background-Image */
+    .box-video .bg-video {
+        position: absolute;
+        background-color: #000f24;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        z-index: 2;
+        opacity: 1;
+    }
+
+    /* Add light shade to make play button visible*/
+    .bg-video::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+
+    /* The Play-Button using CSS-Only */
+    .bt-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -31px 0 0 -31px;
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-indent: -999em;
+        cursor: pointer;
+        z-index: 2;
+        -webkit-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+    }
+
+    .bt-play_user {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -31px 0 0 -31px;
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-indent: -999em;
+        cursor: pointer;
+        z-index: 2;
+        -webkit-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+    }
+
+    .bt-play_user:after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 0;
+        width: 0;
+        margin: -12px 0 0 -6px;
+        border: solid transparent;
+        border-left-color: #000;
+        border-width: 12px 20px;
+        -webkit-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+    }
+
+    /* The Play-Triangle */
+    .bt-play:after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 0;
+        width: 0;
+        margin: -12px 0 0 -6px;
+        border: solid transparent;
+        border-left-color: #000;
+        border-width: 12px 20px;
+        -webkit-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+    }
+
+    .c-video__image-container:hover .bt-play {
+        transform: scale(1.1);
+    }
+
+    /* When Class added the Cover gets hidden... */
+    .box-video.open .bg-video {
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: all .6s .8s;
+        transition: all .6s .8s;
+    }
+
+    /* and iframe shows up */
+    .box-video.open .video-container {
+        opacity: 1;
+        -webkit-transition: all .6s .8s;
+        transition: all .6s .8s;
+    }
+
+    /* Giving the div ratio of 16:9 with padding */
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        margin: 0;
+        z-index: 1;
+        padding-bottom: 56.27198%;
+    }
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    .c-header-in {
+        position: absolute;
+        left: 42vw;
+        right: 0;
+        top: 50px;
+        color: white;
+    }
+
+    .vid-fit-user {
+        height: 280px;
+        background-color: #000f24;
+        position: relative;
+        border-radius: 20px;
+    }
+
+    .vid-fit-reveal {
+        height: 215;
+        background-color: #000f24;
+        position: relative;
+    }
+
+    .vid-fit-reveal.red {
+        background: red;
+    }
+
+    .vid-fit-reveal.reveal-video {
+        background: none;
+    }
+
+    .vid-fit-reveal.reveal-video .c-header-in {
+        display: none;
+    }
+
+    .vid-fit-reveal.reveal-video #vid-reveal {
+        display: block;
+        visibility: visible;
+    }
+
+    .vid-fit-reveal.reveal-video .c-video__play-btn {
+        visibility: hidden;
+    }
+
+    .vid-fit-reveal #vid-reveal {
+        visibility: hidden;
+    }
+
+    .c-video__play-btn {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+
+    .table> :not(:last-child)> :last-child>* {
+        border-bottom-color: inherit;
+        border-right: 1px solid #fff;
+        border-right-width: thin;
+    }
+
+    table.dataTable>thead>tr>td:not(.sorting_disabled),
+    table.dataTable>thead>tr>th:not(.sorting_disabled) {
+        border-bottom-color: inherit;
+        border-right: 1px solid #fff;
+        border-right-width: thin;
+    }
+
+    .w-30 {
+        width: 30px !important;
+    }
+    </style>
+
 @section('content')
 
     @if ($site_homepage_header_background_type == \App\Customization::SITE_HOMEPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
@@ -1364,6 +1576,242 @@
         </div>
     @endif
 
+
+
+
+
+@if ($post_count > 0)
+    @if ($post_count <= 4)
+        <div class="bg-light">
+            <div class="container">
+                <div class="row mt-5 mb-3 align-items-center">
+
+                    <div class="col-md-7 text-left border-primary">
+                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        </h2>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="below_info">
+                            <h3></h3>
+                            <a href="{{ route('page.trending_videos') }}">
+                                <button class="btn btn-primary btn-sm">
+                                    View All
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                @foreach ($AllMedia_view_arr as $video_key => $video)
+                        <!--Begin: slid body  -->
+                        <br><br><br>
+                        <div class="col-lg-3">
+                        <div class="post-slide">
+                            <div class="post-img">
+                                <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                    data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
+                                    <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
+                                        data-src="{{ $video['media_url'] }}">
+                                        <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
+                                    </a>
+                                    <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                
+                            <div class="view_eye_post">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <p class="views" style="color: black;">View</p>
+                                <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
+                            </div>
+                        </div>
+                        </div>
+                        <!--End: slider body  -->
+                @endforeach
+                <div>
+            <div>
+        <div>           
+    @endif
+
+    @if ($post_count > 4  && $post_count <= 6)
+        <div class="bg-light">
+            <div class="container">
+                <div class="row mt-5 mb-3 align-items-center">
+
+                    <div class="col-md-7 text-left border-primary">
+                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        </h2>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="below_info">
+                            <h3></h3>
+                            <a href="{{ route('page.trending_videos') }}">
+                                <button class="btn btn-primary btn-sm">
+                                    View All
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!--Begin: trendding video slider -->
+                    <div class="col-md-12 padding-0-set-sm">
+                    <section class="card_texting container ptb-100-500 ptb-sm-50-50">
+                        <div class="swiper-container-latest-2 swiper_topics_carousel_set">
+                            <div class="swiper-wrapper">
+                            @php $count = 1; @endphp
+                                    @foreach ($AllMedia_view_arr as $video_key => $video)
+                                        @php
+                                            if ($count == 7) {
+                                                break;
+                                            }
+                                        @endphp
+                                    <div class="swiper-slide">
+                                        <div class="listing">
+
+                                            <!--Begin: slider body  -->
+                                            <br><br><br>
+                                                    <div class="post-slide">
+                                                        <div class="post-img">
+                                                            <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                                                data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
+                                                                <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
+                                                                    data-src="{{ $video['media_url'] }}">
+                                                                    <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
+                                                                </a>
+                                                                <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                                encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                            </div>
+                                                        </div>
+                                        
+                                                        <div class="view_eye_post">
+                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                            <p class="views" style="color: black;">View</p>
+                                                            <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <!--End: slider body  -->
+                                                    
+                                        </div>
+                                    </div>
+                                    @php $count++; @endphp
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next id-five-22"></div>
+                    <div class="swiper-button-prev id-six-22"></div>
+                    </div>
+                    <!--End: trendding video slider -->
+
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($post_count >= 7)
+        <!-- Begin: Trending Video's -->
+        <div class="bg-light">
+            <div class="container">
+                <div class="row mt-5 mb-3 align-items-center">
+                    <div class="col-md-7 text-left border-primary">
+                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        </h2>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="below_info">
+                            <h3></h3>
+                                <a href="{{ route('page.trending_videos') }}">
+                                    <button class="btn btn-primary btn-sm">
+                                        View All
+                                    </button>
+                                </a>
+                            
+                        </div>
+                    </div>
+
+                    <!--Begin: trendding video slider -->      
+                            <div class="col-md-12 padding-0-set-sm">
+                                <section class="card_texting container ptb-100-500 ptb-sm-50-50">
+                                    <div class="swiper-container-latest-1 swiper_topics_carousel_set">
+                                        <div class="swiper-wrapper">
+                                        @php $count = 1; @endphp
+                                        @foreach ($AllMedia_view_arr as $video_key => $video)
+                                            @php
+                                                if ($count == 8) {
+                                                    break;
+                                                }
+                                            @endphp
+
+                                                <div class="swiper-slide">
+                                                    <div class="listing">
+                                        
+                                                        <!--Begin: slider body  -->
+                                                        <br><br><br>
+                                                        <div class="post-slide">
+                                                            <div class="post-img">
+                                                                <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                                                    data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
+                                                                    <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
+                                                                        data-src="{{ $video['media_url'] }}">
+                                                                        <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
+                                                                    </a>
+                                                                    <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
+                                                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                                </div>
+                                                            </div>
+                                            
+                                                            <div class="view_eye_post">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                <p class="views" style="color: black;">View</p>
+                                                                <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <!--End: slider body  -->
+                                                    
+                                                            </div>
+                                                        </div>
+                                            
+                                            @php $count++; @endphp
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                
+                                </section>
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-button-next id-five-1"></div>
+                                <div class="swiper-button-prev id-six-1"></div>
+                            </div>
+                    <!--End: trendding video slider -->
+                </div>
+            </div>
+        </div>
+        <!-- End: Trending Video's -->
+    @endif
+@endif
+
+<!-- For youtube modal-->
+<div class="modal-4">
+    <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
+            <div class="modal-content content_design3">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <iframe src="" id="youtubeiframesrcURL" frameborder="0" class="min_h_300"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Modal -->
     <div class="modal fade" id="reload_page_modal" tabindex="-1" role="dialog"
         aria-labelledby="reload_page_modal_label" aria-hidden="true">
@@ -1751,4 +2199,103 @@
         });
 
     </script>
+ 
+<!-- for trendding video's slider button-->
+@if ($post_count > 4 && $post_count <= 6 )
+        <script>
+            // alert("dslkdlk");
+            var swiper = new Swiper(".swiper-container-latest-2", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 2,
+                    slideShadows: true,
+                },
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next.id-five-22',
+                    prevEl: '.swiper-button-prev.id-six-22',
+                }
+            });
+        </script>
+@endif
+
+@if($post_count >= 7)
+    <script>
+            var swiper = new Swiper(".swiper-container-latest-1", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 3.8,
+                    slideShadows: true,
+                },
+                loop: true,
+                navigation: {
+                    nextEl: '.swiper-button-next.id-five-1',
+                    prevEl: '.swiper-button-prev.id-six-1',
+                }
+            });
+    </script>
+@endif
+
+<script>
+// for count and create views
+            $(document).ready(function() {
+            $(".vid-fit-reveal").on('click', function() {
+                var id = $(this).attr('data-id');
+                var main_id = $(this).attr('id');
+
+                $(main_id).addClass("reveal-video");
+                $('#bt-play_' + id).hide();
+                var myFrame = $(main_id).find('#vid-reveal_' + id);
+                var url = $(myFrame).attr('src') + '?autoplay=1';
+                $(myFrame).attr('src', url);
+
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '<?php echo url('/media-visitor'); ?>',
+                    data: {
+                        'id': id
+                    },
+                    success: function(data) {},
+                });
+            });
+        });
+
+
+            //for youtube video playing
+
+            $(".box-video-youtube").click(function () {
+                $('#youtubeiframesrcURL').attr('src', '');
+                // $('#youtubeiframesrcURL').removeAttr('class');
+                $('#exampleModalLabel_podcast').text('');                
+
+
+                var youtube_div_Id = $(this).data('vid');
+                var split_youtube_div_id = youtube_div_Id.split('_')[1]; 
+                // console.log(split_youtube_div_id)               
+                var youtubeUrl = $('#youtube_id_'+split_youtube_div_id).data('src');
+                // console.log(youtubeUrl)
+                
+                $('#youtubeiframesrcURL').attr('src', youtubeUrl);
+            });
+
+            $("#youtubeModal").on("hidden.bs.modal", function() {
+                $('#youtubeiframesrcURL').attr('src', '');            
+            });
+</script>
+
 @endsection
