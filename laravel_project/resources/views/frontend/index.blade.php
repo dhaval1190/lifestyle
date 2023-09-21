@@ -1582,9 +1582,9 @@
 
 @if ($post_count > 0)
     @if ($post_count <= 4)
-        <div class="bg-light">
+        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mt-5 mb-3 align-items-center">
+                <div class="row mb-3 align-items-center">
 
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Video's
@@ -1593,7 +1593,6 @@
 
                     <div class="col-md-12">
                         <div class="below_info">
-                            <h3></h3>
                             <a href="{{ route('page.trending_videos') }}">
                                 <button class="btn btn-primary btn-sm">
                                     View All
@@ -1634,9 +1633,9 @@
     @endif
 
     @if ($post_count > 4  && $post_count <= 6)
-        <div class="bg-light">
+        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mt-5 mb-3 align-items-center">
+                <div class="row mb-3 align-items-center">
 
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Video's
@@ -1645,7 +1644,6 @@
 
                     <div class="col-md-12">
                         <div class="below_info">
-                            <h3></h3>
                             <a href="{{ route('page.trending_videos') }}">
                                 <button class="btn btn-primary btn-sm">
                                     View All
@@ -1712,9 +1710,9 @@
 
     @if($post_count >= 7)
         <!-- Begin: Trending Video's -->
-        <div class="bg-light">
+        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mt-5 mb-3 align-items-center">
+                <div class="row mb-3 align-items-center">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Video's
                         </h2>
@@ -1722,7 +1720,6 @@
 
                     <div class="col-md-12">
                         <div class="below_info">
-                            <h3></h3>
                                 <a href="{{ route('page.trending_videos') }}">
                                     <button class="btn btn-primary btn-sm">
                                         View All
