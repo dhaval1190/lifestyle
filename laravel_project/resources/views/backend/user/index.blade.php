@@ -890,7 +890,7 @@
                             @else
                             <img src="{{ Storage::disk('public')->url('user/'. $login_user['user_image']) }}" style="width: 50%" class="img-fluid rounded-circle">
                             @endif
-                            <div>
+                            <div class="padding-set-md-50">
                                 <h5>{{ $login_user['name'] }}</h5>
                                 <p>{{ !empty($login_user['working_type']) ? \App\User::WORKING_TYPES[$login_user['working_type']] : '' }}
                                     {{ !empty($login_user['experience_year']) ? ' | '.\App\User::EXPERIENCE_YEARS[$login_user['experience_year']].' Years' : '' }}

@@ -18,11 +18,11 @@
     @endif --}}
 
     <div class="row justify-content-between">
-        <div class="col-md-9 col-8">
+        <div class="col-md-8 col-xl-9 col-8">
             <h1 class="h3 mb-2 text-gray-800 font-set-sm">{{ __('backend.subscription.subscription') }}</h1>
             <p class="mb-4 f-12">{{ __('backend.subscription.subscription-desc-user') }}</p>
         </div>
-        <div class="col-4 col-md-3 text-right">            
+        <div class="col-4 col-md-4 col-xl-3 text-right">            
                 <a href="{{ route('user.plans.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>

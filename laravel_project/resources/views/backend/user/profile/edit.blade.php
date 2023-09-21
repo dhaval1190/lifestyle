@@ -155,20 +155,20 @@
     }
     .back_ground_image_set i {
         position: absolute;
-bottom: -20px;
-right: 5px;
-border: 1px solid;
-border-radius: 50%;
-padding: 11px;
-height: 40px;
-width: 40px;
-display: flex !important;
-align-items: center;
-justify-content: center;
-background-color: white;
-color: cornflowerblue;
-/* box-shadow: 0 0 8px 3px #ECECEC; */
-}
+    bottom: -20px;
+    right: 5px;
+    border: 1px solid;
+    border-radius: 50%;
+    padding: 11px;
+    height: 40px;
+    width: 40px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: cornflowerblue;
+    /* box-shadow: 0 0 8px 3px #ECECEC; */
+    }
     .main-profile-img {
         width: 240px;
         height: 2400px;
@@ -184,253 +184,327 @@ color: cornflowerblue;
   border-color: #FFFFFF;
   box-shadow: 0 0 8px 3px #B8B8B8;
   position: absolute;
-bottom: -50px;
-left: 10px;
-}
-
-.profile_image_set img {
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-}
-
-.profile_image_set i {
-  position: absolute;
-  top: 20px;
-  right: -7px;
-  /* border: 1px solid; */
-  border-radius: 50%;
-  /* padding: 11px; */
-  height: 30px;
-  width: 30px;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  color: cornflowerblue;
-  /* box-shadow: 0 0 8px 3px #B8B8B8; */
-}
-.youtube_bg{
-    background: #FFEEF9 0% 0% no-repeat padding-box;
-    position: relative;
-}
-.ebook_bg{
-    background: #E0F5CA 0% 0% no-repeat padding-box;
-    position: relative;
-
-}
-.article_bg{
-    background: #D2EDFF 0% 0% no-repeat padding-box;
-    position: relative;
-
-}
-.podcast_bg{
-    background: #FFE8B9 0% 0% no-repeat padding-box;
-    position: relative;
-
-}
-
-
-
-.tabs {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  position: relative;
-}
-
-.tabs .label {
-  -webkit-box-ordinal-group: 2;
-  -webkit-order: 1;
-  -ms-flex-order: 1;
-  order: 1;
-  display: block;
-  padding: 1rem 2rem;
-  margin-right: 0.2rem;
-  cursor: pointer;
-  /* background: #90CAF9; */
-  font-weight: bold;
-  -webkit-transition: background ease 0.2s;
-  transition: background ease 0.2s;
-}
-
-.tabs .tab {
-  -webkit-box-ordinal-group: 100;
-  -webkit-order: 99;
-  -ms-flex-order: 99;
-  order: 99;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  width: 100%;
-  display: none;
-  padding: 1rem;
-  /* background: #fafafa; */
-}
-
-.tabs input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-}
-
-.tabs input[type="radio"]:checked + .label { background: #F05127; color: #fff; }
-
-.tabs input[type="radio"]:checked + .label + .tab { display: block; }
- @media (max-width: 45em) {
-
-.tabs .tab,  .tabs .label {
-  -webkit-box-ordinal-group: NaN;
-  -webkit-order: initial;
-  -ms-flex-order: initial;
-  order: initial;
-}
-
-.tabs .label {
-  width: 100%;
-  margin-right: 0;
-  margin-top: 0.2rem;
-}
-
-}
-.half_section{
-    background: #fff;
-    color: #000;
-    margin-left: 45px;
-    position: relative;
-    box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
-}
-
-.tabs input[type="radio"]:checked + .label.half_section::before{
-  background-color: #F05127;
-  color: #fff;
-}
-.tabs input[type="radio"]:checked + .label.half_section::after {
-  background-color: #F05127;
-  color: #fff;
-}
-
-.half_section::before,.half_section::after {
-  display: block;
-  content: " ";
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 44px;
-  background-color: #fff;
-  transition: all 250ms ease;
-}
-.half_section::before {
-  right: -24px;
-  transform: skew(30deg, 0deg);
-  box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
-}
-
-.half_section::before {
-  border-radius: 0 8px 0 0;
-}
-.half_section::after {
-  border-radius: 8px 0 0 0;
-}
-
-.half_section::after {
-  left: -24px;
-  transform: skew(-30deg, 0deg);
-  box-shadow: rgba(0,0,0,.1) -3px 2px 5px, inset rgba(255,255,255,.09) 1px 0;
-}
-.tab[class*="skin-"] .half_section {
-  color: #FFF;
-  text-shadow: rgba(0,0,0,.1) 0 1px;
-}
-
-.select2-container{
-    width: 100% !important;
-}
-
-.modal-height-set{
-    overflow: scroll;
-    height:500px;
-}
-
-
-@media
-
-
-@media (max-width:576px)
-{
-    .profile_image_set {
-    width: 100px;
-    height: 100px;
-  
-}
-.tabs {
-    display: -webkit-box;
-}
-}
-
-
-.bfd-dropfield-inner{
-    height: 250px !important;
-    display: grid;
-    min-height: 100%;
-    align-content: center;
-    padding-top: 0px !important;
-    margin-top: 10px;
-}
-
-/* .croppie-container .cr-boundary {    
-    width: 100% !important;    
-}
-
-.croppie-container .cr-overlay {
-    overflow: scroll;
-    width: 100% !important;
-}
-
-@media(min-width:1920px){
-    .croppie-container .cr-viewport, .croppie-container .cr-resizer {
-    width: 100% !important;
+    bottom: -50px;
+    left: 10px;
     }
-} */
 
-
-/* @media (max-width:576px){
-    .croppie-container .cr-boundary {
-    width: 100% !important;
+    .profile_image_set img {
     height: 100%;
-}
-} */
+    width: 100%;
+    border-radius: 50%;
+    }
 
-/* @media (max-width:1800px)
-{
-    .croppie-container .cr-boundary {
-    width: 200% !important;
+    .profile_image_set i {
+    position: absolute;
+    top: 20px;
+    right: -7px;
+    /* border: 1px solid; */
+    border-radius: 50%;
+    /* padding: 11px; */
+    height: 30px;
+    width: 30px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: cornflowerblue;
+    /* box-shadow: 0 0 8px 3px #B8B8B8; */
+    }
+    .youtube_bg{
+        background: #FFEEF9 0% 0% no-repeat padding-box;
+        position: relative;
+    }
+    .ebook_bg{
+        background: #E0F5CA 0% 0% no-repeat padding-box;
+        position: relative;
+
+    }
+    .article_bg{
+        background: #D2EDFF 0% 0% no-repeat padding-box;
+        position: relative;
+
+    }
+    .podcast_bg{
+        background: #FFE8B9 0% 0% no-repeat padding-box;
+        position: relative;
+
+    }
+
+
+
+    .tabs {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    position: relative;
+    }
+
+    .tabs .label {
+    -webkit-box-ordinal-group: 2;
+    -webkit-order: 1;
+    -ms-flex-order: 1;
+    order: 1;
+    display: block;
+    padding: 1rem 2rem;
+    margin-right: 0.2rem;
+    cursor: pointer;
+    /* background: #90CAF9; */
+    font-weight: bold;
+    -webkit-transition: background ease 0.2s;
+    transition: background ease 0.2s;
+    }
+
+    .tabs .tab {
+    -webkit-box-ordinal-group: 100;
+    -webkit-order: 99;
+    -ms-flex-order: 99;
+    order: 99;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    width: 100%;
+    display: none;
+    padding: 1rem;
+    /* background: #fafafa; */
+    }
+
+    .tabs input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    }
+
+    .tabs input[type="radio"]:checked + .label { background: #F05127; color: #fff; }
+
+    .tabs input[type="radio"]:checked + .label + .tab { display: block; }
+    @media (max-width: 45em) {
+
+    .tabs .tab,  .tabs .label {
+    -webkit-box-ordinal-group: NaN;
+    -webkit-order: initial;
+    -ms-flex-order: initial;
+    order: initial;
+    }
+
+    .tabs .label {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0.2rem;
+    text-align: center;
+    }
+
+    }
+    .half_section{
+        background: #fff;
+        color: #000;
+        margin-left: 45px;
+        position: relative;
+        box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
+    }
+
+    .tabs input[type="radio"]:checked + .label.half_section::before{
+    background-color: #F05127;
+    color: #fff;
+    }
+    .tabs input[type="radio"]:checked + .label.half_section::after {
+    background-color: #F05127;
+    color: #fff;
+    }
+
+    .half_section::before,.half_section::after {
+    display: block;
+    content: " ";
+    position: absolute;
+    top: 0;
     height: 100%;
-    overflow-x: scroll !important;
-}
-} */
+    width: 44px;
+    background-color: #fff;
+    transition: all 250ms ease;
+    }
+    .half_section::before {
+    right: -24px;
+    transform: skew(30deg, 0deg);
+    box-shadow: rgba(0,0,0,.1) 3px 2px 5px, inset rgba(255,255,255,.09) -1px 0;
+    }
+
+    .half_section::before {
+    border-radius: 0 8px 0 0;
+    }
+    .half_section::after {
+    border-radius: 8px 0 0 0;
+    }
+
+    .half_section::after {
+    left: -24px;
+    transform: skew(-30deg, 0deg);
+    box-shadow: rgba(0,0,0,.1) -3px 2px 5px, inset rgba(255,255,255,.09) 1px 0;
+    }
+    .tab[class*="skin-"] .half_section {
+    color: #FFF;
+    text-shadow: rgba(0,0,0,.1) 0 1px;
+    }
+
+    .select2-container{
+        width: 100% !important;
+    }
+
+    .modal-height-set{
+        overflow: scroll;
+        height:500px;
+    }
 
 
-.cr-slider-wrap:active .modal-height-set{
-    overflow: hidden !important;
-}
-.cr-slider-wrap:focus .modal-height-set{
-    overflow: hidden !important;
-}
-.cr-slider-wrap:target .modal-height-set{
-    overflow: hidden !important;
-}
-.cr-slider-wrap:visited .modal-height-set{
-    overflow: hidden !important;
-}
-.cr-slider-wrap:checked .modal-height-set{
-    overflow: hidden !important;
-}
+
+    @media (max-width:576px)
+    {
+        .profile_image_set {
+        width: 100px;
+        height: 100px;
+    
+    }
+    .tabs {
+        display: -webkit-box;
+    }
+
+    /* ---------------------------19-09-2023--------------user-css-changes------------- */
+
+    .half_section {
+        margin-left: 0px;
+    }
+
+    .half_section::before, .half_section::after{
+        display: none;
+    }
+    .ck.ck-editor{
+        width: 99% !important;
+    }
+    .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne, .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se {
+        left: 0 !important;
+        width: 100%;
+        right: auto;
+    }
+    .ck.ck-list__item .ck-button {
+        width: auto !important;
+    }
+    .btn-center{
+        text-align: center;
+    }
+    .icon-flex-center{
+        margin-top: 0.5rem;
+    }
+    .fas.fa-plus{
+        padding-right: 5px;
+    }
+
+    }
+
+    @media (min-width:577px) and (max-width:768px){
+    .profile_image_set {
+        width: 180px !important;
+        height: 180px !important;
+    }
+    .ck.ck-editor{
+        width: 99% !important;
+    }
+    .btn-center{
+        text-align: center;
+    }
+    .min-h-md-160{
+        min-height: 160px;
+    }
+    }
+    
+    @media (min-width:769px) and (max-width:1024px){
+    .profile_image_set {
+        width: 180px !important;
+        height: 180px !important;
+    }
+    .ck.ck-editor{
+        width: 99% !important;
+    }
+    .btn-center{
+        text-align: center;
+    }
+    .min-h-md-160{
+        min-height: 160px;
+    }
+    }
+
+
+    .icon-flex-center{
+        display: flex;
+        align-items: center;
+    }
+
+    .icon-flex-center i{
+    padding-right: 5px;
+    }
+
+    /* --------------------------------------------------------------------------------- */
+
+
+    .bfd-dropfield-inner{
+        height: 250px !important;
+        display: grid;
+        min-height: 100%;
+        align-content: center;
+        padding-top: 0px !important;
+        margin-top: 10px;
+    }
+
+    /* .croppie-container .cr-boundary {    
+        width: 100% !important;    
+    }
+
+    .croppie-container .cr-overlay {
+        overflow: scroll;
+        width: 100% !important;
+    }
+
+    @media(min-width:1920px){
+        .croppie-container .cr-viewport, .croppie-container .cr-resizer {
+        width: 100% !important;
+        }
+    } */
+
+
+    /* @media (max-width:576px){
+        .croppie-container .cr-boundary {
+        width: 100% !important;
+        height: 100%;
+    }
+    } */
+
+    /* @media (max-width:1800px)
+    {
+        .croppie-container .cr-boundary {
+        width: 200% !important;
+        height: 100%;
+        overflow-x: scroll !important;
+    }
+    } */
+
+
+    .cr-slider-wrap:active .modal-height-set{
+        overflow: hidden !important;
+    }
+    .cr-slider-wrap:focus .modal-height-set{
+        overflow: hidden !important;
+    }
+    .cr-slider-wrap:target .modal-height-set{
+        overflow: hidden !important;
+    }
+    .cr-slider-wrap:visited .modal-height-set{
+        overflow: hidden !important;
+    }
+    .cr-slider-wrap:checked .modal-height-set{
+        overflow: hidden !important;
+    }
 
 </style>
 
@@ -503,7 +577,7 @@ $chk_post = Auth::user()->phone;
 
 <!-- Content Row -->
 <div class="row pt-4 pl-3 pr-3 pb-4">
-    <div class="col-12 p-0 pl-3">
+    <div class="col-12 pr-3 pl-3">
         <div class="row font_icon_color">
             <div class="col-12">
                 @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) &&
@@ -522,7 +596,7 @@ $chk_post = Auth::user()->phone;
 
                     @if($login_user->isCoach())
                     <div class="row">
-                        <div class="col-sm-6 col-12 col-lg-2 col-md-12 col-lg-4 col-xl-2">
+                        <div class="col-sm-6 col-12 col-md-12 col-lg-12 col-xl-2">
                             {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
                             {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small>
                             --}}
@@ -605,7 +679,7 @@ $chk_post = Auth::user()->phone;
                                 </div>                        
                             </div> --}}
                         </div>
-                        <div class="col-sm-12 col-md-12 col-xl-10 col-lg-8">
+                        <div class="col-sm-12 col-md-12 col-xl-10 col-lg-12">
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
@@ -769,9 +843,9 @@ $chk_post = Auth::user()->phone;
                     </div>
             </div>
             <div class="row mt-3">
-                <div class="col-lg-10 col-md-8">
+                <div class="col-lg-12 col-md-12">
                     <div class="row">
-                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
                             <label for="website" class="text-black">Website</label>
                             <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
                             <small id="linkHelpBlock" class="form-text text-muted">
@@ -783,7 +857,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @enderror
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
                             <label for="instagram" class="text-black">IG Handle</label>
                             <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                             <span class="err_instagram_url" style="color:red"></span>
@@ -801,7 +875,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
                             <label for="linkedin" class="text-black">LinkedIn</label>
                             <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
                             <span class="err_linkedin_url" style="color:red"></span>
@@ -819,7 +893,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
                             <label for="facebook" class="text-black">Facebook</label>
                             <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
                             <span class="err_facebook_url" style="color:red"></span>
@@ -837,7 +911,7 @@ $chk_post = Auth::user()->phone;
                             </span>
                             @endif
                         </div>
-                        <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
                             <div class="row">
                                 <div class="col-sm-12 col-12 col-lg-12">
                                     <label for="youtube" class="text-black">Youtube</label>
@@ -1203,7 +1277,7 @@ $chk_post = Auth::user()->phone;
     <div class="tab">
         {{--  Youtube form --}}
         <form method="POST" action="" class="" enctype="multipart/form-data" name="youtubeVideoFrm" id="youtubeVideoFrm">    
-            <div class="row mt-3 mb-5 youtube_bg" id="podcastsec">
+            <div class="row  mb-5 youtube_bg" id="podcastsec">
                 <div class="col-12">
                     <div>
                         <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
@@ -1280,7 +1354,7 @@ $chk_post = Auth::user()->phone;
     <div class="tab">
       {{--  Ebook form --}}
       <form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
-        <div class="row mt-3 mb-5 break_line_section ebook_bg ">
+        <div class="row  mb-5 break_line_section ebook_bg ">
             <div class="col-12">
                 <div>
                     <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">Ebook Details</h3>
@@ -1373,7 +1447,7 @@ $chk_post = Auth::user()->phone;
     <div class="tab">
       {{--  Podcast form --}}
       <form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
-        <div class="row mt-3 mb-5 break_line_section podcast_bg" id="podcastsec">
+        <div class="row mb-5 break_line_section podcast_bg" id="podcastsec">
             <div class="col-12">
                 <div>
                     <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">Podcast Details</h3>
@@ -1501,20 +1575,20 @@ $chk_post = Auth::user()->phone;
     <label for="tabfour" class="half_section label">
         Create Article
         </label>
-    <div class="tab">
+    <div class="tab p-0 pt-3">
         <div class="article_bg container-fluid">
             @php
             $login_user = auth()->user();
             @endphp
               @if(($login_user->categories()->count() > 0) && isset($login_user->hourly_rate_type) && isset($login_user->experience_year) && isset($login_user->preferred_pronouns))
-                <div class="row mt-3 mb-5">
+                <div class="row">
                     <div class="col-lg-12 co-12">
-                        <h1 class="h3 mb-5 mt-3 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
+                        <h1 class="h3 mb-3 mt-3 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
                     </div>
                 </div>
             
                <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 pl-0">
                         @if(Session::has('required_field_error'))
                             <div class="row mb-4">
                                 <div class="col-12">
@@ -1612,7 +1686,7 @@ $chk_post = Auth::user()->phone;
             
                                     <div class="form-row mb-3">
                                         <input type="hidden" name="article_featured" value="{{ \App\Item::ITEM_NOT_FEATURED }}">                        
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_phone" class="text-black">
                                                 <i class="fa-solid fa-phone-square"></i>
                                                 {{ __('backend.article.phone') }}</label>
@@ -1623,7 +1697,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_social_whatsapp" class="text-black">
                                                 <i class="fa-brands fa-whatsapp-square"></i>
                                                 {{ __('article_whatsapp_instagram.article-social-whatsapp') }}
@@ -1639,7 +1713,7 @@ $chk_post = Auth::user()->phone;
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_website" class="text-black">
                                                 <i class="fa-solid fa-globe"></i>
                                                 {{ __('backend.article.website') }}
@@ -1655,7 +1729,7 @@ $chk_post = Auth::user()->phone;
                                             @enderror
                                         </div>
             
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_social_facebook" class="text-black">
                                                 <i class="fa-brands fa-facebook-square"></i>
                                                 {{ __('backend.article.facebook') }}
@@ -1679,7 +1753,7 @@ $chk_post = Auth::user()->phone;
                                     </div>
             
                                     <div class="form-row mb-3">
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_social_twitter" class="text-black">
                                                 <i class="fa-brands fa-twitter-square"></i>
                                                 {{ __('backend.article.twitter') }}
@@ -1701,7 +1775,7 @@ $chk_post = Auth::user()->phone;
                                             @endif
                                         </div>
             
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_social_linkedin" class="text-black">
                                                 <i class="fa-brands fa-linkedin"></i>
                                                 {{ __('backend.article.linkedin') }}
@@ -1723,7 +1797,7 @@ $chk_post = Auth::user()->phone;
                                             @endif
                                         </div>
             
-                                        <div class="col-md-3 col-lg-3">
+                                        <div class="col-md-6 col-lg-3">
                                             <label for="article_social_instagram" class="text-black">
                                                 <i class="fa-brands fa-instagram-square"></i>
                                                 {{ __('article_whatsapp_instagram.article-social-instagram') }}
@@ -1941,10 +2015,12 @@ $chk_post = Auth::user()->phone;
                                     </div>
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 col-lg-3">
-                                            <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
+                                          <div class="min-h-md-160">
+                                          <span class="text-lg text-gray-800">{{ __('backend.article.feature-image') }}</span>
                                             <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
                                             <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
                                             <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                          </div>
                                             @error('feature_image')
                                                 <span class="invalid-feedback">
                                                     <strong>{{ $message }}</strong>
@@ -1973,10 +2049,12 @@ $chk_post = Auth::user()->phone;
                                             @endif
                                         </div>
                                         <div class="col-md-6 col-lg-9">
+                                        <div class="min-h-md-160">
                                             <span class="text-lg text-gray-800">{{ __('backend.article.gallery-images') }}</span>
                                             <small class="form-text text-muted">{{ __('backend.article.gallery-images-max-upload') }}</small>
                                             <small class="form-text text-muted">{{ __('backend.article.gallery-images-size') }}</small>
                                             <small class="form-text text-muted">{{  __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                        </div>
                                             {{-- <small class="form-text text-muted">
                                                 {{ __('theme_directory_hub.listing.max-upload', ['gallery_photos_count' => $setting_article_max_gallery_photos]) }}
                                             </small> --}}
@@ -2005,7 +2083,7 @@ $chk_post = Auth::user()->phone;
                             <hr/>
             
                             <div class="form-row mb-3">
-                                <div class="col-md-12">
+                                <div class="col-md-12 btn-center">
                                     <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white">
                                         {{ __('Create Article') }}
                                     </button>
@@ -3038,7 +3116,7 @@ $chk_post = Auth::user()->phone;
                             $('#article_gallery_image_error_div').show();
                             // return false;
                         }else{
-                            html += "<div class='col-2 mb-2' id='article_image_gallery_" + a + "'>" +
+                            html += "<div class='col-md-4 col-lg-2 col-xl-2 col-xxl-2 col-12 mb-2' id='article_image_gallery_" + a + "'>" +
                                 "<img style='width: 100%; border-radius: 5px; border: 1px solid #dadada;' src='" + event.files[a].content + "'>" +
                                 "<br/><button class='btn btn-danger btn-sm text-white mt-1' onclick='$(\"#article_image_gallery_" + a + "\").remove();'>Delete</button>" +
                                 "<input type='hidden' value='" + event.files[a].content + "' name='image_gallery[]'>" +
