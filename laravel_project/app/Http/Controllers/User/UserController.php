@@ -393,13 +393,39 @@ class UserController extends Controller
 
         $instagram_username = $request->instagram;
         if($instagram_username){
-            if(stripos($instagram_username,'@') !== false){   
-                $instagram_username = explode('@',$request->instagram)[1];
+
+            // if(stripos($instagram_username,'@') !== false){   
+            //     $instagram_username = explode('@',$request->instagram)[1];
+            // }
+            // else{
+            //      return back()->with('instagram_error','Please enter valid instagram Username Only');
+            // }
+
+            if(stripos($instagram_username,'instagram') !== false && stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                $instagram_username = $request->instagram;
             }
-            if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                return back()->with('instagram_error','Please enter valid instagram user name Only');
-            }
-        }         
+            else{
+                    if(stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                        return back()->with('instagram_error','Please enter valid instagram Username or URl');
+                    }
+                    else{
+
+                        if(preg_match("/^[a-z0-9_.@]*$/", $instagram_username)){
+
+                               if(stripos($instagram_username,'@') !== false){   
+                                    $instagram_username = explode('@',$request->instagram)[1];
+                                }
+                                else{
+                                    $instagram_username = $request->instagram;
+                                }
+                            }
+                            else{
+                                return back()->with('instagram_error','Please enter valid instagram Username Only');
+                            }
+                        } 
+                }
+        }  
+            
         if($request->facebook){
             if(stripos($request->facebook,'facebook') == false){
                 return back()->with('facebook_error','Please enter facebook URL only');
@@ -407,7 +433,7 @@ class UserController extends Controller
         }   
         if($request->linkedin){
             if(stripos($request->linkedin,'linkedin') == false){
-                return back()->with('linkedin_error','Please enter linkedinssss URL only');
+                return back()->with('linkedin_error','Please enter linkedin URL only');
             }
         }
         // if($request->youtube){

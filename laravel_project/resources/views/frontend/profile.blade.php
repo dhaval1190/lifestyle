@@ -1044,11 +1044,22 @@
                                 @if (isset($user_detail['instagram']))
                                     <div class="middle_main"><img src="{{ asset('frontend/images/instagram.svg') }}"
                                             alt="" />
+                                        
+                                    @if(stripos($user_detail['instagram'],'.com') !== false || stripos($user_detail['instagram'],'http') !== false || stripos($user_detail['instagram'],'https') !== false || stripos($user_detail['instagram'],'www.') !== false || stripos($user_detail['instagram'],'//') !== false)
+                                        <a href="{{ $user_detail->instagram }}/"
+                                            target="_blank">
+                                            <p>{{ $user_detail['instagram'] }}</p>
+                                        </a>
+                                    @else
                                         <a href="https://instagram.com/_u/{{ $user_detail->instagram }}/"
                                             target="_blank">
                                             <p>{{ $user_detail['instagram'] }}</p>
                                         </a>
+                                    @endif
+                                        
                                     </div>
+                                    
+
                                 @endif
                                 @if (isset($user_detail['facebook']))
                                     <div class="middle_main"><img src="{{ asset('frontend/images/facebook.svg') }}"

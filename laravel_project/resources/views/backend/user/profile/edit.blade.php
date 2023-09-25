@@ -849,7 +849,7 @@ $chk_post = Auth::user()->phone;
                             <label for="website" class="text-black">Website</label>
                             <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
                             <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('backend.shared.url-help') }}
+                                <!-- {{ __('backend.shared.url-help') }} -->
                             </small>
                             @error('website')
                             <span class="invalid-tooltip" role="alert">
@@ -862,7 +862,8 @@ $chk_post = Auth::user()->phone;
                             <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                             <span class="err_instagram_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
+                                <!-- {{ __('Only instagram Username and URL allowed (include http:// or https://)') }} -->
                             </small>
                             @error('instagram')
                             <span class="invalid-tooltip" role="alert">
@@ -880,7 +881,7 @@ $chk_post = Auth::user()->phone;
                             <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
                             <span class="err_linkedin_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('Only linkedin URL allowed (include http:// or https://)') }}
+                                <!-- {{ __('Only linkedin URL allowed (include http:// or https://)') }} -->
                             </small>
                             @error('linkedin')
                             <span class="invalid-tooltip" role="alert">
@@ -898,7 +899,7 @@ $chk_post = Auth::user()->phone;
                             <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
                             <span class="err_facebook_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('Only facebook URL allowed (include http:// or https://)') }}
+                                <!-- {{ __('Only facebook URL allowed (include http:// or https://)') }} -->
                             </small>
                             @error('facebook')
                             <span class="invalid-tooltip" role="alert">
@@ -919,7 +920,7 @@ $chk_post = Auth::user()->phone;
                                     <span class="err_youtube_url" style="color:red"></span>
                                     <span class="youtube_error" style="color:red"></span>
                                     <small id="linkHelpBlock" class="form-text text-muted">
-                                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                        <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
                                     </small>
                                     @error('youtube')
                                     <span class="invalid-tooltip" role="alert">
@@ -3804,26 +3805,50 @@ $chk_post = Auth::user()->phone;
         //}
     });
 
+    // function isUrl(s) {
+    //     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    //     return regexp.test(s);
+    // }
+    // $('#instagram').on('input', function() {
+    //     $('.err_instagram_url').html('');
+    //     var instaurl = isUrl($("#instagram").val());
+    //     var instaurl1 = $("#instagram").val();
+    //     matchUrl_insta_www = 'www.';
+    //     //    console.log(instaurl);
+    //     //    if(instaurl){
+    //     if (instaurl || instaurl1.indexOf(matchUrl_insta_www) > -1 || instaurl1.indexOf('https') > -1 || instaurl1
+    //         .indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1) {
+    //         $('.err_instagram_url').html("Please enter valid instagram user name Only 1111");
+    //         $('#frmSubmit').attr("disabled", true);
+    //         return false;
+    //     } else {
+    //         $('.err_instagram_url').html('');
+    //         $('#frmSubmit').attr("disabled", false);
+
+    //     }
+
+    // });
+
     function isUrl(s) {
-        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+        var regexp = /^[a-z0-9_.@]*$/
         return regexp.test(s);
     }
     $('#instagram').on('input', function() {
-        $('.err_instagram_url').html('');
+         $('.err_instagram_url').html('');
         var instaurl = isUrl($("#instagram").val());
         var instaurl1 = $("#instagram").val();
-        matchUrl_insta_www = 'www.';
         //    console.log(instaurl);
         //    if(instaurl){
-        if (instaurl || instaurl1.indexOf(matchUrl_insta_www) > -1 || instaurl1.indexOf('https') > -1 || instaurl1
-            .indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1) {
-            $('.err_instagram_url').html("Please enter valid instagram user name Only");
-            $('#frmSubmit').attr("disabled", true);
-            return false;
-        } else {
+
+        if (instaurl || instaurl1.indexOf('instagram') > -1 && instaurl1.indexOf('https') > -1 &&
+            instaurl1.indexOf('http') > -1 && instaurl1.indexOf('.com') > -1 && instaurl1.indexOf('/') > -1 ) {
+
             $('.err_instagram_url').html('');
             $('#frmSubmit').attr("disabled", false);
-
+        } else{
+            $('.err_instagram_url').html("Please enter valid instagram Username or URl");
+            $('#frmSubmit').attr("disabled", true); 
+            return false;
         }
 
     });
