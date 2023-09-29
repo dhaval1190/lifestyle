@@ -200,8 +200,12 @@
                                                             @php
                                                                 $event_start_date = Str::substr(getUserEventTimezone($event->event_start_date.' '.$event->event_start_hour),0,-9);
                                                                 $event_date_format = Str::limit(\Carbon\Carbon::parse($event_start_date)->format('m/d/Y'));
-
-                                                                $remainder = DB::table('reminders')->where('user_id',auth()->user()->id)->where('event_id',$event->id)->first();
+                                                                $auth_user = auth()->user();
+                                                                if($auth_user){
+                                                                    $remainder = DB::table('reminders')->where('user_id',$auth_user->id)->where('event_id',$event->id)->first();
+                                                                }else{
+                                                                    $remainder = null;
+                                                                }
                                                             @endphp
                                                             @if ($event->event_start_date < date('Y-m-d'))
                                                                 <div class="event_date_set">

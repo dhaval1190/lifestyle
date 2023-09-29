@@ -21,16 +21,17 @@
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+
 @endsection
 
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-8 col-md-9">
+        <div class="col-8 col-md-8 col-lg-8 col-xl-9">
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.article.add-article') }}</h1>
             <p class="mb-4 font-sm-14">{{ __('backend.article.add-article-desc-user') }}</p>
         </div>
-        <div class="col-4 col-md-3 text-right">
+        <div class="col-4 col-md-4 col-lg-4 col-xl-3  text-right">
             <a href="{{ route('admin.items.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -75,7 +76,7 @@
                                     <div class="col-md-6">
                                         <label for="user_id" class="text-black">{{ __('role_permission.item.listing-owner') }}</label>
                                         <select id="user_id" class="selectpicker form-control @error('user_id') is-invalid @enderror" name="user_id" data-live-search="true">
-                                            <option value="{{ $login_user->id }}" {{ old('user_id') == $login_user->id ? 'selected' : '' }}>{{ __('role_permission.item.myself') . ' (' . $login_user->email . ')' }}</option>
+                                            {{-- <option value="{{ $login_user->id }}" {{ old('user_id') == $login_user->id ? 'selected' : '' }}>{{ __('role_permission.item.myself') . ' (' . $login_user->email . ')' }}</option> --}}
                                             @foreach($other_users as $other_users_key => $other_user)
                                                 <option value="{{ $other_user->id }}" {{ old('user_id') == $other_user->id ? 'selected' : '' }}>{{ $other_user->name . ' (' . $other_user->email . ')' }}</option>
                                             @endforeach
@@ -165,7 +166,7 @@
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline">
                                             <input {{ old('item_address_hide') == 1 ? 'checked' : '' }} class="form-check-input" type="checkbox" id="item_address_hide" name="item_address_hide" value="1">
-                                            <label class="form-check-label" for="item_address_hide">
+                                            <label class="form-check-label display-grid-md" for="item_address_hide">
                                                 {{ __('backend.item.hide-address') }}
                                                 <small class="text-muted text_hide_sm">
                                                     {{ __('backend.item.hide-address-help') }}
@@ -182,7 +183,7 @@
 
                                 <div class="form-row mb-3">
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="select_country_id" class="text-black">{{ __('backend.setting.country') }}<span class="text-danger">*</span></label>
                                         <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true">
                                             {{-- <option selected value="0">{{ __('prefer_country.select-country') }}</option> --}}
@@ -199,7 +200,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="select_state_id" class="text-black">{{ __('backend.state.state') }}<span class="text-danger">*</span></label>
                                         <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" title="{{ __('backend.item.select-state') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-state') }}</option> --}}
@@ -211,7 +212,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="select_city_id" class="text-black">{{ __('backend.city.city') }}<span class="text-danger">*</span></label>
                                         <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" title="{{ __('backend.item.select-city') }}">
                                             {{-- <option selected value="0">{{ __('backend.item.select-city') }}</option> --}}
@@ -223,7 +224,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="item_postal_code" class="text-black">{{ __('backend.item.postal-code') }}<span class="text-danger">*</span></label>
                                         <input id="item_postal_code" type="text" class="form-control @error('item_postal_code') is-invalid @enderror" name="item_postal_code" value="{{ old('item_postal_code') }}">
                                         @error('item_postal_code')
@@ -237,7 +238,7 @@
 
                                 <div class="form-row mb-3">
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="item_lat" class="text-black">{{ __('backend.item.lat') }}</label>
                                         <input id="item_lat" type="text" class="form-control @error('item_lat') is-invalid @enderror" name="item_lat" value="{{ old('item_lat') }}" aria-describedby="latHelpBlock">
                                         <small id="latHelpBlock" class="form-text text-muted">
@@ -250,7 +251,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="item_lng" class="text-black">{{ __('backend.item.lng') }}</label>
                                         <input id="item_lng" type="text" class="form-control @error('item_lng') is-invalid @enderror" name="item_lng" value="{{ old('item_lng') }}" aria-describedby="lngHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -263,7 +264,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-xl-3 col-md-6">
                                         <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
                                         <input id="item_phone" type="text" class="form-control @error('item_phone') is-invalid @enderror" name="item_phone" value="{{ old('item_phone') }}" onkeypress="validatePostalCode(event)">
                                         @error('item_phone')
@@ -476,7 +477,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3 align-items-end">
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_day_of_week" class="text-black">{{ __('item_hour.day-of-week') }}</label>
                                         <select id="item_hour_day_of_week" class="selectpicker form-control" name="item_hour_day_of_week" data-live-search="true">
                                             <option value="{{ \App\ItemHour::DAY_OF_WEEK_MONDAY }}">{{ __('item_hour.monday') }}</option>
@@ -488,7 +489,7 @@
                                             <option value="{{ \App\ItemHour::DAY_OF_WEEK_SUNDAY }}">{{ __('item_hour.sunday') }}</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_open_time_open_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
                                         <select id="item_hour_open_time_open_hour" class="selectpicker form-control" name="item_hour_open_time_open_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -496,7 +497,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_open_time_open_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
                                         <select id="item_hour_open_time_open_minute" class="selectpicker form-control" name="item_hour_open_time_open_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -504,7 +505,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_open_time_close_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
                                         <select id="item_hour_open_time_close_hour" class="selectpicker form-control" name="item_hour_open_time_close_hour" data-live-search="true">
                                             @for($full_hour=0; $full_hour<=24; $full_hour++)
@@ -513,7 +514,7 @@
                                         </select>
                                         <div id="message" style="color:red"></div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
                                         <select id="item_hour_open_time_close_minute" class="selectpicker form-control" name="item_hour_open_time_close_minute" data-live-search="true">
                                             @for($full_minute=0; $full_minute<=59; $full_minute++)
@@ -521,7 +522,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
+                                    <div class="col-12 col-md-4 col-lg-3 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour') }}
@@ -540,11 +541,11 @@
                                     </div>
                                 </div>
                                 <div class="form-row mb-3 align-items-end">
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_exception_date" class="text-black">{{ __('item_hour.open-hour-exception-date') }}</label>
                                         <input id="item_hour_exception_date" type="text" class="form-control" name="item_hour_exception_date" value="" placeholder="{{ __('item_hour.open-hour-exception-date-placeholder') }}">
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_exception_open_time_open_hour" class="text-black">{{ __('item_hour.item-hour-open-hour') }}</label>
                                         <select id="item_hour_exception_open_time_open_hour" class="selectpicker form-control" name="item_hour_exception_open_time_open_hour" data-live-search="true">
                                             <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
@@ -553,7 +554,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_exception_open_time_open_minute" class="text-black">{{ __('item_hour.item-hour-open-minute') }}</label>
                                         <select id="item_hour_exception_open_time_open_minute" class="selectpicker form-control" name="item_hour_exception_open_time_open_minute" data-live-search="true">
                                             <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
@@ -562,7 +563,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_exception_open_time_close_hour" class="text-black">{{ __('item_hour.item-hour-close-hour') }}</label>
                                         <select id="item_hour_exception_open_time_close_hour" class="selectpicker form-control" name="item_hour_exception_open_time_close_hour" data-live-search="true">
                                             <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
@@ -572,7 +573,7 @@
                                         </select>
                                         <div id="exception_close_hour" style="color:red"></div>
                                     </div>
-                                    <div class="col-12 col-md-2">
+                                    <div class="col-12 col-md-4 col-lg-3">
                                         <label for="item_hour_exception_open_time_close_minute" class="text-black">{{ __('item_hour.item-hour-close-minute') }}</label>
                                         <select id="item_hour_exception_open_time_close_minute" class="selectpicker form-control" name="item_hour_exception_open_time_close_minute" data-live-search="true">
                                             <option value="">{{ __('item_hour.open-hour-exception-close-all-day') }}</option>
@@ -581,7 +582,7 @@
                                             @endfor
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-2 mt-3 mt-sm-0">
+                                    <div class="col-12 col-md-4 col-lg-3 mt-3 mt-sm-0">
                                         <a class="btn btn-sm btn-block btn-primary rounded text-white" id="item_hour_exception_create_button">
                                             <i class="fas fa-plus"></i>
                                             {{ __('item_hour.add-open-hour-exception') }}
@@ -681,9 +682,9 @@
                                 </div>
 
                                 <div class="form-row mb-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-6 col-lg-5 col-xl-5">
                                         <span class="text-lg text-gray-800">{{ __('backend.item.feature-image') }}</span>
-                                        <small class="form-text text-muted">
+                                        <small class="form-text text-muted min-height-md-80">
                                             {{ __('backend.item.feature-image-help') }}
                                         </small>
                                         @error('feature_image')
@@ -712,9 +713,9 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-6 col-lg-7 col-xl-7 mt-3 mt-md-0">
                                         <span class="text-lg text-gray-800">{{ __('backend.item.gallery-images') }}</span>
-                                        <small class="form-text text-muted">
+                                        <small class="form-text text-muted min-height-md-80">
                                             {{ __('theme_directory_hub.listing.gallery-upload-help', ['gallery_photos_count' => $setting_item_max_gallery_photos]) }}
                                         </small>
                                         @error('image_gallery')
@@ -741,7 +742,7 @@
 
                         <hr/>
                         <div class="form-row mb-3">
-                            <div class="col-md-12">
+                            <div class="col-md-12 btn-center">
                                 <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white btn-100-width-sm">
                                     {{ __('backend.shared.create') }}
                                 </button>
@@ -755,7 +756,39 @@
         </div>
     </div>
 
-    <!-- Modal - feature image -->
+      <!-- Croppie Modal -->
+    <div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+        <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="modal-header-bg"></div>
+                    <div class="up-photo-title">
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.item.crop-feature-image') }}</h5>
+                    </div>
+                    <div class="up-photo-content pb-5">
+                    <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="custom-file mt-5">
+                                        <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                        <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        <div id="upload-demo" class="center-block mt-3">
+                            <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                            
+                        </div>
+                        <div class="upload-action-btn text-center px-2">
+                            <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- --------------------------------------- -->
     <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -940,26 +973,48 @@
                 }
             });
 
+            // function isUrl(s) {
+            // var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            // return regexp.test(s);
+            // }
+            // $('#item_social_instagram').on('input', function(){  
+            //     $('.err_instagram_url').html('');             
+            //    var instaurl =  isUrl($("#item_social_instagram").val());  
+            //    var instaurl1 =  $("#item_social_instagram").val();
+            //    matchUrl_insta = 'www.';
+            // //    if(instaurl){
+            //    if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+            //         $('.err_instagram_url').html("Please enter valid instagram user name Only");
+            //         $('#submit').attr("disabled", true);
+            //         return false;
+            //     }else{
+            //         $('.err_instagram_url').html('');
+            //         $('#submit').attr("disabled", false);
+
+            //     }
+              
+            // });
             function isUrl(s) {
-            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-            return regexp.test(s);
+                var regexp = /^[a-z0-9_.@]*$/
+                return regexp.test(s);
             }
-            $('#item_social_instagram').on('input', function(){  
-                $('.err_instagram_url').html('');             
-               var instaurl =  isUrl($("#item_social_instagram").val());  
-               var instaurl1 =  $("#item_social_instagram").val();
-               matchUrl_insta = 'www.';
-            //    if(instaurl){
-               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
-                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
-                    $('#submit').attr("disabled", true);
-                    return false;
-                }else{
+            $('#item_social_instagram').on('input', function() {                
+                $('.err_instagram_url').html('');
+                var instaurl_article = isUrl($("#item_social_instagram").val());
+                var instaurl1_article = $("#item_social_instagram").val();
+                //    console.log(instaurl);
+                //    if(instaurl){
+
+                if (instaurl_article || instaurl1_article.indexOf('instagram') > -1 && instaurl1_article.indexOf('https') > -1 &&
+                    instaurl1_article.indexOf('http') > -1 && instaurl1_article.indexOf('.com') > -1 && instaurl1_article.indexOf('/') > -1 ) {
+
                     $('.err_instagram_url').html('');
                     $('#submit').attr("disabled", false);
-
+                } else{
+                    $('.err_instagram_url').html("Please enter valid instagram Username or URl");
+                    $('#submit').attr("disabled", true); 
+                    return false;
                 }
-              
             });
 
         });
@@ -1286,7 +1341,7 @@
             }
 
             $('#upload_image').on('click', function(){
-                $('#image-crop-modal').modal('show');
+                $('#cropImagePop').modal('show');
                 $('#image_error_div').hide();
                 $('#img_error').text('');
             });
@@ -1294,19 +1349,14 @@
             var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
-                    image_crop = $('#image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
+                    image_crop = $('#upload-demo').croppie({
                         viewport: {
-                            width: 600,
-                            height: 600,
-                            type: 'square'
+                            width: 260,
+                            height: 260,
+                            type: 'sqaure'
                         },
-                        boundary: {
-                            width: 700,
-                            height: 700
-                        },
-                        enableOrientation: true
+                        enforceBoundary: false,
+                        enableExif: true
                     });
                 }
                 var reader = new FileReader();
@@ -1323,25 +1373,25 @@
                     reader.readAsDataURL(this.files[0]);
                 }else{
                     // alert('Please choose only .jpg,.jpeg,.png file');
-                    $('#image-crop-modal').trigger('reset');
-                    $('#image-crop-modal').modal('hide');
+                    $('#cropImagePop').trigger('reset');
+                    $('#cropImagePop').modal('hide');
                     $('#upload_image_input').val('');
                     image_crop = null;
-                    $('#image_demo').croppie('destroy');
+                    $('#upload-demo').croppie('destroy');
                     $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
                     $('#image_error_div').show();
                 }
             });
 
-            $('#crop_image').on("click", function(event) {
+            $('#cropImageBtn').on("click", function(event) {
                 image_crop.croppie('result', {
                     type: 'base64',
-                    size: 'viewport'
+                    size: 'original'
                 }).then(function(response){
                     $('#feature_image').val(response);
                     $('#image_preview').attr("src", response);
                 });
-                $('#image-crop-modal').modal('hide')
+                $('#cropImagePop').modal('hide')
             });
             /**
              * End the croppie image plugin

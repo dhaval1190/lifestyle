@@ -479,14 +479,37 @@ class ArticleController extends Controller
         {
             $instagram_username = $request->article_social_instagram;
             if($instagram_username){
-                if(stripos($instagram_username,'@') !== false){   
-                    $instagram_username = explode('@',$instagram_username)[1];
-                }
-                if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                    // return back()->with('instagram_error','Please enter valid instagram user name Only');
-                    return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
+                // if(stripos($instagram_username,'@') !== false){   
+                //     $instagram_username = explode('@',$instagram_username)[1];
+                // }
+                // if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
+                //     // return back()->with('instagram_error','Please enter valid instagram user name Only');
+                //     return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
                     
+                // }
+                if(stripos($instagram_username,'instagram') !== false && stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                    $instagram_username = $request->article_social_instagram;
                 }
+                else{
+                        if(stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                            return back()->with('instagram_error','Please enter valid instagram Username or URl');
+                        }
+                        else{
+    
+                            if(preg_match("/^[a-z0-9_.@]*$/", $instagram_username)){
+    
+                                   if(stripos($instagram_username,'@') !== false){   
+                                        $instagram_username = explode('@',$request->article_social_instagram)[1];
+                                    }
+                                    else{
+                                        $instagram_username = $request->article_social_instagram;
+                                    }
+                                }
+                                else{
+                                    return back()->with('instagram_error','Please enter valid instagram Username Only');
+                                }
+                            } 
+                    }
             } 
             if($request->article_social_facebook){
                 if(stripos($request->article_social_facebook,'facebook') == false){
@@ -1260,13 +1283,36 @@ class ArticleController extends Controller
 
             $instagram_username = $request->article_social_instagram;
             if($instagram_username){
-                if(stripos($instagram_username,'@') !== false){   
-                    $instagram_username = explode('@',$instagram_username)[1];
+                // if(stripos($instagram_username,'@') !== false){   
+                //     $instagram_username = explode('@',$instagram_username)[1];
+                // }
+                // if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
+                //     // return back()->with('instagram_error','Please enter valid instagram user name Only');
+                //     return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
+                // }
+                if(stripos($instagram_username,'instagram') !== false && stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                    $instagram_username = $request->article_social_instagram;
                 }
-                if(stripos($instagram_username,'.com') !== false || stripos($instagram_username,'http') !== false || stripos($instagram_username,'https') !== false || stripos($instagram_username,'www.') !== false || stripos($instagram_username,'//') !== false){   
-                    // return back()->with('instagram_error','Please enter valid instagram user name Only');
-                    return response()->json(['status'=>'error','msg'=>'Please enter valid instagram user name only in instagram field']);
-                }
+                else{
+                        if(stripos($instagram_username,'.com') !== false && stripos($instagram_username,'https') !== false && stripos($instagram_username,'//') !== false){   
+                            return back()->with('instagram_error','Please enter valid instagram Username or URl');
+                        }
+                        else{
+    
+                            if(preg_match("/^[a-z0-9_.@]*$/", $instagram_username)){
+    
+                                   if(stripos($instagram_username,'@') !== false){   
+                                        $instagram_username = explode('@',$request->article_social_instagram)[1];
+                                    }
+                                    else{
+                                        $instagram_username = $request->article_social_instagram;
+                                    }
+                                }
+                                else{
+                                    return back()->with('instagram_error','Please enter valid instagram Username Only');
+                                }
+                            } 
+                    }
             }
             if($request->article_social_facebook){
                 if(stripos($request->article_social_facebook,'facebook') == false){

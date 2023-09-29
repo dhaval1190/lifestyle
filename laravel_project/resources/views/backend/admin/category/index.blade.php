@@ -8,11 +8,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-8 col-md-9">
+        <div class="col-8 col-md-8 col-lg-8 col-xl-9">
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.category.category') }}</h1>
             <p class="mb-4 font-sm-14">{{ __('backend.category.category-desc') }}</p>
         </div>
-        <div class="col-4 col-md-3 text-right">
+        <div class="col-4 col-md-4 col-lg-4 col-xl-3 text-right">
             <a href="{{ route('admin.categories.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-plus"></i>
@@ -46,7 +46,7 @@
                                     <tr class="bg-info text-white">
                                         <th>{{ __('backend.category.name') }}</th>
                                         <th>{{ __('backend.category.slug') }}</th>
-                                        <th>{{ __('category_image_option.index-table-icon-image') }}</th>
+                                        <th class="width-set-sm-d-block">{{ __('category_image_option.index-table-icon-image') }}</th>
                                         <th>{{ __('categories.parent-cat') }}</th>
                                         <th>{{ __('backend.shared.action') }}</th>
                                     </tr>
@@ -68,12 +68,12 @@
                                                 @endif
                                                 <hr>
                                                 @if($category->category_thumbnail_type == \App\Category::CATEGORY_THUMBNAIL_TYPE_ICON)
-                                                    <span class="text-sm border border-info text-info pl-1 pr-1 rounded">
+                                                    <span class="text-sm border border-info text-info pl-1 pr-1 rounded d-flex-center-wrap-sm">
                                                         <i class="fa-solid fa-font-awesome"></i>
                                                         {{ __('category_image_option.form-category-icon-image-select-icon') }}
                                                     </span>
                                                 @else
-                                                    <span class="text-sm border border-info text-info pl-1 pr-1 rounded">
+                                                    <span class="text-sm border border-info text-info pl-1 pr-1 rounded d-flex-center-wrap-sm">
                                                         <i class="fa-solid fa-image"></i>
                                                         {{ __('category_image_option.form-category-icon-image-select-image') }}
                                                     </span>

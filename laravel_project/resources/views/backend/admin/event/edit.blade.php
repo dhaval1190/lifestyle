@@ -373,6 +373,9 @@
                                             <div class="form_column_right_right">
                                                 <div class="form_group input_file">
                                                     <label class="group_title">Event Image</label>
+                                                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                     <button id="upload_image" type="button"
                                                         class="btn btn-primary btn-sm"><i
                                                             class="fa-solid fa-file-image"></i>
@@ -447,7 +450,39 @@
         </div>
     </div>
 
-    <!-- Modal - Event image -->
+     <!-- Croppie Modal -->
+ <div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('category_image_option.modal-category-image-crop-title') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+                <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="custom-file mt-5">
+                                    <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="upload-demo" class="center-block mt-3">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                        
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<!-- --------------------------------------- -->
     <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -512,7 +547,7 @@
 
             $('#upload_image').on('click', function() {
 
-                $('#image-crop-modal').modal('show');
+                $('#cropImagePop').modal('show');
             });
 
             var window_height = $(window).height();
@@ -529,7 +564,7 @@
             }
 
             $('#upload_image').on('click', function() {
-                $('#image-crop-modal').modal('show');
+                $('#cropImagePop').modal('show');
                 $('#image_error_div').hide();
                 $('#img_error').text('');
             });
@@ -539,19 +574,14 @@
             $('#upload_image_input').on('change', function() {
 
                 if (!image_crop) {
-                    image_crop = $('#image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
+                    image_crop = $('#upload-demo').croppie({
                         viewport: {
-                            width: 600,
-                            height: 600,
-                            type: 'square'
+                            width: 200,
+                            height: 200,
+                            type: 'sqaure'
                         },
-                        boundary: {
-                            width: 700,
-                            height: 700
-                        },
-                        enableOrientation: true
+                        enforceBoundary: false,
+                        enableExif: true
                     });
                 }
 
@@ -573,27 +603,27 @@
                     reader.readAsDataURL(this.files[0]);
                 } else {
                     // alert('Please choose only .jpg,.jpeg,.png file');
-                    $('#image-crop-modal').trigger('reset');
-                    $('#image-crop-modal').modal('hide');
+                    $('#cropImagePop').trigger('reset');
+                    $('#cropImagePop').modal('hide');
                     $('#upload_image_input').val('');
                     image_crop = null;
-                    $('#image_demo').croppie('destroy');
+                    $('#upload-demo').croppie('destroy');
                     $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
                     $('#image_error_div').show();
                 }
             });
 
-            $('#crop_image').on("click", function(event) {
+            $('#cropImageBtn').on("click", function(event) {
 
                 image_crop.croppie('result', {
                     type: 'base64',
-                    size: 'viewport'
+                    size: 'original'
                 }).then(function(response) {
                     $('#event_image').val(response);
                     $('#image_preview').attr("src", response);
                 });
 
-                $('#image-crop-modal').modal('hide')
+                $('#cropImagePop').modal('hide')
             });
             /**
              * End the croppie image plugin

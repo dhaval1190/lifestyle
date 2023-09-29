@@ -1587,12 +1587,12 @@
                 <div class="row mb-3 align-items-center">
 
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
                         </h2>
                     </div>
 
                     <div class="col-md-12">
-                        <div class="below_info">
+                        <div class="below_info justify-content-end">
                             <a href="{{ route('page.trending_videos') }}">
                                 <button class="btn btn-primary btn-sm">
                                     View All
@@ -1638,12 +1638,12 @@
                 <div class="row mb-3 align-items-center">
 
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
                         </h2>
                     </div>
 
                     <div class="col-md-12">
-                        <div class="below_info">
+                        <div class="below_info justify-content-end">
                             <a href="{{ route('page.trending_videos') }}">
                                 <button class="btn btn-primary btn-sm">
                                     View All
@@ -1714,12 +1714,12 @@
             <div class="container">
                 <div class="row mb-3 align-items-center">
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Video's
+                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
                         </h2>
                     </div>
 
                     <div class="col-md-12">
-                        <div class="below_info">
+                        <div class="below_info justify-content-end">
                                 <a href="{{ route('page.trending_videos') }}">
                                     <button class="btn btn-primary btn-sm">
                                         View All

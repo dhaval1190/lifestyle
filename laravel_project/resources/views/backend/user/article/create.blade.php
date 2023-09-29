@@ -729,7 +729,39 @@
             </div>
         </div>
     </div>
-
+   <!-- Croppie Modal -->
+ <div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+                <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="custom-file mt-5">
+                                    <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="upload-demo" class="center-block mt-3">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                        
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<!-- --------------------------------------- -->
     <!-- Modal - feature image -->
     <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -1007,27 +1039,51 @@
                 }
             });
 
-            function isUrl(s) {
-            var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-            return regexp.test(s);
-            }
-            $('#article_social_instagram').on('input', function(){  
-                $('.err_instagram_url').html('');             
-               var instaurl =  isUrl($("#article_social_instagram").val());  
-               var instaurl1 =  $("#article_social_instagram").val();
-               matchUrl_insta = 'www.';
-            //    if(instaurl){
-               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
-                    $('.err_instagram_url').html("Please enter valid instagram user name Only");
-                    $('#submit').attr("disabled", true);
-                    return false;
-                }else{
-                    $('.err_instagram_url').html('');
-                    $('#submit').attr("disabled", false);
+            // function isUrl(s) {
+            // var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+            // return regexp.test(s);
+            // }
+            // $('#article_social_instagram').on('input', function(){  
+            //     $('.err_instagram_url').html('');             
+            //    var instaurl =  isUrl($("#article_social_instagram").val());  
+            //    var instaurl1 =  $("#article_social_instagram").val();
+            //    matchUrl_insta = 'www.';
+            // //    if(instaurl){
+            //    if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+            //         $('.err_instagram_url').html("Please enter valid instagram user name Only");
+            //         $('#submit').attr("disabled", true);
+            //         return false;
+            //     }else{
+            //         $('.err_instagram_url').html('');
+            //         $('#submit').attr("disabled", false);
 
-                }
+            //     }
               
-            });
+            // });
+
+                function isUrl(s) {
+                var regexp = /^[a-z0-9_.@]*$/
+                return regexp.test(s);
+                }
+                $('#article_social_instagram').on('input', function() {
+                    $('.err_instagram_url').html('');
+                    var instaurl_article = isUrl($("#article_social_instagram").val());
+                    var instaurl1_article = $("#article_social_instagram").val();
+                    //    console.log(instaurl);
+                    //    if(instaurl){
+
+                    if (instaurl_article || instaurl1_article.indexOf('instagram') > -1 && instaurl1_article.indexOf('https') > -1 &&
+                        instaurl1_article.indexOf('http') > -1 && instaurl1_article.indexOf('.com') > -1 && instaurl1_article.indexOf('/') > -1 ) {
+
+                        $('.err_instagram_url').html('');
+                        $('#submit').attr("disabled", false);
+                    } else{
+                        $('.err_instagram_url').html("Please enter valid instagram Username or URl");
+                        $('#submit').attr("disabled", true); 
+                        return false;
+                    }
+
+                });
             });
 
         $(document).ready(function() {
@@ -1241,32 +1297,28 @@
                 viewport_width = 800;
                 viewport_height = 687;
             } else {
-                viewport_width = window_width * 0.8;
+                viewport_width = window_width * 0.05;
                 viewport_height = (viewport_width * 687) / 800;
             }
 
             $('#upload_image').on('click', function(){
-                $('#image-crop-modal').modal('show');
+                $('#cropImagePop').modal('show');
                 $('#image_error_div').hide();
                 $('#img_error').text('');
+                // $('#upload-demo').croppie('destroy');
             });
 
             var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function() {
                 if(!image_crop) {
-                    image_crop = $('#image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
+                    image_crop = $('#upload-demo').croppie({
                         viewport: {
-                        width: 200,
-                        height: 200,
-                        type: 'square'
+                            width: 260,
+                            height: 260,
+                            type: 'sqaure'
                         },
-                        boundary: {
-                            width: 300,
-                            height: 300
-                        },
-                        enableOrientation: true
+                        enforceBoundary: false,
+                        enableExif: true
                     });
                 }
                 var reader = new FileReader();
@@ -1278,22 +1330,27 @@
                     image_crop.croppie('bind', {
                         url: event.target.result
                     }).then(function(){
+                        $('.cr-slider').attr({'min':0.0500, 'max':1.5000});
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
+                $('.replacePhoto').on('click', function(){
+                        $('#cropImagePop').modal('hide');
+                        $('.custom-file-input').trigger('click');
+                    })
             }else{
                     // alert('Please choose only .jpg,.jpeg,.png file');
-                    $('#image-crop-modal').trigger('reset');
-                    $('#image-crop-modal').modal('hide');
+                    $('#cropImagePop').trigger('reset');
+                    $('#cropImagePop').modal('hide');
                     $('#upload_image_input').val('');
                     image_crop = null;
-                    $('#image_demo').croppie('destroy');
+                    $('#upload-demo').croppie('destroy');
                     $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
                     $('#image_error_div').show();
                 }
             });
 
-            $('#crop_image').on("click", function(event) {
+            $('#cropImageBtn').on("click", function(event) {
                 image_crop.croppie('result', {
                     type: 'base64',
                     size: 'viewport'
@@ -1301,7 +1358,7 @@
                     $('#feature_image').val(response);
                     $('#image_preview').attr("src", response);
                 });
-                $('#image-crop-modal').modal('hide');
+                $('#cropImagePop').modal('hide');
             });
             /**
              * End the croppie image plugin

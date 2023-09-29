@@ -9,11 +9,11 @@
 @section('content')
 
     <div class="row justify-content-between">
-        <div class="col-8 col-md-9">
+        <div class="col-8 col-md-8 col-lg-8 col-xl-9">
             <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('backend.category.edit-category') }}</h1>
             <p class="mb-4 font-sm-14 ">{{ __('backend.category.edit-category-desc') }}</p>
         </div>
-        <div class="col-4 col-md-3 text-right">
+        <div class="col-4 col-md-4 col-lg-4 col-xl-3 text-right">
             <a href="{{ route('admin.categories.index') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">
                   <i class="fas fa-backspace"></i>
@@ -192,6 +192,9 @@
 
                                         <div class="row mt-3">
                                             <div class="col-md-6">
+                                            <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display: none;">
+                                                    <strong id="img_error"></strong>
+                                                </div>
                                                 <button id="upload_image" type="button" class="btn btn-primary btn-sm mb-2">
                                                     <i class="fa-solid fa-file-image"></i>
                                                     {{ __('backend.item.select-image') }}
@@ -346,7 +349,39 @@
         </div>
     </div>
 
-    <!-- Modal - category image -->
+      <!-- Croppie Modal -->
+ <div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('category_image_option.modal-category-image-crop-title') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+                <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="custom-file mt-5">
+                                    <input id="upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="upload-demo" class="center-block mt-3">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                        
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<!-- --------------------------------------- -->
     <div class="modal fade" id="image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="width: 1000px !important;">
@@ -415,7 +450,8 @@
 
             $('#upload_image').on('click', function(){
 
-                $('#image-crop-modal').modal('show');
+            $('#cropImagePop').modal('show');
+            $('#img_error').text('');
             });
 
             var window_height = $(window).height();
@@ -425,64 +461,71 @@
 
             if(window_width >= 317)
             {
-                viewport_width = 317;
-                viewport_height = 200;
+            viewport_width = 317;
+            viewport_height = 200;
             }
             else
             {
-                viewport_width = window_width * 0.8;
-                viewport_height = (viewport_width * 200) / 317;
+            viewport_width = window_width * 0.8;
+            viewport_height = (viewport_width * 200) / 317;
             }
-
+            var fileTypes = ['jpg', 'jpeg', 'png'];
             $('#upload_image_input').on('change', function(){
 
-                if(!image_crop)
-                {
-                    image_crop = $('#image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
-                        viewport: {
-                            width: 200,
-                            height: 200,
-                            type: 'square'
-                        },
-                        boundary: {
-                            width: 300,
-                            height: 300
-                        },
-                        enableOrientation: true
-                    });
-
-                    $('#image-crop-modal .modal-dialog').css({
-                        'max-width':'100%'
-                    });
-                }
-
-                var reader = new FileReader();
-
-                reader.onload = function (event) {
-
-                    image_crop.croppie('bind', {
-                        url: event.target.result
-                    }).then(function(){
-                        console.log('jQuery bind complete');
-                    });
-
-                };
-                reader.readAsDataURL(this.files[0]);
-            });
-
-            $('#crop_image').on("click", function(event){
-
-                image_crop.croppie('result', {
-                    type: 'base64',
-                    size: 'viewport'
-                }).then(function(response){
-                    $('#category_image').val(response);
-                    $('#image_preview').attr("src", response);
+            if(!image_crop)
+            {
+                image_crop = $('#upload-demo').croppie({
+                    viewport: {
+                        width: 260,
+                        height: 260,
+                        type: 'sqaure'
+                    },
+                    enforceBoundary: false,
+                    enableExif: true
                 });
 
-                $('#image-crop-modal').modal('hide')
+                // $('#image-crop-modal .modal-dialog').css({
+                //     'max-width':'100%'
+                // });
+            }
+
+            var reader = new FileReader();
+            var file = this.files[0]; // Get your file here
+            var fileExt = file.type.split('/')[1]; // Get the file extension
+            if(fileTypes.indexOf(fileExt) !== -1) {
+            reader.onload = function (event) {
+
+                image_crop.croppie('bind', {
+                    url: event.target.result
+                }).then(function(){
+                    console.log('jQuery bind complete');
+                });
+
+            };
+            reader.readAsDataURL(this.files[0]);
+        }else{
+                    // alert('Please choose only .jpg,.jpeg,.png file');
+                    $('#cropImagePop').trigger('reset');
+                    $('#cropImagePop').modal('hide');
+                    $('#upload_image_input').val('');
+                    image_crop = null;
+                    $('#upload-demo').croppie('destroy');
+                    $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
+                    $('#image_error_div').show();
+                }
+            });
+
+            $('#cropImageBtn').on("click", function(event){
+
+            image_crop.croppie('result', {
+                type: 'base64',
+                size: 'original'
+            }).then(function(response){
+                $('#category_image').val(response);
+                $('#image_preview').attr("src", response);
+            });
+
+            $('#cropImagePop').modal('hide')
             });
             /**
              * End the croppie image plugin

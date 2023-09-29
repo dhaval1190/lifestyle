@@ -21,7 +21,7 @@
     @endif
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ __('backend.homepage.dashboard') }}</h1>
         <a href="{{ route('admin.items.create') }}" class="btn btn-info btn-icon-split">
                 <span class="icon text-white-50">

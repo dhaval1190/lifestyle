@@ -279,7 +279,7 @@
                 
             <div class="row mt-5 mb-3 align-items-center">
                 <div class="col-md-7 text-left border-primary">
-                    <h2 class="font-weight-light text-primary mt-5">All Trending Video's</h2>
+                    <h2 class="font-weight-light text-primary mt-5">All Trending Videos</h2>
                 </div>
             </div>
             

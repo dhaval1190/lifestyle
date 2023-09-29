@@ -555,7 +555,7 @@ $chk_post = Auth::user()->phone;
         <div class="col-lg-12 co-12">
             <div class="display_center">
                 <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
-                <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p>
+                <!-- <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p> -->
                 @if(Auth::user()->isCoach())
                 <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
             </div>
@@ -1036,7 +1036,7 @@ $chk_post = Auth::user()->phone;
                         @endforeach
                     </select>
                     <small class="form-text text-muted">
-                        {{ __('Time zone for event') }}
+                        <!-- {{ __('Time zone for event') }} -->
                     </small>
                     @error('hour_time_zone')
                     <span class="invalid-feedback">
@@ -1084,7 +1084,7 @@ $chk_post = Auth::user()->phone;
                                 <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
                                 <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
                                 <small id="linkHelpBlock" class="form-text text-muted">
-                                    {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                    <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
                                 </small>
                                 @error('youtube_intro_title')
                                 <span class="invalid-tooltip" role="alert">
@@ -1125,7 +1125,7 @@ $chk_post = Auth::user()->phone;
                         <span class="err_media_url" style="color:red"></span>
                         <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
                         <small id="linkHelpBlock" class="form-text text-muted">
-                            {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                            <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
                         </small>
                         @error('media_url')
                         <span class="invalid-tooltip" role="alert">
@@ -1226,7 +1226,7 @@ $chk_post = Auth::user()->phone;
                             @endforeach
                         </select>
                         <small class="form-text text-muted">
-                            {{ __('Time zone for event') }}
+                            <!-- {{ __('Time zone for event') }} -->
                         </small>
                         @error('hour_time_zone')
                         <span class="invalid-feedback">
@@ -1299,7 +1299,7 @@ $chk_post = Auth::user()->phone;
                             <span class="err_youtube_media_url" style="color:red"></span>
                             <input id="youtube_media_url" type="url" class="form-control @error('youtube_media_url') is-invalid @enderror" name="youtube_media_url" value="{{ old('youtube_media_url', $login_user->media_url) }}">
                             <small id="linkHelpBlock" class="form-text text-muted">
-                                {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
                             </small>
                             <p class="error_color youtube_url_error"></p>
                             @if(Session::has('added'))
@@ -1399,7 +1399,7 @@ $chk_post = Auth::user()->phone;
                         <label class="text-black">Ebook Cover</label>
                         <input id="media_cover" type="file" class="form-control @error('media_cover') is-invalid @enderror" name="media_cover" accept=".jpg,.jpeg,.png">
                         <small class="form-text text-muted">
-                            {{ __('backend.item.feature-image-help') }}
+                            <!-- {{ __('backend.item.feature-image-help') }} -->
                         </small>
                         @error('media_cover')
                         <span class="invalid-tooltip">
@@ -1491,7 +1491,7 @@ $chk_post = Auth::user()->phone;
                         <span class="podcast_err_media_url" style="color:red"></span>
                         <input id="podcast_image" type="url" class="form-control @error('podcast_image') is-invalid @enderror" name="podcast_image" value="{{ old('podcast_image', $login_user->podcast_image) }}">
                         <small id="linkHelpBlock" class="form-text text-muted">
-                            {{ __('Only URL allowed (include http:// or https://)') }}
+                            <!-- {{ __('Only URL allowed (include http:// or https://)') }} -->
                         </small>
                         @error('podcast_image')
                         <span class="invalid-tooltip" role="alert">
@@ -1706,7 +1706,7 @@ $chk_post = Auth::user()->phone;
                                             <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
                                             <p class="article_social_whatsapp_error error_color"></p>
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
+                                                <!-- {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }} -->
                                             </small>
                                             @error('article_social_whatsapp')
                                             <span class="invalid-feedback">
@@ -1721,7 +1721,7 @@ $chk_post = Auth::user()->phone;
                                             </label>
                                             <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('backend.shared.url-help') }}
+                                                <!-- {{ __('backend.shared.url-help') }} -->
                                             </small>
                                             @error('article_website')
                                             <span class="invalid-feedback">
@@ -1738,7 +1738,7 @@ $chk_post = Auth::user()->phone;
                                             <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
                                             <span class="article_err_media_url" style="color:red"></span>
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('backend.shared.url-help') }}
+                                                <!-- {{ __('backend.shared.url-help') }} -->
                                             </small>
                                             @error('article_social_facebook')
                                             <span class="invalid-feedback">
@@ -1762,7 +1762,7 @@ $chk_post = Auth::user()->phone;
                                             <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
                                             <span class="article_err_twitter_url" style="color:red"></span>
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('backend.shared.url-help') }}
+                                                <!-- {{ __('backend.shared.url-help') }} -->
                                             </small>
                                             @error('article_social_twitter')
                                             <span class="invalid-feedback">
@@ -1784,7 +1784,7 @@ $chk_post = Auth::user()->phone;
                                             <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
                                             <span class="article_err_linkedin_url" style="color:red"></span>
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('backend.shared.url-help') }}
+                                                <!-- {{ __('backend.shared.url-help') }} -->
                                             </small>
                                             @error('article_social_linkedin')
                                             <span class="invalid-feedback">
@@ -1806,7 +1806,7 @@ $chk_post = Auth::user()->phone;
                                             <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
                                             <span class="article_err_instagram_url" style="color:red"></span>
                                             <small id="linkHelpBlock" class="form-text text-muted">
-                                                {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                                <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
                                             </small>
                                             @error('article_social_instagram')
                                             <span class="invalid-feedback">
@@ -1944,7 +1944,7 @@ $chk_post = Auth::user()->phone;
                                         <div class="col-12">
                                             <span class="text-gray-800">{{ __('article_hour.open-hour-exceptions') }}</span>
                                             <small class="form-text text-muted">
-                                                {{ __('article_hour.open-hour-exceptions-help') }}
+                                                <!-- {{ __('article_hour.open-hour-exceptions-help') }} -->
                                             </small>
                                         </div>
                                     </div>
@@ -2245,6 +2245,30 @@ $chk_post = Auth::user()->phone;
 
 
 <!-- Croppie Modal -->
+<div class="modal fade cropImageModal" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+
+                    <div id="upload-demo" class="center-block">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- --------------------------------------- -->
 <div class="modal fade" id="profile-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content modal-height-set">
@@ -2280,6 +2304,38 @@ $chk_post = Auth::user()->phone;
 </div>
 
 <!-- Article Modal - feature image -->
+ <div class="modal fade cropImageModal" id="article_image_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.article.crop-feature-image') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="custom-file mt-5">
+                                    <input id="article_upload_image_input" type="file" class="custom-file-input" accept=".jpg,.jpeg,.png">
+                                    <label class="custom-file-label" for="upload_image_input">{{ __('backend.article.choose-image') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="upload-article_image_demo" class="center-block mt-3">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                        
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="article_crop_image" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<!-- --------------------------------------- -->
 <div class="modal fade" id="image-crop-modal-article" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -2312,6 +2368,31 @@ $chk_post = Auth::user()->phone;
     </div>
 </div>
 
+<!-- --------------------------------------- -->
+<div class="modal fade cropImageModal" id="cropImagePop_profile-cover-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+    <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="modal-header-bg"></div>
+                <div class="up-photo-title">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Crop cover image') }}</h5>
+                </div>
+                <div class="up-photo-content pb-5">
+
+                    <div id="upload-demo_cover_image" class="center-block">
+                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                    </div>
+                    <div class="upload-action-btn text-center px-2">
+                        <button type="button" id="cropImageBtn_cover_image" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- --------------------------------------- -->
 <div class="modal fade" id="profile-cover-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="cover-image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content modal-height-set">
@@ -2912,7 +2993,7 @@ $chk_post = Auth::user()->phone;
         // });
 
         $('#article_upload_image').on('click', function(){
-            $('#image-crop-modal-article').modal('show');
+            $('#article_image_modal').modal('show');
             $('#image_error_div').hide();
             $('#img_error').text('');
         });
@@ -2966,19 +3047,15 @@ $chk_post = Auth::user()->phone;
         var fileTypes = ['jpg', 'jpeg', 'png'];
         $('#article_upload_image_input').on('change', function() {
             if (!image_crop) {
-                image_crop = $('#article_image_demo').croppie({
-                    enableExif: true,
+                image_crop = $('#upload-article_image_demo').croppie({
                     viewport: {
-                        width: 200,
-                        height: 200,
-                        type: 'square'
-                    },
-                    boundary: {
-                        width: 300,
-                        height: 300
-                    },
-                    enableOrientation: true
-                });
+                            width: 260,
+                            height: 260,
+                            type: 'sqaure'
+                        },
+                        enforceBoundary: false,
+                        enableExif: true
+                    });
             }
             var reader = new FileReader();
             var file = this.files[0]; // Get your file here
@@ -2991,17 +3068,17 @@ $chk_post = Auth::user()->phone;
                     image_crop.croppie('bind', {
                         url: event.target.result
                     }).then(function() {
-                        // console.log('jQuery bind complete');
+                        $('.cr-slider').attr({'min':0.0500, 'max':1.5000});
                     });
                 };
                 reader.readAsDataURL(this.files[0]);
             } else {
                 // alert('Please choose only .jpg,.jpeg,.png file');
-                $('#image-crop-modal-article').trigger('reset');
-                $('#image-crop-modal-article').modal('hide');
+                $('#article_image_modal').trigger('reset');
+                $('#article_image_modal').modal('hide');
                 $('#article_upload_image_input').val('');
                 image_crop = null;
-                $('#article_image_demo').croppie('destroy');
+                $('#upload-article_image_demo').croppie('destroy');
                 $('#img_error').text('Please choose only .jpg,.jpeg,.png file');
                 $('#image_error_div').show();
             }
@@ -3021,12 +3098,12 @@ $chk_post = Auth::user()->phone;
         $('#article_crop_image').on("click", function(event) {
             image_crop.croppie('result', {
                 type: 'base64',
-                size: 'viewport'
+                size: 'original'
             }).then(function(response) {
                 $('#article_feature_image').val(response);
                 $('#article_image_preview').attr("src", response);
             });
-            $('#image-crop-modal-article').modal('hide')
+            $('#article_image_modal').modal('hide')
         });
 
         // var cover_image_crop = null;
@@ -3132,7 +3209,7 @@ $chk_post = Auth::user()->phone;
         $('#profile_upload_image').on('click', function(){
             $('#user_image_error_div').hide();
             $('#user_img_error').text('');
-            $('#profile_image_demo').croppie('destroy');
+            $('#upload-demo').croppie('destroy');
             $.FileDialog({
                 accept: ".jpeg,.jpg,.png",
             }).on("files.bs.filedialog", function (e) {
@@ -3140,19 +3217,14 @@ $chk_post = Auth::user()->phone;
                 var image_crop_profile = null;
                 var fileTypes_profile = ['jpg', 'jpeg', 'png'];
                 if (!image_crop_profile) {
-                    image_crop_profile = $('#profile_image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
+                    image_crop_profile = $('#upload-demo').croppie({
                         viewport: {
-                            width: 300,
-                            height: 300,
-                            type: 'square'
+                            width: 260,
+                            height: 260,
+                            type: 'circle'
                         },
-                        boundary: {
-                            width: 500,
-                            height: 400
-                        },
-                        enableOrientation: true
+                        enforceBoundary: false,
+                        enableExif: true
                     });
                 }
                 var reader_profile = new FileReader();
@@ -3165,29 +3237,29 @@ $chk_post = Auth::user()->phone;
                         image_crop_profile.croppie('bind', {
                             url: e1.target.result
                         }).then(function() {
-                            $('.cr-slider').attr({'min':0.5000, 'max':1.5000});
+                            $('.cr-slider').attr({'min':0.0500, 'max':1.5000});
                             // console.log('jQuery bind complete');
                         });
                     };
                     reader_profile.readAsDataURL(e.files[0]);
-                    $('#profile-image-crop-modal').modal('show');
+                    $('#cropImagePop').modal('show');
 
-                    $('#profile_crop_image').on("click", function(event) {
+                    $('#cropImageBtn').on("click", function(event) {
                         image_crop_profile.croppie('result', {
                             type: 'base64',
-                            size: 'viewport'
+                            size: 'original'
                         }).then(function(response) {
                             $('#feature_image').val(response);
                             $('#image_preview').attr("src", response);
                         });
-                        $('#profile-image-crop-modal').modal('hide')
+                        $('#cropImagePop').modal('hide')
                     });
                 } else {
-                    $('#profile-image-crop-modal').trigger('reset');
-                    $('#profile-image-crop-modal').modal('hide');
+                    $('#cropImagePop').trigger('reset');
+                    $('#cropImagePop').modal('hide');
                     $('#upload_profile_image_input').val('');
                     image_crop_profile = null;
-                    $('#profile_image_demo').croppie('destroy');
+                    $('#upload-demo').croppie('destroy');
                     $('#user_img_error').text('Please choose only .jpg,.jpeg,.png file');
                     $('#user_image_error_div').show();
                 }                
@@ -3201,7 +3273,7 @@ $chk_post = Auth::user()->phone;
         $('#profile_cover_upload_image').on('click', function(){
             $('#user_image_error_div').hide();
             $('#user_img_error').text('');
-            $('#cover_image_demo').croppie('destroy');
+            $('#upload-demo_cover_image').croppie('destroy');
 
             $.FileDialog({
                 accept: ".jpeg,.jpg,.png",
@@ -3210,19 +3282,14 @@ $chk_post = Auth::user()->phone;
                 var image_crop_profile = null;
                 var fileTypes_profile = ['jpg', 'jpeg', 'png'];
                 if (!image_crop_profile) {
-                    image_crop_profile = $('#cover_image_demo').croppie({
-                        enableExif: true,
-                        mouseWheelZoom: false,
+                    image_crop_profile = $('#upload-demo_cover_image').croppie({
                         viewport: {
-                            width: 999,
-                            height: 312,
+                            width: 480,
+                            height: 230,
+                            type: 'sqaure'
                         },
-                        boundary: {
-                            width: 950,
-                            height: 650
-                        },
-                        showZoomer: true,
-                        enableOrientation: true
+                        enforceBoundary: false,
+                        enableExif: true
                     });
                 }
                 var reader_profile = new FileReader();
@@ -3235,14 +3302,14 @@ $chk_post = Auth::user()->phone;
                         image_crop_profile.croppie('bind', {
                             url: e1.target.result
                         }).then(function() {
-                            $('.cr-slider').attr({'min':0.5000, 'max':1.5000});
+                            $('.cr-slider').attr({'min':0.0500, 'max':1.5000});
                             // console.log('jQuery bind complete');
                         });
                     };
                     reader_profile.readAsDataURL(e.files[0]);
-                    $('#profile-cover-image-crop-modal').modal('show');
+                    $('#cropImagePop_profile-cover-image').modal('show');
 
-                    $('#crop_cover_image').on("click", function(event) {
+                    $('#cropImageBtn_cover_image').on("click", function(event) {
                         image_crop_profile.croppie('result', {
                             type: 'base64',
                             size: 'original',
@@ -3252,15 +3319,15 @@ $chk_post = Auth::user()->phone;
                             $('#feature_cover_image').val(response);
                             $('#cover_image_preview').css('background-image', 'url(' + response + ')');
                         });
-                        $('#profile-cover-image-crop-modal').modal('hide')
+                        $('#cropImagePop_profile-cover-image').modal('hide')
                     });
 
                 } else {
-                    $('#profile-cover-image-crop-modal').trigger('reset');
-                    $('#profile-cover-image-crop-modal').modal('hide');
+                    $('#cropImagePop_profile-cover-image').trigger('reset');
+                    $('#cropImagePop_profile-cover-image').modal('hide');
                     $('#upload_profile_image_input').val('');
                     image_crop_profile = null;
-                    $('#cover_image_demo').croppie('destroy');
+                    $('#upload-demo_cover_image').croppie('destroy');
                     $('#user_img_error').text('Please choose only .jpg,.jpeg,.png file');
                     $('#user_image_error_div').show();
                 }
@@ -3852,6 +3919,29 @@ $chk_post = Auth::user()->phone;
         }
 
     });
+    function isUrl(s) {
+        var regexp = /^[a-z0-9_.@]*$/
+        return regexp.test(s);
+    }
+    $('#article_social_instagram').on('input', function() {
+         $('.article_err_instagram_url').html('');
+        var instaurl_article = isUrl($("#article_social_instagram").val());
+        var instaurl1_article = $("#article_social_instagram").val();
+        //    console.log(instaurl);
+        //    if(instaurl){
+
+        if (instaurl_article || instaurl1_article.indexOf('instagram') > -1 && instaurl1_article.indexOf('https') > -1 &&
+            instaurl1_article.indexOf('http') > -1 && instaurl1_article.indexOf('.com') > -1 && instaurl1_article.indexOf('/') > -1 ) {
+
+            $('.article_err_instagram_url').html('');
+            $('#submit').attr("disabled", false);
+        } else{
+            $('.article_err_instagram_url').html("Please enter valid instagram Username or URl");
+            $('#submit').attr("disabled", true); 
+            return false;
+        }
+
+    });
 
     //For article social validations
     $('#article_social_facebook').on('input', function(){
@@ -3914,23 +4004,23 @@ $chk_post = Auth::user()->phone;
             var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
             return regexp.test(s);
             }
-            $('#article_social_instagram').on('input', function(){  
-                $('.article_err_instagram_url').html('');             
-               var instaurl =  articleIsUrl($("#article_social_instagram").val());  
-               var instaurl1 =  $("#article_social_instagram").val();
-               matchUrl_insta = 'www.';
-            //    if(instaurl){
-               if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
-                    $('.article_err_instagram_url').html("Please enter valid instagram user name Only");
-                    $('#submit').attr("disabled", true);
-                    return false;
-                }else{
-                    $('.article_err_instagram_url').html('');
-                    $('#submit').attr("disabled", false);
+            // $('#article_social_instagram').on('input', function(){  
+            //     $('.article_err_instagram_url').html('');             
+            //    var instaurl =  articleIsUrl($("#article_social_instagram").val());  
+            //    var instaurl1 =  $("#article_social_instagram").val();
+            //    matchUrl_insta = 'www.';
+            // //    if(instaurl){
+            //    if(instaurl || instaurl1.indexOf(matchUrl_insta) > -1 || instaurl1.indexOf('https') > -1 || instaurl1.indexOf('http') > -1 || instaurl1.indexOf('.com') > -1 || instaurl1.indexOf('/') > -1){
+            //         $('.article_err_instagram_url').html("Please enter valid instagram user name Only");
+            //         $('#submit').attr("disabled", true);
+            //         return false;
+            //     }else{
+            //         $('.article_err_instagram_url').html('');
+            //         $('#submit').attr("disabled", false);
 
-                }
+            //     }
               
-            });
+            // });
 
 
     //End article social validations
