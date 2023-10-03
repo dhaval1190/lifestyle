@@ -180,7 +180,7 @@
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  border-style: solid;
+  /* border-style: solid; */
   border-color: #FFFFFF;
   box-shadow: 0 0 8px 3px #B8B8B8;
   position: absolute;
@@ -533,9 +533,13 @@ $chk_post = Auth::user()->phone;
 <div class="row">
     <div class="col-lg-12 p-0">
         <div class="back_ground_image_set" id="cover_image_preview" @if(!empty($user_detail['user_cover_image'])) style="background-image: url( {{ Storage::disk('public')->url('user/' . $user_detail['user_cover_image']) }});" @else style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});"@endif>
-            <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a>
+            <!-- <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a> -->
             @if(!empty($user_detail['user_cover_image']))
-                <a href="javascript:void(0)" id="delete_user_cover_image_button"><i class="fa fa-trash"></i></a>
+                <!-- <a href="javascript:void(0)" id="delete_user_cover_image_button"> -->
+                <a class="delete_user_cover_image_button" href="#" data-toggle="modal" data-target="#deleteModal_cover_image">
+                    <i class="fa fa-times-circle"></i></a>
+            @else
+                <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a>
             @endif
             <a href="javascript:void(0)" id="profile_upload_image" class="profile_image_set">
                 @if(empty($login_user->user_image))        
@@ -547,7 +551,9 @@ $chk_post = Auth::user()->phone;
                 <i class="fa fa-edit"></i>
             </a>
             @if(!empty($login_user->user_image))  
-                <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"><i class="fa fa-trash"></i></a>
+                <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+                <a class="profile_image_set" href="#" data-toggle="modal" data-target="#deleteModal">
+                    <i class="fa fa-times-circle"></i></a>
             @endif
         
         </div>
@@ -572,7 +578,50 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
 
-
+    <div class="modal fade" id="deleteModal_cover_image" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   Do you really want to delete Cover Image ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
+                        
+                    <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+                            <button type="button"  id="delete_user_cover_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        <!-- </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   Do you really want to delete Profile Picture ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
+                        
+                    <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+                            <button type="button"  id="delete_user_profile_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                        <!-- </a>                    -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 <!-- Content Row -->
@@ -3341,7 +3390,7 @@ $chk_post = Auth::user()->phone;
 
         /* Start delete feature image button */
         $('#delete_user_profile_image_button').on('click', function() {
-            $('#delete_user_profile_image_button').attr("disabled", true);
+            // $('#delete_user_profile_image_button').attr("disabled", true);
             var ajax_url = '/ajax/user/image/delete/' + '{{ $login_user->id }}';
             jQuery.ajax({
                 url: ajax_url,
@@ -3353,8 +3402,9 @@ $chk_post = Auth::user()->phone;
                         "{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}"
                     );
                     $('#feature_image').val("");
+                    $('#deleteModal').modal('hide');
 
-                    $('#delete_user_profile_image_button').attr("disabled", false);
+                    // $('#delete_user_profile_image_button').attr("disabled", false);
                     location.reload();
                 }
             });
@@ -3363,7 +3413,7 @@ $chk_post = Auth::user()->phone;
         /* Start delete cover image button */
         $('#delete_user_cover_image_button').on('click', function() {
             // console.log("fkldfkldk")
-            $('#delete_user_cover_image_button').attr("disabled", true);
+            // $('#delete_user_cover_image_button').attr("disabled", true);
             // var id = '<?php echo $login_user->user_cover_image; ?>';
             // var url = "{{route('user.coverimage.delete', 0)}}";
             // url = url.replace('0', id);
@@ -3379,8 +3429,9 @@ $chk_post = Auth::user()->phone;
                         "{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}"
                     );
                     $('#feature_image').val("");
+                    $('#deleteModal_cover_image').modal('hide');
 
-                    $('#delete_user_cover_image_button').attr("disabled", false);
+                    // $('#delete_user_cover_image_button').attr("disabled", false);
                     location.reload();
                 }
             });
