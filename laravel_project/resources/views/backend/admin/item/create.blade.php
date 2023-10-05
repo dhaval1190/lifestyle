@@ -18,9 +18,9 @@
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}"> -->
 
 @endsection
 
@@ -82,7 +82,7 @@
                                             @endforeach
                                         </select>
                                         <small class="form-text text-muted">
-                                            {{ __('role_permission.item.listing-owner-help') }}
+                                            <!-- {{ __('role_permission.item.listing-owner-help') }} -->
                                         </small>
                                         @error('user_id')
                                         <span class="invalid-tooltip">
@@ -161,7 +161,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
+                               {{--<div class="form-row mb-3">
 
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline">
@@ -176,10 +176,10 @@
                                         @error('item_address_hide')
                                         <span class="invalid-tooltip">
                                         <strong>{{ $message }}</strong>
-                                    </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                        </span>
+                                            @enderror
+                                        </div>
+                                </div>--}} 
 
                                 <div class="form-row mb-3">
 
@@ -238,7 +238,7 @@
 
                                 <div class="form-row mb-3">
 
-                                    <div class="col-xl-3 col-md-6">
+                                   {{--<div class="col-xl-3 col-md-6">
                                         <label for="item_lat" class="text-black">{{ __('backend.item.lat') }}</label>
                                         <input id="item_lat" type="text" class="form-control @error('item_lat') is-invalid @enderror" name="item_lat" value="{{ old('item_lat') }}" aria-describedby="latHelpBlock">
                                         <small id="latHelpBlock" class="form-text text-muted">
@@ -249,9 +249,9 @@
                                         <strong>{{ $message }}</strong>
                                          </span>
                                         @enderror
-                                    </div>
+                                    </div>--}}
 
-                                    <div class="col-xl-3 col-md-6">
+                                   {{--<div class="col-xl-3 col-md-6">
                                         <label for="item_lng" class="text-black">{{ __('backend.item.lng') }}</label>
                                         <input id="item_lng" type="text" class="form-control @error('item_lng') is-invalid @enderror" name="item_lng" value="{{ old('item_lng') }}" aria-describedby="lngHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -262,7 +262,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div>--}}
 
                                     <div class="col-xl-3 col-md-6">
                                         <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
@@ -298,7 +298,7 @@
                                         </label>
                                         <input id="item_website" type="text" class="form-control @error('item_website') is-invalid @enderror" name="item_website" value="{{ old('item_website') }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_website')
                                         <span class="invalid-tooltip">
@@ -315,7 +315,7 @@
                                         <input id="item_social_facebook" type="text" class="form-control @error('item_social_facebook') is-invalid @enderror" name="item_social_facebook" value="{{ old('item_social_facebook') }}">
                                         <span class="err_media_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_facebook')
                                         <span class="invalid-tooltip">
@@ -337,7 +337,7 @@
                                         <input id="item_social_twitter" type="text" class="form-control @error('item_social_twitter') is-invalid @enderror" name="item_social_twitter" value="{{ old('item_social_twitter') }}">
                                         <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_twitter')
                                         <span class="invalid-tooltip">
@@ -362,7 +362,7 @@
                                         <input id="item_social_linkedin" type="text" class="form-control @error('item_social_linkedin') is-invalid @enderror" name="item_social_linkedin" value="{{ old('item_social_linkedin') }}">
                                         <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_linkedin')
                                         <span class="invalid-tooltip">
@@ -384,7 +384,7 @@
                                         <input id="item_social_instagram" type="text" class="form-control @error('item_social_instagram') is-invalid @enderror" name="item_social_instagram" value="{{ old('item_social_instagram') }}">
                                         <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-instagram-help') }}
+                                            <!-- {{ __('item_whatsapp_instagram.item-social-instagram-help') }} -->
                                         </small>
                                         @error('item_social_instagram')
                                         <span class="invalid-tooltip">
@@ -405,7 +405,7 @@
                                         </label>
                                         <input id="item_social_whatsapp" type="text" class="form-control @error('item_social_whatsapp') is-invalid @enderror" name="item_social_whatsapp" value="{{ old('item_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }}
+                                            <!-- {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }} -->
                                         </small>
                                         @error('item_social_whatsapp')
                                         <span class="invalid-tooltip">
@@ -420,7 +420,7 @@
                         </div>
 
                         <!-- start opening hour section -->
-                        <div class="row border-left-primary mb-4">
+                       {{--<div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
                                     <div class="col-md-12">
@@ -592,13 +592,13 @@
                                 <div class="form-row mb-3" id="open_hour_added_exceptions">
                                 </div>
                             </div>
-                        </div>
+                        </div> --}} 
                         <!-- end opening hour section -->
 
                         <!-- Start custom field section -->
-                        <div class="row border-left-primary mb-4">
+                        <div class="row border-left-primary">
                             <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                               {{--<div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-tasks"></i>
@@ -608,7 +608,7 @@
                                             {{ __('backend.item.custom-field-help') }}
                                         </small>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="form-row mb-3">
                                     @foreach($all_customFields as $key => $customField)
                                         <div class="col-md-4 mb-3">
@@ -877,9 +877,9 @@
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script> -->
     <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
@@ -887,7 +887,7 @@
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> -->
 
     <script>
 

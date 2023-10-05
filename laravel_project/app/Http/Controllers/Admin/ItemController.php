@@ -386,7 +386,7 @@ class ItemController extends Controller
             'category' => 'required|array',
             'category.*' => 'required|numeric|exists:categories,id',
             'item_status' => 'required|numeric',
-            'item_featured' => 'required|numeric',
+            // 'item_featured' => 'required|numeric',
             'item_title' => 'required|max:100',
             'item_address' => 'required',
             'user_id' => 'required|numeric',
@@ -404,8 +404,8 @@ class ItemController extends Controller
             'item_video_urls' => 'nullable|array',
             'item_video_urls.*' => 'url|max:255',
             'item_type' => 'required|numeric|in:1,2',
-            'item_hour_time_zone' => 'required|max:255',
-            'item_hour_show_hours' => 'required|numeric|in:1,2',
+            // 'item_hour_time_zone' => 'required|max:255',
+            // 'item_hour_show_hours' => 'required|numeric|in:1,2',
             'item_social_instagram' => 'nullable|max:255',
             'item_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
@@ -612,8 +612,8 @@ class ItemController extends Controller
         $item_social_instagram = $instagram_username;
         $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
 
-        $item_hour_time_zone = $request->item_hour_time_zone;
-        $item_hour_show_hours = $request->item_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
+        // $item_hour_time_zone = $request->item_hour_time_zone;
+        // $item_hour_show_hours = $request->item_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
         // start upload feature image
         $feature_image = $request->feature_image;
@@ -712,8 +712,8 @@ class ItemController extends Controller
             'item_categories_string' => $item_categories_string,
             'item_location_str' => $item_location_str,
             'item_type' => $item_type,
-            'item_hour_time_zone' => $item_hour_time_zone,
-            'item_hour_show_hours' => $item_hour_show_hours,
+            // 'item_hour_time_zone' => $item_hour_time_zone,
+            // 'item_hour_show_hours' => $item_hour_show_hours,
             'item_social_instagram' => $item_social_instagram,
             'item_social_whatsapp' => $item_social_whatsapp,
         ));
@@ -1218,8 +1218,8 @@ class ItemController extends Controller
             'item_video_urls' => 'nullable|array',
             'item_video_urls.*' => 'url|max:255',
             'item_type' => 'required|numeric|in:1,2',
-            'item_hour_time_zone' => 'required|max:255',
-            'item_hour_show_hours' => 'required|numeric|in:1,2',
+            // 'item_hour_time_zone' => 'required|max:255',
+            // 'item_hour_show_hours' => 'required|numeric|in:1,2',
             'item_social_instagram' => 'nullable|max:255',
             'item_social_whatsapp' => 'nullable|numeric|digits_between:10,20',
         ];
@@ -1389,7 +1389,7 @@ class ItemController extends Controller
         $item_social_instagram = $instagram_username;
         $item_social_whatsapp = ltrim($request->item_social_whatsapp, '0');
 
-        $item_hour_time_zone = $request->item_hour_time_zone;
+        // $item_hour_time_zone = $request->item_hour_time_zone;
         $item_hour_show_hours = $request->item_hour_show_hours == Item::ITEM_HOUR_SHOW ? Item::ITEM_HOUR_SHOW : Item::ITEM_HOUR_NOT_SHOW;
 
         // start upload feature image
@@ -1506,8 +1506,8 @@ class ItemController extends Controller
 
         $item->item_type = $item_type;
 
-        $item->item_hour_time_zone = $item_hour_time_zone;
-        $item->item_hour_show_hours = $item_hour_show_hours;
+        // $item->item_hour_time_zone = $item_hour_time_zone;
+        // $item->item_hour_show_hours = $item_hour_show_hours;
 
         $item->save();
 

@@ -279,11 +279,11 @@ $login_user = Auth::user();
                                                     @enderror
                                                 </div>
                                                 <div class="col-sm-6 col-lg-12 col-xl-6">
-                                                    <label for="instagram" class="text-black">IG Handle</label>
+                                                    <label for="instagram" class="text-black">Instagram</label>
                                                     <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $user->instagram) }}">
                                                     <span class="err_instagram_url" style="color:red"></span>
                                                     <small id="linkHelpBlock" class="form-text text-muted">
-                                                        {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                                        <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
                                                     </small>
                                                     @error('instagram')
                                                     <span class="invalid-tooltip" role="alert">
@@ -305,7 +305,7 @@ $login_user = Auth::user();
                                                     <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
                                                     <span class="err_linkedin_url" style="color:red"></span>
                                                     <small id="linkHelpBlock" class="form-text text-muted">
-                                                        {{ __('Only linkedin URL allowed (include http:// or https://)') }}
+                                                        <!-- {{ __('Only linkedin URL allowed (include http:// or https://)') }} -->
                                                     </small>
                                                     @error('linkedin')
                                                     <span class="invalid-tooltip" role="alert">
@@ -323,7 +323,7 @@ $login_user = Auth::user();
                                                     <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $user->facebook) }}">
                                                     <span class="err_facebook_url" style="color:red"></span>
                                                     <small id="linkHelpBlock" class="form-text text-muted">
-                                                        {{ __('Only facebook URL allowed (include http:// or https://)') }}
+                                                        <!-- {{ __('Only facebook URL allowed (include http:// or https://)') }} -->
                                                     </small>
                                                     @error('facebook')
                                                     <span class="invalid-tooltip" role="alert">
@@ -341,7 +341,7 @@ $login_user = Auth::user();
                                                     <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $user->youtube) }}">
                                                     <span class="err_youtube_url" style="color:red"></span>
                                                     <small id="linkHelpBlock" class="form-text text-muted">
-                                                        {{ __('Only youtube URL allowed (include http:// or https://)') }}
+                                                        <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
                                                     </small>
                                                     @error('youtube')
                                                     <span class="invalid-tooltip" role="alert">

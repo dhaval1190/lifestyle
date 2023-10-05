@@ -79,12 +79,11 @@
     return value;
   }
 
-  function checkBounds (value, minValue, maxValue) {
+  function checkBounds (value = 0, minValue = 0, maxValue = 5) {
 
     /*
      * Check if the value is between min and max values, if not, throw an error
      */
-
     var isValid = value >= minValue && value <= maxValue;
 
     if(!isValid){
@@ -241,8 +240,7 @@
        */
 
       if (!isDefined(ratingVal)) {
-
-        ratingVal = options.rating;
+        ratingVal = options.rating || 0;
       }
 
       // Storing the value that is being shown in `currentRating`.
@@ -661,6 +659,10 @@
         }
 
         rating = parseFloat(rating);
+      }
+
+      if (!rating) {
+        rating = 0;
       }
 
       checkBounds(rating, minValue, maxValue);

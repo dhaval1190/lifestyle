@@ -315,7 +315,7 @@
                                         </label>
                                         <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') }}" onkeypress="validatePostalCode(event)">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
+                                            <!-- {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }} -->
                                         </small>
                                         <p class="article_social_whatsapp_error error_color"></p>
                                         @error('article_social_whatsapp')
@@ -331,7 +331,7 @@
                                         </label>
                                         <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website', $login_user->website) }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_website')
                                         <span class="invalid-feedback">
@@ -348,7 +348,7 @@
                                         <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook', $login_user->facebook) }}">
                                         <span class="err_media_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_social_facebook')
                                         <span class="invalid-feedback">
@@ -373,7 +373,7 @@
                                         <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') }}">
                                         <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_social_twitter')
                                         <span class="invalid-feedback">
@@ -395,7 +395,7 @@
                                         <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin', $login_user->linkedin) }}">
                                         <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_social_linkedin')
                                         <span class="invalid-feedback">
@@ -417,7 +417,7 @@
                                         <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram',$login_user->instagram) }}">
                                         <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                            <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
                                         </small>
                                         @error('article_social_instagram')
                                         <span class="invalid-feedback">

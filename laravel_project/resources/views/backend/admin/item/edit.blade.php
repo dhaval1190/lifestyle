@@ -21,9 +21,9 @@ $login_user = Auth::user();
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}"> -->
     <style>
         .select2-container{
             width: 100% !important;
@@ -312,7 +312,7 @@ $login_user = Auth::user();
                                     </div>
                                 </div>
 
-                                <div class="form-row mb-3">
+                               {{--<div class="form-row mb-3">
 
                                     <div class="col-md-12">
                                         <div class="form-check form-check-inline">
@@ -326,11 +326,11 @@ $login_user = Auth::user();
                                         </div>
                                         @error('item_address_hide')
                                         <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                        @enderror
+                                        <strong>{{ $message }}</strong>
+                                        </span>
+                                            @enderror
                                     </div>
-                                </div>
+                                </div>--}}
 
                                 <div class="form-row mb-3">
 
@@ -404,7 +404,7 @@ $login_user = Auth::user();
 
                                 <div class="form-row mb-3">
 
-                                    <div class="col-md-3">
+                                {{--<div class="col-md-3">
                                         <label for="item_lat" class="text-black">{{ __('backend.item.lat') }}</label>
                                         <input id="item_lat" type="text" class="form-control @error('item_lat') is-invalid @enderror" name="item_lat" value="{{ old('item_lat') ? old('item_lat') : $item->item_lat }}" aria-describedby="latHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -415,9 +415,9 @@ $login_user = Auth::user();
                                         <strong>{{ $message }}</strong>
                                          </span>
                                          @enderror
-                                    </div>
+                                    </div>--}}
 
-                                    <div class="col-md-3">
+                                    {{--<div class="col-md-3">
                                         <label for="item_lng" class="text-black">{{ __('backend.item.lng') }}</label>
                                         <input id="item_lng" type="text" class="form-control @error('item_lng') is-invalid @enderror" name="item_lng" value="{{ old('item_lng') ? old('item_lng') : $item->item_lng }}" aria-describedby="lngHelpBlock">
                                         <small id="lngHelpBlock" class="form-text text-muted">
@@ -428,7 +428,7 @@ $login_user = Auth::user();
                                         <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                    </div>
+                                    </div>--}}
 
                                     <div class="col-md-3">
                                         <label for="item_phone" class="text-black">{{ __('backend.item.phone') }}</label>
@@ -462,7 +462,7 @@ $login_user = Auth::user();
                                         </label>
                                         <input id="item_website" type="text" class="form-control @error('item_website') is-invalid @enderror" name="item_website" value="{{ old('item_website') ? old('item_website') : $item->item_website }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_website')
                                         <span class="invalid-tooltip">
@@ -479,7 +479,7 @@ $login_user = Auth::user();
                                         <input id="item_social_facebook" type="text" class="form-control @error('item_social_facebook') is-invalid @enderror" name="item_social_facebook" value="{{ old('item_social_facebook') ? old('item_social_facebook') : $item->item_social_facebook }}">
                                         <span class="err_facebook_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_facebook')
                                         <span class="invalid-tooltip">
@@ -501,7 +501,7 @@ $login_user = Auth::user();
                                         <input id="item_social_twitter" type="text" class="form-control @error('item_social_twitter') is-invalid @enderror" name="item_social_twitter" value="{{ old('item_social_twitter') ? old('item_social_twitter') : $item->item_social_twitter }}">
                                         <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_twitter')
                                         <span class="invalid-tooltip">
@@ -525,7 +525,7 @@ $login_user = Auth::user();
                                         <input id="item_social_linkedin" type="text" class="form-control @error('item_social_linkedin') is-invalid @enderror" name="item_social_linkedin" value="{{ old('item_social_linkedin') ? old('item_social_linkedin') : $item->item_social_linkedin }}">
                                         <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('item_social_linkedin')
                                         <span class="invalid-tooltip">
@@ -547,7 +547,7 @@ $login_user = Auth::user();
                                         <input id="item_social_instagram" type="text" class="form-control @error('item_social_instagram') is-invalid @enderror" name="item_social_instagram" value="{{ old('item_social_instagram') ? old('item_social_instagram') : $item->item_social_instagram }}">
                                         <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-instagram-help') }}
+                                            <!-- {{ __('item_whatsapp_instagram.item-social-instagram-help') }} -->
                                         </small>
                                         @error('item_social_instagram')
                                         <span class="invalid-tooltip">
@@ -568,7 +568,7 @@ $login_user = Auth::user();
                                         </label>
                                         <input id="item_social_whatsapp" type="text" class="form-control @error('item_social_whatsapp') is-invalid @enderror" name="item_social_whatsapp" value="{{ old('item_social_whatsapp') ? old('item_social_whatsapp') : $item->item_social_whatsapp }}" onkeypress="validatePostalCode(event)">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }}
+                                            <!-- {{ __('item_whatsapp_instagram.item-social-whatsapp-help') }} -->
                                         </small>
                                         @error('item_social_whatsapp')
                                         <span class="invalid-tooltip">
@@ -583,7 +583,8 @@ $login_user = Auth::user();
                         </div>
 
                         <!-- start opening hour section -->
-                        <div class="row border-left-primary mb-4">
+
+                        {{-- <div class="row border-left-primary mb-4">
                             <div class="col-12">
                                 <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
                                     <div class="col-md-12">
@@ -797,13 +798,13 @@ $login_user = Auth::user();
                                     @endforeach
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- end opening hour section -->
 
                         <!-- Start custom field section -->
-                        <div class="row border-left-primary mb-4">
+                        <div class="row border-left-primary">
                             <div class="col-12">
-                                <div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
+                            {{--<div class="form-row mb-4 bg-primary pl-1 pt-1 pb-1">
                                     <div class="col-md-12">
                                         <span class="text-lg text-white">
                                             <i class="fas fa-tasks"></i>
@@ -813,7 +814,7 @@ $login_user = Auth::user();
                                             {{ __('backend.item.custom-field-help') }}
                                         </small>
                                     </div>
-                                </div>
+                                </div>--}}
                                 <div class="form-row mb-3">
                                     @foreach($all_customFields as $all_customFields_key => $customField)
 
@@ -1458,9 +1459,9 @@ $login_user = Auth::user();
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script> -->
     <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
@@ -1468,7 +1469,7 @@ $login_user = Auth::user();
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> -->
 
     <script>
 

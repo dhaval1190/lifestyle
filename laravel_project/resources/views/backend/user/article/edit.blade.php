@@ -18,9 +18,9 @@ $login_user = Auth::user();
 
     <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}"> -->
 @endsection
 
 @section('content')
@@ -385,7 +385,7 @@ $login_user = Auth::user();
                                         <input id="article_social_whatsapp" type="text" class="form-control @error('article_social_whatsapp') is-invalid @enderror" name="article_social_whatsapp" value="{{ old('article_social_whatsapp') ? old('article_social_whatsapp') : $article->item_social_whatsapp }}" onkeypress="validatePostalCode(event)">
                                         <p class="article_social_whatsapp_error error_color"></p>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }}
+                                            <!-- {{ __('article_whatsapp_instagram.article-social-whatsapp-help') }} -->
                                         </small>
                                         @error('article_social_whatsapp')
                                         <span class="invalid-tooltip">
@@ -400,7 +400,7 @@ $login_user = Auth::user();
                                         </label>
                                         <input id="article_website" type="text" class="form-control @error('article_website') is-invalid @enderror" name="article_website" value="{{ old('article_website') ? old('article_website') : $article->item_website }}">
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_website')
                                         <span class="invalid-tooltip">
@@ -416,7 +416,7 @@ $login_user = Auth::user();
                                         <input id="article_social_facebook" type="text" class="form-control @error('article_social_facebook') is-invalid @enderror" name="article_social_facebook" value="{{ old('article_social_facebook') ? old('article_social_facebook') : $article->item_social_facebook }}">
                                         <span class="err_facebook_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         
                                         @error('article_social_facebook')
@@ -441,7 +441,7 @@ $login_user = Auth::user();
                                         <input id="article_social_twitter" type="text" class="form-control @error('article_social_twitter') is-invalid @enderror" name="article_social_twitter" value="{{ old('article_social_twitter') ? old('article_social_twitter') : $article->item_social_twitter }}">
                                         <span class="err_twitter_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_social_twitter')
                                         <span class="invalid-tooltip">
@@ -462,7 +462,7 @@ $login_user = Auth::user();
                                         <input id="article_social_linkedin" type="text" class="form-control @error('article_social_linkedin') is-invalid @enderror" name="article_social_linkedin" value="{{ old('article_social_linkedin') ? old('article_social_linkedin') : $article->item_social_linkedin }}">
                                         <span class="err_linkedin_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_social_linkedin')
                                         <span class="invalid-tooltip">
@@ -483,7 +483,7 @@ $login_user = Auth::user();
                                         <input id="article_social_instagram" type="text" class="form-control @error('article_social_instagram') is-invalid @enderror" name="article_social_instagram" value="{{ old('article_social_instagram') ? old('article_social_instagram') : $article->item_social_instagram }}">
                                         <span class="err_instagram_url" style="color:red"></span>
                                         <small id="linkHelpBlock" class="form-text text-muted">
-                                            {{ __('article_whatsapp_instagram.article-social-instagram-help') }}
+                                            <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
                                         </small>
                                         @error('article_social_instagram')
                                         <span class="invalid-tooltip">
@@ -511,7 +511,7 @@ $login_user = Auth::user();
                                         <label for="article_video_urls" class="text-black"><i class="fa-brands fa-youtube-square"></i> Video Url</label>
                                         <input id="article_video_urls" type="url" class="form-control @error('article_video_urls') is-invalid @enderror" name="article_video_urls[]" value="{{ $article_video_url }}">
                                         <small id="videoHelpBlock" class="form-text text-muted">
-                                            {{ __('backend.shared.url-help') }}
+                                            <!-- {{ __('backend.shared.url-help') }} -->
                                         </small>
                                         @error('article_video_urls')
                                         <span class="invalid-feedback">
@@ -1326,9 +1326,9 @@ $login_user = Auth::user();
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script> -->
     <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
@@ -1336,7 +1336,7 @@ $login_user = Auth::user();
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> -->
 
     <script>
         ClassicEditor

@@ -1052,7 +1052,7 @@
                                 <span class="padding-20">Basic + Social Profile complete includes</span>
                             <ul class="list_design_ptb-30">
                                 <li id="website">Website</li>
-                                <li id="instagram">IG Handle*</li>
+                                <li id="instagram">Instagram*</li>
                                 <li id="facebook">Facebook*</li>
                                 <li id="linkedin">LinkedIn*</li>
                                 <li id="youtube">YouTube*</li>

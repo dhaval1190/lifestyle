@@ -10,12 +10,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link href="{{ asset('backend/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
-<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
+<!-- <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}"> -->
 <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
 
 <style type="text/css">
+    .media_hint{
+        display:flex;
+        align-items:center;
+    }
     .bootstrap-select.form-control {
         border: 1px solid #ced4da;
     }
@@ -148,10 +152,12 @@
 
     .back_ground_image_set{
         /* background-image: url("https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/user/user-harsh-modi-2023-07-21-64ba1c7232a26.jpg"); */
-        min-height: 375px;
-        background-size: cover;
+        min-height: 425px;
+        background-size: 100% 100%;
         background-position: center;
         position: relative;
+        width:100%;
+        background-repeat:no-repeat;
     }
     .back_ground_image_set i {
         position: absolute;
@@ -401,6 +407,10 @@
         padding-right: 5px;
     }
 
+    .back_ground_image_set{
+        min-height:120px;
+    }
+
     }
 
     @media (min-width:577px) and (max-width:768px){
@@ -417,6 +427,10 @@
     .min-h-md-160{
         min-height: 160px;
     }
+    .back_ground_image_set{
+        min-height:170px;
+    }
+
     }
     
     @media (min-width:769px) and (max-width:1024px){
@@ -433,6 +447,9 @@
     .min-h-md-160{
         min-height: 160px;
     }
+    .back_ground_image_set{
+        min-height:170px;
+    }
     }
 
 
@@ -446,6 +463,12 @@
     }
 
     /* --------------------------------------------------------------------------------- */
+
+    @media (min-width:1025px) and (max-width:1899px){
+        .back_ground_image_set{
+        min-height:270px;
+    }
+}
 
 
     .bfd-dropfield-inner{
@@ -907,7 +930,7 @@ $chk_post = Auth::user()->phone;
                             @enderror
                         </div>
                         <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <label for="instagram" class="text-black">IG Handle</label>
+                            <label for="instagram" class="text-black">Instagram</label>
                             <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
                             <span class="err_instagram_url" style="color:red"></span>
                             <small id="linkHelpBlock" class="form-text text-muted">
@@ -1329,8 +1352,9 @@ $chk_post = Auth::user()->phone;
         <form method="POST" action="" class="" enctype="multipart/form-data" name="youtubeVideoFrm" id="youtubeVideoFrm">    
             <div class="row  mb-5 youtube_bg" id="podcastsec">
                 <div class="col-12">
-                    <div>
+                    <div class="media_hint">
                         <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
+                        <!-- <button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" data-target="#youtube_guide">{{ __('Hint') }} </button>                        -->
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-4">
@@ -1406,8 +1430,9 @@ $chk_post = Auth::user()->phone;
       <form method="POST" action="" class="" enctype="multipart/form-data" name="ebookFrm" id="ebookFrm">
         <div class="row  mb-5 break_line_section ebook_bg ">
             <div class="col-12">
-                <div>
+                <div class="media_hint">
                     <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">Ebook Details</h3>
+                    <!-- <button type="button" class="btn btn-sm btn-outline-primary ml-2 mb-2" data-toggle="modal" data-target="#ebook_guide">{{ __('Hint') }} </button> -->
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-3">
@@ -1499,8 +1524,9 @@ $chk_post = Auth::user()->phone;
       <form method="POST" action="" class="" enctype="multipart/form-data" name="podcastFrm" id="podcastFrm">    
         <div class="row mb-5 break_line_section podcast_bg" id="podcastsec">
             <div class="col-12">
-                <div>
+                <div class="media_hint">
                     <h3 class="h3 mb-2 mt-3 font-set-sm text-orange-700">Podcast Details</h3>
+                    <!-- <button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" data-target="#podcast_guide">{{ __('Hint') }}</button> -->
                 </div>
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-4">
@@ -1632,8 +1658,13 @@ $chk_post = Auth::user()->phone;
             @endphp
               @if(($login_user->categories()->count() > 0) && isset($login_user->hourly_rate_type) && isset($login_user->experience_year) && isset($login_user->preferred_pronouns))
                 <div class="row">
-                    <div class="col-lg-12 co-12">
+                    <div class="col-lg-12 co-12 media_hint">
                         <h1 class="h3 mb-3 mt-3 font-set-sm text-orange-800">{{ __('Create Article') }}</h1>
+                        
+                        <!-- <button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" data-target="#article_guide">
+                             {{ __('Hint') }} -->
+                    </button>
+                       
                     </div>
                 </div>
             
@@ -2704,7 +2735,7 @@ $chk_post = Auth::user()->phone;
                             <span class="padding-20">Basic + Social Profile complete includes</span>
                             <ul class="list_design_ptb-30">
                                 <li class="website">Website</li>
-                                <li class="instagram">IG Handle*</li>
+                                <li class="instagram">Instagram*</li>
                                 <li class="facebook">Facebook*</li>
                                 <li class="linkedin">LinkedIn*</li>
                                 <li class="youtube">YouTube*</li>
@@ -2789,6 +2820,158 @@ $chk_post = Auth::user()->phone;
         </div>
     </div>
 
+    <div class="modal fade" id="youtube_guide" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Youtube Video Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="basic_content">
+                        <div class="col-md-12">
+                            <span class="padding-20">Basic Profile complete includes</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="list_design_ptb-30">
+                                <li class="user_image">Picture</li>
+                                <li class="category_p">Category</li>
+                                <li class="name">Name</li>
+                                <li class="company_name">Company Name</li>
+                                <li class="phone">Phone</li>
+                                <li class="email">Email</li>
+                                <li class="working_type">Working Method</li>
+                                <li class="preferred_pronouns">Pronouns</li>
+                                <li class="hourly_rate_type">Rate</li>
+                            </ul>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ebook_guide" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="basic_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="basic_profile_img">
+                                <span class="bold pl-1" id="basic_profile">Basic</span>                            
+                            </div>
+                            <span class="padding-20">Basic Profile complete includes</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="list_design_ptb-30">
+                                <li class="user_image">Picture</li>
+                                <li class="category_p">Category</li>
+                                <li class="name">Name</li>
+                                <li class="company_name">Company Name</li>
+                                <li class="phone">Phone</li>
+                                <li class="email">Email</li>
+                                <li class="working_type">Working Method</li>
+                                <li class="preferred_pronouns">Pronouns</li>
+                                <li class="hourly_rate_type">Rate</li>
+                            </ul>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="podcast_guide" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="basic_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="basic_profile_img">
+                                <span class="bold pl-1" id="basic_profile">Basic</span>                            
+                            </div>
+                            <span class="padding-20">Basic Profile complete includes</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="list_design_ptb-30">
+                                <li class="user_image">Picture</li>
+                                <li class="category_p">Category</li>
+                                <li class="name">Name</li>
+                                <li class="company_name">Company Name</li>
+                                <li class="phone">Phone</li>
+                                <li class="email">Email</li>
+                                <li class="working_type">Working Method</li>
+                                <li class="preferred_pronouns">Pronouns</li>
+                                <li class="hourly_rate_type">Rate</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="article_guide" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Profile Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="basic_content">
+                        <div class="col-md-12">
+                            <div class="align_set_flex">
+                                <img src="" alt="" id="basic_profile_img">
+                                <span class="bold pl-1" id="basic_profile">Basic</span>                            
+                            </div>
+                            <span class="padding-20">Basic Profile complete includes</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="list_design_ptb-30">
+                                <li class="user_image">Picture</li>
+                                <li class="category_p">Category</li>
+                                <li class="name">Name</li>
+                                <li class="company_name">Company Name</li>
+                                <li class="phone">Phone</li>
+                                <li class="email">Email</li>
+                                <li class="working_type">Working Method</li>
+                                <li class="preferred_pronouns">Pronouns</li>
+                                <li class="hourly_rate_type">Rate</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal - map -->
     <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" aria-labelledby="map-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -2842,9 +3025,9 @@ $chk_post = Auth::user()->phone;
 
     <script src="{{ asset('backend/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/resizable-resolveconflict.min.js') }}"></script> -->
     <script src="{{ asset('backend/vendor/jquery-resizable/dist/jquery-resizable.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
+    <!-- <script src="{{ asset('backend/vendor/trumbowyg/dist/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/base64/trumbowyg.base64.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/resizimg/trumbowyg.resizimg.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/trumbowyg.colors.min.js') }}"></script>
@@ -2852,7 +3035,7 @@ $chk_post = Auth::user()->phone;
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/indent/trumbowyg.indent.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/lineheight/trumbowyg.lineheight.min.js') }}"></script>
     <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/noembed/trumbowyg.noembed.min.js') }}"></script>
-    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script>
+    <script src="{{ asset('backend/vendor/trumbowyg/dist/plugins/table/trumbowyg.table.min.js') }}"></script> -->
     <script>
         ClassicEditor
                 .create( document.querySelector( '#article_description' ),{
@@ -3333,8 +3516,8 @@ $chk_post = Auth::user()->phone;
                 if (!image_crop_profile) {
                     image_crop_profile = $('#upload-demo_cover_image').croppie({
                         viewport: {
-                            width: 480,
-                            height: 230,
+                            width: 650,
+                            height: 150,
                             type: 'sqaure'
                         },
                         enforceBoundary: false,

@@ -213,7 +213,7 @@
                             <span class="bold">Basic + Social Profile complete includes</span>
                             <ul class="list_design_ptb-30">
                                 <li>Website</li>
-                                <li>IG Handle*</li>
+                                <li>Instagram*</li>
                                 <li>Facebook*</li>
                                 <li>LinkedIn*</li>
                                 <li>YouTube*</li>
