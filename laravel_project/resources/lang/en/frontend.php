@@ -67,7 +67,7 @@ return array (
     'cheatsheet' => 'cheatsheet',
     'edit-comment' => 'Edit Comment',
     'enter-email' => 'Enter your email here:',
-    'enter-message' => 'Enter your message here:',
+    'enter-message' => 'Enter your comment here:',
     'enter-name' => 'Enter your name here:',
     'login' => 'Log in',
     'markdown' => 'Markdown',

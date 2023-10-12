@@ -11,204 +11,204 @@
 <style>
     .upper_logo_padding_25 {
     white-space: pre-wrap;
-}
-    .listing .lh-content {
-        text-align: left !important;
-
     }
+        .listing .lh-content {
+            text-align: left !important;
 
-    .box-video {
-        position: relative;
-        width: 100%;
-        margin: 0 auto 20px auto;
-        cursor: pointer;
-        overflow: hidden;
-    }
+        }
 
-    /* Set Cover aka Background-Image */
-    .box-video .bg-video {
-        position: absolute;
-        background-color: #000f24;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        z-index: 2;
-        opacity: 1;
-    }
+        .box-video {
+            position: relative;
+            width: 100%;
+            margin: 0 auto 20px auto;
+            cursor: pointer;
+            overflow: hidden;
+        }
 
-    /* Add light shade to make play button visible*/
-    .bg-video::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.1);
-    }
+        /* Set Cover aka Background-Image */
+        .box-video .bg-video {
+            position: absolute;
+            background-color: #000f24;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            z-index: 2;
+            opacity: 1;
+        }
 
-
-    /* The Play-Button using CSS-Only */
-    .bt-play {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -30px 0 0 -30px;
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        text-indent: -999em;
-        cursor: pointer;
-        z-index: 2;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    /* The Play-Triangle */
-    .bt-play:after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 0;
-        width: 0;
-        margin: -12px 0 0 -6px;
-        border: solid transparent;
-        border-left-color: #000;
-        border-width: 12px 20px;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    .c-video__image-container:hover .bt-play {
-        transform: scale(1.1);
-    }
-
-    /* When Class added the Cover gets hidden... */
-    .box-video.open .bg-video {
-        visibility: hidden;
-        opacity: 0;
-        -webkit-transition: all .6s .8s;
-        transition: all .6s .8s;
-    }
-
-    /* and iframe shows up */
-    .box-video.open .video-container {
-        opacity: 1;
-        -webkit-transition: all .6s .8s;
-        transition: all .6s .8s;
-    }
-
-    /* Giving the div ratio of 16:9 with padding */
-    .video-container {
-        position: relative;
-        width: 100%;
-        height: 0;
-        margin: 0;
-        z-index: 1;
-        padding-bottom: 56.27198%;
-    }
-
-    .video-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
+        /* Add light shade to make play button visible*/
+        .bg-video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
 
 
-    .c-header-in {
-        position: absolute;
-        left: 42vw;
-        right: 0;
-        top: 50px;
-        color: white;
-    }
+        /* The Play-Button using CSS-Only */
+        .bt-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -30px 0 0 -30px;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-indent: -999em;
+            cursor: pointer;
+            z-index: 2;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
 
-    .vid-fit-user {
-        height: 380;
-        background-color: #000f24;
-        position: relative;
-    }
+        /* The Play-Triangle */
+        .bt-play:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 0;
+            width: 0;
+            margin: -12px 0 0 -6px;
+            border: solid transparent;
+            border-left-color: #000;
+            border-width: 12px 20px;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
 
-    .vid-fit-reveal {
-        height: 215;
-        background-color: #000f24;
-        position: relative;
-    }
+        .c-video__image-container:hover .bt-play {
+            transform: scale(1.1);
+        }
 
-    .vid-fit-reveal.red {
-        background: red;
-    }
+        /* When Class added the Cover gets hidden... */
+        .box-video.open .bg-video {
+            visibility: hidden;
+            opacity: 0;
+            -webkit-transition: all .6s .8s;
+            transition: all .6s .8s;
+        }
 
-    .vid-fit-reveal.reveal-video {
-        background: none;
-    }
+        /* and iframe shows up */
+        .box-video.open .video-container {
+            opacity: 1;
+            -webkit-transition: all .6s .8s;
+            transition: all .6s .8s;
+        }
 
-    .vid-fit-reveal.reveal-video .c-header-in {
-        display: none;
-    }
+        /* Giving the div ratio of 16:9 with padding */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            margin: 0;
+            z-index: 1;
+            padding-bottom: 56.27198%;
+        }
 
-    .vid-fit-reveal.reveal-video #vid-reveal {
-        display: block;
-        visibility: visible;
-    }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    .vid-fit-reveal.reveal-video .c-video__play-btn {
-        visibility: hidden;
-    }
 
-    .vid-fit-reveal #vid-reveal {
-        visibility: hidden;
-    }
+        .c-header-in {
+            position: absolute;
+            left: 42vw;
+            right: 0;
+            top: 50px;
+            color: white;
+        }
 
-    .c-video__play-btn {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-    }
+        .vid-fit-user {
+            height: 380;
+            background-color: #000f24;
+            position: relative;
+        }
 
-    .table> :not(:last-child)> :last-child>* {
-        border-bottom-color: inherit;
-        border-right: 1px solid #fff;
-        border-right-width: thin;
-    }
+        .vid-fit-reveal {
+            height: 215;
+            background-color: #000f24;
+            position: relative;
+        }
 
-    table.dataTable>thead>tr>td:not(.sorting_disabled),
-    table.dataTable>thead>tr>th:not(.sorting_disabled) {
-        border-bottom-color: inherit;
-        border-right: 1px solid #fff;
-        border-right-width: thin;
-    }
+        .vid-fit-reveal.red {
+            background: red;
+        }
 
-    .w-30 {
-        width: 30px !important;
-    }
+        .vid-fit-reveal.reveal-video {
+            background: none;
+        }
 
-    .address_wrap {
-        word-break: break-all;
-    }
+        .vid-fit-reveal.reveal-video .c-header-in {
+            display: none;
+        }
 
-    .form-section {
-        display: none;
-    }
+        .vid-fit-reveal.reveal-video #vid-reveal {
+            display: block;
+            visibility: visible;
+        }
 
-    .form-section.current {
-        display: inline;
-    }
+        .vid-fit-reveal.reveal-video .c-video__play-btn {
+            visibility: hidden;
+        }
 
-    .parsley-errors-list {
-        color: red;
-    }
+        .vid-fit-reveal #vid-reveal {
+            visibility: hidden;
+        }
+
+        .c-video__play-btn {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        .table> :not(:last-child)> :last-child>* {
+            border-bottom-color: inherit;
+            border-right: 1px solid #fff;
+            border-right-width: thin;
+        }
+
+        table.dataTable>thead>tr>td:not(.sorting_disabled),
+        table.dataTable>thead>tr>th:not(.sorting_disabled) {
+            border-bottom-color: inherit;
+            border-right: 1px solid #fff;
+            border-right-width: thin;
+        }
+
+        .w-30 {
+            width: 30px !important;
+        }
+
+        .address_wrap {
+            word-break: break-all;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.current {
+            display: inline;
+        }
+
+        .parsley-errors-list {
+            color: red;
+        }
 </style>
 @section('content')
     <!-- <div class="site-section"> -->
@@ -217,7 +217,7 @@
         <div class="row">
             <div class="col-md-12 col-12 p-0">
                 <div class="upper_white_bg">
-                    <div class="upper_middle_img">
+                    <div class="upper_middle_img">                    
                         @if (empty($user_detail['user_cover_image']))
                             <div class="site-blocks-cover inner-page-cover main_logo"
                                 style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});">
@@ -227,7 +227,7 @@
                                 style="background-image: url( {{ Storage::disk('public')->url('user/' . $user_detail['user_cover_image']) }});">
                                 {{-- <div class="site-blocks-cover inner-page-cover overlay main_logo" style="background-image: url( {{ Storage::url('user/'. $user_detail['user_cover_image']) }});"> --}}
                             </div>
-                        @endif
+                        @endif                      
 
                         <div class="upper_main_section">
                             <div class="upper_logo">
@@ -362,7 +362,7 @@
                                         </div>
                                     </div>
                                 @endif
-
+                               
                                 <!-- <div class="progress">
                                                                 <div class="progress-bar" role="progressbar" style="width: {{ $progress_data['percentage'] }}%"
                                                                     aria-valuenow="{{ $progress_data['percentage'] }}" aria-valuemin="0" aria-valuemax="100" title="{{ $progress_data['profile'] }}">
@@ -372,12 +372,32 @@
                                                 </div> -->
                             </div>
                         </div>
+                        <div class="alert alert-success alert-dismissible fade show" id="register_success_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="register_success">Review Added SuccessFull</span>
+                        </div>
+                        <div class="alert alert-success alert-dismissible fade show col-6" id="share_modal_success_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="share_modal_success">Shared SuccessFull</span>
+                        </div>
+                        <div class="alert alert-success alert-dismissible fade show col-6" id="contactForm_success_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="contactForm_success">Contact To This Coach SuccessFull</span>
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show" id="register_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="register_s">Review Not Added</span>
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show col-6" id="share_modal_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="share_modal_">Shared SuccessFull</span>
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show col-6" id="contactForm_error_div" role="alert" style="display:none;margin:4px;">
+                            <span id="contactForm_">Contact To This Coach SuccessFull</span>
+                        </div>
+                        @if(!empty($user_detail['user_about']))
                         <div class="upper_logo_info">
                             <div class="upper_logo_padding_25">
                                 <h3>About</h3>
                                 <p>{{ $user_detail['user_about'] }}</p>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -834,6 +854,7 @@
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="review-modal" tabindex="-1" role="dialog"
         aria-labelledby="share-modal"aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -955,10 +976,10 @@
                                                     {{ __('review_galleries.upload-photos-help') }}
                                                 </small>
                                                 @error('review_image_galleries')
-        <span class="invalid-tooltip">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-    @enderror
+                                            <span class="invalid-tooltip">
+                                                                                            <strong>{{ $message }}</strong>
+                                                                                        </span>
+                                        @enderror
                                                 <div class="row mt-3">
                                                     <div class="col-12">
                                                         <button id="upload_gallery" type="button" class="btn btn-primary mb-2"  {{ Auth::check() ? '' : 'disabled' }} readonly>{{ __('review_galleries.choose-photo') }}</button>
@@ -1887,6 +1908,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- end for contact us stepper -->
     <script src="{{ asset('backend/vendor/bootstrap-fd/bootstrap.fd.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 
     @include('frontend.partials.bootstrap-select-locale')
     <script>
@@ -2032,6 +2055,8 @@
                             $("#review_form").trigger("reset");
                             $('#rating').val(1);
                             $("#rating").selectpicker("refresh");
+                            // $('#register_success_error_div').show();
+                            toastr.success('profile review added');
                             $(':input[type="submit"]').prop('disabled', false);
                             location.reload();
                             // });
@@ -2039,6 +2064,8 @@
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)	
                             $('.please_wait').text('');
+                            $('#register_error_div').show();
+
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.rating) {
                                     $('.profile_review_rating_error').text(response.msg
@@ -2129,11 +2156,16 @@
                                 new Notification(title, options);
                             });
                             location.reload();
+                           // $('#contactForm_success_error_div').show();
+                            toastr.success('Conatct This Coach SuccessFull');
+
+
 
                         }
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)
                             $('.please_wait').text('');
+                            $('#contactForm_error_div').show();
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.item_conntact_email_name) {
                                     $('.name_error').text(response.msg
@@ -2230,11 +2262,17 @@
                                 new Notification(title, options);
                             });
                             location.reload();
+                           // $('#share_modal_success_error_div').show();
+                            toastr.success('Shared SuccessFull');
+
+
 
                         }
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)
                             $('.please_wait').text('');
+                            $('#share_modal_error_div').show();
+
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.profile_share_email_name) {
                                     $('.profile_name_error').text(response.msg
@@ -2330,6 +2368,8 @@
                                 new Notification(title, options);
                             });
                             location.reload();
+                            toastr.success('Share a Referral Link SuccessFull');
+
 
                         }
                         if (response.status == 'error') {

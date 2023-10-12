@@ -28,7 +28,7 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}<br><span><b>{{ Auth::user()->role->name }}</b></span></span>
                 @if(Auth::user()->user_image)
                     <img class="img-profile rounded-circle" src="{{ Storage::disk('public')->url('user/'. Auth::user()->user_image) }}">
                 @else
@@ -36,6 +36,7 @@
                     <img class="img-profile rounded-circle" src="{{ asset('backend/images/placeholder/profile_default.webp') }}">
                 @endif
             </a>
+            
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() > 0) && isset(Auth::user()->hourly_rate_type) && isset(Auth::user()->experience_year) && isset(Auth::user() ->preferred_pronouns))

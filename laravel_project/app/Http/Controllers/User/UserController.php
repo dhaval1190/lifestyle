@@ -1481,4 +1481,53 @@ class UserController extends Controller
                     'order_by', 'count_per_page', 'request_query_array','role'));
         }
     }
+    public function profileImageUpdate(Request $request)
+    {
+        $user_image = $request->user_image;
+        $auth_user_name = Auth::user()->name;
+        $login_user = Auth::user();
+        if(!empty($user_image)) {
+            $currentDate = Carbon::now()->toDateString();
+            $user_image_name = 'user-' . str_slug($auth_user_name).'-'.$currentDate.'-'.uniqid().'.jpg';
+            if(!Storage::disk('public')->exists('user')){
+                Storage::disk('public')->makeDirectory('user');
+            }
+            if(Storage::disk('public')->exists('user/' . $login_user->user_image)){
+                Storage::disk('public')->delete('user/' . $login_user->user_image);
+            }
+            $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_image)))->stream('jpg', 70);
+            Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
+
+            $login_user->user_image = $user_image_name;
+            $login_user->save();
+                return response()->json(['status' => true, 'data' => $user_image]);
+        }else{
+            return response()->json(['status' => false, 'data' => 'Nooooooooooo']);
+        }
+    }
+
+    public function covreImageUpdate(Request $request)
+    {
+        $user_cover_image = $request->user_cover_image;
+        $auth_user_name = Auth::user()->name;
+        $login_user = Auth::user();
+        if(!empty($user_cover_image)) {
+            $currentDate = Carbon::now()->toDateString();
+            $user_image_name = 'user-' . str_slug($auth_user_name).'-'.$currentDate.'-'.uniqid().'.jpg';
+            if(!Storage::disk('public')->exists('user')){
+                Storage::disk('public')->makeDirectory('user');
+            }
+            if(Storage::disk('public')->exists('user/' . $login_user->user_cover_image)){
+                Storage::disk('public')->delete('user/' . $login_user->user_cover_image);
+            }
+            $new_user_image = Image::make(base64_decode(preg_replace('#^data:image/\w+;base64,#i', '',$user_cover_image)))->stream('jpg', 70);
+            Storage::disk('public')->put('user/'.$user_image_name, $new_user_image);
+
+            $login_user->user_cover_image = $user_image_name;
+            $login_user->save();
+                return response()->json(['status' => true, 'data' => 'Yes']);
+        }else{
+            return response()->json(['status' => false, 'data' => 'No']);
+        }
+    }
 }

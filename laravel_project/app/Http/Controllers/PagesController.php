@@ -187,11 +187,24 @@ class PagesController extends Controller
         /**
          * get first 6 latest items
          */
+        
         $latest_items = Item::join('users', 'users.id', '=', 'items.user_id')
             ->select('items.*')
             ->where('users.user_suspended', User::USER_NOT_SUSPENDED)
-            ->where('item_status', Item::ITEM_PUBLISHED)
-            ->take(7)
+            ->where('item_status', Item::ITEM_PUBLISHED);
+
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $latest_items = $latest_items;
+                }else{                    
+                    $latest_items = $latest_items->where('users.role_flag','0');
+                }
+            }else{                    
+                $latest_items = $latest_items->where('users.role_flag','0');
+            }
+
+
+            $latest_items= $latest_items->take(7)
             ->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user')
             ->get();
             /**
@@ -199,17 +212,26 @@ class PagesController extends Controller
              */
             $trainding_user_ids = $active_user_ids;
             $trainding_items = Item::query();
-            $trainding_items->where("items.item_status", Item::ITEM_PUBLISHED)
+            $trainding_items->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $trainding_user_ids);
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $trainding_items = $trainding_items;
+                }else{                    
+                    $trainding_items = $trainding_items->where('users.role_flag','0');
+                }
+            }else{                    
+                $trainding_items = $trainding_items->where('users.role_flag','0');
+            }
             $trainding_items->distinct('items.id')
             ->with('country')
             ->with('state')
             ->with('city')
             ->with('user');
             $trainding_items_new = $trainding_items->get();
-            $trainding_items_user_ids = $trainding_items->pluck('id')->toArray(); 
+            $trainding_items_user_ids = $trainding_items->pluck('items.id')->toArray(); 
             $all_trainding_items = array();
             foreach($trainding_items_user_ids as $items_ids){    
                 $all_trainding_items[] = Item::where('items.id',$items_ids)->leftjoin('items_visits','items_visits.item_id','=','items.id')
@@ -272,10 +294,19 @@ class PagesController extends Controller
         $active_user_ids = $subscription_obj->getActiveCoachUserIds();
         $featured_coaches = Item::query();
         $free_user_ids = $active_user_ids;
-        $featured_coaches->where("items.item_status", Item::ITEM_PUBLISHED)
+        $featured_coaches->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
             ->where('items.item_featured', Item::ITEM_NOT_FEATURED)
             ->where('items.item_featured_by_admin', Item::ITEM_NOT_FEATURED_BY_ADMIN)
             ->whereIn('items.user_id', $free_user_ids);
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $featured_coaches = $featured_coaches;
+                }else{                    
+                    $featured_coaches = $featured_coaches->where('users.role_flag','0');
+                }
+            }else{                    
+                $featured_coaches = $featured_coaches->where('users.role_flag','0');
+            }
             $featured_coaches->distinct('items.id')
             ->with('country')
             ->with('state')
@@ -292,8 +323,18 @@ class PagesController extends Controller
         $all_coaches = collect($all_coaches)->sortByDesc('totalcount');
         
             foreach($all_coaches as $category_coach){
-                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
-                ->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
+                $coach_categorys = User::join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id');
+                if(Auth::check()){           
+                    if(Auth::user()->role_flag == 1){
+                        $coach_categorys = $coach_categorys;
+                    }else{                    
+                        $coach_categorys = $coach_categorys->where('users.role_flag','0');
+                    }
+                }else{                    
+                    $coach_categorys = $coach_categorys->where('users.role_flag','0');
+                }
+
+                $coach_categorys = $coach_categorys->select('user_categories.*','category_name','category_parent_id','category_icon','category_slug')->where('users.id',$category_coach->id)
                 ->get();
                 $category=[];
                 $parent_category=[];
@@ -319,8 +360,18 @@ class PagesController extends Controller
         //     ->orderBy('totalcount', 'DESC');
         // })
 
-
-        $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->get();
+        $all_media_deatils_visit = new MediaDetail;
+        $all_media_deatils_visit = $all_media_deatils_visit->join('users','users.id','media_details.user_id');
+        if(Auth::check()){           
+            if(Auth::user()->role_flag == 1){
+                $all_media_deatils_visit = $all_media_deatils_visit;
+            }else{                    
+                $all_media_deatils_visit = $all_media_deatils_visit->where('users.role_flag','0');
+            }
+        }else{                    
+            $all_media_deatils_visit = $all_media_deatils_visit->where('users.role_flag','0');
+        }
+        $all_media_deatils_visit = $all_media_deatils_visit->select('media_details.*')->where('media_details.media_type','video')->where('media_details.is_status',0)->get();
         $AllMedia = array();
         $AllMedia_data_count = array();
         $AllMedia_view_arr = array();
@@ -351,7 +402,7 @@ class PagesController extends Controller
 
                 $post_count=count($AllMedia_data_count);
             }
-
+            //print_r($AllMedia_view_arr);exit;
 
         return response()->view($theme_view_path . 'index',
         compact('post_count','AllMedia_view_arr','categories', 'paid_items', 'popular_items', 'latest_items',
@@ -450,14 +501,19 @@ class PagesController extends Controller
         /**
          * Start filter gender type, working type, price range
          */
+        $demo_user = 1;
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
         $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
+        if($demo_user || $filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $paid_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
+            if(Auth::check() && Auth::user()->role_flag == 1){
+            }else{                    
+                $paid_items_query->where('users.role_flag','0');
+            }
             if($filter_gender_type) {
                 $paid_items_query->where('users.gender', $filter_gender_type);
             }
@@ -476,6 +532,15 @@ class PagesController extends Controller
         */
 
         $paid_items_query->orderBy('items.created_at', 'DESC')->distinct('items.id')->with('state')->with('city')->with('user');
+        // if(Auth::check()){           
+        //     if(Auth::user()->role_flag == 1){                    
+        //         $paid_items_query = $paid_items_query;
+        //     }else{                                   
+        //         $paid_items_query = $paid_items_query->where('users.role_flag','0');
+        //     }
+        // }else{                    
+        //     $paid_items_query = $paid_items_query->where('users.role_flag','0');
+        // }
 
         $total_paid_items = $paid_items_query->count();
         /**
@@ -532,14 +597,19 @@ class PagesController extends Controller
         /**
          * Start filter gender type, working type, price range
          */
+        $demo_user = 1;
         $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
         $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
         $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
         $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-        if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
+        if($demo_user || $filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns) {
             $free_items_query->leftJoin('users', function($join) {
                 $join->on('users.id', '=', 'items.user_id');
             });
+            if(Auth::check() && Auth::user()->role_flag == 1){
+            }else{                    
+                $free_items_query->where('users.role_flag','0');
+            }
             if($filter_gender_type) {
                 $free_items_query->where('users.gender', $filter_gender_type);
             }
@@ -561,7 +631,7 @@ class PagesController extends Controller
          * Start filter sort by for free listing
          */
         $filter_sort_by = empty($request->filter_sort_by) ? Item::ITEMS_SORT_BY_NEWEST_CREATED : $request->filter_sort_by;
-        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED) {
+        if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED) {            
             $free_items_query->orderBy('items.created_at', 'DESC');
         }
         elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED) {
@@ -586,7 +656,15 @@ class PagesController extends Controller
             ->with('state')
             ->with('city')
             ->with('user');
-
+            // if(Auth::check()){           
+            //     if(Auth::user()->role_flag == 1){
+            //         $free_items_query = $free_items_query;
+            //     }else{                    
+            //         $free_items_query = $free_items_query->where('users.role_flag','0');
+            //     }
+            // }else{                    
+            //     $free_items_query = $free_items_query->where('users.role_flag','0');
+            // }
         $total_free_items = $free_items_query->count();
         /**
          * End free search
@@ -605,8 +683,9 @@ class PagesController extends Controller
             'filter_hourly_rate' => $filter_hourly_rate,
         ];
 
-        if($total_free_items == 0 || $total_paid_items == 0) {
-            $paid_items = $paid_items_query->paginate(10);
+        if($total_free_items == 0 || $total_paid_items == 0) {          
+            
+            $paid_items = $paid_items_query->paginate(10);           
             $free_items = $free_items_query->paginate(10);
             if($total_free_items == 0) {
                 $pagination = $paid_items->appends($querystringArray);
@@ -1408,7 +1487,7 @@ class PagesController extends Controller
             $paid_items_query->whereIn('items.id', $item_ids);
         }
 
-        $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        $paid_items_query->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
         // ->where(function ($query) use ($site_prefer_country_id) {
         //     $query->where('items.country_id', $site_prefer_country_id)
         //     ->orWhereNull('items.country_id');
@@ -1468,6 +1547,15 @@ class PagesController extends Controller
             ->with('city')
             ->with('user');
 
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $paid_items_query = $paid_items_query;
+                }else{                    
+                    $paid_items_query = $paid_items_query->where('users.role_flag','0');
+                }
+            }else{                    
+                $paid_items_query = $paid_items_query->where('users.role_flag','0');
+            }
         $total_paid_items = $paid_items_query->count();
 
         // free listing
@@ -1483,7 +1571,7 @@ class PagesController extends Controller
             $free_items_query->whereIn('items.id', $item_ids);
         }
 
-        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
+        $free_items_query->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
             // ->where(function ($query) use ($site_prefer_country_id) {
             //     $query->where('items.country_id', $site_prefer_country_id)
             //         ->orWhereNull('items.country_id');
@@ -1570,6 +1658,16 @@ class PagesController extends Controller
             ->with('city')
             ->with('user');
 
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $free_items_query = $free_items_query;
+                }else{                    
+                    $free_items_query = $free_items_query->where('users.role_flag','0');
+                }
+            }else{                    
+                $free_items_query = $free_items_query->where('users.role_flag','0');
+            }
+
         $total_free_items = $free_items_query->count();
 
         $querystringArray = [
@@ -1588,6 +1686,7 @@ class PagesController extends Controller
         {
             $paid_items = $paid_items_query->paginate(10);
             $free_items = $free_items_query->paginate(10);
+            // print_r($free_items);exit;
 
             if($total_free_items == 0)
             {
@@ -2141,7 +2240,6 @@ class PagesController extends Controller
                 'total_results','filter_gender_type','filter_preferred_pronouns','filter_working_type','filter_hourly_rate','all_countries','filter_country'
             ));
     }
-
     public function allNearbyTopics(Request $request)
     {
 
@@ -2961,7 +3059,15 @@ class PagesController extends Controller
         $site_prefer_country_id = app('site_prefer_country_id');
         
         $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->get();
-
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $all_coaches = $all_coaches;
+                }else{                    
+                    $all_coaches = $all_coaches->where('users.role_flag','0');
+                }
+            }else{                    
+                $all_coaches = $all_coaches->where('users.role_flag','0');
+            }
         /**
          * Start SEO
          */
@@ -3216,7 +3322,18 @@ class PagesController extends Controller
         
         if($filter_sort_by == Item::ITEMS_SORT_BY_NEWEST_CREATED){
             $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->paginate(10);
-            $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'DESC')->get();
+           $user = new User;
+            $all_coaches = $user->where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED);
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $all_coaches = $all_coaches;
+                }else{                    
+                    $all_coaches = $all_coaches->where('users.role_flag','0');
+                }
+            }else{                    
+                $all_coaches = $all_coaches->where('users.role_flag','0');
+            }
+            $all_coaches = $all_coaches->orderBy('users.created_at', 'DESC')->get();
         }elseif($filter_sort_by == Item::ITEMS_SORT_BY_OLDEST_CREATED){
             $pagination = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->paginate(10);
             $all_coaches = User::where('role_id', Role::COACH_ROLE_ID)->where('user_suspended', User::USER_NOT_SUSPENDED)->whereIn('id', $free_items_user_ids)->orderBy('users.created_at', 'ASC')->get();
@@ -3294,14 +3411,26 @@ class PagesController extends Controller
         
         $category_id_arr = [];
         $user = new User;
+        if(Auth::check()){           
+            if(Auth::user()->role_flag == 1){
+                $role_flag = array(0,1);
+            }else{                    
+                $role_flag = array(0);
+            }
+        }else{                    
+            $role_flag = array(0);
+        }
         if($category->category_parent_id == null){
             $children_categories = $category->children()->orderBy('category_name')->get();
             foreach($children_categories as $children_category){
                 $category_id_arr[] = $children_category->id;
             }
+            
             // print_r($category_id_arr);exit;            
             $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
-            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')->whereIn('categories.id',$category_id_arr)
+            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')
+            ->whereIn('users.role_flag',$role_flag)
+            ->whereIn('categories.id',$category_id_arr)
             ->groupBy('users.id');
             
             // dd($all_coaches);            
@@ -3311,7 +3440,9 @@ class PagesController extends Controller
 
             $category_id_arr[] = $category->id;
             $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
-            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')->whereIn('categories.id',$category_id_arr)
+            ->select('category_name','category_parent_id','category_icon','category_slug','users.*')
+            ->whereIn('users.role_flag',$role_flag)
+            ->whereIn('categories.id',$category_id_arr)
             ->groupBy('users.id');
             // dd($category_id_arr);
             // dd($all_coaches);
@@ -4016,6 +4147,16 @@ class PagesController extends Controller
         $all_coaches = $user->join('user_categories','user_categories.user_id','=','users.id')->join('categories','categories.id','=','user_categories.category_id')
             ->select('category_name','category_parent_id','category_icon','category_slug','users.*')
             ->groupBy('users.id');
+
+            if(Auth::check()){           
+                if(Auth::user()->role_flag == 1){
+                    $all_coaches = $all_coaches;
+                }else{                    
+                    $all_coaches = $all_coaches->where('users.role_flag','0');
+                }
+            }else{                    
+                $all_coaches = $all_coaches->where('users.role_flag','0');
+            }
             // dd($all_coaches);
 
         /**
@@ -5883,6 +6024,8 @@ class PagesController extends Controller
             /**
              * Start filter gender type, working type, price range
              */
+            $demo_user = 1;
+
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
             $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
@@ -5891,6 +6034,10 @@ class PagesController extends Controller
                 $paid_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
+                if(Auth::check() && Auth::user()->role_flag == 1){
+                }else{                    
+                    $paid_items_query->where('users.role_flag','0');
+                }
                 if($filter_gender_type) {
                     $paid_items_query->where('users.gender', $filter_gender_type);
                 }
@@ -5929,6 +6076,15 @@ class PagesController extends Controller
                 ->with('city')
                 ->with('user');
 
+                // if(Auth::check()){           
+                //     if(Auth::user()->role_flag == 1){
+                //         $paid_items_query = $paid_items_query;
+                //     }else{                    
+                //         $paid_items_query = $paid_items_query->where('users.role_flag','0');
+                //     }
+                // }else{                    
+                //     $paid_items_query = $paid_items_query->where('users.role_flag','0');
+                // }
             $total_paid_items = $paid_items_query->count();
 
             // free listing
@@ -5964,14 +6120,20 @@ class PagesController extends Controller
             /**
          * Start filter gender type, working type, price range
          */
+            $demo_user = 1;
             $filter_gender_type = empty($request->filter_gender_type) ? '' : $request->filter_gender_type;
+
             $filter_preferred_pronouns = empty($request->filter_preferred_pronouns) ? '' : $request->filter_preferred_pronouns;
             $filter_working_type = empty($request->filter_working_type) ? '' : $request->filter_working_type;
             $filter_hourly_rate = empty($request->filter_hourly_rate) ? '' : $request->filter_hourly_rate;
-            if($filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
+            if($demo_user || $filter_gender_type || $filter_working_type || $filter_hourly_rate || $filter_preferred_pronouns || $filter_country || $filter_state || $filter_city) {
                 $free_items_query->leftJoin('users', function($join) {
                     $join->on('users.id', '=', 'items.user_id');
                 });
+                if(Auth::check() && Auth::user()->role_flag == 1){
+                }else{                    
+                    $free_items_query->where('users.role_flag','0');
+                }
                 if($filter_gender_type) {
                     $free_items_query->where('users.gender', $filter_gender_type);
                 }
@@ -6038,6 +6200,9 @@ class PagesController extends Controller
                 ->with('state')
                 ->with('city')
                 ->with('user');
+
+                
+            
 
             $total_free_items = $free_items_query->count();
 
@@ -11326,8 +11491,10 @@ class PagesController extends Controller
             return $return['message'] = $e->getMessage();
         }
 
-        $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
-        $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
+        $coaches = User::where('role_id',2)->select('name','email','created_at','email_verified_at')->where('role_flag',0)
+        ->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
+        $users = User::where('role_id',3)->select('name','email','created_at','email_verified_at')->where('role_flag',0)
+        ->whereNotIn('email',['shubham@pranshtech.com','bansari@pranshtech.com','harsh.modi@pranshtech.com'])->get();
 
         //Coaches
         $coach_tmp =  storage_path('public/users_coaches_list/coaches_list_'.$time.'.csv');
@@ -11585,7 +11752,19 @@ class PagesController extends Controller
 
 
         //  for media video slider
-         $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->get();
+        $all_media_deatils_visit = new MediaDetail;
+        $all_media_deatils_visit = $all_media_deatils_visit->join('users','users.id','media_details.user_id');
+        if(Auth::check()){           
+            if(Auth::user()->role_flag == 1){
+                $all_media_deatils_visit = $all_media_deatils_visit;
+            }else{                    
+                $all_media_deatils_visit = $all_media_deatils_visit->where('users.role_flag','0');
+            }
+        }else{                    
+            $all_media_deatils_visit = $all_media_deatils_visit->where('users.role_flag','0');
+        }
+        $all_media_deatils_visit = $all_media_deatils_visit->select('media_details.*')->where('media_details.media_type','video')->where('media_details.is_status',0)->get();
+        //  $all_media_deatils_visit = MediaDetail::where('media_type','video')->where('is_status',0)->get();
          $show_all_video= array();
  
          if(isset($all_media_deatils_visit) && !empty($all_media_deatils_visit)){

@@ -118,6 +118,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'user_about',
         'user_suspended',
         'user_prefer_language',
+        'role_flag',
+
     ];
 
     /**

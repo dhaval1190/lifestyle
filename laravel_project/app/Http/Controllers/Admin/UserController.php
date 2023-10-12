@@ -294,7 +294,6 @@ class UserController extends Controller
         $email_verified_at = date("Y-m-d H:i:s");
         $password = Hash::make($request->password);
         $role_id = (isset($input['is_coach']) && $input['is_coach'] == Role::COACH_ROLE_ID) ? Role::COACH_ROLE_ID : Role::USER_ROLE_ID;
-
         $user_about = $request->user_about;
         $user_prefer_language = empty($request->user_prefer_language) ? 'en' : $request->user_prefer_language;
         $user_prefer_country_id = empty($request->user_prefer_country_id) ? $request->country_id : $request->user_prefer_country_id;
@@ -315,6 +314,8 @@ class UserController extends Controller
         }
 
         $user_image = $request->user_image;
+        $role_flag = isset($request->role_flag) ? 1 : 0;
+
         $user_image_name = null;
         if(!empty($user_image)){
             $currentDate = Carbon::now()->toDateString();
@@ -332,7 +333,7 @@ class UserController extends Controller
         $user->email_verified_at        = $email_verified_at;
         $user->password                 = $password;
         $user->role_id                  = $role_id;
-
+        $user->role_flag                = $role_flag;
         $user->company_name             = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                    = isset($input['phone']) ? $input['phone'] : null;
 
@@ -443,8 +444,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $input = $request->all();
-        // dd($input);
+    //     $input = $request->all();
+    //    print_r($input);exit;
 
         if(isset($input['youtube'])){
             if (strpos($input['youtube'], "?v=") !== false) {            
@@ -558,6 +559,8 @@ class UserController extends Controller
         $name = $request->name;
         $email = $request->email;
         $user_about = $request->user_about;
+        $role_flag   =  isset($request->role_flag) ? 1 : 0;
+
         // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
         // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
 
@@ -580,6 +583,8 @@ class UserController extends Controller
 
         $user_image = $request->user_image;
         $user_image_name = $user->user_image;
+        $user->role_flag           =  isset($input['role_flag']) ? 1 : 0;
+
         if(!empty($user_image)) {
             $currentDate = Carbon::now()->toDateString();
             $user_image_name = 'user-' . str_slug($name).'-'.$currentDate.'-'.uniqid().'.jpg';
@@ -595,10 +600,9 @@ class UserController extends Controller
 
         $user->name                 = $name;
         $user->email                = $email;
-
+        $user->role_flag            = $role_flag;
         $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                = isset($input['phone']) ? $input['phone'] : null;
-
         $user->gender               = isset($input['gender']) ? $input['gender'] : null;
         $user->preferred_pronouns   = isset($input['preferred_pronouns']) ? $input['preferred_pronouns'] : null;
 
@@ -626,6 +630,7 @@ class UserController extends Controller
         // $user->user_prefer_language = $user_prefer_language;
         // $user->user_prefer_country_id = $user_prefer_country_id;
         $user->user_image = $user_image_name;
+        // print_r($user);exit;
         $user->save();
 
         if(isset($input['category_ids']) && !empty($input['category_ids'])) {

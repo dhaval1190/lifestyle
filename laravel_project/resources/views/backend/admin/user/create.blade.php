@@ -5,7 +5,11 @@
     <link href="{{ asset('backend/vendor/croppie/croppie.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.3/css/bootstrap-select.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
+    <style>
+    .role_flag{
+        margin-left: 10px;
+    }
+    </style>
 @endsection
 
 @section('content')
@@ -359,6 +363,16 @@
                                     <label for="zip" class="text-black">Post Code<span class="text-danger">*</span></label>
                                     <input id="zip" type="text" class="form-control @error('post_code') zip is-invalid @enderror" name="post_code" value="{{ old('post_code') }}">
                                     @error('post_code')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-2 col-md-6">
+                                    <label for="role_flag" class="text-black">Test User     
+                                    <input id="role_flag" type="checkbox" class="role_flag" name="role_flag"> </label>                                   
+                                    
+                                    @error('role_flag')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

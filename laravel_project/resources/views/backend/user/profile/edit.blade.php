@@ -183,37 +183,37 @@
         border-color: #FFFFFF;
     }
     .profile_image_set {
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  /* border-style: solid; */
-  border-color: #FFFFFF;
-  box-shadow: 0 0 8px 3px #B8B8B8;
-  position: absolute;
-    bottom: -50px;
-    left: 10px;
-    }
-
-    .profile_image_set img {
-    height: 100%;
-    width: 100%;
+    width: 240px;
+    height: 240px;
     border-radius: 50%;
-    }
+    /* border-style: solid; */
+    border-color: #FFFFFF;
+    box-shadow: 0 0 8px 3px #B8B8B8;
+    position: absolute;
+        bottom: -50px;
+        left: 10px;
+        }
+
+        .profile_image_set img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        }
 
     .profile_image_set i {
-    position: absolute;
-    top: 20px;
-    right: -7px;
-    /* border: 1px solid; */
-    border-radius: 50%;
-    /* padding: 11px; */
-    height: 30px;
-    width: 30px;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: cornflowerblue;
+        position: absolute;
+            bottom: 180px;
+            right: 15px;
+            border: 1px solid;
+            border-radius: 50%;
+            padding: 11px;
+            height: 40px;
+            width: 40px;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: cornflowerblue;
     /* box-shadow: 0 0 8px 3px #B8B8B8; */
     }
     .youtube_bg{
@@ -468,66 +468,171 @@
         .back_ground_image_set{
         min-height:270px;
     }
-}
-
-
-    .bfd-dropfield-inner{
-        height: 250px !important;
-        display: grid;
-        min-height: 100%;
-        align-content: center;
-        padding-top: 0px !important;
-        margin-top: 10px;
     }
 
-    /* .croppie-container .cr-boundary {    
-        width: 100% !important;    
-    }
 
-    .croppie-container .cr-overlay {
-        overflow: scroll;
-        width: 100% !important;
-    }
-
-    @media(min-width:1920px){
-        .croppie-container .cr-viewport, .croppie-container .cr-resizer {
-        width: 100% !important;
+        .bfd-dropfield-inner{
+            height: 250px !important;
+            display: grid;
+            min-height: 100%;
+            align-content: center;
+            padding-top: 0px !important;
+            margin-top: 10px;
         }
-    } */
+
+        /* .croppie-container .cr-boundary {    
+            width: 100% !important;    
+        }
+
+        .croppie-container .cr-overlay {
+            overflow: scroll;
+            width: 100% !important;
+        }
+
+        @media(min-width:1920px){
+            .croppie-container .cr-viewport, .croppie-container .cr-resizer {
+            width: 100% !important;
+            }
+        } */
 
 
-    /* @media (max-width:576px){
-        .croppie-container .cr-boundary {
-        width: 100% !important;
-        height: 100%;
-    }
-    } */
+        /* @media (max-width:576px){
+            .croppie-container .cr-boundary {
+            width: 100% !important;
+            height: 100%;
+        }
+        } */
 
-    /* @media (max-width:1800px)
-    {
-        .croppie-container .cr-boundary {
-        width: 200% !important;
-        height: 100%;
-        overflow-x: scroll !important;
-    }
-    } */
+        /* @media (max-width:1800px)
+        {
+            .croppie-container .cr-boundary {
+            width: 200% !important;
+            height: 100%;
+            overflow-x: scroll !important;
+        }
+        } */
 
 
-    .cr-slider-wrap:active .modal-height-set{
-        overflow: hidden !important;
-    }
-    .cr-slider-wrap:focus .modal-height-set{
-        overflow: hidden !important;
-    }
-    .cr-slider-wrap:target .modal-height-set{
-        overflow: hidden !important;
-    }
-    .cr-slider-wrap:visited .modal-height-set{
-        overflow: hidden !important;
-    }
-    .cr-slider-wrap:checked .modal-height-set{
-        overflow: hidden !important;
-    }
+        .cr-slider-wrap:active .modal-height-set{
+            overflow: hidden !important;
+        }
+        .cr-slider-wrap:focus .modal-height-set{
+            overflow: hidden !important;
+        }
+        .cr-slider-wrap:target .modal-height-set{
+            overflow: hidden !important;
+        }
+        .cr-slider-wrap:visited .modal-height-set{
+            overflow: hidden !important;
+        }
+        .cr-slider-wrap:checked .modal-height-set{
+            overflow: hidden !important;
+        }
+
+
+        
+        .dropdown-profile{
+        position: absolute;
+            bottom: 150px;
+            left: 250px;
+        }
+
+        .drop_btn{
+        border: none;
+        box-shadow: none;
+        outline: none;
+        cursor: pointer;
+        }
+        .drop_btn2{
+        border: none;
+        box-shadow: none;
+        outline: none;
+        cursor: pointer;
+        }
+
+        .dropdown-profile ul{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        transform-origin: top;
+        transform: perspective(1000px) rotateX(-90deg);
+        transition: 0.5s;
+        right:0px;
+        top:0px;
+
+        }
+
+        .dropdown-profile ul.active{
+        transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .dropdown-profile ul li {
+        list-style: none;
+        width:150px;  
+        }
+
+        .dropdown-profile ul li a {
+        display:block;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        background: #F05127;
+        color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0,.2);
+        transition: 0.5s;
+        }
+
+        .dropdown-profile ul li a:hover{
+        background: #F05127;
+        }
+        /*  */
+        .dropdown-profile2{
+        position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+
+        .dropdown-profile2 ul{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 150px;
+        background: #F05127;
+        transform-origin: top;
+        transform: perspective(1000px) rotateX(-90deg);
+        transition: 0.5s;
+        right:50px;
+        top:0px;
+
+        }
+
+        .dropdown-profile2 ul.active{
+        transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .dropdown-profile2 ul li {
+        list-style: none;
+        width:150px;  
+        }
+
+        .dropdown-profile2 ul li a {
+        display:block;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        background: #F05127;
+        color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0,.2);
+        transition: 0.5s;
+        }
+
+        .dropdown-profile2 ul li a:hover{
+        background: #F05127;
+        }
+
+
 
 </style>
 
@@ -549,37 +654,91 @@ $chk_post = Auth::user()->phone;
     </div>
 @endif
 
-
+<div class="row mb-2 profile_image_message" style="display: none;">
+   <div class="col-12">
+       <div class="alert alert-success alert-dismissible fade show" role="alert">
+           The profile image updated successfully.
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">×</span>
+           </button>
+       </div>
+   </div>
+</div>
+<div class="row mb-2 profile_cover_image_message" style="display: none;">
+   <div class="col-12">
+       <div class="alert alert-success alert-dismissible fade show" role="alert">
+           The profile cover image updated successfully.
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">×</span>
+           </button>
+       </div>
+   </div>
+</div>
 
 
 
 <div class="row">
     <div class="col-lg-12 p-0">
         <div class="back_ground_image_set" id="cover_image_preview" @if(!empty($user_detail['user_cover_image'])) style="background-image: url( {{ Storage::disk('public')->url('user/' . $user_detail['user_cover_image']) }});" @else style="background-image: url( {{ asset('frontend/images/main_upper_logo.png') }});"@endif>
-            <!-- <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a> -->
-            @if(!empty($user_detail['user_cover_image']))
-                <!-- <a href="javascript:void(0)" id="delete_user_cover_image_button"> -->
-                <a class="delete_user_cover_image_button" href="#" data-toggle="modal" data-target="#deleteModal_cover_image">
-                    <i class="fa fa-times-circle"></i></a>
-            @else
-                <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a>
-            @endif
-            <a href="javascript:void(0)" id="profile_upload_image" class="profile_image_set">
-                @if(empty($login_user->user_image))        
-                    {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img "> --}}
-                    <img id="image_preview" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" class=" main-profile-img ">
+            <form action="" method="post" id="cover_img">
+                <!-- <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a> -->
+                <input id="feature_cover_image" type="hidden" name="user_cover_image">
+                @if(!empty($user_detail['user_cover_image']))
+                    <!-- <a href="javascript:void(0)" id="delete_user_cover_image_button"> -->
+                    <!-- <a class="delete_user_cover_image_button" href="#" data-toggle="modal" data-target="#deleteModal_cover_image"> -->
+                    <div class="dropdown-profile2">
+                            <div id="" class="drop_btn2"><i class="fa fa-edit"></i>
+                                    <ul>
+                                        <li><a href="javascript:void(0)" id="profile_cover_upload_image">Edit</a></li>
+                                        <li><a class="" href="#" data-toggle="modal" data-target="#deleteModal_cover_image">Remove</a></li>
+                                        <!-- <li><a href="#">Resize</a></li> -->
+                                    </ul>
+                            </div>
+                        </div>
+                        <!-- <i class="fa fa-times-circle"></i> -->
+                    <!-- </a> -->
                 @else
-                    <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
+                    <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a>
                 @endif
-                <i class="fa fa-edit"></i>
-            </a>
-            @if(!empty($login_user->user_image))  
-                <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
-                <a class="profile_image_set" href="#" data-toggle="modal" data-target="#deleteModal">
-                    <i class="fa fa-times-circle"></i></a>
-            @endif
-        
-        </div>
+                </form>
+                <a href="javascript:void(0)"  class="profile_image_set profile_upload_image">
+                    @if(empty($login_user->user_image))        
+                        {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img "> --}}
+                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" class=" main-profile-img ">
+                        <i class="fa fa-edit drop_btn"></i>
+                        
+                    @else
+                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
+                    @endif
+                        <!-- <div class="dropdown-profile">
+                            <div id="" class="drop_btn"><i class="fa fa-edit"></i>
+                                    <ul>
+                                        <li><a href="">Edit</a></li>
+                                        <li><a class="profile_image_set" href="#" data-toggle="modal" data-target="#deleteModal">Remove</a></li>
+                                        <li><a href="#">Resize</a></li>
+                                    </ul>
+                            </div>
+                        </div>
+                -->
+                    </a>
+                    @if(!empty($login_user->user_image))  
+                    <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+
+                        <div class="dropdown-profile">
+                            <div id="" class="drop_btn"><i class="fa fa-edit"></i>
+                                    <ul>
+                                        <li><a href="javascript:void(0)" class="profile_upload_image">Edit</a></li>
+                                        <li><a class="" href="#" data-toggle="modal" data-target="#deleteModal">Remove</a></li>
+                                        <!-- <li><a href="#">Resize</a></li> -->
+                                    </ul>
+                            </div>
+                        </div>
+
+                    <!-- <a class="profile_image_set" href="#" data-toggle="modal" data-target="#deleteModal">
+                        <i class="fa fa-times-circle"></i></a> -->
+                @endif
+            
+            </div>
         
         <div class="col-lg-12 co-12">
             <div class="display_center">
@@ -677,7 +836,7 @@ $chk_post = Auth::user()->phone;
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            <input id="feature_image" type="hidden" name="user_image">
+                            <!-- <input id="feature_image" type="hidden" name="user_image"> -->
                             {{-- <div class="border_bg_set">
                                 <div class="row mt-3">
                                     <div class="col-12">
@@ -721,7 +880,7 @@ $chk_post = Auth::user()->phone;
                                 </div>
                             </div>
                             @endif
-                            <input id="feature_cover_image" type="hidden" name="user_cover_image">                        
+                            <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">                         -->
                             {{-- <div class="border_bg_set mt-3">
                                 @error('user_cover_image')
                                 <span class="invalid-tooltip">
@@ -1245,8 +1404,8 @@ $chk_post = Auth::user()->phone;
     </div>
     @else
         <div class="row">
-            <input id="feature_image" type="hidden" name="user_image">
-            <input id="feature_cover_image" type="hidden" name="user_cover_image"> 
+            <!-- <input id="feature_image" type="hidden" name="user_image"> -->
+            <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">  -->
             <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
                 <div class="row mt-3">
                     <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
@@ -2329,25 +2488,29 @@ $chk_post = Auth::user()->phone;
     <button type="button" class="close-modal-custom" data-dismiss="modal" aria-label="Close"><i class="feather icon-x"></i></button>
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-body p-0">
-                <div class="modal-header-bg"></div>
-                <div class="up-photo-title">
-                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
-                </div>
-                <div class="up-photo-content pb-5">
+            <form id="profile_image_form" enctype="multipart/form-data" name="profile_image_form">
+            <input id="feature_image" type="hidden" name="user_image">
+                <div class="modal-body p-0">
+                    <div class="modal-header-bg"></div>
+                    <div class="up-photo-title">
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.user.crop-profile-image') }}</h5>
+                    </div>
+                    <div class="up-photo-content pb-5">
 
-                    <div id="upload-demo" class="center-block">
-                        <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
-                    </div>
-                    <div class="upload-action-btn text-center px-2">
-                        <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        <div id="upload-demo" class="center-block">
+                            <!-- <h5><i class="fas fa-arrows-alt mr-1"></i> Drag your photo as you require</h5> -->
+                        </div>
+                        <div class="upload-action-btn text-center px-2">
+                            <button type="button" id="cropImageBtn" class="btn btn-default btn-medium bg-blue px-3 mr-2">{{ __('backend.user.crop-image') }}</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
+
 <!-- --------------------------------------- -->
 <div class="modal fade" id="profile-image-crop-modal" tabindex="-1" role="dialog" aria-labelledby="image-crop-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -3438,7 +3601,7 @@ $chk_post = Auth::user()->phone;
         });
 
         /* Start, For profile image upload and crop */
-        $('#profile_upload_image').on('click', function(){
+        $('.profile_upload_image').on('click', function(){
             $('#user_image_error_div').hide();
             $('#user_img_error').text('');
             $('#upload-demo').croppie('destroy');
@@ -3483,8 +3646,31 @@ $chk_post = Auth::user()->phone;
                         }).then(function(response) {
                             $('#feature_image').val(response);
                             $('#image_preview').attr("src", response);
-                        });
-                        $('#cropImagePop').modal('hide')
+                            var formdata = $('#profile_image_form').serializeArray();
+                            console.log(formdata);
+                            // var url ="/user/profile/image";
+                            console.log("hello")
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                                jQuery.ajax({
+                                    type: 'POST',
+                                    url: "{{route('user.profile.image.update')}}",
+                                    data: formdata,
+                                    dataType: 'JSON',
+                                    success: function(response) {
+                                        console.log(response);
+                                        $('.profile_image_message').css('display', 'block');
+                                        $('.profile_cover_image_message').css('display', 'none');
+                                    },
+                                    error:function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                            });
+                            $('#cropImagePop').modal('hide')
                     });
                 } else {
                     $('#cropImagePop').trigger('reset');
@@ -3550,6 +3736,30 @@ $chk_post = Auth::user()->phone;
                         }).then(function(response) {
                             $('#feature_cover_image').val(response);
                             $('#cover_image_preview').css('background-image', 'url(' + response + ')');
+
+                            var formdata = $('#cover_img').serializeArray();
+                            console.log(formdata);
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                                jQuery.ajax({
+                                    type: 'POST',
+                                    url: "{{route('user.cover.image.update')}}",
+                                    data: formdata,
+                                    dataType: 'JSON',
+                                    success: function(response) {
+                                        console.log(response);
+                                        $('.profile_cover_image_message').css('display', 'block');
+                                        $('.profile_image_message').css('display', 'none');
+                                    },
+                                    error:function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                            
                         });
                         $('#cropImagePop_profile-cover-image').modal('hide')
                     });
@@ -4409,6 +4619,12 @@ $chk_post = Auth::user()->phone;
                     }
                 });
             })
+                $('.drop_btn').click(function(){
+            $('.drop_btn ul').toggleClass('active');
+            });
+            $('.drop_btn2').click(function(){
+            $('.drop_btn2 ul').toggleClass('active');
+            });
         })    
     </script>
 
@@ -4440,6 +4656,7 @@ $chk_post = Auth::user()->phone;
                         }
                     });
                 }
+               
             });
 
             $('#article_select_state_id').on('change', function() {

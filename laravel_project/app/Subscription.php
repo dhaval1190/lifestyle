@@ -5,6 +5,7 @@ namespace App;
 use DateTime;
 use DateInterval;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Subscription extends Model
 {
@@ -83,10 +84,21 @@ class Subscription extends Model
         // $today = $today->format("Y-m-d");
         $today = $today->add(new DateInterval('P14D'))->format("Y-m-d");
 
+        if(Auth::check()){           
+            if(Auth::user()->role_flag == 1){
+                $role_flag = array(0,1);
+            }else{                    
+                $role_flag = array(0);
+            }
+        }else{                    
+            $role_flag = array(0);
+        }
+
         // get paid users id array
         $paid_user_ids = array();
 
         $paid_user_ids = Subscription::join('users as u', 'subscriptions.user_id', '=', 'u.id')
+            ->whereIn('u.role_flag',$role_flag)
             ->where('u.email_verified_at', '!=', null)
             ->where('u.user_suspended', User::USER_NOT_SUSPENDED)
             ->where('subscriptions.subscription_end_date', '!=', null)
@@ -123,7 +135,18 @@ class Subscription extends Model
     {
         $active_user_ids = array();
 
+        if(Auth::check()){           
+            if(Auth::user()->role_flag == 1){
+                $role_flag = array(0,1);
+            }else{                    
+                $role_flag = array(0);
+            }
+        }else{                    
+            $role_flag = array(0);
+        }
+
         $active_user_ids = Subscription::join('users as u', 'subscriptions.user_id', '=', 'u.id')
+            ->whereIn('u.role_flag',$role_flag)
             ->where('u.email_verified_at', '!=', null)
             ->where('u.user_suspended', User::USER_NOT_SUSPENDED)
             ->pluck('u.id')

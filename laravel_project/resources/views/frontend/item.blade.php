@@ -3459,7 +3459,8 @@
     <!-- start for contact us stepper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- end for contact us stepper -->
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
   <script>
     $(document).ready(function() {
             $('.name_error').text('')
@@ -3530,6 +3531,8 @@
                                 new Notification(title, options);
                             });
                             location.reload();
+                            toastr.success('Conatct This Coach SuccessFull');
+
 
                         }
                         if (response.status == 'error') {
@@ -3652,6 +3655,8 @@
                                 new Notification(title, options);
                             });
                             location.reload();
+                            //toastr.success('Shared SuccessFull');
+
 
                         }
                         if (response.status == 'error') {

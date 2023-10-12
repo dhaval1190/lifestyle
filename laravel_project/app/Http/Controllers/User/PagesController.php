@@ -459,6 +459,7 @@ class PagesController extends Controller
                 \Session::flash('flash_message', __('review.alert.review-posted-success'));
                 \Session::flash('flash_type', 'success');
 
+    
                 return response()->json(['status'=>"success",'msg'=>'Review Add SuccessFull']);
 
             }else{

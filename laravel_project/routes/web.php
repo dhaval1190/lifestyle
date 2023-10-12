@@ -762,6 +762,8 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::post('/podcast/details', 'UserController@addPodcastDetails');
         Route::post('/youtube/details', 'UserController@addYoutubeDetails');
         Route::post('/ebook/details', 'UserController@addEbookDetails');
+        Route::post('/profile/image', 'UserController@profileimageupdate')->name('profile.image.update');
+        Route::post('/cover/image', 'UserController@covreimageupdate')->name('cover.image.update');
 
         Route::get('/user-email-template/{param?}', 'UserController@showEmailtemplate')->name('email.template')->middleware('check_coach_details');
         // Route::get('/user-email-template/{coach?}', 'UserController@showEmailtemplate')->name('coach.email.template');

@@ -170,10 +170,35 @@
     {{-- main content --}}
     @yield('content')
 
+    {{-- <div class="ba-we-love-subscribers-wrap">
+        <div class="ba-we-love-subscribers popup-ani">
+            <header>
+                <h1>We<i class="img love"></i>subscribers</h1>
+            </header>
+            <form action="#" method="post" >
+                <input name="email" placeholder="hello@barrel.im" type="email" value=""><br>
+                <input class="logo-ani" name="submit" type="submit"> <input name="uri" type="hidden" value="barreldotim">
+            </form>
+            <div class="img ba-logo logo-ani"></div>
+        </div>
+        <div class="ba-we-love-subscribers-fab">
+            <div class="wrap">
+                <div class="img-fab img"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+            </div>
+        </div>
+    </div> --}}
+
     {{-- footer --}}
     @include('frontend.partials.footer')
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+   $(".ba-we-love-subscribers-fab").click(function() {
+	$('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
+	$('.ba-we-love-subscribers').toggleClass("open");
+	$('.img-fab.img').toggleClass("close");
+});
+</script>
 <script async src="{{ asset('frontend/vendor/pace/pace.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery-3.5.1.min.js') }}"></script>
 
