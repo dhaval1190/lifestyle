@@ -13,7 +13,7 @@
 <!-- <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/ui/trumbowyg.min.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css') }}">
 <link rel="stylesheet" href="{{ asset('backend/vendor/trumbowyg/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css') }}"> -->
-<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" />
+<!-- <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" /> -->
 
 <style type="text/css">
     .media_hint{
@@ -701,11 +701,11 @@ $chk_post = Auth::user()->phone;
                     <a href="javascript:void(0)" id="profile_cover_upload_image"><i class="fa fa-edit"></i></a>
                 @endif
                 </form>
-                <a href="javascript:void(0)"  class="profile_image_set profile_upload_image">
+                <div  class="profile_image_set">
                     @if(empty($login_user->user_image))        
                         {{-- <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class=" main-profile-img "> --}}
                         <img id="image_preview" src="{{ asset('backend/images/placeholder/profile_default.webp') }}" class=" main-profile-img ">
-                        <i class="fa fa-edit drop_btn"></i>
+                        <i class="fa fa-edit drop_btn profile_upload_image"></i>
                         
                     @else
                         <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class=" main-profile-img ">
@@ -718,9 +718,9 @@ $chk_post = Auth::user()->phone;
                                         <li><a href="#">Resize</a></li>
                                     </ul>
                             </div>
-                        </div>
-                -->
-                    </a>
+                        </div>-->
+                
+                </div>
                     @if(!empty($login_user->user_image))  
                     <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
 
@@ -3664,6 +3664,7 @@ $chk_post = Auth::user()->phone;
                                         console.log(response);
                                         $('.profile_image_message').css('display', 'block');
                                         $('.profile_cover_image_message').css('display', 'none');
+                                        location.reload();
                                     },
                                     error:function(error) {
                                         console.log(error);
@@ -3754,6 +3755,7 @@ $chk_post = Auth::user()->phone;
                                         console.log(response);
                                         $('.profile_cover_image_message').css('display', 'block');
                                         $('.profile_image_message').css('display', 'none');
+                                        location.reload();
                                     },
                                     error:function(error) {
                                         console.log(error);

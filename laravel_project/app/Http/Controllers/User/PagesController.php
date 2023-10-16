@@ -331,7 +331,7 @@ class PagesController extends Controller
             //         }
             //     }
 
-            $Ariclevisit_deatils_visit = Item::where('user_id', $login_user->id)->groupBy('id')->get();
+            $Ariclevisit_deatils_visit = Item::where('user_id', $login_user->id)->where('item_status','!=',3)->groupBy('id')->get();
 
             // $Ariclevisit_deatils_visit = Item::join('items_visits', 'items_visits.item_id', '=', 'items.id')
             // ->select('items.*','items_visits.item_id',DB::raw('COUNT(items_visits.item_id) as totalcount'))->where('user_id', $login_user->id)->groupBy('id')->get();

@@ -107,7 +107,10 @@ $(document).ready(function() {
 
     "use strict";
 
-    $('#dataTable').DataTable();
+    $('#dataTable').DataTable({
+        order: [[0 , "desc" ]]
+    });
+
 });
 </script>
 @endsection

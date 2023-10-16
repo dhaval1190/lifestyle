@@ -72,6 +72,7 @@ use Google\Client;
 use Google\Service\Calendar;
 use Config;
 use Spatie\GoogleCalendar\Event as GoogleEvent;
+use App\ContactUs;
 
 
 class PagesController extends Controller
@@ -5151,7 +5152,7 @@ class PagesController extends Controller
         $login_user = Auth::user();
         $notifications = UserNotification::where('user_id',$login_user->id)->get();
         $Articledetail= array();        
-        $Ariclevisit_deatils_visit = Item::where('user_id', $login_user->id)->groupBy('id')->get();
+        $Ariclevisit_deatils_visit = Item::where('user_id', $login_user->id)->where('item_status','!=',3)->groupBy('id')->get();
 
         if(isset($Ariclevisit_deatils_visit) && !empty($Ariclevisit_deatils_visit)){
             foreach($Ariclevisit_deatils_visit as $article_detail){
@@ -11798,5 +11799,90 @@ class PagesController extends Controller
                 'site_innerpage_header_background_youtube_video', 'site_innerpage_header_title_font_color',
                 'site_innerpage_header_paragraph_font_color','site_prefer_country_id'
             ));   
+    }
+    public function conatact_us(Request $request )
+    {
+        if( Auth::check()){
+            $validator = Validator::make($request->all(),[
+                'email' => 'required|email|max:255',
+                'message' => 'required|string|max:255',
+                //'user_type' => 'required',
+            ],[
+                'email.required'=> 'Email is required',            
+                'email.regex'         =>  "Invalid email format",                          
+                'message.required' => 'Message field is required',
+                'message.max' => 'Message should not more than 255 characters',
+
+                //'user_type.required' => 'User type field is required'
+            ]);
+            $coach = Auth::user()->role->name;
+        }else{
+            $validator = Validator::make($request->all(),[
+                'email' => 'required|email|max:255',
+                'message' => 'required|string|max:255',
+                'user_type' => 'required',
+            ],[
+                'email.required'=> 'Email field is required',            
+                'email.regex'         =>  "Invalid email format",                          
+                'message.required' => 'Message field is required',
+                'user_type.required' => 'User type field is required'
+            ]);
+        }
+        if($validator->passes()){
+            $user = ContactUs::create([
+                'email' => $request->email,
+                'user_type' => isset($coach) ? $coach :$request->user_type,
+                'message' => $request->message,
+            ]);
+
+            $settings = app('site_global_settings');
+
+            if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+            {
+                // config SMTP
+                config_smtp(
+                    $settings->settings_site_smtp_sender_name,
+                    $settings->settings_site_smtp_sender_email,
+                    $settings->settings_site_smtp_host,
+                    $settings->settings_site_smtp_port,
+                    $settings->settings_site_smtp_encryption,
+                    $settings->settings_site_smtp_username,
+                    $settings->settings_site_smtp_password
+                );
+            }
+                
+            try {
+                $_admin = User::getAdmin();
+                // $email_admins = $_admin->email.','.'ajay@pranshtech.com';                
+                $email_admins = $_admin->email.','.'vishal@pranshtech.com';
+                //$email_admins = 'ajay@pranshtech.com,harsh.modi@pranshtech.com';
+                $email_admin =  explode(',',$email_admins);
+                $email_subject = __('email.contact.subject');
+                $email_notify_message = [
+                    'to_mail' => $email_admin,
+                    'email_from' => $request->email,
+                    'user_type' => isset($coach) ? $coach :$request->user_type,                
+                    'note' => isset($request->message) ? $request->message : '',
+                    'year' => date('Y'), 
+                    'subject' =>  $email_subject              
+                ];
+
+                //print_r($email_notify_message);exit;
+                Mail::send('frontend.email.contact_us',$email_notify_message,function($messages) use ($email_admin,$email_subject){
+                    $messages->to($email_admin);                        
+                    $messages->subject($email_subject);
+                    
+                });
+                
+            } catch (\Throwable $th) {
+                echo $th->getMessage();
+                return true;
+                exit;
+            }            
+            return response()->json(['status'=>"success"]);
+        }
+        else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+        }
     }
 }

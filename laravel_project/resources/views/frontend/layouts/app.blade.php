@@ -51,12 +51,7 @@
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
 
-
-
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}"/>
-
-
-
 
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -87,6 +82,7 @@
             {
                 background: #009688;
             }
+            
         </style>
     @endif
 
@@ -110,6 +106,16 @@
             padding-right:5px;
             width: 100%;
         }
+        .error_color_color{
+                color: red !important;
+                font-weight: 400 !important;
+                padding-top: 4px;
+                display: block;
+                text-align:left;
+            }
+            .ba-we-love-subscribers input[name="email"] {
+                background-color: white !important;
+            }
     </style>
 </head>
 <body>
@@ -170,23 +176,57 @@
     {{-- main content --}}
     @yield('content')
 
-    {{-- <div class="ba-we-love-subscribers-wrap">
+    <div class="ba-we-love-subscribers-wrap">
         <div class="ba-we-love-subscribers popup-ani">
-            <header>
-                <h1>We<i class="img love"></i>subscribers</h1>
+            <header class="bg_email">
+                <div class="site-logo">
+                    <a href="https://bold-nobel.159-89-93-200.plesk.page" class="text-black mb-0">
+                        <img src="https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/setting/logo-2023-09-27-651423c8e76f8.png">
+                    </a>
+                </div>
             </header>
-            <form action="#" method="post" >
-                <input name="email" placeholder="hello@barrel.im" type="email" value=""><br>
-                <input class="logo-ani" name="submit" type="submit"> <input name="uri" type="hidden" value="barreldotim">
+            <form method="POST" name="contact_us" id="contact_us">
+                @csrf
+                <input name="email" placeholder="Please Enter Your Email" type="email" id="contact_email"><br>
+                {{ old('email') }}
+                <p class="contact_us_email_error error_color_color" role="alert"></p>
+
+                @error('body')
+                    <span class="invalid-tooltip">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+                @if( !Auth::check())
+                <div class="radio"> 
+                    <input id="first" type="radio" name="user_type" value="user" id="contact_us">  
+                    <label for="first">User</label>  
+                    <input id="second" type="radio" name="user_type" value="coach" id="contact_us">  
+                    <label for="second">Coach</label> 
+                    <input id="third" type="radio" name="user_type" value="none" id="contact_us">  
+                    <label for="third">None</label>    
+                  </div> 
+                  <p class="contact_us_user_type_error error_color_color" role="alert"></p>
+                 @endif
+                <textarea name="message" cols="10" rows="10" id="contact_message" placeholder="Message"></textarea>
+                <p class="contact_us_message_error error_color_color" role="alert"></p>
+
+                @error('message')
+                    <span class="invalid-tooltip">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+                <input class="logo-ani" name="submit" type="submit">
+                <span class="please_wait">Please Wait..</span>
             </form>
-            <div class="img ba-logo logo-ani"></div>
         </div>
         <div class="ba-we-love-subscribers-fab">
-            <div class="wrap">
-                <div class="img-fab img"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-            </div>
+            <div class="float">
+                <div class="trigger">
+                  <i class="fa fa-commenting" aria-hidden="true"></i>
+                </div>
+              </div>
         </div>
-    </div> --}}
+    </div>
 
     {{-- footer --}}
     @include('frontend.partials.footer')
@@ -216,15 +256,91 @@
 @if(is_demo_mode() || $site_global_settings->setting_site_maintenance_mode == \App\Setting::SITE_MAINTENANCE_MODE_ON)
 <script src="{{ asset('frontend/vendor/js-cookie/js.cookie.js') }}"></script>
 @endif
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 <script>
-
     jQuery.event.special.touchstart = {
         setup: function( _, ns, handle ){
             this.addEventListener("touchstart", handle, { passive: true });
         }
     };
+    $(document).ready(function() {
+        $('.contact_us_email_error').text('');
+        $('.contact_us_message_error').text('');
+        $('.contact_us_user_type_error').text('');
+        $('.please_wait').text('');
+    
+        $('#contact_us').on('submit', function(e) {
+            e.preventDefault();
+            $('.please_wait').text('Please Wait..');    
+            
+            var url = "{{ route('page.conatact_us') }}"
+            
+            var formData = new FormData(this);
+            jQuery.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                dataType: 'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.status == 'success') {
+                        // console.log(response)	
+                        $(".error_color_color").text("");
+                        $('.please_wait').text('');
+                        // location.reload(); 	
+                        // window.location.href = "{{ route('login') }}";	
+                        $('#contact_us-modal').modal('hide');
+                    
+                        $("#contact_us").trigger("reset");
+                    
+                        toastr.success('You Request Submited Successfully');
+                        $(':input[type="submit"]').prop('disabled', false);
+                        location.reload();
+                        // });
+                    }
+                    if (response.status == 'error') {
+                        // console.log(response.msg.item_contact_email_note)	
+                        $('.please_wait').text('');
+                        // $('#register_error_div').show();
 
+                        $.each(response.msg, function(key, val) {
+                        
+                            if (response.msg.email) {
+                                $('.contact_us_email_error').text(response.msg.email)
+                            }
+                            if (response.msg.message) {
+                                $('.contact_us_message_error').text(response.msg.message)
+                            }
+                            if (response.msg.user_type) {
+                                $('.contact_us_user_type_error').text(response.msg.user_type)
+                            }
+                            $(':input[type="submit"]').prop('disabled', false);
+                        });
+                    }
+                }
+            });
+        });
+        $(".ba-we-love-subscribers").find("input,textarea,select").on('input', function() {
+    
+            $('#contact_email').on('input',function() {
+                $('.contact_us_email_error').empty();
+            });
+            $('#contact_message').on('input',function() {
+                $('.contact_us_message_error').empty();
+            });
+            $('#contact_us').on('input',function() {
+                $('.contact_us_user_type_error').empty();
+            });
+        }); 
+    });
+    
     $(document).ready(function(){
 
         "use strict";
@@ -415,13 +531,13 @@
 var autoSwap = setInterval( swap,7000);
 
 //pause slideshow and reinstantiate on mouseout
-$('.carousel, .slider').hover(
-  function () {
-    clearInterval(autoSwap);
-}, 
-  function () {
-   autoSwap = setInterval( swap,7000);
-});
+    $('.carousel, .slider').hover(
+    function () {
+        clearInterval(autoSwap);
+    }, 
+    function () {
+    autoSwap = setInterval( swap,7000);
+    });
 
 //global variables
 var items = [];
