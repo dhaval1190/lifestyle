@@ -199,7 +199,7 @@
 <!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 <script>
    $(".ba-we-love-subscribers-fab").click(function() {
 	$('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
