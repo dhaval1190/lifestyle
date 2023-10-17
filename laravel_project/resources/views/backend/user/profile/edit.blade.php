@@ -739,717 +739,538 @@ $chk_post = Auth::user()->phone;
                 @endif
             
             </div>
-        
-        <div class="col-lg-12 co-12">
-            <div class="display_center">
-                <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
-                <!-- <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p> -->
-                @if(Auth::user()->isCoach())
-                <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+    <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
+        @csrf
+        <div class="col-lg-12">
+        <div class="row align-set_center">
+            <div class="col-lg-6 col-xl-6 col-xxl-6 col-md-6 col-12">
+                <div class="display_center">
+                    <h1 class="h3 mb-2 mt-5rem font-set-sm text-orange-800 z-index-99">{{ __('backend.user.edit-profile') }}</h1>
+                    <!-- <p class="mb-2 z-index-99">{{ __('backend.user.edit-profile-desc') }}</p> -->
+                    @if(Auth::user()->isCoach())
+                    <p class="mb-4 z-index-99">{{ __('How it works? ') }}<a href="{{ route('page.earn.points') }}" target="_blank" class="text-orange-700">{{ __('Learn Here') }}</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-xl-6 col-xxl-6 text-align-end  col-md-6 col-12">                
+                <button type="submit" id="frmSubmit" class="btn btn-primary mb-2 mt-md-5 mt-0  mt-5rem font-set-sm">
+                {{ __('Update Profile') }}
+                </button>
+            
             </div>
             {{-- <p class="mb-4 "><a href="javascript:void(0)" aria-hidden="true" title="info" id="profileCompleteModalBtn" >
                 <button type="button" class="btn btn-sm btn-primary">{{ __('See Profile Progress') }}
                 </button></a>
             </p> --}}
             @endif
+        
         </div>
-    </div>
-    <div class="col-lg-12 co-12">
-        <div class="alert alert-danger alert-dismissible fade show" id="user_image_error_div" role="alert" style="display: none;">
-            <strong id="user_img_error"></strong>
         </div>
-    </div>
+     
+        <div class="col-lg-12 co-12">
+            <div class="alert alert-danger alert-dismissible fade show" id="user_image_error_div" role="alert" style="display: none;">
+                <strong id="user_img_error"></strong>
+            </div>
+        </div>
 
-    <div class="modal fade" id="deleteModal_cover_image" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                   Do you really want to delete Cover Image ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
-                        
-                    <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
-                            <button type="button"  id="delete_user_cover_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
-                        <!-- </a> -->
+        <div class="modal fade" id="deleteModal_cover_image" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    Do you really want to delete Cover Image ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
+                            
+                        <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+                                <button type="button"  id="delete_user_cover_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                            <!-- </a> -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                   Do you really want to delete Profile Picture ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
-                        
-                    <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
-                            <button type="button"  id="delete_user_profile_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
-                        <!-- </a>                    -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('backend.shared.delete-confirm') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    Do you really want to delete Profile Picture ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>                    
+                            
+                        <!-- <a href="javascript:void(0)" id="delete_user_profile_image_button" class="profile_image_set"> -->
+                                <button type="button"  id="delete_user_profile_image_button" class="btn btn-danger">{{ __('backend.shared.delete') }}</button>
+                            <!-- </a>                    -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-<!-- Content Row -->
-<div class="row pt-4 pl-3 pr-3 pb-4">
-    <div class="col-12 pr-3 pl-3">
-        <div class="row font_icon_color">
-            <div class="col-12">
-                @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) &&
-                !isset(Auth::user()->hourly_rate_type) && !isset(Auth::user()->experience_year) && !isset(Auth::user()
-                ->preferred_pronouns))
-                <div class="alert alert-danger" role="alert">
-                    Please enter required details to access other menus
-                </div>
-                @endif
-                <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
-                    <strong id="img_error"></strong>
-                </div>
-                <form method="POST" action="{{ route('user.profile.update') }}" class="" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="is_coach" id="is_coach" value="{{ Auth::user()->isCoach() ? 2 : null }}">
+        <!-- Content Row -->
+        <div class="row pt-4 pl-3 pr-3 pb-4">
+        <div class="col-12 pr-3 pl-3">
+            <div class="row font_icon_color">
+                <div class="col-12">
+                    @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() == 0) &&
+                    !isset(Auth::user()->hourly_rate_type) && !isset(Auth::user()->experience_year) && !isset(Auth::user()
+                    ->preferred_pronouns))
+                    <div class="alert alert-danger" role="alert">
+                        Please enter required details to access other menus
+                    </div>
+                    @endif
+                    <div class="alert alert-danger alert-dismissible fade show" id="image_error_div" role="alert" style="display:none">
+                        <strong id="img_error"></strong>
+                    </div>
+                    
+                        <input type="hidden" name="is_coach" id="is_coach" value="{{ Auth::user()->isCoach() ? 2 : null }}">
 
-                    @if($login_user->isCoach())
-                    <div class="row">
-                        <div class="col-sm-6 col-12 col-md-12 col-lg-12 col-xl-2">
-                            {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
-                            {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small>
-                            --}}
-                            @error('user_image')
-                            <span class="invalid-tooltip">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            <!-- <input id="feature_image" type="hidden" name="user_image"> -->
-                            {{-- <div class="border_bg_set">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        @if(empty($login_user->user_image))
-                                        <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
-                                        @else
-                                        <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
-                                    @if(isset($login_user->user_image))
-                                    <div class="col-xl-12 col-12">
-                                        <a class="btn btn-danger text-white w-100" id="delete_user_profile_image_button">
-                                            <!-- <i class="fas fa-trash-alt"></i> -->
-                                            {{ __('role_permission.user.delete-profile-image') }}
-                                        </a>
-                                    </div>
-                                    @endif
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-12">
-                                        <span class="text-lg text-gray-900 mt-5">{{ __('Select Profile Image') }}</span>
-                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
-                                        <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
-                                        <small class="form-text text-muted">{{ __('Accepts only JPG,JPEG and PNG image type') }}</small>
-                                    </div>
-                                </div>
-                            </div> --}}
-
-                            @if(Auth::user()->isCoach())
-                            <div class="col-lg-12 col-12 p-0 mt-2">
-                                <div class="coach_sidebar display_flex_center" id="progress_bar_div">
-                                    <div class="sidebar_info">
-                                        <div class="level">
-                                            <h5>{{ $progress_data['profile'] }}</h5>
-                                            <h6>{{ $progress_data['percentage'] }}% Completed</h6>
-                                        </div>
-                                    </div>
-                                    <div id="chartContainer" style="height: 200px; width: 100%;" class="level_two"></div>
-                                </div>
-                            </div>
-                            @endif
-                            <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">                         -->
-                            {{-- <div class="border_bg_set mt-3">
-                                @error('user_cover_image')
+                        @if($login_user->isCoach())
+                        <div class="row">
+                            <div class="col-sm-6 col-12 col-md-12 col-lg-12 col-xl-2">
+                                {{-- <span class="text-lg text-gray-800">{{ __('backend.user.profile-image') }}</span> --}}
+                                {{-- <small class="form-text text-muted">{{ __('backend.user.profile-image-help') }}</small>
+                                --}}
+                                @error('user_image')
                                 <span class="invalid-tooltip">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                                <p>Cover Image</p>
-                                @if(empty($login_user->user_cover_image))
-                                <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%; min-height:100px;">
-                                @else
-                                <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%; min-height:100px;">
-                                @endif
-                                <div class="mt-1">
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-        
+                                <!-- <input id="feature_image" type="hidden" name="user_image"> -->
+                                {{-- <div class="border_bg_set">
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            @if(empty($login_user->user_image))
+                                            <img id="image_preview" src="{{ asset('backend/images/placeholder/profile-' . intval($login_user->id % 10) . '.webp') }}" class="">
+                                            @else
+                                            <img id="image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_image) }}" class="">
+                                            @endif
                                         </div>
-                                        @if(!empty($login_user->user_cover_image))
-                                            <div class="col-md-6">
-                                                <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
-                                                    <!-- <i class="fas fa-trash-alt"></i> -->
-                                                    {{ __('role_permission.user.delete-profile-image') }}
-                                                </a>
-                                            </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        @if(isset($login_user->user_image))
+                                        <div class="col-xl-12 col-12">
+                                            <a class="btn btn-danger text-white w-100" id="delete_user_profile_image_button">
+                                                <!-- <i class="fas fa-trash-alt"></i> -->
+                                                {{ __('role_permission.user.delete-profile-image') }}
+                                            </a>
+                                        </div>
                                         @endif
                                     </div>
-                                </div>                        
-                            </div> --}}
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-xl-10 col-lg-12">
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
-                                    <!-- <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> -->
-                                    <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple>
-                                        {{-- <option value="">Select Category</option> --}}
-                                        @foreach($printable_categories as $key => $printable_category)
-                                        @php
-                                        if(empty($printable_category["is_parent"])) continue;
-                                        if($printable_category["category_name"] == 'Entrepreneurial' ||
-                                        $printable_category["category_name"] == 'Productivity') continue;
-                                        @endphp
-                                        <option value="{{ $printable_category["category_id"] }}" {{ in_array($printable_category["category_id"] ,old('category_ids', $login_user->categories()->pluck('categories.id')->all())) ? 'selected' : '' }}>
-                                            {{ $printable_category["category_name"] }}
+                                    <div class="row mt-1">
+                                        <div class="col-12">
+                                            <span class="text-lg text-gray-900 mt-5">{{ __('Select Profile Image') }}</span>
+                                            <small class="form-text text-muted">{{ __('backend.article.feature-image-ratio') }}</small>
+                                            <small class="form-text text-muted">{{ __('backend.article.feature-image-size') }}</small>
+                                            <small class="form-text text-muted">{{ __('Accepts only JPG,JPEG and PNG image type') }}</small>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                                @if(Auth::user()->isCoach())
+                                <div class="col-lg-12 col-12 p-0 mt-2">
+                                    <div class="coach_sidebar display_flex_center" id="progress_bar_div">
+                                        <div class="sidebar_info">
+                                            <div class="level">
+                                                <h5>{{ $progress_data['profile'] }}</h5>
+                                                <h6>{{ $progress_data['percentage'] }}% Completed</h6>
+                                            </div>
+                                        </div>
+                                        <div id="chartContainer" style="height: 200px; width: 100%;" class="level_two"></div>
+                                    </div>
+                                </div>
+                                @endif
+                                <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">                         -->
+                                {{-- <div class="border_bg_set mt-3">
+                                    @error('user_cover_image')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                    <p>Cover Image</p>
+                                    @if(empty($login_user->user_cover_image))
+                                    <img id="cover_image_preview" src="{{ asset('frontend/images/main_upper_logo.png') }}" style="width:100%; min-height:100px;">
+                                    @else
+                                    <img id="cover_image_preview" src="{{ Storage::disk('public')->url('user/'. $login_user->user_cover_image) }}" style="width:100%; min-height:100px;">
+                                    @endif
+                                    <div class="mt-1">
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+            
+                                            </div>
+                                            @if(!empty($login_user->user_cover_image))
+                                                <div class="col-md-6">
+                                                    <a class="btn btn-danger btn-block text-white" id="delete_user_cover_image_button">
+                                                        <!-- <i class="fas fa-trash-alt"></i> -->
+                                                        {{ __('role_permission.user.delete-profile-image') }}
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>                        
+                                </div> --}}
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-xl-10 col-lg-12">
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label for="category_ids" class="text-black">Category<span class="text-danger">*</span></label>
+                                        <!-- <select class="form-control selectpicker-category @error('category_ids') is-invalid @enderror" name="category_ids[]" required multiple title="Select Categories" data-size="10" data-live-search="true"> -->
+                                        <select class="form-control form-select category_ids @error('category_ids') is-invalid @enderror" name="category_ids[]" multiple>
+                                            {{-- <option value="">Select Category</option> --}}
+                                            @foreach($printable_categories as $key => $printable_category)
+                                            @php
+                                            if(empty($printable_category["is_parent"])) continue;
+                                            if($printable_category["category_name"] == 'Entrepreneurial' ||
+                                            $printable_category["category_name"] == 'Productivity') continue;
+                                            @endphp
+                                            <option value="{{ $printable_category["category_id"] }}" {{ in_array($printable_category["category_id"] ,old('category_ids', $login_user->categories()->pluck('categories.id')->all())) ? 'selected' : '' }}>
+                                                {{ $printable_category["category_name"] }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('category_ids')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-sm-6 col-12 col-xl-3 col-lg-6  ">
+                                        <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
+                                        @error('name')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
+                                        <label for="company_name" class="text-black">Company Name</label>
+                                        <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $login_user->company_name) }}">
+                                        @error('company_name')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
+                                        <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
+                                        @error('email')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
+                                        <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
+                                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)" required>
+                                        @error('phone')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    {{-- <div class="col-sm-5">
+                                                <div class="row mt-3"> --}}
+                                    {{-- <div class="col-sm-6">
+                                                        <label for="gender" class="text-black">Gender</label>
+                                                        <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
+                                                            @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
+                                                                <option value="{{ $gkey }}"
+                                    {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
+                                    </option>
+                                    @endforeach
+                                    </select>
+                                    @error('gender')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div> --}}
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
+                                    <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
+                                    <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
+                                        @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
+                                        <option value="{{ $prkey }}" {{ old('preferred_pronouns', $login_user->preferred_pronouns) == $prkey ? 'selected' : '' }}>
+                                            {{ $pronoun }}
                                         </option>
                                         @endforeach
                                     </select>
-                                    @error('category_ids')
+                                    @error('preferred_pronouns')
                                     <span class="invalid-tooltip" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
+                                {{-- </div>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <div class="row mt-3"> --}}
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
+                                    <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
+                                    <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
+                                        @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
+                                        <option value="{{ $hrkey }}" {{ old('hourly_rate_type', $login_user->hourly_rate_type) == $hrkey ? 'selected' : '' }}>
+                                            {{ $rate }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('hourly_rate_type')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
+                                    {{-- <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label> --}}
+                                    <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
+                                    <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Session Method">
+                                        @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
+                                        <option value="{{ $wtkey }}" {{ old('working_type', $login_user->working_type) == $wtkey ? 'selected' : '' }}>
+                                            {{ $working_type }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('working_type')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
+                                    <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
+                                    <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
+                                        @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
+                                        <option value="{{ $eykey }}" {{ old('experience_year', $login_user->experience_year) == $eykey ? 'selected' : '' }}>
+                                            {{ $experience_year }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('experience_year')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                {{-- </div>
+                                            </div> --}}
                             </div>
-
                             <div class="row mt-3">
-                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6  ">
-                                    <label for="name" class="text-black">{{ __('auth.name') }}<span class="text-danger">*</span></label>
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
-                                    @error('name')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
-                                    <label for="company_name" class="text-black">Company Name</label>
-                                    <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name', $login_user->company_name) }}">
-                                    @error('company_name')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
-                                    <label class="text-black" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
-                                    @error('email')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-6 col-12 col-xl-3 col-lg-6 ">
-                                    <label for="phone" class="text-black">Phone<span class="text-danger">*</span></label>
-                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)" required>
-                                    @error('phone')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                {{-- <div class="col-sm-5">
-                                            <div class="row mt-3"> --}}
-                                {{-- <div class="col-sm-6">
-                                                    <label for="gender" class="text-black">Gender</label>
-                                                    <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" required title="Select Gender">
-                                                        @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
-                                                            <option value="{{ $gkey }}"
-                                {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
-                                </option>
-                                @endforeach
-                                </select>
-                                @error('gender')
-                                <span class="invalid-tooltip" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div> --}}
-                            <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
-                                <label for="preferred_pronouns" class="text-black">Preferred Pronouns<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker @error('preferred_pronouns') is-invalid @enderror" name="preferred_pronouns" title="Select Preferred Pronouns">
-                                    @foreach(\App\User::PREFERRED_PRONOUNS as $prkey => $pronoun)
-                                    <option value="{{ $prkey }}" {{ old('preferred_pronouns', $login_user->preferred_pronouns) == $prkey ? 'selected' : '' }}>
-                                        {{ $pronoun }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('preferred_pronouns')
-                                <span class="invalid-tooltip" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            {{-- </div>
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <div class="row mt-3"> --}}
-                            <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
-                                <label for="hourly_rate_type" class="text-black">Hourly Rate<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker @error('hourly_rate_type') is-invalid @enderror" name="hourly_rate_type" title="Select Hourly Rate">
-                                    @foreach(\App\User::HOURLY_RATES as $hrkey => $rate)
-                                    <option value="{{ $hrkey }}" {{ old('hourly_rate_type', $login_user->hourly_rate_type) == $hrkey ? 'selected' : '' }}>
-                                        {{ $rate }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('hourly_rate_type')
-                                <span class="invalid-tooltip" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
-                                {{-- <label for="working_type" class="text-black">Session Method<span class="text-danger">*</span></label> --}}
-                                <label for="working_type" class="text-black">Working Method<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker @error('working_type') is-invalid @enderror" name="working_type" required title="Select Session Method">
-                                    @foreach(\App\User::WORKING_TYPES as $wtkey => $working_type)
-                                    <option value="{{ $wtkey }}" {{ old('working_type', $login_user->working_type) == $wtkey ? 'selected' : '' }}>
-                                        {{ $working_type }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('working_type')
-                                <span class="invalid-tooltip" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-sm-6 col-12 col-xl-3 col-lg-6">
-                                <label for="experience_year" class="text-black">Experience Year<span class="text-danger">*</span></label>
-                                <select class="form-control selectpicker @error('experience_year') is-invalid @enderror" name="experience_year" title="Select Experience">
-                                    @foreach(\App\User::EXPERIENCE_YEARS as $eykey => $experience_year)
-                                    <option value="{{ $eykey }}" {{ old('experience_year', $login_user->experience_year) == $eykey ? 'selected' : '' }}>
-                                        {{ $experience_year }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('experience_year')
-                                <span class="invalid-tooltip" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            {{-- </div>
-                                        </div> --}}
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                                <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="10">{{ old('user_about', $login_user->user_about) }}</textarea>
-                                @error('user_about')
-                                <span class="invalid-tooltip">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-12 col-md-12">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <label for="website" class="text-black">Website</label>
-                            <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                <!-- {{ __('backend.shared.url-help') }} -->
-                            </small>
-                            @error('website')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <label for="instagram" class="text-black">Instagram</label>
-                            <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
-                            <span class="err_instagram_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
-                                <!-- {{ __('Only instagram Username and URL allowed (include http:// or https://)') }} -->
-                            </small>
-                            @error('instagram')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('instagram_error'))
-                            <span class="invalid-tooltip">
-                                <strong>{{ Session::get('instagram_error') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <label for="linkedin" class="text-black">LinkedIn</label>
-                            <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
-                            <span class="err_linkedin_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                <!-- {{ __('Only linkedin URL allowed (include http:// or https://)') }} -->
-                            </small>
-                            @error('linkedin')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('linkedin_error'))
-                            <span class="invalid-tooltip">
-                                <strong>{{ Session::get('linkedin_error') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <label for="facebook" class="text-black">Facebook</label>
-                            <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
-                            <span class="err_facebook_url" style="color:red"></span>
-                            <small id="linkHelpBlock" class="form-text text-muted">
-                                <!-- {{ __('Only facebook URL allowed (include http:// or https://)') }} -->
-                            </small>
-                            @error('facebook')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            @if(Session::has('facebook_error'))
-                            <span class="invalid-tooltip">
-                                <strong>{{ Session::get('facebook_error') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
-                            <div class="row">
-                                <div class="col-sm-12 col-12 col-lg-12">
-                                    <label for="youtube" class="text-black">Youtube</label>
-                                    <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
-                                    <span class="err_youtube_url" style="color:red"></span>
-                                    <span class="youtube_error" style="color:red"></span>
-                                    <small id="linkHelpBlock" class="form-text text-muted">
-                                        <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
-                                    </small>
-                                    @error('youtube')
-                                    <span class="invalid-tooltip" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                    @if(Session::has('youtube_error'))
+                                <div class="col-md-12">
+                                    <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
+                                    <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="10">{{ old('user_about', $login_user->user_about) }}</textarea>
+                                    @error('user_about')
                                     <span class="invalid-tooltip">
-                                        <strong>{{ Session::get('youtube_error') }}</strong>
+                                        <strong>{{ $message }}</strong>
                                     </span>
-                                    @endif
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
                 </div>
-               
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-6 col-xl-12 col-md-6">
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-12 col-xl-12 col-12">
-                            <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
-                            <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $login_user->address) }}" required>
-                            @error('address')
-                            <span class="invalid-tooltip" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>                
-            </div>
-            <div class="row mt-3">
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
-                    <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
-                    <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}" required>
-                        @foreach($all_countries as $all_countries_key => $country)
-                        @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status
-                        == \App\Country::COUNTRY_STATUS_DISABLE && $login_user->country_id == $country->id))
-                        <option value="{{ $country->id }}" {{ $country->id == old('country_id', $login_user->country_id) ? 'selected' : '' }}>
-                            {{ $country->country_name }}
-                        </option>
-                        @endif
-                        @endforeach
-                    </select>
-                    @error('country_id')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
-                    <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
-                        @if($all_states)
-                        @foreach($all_states as $key => $state)
-                        @error('state_id')<option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
-                            {{ $state->state_name }}
-                        </option>
-                        @else
-                        <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
-                            {{ $state->state_name }}
-                        </option>
-                        @enderror
-                        @endforeach
-                        @endif
-                    </select>
-                    @error('state_id')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
-                    <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
-                    <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
-                        @if($all_cities)
-                        @foreach($all_cities as $key => $city)
-                        @error('state_id') <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
-                            {{ $city->state_name }}
-                        </option>
-                        @else
-                        <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
-                            {{ $city->city_name }}
-                        </option>
-                        @enderror
-                        @endforeach
-                        @endif
-                    </select>
-                    @error('city_id')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
-                    <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
-                    <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" required>
-                    @error('post_code')
-                    <span class="invalid-tooltip" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
-                    <label for="hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
-                    <select id="hour_time_zone" class="selectpicker form-control @error('hour_time_zone') is-invalid @enderror" name="hour_time_zone" data-live-search="true">
-                        @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
-                        <option value="{{ $time_zone_identifier }}" {{ $login_user->time_zone == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
-                        @endforeach
-                    </select>
-                    <small class="form-text text-muted">
-                        <!-- {{ __('Time zone for event') }} -->
-                    </small>
-                    @error('hour_time_zone')
-                    <span class="invalid-feedback">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="row mt-3 mb-5 break_line_section">
-                <div class="col-md-6 mb-3">
-                    <label class="text-black" for="certifications">{{ __('Certifications') }}</label>
-                    <textarea id="certifications" class="form-control @error('certifications') is-invalid @enderror" name="certifications" rows="4">{{ old('certifications', $login_user->certifications) }}</textarea>
-                    @error('certifications')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="col-md-6">
-                    <label class="text-black" for="awards">{{ __('Awards') }}</label>
-                    <textarea id="awards" class="form-control @error('awards') is-invalid @enderror" name="awards" rows="4">{{ old('awards', $login_user->awards) }}</textarea>
-                    @error('awards')
-                    <span class="invalid-tooltip">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="alert alert-danger alert-dismissible fade show" id="cover_image_error_div" role="alert" style="display:none;margin:4px;">
-                <strong id="cover_img_error"></strong>
-            </div>
-
-           {{-- <div class="">
-                <div class="row mt-3" id="YouTube_sec">
-                    <div class="col-12">
-                        <div>
-                            <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
-                        </div>
-                    </div>
-                
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="row mt-3">
+                    <div class="col-lg-12 col-md-12">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
-                                <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
+                            <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
+                                <label for="website" class="text-black">Website</label>
+                                <input id="website" type="url" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website', $login_user->website) }}">
                                 <small id="linkHelpBlock" class="form-text text-muted">
-                                    <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
+                                    <!-- {{ __('backend.shared.url-help') }} -->
                                 </small>
-                                @error('youtube_intro_title')
+                                @error('website')
                                 <span class="invalid-tooltip" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-sm-6 ">
-                                <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
-                                <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
-                                @error('youtube_intro_description')
-                                <span class="invalid-tooltip">
+                            <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
+                                <label for="instagram" class="text-black">Instagram</label>
+                                <input id="instagram" type="text" class="form-control @error('instagram') is-invalid @enderror" name="instagram" value="{{ old('instagram', $login_user->instagram) }}">
+                                <span class="err_instagram_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    <!-- {{ __('article_whatsapp_instagram.article-social-instagram-help') }} -->
+                                    <!-- {{ __('Only instagram Username and URL allowed (include http:// or https://)') }} -->
+                                </small>
+                                @error('instagram')
+                                <span class="invalid-tooltip" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+                                @if(Session::has('instagram_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('instagram_error') }}</strong>
+                                </span>
+                                @endif
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-
-                    <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
-                        <label class="text-black">Youtube</label>
-                        <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
-                            @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
-                            <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
-                            @endforeach
-                        </select>
-                        @error('media_type')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
-                        <label for="media_url" class="text-black">Youtube Video URL</label>
-                        <span class="err_media_url" style="color:red"></span>
-                        <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
-                        <small id="linkHelpBlock" class="form-text text-muted">
-                            <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
-                        </small>
-                        @error('media_url')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
-                        <label for="media_url" class="text-black">&nbsp;</label>
-                        <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
-                            <i class="fas fa-plus" style="color: white !important"></i>
-                            {{ __('Add') }}
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row mt-3 font_icon_color_diff mb-5 break_line_section">
-                    <div class="col-12 pt-md-4 pb-md-4" id="media_details_added">
-                        @foreach($video_media_array as $video_media_key => $video_media_value)
-                        <div class="col-12 p-0 ">
-                            <div class="row border_set_row">
-                                <div class="col-md-6 col-9">
-                                    <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
-                                    <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
-                                        : {{ $video_media_value->media_url }}</span>
-
-                                </div>
-                                <div class="col-md-6 col-3">
-                                    <div class="edit_delete_btn">
-                                        <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
-                                            <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
-                                        </a>
-                                        <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
-                                            <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
-                                        </a>
+                            <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
+                                <label for="linkedin" class="text-black">LinkedIn</label>
+                                <input id="linkedin" type="text" class="form-control @error('linkedin') is-invalid @enderror" name="linkedin" value="{{ old('linkedin', $login_user->linkedin) }}">
+                                <span class="err_linkedin_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    <!-- {{ __('Only linkedin URL allowed (include http:// or https://)') }} -->
+                                </small>
+                                @error('linkedin')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('linkedin_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('linkedin_error') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
+                                <label for="facebook" class="text-black">Facebook</label>
+                                <input id="facebook" type="text" class="form-control @error('facebook') is-invalid @enderror" name="facebook" value="{{ old('facebook', $login_user->facebook) }}">
+                                <span class="err_facebook_url" style="color:red"></span>
+                                <small id="linkHelpBlock" class="form-text text-muted">
+                                    <!-- {{ __('Only facebook URL allowed (include http:// or https://)') }} -->
+                                </small>
+                                @error('facebook')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                                @if(Session::has('facebook_error'))
+                                <span class="invalid-tooltip">
+                                    <strong>{{ Session::get('facebook_error') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-12 col-lg-4 col-xl-3">
+                                <div class="row">
+                                    <div class="col-sm-12 col-12 col-lg-12">
+                                        <label for="youtube" class="text-black">Youtube</label>
+                                        <input id="youtube" type="url" class="form-control @error('youtube') is-invalid @enderror" name="youtube" value="{{ old('youtube', $login_user->youtube) }}">
+                                        <span class="err_youtube_url" style="color:red"></span>
+                                        <span class="youtube_error" style="color:red"></span>
+                                        <small id="linkHelpBlock" class="form-text text-muted">
+                                            <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
+                                        </small>
+                                        @error('youtube')
+                                        <span class="invalid-tooltip" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                        @if(Session::has('youtube_error'))
+                                        <span class="invalid-tooltip">
+                                            <strong>{{ Session::get('youtube_error') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
+
+
                     </div>
+                
                 </div>
-           </div> --}}
-        </div>
-    </div>
-    @else
-        <div class="row">
-            <!-- <input id="feature_image" type="hidden" name="user_image"> -->
-            <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">  -->
-            <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
                 <div class="row mt-3">
-                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                        <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
-                        @error('name')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                        <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
-                        @error('email')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                        <label for="phone" class="text-black labet_set">Phone</label>
-                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
-                        @error('phone')
-                        <span class="invalid-tooltip" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
-                        <label for="gender" class="text-black labet_set">Gender</label>
-                        <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
-                            @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
-                            <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
+                    <div class="col-lg-6 col-xl-12 col-md-6">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-12 col-xl-12 col-12">
+                                <label for="address" class="text-black">Address<span class="text-danger">*</span></label>
+                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $login_user->address) }}" required>
+                                @error('address')
+                                <span class="invalid-tooltip" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
+                        <label for="country_id" class="text-black">Country<span class="text-danger">*</span></label>
+                        <select id="select_country_id" class="selectpicker form-control @error('country_id') is-invalid @enderror" name="country_id" data-live-search="true" title="{{ __('prefer_country.select-country') }}" required>
+                            @foreach($all_countries as $all_countries_key => $country)
+                            @if($country->country_status == \App\Country::COUNTRY_STATUS_ENABLE || ($country->country_status
+                            == \App\Country::COUNTRY_STATUS_DISABLE && $login_user->country_id == $country->id))
+                            <option value="{{ $country->id }}" {{ $country->id == old('country_id', $login_user->country_id) ? 'selected' : '' }}>
+                                {{ $country->country_name }}
                             </option>
+                            @endif
                             @endforeach
                         </select>
-                        @error('gender')
+                        @error('country_id')
                         <span class="invalid-tooltip" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
-                    <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3 mt-2">
+                    <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <label for="state_id" class="text-black">State<span class="text-danger">*</span></label>
+                        <select id="select_state_id" class="selectpicker form-control @error('state_id') is-invalid @enderror" name="state_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-state') }}">
+                            @if($all_states)
+                            @foreach($all_states as $key => $state)
+                            @error('state_id')<option {{ $state->id == old('state_id', $login_user->state_id) }} value="{{ $state->id }}">
+                                {{ $state->state_name }}
+                            </option>
+                            @else
+                            <option {{ $login_user->state_id == $state->id ? 'selected' : '' }} value="{{ $state->id }}">
+                                {{ $state->state_name }}
+                            </option>
+                            @enderror
+                            @endforeach
+                            @endif
+                        </select>
+                        @error('state_id')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-4 col-xl-3">
+                        <label for="city_id" class="text-black">City<span class="text-danger">*</span></label>
+                        <select id="select_city_id" class="selectpicker form-control @error('city_id') is-invalid @enderror" name="city_id" data-live-search="true" data-size="10" title="{{ __('backend.item.select-city') }}">
+                            @if($all_cities)
+                            @foreach($all_cities as $key => $city)
+                            @error('state_id') <option {{ $city->id == old('city_id', $login_user->city_id) }} value="{{ $city->id }}">
+                                {{ $city->state_name }}
+                            </option>
+                            @else
+                            <option {{ $login_user->city_id == $city->id ? 'selected' : '' }} value="{{ $city->id }}">
+                                {{ $city->city_name }}
+                            </option>
+                            @enderror
+                            @endforeach
+                            @endif
+                        </select>
+                        @error('city_id')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
+                        <label for="post_code" class="text-black">Post Code<span class="text-danger">*</span></label>
+                        <input id="post_code" type="text" class="form-control @error('post_code') is-invalid @enderror" name="post_code" value="{{ old('post_code', $login_user->post_code) }}" required>
+                        @error('post_code')
+                        <span class="invalid-tooltip" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6 col-12 col-lg-4 col-xl-2">
                         <label for="hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
                         <select id="hour_time_zone" class="selectpicker form-control @error('hour_time_zone') is-invalid @enderror" name="hour_time_zone" data-live-search="true">
                             @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
@@ -1466,41 +1287,231 @@ $chk_post = Auth::user()->phone;
                         @enderror
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
-                        <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="8">{{ old('user_about', $login_user->user_about) }}</textarea>
-                        @error('user_about')
+
+                <div class="row mt-3 mb-5 break_line_section">
+                    <div class="col-md-6 mb-3">
+                        <label class="text-black" for="certifications">{{ __('Certifications') }}</label>
+                        <textarea id="certifications" class="form-control @error('certifications') is-invalid @enderror" name="certifications" rows="4">{{ old('certifications', $login_user->certifications) }}</textarea>
+                        @error('certifications')
+                        <span class="invalid-tooltip">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-black" for="awards">{{ __('Awards') }}</label>
+                        <textarea id="awards" class="form-control @error('awards') is-invalid @enderror" name="awards" rows="4">{{ old('awards', $login_user->awards) }}</textarea>
+                        @error('awards')
                         <span class="invalid-tooltip">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
                 </div>
+                <div class="alert alert-danger alert-dismissible fade show" id="cover_image_error_div" role="alert" style="display:none;margin:4px;">
+                    <strong id="cover_img_error"></strong>
+                </div>
+
+            {{-- <div class="">
+                    <div class="row mt-3" id="YouTube_sec">
+                        <div class="col-12">
+                            <div>
+                                <h3 class="h3 mb-4 mt-3 font-set-sm text-orange-700">YouTube Details</h3>
+                            </div>
+                        </div>
+                    
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label for="youtube_intro_title" class="text-black">Youtube Intro Title</label>
+                                    <input id="youtube_intro_title" type="text" class="form-control @error('youtube_intro_title') is-invalid @enderror" name="youtube_intro_title" value="{{ old('youtube_intro_title', $login_user->youtube_intro_title) }}">
+                                    <small id="linkHelpBlock" class="form-text text-muted">
+                                        <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
+                                    </small>
+                                    @error('youtube_intro_title')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-6 ">
+                                    <label class="text-black" for="youtube_intro_description">{{ __('Youtube Intro Description') }}</label>
+                                    <textarea id="youtube_intro_description" class="form-control @error('youtube_intro_description') is-invalid @enderror" name="youtube_intro_description" rows="4">{{ old('youtube_intro_description', $login_user->youtube_intro_description) }}</textarea>
+                                    @error('youtube_intro_description')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-12 col-md-6 col-lg-12 col-xl-4 mt-3">
+                            <label class="text-black">Youtube</label>
+                            <select id="media_type" class="form-control @error('media_type') is-invalid @enderror" name="media_type" title="Select Type">
+                                @foreach(\App\MediaDetail::VIDEO_MEDIA_TYPE as $mkey => $mvalue)
+                                <option value="{{ $mkey }}" selected>{{ $mvalue }}</option>
+                                @endforeach
+                            </select>
+                            @error('media_type')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
+                            <label for="media_url" class="text-black">Youtube Video URL</label>
+                            <span class="err_media_url" style="color:red"></span>
+                            <input id="media_url" type="url" class="form-control @error('media_url') is-invalid @enderror" name="media_url" value="{{ old('media_url', $login_user->media_url) }}">
+                            <small id="linkHelpBlock" class="form-text text-muted">
+                                <!-- {{ __('Only youtube URL allowed (include http:// or https://)') }} -->
+                            </small>
+                            @error('media_url')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
+                            <label for="media_url" class="text-black">&nbsp;</label>
+                            <a class="btn btn-sm btn-block btn-primary rounded text-white align_set_center_all mb-set-sm" id="media_type_create_button">
+                                <i class="fas fa-plus" style="color: white !important"></i>
+                                {{ __('Add') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 font_icon_color_diff mb-5 break_line_section">
+                        <div class="col-12 pt-md-4 pb-md-4" id="media_details_added">
+                            @foreach($video_media_array as $video_media_key => $video_media_value)
+                            <div class="col-12 p-0 ">
+                                <div class="row border_set_row">
+                                    <div class="col-md-6 col-9">
+                                        <span><img src="{{ asset('frontend/images/youtube_icon.png') }}" alt="" height="25px"></span>
+                                        <span class="set_width">{{ \App\MediaDetail::MEDIA_TYPE[$video_media_value->media_type] }}
+                                            : {{ $video_media_value->media_url }}</span>
+
+                                    </div>
+                                    <div class="col-md-6 col-3">
+                                        <div class="edit_delete_btn">
+                                            <a class="text-primary" href="#" data-toggle="modal" data-target="#editMediaModal_{{ $video_media_value->id }}">
+                                                <img src="{{ asset('frontend/images/edit_icon.png') }}" alt="" height="25px">
+                                            </a>
+                                            <a class="text-danger" href="#" data-toggle="modal" data-target="#deleteMediaModal_{{ $video_media_value->id }}">
+                                                <img src="{{ asset('frontend/images/delete_icon.png') }}" alt="" height="25px">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+            </div> --}}
             </div>
         </div>
-    @endif
-    <!-- <hr class="mt-5"> -->
-
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <div class="">
-                <div class="row">
-                    <div class="col-md-6 col-12 mb-3 mb-md-0">
-                        <button type="submit" id="frmSubmit" class="btn btn-primary w-100 text-white first_btn ">
-                            {{ __('Update Profile') }}
-                        </button>
+        @else
+            <div class="row">
+                <!-- <input id="feature_image" type="hidden" name="user_image"> -->
+                <!-- <input id="feature_cover_image" type="hidden" name="user_cover_image">  -->
+                <div class="col-sm-10 col-md-12 col-lg-8 col-xl-10">
+                    <div class="row mt-3">
+                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                            <label for="name" class="text-black labet_set">{{ __('auth.name') }}<span class="text-danger">*</span></label>
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $login_user->name) }}">
+                            @error('name')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                            <label class="text-black labet_set" for="email">{{ __('auth.email-addr') }}<span class="text-danger">*</span></label>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $login_user->email) }}">
+                            @error('email')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                            <label for="phone" class="text-black labet_set">Phone</label>
+                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $login_user->phone) }}" onkeypress="validatePostalCode(event)">
+                            @error('phone')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3">
+                            <label for="gender" class="text-black labet_set">Gender</label>
+                            <select class="form-control selectpicker @error('gender') is-invalid @enderror" name="gender" title="Select Gender">
+                                @foreach(\App\User::GENDER_TYPES as $gkey => $gender)
+                                <option value="{{ $gkey }}" {{ old('gender', $login_user->gender) == $gkey ? 'selected' : '' }}>{{ $gender }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('gender')
+                            <span class="invalid-tooltip" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6 col-12 col-lg-3 col-md-12 col-lg-6 col-xl-3 mt-2">
+                            <label for="hour_time_zone" class="text-black">{{ __('article_hour.timezone') }}</label>
+                            <select id="hour_time_zone" class="selectpicker form-control @error('hour_time_zone') is-invalid @enderror" name="hour_time_zone" data-live-search="true">
+                                @foreach($time_zone_identifiers as $time_zone_identifiers_key => $time_zone_identifier)
+                                <option value="{{ $time_zone_identifier }}" {{ $login_user->time_zone == $time_zone_identifier ? 'selected' : '' }}>{{ $time_zone_identifier }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">
+                                <!-- {{ __('Time zone for event') }} -->
+                            </small>
+                            @error('hour_time_zone')
+                            <span class="invalid-feedback">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <a class="btn btn-warning text-white first_btn w-100" href="{{ route('user.profile.password.edit') }}">
-                            {{ __('backend.user.change-password') }}
-                        </a>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="text-black" for="user_about">{{ __('backend.user.user-about') }}</label>
+                            <textarea id="user_about" class="form-control @error('user_about') is-invalid @enderror" name="user_about" rows="8">{{ old('user_about', $login_user->user_about) }}</textarea>
+                            @error('user_about')
+                            <span class="invalid-tooltip">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- <hr class="mt-5"> -->
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-6 col-12 mb-3 mb-md-0">
+                            <button type="submit" id="frmSubmit" class="btn btn-primary w-100 text-white first_btn ">
+                                {{ __('Update Profile') }}
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn btn-warning text-white first_btn w-100" href="{{ route('user.profile.password.edit') }}">
+                                {{ __('backend.user.change-password') }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 
 @if(Auth::user()->isCoach())
 <div class="tabs">
