@@ -451,6 +451,16 @@ $login_user = Auth::user();
                                     </span>
                                     @enderror
                                 </div>
+                                <div class="col-lg-2 col-md-6">
+                                    <label for="is_admin" class="text-black">Is Admin    
+                                    <input id="is_admin" type="checkbox" class="role_flag" name="is_admin"
+                                    value="1" {{ $user->is_admin == 1 ? 'checked' : '' }}/</label>                                   
+                                    @error('is_admin')
+                                    <span class="invalid-tooltip" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                                 
                             </div>
                         @else

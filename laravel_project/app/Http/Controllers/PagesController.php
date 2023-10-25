@@ -1488,7 +1488,7 @@ class PagesController extends Controller
             $paid_items_query->whereIn('items.id', $item_ids);
         }
 
-        $paid_items_query->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
+        $paid_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
         // ->where(function ($query) use ($site_prefer_country_id) {
         //     $query->where('items.country_id', $site_prefer_country_id)
         //     ->orWhereNull('items.country_id');
@@ -1548,15 +1548,15 @@ class PagesController extends Controller
             ->with('city')
             ->with('user');
 
-            if(Auth::check()){           
-                if(Auth::user()->role_flag == 1){
-                    $paid_items_query = $paid_items_query;
-                }else{                    
-                    $paid_items_query = $paid_items_query->where('users.role_flag','0');
-                }
-            }else{                    
-                $paid_items_query = $paid_items_query->where('users.role_flag','0');
-            }
+            // if(Auth::check()){           
+            //     if(Auth::user()->role_flag == 1){
+            //         $paid_items_query = $paid_items_query;
+            //     }else{                    
+            //         $paid_items_query = $paid_items_query->where('users.role_flag','0');
+            //     }
+            // }else{                    
+            //     $paid_items_query = $paid_items_query->where('users.role_flag','0');
+            // }
         $total_paid_items = $paid_items_query->count();
 
         // free listing
@@ -1572,7 +1572,7 @@ class PagesController extends Controller
             $free_items_query->whereIn('items.id', $item_ids);
         }
 
-        $free_items_query->join('users','users.id','items.user_id')->where("items.item_status", Item::ITEM_PUBLISHED)
+        $free_items_query->where("items.item_status", Item::ITEM_PUBLISHED)
             // ->where(function ($query) use ($site_prefer_country_id) {
             //     $query->where('items.country_id', $site_prefer_country_id)
             //         ->orWhereNull('items.country_id');
@@ -1659,15 +1659,15 @@ class PagesController extends Controller
             ->with('city')
             ->with('user');
 
-            if(Auth::check()){           
-                if(Auth::user()->role_flag == 1){
-                    $free_items_query = $free_items_query;
-                }else{                    
-                    $free_items_query = $free_items_query->where('users.role_flag','0');
-                }
-            }else{                    
-                $free_items_query = $free_items_query->where('users.role_flag','0');
-            }
+            // if(Auth::check()){           
+            //     if(Auth::user()->role_flag == 1){
+            //         $free_items_query = $free_items_query;
+            //     }else{                    
+            //         $free_items_query = $free_items_query->where('users.role_flag','0');
+            //     }
+            // }else{                    
+            //     $free_items_query = $free_items_query->where('users.role_flag','0');
+            // }
 
         $total_free_items = $free_items_query->count();
 

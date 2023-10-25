@@ -1,4 +1,8 @@
 <!-- Topbar -->
+@php
+$admin = DB::table('users')->where('role_id',1)->first();
+$coach_id = Auth::user()->id;
+@endphp
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow padding-sm-0">
     <div class="detail one padding-0">
         @if(Auth::user()->isCoach() && (Auth::user()->categories()->count() > 0) && isset(Auth::user()->hourly_rate_type) && isset(Auth::user()->experience_year) && isset(Auth::user() ->preferred_pronouns))
@@ -14,6 +18,17 @@
             {{ __('backend.nav.website') }}
         </a>
     </div>
+    @if(Auth::user()->is_admin == 1)
+        <div class="detail one padding-0">
+            @php
+                Session::put('coach_id',$coach_id); 
+            @endphp
+            <a class="dropdown-item  web-hide-sm" href="{{ route('user.users.login',$admin->id) }}">
+                <i class="fa fa-sign-in fa-sm fa-fw mr-2 text-gray-400"></i>
+                {{ __('Login As a Admin') }}
+            </a>
+        </div>
+    @endif
 
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">

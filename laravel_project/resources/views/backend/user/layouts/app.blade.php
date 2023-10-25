@@ -53,6 +53,89 @@
             padding-right:5px;
             width: 100%;
         }
+        
+
+
+.ba-we-love-subscribers-wrap {
+  position: fixed;
+  right: 25px;
+  bottom: 130px;
+  z-index: 1000;
+}
+
+.ba-settings {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  padding: 10px 20px;
+  background-color: #555;
+  border-radius: 5px;
+  color: #fff;
+}
+
+/* Begin float */
+
+.float {
+  position:fixed;
+  bottom:70px;
+  right:10px;
+  text-align:center;
+  z-index:1000;
+}
+
+.float .trigger {
+  border-radius:50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  position:relative;
+  background:#f05127 !important;
+  color:#fff;
+  height:60px;
+  width:60px;
+  vertical-align:middle;
+  animation: 1.5s linear 0s infinite normal pulse;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.float .trigger:hover{
+  transform:scale(1.1);
+}
+
+.float.open .trigger .fa::before{
+  content: "\f00d";
+}
+
+.float .trigger .fa::after{
+  transition: ease-in-out 1s;
+}
+
+.fab.open .trigger i{
+  transition: all 0.4s ease;
+  transform: translateY(5px) rotate(360deg);
+}
+
+.float i{
+  font-size:28px;
+  line-height:58px;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 0px #ef242450;
+    }
+    30% {
+      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 5px #ef242450;
+    }
+    70% {
+      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 15px #ef242410;
+    }
+    100% {   
+      box-shadow: 1px 1px 2px 1px #ab1a1a30, 0px 0px 0px 20px transparent;
+    }
+  }
+
+
       
     </style>
 </head>

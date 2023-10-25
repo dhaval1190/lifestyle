@@ -315,6 +315,7 @@ class UserController extends Controller
 
         $user_image = $request->user_image;
         $role_flag = isset($request->role_flag) ? 1 : 0;
+        $is_admin = isset($request->is_admin) ? 1 : 0;
 
         $user_image_name = null;
         if(!empty($user_image)){
@@ -334,6 +335,7 @@ class UserController extends Controller
         $user->password                 = $password;
         $user->role_id                  = $role_id;
         $user->role_flag                = $role_flag;
+        $user->is_admin                 = $is_admin;
         $user->company_name             = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                    = isset($input['phone']) ? $input['phone'] : null;
 
@@ -560,6 +562,8 @@ class UserController extends Controller
         $email = $request->email;
         $user_about = $request->user_about;
         $role_flag   =  isset($request->role_flag) ? 1 : 0;
+        $is_admin   =  isset($request->is_admin) ? 1 : 0;
+
 
         // $user_prefer_language = empty($request->user_prefer_language) ? null : $request->user_prefer_language;
         // $user_prefer_country_id = empty($request->user_prefer_country_id) ? null : $request->user_prefer_country_id;
@@ -584,6 +588,7 @@ class UserController extends Controller
         $user_image = $request->user_image;
         $user_image_name = $user->user_image;
         $user->role_flag           =  isset($input['role_flag']) ? 1 : 0;
+        $user->is_admin           =  isset($input['is_admin']) ? 1 : 0;
 
         if(!empty($user_image)) {
             $currentDate = Carbon::now()->toDateString();
@@ -601,6 +606,7 @@ class UserController extends Controller
         $user->name                 = $name;
         $user->email                = $email;
         $user->role_flag            = $role_flag;
+        $user->is_admin             = $is_admin;
         $user->company_name         = isset($input['company_name']) ? $input['company_name'] : null;
         $user->phone                = isset($input['phone']) ? $input['phone'] : null;
         $user->gender               = isset($input['gender']) ? $input['gender'] : null;

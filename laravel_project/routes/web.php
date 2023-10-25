@@ -782,6 +782,20 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::get('/error', function(){
             return view('backend.user.error_log_page');
         })->name('error');
+        
+        Route::get('/user-login/{user_id}',function($id){
+            session_start();
+            if (isset($_SESSION['user_main_access']) && $_SESSION['user_main_access'] == $id) {
+                session_destroy();
+                Auth::loginUsingId($id, true);
+            }else{         
+                $_SESSION['user_main_access'] = auth()->user()->id;
+                Auth::loginUsingId($id, true);
+                $_SESSION['user_access'] = auth()->user();
+            }
+    
+            return redirect('/');
+        })->name('users.login');
 
         
     });

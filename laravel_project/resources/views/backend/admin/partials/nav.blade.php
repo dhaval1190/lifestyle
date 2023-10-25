@@ -1,6 +1,17 @@
 <!-- Topbar -->
+@php
+$id = (Session::get('coach_id'));
+$is_admin_check = DB::table('users')->where('id',$id)->where('is_admin',1)->first();
+@endphp
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+    @if(isset($is_admin_check))  
+        <div class="detail one padding-0">
+            <a class="dropdown-item  web-hide-sm" href="{{ route('admin.users.login',$id) }}">
+                <i class="fa fa-sign-in fa-sm fa-fw mr-2 text-gray-400"></i>
+                {{ __('Back to Coach Profile') }}
+            </a>
+        </div>
+    @endif
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>

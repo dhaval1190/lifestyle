@@ -119,6 +119,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'user_suspended',
         'user_prefer_language',
         'role_flag',
+        'is_admin'
+
 
     ];
 
