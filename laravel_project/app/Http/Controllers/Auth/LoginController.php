@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Laravel\Socialite\Facades\Socialite;
+use App\TempUser;
+use App\ChatMessage;
+use App\ContactLead;
 
 class LoginController extends Controller
 {
@@ -61,6 +64,22 @@ class LoginController extends Controller
         //     Auth::logout();
         //     return redirect()->route('login')->with('email_not_verified','Your email ID is not verified.Please verify first to login');
         // }
+        $chk_user = TempUser::where('email',$request->email)->get();
+        // dd($chk_user);
+        if($chk_user){
+            $auth_user = Auth::user();
+            foreach($chk_user as $data){
+                $temp_user_id = $data->temp_user_id;
+    
+                ContactLead::where('sender_id',$temp_user_id)->update(['sender_id'=>$auth_user->id]);
+                ContactLead::where('receiver_id',$temp_user_id)->update(['receiver_id'=>$auth_user->id]);
+                TempUser::where('temp_user_id',$temp_user_id)->update(['temp_user_id'=>$auth_user->id]);
+                ChatMessage::where('sender_id',$temp_user_id)->update(['sender_id'=>$auth_user->id]);
+                ChatMessage::where('receiver_id',$temp_user_id)->update(['receiver_id'=>$auth_user->id]);
+
+            }
+        }
+
         if ($user->isAdmin() || $user->isEditor())
         {
             app()->call('Canvas\Http\Controllers\Auth\AuthenticatedSessionController@store', $request->all());

@@ -129,6 +129,9 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::post('/items/{item_slug}/unsave', 'PagesController@unSaveItem')->name('page.item.unsave');
         Route::post('/referral/{referral_link}/email', 'PagesController@emailReferral')->name('page.referral.email');
         Route::post('/read-notification', 'PagesController@readNotification')->name('read-notification');
+
+        Route::get('/contact-chat/{uid}/{cid}/{con_id}','ContactChatController@index')->name('chat.index');
+        Route::post('/contact-chat-store/{uid}/{cid}','ContactChatController@store')->name('chat.store');
       
 
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
@@ -775,6 +778,9 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
         Route::resource('/item-leads', 'ItemLeadController');
         Route::resource('/contact-leads', 'ContactLeadController')->middleware('check_coach_details');
         Route::get('/referral', 'ReferralController@index')->name('referral.index')->middleware('check_coach_details');
+
+        Route::get('/contact-chat/{uid}/{cid}/{con_id}','UserContactChatController@chatIndex')->name('chat.index');
+        Route::post('/contact-chat-store/{uid}/{cid}','UserContactChatController@chatStore')->name('chat.store');
 
         //User coach listing for only Chris and Bunny login
         Route::get('/user-coach-listing', 'UserController@userCoachListing')->name('users.coach.list');
