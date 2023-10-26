@@ -3,6 +3,8 @@
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use App\User;
+use App\TempUser;
 
 if (! function_exists('get_item_slug')) {
     function get_item_slug()
@@ -780,4 +782,13 @@ if (! function_exists('get_vincenty_great_circle_distance')) {
             "Pacific/Wallis",
         ];
     }
+}
+
+function getUserCoachName($id)
+{
+    $user = User::where('id',$id)->select('name')->first();
+    if($user == null){
+        $user = TempUser::where('temp_user_id',$id)->select('name')->first();
+    }
+    return $user;
 }

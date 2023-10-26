@@ -32,7 +32,9 @@ class ContactLeadController extends Controller
 
         $login_user = Auth::user();
         // dd($login_user);
-        $all_contact_leads = ContactLead::where('receiver_id',$login_user->id)->orderBy('id','DESC')->paginate(10);
+        $all_contact_leads = ContactLead::where('receiver_id',$login_user->id)
+                                        ->orWhere('sender_id',$login_user->id)
+                                        ->orderBy('id','DESC')->paginate(10);
 
         
 
@@ -58,13 +60,15 @@ class ContactLeadController extends Controller
 
         $login_user = Auth::user();
 
-        $contact_lead = ContactLead::where('id',$id)->where('receiver_id',$login_user->id)->first(); 
+        $contact_lead = ContactLead::where('id',$id)->where('receiver_id',$login_user->id)
+                                    ->orWhere('sender_id',$login_user->id)
+                                    ->first(); 
         if(isset($contact_lead)){
             $user_role = User::where('id',$contact_lead->sender_id)->select('role_id')->first();
             // $contact_lead = ContactLead::where('id',$id)->first();
                 if($contact_lead){
                     return response()->view('backend.user.item.contact-lead.edit',
-                        compact('contact_lead','user_role'));
+                        compact('contact_lead','user_role','login_user'));
                 }else{
                     return redirect()->route('user.contact-leads.index');
                 }            

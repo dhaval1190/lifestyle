@@ -9496,19 +9496,37 @@ class PagesController extends Controller
                         }
                         // return response()->json(['status'=>"successsssssssssssss",'msg'=>$request->all()]);
 
-                        $contact_data_id = DB::table('contact_coach')->insertGetId([
-                            'name' => $request->item_conntact_email_name,
-                            'email' => $request->item_contact_email_from_email,
-                            'sender_id' => $authUserId,
-                            'receiver_id' => $request->userId,
-                            'profile_article' => $profile_or_article,
-                            'question1' =>  $request->question1,
-                            'question2' =>  $question_2_val,
-                            'question3' =>  $request->question3,
-                            'question4' =>  $request->question4,
-                            'question5' =>  $request->question5,
-                            'question6' =>  $request->question6,
-                        ]);
+                        if($authUserId == null){
+                            $temp_user_id = uniqid();
+                            $contact_data_id = DB::table('contact_coach')->insertGetId([
+                                'name' => $request->item_conntact_email_name,
+                                'email' => $request->item_contact_email_from_email,
+                                'sender_id' => $temp_user_id,
+                                'receiver_id' => $request->userId,
+                                'profile_article' => $profile_or_article,
+                                'question1' =>  $request->question1,
+                                'question2' =>  $question_2_val,
+                                'question3' =>  $request->question3,
+                                'question4' =>  $request->question4,
+                                'question5' =>  $request->question5,
+                                'question6' =>  $request->question6,
+                            ]);
+
+                        }else{
+                            $contact_data_id = DB::table('contact_coach')->insertGetId([
+                                'name' => $request->item_conntact_email_name,
+                                'email' => $request->item_contact_email_from_email,
+                                'sender_id' => $authUserId,
+                                'receiver_id' => $request->userId,
+                                'profile_article' => $profile_or_article,
+                                'question1' =>  $request->question1,
+                                'question2' =>  $question_2_val,
+                                'question3' =>  $request->question3,
+                                'question4' =>  $request->question4,
+                                'question5' =>  $request->question5,
+                                'question6' =>  $request->question6,
+                            ]);
+                        }
 
                         // return response()->json(['status'=>"successsssssssssssss",'msg'=>$contact_data]);
 
@@ -9713,6 +9731,49 @@ class PagesController extends Controller
                                     // __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
                                     // $request->question6,
                                 ];
+
+                                //send email to customer who want to contact
+
+                                $user_email_notify_message = [
+                                    // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                    'We received your email.Click the below  link to begin chat',
+                                    // __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                                    
+                                ];
+                                if($authUserId == null){
+                                    $temp_user_id = $temp_user_id;
+                                }else{
+                                    $temp_user_id = $authUserId;
+                                }
+
+                                TempUser::create([
+                                    'name' => $request->item_conntact_email_name,
+                                    'email' => $item_contact_email,
+                                    'temp_user_id' => $temp_user_id,
+                                ]);
+
+                                ChatMessage::create([
+                                    'sender_id' => $temp_user_id,
+                                    'receiver_id' => $request->userId,
+                                    'message' => null,
+                                    'contact_coach_id' => $contact_data_id
+                                    
+                                ]);
+
+                                Mail::to($item_contact_email)->send(
+                                    new Notification(
+                                        'Contact chat email',
+                                        $item_contact_email,
+                                        null,
+                                        $user_email_notify_message,
+                                        'View',
+                                        'success',
+                                        // route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
+                                        route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
+                                        // null,
+                                        // null,
+                                    )
+                                );
     
     
                             }else{
