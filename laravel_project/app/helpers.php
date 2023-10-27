@@ -792,3 +792,25 @@ function getUserCoachName($id)
     }
     return $user;
 }
+
+function getUserCoachColor($id)
+{
+    $auth_user = auth()->user();
+    if($auth_user){
+        $auth_user_id = $auth_user->id;
+    }else{
+        $user = User::where('id',$id)->select('id')->first();
+        if($user == null){
+            $user = TempUser::where('temp_user_id',$id)->select('temp_user_id')->first();
+            $auth_user_id = $user->temp_user_id;
+        }
+    }
+    
+    $color_class = '';
+    if($auth_user_id == $id || $auth_user_id == $id){
+        $color_class = 'first-highlight';
+    }else{
+        $color_class = 'sec-highlight';
+    }
+    return $color_class;
+}

@@ -30,25 +30,59 @@
         }
 
         .main-media-fixed {
-            height: 450px;
+            height: 450px ;
             position: sticky;
-            overflow-y: scroll;
             top: 200px;
+            overflow-y: scroll;
             width: 100%;
             border: 1px solid rgba(0, 0, 0, .1);
         }
-
+        .h-450{
+            height: 450px;
+            overflow-y:scroll;
+           
+        }        
+        .h-auto1{
+            height: 100%;
+            overflow: scroll;
+           
+        }
         .heading-font-highlight {
             font-weight: 800;
+            display: flex;
+        }
+        .first-highlight {
+            font-weight: 800;
             color: #F05127;
+            text-decoration-color: #F05127;
+            text-decoration: underline;
+        }
+        .sec-highlight{
+            color: #0069d9;
+            padding-left: 10px;
+            text-decoration-color: #0069d9;
             text-decoration: underline;
         }
 
+        .hide-sm-space{
+            padding-right: 4px;
+        }
         @media (max-width:576px) {
             .btn-w-100{
                 width: 100%;
             }
-            
+            .flex-set-from-to{
+                display: block
+            }
+            .first-highlight {
+             font-size: 14px;
+            }
+            .sec-highlight{
+                font-size: 14px;
+        }
+        .hide-sm-space{
+            display: none;
+        }
         }
 
     </style>
@@ -69,80 +103,103 @@
             </a>
         </div>
     </div>
-
+@php
+    $record_count = $all_chat_messages->count();
+@endphp
     <!-- Content Row -->
-    <div class="row bg-white pt-4 pl-3 pr-3 pb-4 custom_set">
-        <div class="col-12 col-lg-8 m-auto p-md-3">
-            {{-- <span class="text-lg text-gray-800">{{ __('backend.message.subject') }}: {{ "ffffff" }}</span>
-            <hr/> --}}
-            <div class="row mb-2">
-                <div class="col-12  main-media-fixed p-0 ">
-                        @foreach ($all_chat_messages as $key => $message)
-                        <div class="media">
-                            <div class="media-body">
-                                  @php
-                                    if ($message->message == null) {
-                                        continue;
-                                    }
-                                    $username_ftn1 = getUserCoachName($message->sender_id);
-                                    $username_ftn2 = getUserCoachName($message->receiver_id);
-                                @endphp
-                               <div class="media-border2">
-                               <div class="flex-set-from-to">
-                                    <div class="heading-font-highlight">
-                                        From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
+    @if($record_count > 1)
+        <div class="row bg-white pt-4 pl-3 pr-3 pb-4 custom_set">
+            <div class="col-12 col-lg-8 m-auto p-md-3">
+                {{-- <span class="text-lg text-gray-800">{{ __('backend.message.subject') }}: {{ "ffffff" }}</span>
+                <hr/> --}}
+                <div class="row mb-2">
+                    @php $auth_user_id = auth()->user()->id; @endphp
+                    <div class="col-12 main-media-fixed p-0 @if($record_count >= 6) h-450 @elseif($record_count <= 5) h-auto1 @endif">
+                            @foreach ($all_chat_messages as $key => $message)
+                            <div class="media">
+                                <div class="media-body">
+                                    @php
+                                        
+                                        if ($message->message == null) {
+                                            continue;
+                                        }
+                                        $username_ftn1 = getUserCoachName($message->sender_id);
+                                        $username_ftn2 = getUserCoachName($message->receiver_id);
+                                        $color_ftn1 = getUserCoachColor($message->sender_id);
+                                        $color_ftn2 = getUserCoachColor($message->receiver_id);
+                                        $contact_coach_id = $message->contact_coach_id;
+                                    @endphp
+                                <div class="media-border2">
+                                <div class="flex-set-from-to">
+                                        <div class="heading-font-highlight">
+                                        <div class="{{ $color_ftn1 }}">
+                                            From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
+                                        </div>
 
-                                        To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
+                                        <div class="{{ $color_ftn2 }}">
+                                            To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
+                                        </div>
+                                        </div>
+                                        <div>
+                                            <small class="flex-end-set"><span class="hide-sm-space">Sent</span>
+                                                {{ $message->created_at->diffForHumans() }}</small>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <small class="flex-end-set">{{ __('backend.message.posted') }}
-                                            {{ $message->created_at->diffForHumans() }}</small>
-                                    </div>
+                                    <p class="mt-1 mb-0">{{ $message->message }}</p>
                                 </div>
-                                <p class="mt-1 mb-0">{{ $message->message }}</p>
-                               </div>
 
+                                </div>
                             </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-            @php
-                // echo base64_encode($message->contact_coach_id);
-                // echo "<br>";
-                // echo base64_decode("MTg4");
-            @endphp
+                @php
+                    // echo base64_encode($message->contact_coach_id);
+                    // echo "<br>";
+                    // echo base64_decode("MTg4");
+                @endphp
+            </div>
         </div>
-    </div>
-    <div class="row mb-4">
-        <div class="col-12 p-0 p-md-0">
-            <form method="POST" action="" name="chatContactFrm" id="chatContactFrm">
-                <input type="hidden" name="co_id" value="{{ $message->contact_coach_id }}">
-                <div class="form-row mb-3">
-                    <div class="col-md-12">
-                        <label class="text-black" for="message">{{ __('backend.message.reply-message') }}</label>
-                        <textarea rows="6" id="chat_msg" type="text" class="form-control" name="chat_msg"></textarea>
-                        <p class="validation_error"></p>
+    @endif
+    @php
+        if($record_count == 1)
+        {
+            foreach ($all_chat_messages as $mg) {
+                $contact_coach_id = $mg->contact_coach_id;
+            }
+        }
+    @endphp
+   <div class="container p-0">
+        <div class="row mb-4">
+            <div class="@if($record_count == 1) col-lg-12 @else col-lg-12 @endif  m-auto p-0 p-md-0">
+                <form method="POST" action="" name="chatContactFrm" id="chatContactFrm">
+                    <input type="hidden" name="co_id" value="{{ $contact_coach_id }}">
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <label class="text-black" for="message">{{ __('Send message') }}</label>
+                            <textarea rows="6" id="chat_msg" type="text" class="form-control" name="chat_msg"></textarea>
+                            <p class="validation_error"></p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-row mb-3">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary py-2 px-4 text-white btn-w-100">
-                            {{ __('backend.message.reply') }}
-                        </button>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary py-2 px-4 text-white btn-w-100">
+                                {{ __('backend.message.reply') }}
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+   </div>
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
-            toastr.options.timeOut = 10000;
+            toastr.options.timeOut = 8000;
             @if (Session::has('error'))
                 toastr.error("{{ Session::get('error ') }}");
             @elseif (Session::has('success'))

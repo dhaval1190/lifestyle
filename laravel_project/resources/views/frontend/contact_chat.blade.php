@@ -10,17 +10,27 @@
 .main-media-fixed {
             height: 450px;
             position: sticky;
-            overflow-y: scroll;
+            overflow-y: auto;
             top: 200px;
             width: 100%;
             border: 1px solid rgba(0, 0, 0, .1);
         }
         .heading-font-highlight {
             font-weight: 800;
+            display: flex;
+        }
+        .first-highlight {
+            font-weight: 800;
             color: #F05127;
+            text-decoration-color: #F05127;
             text-decoration: underline;
         }
-        
+        .sec-highlight{
+            color: #0069d9;
+            padding-left: 10px;
+            text-decoration-color: #0069d9;
+            text-decoration: underline;
+        }
         .media-border2 {
             border: 1px solid rgba(0, 0, 0, .1);
             padding: 10px;
@@ -28,6 +38,49 @@
         }
         .text-gray-800{
             font-weight: 800 !important;
+        }
+        .flex-set-from-to {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .h-450{
+            height: 450px;
+            overflow-y:scroll;
+           
+        }        
+        .h-auto1{
+            height: 100%;
+           
+        }
+
+
+        .flex-end-set {
+            display: flex;
+            justify-content: end;
+        }
+        .hide-sm-space{
+            display: block;
+            padding-right: 3px;
+        }
+        @media (max-width:576px) {
+            .btn-w-100{
+                width: 100%;
+            }
+            /* .flex-set-from-to{
+                display: block
+            } */
+            .first-highlight {
+             font-size: 14px;
+            }
+            .sec-highlight{
+                font-size: 14px;
+        }
+        .hide-sm-space{
+            display: none;
+        }
+
         }
 
 </style>
@@ -69,61 +122,80 @@
             </div>
         </div>
     </div>
-
+@php
+    $record_count = $all_chat_messages->count();
+@endphp
     <div class="site-section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-9 col-8">
-                <h1 class="h3 mb-2 font-set-sm text-gray-800">Chat Details</h1>
+            @if($record_count > 1)
+                <div class="row">
+                    <div class="col-md-9 col-8">
+                    <h1 class="h3 mb-2 font-set-sm text-gray-800">Chat Details</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-5">
-                <div class="col-12">
-                   <div class="main-media-fixed">
-                   @foreach($all_chat_messages as $msg)
-                       <div class="media-border2 ">
-                       @php
-                        if($msg->message == null) continue;
-                           $username_ftn1 =  getUserCoachName($msg->sender_id);
-                           $username_ftn2 =  getUserCoachName($msg->receiver_id);
-                        @endphp
-                        <div class="heading-font-highlight">
-                        From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
-                        
-                        To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
-                        </div>
-                        <p class="mb-0">{{ $msg->message }}</p>
-                     
-                       </div>
-                    @endforeach
-                   </div>
-                </div>
-            </div>
+                <div class="row mb-5">
+                    <div class="col-12">
+                    <div class="main-media-fixed @if($record_count >= 6) h-450 @elseif($record_count <= 5) h-auto1 @endif">
+                    @foreach($all_chat_messages as $msg)
+                        <div class="media-border2 ">
+                        @php
+                            if($msg->message == null) continue;
+                            $username_ftn1 =  getUserCoachName($msg->sender_id);
+                            $username_ftn2 =  getUserCoachName($msg->receiver_id);
+                            // $color_ftn1 = getUserCoachColor($msg->sender_id);
+                            // $color_ftn2 = getUserCoachColor($msg->receiver_id);
+                            @endphp
+                            <div class="flex-set-from-to">
 
-                <div class="col-12 mb-5">
-                    <form action="" method="POST" name="chatContactFrm" id="chatContactFrm" class="contact-coach-form">
-                        <div class="form-section">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <label for="Question 1"
-                                        class="text-black">{{ __('Enter message') }}<span
-                                            class="text-danger">*</span></label>
-                                    <textarea class="form-control" id="chat_msg" rows="3" name="chat_msg" required></textarea>
-                                    <p class="validation_error"></p>
+                                <div class="heading-font-highlight">
+                                    <div class="first-highlight">
+                                        From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
+                                    </div>
+                                    <div class="sec-highlight">
+                                        To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
+                                    </div>
+                                
+                            
+                                </div>
+                                <div>
+                                    <small class="flex-end-set"><span class="hide-sm-space">Sent</span> 
+                                        {{ $msg->created_at->diffForHumans() }}</small>
                                 </div>
                             </div>
+                            <p class="mb-0">{{ $msg->message }}</p>
+                        
+                        
                         </div>
-                        <div class="form-row">
-                            <div class="col-md-12 form-navigation">
-                                <button type="submit" id="submitbtn"
-                                    class="btn btn-primary py-2 px-4 mt-2 text-white rounded">
-                                    {{ __('Send') }}
-                                </button>
-                                <span class="please_wait">Please Wait..</span>
+                        @endforeach
+                    </div>
+                    </div>
+                </div>
+            @endif
+
+            <div class="col-12 mb-5">
+                <form action="" method="POST" name="chatContactFrm" id="chatContactFrm" class="contact-coach-form">
+                    <div class="form-section">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <label for="Question 1"
+                                    class="text-black">{{ __('Send message') }}<span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="chat_msg" rows="3" name="chat_msg" required></textarea>
+                                <p class="validation_error"></p>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 form-navigation">
+                            <button type="submit" id="submitbtn"
+                                class="btn btn-primary py-2 px-4 mt-2 text-white rounded">
+                                {{ __('Send') }}
+                            </button>
+                            <span class="please_wait">Please Wait..</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
         </div>
     </div>
@@ -132,7 +204,7 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-            toastr.options.timeOut = 10000;
+            toastr.options.timeOut = 8000;
             @if (Session::has('error'))
                 toastr.error("{{ Session::get('error ') }}");
             @elseif (Session::has('success'))
