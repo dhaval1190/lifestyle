@@ -11,7 +11,8 @@
                     <div class="col-md-3 col-6 col-lg-2">
                         <h2 class="footer-heading mb-4"><strong>{{ __('frontend.footer.navigations') }}</strong></h2>
                         <ul class="list-unstyled">
-                            <li><a href="{{ route('page.pricing') }}">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li>
+                            {{-- <li><a href="{{ route('page.pricing') }}">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li> --}}
+                            <li><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
 
                             @if($site_global_settings->setting_page_about_enable == \App\Setting::ABOUT_PAGE_ENABLED)
                             <li><a href="{{ route('page.about') }}">{{ __('frontend.footer.about-us') }}</a></li>

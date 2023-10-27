@@ -80,7 +80,7 @@
                     <p class="answer">{{ $contact_lead->question3 }}</p>
                 </div>
                 <div class="question_set_coaches">
-                    <span class="questions">Q4.On a sale of 1-10 how structured do you want your coaching experience?</span>
+                    <span class="questions">Q4.On a scale of 1-10 how structured do you want your coaching experience?</span>
                     <p class="answer">{{ $contact_lead->question4 }}</p>
                 </div>
                 <div class="question_set_coaches">

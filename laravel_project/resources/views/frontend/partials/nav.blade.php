@@ -54,8 +54,9 @@
                             <li class="@yield('event_active')"><a href="{{ route('page.event') }}">{{ __('Events') }}</a></li>
                         </ul>
                     </li>
-                    <li class="@yield('faq_active')"><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li>
-                    <!-- <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li> -->
+                    {{-- <li class="@yield('faq_active')"><a href="{{ route('page.faq') }}">{{ __('FAQ') }}</a></li> --}}
+                    <li class="@yield('pricing_active')"><a href="{{ route('page.pricing') }}">{{ __('theme_directory_hub.pricing.footer.pricing') }}</a></li>
+                    {{-- <li><a href="{{ route('page.contact') }}">{{ __('frontend.header.contact') }}</a></li> --}}
 
                     @guest
                         @if (Route::has('register'))

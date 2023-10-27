@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('pricing_active', 'active')
 
 @section('styles')
     {{-- <link href="{{ asset('frontend/vendor/smart-wizard/smart_wizard.min.css') }}" rel="stylesheet"/>
