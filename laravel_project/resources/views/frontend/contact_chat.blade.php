@@ -7,6 +7,29 @@
         font-weight: 500 !important;
         display: block;
 }
+.main-media-fixed {
+            height: 450px;
+            position: sticky;
+            overflow-y: scroll;
+            top: 200px;
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, .1);
+        }
+        .heading-font-highlight {
+            font-weight: 800;
+            color: #F05127;
+            text-decoration: underline;
+        }
+        
+        .media-border2 {
+            border: 1px solid rgba(0, 0, 0, .1);
+            padding: 10px;
+
+        }
+        .text-gray-800{
+            font-weight: 800 !important;
+        }
+
 </style>
 
 @section('content')
@@ -49,25 +72,35 @@
 
     <div class="site-section">
         <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-8">
+                <h1 class="h3 mb-2 font-set-sm text-gray-800">Chat Details</h1>
+                </div>
+            </div>
             <div class="row mb-5">
                 <div class="col-12">
-                    @foreach($all_chat_messages as $msg)
-                        @php
+                   <div class="main-media-fixed">
+                   @foreach($all_chat_messages as $msg)
+                       <div class="media-border2 ">
+                       @php
                         if($msg->message == null) continue;
                            $username_ftn1 =  getUserCoachName($msg->sender_id);
                            $username_ftn2 =  getUserCoachName($msg->receiver_id);
                         @endphp
+                        <div class="heading-font-highlight">
                         From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
-                        <br>
+                        
                         To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
-                        <p>{{ $msg->message }}</p>
-                        <hr />
+                        </div>
+                        <p class="mb-0">{{ $msg->message }}</p>
+                     
+                       </div>
                     @endforeach
+                   </div>
                 </div>
             </div>
 
-            <div class="row mb-5">
-                <div class="col-12">
+                <div class="col-12 mb-5">
                     <form action="" method="POST" name="chatContactFrm" id="chatContactFrm" class="contact-coach-form">
                         <div class="form-section">
                             <div class="col-md-12">
@@ -91,11 +124,9 @@
                         </div>
                     </form>
                 </div>
-            </div>
 
         </div>
     </div>
-
 @endsection
 
 @section('scripts')

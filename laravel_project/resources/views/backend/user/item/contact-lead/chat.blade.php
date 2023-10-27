@@ -13,10 +13,10 @@
             align-items: center;
             justify-content: space-between;
         }
-
+/* 
         .media-body {
             padding: 10px;
-        }
+        } */
 
         .flex-end-set {
             display: flex;
@@ -25,15 +25,17 @@
 
         .media-border2 {
             border: 1px solid rgba(0, 0, 0, .1);
+            padding: 10px;
 
         }
 
         .main-media-fixed {
-            height: 650px;
+            height: 450px;
             position: sticky;
             overflow-y: scroll;
             top: 200px;
             width: 100%;
+            border: 1px solid rgba(0, 0, 0, .1);
         }
 
         .heading-font-highlight {
@@ -41,6 +43,14 @@
             color: #F05127;
             text-decoration: underline;
         }
+
+        @media (max-width:576px) {
+            .btn-w-100{
+                width: 100%;
+            }
+            
+        }
+
     </style>
 @endsection
 
@@ -62,14 +72,14 @@
 
     <!-- Content Row -->
     <div class="row bg-white pt-4 pl-3 pr-3 pb-4 custom_set">
-        <div class="col-12 col-lg-8 m-auto p-0  main-media-fixed">
+        <div class="col-12 col-lg-8 m-auto p-md-3">
             {{-- <span class="text-lg text-gray-800">{{ __('backend.message.subject') }}: {{ "ffffff" }}</span>
             <hr/> --}}
-            @foreach ($all_chat_messages as $key => $message)
-                <div class="row mb-2">
-                    <div class="col-12">
+            <div class="row mb-2">
+                <div class="col-12  main-media-fixed p-0 ">
+                        @foreach ($all_chat_messages as $key => $message)
                         <div class="media">
-                            <div class="media-body media-border2">
+                            <div class="media-body">
                                   @php
                                     if ($message->message == null) {
                                         continue;
@@ -77,7 +87,8 @@
                                     $username_ftn1 = getUserCoachName($message->sender_id);
                                     $username_ftn2 = getUserCoachName($message->receiver_id);
                                 @endphp
-                                <div class="flex-set-from-to">
+                               <div class="media-border2">
+                               <div class="flex-set-from-to">
                                     <div class="heading-font-highlight">
                                         From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
 
@@ -89,12 +100,13 @@
                                     </div>
                                 </div>
                                 <p class="mt-1 mb-0">{{ $message->message }}</p>
+                               </div>
 
                             </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
-            @endforeach
             @php
                 // echo base64_encode($message->contact_coach_id);
                 // echo "<br>";
@@ -103,7 +115,7 @@
         </div>
     </div>
     <div class="row mb-4">
-        <div class="col-12">
+        <div class="col-12 p-0 p-md-0">
             <form method="POST" action="" name="chatContactFrm" id="chatContactFrm">
                 <input type="hidden" name="co_id" value="{{ $message->contact_coach_id }}">
                 <div class="form-row mb-3">
@@ -116,7 +128,7 @@
 
                 <div class="form-row mb-3">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary py-2 px-4 text-white">
+                        <button type="submit" class="btn btn-primary py-2 px-4 text-white btn-w-100">
                             {{ __('backend.message.reply') }}
                         </button>
                     </div>
