@@ -12,9 +12,9 @@ class UserContactChatController extends Controller
 {
     public function chatIndex($cid,$uid,$con_id)
     {
-        // $cid = base64_decode($cid);
-        // $uid = base64_decode($uid);
-        // $con_id = base64_decode($con_id);
+        $cid = base64_decode($cid);
+        $uid = base64_decode($uid);
+        $con_id = base64_decode($con_id);
         $all_chat_messages = ChatMessage::where(function ($query) use ($cid,$uid,$con_id) {
             $query->where('sender_id',$cid)
             ->where('receiver_id',$uid)

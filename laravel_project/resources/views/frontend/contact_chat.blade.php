@@ -102,10 +102,10 @@
                 $curr_url = url()->current();
                 $current_url_arr = explode("contact-chat/",$curr_url)[1];
                 $exp_current_url_arr = explode('/',$current_url_arr);
-                // $uid = base64_decode($exp_current_url_arr[0]);
-                // $cid = base64_decode($exp_current_url_arr[1]);
-                $uid = $exp_current_url_arr[0];
-                $cid = $exp_current_url_arr[1];
+                //$uid = $exp_current_url_arr[0];
+                //$cid = $exp_current_url_arr[1];
+                $uid = base64_decode($exp_current_url_arr[0]);
+                $cid = base64_decode($exp_current_url_arr[1]);
             @endphp
 
             $('#chatContactFrm').submit(function(e){

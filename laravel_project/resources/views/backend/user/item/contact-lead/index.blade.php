@@ -63,8 +63,8 @@
                                                                                     ->get();
                                         @endphp
                                         @if($temp_user->isNotEmpty())
-                                            {{-- <a href="{{ route('user.chat.index',['uid' =>base64_encode($uid),'cid'=>base64_encode($contact_lead->receiver_id),'con_id'=>base64_encode($contact_lead->id)]) }}" --}}
-                                            <a href="{{ route('user.chat.index',['uid' =>$uid,'cid'=>$contact_lead->receiver_id,'con_id'=>$contact_lead->id]) }}"
+                                        {{-- <a href="{{ route('user.chat.index',['uid' =>$uid,'cid'=>$contact_lead->receiver_id,'con_id'=>$contact_lead->id]) }}" --}}
+                                            <a href="{{ route('user.chat.index',['uid' =>base64_encode($uid),'cid'=>base64_encode($contact_lead->receiver_id),'con_id'=>base64_encode($contact_lead->id)]) }}"
                                                 class="btn btn-primary btn-circle">
                                                 <i class="fas fa-eye"></i>
                                             </a>

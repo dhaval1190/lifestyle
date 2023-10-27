@@ -73,6 +73,8 @@ use Google\Service\Calendar;
 use Config;
 use Spatie\GoogleCalendar\Event as GoogleEvent;
 use App\ContactUs;
+use App\TempUser;
+use App\ChatMessage;
 
 
 class PagesController extends Controller
@@ -9768,8 +9770,8 @@ class PagesController extends Controller
                                         $user_email_notify_message,
                                         'View',
                                         'success',
-                                        // route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
-                                        route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
+                                        route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
+                                        // route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
                                         // null,
                                         // null,
                                     )
