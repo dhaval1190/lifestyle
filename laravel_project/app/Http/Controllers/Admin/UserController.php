@@ -446,7 +446,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-    //     $input = $request->all();
+        $input = $request->all();
     //    print_r($input);exit;
 
         if(isset($input['youtube'])){

@@ -3159,7 +3159,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-section col-md-12 ">                                            
-                                    <label for="Question 4">{{ __('4.On a sale of 1-10 how structured do you want your coaching experience?') }}<span class="text-danger">*</span></label><br>
+                                    <label for="Question 4">{{ __('4.On a scale of 1-10 how structured do you want your coaching experience?') }}<span class="text-danger">*</span></label><br>
                                     <input type="radio" id="question4" name="question4" value="1" required><label for="question4"><span class="pl-2"> 1</span></label><br>                                            
                                     <input type="radio" id="question4" name="question4" value="2" required><label for="question4"><span class="pl-2"> 2</span></label><br>                                            
                                     <input type="radio" id="question4" name="question4" value="3" required><label for="question4"><span class="pl-2"> 3</span></label><br>                                            

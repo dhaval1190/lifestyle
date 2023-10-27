@@ -1,6 +1,14 @@
 @extends('frontend.layouts.app')
 @section('about_active', 'active')
 
+<style>
+    .validation_error {
+        color: rgb(255, 00, 0) !important;
+        font-weight: 500 !important;
+        display: block;
+}
+</style>
+
 @section('content')
 
     @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_DEFAULT)
@@ -68,6 +76,7 @@
                                         class="text-black">{{ __('Enter message') }}<span
                                             class="text-danger">*</span></label>
                                     <textarea class="form-control" id="chat_msg" rows="3" name="chat_msg" required></textarea>
+                                    <p class="validation_error"></p>
                                 </div>
                             </div>
                         </div>
@@ -92,6 +101,12 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+            toastr.options.timeOut = 10000;
+            @if (Session::has('error'))
+                toastr.error("{{ Session::get('error ') }}");
+            @elseif (Session::has('success'))
+                toastr.success("{{ Session::get('success') }}");
+            @endif
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -111,7 +126,7 @@
             $('#chatContactFrm').submit(function(e){
                 e.preventDefault();
                 $('#submitbtn').attr('disabled',false);
-                console.log("ddddddddd")
+                $('.validation_error').html('');
                 var formData = new FormData(this);
 
                 jQuery.ajax({
@@ -128,15 +143,18 @@
                         if(response.status == true){
                             location.reload();
                         }
+                        if(response.status == 'validator_error')
+                        {
+                            $.each(response.msg, function(key, value) {
+                                $(`#${key}`).siblings('p').html(value);
+                            });
+                        }
                         
                     }
                 });
-            });
-
-            
+            });            
         });
-    </script>
-    
+    </script>  
 
     
 @endsection

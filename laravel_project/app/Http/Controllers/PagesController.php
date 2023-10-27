@@ -9577,7 +9577,7 @@ class PagesController extends Controller
                                 $question2_val.= $question_2.",";	
                             }
 
-                            $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of personality traits would be helpful for a person to have when coaching you?</p><br><p>'.$question2_val.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a sale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
+                            $all_questions = '<p>Q1. What are the top 2 challenges you feel this coach can help you navigate?</p><br><p>'.$request->question1.'</p>'.'<p>Q2. What type of personality traits would be helpful for a person to have when coaching you?</p><br><p>'.$question2_val.'</p>'.'<p>Q3. What specific training, expertise and industry knowledge is important for this coach to possess?</p><br><p>'.$request->question3.'</p>'.'<p>Q4. On a scale of 1-10 how structured do you want your coaching experience?</p><br><p>'.$request->question4.'</p>'.'<p>Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</p><br><p>'.$request->question5.'</p>'.'<p>Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</p><br><p>'.$request->question6.'</p>';
                             // $template_body = str_replace('[QUESTIONS]',$all_questions,$template_body);
 
                             if($request->contact_profile){
@@ -9658,6 +9658,48 @@ class PagesController extends Controller
 
                             }
 
+                            //send email to customer for chat functionality
+                            $user_email_notify_message = [
+                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                'We received your email.Click the below  link to begin chat',
+                                // __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                                
+                            ];
+                            if($authUserId == null){
+                                $temp_user_id = $temp_user_id;
+                            }else{
+                                $temp_user_id = $authUserId;
+                            }
+
+                            TempUser::create([
+                                'name' => $request->item_conntact_email_name,
+                                'email' => $item_contact_email,
+                                'temp_user_id' => $temp_user_id,
+                            ]);
+
+                            ChatMessage::create([
+                                'sender_id' => $temp_user_id,
+                                'receiver_id' => $request->userId,
+                                'message' => null,
+                                'contact_coach_id' => $contact_data_id
+                                
+                            ]);
+
+                            Mail::to($item_contact_email)->send(
+                                new Notification(
+                                    'Contact chat email',
+                                    $item_contact_email,
+                                    null,
+                                    $user_email_notify_message,
+                                    'View',
+                                    'success',
+                                    route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
+                                    // route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
+                                    // null,
+                                    // null,
+                                )
+                            );
+
                                 $encodedData = json_encode($data);    
                                 $headers = [
                                     'Authorization:key=' . $serverKey,
@@ -9726,57 +9768,14 @@ class PagesController extends Controller
                                     // $question2_val,
                                     // __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
                                     // $request->question3,
-                                    // __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    // __('Q4. On a scale of 1-10 how structured do you want your coaching experience?'),
                                     // $request->question4,
                                     // __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
                                     // $request->question5,
                                     // __('Q6. Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.'),
                                     // $request->question6,
                                 ];
-
-                                //send email to customer who want to contact
-
-                                $user_email_notify_message = [
-                                    // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
-                                    'We received your email.Click the below  link to begin chat',
-                                    // __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
-                                    
-                                ];
-                                if($authUserId == null){
-                                    $temp_user_id = $temp_user_id;
-                                }else{
-                                    $temp_user_id = $authUserId;
-                                }
-
-                                TempUser::create([
-                                    'name' => $request->item_conntact_email_name,
-                                    'email' => $item_contact_email,
-                                    'temp_user_id' => $temp_user_id,
-                                ]);
-
-                                ChatMessage::create([
-                                    'sender_id' => $temp_user_id,
-                                    'receiver_id' => $request->userId,
-                                    'message' => null,
-                                    'contact_coach_id' => $contact_data_id
-                                    
-                                ]);
-
-                                Mail::to($item_contact_email)->send(
-                                    new Notification(
-                                        'Contact chat email',
-                                        $item_contact_email,
-                                        null,
-                                        $user_email_notify_message,
-                                        'View',
-                                        'success',
-                                        route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
-                                        // route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
-                                        // null,
-                                        // null,
-                                    )
-                                );
-    
+   
     
                             }else{
                                 $email_to = $user->email;
@@ -9817,7 +9816,7 @@ class PagesController extends Controller
                                     // $question2_val,
                                     // __('Q3. What specific training, expertise and industry knowledge is important for this coach to possess?'),
                                     // $request->question3,
-                                    // __('Q4. On a sale of 1-10 how structured do you want your coaching experience?'),
+                                    // __('Q4. On a scale of 1-10 how structured do you want your coaching experience?'),
                                     // $request->question4,
                                     // __('Q5. If you invest your time and money with this coach, what is the single biggest change you hope to achieve?'),
                                     // $request->question5,
@@ -9825,6 +9824,48 @@ class PagesController extends Controller
                                     // $request->question6,
                                 ];
                             }
+
+                            //send email to customer for chat functionality
+                            $user_email_notify_message = [
+                                // __('frontend.item.send-email-contact-body', ['from_name' => $email_from_name, 'url' => route('page.profile', $request->hexId)]),
+                                'We received your email.Click the below  link to begin chat',
+                                // __('frontend.item.send-email-from-email',['email' => $item_contact_email]),                        
+                                
+                            ];
+                            if($authUserId == null){
+                                $temp_user_id = $temp_user_id;
+                            }else{
+                                $temp_user_id = $authUserId;
+                            }
+
+                            TempUser::create([
+                                'name' => $request->item_conntact_email_name,
+                                'email' => $item_contact_email,
+                                'temp_user_id' => $temp_user_id,
+                            ]);
+
+                            ChatMessage::create([
+                                'sender_id' => $temp_user_id,
+                                'receiver_id' => $request->userId,
+                                'message' => null,
+                                'contact_coach_id' => $contact_data_id
+                                
+                            ]);
+
+                            Mail::to($item_contact_email)->send(
+                                new Notification(
+                                    'Contact chat email',
+                                    $item_contact_email,
+                                    null,
+                                    $user_email_notify_message,
+                                    'View',
+                                    'success',
+                                    route('chat.index',['uid'=>base64_encode($temp_user_id),'cid'=>base64_encode($request->userId),'con_id'=>base64_encode($contact_data_id)]),
+                                    // route('chat.index',['uid'=>$temp_user_id,'cid'=>$request->userId,'con_id'=>$contact_data_id]),
+                                    // null,
+                                    // null,
+                                )
+                            );
 
                             try
                             {

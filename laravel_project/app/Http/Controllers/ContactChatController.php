@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 use App\Setting;
 use App\Customization;
 use App\Theme;
@@ -103,20 +104,31 @@ class ContactChatController extends Controller
 
     public function store(Request $request,$uid,$cid)
     {
+        $validator = Validator::make($request->all(),[
+            'chat_msg' => 'required|max:200'
+        ],[
+            'chat_msg.required' => 'Message field is required',
+            'chat_msg.max' => 'Message field must not more than 200 characters'
+        ]);
 
-        if(isset($cid,$uid)){
-            $lead_data = ContactLead::where('sender_id',$uid)->orderBy('id','DESC')->first();
-            // return response()->json(['status'=>'dddddd','msg'=>$lead_data->id]);
+        if($validator->passes()){
+            if(isset($cid,$uid)){
+                $lead_data = ContactLead::where('sender_id',$uid)->orderBy('id','DESC')->first();
 
-            ChatMessage::create([
-                'sender_id' => $uid,
-                'receiver_id' => $cid,
-                'message' => $request->chat_msg,
-                'contact_coach_id' => $lead_data->id
-            ]);
-            return response()->json(['status'=>true,'msg'=>'Msg sent successfully']);
+                ChatMessage::create([
+                    'sender_id' => $uid,
+                    'receiver_id' => $cid,
+                    'message' => $request->chat_msg,
+                    'contact_coach_id' => $lead_data->id
+                ]);
+
+                $request->session()->flash('success','Message sent');
+                return response()->json(['status'=>true,'msg'=>'Msg sent successfully']);
+            }else{
+                return response()->json(['status'=>false,'msg'=>'User not found']);
+            }
         }else{
-            return response()->json(['status'=>false,'msg'=>'User not found']);
+            return response()->json(['status'=>'validator_error','msg'=>$validator->errors()]);
         }
 
     }

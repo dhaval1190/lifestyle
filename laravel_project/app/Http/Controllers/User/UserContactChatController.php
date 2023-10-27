@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\ChatMessage;
 use App\ContactLead;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserContactChatController extends Controller
 {
@@ -39,27 +40,38 @@ class UserContactChatController extends Controller
 
     public function chatStore(Request $request,$uid,$cid)
     {
+        $validator = Validator::make($request->all(),[
+            'chat_msg' => 'required|max:200'
+        ],[
+            'chat_msg.required' => 'Message field is required',
+            'chat_msg.max' => 'Message field must not more than 200 characters'
+        ]);
 
-        if(isset($cid,$uid)){
-            // $lead_data = ContactLead::where('receiver_id',$cid)->orderBy('id','DESC')->first();
-
-            $auth_user = Auth::user();
-            if($auth_user->id == $uid){
-                $uid = $cid;
+        if($validator->passes()){
+            if(isset($cid,$uid)){
+                // $lead_data = ContactLead::where('receiver_id',$cid)->orderBy('id','DESC')->first();
+    
+                $auth_user = Auth::user();
+                if($auth_user->id == $uid){
+                    $uid = $cid;
+                }else{
+                    $uid = $uid;
+                }
+                // return response()->json(['status'=>'dddddd','msg'=>$uid]);
+    
+                ChatMessage::create([
+                    'sender_id' => $auth_user->id,
+                    'receiver_id' => $uid,
+                    'message' => $request->chat_msg,
+                    'contact_coach_id' => $request->co_id
+                ]);
+                $request->session()->flash('success','Message sent');
+                return response()->json(['status'=>true,'msg'=>'Msg sent successfully']);
             }else{
-                $uid = $uid;
+                return response()->json(['status'=>false,'msg'=>'User not found']);
             }
-            // return response()->json(['status'=>'dddddd','msg'=>$uid]);
-
-            ChatMessage::create([
-                'sender_id' => $auth_user->id,
-                'receiver_id' => $uid,
-                'message' => $request->chat_msg,
-                'contact_coach_id' => $request->co_id
-            ]);
-            return response()->json(['status'=>true,'msg'=>'Msg sent successfully']);
         }else{
-            return response()->json(['status'=>false,'msg'=>'User not found']);
+            return response()->json(['status'=>'validator_error','msg'=>$validator->errors()]);
         }
 
     }
