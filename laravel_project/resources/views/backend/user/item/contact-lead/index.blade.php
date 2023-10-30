@@ -56,8 +56,8 @@
                             @foreach ($all_contact_leads as $all_contact_leads_key => $contact_lead)
                                 <tr>
                                     <td>{{ $contact_lead->id }}</td>
-                                    <td>{{ getUserCoachName($contact_lead->sender_id)->name }}</td>
-                                    <td>{{ getUserCoachName($contact_lead->receiver_id)->name }}</td>
+                                    <td>{{ getUserCoachName($contact_lead->sender_id) ? getUserCoachName($contact_lead->sender_id)->name : '---' }}</td>
+                                    <td>{{ getUserCoachName($contact_lead->receiver_id) ? getUserCoachName($contact_lead->receiver_id)->name : '---' }}</td>
                                     <td>{{ $contact_lead->email }}</td>
                                     <td>{{ $contact_lead->profile_article }}</td>
                                     <td>{{ $contact_lead->created_at->diffForHumans() }}</td>

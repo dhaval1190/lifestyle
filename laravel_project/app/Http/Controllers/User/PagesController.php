@@ -74,7 +74,7 @@ class PagesController extends Controller
             array("y"=> (100- $progress_data['percentage']), "name"=> "Remaining", "color"=> "#D3D3D3")
         );
         $profile_visit = ProfileVisit::where('user_id', $login_user->id)->get();
-        $contact_lead_count = ContactLead::where('receiver_id', $login_user->id)->count();
+        $contact_lead_count = ContactLead::where('receiver_id', $login_user->id)->orWhere('sender_id',$login_user->id)->count();
         $coaches_count = User::where('role_id', 2)->where('email_verified_at','!=','null')->where('user_suspended',0)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
         $users_count = User::where('role_id', 3)->where('email_verified_at','!=','null')->where('user_suspended',0)->whereNotIn('email',['harsh.modi@pranshtech.com','shubham@pranshtech.com','bansari@pranshtech.com'])->count();
         // dd($coaches_count);
