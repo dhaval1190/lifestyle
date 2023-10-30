@@ -54,12 +54,13 @@
         .first-highlight {
             font-weight: 800;
             color: #F05127;
+            padding-right: 10px;
             text-decoration-color: #F05127;
             text-decoration: underline;
         }
         .sec-highlight{
             color: #0069d9;
-            padding-left: 10px;
+            padding-right: 10px;
             text-decoration-color: #0069d9;
             text-decoration: underline;
         }
@@ -132,13 +133,12 @@
                                 <div class="media-border2">
                                 <div class="flex-set-from-to">
                                         <div class="heading-font-highlight">
-                                        <div class="{{ $color_ftn1 }}">
-                                            From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
-                                        </div>
-
-                                        <div class="{{ $color_ftn2 }}">
-                                            To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
-                                        </div>
+                                            <div class="{{ $color_ftn1 }}">
+                                                From: {{ $username_ftn1 ? $username_ftn1->name : '' }}&nbsp;
+                                            </div>
+                                            <div class="{{ $color_ftn2 }}">
+                                                To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
+                                            </div>
                                         </div>
                                         <div>
                                             <small class="flex-end-set"><span class="hide-sm-space">Sent</span>
