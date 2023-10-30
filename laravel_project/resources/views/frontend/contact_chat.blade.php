@@ -142,16 +142,16 @@
                             if($msg->message == null) continue;
                             $username_ftn1 =  getUserCoachName($msg->sender_id);
                             $username_ftn2 =  getUserCoachName($msg->receiver_id);
-                            // $color_ftn1 = getUserCoachColor($msg->sender_id);
-                            // $color_ftn2 = getUserCoachColor($msg->receiver_id);
+                            $color_ftn1 = getUserCoachColor($msg->sender_id);
+                            $color_ftn2 = getUserCoachColor($msg->receiver_id);
                             @endphp
                             <div class="flex-set-from-to">
 
                                 <div class="heading-font-highlight">
-                                    <div class="first-highlight">
+                                    <div class="{{ $color_ftn1 }}">
                                         From: {{ $username_ftn1 ? $username_ftn1->name : '' }}
                                     </div>
-                                    <div class="sec-highlight">
+                                    <div class="{{ $color_ftn2 }}">
                                         To: {{ $username_ftn2 ? $username_ftn2->name : '' }}
                                     </div>
                                 

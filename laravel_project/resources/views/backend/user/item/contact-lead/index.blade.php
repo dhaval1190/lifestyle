@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+@php
+    $contact_leads_count = $all_contact_leads->count();
+@endphp
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
             @if(auth()->user()->isCoach())
@@ -18,22 +21,24 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
-        <div class="col-3">
-            <form class="" action="" method="GET" id="filterLead">
-                <select id="priority-filter" class="form-control" name="filter_lead">
-                    <option value="all" {{ Request::get('filter_lead') == 'all' ? 'selected' : '' }}>{{ __('All') }}</option>
-                    <option value="deleted" {{ Request::get('filter_lead') == 'deleted' ? 'selected' : '' }}>{{ __('Deleted') }}</option>
-                </select>
-            </form>
+    @if($contact_leads_count > 0)
+        <div class="row">
+            <div class="col-3">
+                <form class="" action="" method="GET" id="filterLead">
+                    <select id="priority-filter" class="form-control" name="filter_lead">
+                        <option value="all" {{ Request::get('filter_lead') == 'all' ? 'selected' : '' }}>{{ __('All') }}</option>
+                        <option value="deleted" {{ Request::get('filter_lead') == 'deleted' ? 'selected' : '' }}>{{ __('Deleted') }}</option>
+                    </select>
+                </form>
+            </div>
+            <div class="col-3">
+                <a href="{{ route('user.contact-leads.index') }}" class="btn btn-primary">Reset</a>
+            </div>
         </div>
-        <div class="col-3">
-            <a href="{{ route('user.contact-leads.index') }}" class="btn btn-primary">Reset</a>
-        </div>
-    </div>
+    @endif
     <div class="row bg-white pt-4 pb-4">
         <div class="col-12">
-            @if ($all_contact_leads->count() > 0)
+            @if ($contact_leads_count > 0)
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
