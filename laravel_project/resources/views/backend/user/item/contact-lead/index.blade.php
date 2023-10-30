@@ -7,6 +7,9 @@
 @endsection
 
 @section('content')
+@php
+    $contact_leads_count = $all_contact_leads->count();
+@endphp
     <div class="row justify-content-between">
         <div class="col-lg-9 col-12">
             @if(auth()->user()->isCoach())
@@ -18,9 +21,24 @@
     </div>
 
     <!-- Content Row -->
+    @if($contact_leads_count > 0)
+        <div class="row">
+            <div class="col-3">
+                <form class="" action="" method="GET" id="filterLead">
+                    <select id="priority-filter" class="form-control" name="filter_lead">
+                        <option value="all" {{ Request::get('filter_lead') == 'all' ? 'selected' : '' }}>{{ __('All') }}</option>
+                        <option value="deleted" {{ Request::get('filter_lead') == 'deleted' ? 'selected' : '' }}>{{ __('Deleted') }}</option>
+                    </select>
+                </form>
+            </div>
+            <div class="col-3">
+                <a href="{{ route('user.contact-leads.index') }}" class="btn btn-primary">Reset</a>
+            </div>
+        </div>
+    @endif
     <div class="row bg-white pt-4 pb-4">
         <div class="col-12">
-            @if ($all_contact_leads->count() > 0)
+            @if ($contact_leads_count > 0)
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -31,7 +49,7 @@
                                 <th>{{ __('role_permission.item-leads.item-lead-email') }}</th>
                                 <th>{{ __('Mail Page') }}</th>
                                 <th>{{ __('role_permission.item-leads.item-lead-received-at') }}</th>
-                                <th>{{ __('View Prospects') }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,6 +86,11 @@
                                                 class="btn btn-primary btn-circle">
                                                 <i class="fas fa-eye"></i>
                                             </a>
+                                            @if($contact_lead->status == 0)
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-circle deleteLead" data-id="{{ $contact_lead->id }}"><i class="fas fa-trash"></i></a>
+                                            @else
+                                                <a href="javascript:void(0)" class="btn btn-success btn-circle restoreLead" data-id="{{ $contact_lead->id }}"><i class="fas fa-plus"></i></a>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
@@ -86,6 +109,33 @@
             @endif
         </div>
     </div>
+
+    <!-- Modal Delete Listing -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Confirm') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirm_text">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                    <form action="{{ route('user.contact-leads.destroy','leadID') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="action_type" id="action_type">
+                        <input type="hidden" name="leadID" id="leadID">
+                        <button type="submit" class="btn btn-danger" id="confirm_button"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -100,54 +150,44 @@
     <script src="{{ asset('backend/vendor/datatables/buttons.print.min.js') }}"></script>
 
     <script>
-        // Call the dataTables jQuery plugin
-        // $(document).ready(function() {
+        $(function(){
+            toastr.options.timeOut = 8000;
+            @if (Session::has('error'))
+                toastr.error("{{ Session::get('error') }}");
+            @elseif (Session::has('success'))
+                toastr.success("{{ Session::get('success') }}");
+            @endif
 
-        //     "use strict";
+            $('.deleteLead').click(function(){
+                $('#confirm_text').empty();
+                let lead_id = $(this).data('id')
+                $('#action_type').val('delete');
 
-        //     $('#dataTable').DataTable({
-        //         "order": [[ 0, "desc" ]],
-        //         "columnDefs": [
-        //             {
-        //                 "targets": [ 0 ],
-        //                 "visible": false,
-        //                 "searchable": false
-        //             }
-        //         ],
-        //         dom: 'lBfrtip',
-        //         buttons: [
-        //             {
-        //                 extend: 'copy',
-        //                 exportOptions: {
-        //                     columns: [1,2,3,4,5,6,7]
-        //                 }
-        //             },
-        //             {
-        //                 extend: 'csv',
-        //                 exportOptions: {
-        //                     columns: [1,2,3,4,5,6,7]
-        //                 }
-        //             },
-        //             {
-        //                 extend: 'excel',
-        //                 exportOptions: {
-        //                     columns: [1,2,3,4,5,6,7]
-        //                 }
-        //             },
-        //             {
-        //                 extend: 'pdf',
-        //                 exportOptions: {
-        //                     columns: [1,2,3,4,5,6,7]
-        //                 }
-        //             },
-        //             {
-        //                 extend: 'print',
-        //                 exportOptions: {
-        //                     columns: [1,2,3,4,5,6,7]
-        //                 }
-        //             },
-        //         ]
-        //     });
-        // });
+                $('#confirm_text').text('Do you want to delete this record?');
+                $('#confirm_button').removeClass('btn-success');
+                $('#confirm_button').addClass('btn-danger');
+                $('#confirm_button').text('Delete');
+                
+                $('#confirmModal').modal('show');
+                $('#leadID').val(lead_id);
+            });
+
+            $('.restoreLead').click(function(){
+                $('#confirm_text').empty();
+                let lead_id = $(this).data('id');
+                $('#action_type').val('restore');
+
+                $('#confirm_text').text('Do you want to restore this record?');
+                $('#confirm_button').removeClass('btn-danger');
+                $('#confirm_button').addClass('btn-success');
+                $('#confirm_button').text('Restore');
+                $('#confirmModal').modal('show');
+                $('#leadID').val(lead_id);
+            });
+
+            $('#filterLead').change(function(){
+                $('#filterLead').submit();
+            });
+        });
     </script>
 @endsection

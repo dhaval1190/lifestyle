@@ -26,7 +26,7 @@ class UserContactChatController extends Controller
             ->where('receiver_id',$cid)
             ->where('contact_coach_id',$con_id);
         })
-        ->orderBy('created_at','asc')
+        ->orderBy('created_at','DESC')
         ->get();
 
         if($all_chat_messages->isNotEmpty()){
