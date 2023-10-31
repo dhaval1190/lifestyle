@@ -75,7 +75,7 @@ use Spatie\GoogleCalendar\Event as GoogleEvent;
 use App\ContactUs;
 use App\TempUser;
 use App\ChatMessage;
-
+use App\SearchHistory;
 
 class PagesController extends Controller
 {
@@ -438,6 +438,12 @@ class PagesController extends Controller
         $search_query = empty($request->search_query) ? null : $request->search_query;
         $search_values = !empty($search_query) ? preg_split('/\s+/', $search_query, -1, PREG_SPLIT_NO_EMPTY) : array();
 
+        if($request->search_query && !empty($request->search_query)){
+                $serach_history = new SearchHistory;
+                    $serach_history->search_input = $request->search_query;
+                    $serach_history->user_id = (Auth::check()) ? Auth::user()->id : '';
+                    $save_serach = $serach_history->save();
+        }
         // categories
         $filter_categories = empty($request->filter_categories) ? array() : $request->filter_categories;
 
@@ -11988,5 +11994,35 @@ class PagesController extends Controller
         else{
             return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
         }
+    }
+    public function searchHistory(Request $request)
+    {
+        $settings = app('site_global_settings');
+
+        /**
+         * Start SEO
+         */
+        SEOMeta::setTitle(__('Search History', ['site_name' => empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name]));
+        SEOMeta::setDescription('');
+        SEOMeta::setCanonical(URL::current());
+        SEOMeta::addKeyword($settings->setting_site_seo_home_keywords);
+        /**
+         * End SEO
+         */
+        $_date = isset($request->search_date) && !empty($request->search_date) ? $request->search_date : date('Y-m-d');
+
+        $search_data = DB::table('search_history');
+        if($request->search_date){
+                $datesearching = explode('-', $request->search_date);
+                $date1 = $datesearching[0];
+                $date2 = !empty($datesearching[1]) ? $datesearching[1] : $datesearching[0];
+            
+            $search_data = $search_data->whereBetween('created_at',[date('Y-m-d 00:00:01',strtotime($date1)),date('Y-m-d 23:59:59',strtotime($date2))]);
+        }
+                        
+        $search_data = $search_data->orderBy('updated_at', 'desc')->get();
+
+        return response()->view('backend.admin.search.index',
+            compact('search_data','_date'));
     }
 }
