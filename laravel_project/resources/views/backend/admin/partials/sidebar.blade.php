@@ -132,7 +132,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="{{ route('page.search.index') }}">
-            <i class="fas fa-address-card"></i>
+        <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
             <span>{{ __('Search History') }}</span>
         </a>
     </li>
