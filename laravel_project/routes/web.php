@@ -81,6 +81,9 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
     // for trending video's page 
     Route::get('/trending_videos_page', 'PagesController@trending_videos_page_all')->name('page.trending_videos');
     Route::post('/conatact_us', 'PagesController@conatact_us')->name('page.conatact_us');
+    //serach history    
+
+    Route::get('/search/index', 'PagesController@searchHistory')->name('page.search.index');
 
     Route::get('/profile/{id}', 'PagesController@profile')->name('page.profile');
     Route::get('/ajax/profile/podcast/{id}', 'PagesController@jsonProfilePodcastDetail')->name('json.profile.podcast');

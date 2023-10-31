@@ -130,6 +130,13 @@
         </div>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('page.search.index') }}">
+            <i class="fas fa-address-card"></i>
+            <span>{{ __('Search History') }}</span>
+        </a>
+    </li>
+
     {{-- @if(auth()->user()->isAdmin())
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_email" aria-expanded="true" aria-controls="collapse_email">
