@@ -57,7 +57,7 @@
                                 <th>{{ __('Serach Input') }}</th>
                                 <th>{{ __('User') }}</th>                           
                                 <th>{{ __('Date') }}</th>
-                                <th>{{ __('backend.shared.action') }}</th>
+                                
                             </tr>
                             </thead>
                             <tfoot>
@@ -65,8 +65,7 @@
                                  <th>{{ __('Id') }}</th>
                                 <th>{{ __('Serach Input') }}</th>  
                                 <th>{{ __('User') }}</th>                           
-                                <th>{{ __('Date') }}</th>
-                                <th>{{ __('backend.shared.action') }}</th>
+                                <th>{{ __('Date') }}</th>                                
                             </tr>
                             </tfoot>
                             <tbody>
@@ -83,10 +82,6 @@
                                     <td>{{ $search->search_input }}</td> 
                                     <td>{{$_name }}</td>                                                          
                                     <td>{{ date('Y-m-d',strtotime($search->created_at)) }}</td>
-                                    
-                                    <td>
-                                      
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
