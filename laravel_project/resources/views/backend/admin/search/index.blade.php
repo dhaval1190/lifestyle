@@ -38,7 +38,7 @@
                                         <input type='text' name="search_date" value="{{isset($date) ? $date_ex[0]. '-' .$date_ex[1] : '' }}" autocomplete="off" class="form-control" readonly placeholder="Select date range" />
                                 </div>
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary" style ="margin-left: 30px;">{{ __('backend.shared.update') }}</button>
+                                        <button type="submit" class="btn btn-primary" style ="margin-left: 30px;">{{ __('Search') }}</button>
                                     </div>
                                 </div>
                             </form>
@@ -56,8 +56,7 @@
                                 <th>{{ __('Id') }}</th>
                                 <th>{{ __('Serach Input') }}</th>
                                 <th>{{ __('User') }}</th>                           
-                                <th>{{ __('Date') }}</th>
-                                
+                                <th>{{ __('Date') }}</th>                                
                             </tr>
                             </thead>
                             <tfoot>
