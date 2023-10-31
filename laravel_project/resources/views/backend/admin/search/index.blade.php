@@ -54,7 +54,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('Id') }}</th>
-                                <th>{{ __('Serach Input') }}</th>
+                                <th>{{ __('Search Input') }}</th>
                                 <th>{{ __('User') }}</th>                           
                                 <th>{{ __('Date') }}</th>                                
                             </tr>
