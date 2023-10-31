@@ -13,8 +13,8 @@
 
     <div class="row justify-content-between">
         <div class="col-8 col-md-9">
-            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Manage Serach History') }}</h1>
-            <p class="mb-4 font-sm-14">{{ __('review.backend.manage-reviews-desc') }}</p>
+            <h1 class="h3 mb-2 text-gray-800 font-sm-20">{{ __('Serach History') }}</h1>
+            <!-- <p class="mb-4 font-sm-14">{{ __('review.backend.manage-reviews-desc') }}</p> -->
         </div>
         <div class="col-4 col-md-3 text-right">
 
