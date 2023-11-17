@@ -4,8 +4,8 @@
     @if ($site_global_settings->setting_site_map == \App\Setting::SITE_MAP_OPEN_STREET_MAP)
         <link href="{{ asset('frontend/vendor/leaflet/leaflet.css') }}" rel="stylesheet" />
     @endif
-
     <link href="{{ asset('frontend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 @endsection
 
 <style>
@@ -615,6 +615,7 @@
                                         <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
                                         <p class="question6_error error_color_modal" role="alert"></p>
                                         <p class="question6_desc_char_count count_error"></p>
+                                        <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
                                     </div>
                                 </div>
                                 <div class="form-row">

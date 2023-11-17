@@ -2,6 +2,16 @@
 
 @section('styles')
     <link href="{{ asset('backend/vendor/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" />
+    <style>
+        .card{
+            padding:20px;
+            margin-top:25px;
+            background-color: aliceblue;
+        }
+        .answer{
+            margin-top: 20px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -64,37 +74,60 @@
     </div>
     
     {{-- ----------------Question  --}}
-       <div class="container-fluid bg-white">
+    <div class="container-fluid bg-white">
         <div class="row">
             <div class="col-md-12">
-                <div class="question_set_coaches">
-                    <span class="questions">Q1. What are the top 2 challenges you feel this coach can help you navigate?</span>
-                    <p class="answer">{{ $contact_lead->question1 }}</p>
-                </div>
-                <div class="question_set_coaches">
-                    <span class="questions">Q2.What type of personality traits would be helpful for a person to have when coaching you?</span>
-                    <p class="answer">{{ $contact_lead->question2 }}</p>
-                </div>
-                <div class="question_set_coaches">
-                    <span class="questions">Q3.What specific training, expertise and industry knowledge is important for this coach to possess?</span>
-                    <p class="answer">{{ $contact_lead->question3 }}</p>
-                </div>
-                <div class="question_set_coaches">
-                    <span class="questions">Q4.On a scale of 1-10 how structured do you want your coaching experience?</span>
-                    <p class="answer">{{ $contact_lead->question4 }}</p>
-                </div>
-                <div class="question_set_coaches">
-                    <span class="questions">Q5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</span>
-                    <p class="answer">{{ $contact_lead->question5 }}</p>
-                </div>
-                <div class="question_set_coaches">
-                    <span class="questions">Q6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</span>
-                    <p class="answer">{{ $contact_lead->question6 }}</p>
-                </div>
+                <div class="card">
+                    <div class="card-body">
+                            <div class="question_set_coaches">
+                                <span class="questions">Q1. What are the top 2 challenges you feel this coach can help you navigate?</span>
+                                <p class="answer"><b>Ans:</b> {{ $contact_lead->question1 }}</p>
+                            </div>
+                    </div>
+                </div>    
+                <div class="card">
+                    <div class="card-body"> 
+                        <div class="question_set_coaches">
+                            <span class="questions">Q2.What type of personality traits would be helpful for a person to have when coaching you?</span>
+                            <p class="answer"><b>Ans:</b> {{ $contact_lead->question2 }}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="question_set_coaches">
+                            <span class="questions">Q3.What specific training, expertise and industry knowledge is important for this coach to possess?</span>
+                            <p class="answer"><b>Ans:</b> {{ $contact_lead->question3 }}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="question_set_coaches">
+                            <span class="questions">Q4.On a scale of 1-10 how structured do you want your coaching experience?</span>
+                            <p class="answer"><b>Ans:</b> {{ $contact_lead->question4 }}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="question_set_coaches">
+                            <span class="questions">Q5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?</span>
+                            <p class="answer"><b>Ans:</b> {{ $contact_lead->question5 }}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card">
+                        <div class="card-body">
+                            <div class="question_set_coaches">
+                                <span class="questions">Q6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.</span>
+                                <p class="answer"><b>Ans:</b> {{ $contact_lead->question6 }}</p>
+                            </div>
+                        </div>
+                </div> 
             </div>
-        </div>
-     
-       </div> 
+        </div>     
+    </div> 
             
     {{-- ------------------------ --}}
 @endsection

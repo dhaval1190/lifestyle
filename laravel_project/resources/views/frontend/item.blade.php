@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset('frontend/vendor/justified-gallery/justifiedGallery.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/vendor/colorbox/colorbox.css') }}" type="text/css">
-
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <!-- Start Google reCAPTCHA version 2 -->
     @if($site_global_settings->setting_site_recaptcha_item_lead_enable == \App\Setting::SITE_RECAPTCHA_ITEM_LEAD_ENABLE)
         {!! htmlScriptTagJsApi(['lang' => empty($site_global_settings->setting_site_language) ? 'en' : $site_global_settings->setting_site_language]) !!}
@@ -3186,13 +3186,16 @@
                                     <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>                                            
                                     <p class="question6_error error_color_modal" role="alert"></p>
                                     <p class="question6_desc_char_count count_error"></p>
+                                    <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+
                                 </div>
                             </div>                            
                             <div class="form-row">
                                 <div class="col-md-12 form-navigation">
                                     {{-- @if(Auth::check()) --}}
-                                        <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>
+                                        <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>                                        
                                         <button type="button" class="next btn btn-primary float-right mt-2">Next &gt;</button>
+
                                         <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2">
                                             {{ __('frontend.item.send-email') }}
                                         </button>

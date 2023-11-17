@@ -52,6 +52,7 @@
         crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}"/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -180,9 +181,10 @@
         <div class="ba-we-love-subscribers popup-ani">
             <header class="bg_email">
                 <div class="site-logo">
-                    <a href="https://bold-nobel.159-89-93-200.plesk.page" class="text-black mb-0">
+                    <!-- <a href="#" class="text-black mb-0"> -->
                         <img src="https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/setting/logo-2023-09-27-651423c8e76f8.png">
-                    </a>
+                    <!-- </a> -->
+                    <button type="button" class="btn close_mod" style="float:right;margin-right: 10px;margin-top: 2px; font-size:22px;"><span aria-hidden="true"><b>×</b></span></button>
                 </div>
             </header>
             <form method="POST" name="contact_us" id="contact_us">
@@ -215,7 +217,8 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <input class="logo-ani" name="submit" type="submit">
+                <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                <input class="logo-ani mt-3" name="submit" type="submit">
                 <span class="please_wait">Please Wait..</span>
             </form>
         </div>
@@ -237,7 +240,12 @@
 	$('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
 	$('.ba-we-love-subscribers').toggleClass("open");
 	$('.img-fab.img').toggleClass("close");
-});
+    });
+    $(".close_mod").click(function() {
+        $('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
+        $('.ba-we-love-subscribers').toggleClass("open");
+        $('.img-fab.img').toggleClass("close");
+    });
 </script>
 <script async src="{{ asset('frontend/vendor/pace/pace.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jquery-3.5.1.min.js') }}"></script>

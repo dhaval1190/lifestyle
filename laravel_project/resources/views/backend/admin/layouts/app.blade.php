@@ -46,6 +46,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
     @yield('styles')
     <link rel="stylesheet" href="{{ asset('backend/css/plugins.bundle.css') }}">
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         function validatePostalCode(e) {
         e = e || window.event;
@@ -65,98 +66,88 @@
             width: 100%;
         }
         .error_color_color{
-                color: red !important;
-                font-weight: 400 !important;
-                padding-top: 4px;
-                display: block;
-                text-align:left;
+            color: red !important;
+            font-weight: 400 !important;
+            padding-top: 4px;
+            display: block;
+            text-align:left;
+        }
+        .ba-we-love-subscribers input[name="email"] {
+            background-color: white !important;
+        }
+        .ba-we-love-subscribers-wrap {
+            position: fixed;
+            right: 25px;
+            bottom: 130px;
+            z-index: 1000;
+        }
+
+        .ba-settings {
+            position: absolute;
+            top: -25px;
+            right: 0px;
+            padding: 10px 20px;
+            background-color: #555;
+            border-radius: 5px;
+            color: #fff;
+        }
+        /* Begin float */
+
+        .float {
+            position:fixed;
+            bottom:70px;
+            right:10px;
+            text-align:center;
+            z-index:1000;
+        }
+        .float .trigger {
+            border-radius:50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+            position:relative;
+            background:#f05127 !important;
+            color:#fff;
+            height:60px;
+            width:60px;
+            vertical-align:middle;
+            animation: 1.5s linear 0s infinite normal pulse;
+            transition: ease-in-out 0.2s;
+            cursor: pointer;
+        }
+        .float .trigger:hover{
+            transform:scale(1.1);
+        }
+
+        .float.open .trigger .fa::before{
+         content: "\f00d";
+        }
+
+        .float .trigger .fa::after{
+         transition: ease-in-out 1s;
+        }
+        .fab.open .trigger i{
+            transition: all 0.4s ease;
+            transform: translateY(5px) rotate(360deg);
+        }
+
+        .float i{
+            font-size:28px;
+            line-height:58px;
+        }
+        /* Animations */
+        @keyframes pulse {
+            0% {
+            box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 0px #ef242450;
             }
-            .ba-we-love-subscribers input[name="email"] {
-                background-color: white !important;
+            30% {
+            box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 5px #ef242450;
             }
-            
-
-
-.ba-we-love-subscribers-wrap {
-  position: fixed;
-  right: 25px;
-  bottom: 130px;
-  z-index: 1000;
-}
-
-.ba-settings {
-  position: absolute;
-  top: -25px;
-  right: 0px;
-  padding: 10px 20px;
-  background-color: #555;
-  border-radius: 5px;
-  color: #fff;
-}
-
-/* Begin float */
-
-.float {
-  position:fixed;
-  bottom:70px;
-  right:10px;
-  text-align:center;
-  z-index:1000;
-}
-
-.float .trigger {
-  border-radius:50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-  position:relative;
-  background:#f05127 !important;
-  color:#fff;
-  height:60px;
-  width:60px;
-  vertical-align:middle;
-  animation: 1.5s linear 0s infinite normal pulse;
-  transition: ease-in-out 0.2s;
-  cursor: pointer;
-}
-
-.float .trigger:hover{
-  transform:scale(1.1);
-}
-
-.float.open .trigger .fa::before{
-  content: "\f00d";
-}
-
-.float .trigger .fa::after{
-  transition: ease-in-out 1s;
-}
-
-.fab.open .trigger i{
-  transition: all 0.4s ease;
-  transform: translateY(5px) rotate(360deg);
-}
-
-.float i{
-  font-size:28px;
-  line-height:58px;
-}
-
-/* Animations */
-@keyframes pulse {
-    0% {
-      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 0px #ef242450;
-    }
-    30% {
-      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 5px #ef242450;
-    }
-    70% {
-      box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 15px #ef242410;
-    }
-    100% {   
-      box-shadow: 1px 1px 2px 1px #ab1a1a30, 0px 0px 0px 20px transparent;
-    }
-  }
-
-
+            70% {
+            box-shadow: 0px 1px 0px 3px #ab1a1a30, 0px 0px 0px 15px #ef242410;
+            }
+            100% {   
+            box-shadow: 1px 1px 2px 1px #ab1a1a30, 0px 0px 0px 20px transparent;
+            }
+        }
     </style>
 
 </head>
@@ -199,9 +190,10 @@
         <div class="ba-we-love-subscribers popup-ani">
             <header class="bg_email">
                 <div class="site-logo">
-                    <a href="https://bold-nobel.159-89-93-200.plesk.page" class="text-black mb-0">
+                    <!-- <a href="#" class="text-black mb-0"> -->
                         <img src="https://bold-nobel.159-89-93-200.plesk.page/laravel_project/public/storage/setting/logo-2023-09-27-651423c8e76f8.png">
-                    </a>
+                    <!-- </a> -->
+                    <button type="button" class="btn close_mod" style="float:right;margin-right: 10px;margin-top: 2px; font-size:22px;"><span aria-hidden="true"><b>×</b></span></button>
                 </div>
             </header>
             <form method="POST" action="{{ route('page.conatact_us') }}" name="contact_us" id="contact_us">
@@ -234,7 +226,8 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <input class="logo-ani" name="submit" type="submit">
+                <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                <input class="logo-ani mt-3" name="submit" type="submit">
                 <span class="please_wait">Please Wait..</span>
             </form>
         </div>
@@ -288,7 +281,12 @@
 	$('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
 	$('.ba-we-love-subscribers').toggleClass("open");
 	$('.img-fab.img').toggleClass("close");
-});
+    });
+    $(".close_mod").click(function() {
+    $('.ba-we-love-subscribers-fab .wrap').toggleClass("ani");
+    $('.ba-we-love-subscribers').toggleClass("open");
+    $('.img-fab.img').toggleClass("close");
+    });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">

@@ -83,8 +83,8 @@
                                         @if($temp_user->isNotEmpty())
                                         {{-- <a href="{{ route('user.chat.index',['uid' =>$uid,'cid'=>$contact_lead->receiver_id,'con_id'=>$contact_lead->id]) }}" --}}
                                             <a href="{{ route('user.chat.index',['uid' =>base64_encode($uid),'cid'=>base64_encode($contact_lead->receiver_id),'con_id'=>base64_encode($contact_lead->id)]) }}"
-                                                class="btn btn-primary btn-circle">
-                                                <i class="fas fa-eye"></i>
+                                                class="btn btn-primary btn-circle view">
+                                                <i class="fas fa-eye" style="margin-left: -3px;margin-top: 4px;"></i>
                                             </a>
                                             @if($contact_lead->status == 0)
                                                 <a href="javascript:void(0)" class="btn btn-danger btn-circle deleteLead" data-id="{{ $contact_lead->id }}"><i class="fas fa-trash"></i></a>
