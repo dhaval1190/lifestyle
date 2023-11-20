@@ -169,7 +169,7 @@
             }
         }
     @endphp
-   <div class="container p-0">
+   <div class="container">
         <div class="row mb-4">
             <div class="@if($record_count == 1) col-lg-12 @else col-lg-12 @endif  m-auto p-0 p-md-0">
                 <form method="POST" action="" name="chatContactFrm" id="chatContactFrm">
