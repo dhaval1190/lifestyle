@@ -135,7 +135,13 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
 
         Route::get('/contact-chat/{uid}/{cid}/{con_id}','ContactChatController@index')->name('chat.index');
         Route::post('/contact-chat-store/{uid}/{cid}','ContactChatController@store')->name('chat.store');
-      
+        Route::post('/conact-coach','PagesController@sendLoginEmailOtp');
+        Route::post('/verify-conact-coach-email-otp','PagesController@verifyLoginEmailOtp');
+        Route::get('/show-pass/{id}','PagesController@user_password_show')->name('page.show_pass');
+        Route::post('/update-pass','PagesController@update_user_password')->name('page.update_pass');
+
+
+
 
     Route::post('/items/{item_slug}/lead/store', 'PagesController@storeItemLead')->name('page.item.lead.store');
 
@@ -808,6 +814,8 @@ Route::middleware(['installed','demo','global_variables','maintenance','front_us
 
         
     });
+    Route::post('/send-login-email-otp','Auth\LoginController@sendLoginEmailOtp');
+    Route::post('/verify-login-email-otp','Auth\LoginController@verifyLoginEmailOtp');
 
     Route::post('/signUp-user', 'Auth\RegisterController@userSignUp')->name('userSignUp');
     Route::post('/coach-signUp', 'Auth\RegisterController@coachSignUp')->name('coachSignUp');
