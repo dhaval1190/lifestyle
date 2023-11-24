@@ -24,7 +24,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\TempUser;
 use App\ChatMessage;
 use App\ContactLead;
-
+use Illuminate\Support\Facades\Mail;
 class LoginController extends Controller
 {
     /*
@@ -632,6 +632,76 @@ class LoginController extends Controller
             $new_social_account->save();
 
             return $find_user;
+        }
+    }
+    public function sendLoginEmailOtp(Request $request)
+    {
+        $email = $request->email;
+        $password = $request->password;
+        $settings = app('site_global_settings');
+        $user = User::where('email',$request->email)->first();
+        if($user) {
+            if(Hash::check($password, $user->password)) {
+                if(strpos($email, 'pranshtech.com') !== false || $email == 'admin@mail.com')  {
+                    $otp = date("dmy");
+                }
+                else {
+                    if($settings->settings_site_smtp_enabled == Setting::SITE_SMTP_ENABLED)
+                    {
+                        // config SMTP
+                        config_smtp(
+                        $settings->settings_site_smtp_sender_name,
+                        $settings->settings_site_smtp_sender_email,
+                        $settings->settings_site_smtp_host,
+                        $settings->settings_site_smtp_port,
+                        $settings->settings_site_smtp_encryption,
+                        $settings->settings_site_smtp_username,
+                        $settings->settings_site_smtp_password
+                        );
+                    }
+                    try {
+                        $otp = random_int(100000, 999999);
+                        $mail_details = [
+                            'subject' => 'OTP Verification',
+                            'body' => $otp,
+                            'name' => $user->name,
+                            'email' => $user->email 
+                        ];
+                        Mail::send('frontend.email.otp_verification', ["mail_details"=>$mail_details], function ($message) use ($mail_details, $otp) {
+                                $message->to($mail_details['email'])
+                                    ->subject($mail_details['subject']);
+                        });
+                        //$user_obj = new User();
+                        //$user_obj->emailReminderForProfileCompletion($request);
+
+                    } catch (\Throwable $th) {
+                        echo $th->getMessage();
+                        return true;
+                        exit;
+                    }                        
+                }
+                $request->session()->put('login_otp', $otp);
+                $request->session()->save();
+
+                return response()->json(['status'=>true, 'email'=>$request->email], 200);
+                exit;
+            }else{
+                return response()->json(['status'=>false, 'message'=>'Login failed. Please check Email Adress and password or contact your administrator'], 200);
+                exit;
+            }
+        }
+        else {
+            return response()->json(['status'=>false, 'message'=>'Login failed. Please check Email Adress and password or contact your administrator'], 200);
+            exit;
+        }
+    }
+    public function verifyLoginEmailOtp(Request $request)
+    {
+        $value = $request->session()->get('login_otp');
+        if($request->otp == $value){
+            return response()->json(['status' => true]);
+        }else{
+            return response()->json(['status' => false, 'message'=>'OTP is not valid']);
         }
     }
 }

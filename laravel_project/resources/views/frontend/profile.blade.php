@@ -9,6 +9,12 @@
 @endsection
 
 <style>
+    .disabled-login-error{
+        color:red;
+    }
+    .error{
+        color:red;
+    }
     .upper_logo_padding_25 {
     white-space: pre-wrap;
     }
@@ -447,198 +453,257 @@
                                 <input type="hidden" name="userId" value="{{ $user_detail->id }}">
                                 <input type="hidden" name="authUserId"
                                     value="{{ isset(auth()->user()->id) ? auth()->user()->id : '' }}">
+                                <input type="hidden" id="new_user" name="new_user" value="">
 
-                                <div class="form-section">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-6 pl-0">
-                                                <label for="item_conntact_email_name"
-                                                    class="text-black">{{ __('frontend.item.name') }}<span
-                                                        class="text-danger">*</span></label>
-                                                <input id="item_conntact_email_name" type="text"
-                                                    class="form-control @error('item_conntact_email_name') is-invalid @enderror"
-                                                    name="item_conntact_email_name"
-                                                    value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" required>
-                                                <p class="name_error error_color" role="alert"></p>
-                                                @error('item_conntact_email_name')
-                                                    <span class="invalid-tooltip">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                <div class="step-01 step_class">
+                                    <div class="form-section">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6 pl-0">
+                                                    <label for="item_conntact_email_name"
+                                                        class="text-black">{{ __('frontend.item.name') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <input id="item_conntact_email_name" type="text"
+                                                        class="form-control @error('item_conntact_email_name') is-invalid @enderror"
+                                                        name="item_conntact_email_name"
+                                                        value="{{ isset(auth()->user()->name) ? auth()->user()->name : old('item_conntact_email_name') }}" required>
+                                                    <p class="name_error error_color" role="alert"></p>
+                                                    @error('item_conntact_email_name')
+                                                        <span class="invalid-tooltip">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 pl-0">
+                                                    <label for="item_contact_email_from_email"
+                                                        class="text-black">{{ __('frontend.item.email') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <input id="item_contact_email_from_email" type="email"
+                                                        class="form-control @error('item_contact_email_from_email') is-invalid @enderror"
+                                                        name="item_contact_email_from_email"
+                                                        value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" required>
+                                                    <p class="email_error error_color" role="alert"></p>
+                                                    @error('item_contact_email_from_email')
+                                                        <span class="invalid-tooltip">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 pl-0">
-                                                <label for="item_contact_email_from_email"
-                                                    class="text-black">{{ __('frontend.item.email') }}<span
+                                            <div class="row">
+                                                <label for="Question 1"
+                                                    class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span
                                                         class="text-danger">*</span></label>
-                                                <input id="item_contact_email_from_email" type="email"
-                                                    class="form-control @error('item_contact_email_from_email') is-invalid @enderror"
-                                                    name="item_contact_email_from_email"
-                                                    value="{{ isset(auth()->user()->email) ? auth()->user()->email : old('item_contact_email_from_email') }}" required>
-                                                <p class="email_error error_color" role="alert"></p>
-                                                @error('item_contact_email_from_email')
+                                                <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt" rows="3"
+                                                    name="question1" required>{{ old('question1') }}</textarea>
+                                                <p class="question1_error error_color_modal" role="alert"></p>
+                                                <p class="question1_desc_char_count count_error"></p>
+                                                @error('question1')
                                                     <span class="invalid-tooltip">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <label for="Question 1"
-                                                class="text-black">{{ __('1. What are the top 2 challenges you feel this coach can help you navigate?') }}<span
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-section col-md-12">
+                                            <label
+                                                for="Question 2">{{ __('2.What type of personality traits would be helpful for a person to have when coaching you?') }}<span
+                                                    class="text-danger">*</span>
+                                                <p class="pl-3">Check all that apply fields:</p>
+                                            </label>
+                                            {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="Patient" id="question2_checkbox1" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    a) Patient
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="Diplomatic" id="question2_checkbox2" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    b) Diplomatic
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="Direct" id="question2_checkbox3" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    c) Direct
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="Sensitive" id="question2_checkbox4" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    d) Sensitive
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="High Energy" id="question2_checkbox5" required>
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    e) High Energy
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="question2[]"
+                                                    value="Calm" id="question2_checkbox6" required>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                    f) Calm
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="question_2">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    g) Other
+                                                </label>
+                                                <textarea name="question2[]" class="form-control mb-3" cols="30" rows="5" id="question2_txt"
+                                                    style="display:none"></textarea>
+                                            </div>
+                                            <p class="question2_error error_color_modal" role="alert"></p>
+                                            <p class="question2_desc_char_count count_error"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-section col-md-12 ">
+                                            <label
+                                                for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span
                                                     class="text-danger">*</span></label>
-                                            <textarea class="form-control @error('question1') is-invalid @enderror" id="question1_txt" rows="3"
-                                                name="question1" required>{{ old('question1') }}</textarea>
-                                            <p class="question1_error error_color_modal" role="alert"></p>
-                                            <p class="question1_desc_char_count count_error"></p>
-                                            @error('question1')
-                                                <span class="invalid-tooltip">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                            <textarea name="question3" id="question3_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                            <p class="question3_error error_color_modal" role="alert"></p>
+                                            <p class="question3_desc_char_count count_error"></p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-section col-md-12">
-                                        <label
-                                            for="Question 2">{{ __('2.What type of personality traits would be helpful for a person to have when coaching you?') }}<span
-                                                class="text-danger">*</span>
-                                            <p class="pl-3">Check all that apply fields:</p>
-                                        </label>
-                                        {{-- <textarea name="question2" id="question2_txt" class="form-control mb-3" cols="30" rows="5" required></textarea> --}}
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="Patient" id="question2_checkbox1" required>
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                a) Patient
-                                            </label>
+                                    <div class="row">
+                                        <div class="form-section col-md-12 ">
+                                            <label
+                                                for="Question 4">{{ __('4.On a scale of 1-10 how structured do you want your coaching experience?') }}<span
+                                                    class="text-danger">*</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="1"
+                                                required><label for="question4"><span class="pl-2"> 1</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="2"
+                                                required><label for="question4"><span class="pl-2"> 2</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="3"
+                                                required><label for="question4"><span class="pl-2"> 3</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="4"
+                                                required><label for="question4"><span class="pl-2"> 4</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="5"
+                                                required><label for="question4"><span class="pl-2"> 5</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="6"
+                                                required><label for="question4"><span class="pl-2"> 6</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="7"
+                                                required><label for="question4"><span class="pl-2"> 7</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="8"
+                                                required><label for="question4"><span class="pl-2"> 8</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="9"
+                                                required><label for="question4"><span class="pl-2"> 9</span></label><br>
+                                            <input type="radio" id="question4" name="question4" value="10"
+                                                required><label for="question4"><span class="pl-2">10</span></label><br>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="Diplomatic" id="question2_checkbox2" required>
-                                            <label class="form-check-label" for="flexCheckChecked">
-                                                b) Diplomatic
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="Direct" id="question2_checkbox3" required>
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                c) Direct
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="Sensitive" id="question2_checkbox4" required>
-                                            <label class="form-check-label" for="flexCheckChecked">
-                                                d) Sensitive
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="High Energy" id="question2_checkbox5" required>
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                e) High Energy
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question2[]"
-                                                value="Calm" id="question2_checkbox6" required>
-                                            <label class="form-check-label" for="flexCheckChecked">
-                                                f) Calm
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="question_2">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                g) Other
-                                            </label>
-                                            <textarea name="question2[]" class="form-control mb-3" cols="30" rows="5" id="question2_txt"
-                                                style="display:none"></textarea>
-                                        </div>
-                                        <p class="question2_error error_color_modal" role="alert"></p>
-                                        <p class="question2_desc_char_count count_error"></p>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-section col-md-12 ">
-                                        <label
-                                            for="Question 3">{{ __('3.What specific training, expertise and industry knowledge is important for this coach to possess?') }}<span
-                                                class="text-danger">*</span></label>
-                                        <textarea name="question3" id="question3_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
-                                        <p class="question3_error error_color_modal" role="alert"></p>
-                                        <p class="question3_desc_char_count count_error"></p>
+                                    <div class="row">
+                                        <div class="form-section col-md-12 ">
+                                            <label
+                                                for="Question 5">{{ __('5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?') }}<span
+                                                    class="text-danger">*</span></label>
+                                            <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                            <p class="question5_error error_color_modal" role="alert"></p>
+                                            <p class="question5_desc_char_count count_error"></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-section col-md-12 ">
-                                        <label
-                                            for="Question 4">{{ __('4.On a scale of 1-10 how structured do you want your coaching experience?') }}<span
-                                                class="text-danger">*</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="1"
-                                            required><label for="question4"><span class="pl-2"> 1</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="2"
-                                            required><label for="question4"><span class="pl-2"> 2</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="3"
-                                            required><label for="question4"><span class="pl-2"> 3</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="4"
-                                            required><label for="question4"><span class="pl-2"> 4</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="5"
-                                            required><label for="question4"><span class="pl-2"> 5</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="6"
-                                            required><label for="question4"><span class="pl-2"> 6</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="7"
-                                            required><label for="question4"><span class="pl-2"> 7</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="8"
-                                            required><label for="question4"><span class="pl-2"> 8</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="9"
-                                            required><label for="question4"><span class="pl-2"> 9</span></label><br>
-                                        <input type="radio" id="question4" name="question4" value="10"
-                                            required><label for="question4"><span class="pl-2">10</span></label><br>
+                                    <div class="row">
+                                        <div class="form-section col-md-12 ">
+                                            <label
+                                                for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span
+                                                    class="text-danger">*</span></label>
+                                            <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
+                                            <p class="question6_error error_color_modal" role="alert"></p>
+                                            <p class="question6_desc_char_count count_error"></p>
+                                            <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-section col-md-12 ">
-                                        <label
-                                            for="Question 5">{{ __('5.If you invest your time and money with this coach, what is the single biggest change you hope to achieve?') }}<span
-                                                class="text-danger">*</span></label>
-                                        <textarea name="question5" id="question5_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
-                                        <p class="question5_error error_color_modal" role="alert"></p>
-                                        <p class="question5_desc_char_count count_error"></p>
+                                    <div class="form-row">
+                                        <div class="col-md-12 form-navigation">
+                                            {{-- @if (Auth::check()) --}}
+                                                <button type="button" class="previous btn btn-primary float-left mt-2">&lt;
+                                                    Previous</button>
+                                                <button type="button" class="next btn btn-primary float-right mt-2">Next
+                                                    &gt;</button>
+                                                <button type="submit" id="kt_login_step_01"
+                                                    class="btn btn-primary py-2 px-4 mt-2 text-white rounded float-right">
+                                                    {{ __('frontend.item.send-email') }}
+                                                </button>
+                                            {{-- @endif --}}
+                                            <span class="please_wait">Please Wait..</span>
+                                            {{-- @if (!Auth::user())
+                                                <a
+                                                    href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
+                                                    {{ __('Login') }}
+                                                </a>
+                                            @endif --}}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-section col-md-12 ">
-                                        <label
-                                            for="Question 6">{{ __('6.Was there a particular Blog post, Podcast, Video, e-Book, etc that helped you select this coach? If so please share the name of it.') }}<span
-                                                class="text-danger">*</span></label>
-                                        <textarea name="question6" id="question6_txt" class="form-control mb-3" cols="30" rows="5" required></textarea>
-                                        <p class="question6_error error_color_modal" role="alert"></p>
-                                        <p class="question6_desc_char_count count_error"></p>
-                                        <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                </div>    
+                                <div class="step-02 step_class" style="display:none">
+                                    <!-- <div class="fv-row mb-10">
+                                        <label class="form-label fw-bold6er text-dark fs-6">Enter OTP sent to your email address</label>
+                                        <input class="form-control otp" id="otp" type="text" placeholder="" name="otp" autocomplete="off" required />
+                                        <div id="otp_val" class="error"></div>
+                                    </div> -->
+                                    <div class="text-center mb-10">
+                                        <h1 class="text-dark mb-3">
+                                            Two-Factor Verification
+                                        </h1>
+                                        <div class="text-muted fw-semibold fs-5 mb-5">Enter the verification code we sent to your email</div>
                                     </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-12 form-navigation">
-                                        {{-- @if (Auth::check()) --}}
-                                            <button type="button" class="previous btn btn-primary float-left mt-2">&lt;
-                                                Previous</button>
-                                            <button type="button" class="next btn btn-primary float-right mt-2">Next
-                                                &gt;</button>
-                                            <button type="submit" id="submit"
-                                                class="btn btn-primary py-2 px-4 mt-2 text-white rounded float-right">
-                                                {{ __('frontend.item.send-email') }}
-                                            </button>
-                                        {{-- @endif --}}
-                                        <span class="please_wait">Please Wait..</span>
-                                        {{-- @if (!Auth::user())
-                                            <a
-                                                href="{{ route('login') }}"class="btn btn-primary px-4 text-white rounded float-right mt-2">
-                                                {{ __('Login') }}
+                                    <div class="fv-row mb-10">
+                                        <!-- <div class="fw-bold text-start text-dark fs-6 mb-1 ms-1">Type your 6 digit otp</div> -->
+                                        {{-- <div class="d-flex flex-wrap flex-stack">
+                                            <input type="text" name="code_1" id="code_1" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                            <input type="text" name="code_2" id="code_2" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                            <input type="text" name="code_3" id="code_3" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                            <input type="text" name="code_4" id="code_4" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                            <input type="text" name="code_5" id="code_5" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                            <input type="text" name="code_6" id="code_6" data-inputmask="'mask': '9', 'placeholder': ''" maxlength="1" class="form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" autocomplete="off" value=""/>
+                                        </div>--}}
+                                        <div class="d-flex ap-otp-inputs justify-content-between" data-channel="email" data-length="6" data-form="login">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="0" id="code_1">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="1" id="code_2">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="2" id="code_3">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="3" id="code_4">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="4" id="code_5">
+                                            <input class="ap-otp-input form-control bg-transparent h-60px w-60px fs-2qx text-center mx-1 my-2" type="tel" maxlength="1" data-index="5" id="code_6">
+                                        </div>
+                                        <div id="otp_val" class="error"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="fw-semibold fs-5 d-flex w-100 justify-content-center fw-semibold fs-5">
+                                        <span class="text-muted me-1" id="resend_login_otp_title">Didn't get the otp ?</span>
+                                            <a href="#" id="resend_login_otp" class="link-primary fs-5 me-1">
+                                            <span class="indicator-label" style="margin-left: 10px;">{{ __('Resend') }}</span>
                                             </a>
-                                        @endif --}}
+                                            <p><span class="indicator-progress" style="margin-right: 60px;">Please wait...
+                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                </span><p>
+                                        
+                                            <div class="login_otp_countdown fw-semibold fs-5" style="margin-left:10px;"></div>
+                                        </div>
                                     </div>
-
+                                    <div class="pb-lg-0 pb-8 mt-3">
+                                        <button type="button" id="kt_login_step_02" class="btn btn-lg btn-info w-100 mb-5">
+                                        Login
+                                        </button>
+                                        </div>
+                                    <a href="#" id="kt_login_prev_step_01" class="d-flex w-100 justify-content-center link-primary fs-5 me-1">
+                                        <span class="indicator-label">{{ __('Back To Sign in') }}</span>
+                                            <!-- <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span> -->
+                                    </a>
                                 </div>
                             </form>
 
@@ -2113,7 +2178,6 @@
                 $('.please_wait').text('Please Wait..');
                 var item_slug = <?php echo json_encode($item->item_slug); ?>;
                 // alert(item_slug);
-
                 var formData = new FormData(this);
 
                 jQuery.ajax({
@@ -2963,8 +3027,200 @@
             $("#youtubeModal").on("hidden.bs.modal", function() {
                 $('#youtubeiframesrcURL').attr('src', '');
             });
+        });
+    </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/jquery.inputmask.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script>
+        Inputmask({
+            "mask": "999999"
+        }).mask(".otp");
 
+        $('#resend_login_otp').on('click', function() {
+            $("#resend_login_otp").attr('disabled', true);
+            $("#resend_login_otp").attr('data-kt-indicator', 'on');
+            $('#kt_login_step_01').trigger('click');
+        });
+
+        let interval_otp;
+
+        $(".ap-otp-input").keyup(function(){
+            $('#otp_val').text('');
+            otp = $('#code_1').val() + $('#code_2').val()  + $('#code_3').val()  + $('#code_4').val()  + $('#code_5').val()  + $('#code_6').val() ;
+            check_otp_length = otp.length;
+            if(check_otp_length == 6){
+                $('#kt_login_step_02').trigger('click');
+            }
+        });
+
+        $("#kt_login_step_01").on('click', function() {
+            $('#email_val').text('');
+            if ($('#contactFormModal').valid()) {
+                $("#kt_login_step_01").attr('disabled', true);
+                $("#kt_login_step_01").attr('data-kt-indicator', 'on');
+                email = $('#item_contact_email_from_email').val();
+                name = $('#item_conntact_email_name').val();              
+                var email_from = email.substring(0, email.indexOf("@"));
+                var num = (email_from.match(/\./g)) ? email_from.match(/\./g).length : 0;
+                if(num <= 2)
+                {
+                    $.ajax({
+                        url: "/conact-coach",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        method: "POST",
+                        data: {
+                            'email': email,
+                            'name':name,
+                            
+                        },
+                        success: function(response) {
+                            if (response.status==false) {
+                                $("#kt_login_step_01").removeAttr('disabled');
+                                $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                                $("#resend_login_otp").removeAttr('disabled');
+                                $("#resend_login_otp").removeAttr('data-kt-indicator');
+                                if(response.message){
+                                    $('.disabled-login-error').text(response.message);
+                                    $('.disabled-login-error').show();
+                                }
+                                // if (response.errors.email) {
+                                //     $('#email_val').text(response.errors.email);
+                                // }
+                            }else{
+                                $("#new_user").val(response.new_user)
+                                $("#resend_login_otp_title").text("OTP send in");
+                                setCountDownLoginOTP();
+                                $("#resend_login_otp").hide();
+                                $("#kt_login_step_01").removeAttr('disabled');
+                                $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                                $("#resend_login_otp").removeAttr('disabled');
+                                $("#resend_login_otp").removeAttr('data-kt-indicator');
+                                $('.disabled-login-error').text('');
+                                $('.disabled-login-error').hide();
+                                $(".step-01").hide();
+                                $(".step-02").show();
+                                $("#code_1").focus();
+                                $("#indicator-progress").show();
+
+                                // pls_wit
+                            }
+                        },
+                        error: function(err) {
+                            $("#kt_login_step_01").removeAttr('disabled');
+                            $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                            if(!err.responseJSON.status) {
+                                $('.disabled-login-error').text(err.responseJSON.message);
+                                $('.disabled-login-error').show();
+                                // if (err.responseJSON.errors.email) {
+                                //     $('#email_val').text(err.responseJSON.errors.email);
+                                // }
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#kt_login_step_01").removeAttr('disabled');
+                    $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                    $('#email_val').text('Invalid email !');
+                }
+            }
+        });
+
+        $("#kt_login_step_02").on('click', function() {
+            if ($('#contactFormModal').valid()) {
+                $("#kt_login_step_02").attr('disabled', true);
+                $("#kt_login_step_02").attr('data-kt-indicator', 'on');
+                otp = $('#code_1').val() + $('#code_2').val() + $('#code_3').val() + $('#code_4').val() + $('#code_5').val() + $('#code_6').val();
+                $.ajax({
+                    url: "/verify-conact-coach-email-otp",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "POST",
+                    data: {
+                        'otp': otp
+                    },
+                    success: function(res) {
+                        if (res.status == true) {
+                            console.log(res);
+                            $('#contactFormModal').submit();
+                        } else {
+                            $("#kt_login_step_02").removeAttr('disabled');
+                            $("#kt_login_step_02").removeAttr('data-kt-indicator');
+                            $('#otp_val').text(res.message);
+                        }
+                    },
+                    error: function(err) {
+                        $("#kt_login_step_02").removeAttr('disabled');
+                        $("#kt_login_step_02").removeAttr('data-kt-indicator');
+                    }
+                });
+            }
+        });
+
+        $("#kt_login_prev_step_01").on('click', function() {
+            $('#otp_val').text('');
+            $("#code_1").val('');
+            $("#code_2").val('');
+            $("#code_3").val('');
+            $("#code_4").val('');
+            $("#code_5").val('');
+            $("#code_6").val('');
+            clearInterval(interval_otp);
+            $(".step-02").hide();	
+            $(".step-01").show();	
+
+        });	
+
+        function setCountDownLoginOTP() {
+            $(".login_otp_countdown").html('');
+            $(".login_otp_countdown").show();
+            var otp_timer2 = "1:00";
+            interval_otp = setInterval(function() {
+                var timer_otp = otp_timer2.split(':');
+                //by parsing integer, I avoid all extra string processing
+                var minutes = parseInt(timer_otp[0], 10);
+                var seconds = parseInt(timer_otp[1], 10);
+                --seconds;
+                minutes = (seconds < 0) ? --minutes : minutes;
+                if (minutes < 0) clearInterval(interval_otp);
+                seconds = (seconds < 0) ? 59 : seconds;
+                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                //minutes = (minutes < 10) ?  minutes : minutes;
+                $('.login_otp_countdown').html(minutes + ':' + seconds);
+                otp_timer2 = minutes + ':' + seconds;
+                if(minutes < 0) {
+                    $(".login_otp_countdown").hide();
+                    clearInterval(interval_otp);
+                    $("#resend_login_otp").show();
+                    $("#resend_login_otp_title").text("Didn't get the otp?");
+                }
+            }, 1000);
+        }
+
+        const $inp = $(".ap-otp-input");
+        $inp.on({
+            paste(ev) { // Handle Pasting
+                const clip = ev.originalEvent.clipboardData.getData('text').trim();
+                // Allow numbers only
+                if (!/\d{6}/.test(clip)) return ev.preventDefault(); // Invalid. Exit here
+                // Split string to Array or characters
+                const s = [...clip];
+                // Populate inputs. Focus last input.
+                $inp.val(i => s[i]).eq(5).focus();
+            },
+            input(ev) { // Handle typing
+                const i = $inp.index(this);
+                if (this.value) $inp.eq(i + 1).focus();
+            },
+            keydown(ev) { // Handle Deleting
+                const i = $inp.index(this);
+                if (!this.value && ev.key === "Backspace" && i) $inp.eq(i - 1).focus();
+            }
         });
     </script>
 @endsection
