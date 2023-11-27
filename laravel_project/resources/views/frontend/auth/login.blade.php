@@ -166,7 +166,6 @@
                                 {{-- <p>{{ __('auth.no-account-yet') }}? <a href="{{ route('register') }}">{{ __('auth.register') }}</a></p> --}}
                                 <p>{{ __('auth.no-account-yet') }}? <a href="{{ route('register') }}">{{ __('Sign up as a user') }}</a></p>
                             </div>                  
-                            <div class="row form-group">
                                 <div class="col-md-12">
                                     <button type="button" id="kt_login_step_01" class="btn btn-primary py-2 px-4 text-white rounded">
                                         {{ __('auth.login') }}
@@ -177,7 +176,6 @@
                                         </a>
                                     @endif
                                 </div>
-                            </div>
                         </div>
                         </div>
                         @if($social_login_facebook || $social_login_google || $social_login_twitter || $social_login_linkedin || $social_login_github)
@@ -260,10 +258,10 @@
                                 <div id="otp_val" class="error"></div>
                             </div> -->
                             <div class="text-center mb-10">
-                                <h1 class="text-dark mb-3">
+                                <h1 class="text-dark mb-3 verification-text">
                                     Two-Factor Verification
                                 </h1>
-                                <div class="text-muted fw-semibold fs-5 mb-5">Enter the verification code we sent to your email</div>
+                                <div class="fw-semibold fs-5 mb-5">Enter the verification code we sent to your email</div>
                             </div>
                             <div class="fv-row mb-10">
                                 <!-- <div class="fw-bold text-start text-dark fs-6 mb-1 ms-1">Type your 6 digit otp</div> -->
@@ -286,15 +284,15 @@
                                 <div id="otp_val" class="error"></div>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <div class="fw-semibold fs-5 d-flex w-100 justify-content-center fw-semibold fs-5">
+                                <div class="fw-semibold fs-5 d-flex w-100 justify-content-center fw-semibold fs-5 align-items-center">
                                     <span class="text-muted me-1" id="resend_login_otp_title">Didn't get the otp ?</span>
-                                    <a href="#" id="resend_login_otp" class="link-primary fs-5 me-1">
+                                    <a href="#" id="resend_login_otp" class="link-primary fs-5 me-1 pl-1">
                                         <span class="indicator-label">{{ __('Resend') }}</span>
                                         <span class="indicator-progress">Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
                                     </a>
-                                    <div class="login_otp_countdown fw-semibold fs-5"></div>
+                                    <div class="login_otp_countdown fw-semibold fs-5 pl-1"></div>
                                 </div>
                             </div>
                             <div class="pb-lg-0 pb-8 mt-3">
@@ -324,8 +322,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/jquery.inputmask.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
     @if($site_innerpage_header_background_type == \App\Customization::SITE_INNERPAGE_HEADER_BACKGROUND_TYPE_YOUTUBE_VIDEO)
     <!-- Youtube Background for Header -->
         <script src="{{ asset('frontend/vendor/jquery-youtube-background/jquery.youtube-background.js') }}"></script>

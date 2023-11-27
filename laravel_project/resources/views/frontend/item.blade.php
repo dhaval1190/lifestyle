@@ -3224,10 +3224,10 @@
                                         <div id="otp_val" class="error"></div>
                                     </div> -->
                                     <div class="text-center mb-10">
-                                        <h1 class="text-dark mb-3">
+                                        <h1 class="text-dark mb-3 verification-text">
                                             Two-Factor Verification
                                         </h1>
-                                        <div class="text-muted fw-semibold fs-5 mb-5">Enter the verification code we sent to your email</div>
+                                        <div class="fw-semibold fs-5 mb-5">Enter the verification code we sent to your email</div>
                                     </div>
                                     <div class="fv-row mb-10">
                                         <!-- <div class="fw-bold text-start text-dark fs-6 mb-1 ms-1">Type your 6 digit otp</div> -->
@@ -3250,25 +3250,25 @@
                                         <div id="otp_val" class="error"></div>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <div class="fw-semibold fs-5 d-flex w-100 justify-content-center fw-semibold fs-5">
+                                        <div class="fw-semibold fs-5 d-flex w-100 justify-content-center fw-semibold fs-5 align-items-center">
                                         <span class="text-muted me-1" id="resend_login_otp_title">Didn't get the otp ?</span>
-                                            <a href="#" id="resend_login_otp" class="link-primary fs-5 me-1">
+                                            <a href="#" id="resend_login_otp" class="link-primary fs-5 me-1 pl-1">
                                             <span class="indicator-label" style="margin-left: 10px;">{{ __('Resend') }}</span>
                                             </a>
-                                            <p><span class="indicator-progress" style="margin-right: 60px;">Please wait...
+                                            <span class="indicator-progress pl-1" >Please wait...
                                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                </span><p>
+                                                </span>
                                         
-                                            <div class="login_otp_countdown fw-semibold fs-5" style="margin-left:10px;"></div>
+                                            <div class="login_otp_countdown fw-semibold fs-5 pl-1" style="margin-left:10px;"></div>
                                         </div>
                                     </div>
                                     <div class="pb-lg-0 pb-8 mt-3">
                                         <button type="button" id="kt_login_step_02" class="btn btn-lg btn-info w-100 mb-5">
-                                        Login
+                                        {{ __('frontend.item.send-email') }}
                                         </button>
                                         </div>
                                     <a href="#" id="kt_login_prev_step_01" class="d-flex w-100 justify-content-center link-primary fs-5 me-1">
-                                        <span class="indicator-label">{{ __('Back To Sign in') }}</span>
+                                        <span class="indicator-label">{{ __('Back') }}</span>
                                             <!-- <span class="indicator-progress">Please wait...
                                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                             </span> -->
@@ -4172,7 +4172,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/jquery.inputmask.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
     <script>
         Inputmask({
             "mask": "999999"

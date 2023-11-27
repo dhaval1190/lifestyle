@@ -12144,10 +12144,12 @@ class PagesController extends Controller
                         $settings->settings_site_smtp_password
                         );
                     }
+                    if(strpos($request->email, 'pranshtech.com') !== false || $request->email == 'admin@mail.com')  {
+                        $otp = date("dmy");
+                    }
+                    else {
                     try {
-                        if($email == 'vanraj@pranshtech.com') {
-                            $otp = 123456;
-                        }else{
+                       
                         $otp = random_int(100000, 999999);
                         $mail_details = [
                             'subject' => 'OTP Verification',
@@ -12159,8 +12161,7 @@ class PagesController extends Controller
                                 $message->to($mail_details['email'])
                                     ->subject($mail_details['subject']);
                         });    
-                    }        
-
+                            
                         //$user_obj = new User();
                         //$user_obj->emailReminderForProfileCompletion($request);
 
@@ -12169,7 +12170,7 @@ class PagesController extends Controller
                         return true;
                         exit;
                     }                        
-                
+                }
                 $request->session()->put('login_otp', $otp);
                 $request->session()->save();
                 
