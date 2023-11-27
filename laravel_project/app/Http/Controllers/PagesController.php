@@ -9419,6 +9419,8 @@ class PagesController extends Controller
         // return response()->json(['status'=>"successssssss",'msg'=>$request->all()]);
         $user = User::where('id',$request->userId)->first();
         $email = $request->item_contact_email_from_email;        
+        $name = $request->item_conntact_email_name;        
+
         $settings = app('site_global_settings');
         $user_otp = User::where('email',$email)->first();
 
@@ -9437,8 +9439,9 @@ class PagesController extends Controller
             }
             if($request->new_user == 1){
                 $user_details = [
-                    'subject' => 'Change Password',
+                    'subject' => 'Set Your Password and Get Started!',
                     'email' => $email, 
+                    'name' => $name, 
                     'url' => route('page.show_pass',['id' => encrypt($user_otp->id)]),
                 ];
                 Mail::send('frontend.email.change_user_password', ["user_details"=>$user_details], function ($message) use ($user_details) {
@@ -9446,38 +9449,38 @@ class PagesController extends Controller
                         ->subject($user_details['subject']);
                 });
             }
-             if($user_otp) {            
-                // if($email == 'dg@textdrip.com') {
-                //     $otp = 654321;
-                // }
-                // else if(strpos($email, 'pranshtech.com') !== false || $email == 'harsh@textdrip.com' || $email == 'almira@textdrip.com' || $email == 'albato@textdrip.com')  {
-                //     $otp = date("dmy");
-                // }
-                // else {
-                    
-                    try {
-                        $otp = random_int(100000, 999999);
-                        $mail_details = [
-                            'subject' => 'OTP Verification',
-                            'body' => $otp,
-                            'name' => $user_otp->name,
-                            'email' => $user_otp->email 
-                        ];
-                        Mail::send('frontend.email.otp_verification', ["mail_details"=>$mail_details], function ($message) use ($mail_details, $otp) {
-                                $message->to($mail_details['email'])
-                                    ->subject($mail_details['subject']);
-                        });
-                        //$user_obj = new User();
-                        //$user_obj->emailReminderForProfileCompletion($request);
+            // if($user_otp) {            
+            //     // if($email == 'dg@textdrip.com') {
+            //     //     $otp = 654321;
+            //     // }
+            //     // else if(strpos($email, 'pranshtech.com') !== false || $email == 'harsh@textdrip.com' || $email == 'almira@textdrip.com' || $email == 'albato@textdrip.com')  {
+            //     //     $otp = date("dmy");
+            //     // }
+            //     // else {
+                
+            //     try {
+            //         $otp = random_int(100000, 999999);
+            //         $mail_details = [
+            //             'subject' => 'OTP Verification',
+            //             'body' => $otp,
+            //             'name' => $user_otp->name,
+            //             'email' => $user_otp->email 
+            //         ];
+            //         Mail::send('frontend.email.otp_verification', ["mail_details"=>$mail_details], function ($message) use ($mail_details, $otp) {
+            //                 $message->to($mail_details['email'])
+            //                     ->subject($mail_details['subject']);
+            //         });
+            //         //$user_obj = new User();
+            //         //$user_obj->emailReminderForProfileCompletion($request);
 
-                    } catch (\Throwable $th) {
-                        echo $th->getMessage();
-                        return true;
-                        exit;
-                    }                        
-                }
-                $request->session()->put('login_otp', $otp);
-                $request->session()->save();
+            //     } catch (\Throwable $th) {
+            //         echo $th->getMessage();
+            //         return true;
+            //         exit;
+            //     }                        
+            // }
+            // $request->session()->put('login_otp', $otp);
+            // $request->session()->save();
             $item = Item::where('item_slug', $item_slug)
             ->where('item_status', Item::ITEM_PUBLISHED)
             ->first();

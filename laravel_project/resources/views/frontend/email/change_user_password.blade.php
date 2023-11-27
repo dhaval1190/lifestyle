@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Changes Your Password</title>
+    <title>Set Your Password and Get Started!</title>
 
     <style>
         * {
@@ -47,16 +47,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <p style="padding:10px 0px; font-weight: bold;">Hello!</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>Please click the button below to change your password.</p>
+                            <p style="padding:10px 0px; font-weight: bold;">Dear {{ $user_details['name'] }},</p>
                         </td>
                     </tr>
                 </tbody>
@@ -64,19 +55,41 @@
             <table cellpadding="0" cellspacing="0" style="margin: auto; padding: 22px;">
                 <tbody>
                     <tr>
+                        <td>
+                            <p>Welcome to our platform! We're thrilled to have you join us. To get started, please set your password by clicking on the link below:</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+          
+            <table cellpadding="0" cellspacing="0" style="margin: auto; padding: 22px;">
+                <tbody>
+                    <tr>
                         <td
                             style="background: #2d3748; color: #fff; border-bottom: 8px solid #2d3748; border-left: 18px solid #2d3748; border-right: 18px solid #2d3748; border-top: 8px solid #2d3748; display: inline-block;">
-                            <a href="{{ $user_details['url'] }}" style="color: #fff; text-decoration: none;">Change Your Password</a>
+                            <a href="{{ $user_details['url'] }}" style="color: #fff; text-decoration: none;">Change Password Link</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-           
+            <table cellpadding="0" cellspacing="0" style="margin: auto; padding: 22px;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>If you have any questions or need assistance, feel free to reach out to us. We're here to help!</p>
+
+                            <p style="margin-top:10px;">Cheers to new beginnings and exciting experiences!</p>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    
             <table>
                 <tbody>
                     <tr>
                         <td>
-                            <p style="padding-top: 10px;">Regards,</p>
+                            <p style="padding-top: 10px;">Best Regards,</p>
                         </td>
                     </tr>
                 </tbody>

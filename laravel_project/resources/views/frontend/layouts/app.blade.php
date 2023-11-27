@@ -260,7 +260,7 @@
 <script src="{{ asset('frontend/js/jquery.stellar.min.js') }}"></script>
 
 <script src="{{ asset('frontend/js/main.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 @if(is_demo_mode() || $site_global_settings->setting_site_maintenance_mode == \App\Setting::SITE_MAINTENANCE_MODE_ON)
 <script src="{{ asset('frontend/vendor/js-cookie/js.cookie.js') }}"></script>
 @endif
