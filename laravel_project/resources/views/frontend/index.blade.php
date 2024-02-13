@@ -221,6 +221,35 @@
     .w-30 {
         width: 30px !important;
     }
+    .border-10{
+        border-radius: 10px;
+    }
+
+    .padding-top-bottom-20{
+        padding: 20px 0px;
+    }
+    .border-primary2 {
+  border-color: #f05127 !important;
+  position: relative;
+  font-size: 28px;
+}
+
+.border-primary2::after {
+  background: #f05127 !important;
+
+}
+.border-primary2::after {
+  position: absolute;
+  content: "";
+  bottom: -3px;
+  width: 80px;
+  height: 3px;
+  left: 0px;
+}
+.image-category-img2{
+    margin: 20px 0px;
+}
+    
     </style>
 
 @section('content')
@@ -252,30 +281,74 @@
     @endphp
 
     <div class="container">
-        <div class="row align-items-center justify-content-center text-center ">
-            <div class="col-md-12">
-                <div class="row justify-content-center mb-1">
-                    <div class="col-md-12 text-center">
-                        <h1 class="" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
-                            {{ __('frontend.homepage.title') }}</h1>
-                        <p data-aos="fade-up" data-aos-delay="100"
-                            style="color: {{ $site_homepage_header_paragraph_font_color }};">
-                            {{ __('frontend.homepage.description') }}</p>
-                    </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6 border-10 form-search-wrap padding-top-bottom-20 d-small-none" data-aos="fade-right">
+                   <div class="looking-heading">
+                       <h2 class="font-weight-light text-white text-center f-md-24">I'm looking for</h2>
+                   </div>
+                   <div class="row">
+                        <div class="col-md-6">
+                            <a href="#Feature-coaches"><h2 class="font-weight-light text-white border-primary2">Featured Coaches</h2>
+                            <img src="{{ asset('frontend/images/Featured Coaches.webp') }}"
+                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2  "> 
+                           </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#Trending-Videos"><h2 class="font-weight-light text-white border-primary2">Trending Videos</h2>
+                            <img src="{{ asset('frontend/images/Trending Videos.webp') }}"
+                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> </a>
+                        </div>                       
+                        <div class="col-md-6">
+                            <a href="{{ route('page.allcoaches')}}"><h2 class="font-weight-light text-white border-primary2">All Coaches</h2>
+                            <img src="{{ asset('frontend/images/Featured Coaches.webp') }}"
+                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> 
+                           </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#Trending-topics"><h2 class="font-weight-light text-white border-primary2">Trending Topics</h2>
+                            <img src="{{ asset('frontend/images/Trending Topics.webp') }}"
+                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> </a>
+                        </div>
+                       
+                   </div>
                 </div>
-                <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
-                    @include('frontend.partials.search.head')
-                </div>
-                <div class="row justify-content-center mt-5">
-                    <div class="col-md-10 col-lg-6 text-center">
-                        <a href="{{ route('page.coaches') }}"
-                            class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:30px">
-                            {{ __('I want to find a great fit coach!') }}
-                        </a>
+                <div class="col-md-5 offset-md-1 padding-md-5-set"   data-aos="fade-left">
+                     <div class="row justify-content-center mb-1">
+                        <div class="col-md-12 text-center">
+                            <h1 class="heading-one" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
+                                {{ __('frontend.homepage.title') }}</h1>
+                            <p data-aos="fade-up" data-aos-delay="100"
+                                style="color: {{ $site_homepage_header_paragraph_font_color }};" class="description-para">
+                                {{ __('frontend.homepage.description') }}</p>
+                        </div>
+                    </div> 
+                    {{-- <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                        @include('frontend.partials.search.head')
+                    </div> --}}
+
+                 {{------------------------------------------------new-two-btn-add-------------- --}}
+                      <div class="form-search-wrap p-4">
+                        <div class="main_banner_btn">
+                            <a href="{{ route('page.coaches') }}"
+                            class="btn btn-primary rounded py-2 px-4 text-white">Find A Coach</a>
+                            <a href="{{ route('page.register') }}"
+                            class="btn btn-primary rounded py-2 px-4 text-white">Become A Coach</a>
+                        </div>
+                    </div> 
+
+
+
+                    <div class="row justify-content-center mt-5 mb-5 mb-lg-0">
+                        <div class="col-md-12 col-lg-10 col-xl-8 text-center">
+                            <!-- <a href="{{ route('page.coaches') }}"
+                                class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:16px">
+                                {{ __('I want to find a great fit coach!') }}
+                            </a> -->
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <div class="row align-items-center justify-content-center text-center d-none mt-5">
             <div class="col-md-12">
@@ -403,7 +476,7 @@
                 </div>
             </div>
             <!-- End categories section mobile view-->
-            <div class="row mt-5 mb-5">
+            <div class="row mt-5 mb-5" id="Feature-coaches">
                 <div class="col-12 text-center">
                     <a href="{{ route('page.categories') }}" class="btn btn-primary rounded text-white">
                         <i class="fas fa-th"></i>
@@ -414,7 +487,7 @@
             @if ($all_coaches->count() > 0)
                 <div class="row mb-4">
                     <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary">{{ __('Featured Coaches') }}
+                        <h2 class="font-weight-light font-weight-300 text-primary p-0 mb-2">{{ __('Featured Coaches') }}
                         </h2>
                     </div>                    
                 </div>
@@ -430,7 +503,7 @@
                     </div>
                 </div>
             @endif
-            <div class="row">
+            <div class="row" >
                 <div class="col-lg-12 padding-0-set-sm">
                     @if ($all_coaches->count() >= 5)
                         <section class="card_texting container ptb-100-500">
@@ -654,7 +727,7 @@
     <div class="second_carousel_home">
         <div class="container position-relative">
             @if ($all_trainding_items->count() > 0)
-                <div class="row mt-5 mb-3 align-items-center">
+                <div class="row mt-5 mb-3 align-items-center" id="Trending-topics">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary">{{ __('Trending Topics') }}</h2>
                     </div>
@@ -1211,7 +1284,7 @@
     @if ($latest_items->count() > 0)
         <div class="bg-light">
             <div class="container">
-                <div class="row mt-5 mb-3 align-items-center">
+                <div class="row mt-5 mb-3 align-items-center" id="Recent-topics">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">{{ __('frontend.homepage.recent-listings') }}
                         </h2>
@@ -1584,7 +1657,7 @@
     @if ($post_count <= 4)
         <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mb-3 align-items-center">
+                <div class="row mb-3 align-items-center" id="Trending-Videos">
 
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Videos
@@ -1635,7 +1708,7 @@
     @if ($post_count > 4  && $post_count <= 6)
         <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mb-3 align-items-center">
+                <div class="row mb-3 align-items-center" id="Trending-Videos">
 
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Videos
@@ -1712,7 +1785,7 @@
         <!-- Begin: Trending Video's -->
         <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
             <div class="container">
-                <div class="row mb-3 align-items-center">
+                <div class="row mb-3 align-items-center" id="Trending-Videos">
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light text-primary mt-5">Trending Videos
                         </h2>
@@ -2293,6 +2366,16 @@
             $("#youtubeModal").on("hidden.bs.modal", function() {
                 $('#youtubeiframesrcURL').attr('src', '');            
             });
+</script>
+
+<script>
+    $(document).on('click', 'a[href^="#"]', function (event) {
+    event.preventDefault();
+
+    $('html, body').animate({
+        scrollTop: $($.attr(this, 'href')).offset().top
+    }, 1500);
+});
 </script>
 
 @endsection

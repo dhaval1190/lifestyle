@@ -1,6 +1,6 @@
 <form action="{{ route('page.search') }}">
     <div class="row align-items-center">
-        <div class="col-lg-12 mb-4 mb-xl-0 col-xl-10 pr-xl-0">
+        <div class="col-lg-12 mb-4 mb-xl-0 col-xl-12 pr-xl-0">
 
             <div class="input-group">
                 <div class="input-group-prepend" id="search-box-query-icon-div">
@@ -16,9 +16,10 @@
 
         </div>
 
-        <div class="col-lg-12 col-xl-2 ml-auto">
-            <input type="submit" class="btn btn-primary btn-block rounded text-white" value="{{ __('frontend.search.search') }}">
-        </div>
+       
 
     </div>
+    <div class="col-lg-12 col-xl-6 m-auto pt-lg-3">
+            <input type="submit" class="btn btn-primary btn-block rounded text-white" value="{{ __('frontend.search.search') }}">
+        </div>
 </form>

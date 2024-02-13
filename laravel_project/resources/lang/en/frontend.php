@@ -133,7 +133,7 @@ return array (
     'popular-listings' => 'Popular topics around you',
     'recent-listings' => 'Recent Topics',
     'testimonials' => 'Testimonials',
-    'title' => 'Need some free advice? Search a topic!',
+    'title' => 'Free Coaching Advice? Search a topic!',
   ),
   'item' =>
   array (

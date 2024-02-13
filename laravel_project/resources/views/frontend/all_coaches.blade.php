@@ -315,7 +315,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="row mb-4">
+                    <div class="row mb-4" id="All-Coaches">
                         <div class="col-md-12 text-left border-primary">
                             <h2 class="font-weight-light text-primary">{{ __('All Coaches') }}</h2>
                         </div>
