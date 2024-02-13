@@ -418,7 +418,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('Contact This Coach') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -713,7 +713,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary rounded"
-                        data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -726,7 +726,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title text-black" id="exampleModalLongTitle" style="color: black;">{{ __('frontend.item.share-listing') }}
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -915,7 +915,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary rounded"
-                        data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -927,7 +927,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">Select Your Rating</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1809,7 +1809,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle" style="color: black;">{{ __('Share a Referral Link') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1905,7 +1905,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary rounded"
-                        data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                        data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -1919,7 +1919,7 @@
                 <div class="modal-content content_design3">
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title" id="exampleModalLabel_podcast"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -1937,7 +1937,7 @@
                 <div class="modal-content content_design3">
                     <div class="modal-header border-bottom-0">
                         <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
