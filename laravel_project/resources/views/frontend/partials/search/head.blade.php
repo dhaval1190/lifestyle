@@ -1,6 +1,6 @@
 <form action="{{ route('page.search') }}">
     <div class="row align-items-center">
-        <div class="col-lg-12 mb-4 mb-xl-0 col-xl-12 pr-xl-0">
+        <div class="col-lg-12 mb-4 mb-xl-0 col-xl-12">
 
             <div class="input-group">
                 <div class="input-group-prepend" id="search-box-query-icon-div">

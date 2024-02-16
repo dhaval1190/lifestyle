@@ -7,250 +7,246 @@
             height: 800px;
             overflow-y: scroll;
         }
+        .box-video {
+            position: relative;
+            width: 100%;
+            margin: 0 auto 20px auto;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* Set Cover aka Background-Image */
+        .box-video .bg-video {
+            position: absolute;
+            background-color: #000f24;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        /* Add light shade to make play button visible*/
+        .bg-video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* The Play-Button using CSS-Only */
+        .bt-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -31px 0 0 -31px;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-indent: -999em;
+            cursor: pointer;
+            z-index: 2;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+        .bt-play_user {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -31px 0 0 -31px;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-indent: -999em;
+            cursor: pointer;
+            z-index: 2;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+        .bt-play_user:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 0;
+            width: 0;
+            margin: -12px 0 0 -6px;
+            border: solid transparent;
+            border-left-color: #000;
+            border-width: 12px 20px;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+        /* The Play-Triangle */
+        .bt-play:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 0;
+            width: 0;
+            margin: -12px 0 0 -6px;
+            border: solid transparent;
+            border-left-color: #000;
+            border-width: 12px 20px;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+        .c-video__image-container:hover .bt-play {
+            transform: scale(1.1);
+        }
+
+        /* When Class added the Cover gets hidden... */
+        .box-video.open .bg-video {
+            visibility: hidden;
+            opacity: 0;
+            -webkit-transition: all .6s .8s;
+            transition: all .6s .8s;
+        }
+
+        /* and iframe shows up */
+        .box-video.open .video-container {
+            opacity: 1;
+            -webkit-transition: all .6s .8s;
+            transition: all .6s .8s;
+        }
+
+        /* Giving the div ratio of 16:9 with padding */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            margin: 0;
+            z-index: 1;
+            padding-bottom: 56.27198%;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .c-header-in {
+            position: absolute;
+            left: 42vw;
+            right: 0;
+            top: 50px;
+            color: white;
+        }
+
+        .vid-fit-user {
+            height: 280px;
+            background-color: #000f24;
+            position: relative;
+            border-radius: 20px;
+        }
+
+        .vid-fit-reveal {
+            height: 215;
+            background-color: #000f24;
+            position: relative;
+        }
+
+        .vid-fit-reveal.red {
+            background: red;
+        }
+
+        .vid-fit-reveal.reveal-video {
+            background: none;
+        }
+
+        .vid-fit-reveal.reveal-video .c-header-in {
+            display: none;
+        }
+
+        .vid-fit-reveal.reveal-video #vid-reveal {
+            display: block;
+            visibility: visible;
+        }
+
+        .vid-fit-reveal.reveal-video .c-video__play-btn {
+            visibility: hidden;
+        }
+
+        .vid-fit-reveal #vid-reveal {
+            visibility: hidden;
+        }
+
+        .c-video__play-btn {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        .table> :not(:last-child)> :last-child>* {
+            border-bottom-color: inherit;
+            border-right: 1px solid #fff;
+            border-right-width: thin;
+        }
+
+        table.dataTable>thead>tr>td:not(.sorting_disabled),
+        table.dataTable>thead>tr>th:not(.sorting_disabled) {
+            border-bottom-color: inherit;
+            border-right: 1px solid #fff;
+            border-right-width: thin;
+        }
+
+        .w-30 {
+            width: 30px !important;
+        }
+        .border-10{
+            border-radius: 10px;
+        }
+
+        .padding-top-bottom-20{
+            padding: 20px 0px;
+        }
+        .border-primary2 {
+            border-color: #f05127 !important;
+            position: relative;
+            font-size: 28px;
+        }
+
+        .border-primary2::after {
+            background: #f05127 !important;
+
+        }
+        .border-primary2::after {
+            position: absolute;
+            content: "";
+            bottom: -3px;
+            width: 80px;
+            height: 3px;
+            left: 0px;
+        }
+        .image-category-img2{
+            margin: 20px 0px;
+        }
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @endsection
-
-<style>
-       .box-video {
-        position: relative;
-        width: 100%;
-        margin: 0 auto 20px auto;
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    /* Set Cover aka Background-Image */
-    .box-video .bg-video {
-        position: absolute;
-        background-color: #000f24;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        z-index: 2;
-        opacity: 1;
-    }
-
-    /* Add light shade to make play button visible*/
-    .bg-video::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-
-
-    /* The Play-Button using CSS-Only */
-    .bt-play {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -31px 0 0 -31px;
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        text-indent: -999em;
-        cursor: pointer;
-        z-index: 2;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    .bt-play_user {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: -31px 0 0 -31px;
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        text-indent: -999em;
-        cursor: pointer;
-        z-index: 2;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    .bt-play_user:after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 0;
-        width: 0;
-        margin: -12px 0 0 -6px;
-        border: solid transparent;
-        border-left-color: #000;
-        border-width: 12px 20px;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    /* The Play-Triangle */
-    .bt-play:after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        height: 0;
-        width: 0;
-        margin: -12px 0 0 -6px;
-        border: solid transparent;
-        border-left-color: #000;
-        border-width: 12px 20px;
-        -webkit-transition: all .3s ease-out;
-        transition: all .3s ease-out;
-    }
-
-    .c-video__image-container:hover .bt-play {
-        transform: scale(1.1);
-    }
-
-    /* When Class added the Cover gets hidden... */
-    .box-video.open .bg-video {
-        visibility: hidden;
-        opacity: 0;
-        -webkit-transition: all .6s .8s;
-        transition: all .6s .8s;
-    }
-
-    /* and iframe shows up */
-    .box-video.open .video-container {
-        opacity: 1;
-        -webkit-transition: all .6s .8s;
-        transition: all .6s .8s;
-    }
-
-    /* Giving the div ratio of 16:9 with padding */
-    .video-container {
-        position: relative;
-        width: 100%;
-        height: 0;
-        margin: 0;
-        z-index: 1;
-        padding-bottom: 56.27198%;
-    }
-
-    .video-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-
-    .c-header-in {
-        position: absolute;
-        left: 42vw;
-        right: 0;
-        top: 50px;
-        color: white;
-    }
-
-    .vid-fit-user {
-        height: 280px;
-        background-color: #000f24;
-        position: relative;
-        border-radius: 20px;
-    }
-
-    .vid-fit-reveal {
-        height: 215;
-        background-color: #000f24;
-        position: relative;
-    }
-
-    .vid-fit-reveal.red {
-        background: red;
-    }
-
-    .vid-fit-reveal.reveal-video {
-        background: none;
-    }
-
-    .vid-fit-reveal.reveal-video .c-header-in {
-        display: none;
-    }
-
-    .vid-fit-reveal.reveal-video #vid-reveal {
-        display: block;
-        visibility: visible;
-    }
-
-    .vid-fit-reveal.reveal-video .c-video__play-btn {
-        visibility: hidden;
-    }
-
-    .vid-fit-reveal #vid-reveal {
-        visibility: hidden;
-    }
-
-    .c-video__play-btn {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-    }
-
-    .table> :not(:last-child)> :last-child>* {
-        border-bottom-color: inherit;
-        border-right: 1px solid #fff;
-        border-right-width: thin;
-    }
-
-    table.dataTable>thead>tr>td:not(.sorting_disabled),
-    table.dataTable>thead>tr>th:not(.sorting_disabled) {
-        border-bottom-color: inherit;
-        border-right: 1px solid #fff;
-        border-right-width: thin;
-    }
-
-    .w-30 {
-        width: 30px !important;
-    }
-    .border-10{
-        border-radius: 10px;
-    }
-
-    .padding-top-bottom-20{
-        padding: 20px 0px;
-    }
-    .border-primary2 {
-  border-color: #f05127 !important;
-  position: relative;
-  font-size: 28px;
-}
-
-.border-primary2::after {
-  background: #f05127 !important;
-
-}
-.border-primary2::after {
-  position: absolute;
-  content: "";
-  bottom: -3px;
-  width: 80px;
-  height: 3px;
-  left: 0px;
-}
-.image-category-img2{
-    margin: 20px 0px;
-}
-
-    </style>
 
 @section('content')
 
