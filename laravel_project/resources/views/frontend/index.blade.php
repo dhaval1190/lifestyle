@@ -249,7 +249,7 @@
 .image-category-img2{
     margin: 20px 0px;
 }
-    
+
     </style>
 
 @section('content')
@@ -282,9 +282,9 @@
 
     <div class="container">
         <div class="row align-items-center justify-content-center">
-            <div class="col-md-6 border-10 form-search-wrap padding-top-bottom-20 d-small-none" data-aos="fade-right">
+            <!-- <div class="col-md-6 border-10 form-search-wrap padding-top-bottom-20 d-small-none" data-aos="fade-right">
                    <div class="looking-heading">
-                       <h2 class="font-weight-light text-white text-center f-md-24">I'm looking for</h2>
+                       <h2 class="font-weight-light text-white text-center f-md-24">I'm looking for...</h2>
                    </div>
                    <div class="row">
                         <div class="col-md-6">
@@ -311,14 +311,14 @@
                         </div>
                        
                    </div>
-                </div>
-                <div class="col-md-5 offset-md-1 padding-md-5-set"   data-aos="fade-left">
+                </div> -->
+                <div class="col-md-5 m-auto  padding-md-5-set"   data-aos="fade-left">
                      <div class="row justify-content-center mb-1">
                         <div class="col-md-12 text-center">
                             <h1 class="heading-one" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
                                 {{ __('frontend.homepage.title') }}</h1>
                             <p data-aos="fade-up" data-aos-delay="100"
-                                style="color: {{ $site_homepage_header_paragraph_font_color }};" class="description-para">
+                                style="color: {{ $site_homepage_header_paragraph_font_color }};word-break: initial;" class="description-para">
                                 {{ __('frontend.homepage.description') }}</p>
                         </div>
                     </div> 
