@@ -7,6 +7,7 @@
             height: 800px;
             overflow-y: scroll;
         }
+
         .box-video {
             position: relative;
             width: 100%;
@@ -216,23 +217,25 @@
         .w-30 {
             width: 30px !important;
         }
-        .border-10{
+
+        .border-10 {
             border-radius: 10px;
         }
 
-        .padding-top-bottom-20{
+        .padding-top-bottom-20 {
             padding: 20px 0px;
         }
+
         .border-primary2 {
-            border-color: #f05127 !important;
             position: relative;
-            font-size: 28px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: 600 !important;
+            padding-top: 0.5rem;
         }
 
-        .border-primary2::after {
-            background: #f05127 !important;
+        .border-primary2::after {}
 
-        }
         .border-primary2::after {
             position: absolute;
             content: "";
@@ -241,9 +244,76 @@
             height: 3px;
             left: 0px;
         }
-        .image-category-img2{
+
+        .image-category-img2 {
             margin: 20px 0px;
         }
+
+        .four_main_section {
+            border-radius: 0px 12px 12px 0px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .section_set:hover {
+            background: #FFFFFF 0% 0% no-repeat padding-box;
+            border-radius: 12px 12px 0px 0px;
+            opacity: 0.77;
+        }
+
+        .section_set:hover .border-primary2 {
+            color: #F05127 !important;
+        }
+        .section_set:hover .see_below_btn {
+            background: #F05127 !important;
+            border: none;
+        }
+
+        .see_below_para {
+            margin: 0;
+            padding-right: 5px;
+            font-size: 16px !important;
+            color: #fff;
+        }
+
+        .see_below_btn {
+            border: 1px solid #F3F3F3;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            padding: 4px 10px;
+        }
+
+        .image-category-img3 {
+            width: 20px;
+            height: 20px;
+
+        }
+        .section_set{
+            padding: 15px 0px;
+        }
+
+        .see-more {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+ 
+        @media screen and (max-width: 992px){
+            .four_main_section{
+                display: none;
+            }
+        }
+
+        @media screen and (min-width:993px){
+            .d-hide-lg{
+                display:none;
+            }
+        }
+
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 @endsection
@@ -278,73 +348,115 @@
 
     <div class="container">
         <div class="row align-items-center justify-content-center">
-            <!-- <div class="col-md-6 border-10 form-search-wrap padding-top-bottom-20 d-small-none" data-aos="fade-right">
-                   <div class="looking-heading">
-                       <h2 class="font-weight-light text-white text-center f-md-24">I'm looking for...</h2>
+            <div class="col-md-12">
+                <div class="col-md-7 col-12 col-lg-6 col-xl-5   m-auto  padding-md-5-set"   data-aos="fade-left">
+                    <div class="row justify-content-center mb-1">
+                       <div class="col-md-12 text-center">
+                           <h1 class="heading-one" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
+                               {{ __('frontend.homepage.title') }}</h1>
+                           <p data-aos="fade-up" data-aos-delay="100"
+                               style="color: {{ $site_homepage_header_paragraph_font_color }};word-break: initial;" class="description-para">
+                               {{ __('frontend.homepage.description') }}</p>
+                       </div>
+                   </div> 
+                   {{-- <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
+                       @include('frontend.partials.search.head')
+                   </div> --}}
+
+                {{------------------------------------------------new-two-btn-add-------------- --}}
+                     <div class="form-search-wrap p-4 d-hide-lg">
+                       <div class="main_banner_btn">
+                           <a href="{{ route('page.coaches') }}"
+                           class="btn btn-primary rounded py-2 px-4 text-white">Find A Coach</a>
+                           <a href="{{ route('page.register') }}"
+                           class="btn btn-primary rounded py-2 px-4 text-white">Become A Coach</a>
+                       </div>
+                   </div> 
+
+
+
+                   <div class="row justify-content-center mt-5 mb-5 mb-lg-0">
+                       <div class="col-md-12 col-lg-10 col-xl-8 text-center">
+                           <!-- <a href="{{ route('page.coaches') }}"
+                               class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:16px">
+                               {{ __('I want to find a great fit coach!') }}
+                           </a> -->
+                           
+                       </div>
                    </div>
-                   <div class="row">
-                        <div class="col-md-6">
-                            <a href="#Feature-coaches"><h2 class="font-weight-light text-white border-primary2">Featured Coaches</h2>
-                            <img src="{{ asset('frontend/images/Featured Coaches.webp') }}"
-                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2  "> 
-                           </a>
+               </div>
+                <div class="four_main_section">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="section_set">
+                                <a href="#Feature-coaches">
+                                    <h2 class="font-weight-light text-white border-primary2">Featured Coaches</h2>
+                                    <img src="{{ asset('frontend/images/Featured Coaches.webp') }}" alt="Image"
+                                        class="img-fluid rounded image-category-img image-category-img2 ">
+                                </a>
+                                <div class="see-more">
+                                    <a href="#Feature-coaches" class="see_below_btn">
+                                        <p class="see_below_para">See Below</p>
+                                        <img src="{{ asset('frontend/images/bottom_icon.webp') }}" alt="Image"
+                                            class="img-fluid rounded image-category-img image-category-img3  ">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <a href="#Trending-Videos"><h2 class="font-weight-light text-white border-primary2">Trending Videos</h2>
-                            <img src="{{ asset('frontend/images/Trending Videos.webp') }}"
-                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> </a>
-                        </div>                       
-                        <div class="col-md-6">
-                            <a href="{{ route('page.allcoaches')}}"><h2 class="font-weight-light text-white border-primary2">All Coaches</h2>
-                            <img src="{{ asset('frontend/images/Featured Coaches.webp') }}"
-                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> 
-                           </a>
+                        <div class="col-md-3">
+                            <div class="section_set">
+                                <a href="#Trending-topics">
+                                    <h2 class="font-weight-light text-white border-primary2">Trending Topics</h2>
+                                    <img src="{{ asset('frontend/images/Trending Topics.webp') }}" alt="Image"
+                                        class="img-fluid rounded image-category-img image-category-img2">
+                                </a>
+                                <div class="see-more">
+                                    <a href="#Trending-topics" class="see_below_btn">
+                                        <p class="see_below_para">See Below</p>
+                                        <img src="{{ asset('frontend/images/bottom_icon.webp') }}" alt="Image"
+                                            class="img-fluid rounded image-category-img image-category-img3  ">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <a href="#Trending-topics"><h2 class="font-weight-light text-white border-primary2">Trending Topics</h2>
-                            <img src="{{ asset('frontend/images/Trending Topics.webp') }}"
-                                                        alt="Image" class="img-fluid rounded image-category-img image-category-img2"> </a>
+                        <div class="col-md-3">
+                            <div class="section_set">
+                                <a href="#Recent-topics">
+                                    <h2 class="font-weight-light text-white border-primary2">Recent Topics</h2>
+                                    <img src="{{ asset('frontend/images/Recent Topics.webp') }}" alt="Image"
+                                        class="img-fluid rounded image-category-img image-category-img2">
+                                </a>
+                                <div class="see-more">
+                                    <a href="#Recent-topics" class="see_below_btn">
+                                        <p class="see_below_para">See Below</p>
+                                        <img src="{{ asset('frontend/images/bottom_icon.webp') }}" alt="Image"
+                                            class="img-fluid rounded image-category-img image-category-img3  ">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                       
-                   </div>
-                </div> -->
-                <div class="col-md-5 m-auto  padding-md-5-set"   data-aos="fade-left">
-                     <div class="row justify-content-center mb-1">
-                        <div class="col-md-12 text-center">
-                            <h1 class="heading-one" data-aos="fade-up" style="color: {{ $site_homepage_header_title_font_color }};">
-                                {{ __('frontend.homepage.title') }}</h1>
-                            <p data-aos="fade-up" data-aos-delay="100"
-                                style="color: {{ $site_homepage_header_paragraph_font_color }};word-break: initial;" class="description-para">
-                                {{ __('frontend.homepage.description') }}</p>
+                        <div class="col-md-3">
+                            <div class="section_set">
+                                <a href="#Trending-Videos">
+                                    <h2 class="font-weight-light text-white border-primary2">Trending Videos</h2>
+                                    <img src="{{ asset('frontend/images/Trending Video.webp') }}" alt="Image"
+                                        class="img-fluid rounded image-category-img image-category-img2">
+                                </a>
+                                <div class="see-more">
+                                    <a href="#Trending-Videos" class="see_below_btn">
+                                        <p class="see_below_para">See Below</p>
+                                        <img src="{{ asset('frontend/images/bottom_icon.webp') }}" alt="Image"
+                                            class="img-fluid rounded image-category-img image-category-img3  ">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div> 
-                    {{-- <div class="form-search-wrap" data-aos="fade-up" data-aos-delay="200">
-                        @include('frontend.partials.search.head')
-                    </div> --}}
-
-                 {{------------------------------------------------new-two-btn-add-------------- --}}
-                      <div class="form-search-wrap p-4">
-                        <div class="main_banner_btn">
-                            <a href="{{ route('page.coaches') }}"
-                            class="btn btn-primary rounded py-2 px-4 text-white">Find A Coach</a>
-                            <a href="{{ route('page.register') }}"
-                            class="btn btn-primary rounded py-2 px-4 text-white">Become A Coach</a>
-                        </div>
-                    </div> 
-
-
-
-                    <div class="row justify-content-center mt-5 mb-5 mb-lg-0">
-                        <div class="col-md-12 col-lg-10 col-xl-8 text-center">
-                            <!-- <a href="{{ route('page.coaches') }}"
-                                class="btn btn-primary btn-lg btn-block rounded text-white f-16" style="font-size:16px">
-                                {{ __('I want to find a great fit coach!') }}
-                            </a> -->
-                            
-                        </div>
+                     
                     </div>
                 </div>
             </div>
+
+        </div>
 
         <div class="row align-items-center justify-content-center text-center d-none mt-5">
             <div class="col-md-12">
@@ -485,7 +597,7 @@
                     <div class="col-md-7 text-left border-primary">
                         <h2 class="font-weight-light font-weight-300 text-primary p-0 mb-2">{{ __('Featured Coaches') }}
                         </h2>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-md-6 text-left">
@@ -495,11 +607,11 @@
                             <button class="btn btn-primary btn-sm">
                                 View All
                             </button>
-                        </a>                                
+                        </a>
                     </div>
                 </div>
             @endif
-            <div class="row" >
+            <div class="row">
                 <div class="col-lg-12 padding-0-set-sm">
                     @if ($all_coaches->count() >= 5)
                         <section class="card_texting container ptb-100-500">
@@ -685,8 +797,7 @@
                                                     </svg>
                                                     <svg class="check" style="width: 24px; height: 24px"
                                                         viewBox="0 0 24 24">
-                                                        <path
-                                                            d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                                                        <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
                                                     </svg>
                                                     <svg class="close" style="width: 24px; height: 24px"
                                                         viewBox="0 0 24 24">
@@ -729,10 +840,10 @@
                     </div>
                     @if ($all_trainding_items->count() >= 8)
                         <!-- <div class="col-md-5 text-right">
-                                    <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
-                                        {{ __('all_latest_listings.view-all-latest') }}
-                                    </a>
-                                </div> -->
+                                                    <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
+                                                        {{ __('all_latest_listings.view-all-latest') }}
+                                                    </a>
+                                                </div> -->
                     @endif
                 </div>
             @endif
@@ -826,7 +937,6 @@
                                                                 <a class="decoration-none"
                                                                     href="{{ route('page.profile', encrypt($trainding_item->user->id)) }}">
                                                                     @if (empty($trainding_item->user->user_image))
-                                                                    
                                                                         {{-- <img src="{{ asset('frontend/images/placeholder/profile-' . intval($trainding_item->user->id % 10) . '.webp') }}"
                                                                             alt="Image"
                                                                             class="img-fluid rounded-circle"> --}}
@@ -1287,10 +1397,10 @@
                     </div>
                     @if ($latest_items->count() >= 8)
                         <!-- <div class="col-md-5 text-right">
-                                <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
-                                    {{ __('all_latest_listings.view-all-latest') }}
-                                </a>
-                            </div> -->
+                                                <a href="{{ route('page.all.recenttopics') }}" class="btn btn-primary rounded text-white">
+                                                    {{ __('all_latest_listings.view-all-latest') }}
+                                                </a>
+                                            </div> -->
                     @endif
                 </div>
             </div>
@@ -1649,160 +1759,177 @@
 
 
 
-@if ($post_count > 0)
-    @if ($post_count <= 4)
-        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
-            <div class="container">
-                <div class="row mb-3 align-items-center" id="Trending-Videos">
+    @if ($post_count > 0)
+        @if ($post_count <= 4)
+            <div class="@if ($recent_blog->count() > 0) bg-light @else '' @endif">
+                <div class="container">
+                    <div class="row mb-3 align-items-center" id="Trending-Videos">
 
-                    <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
-                        </h2>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="below_info justify-content-end">
-                            <a href="{{ route('page.trending_videos') }}">
-                                <button class="btn btn-primary btn-sm">
-                                    View All
-                                </button>
-                            </a>
+                        <div class="col-md-7 text-left border-primary">
+                            <h2 class="font-weight-light text-primary mt-5">Trending Videos
+                            </h2>
                         </div>
-                    </div>
 
-                @foreach ($AllMedia_view_arr as $video_key => $video)
-                        <!--Begin: slid body  -->
-                        <br><br><br>
-                        <div class="col-lg-3">
-                        <div class="post-slide">
-                            <div class="post-img">
-                                <div class='c-video__image-container vid-fit-reveal box-video-youtube'
-                                    data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
-                                    <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
-                                        data-src="{{ $video['media_url'] }}">
-                                        <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
-                                    </a>
-                                    <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                
-                            <div class="view_eye_post">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                <p class="views" style="color: black;">View</p>
-                                <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
-                            </div>
-                        </div>
-                        </div>
-                        <!--End: slider body  -->
-                @endforeach
-                <div>
-            <div>
-        <div>           
-    @endif
-
-    @if ($post_count > 4  && $post_count <= 6)
-        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
-            <div class="container">
-                <div class="row mb-3 align-items-center" id="Trending-Videos">
-
-                    <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
-                        </h2>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="below_info justify-content-end">
-                            <a href="{{ route('page.trending_videos') }}">
-                                <button class="btn btn-primary btn-sm">
-                                    View All
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--Begin: trendding video slider -->
-                    <div class="col-md-12 padding-0-set-sm">
-                    <section class="card_texting container ptb-100-500 ptb-sm-50-50">
-                        <div class="swiper-container-latest-2 swiper_topics_carousel_set">
-                            <div class="swiper-wrapper">
-                            @php $count = 1; @endphp
-                                    @foreach ($AllMedia_view_arr as $video_key => $video)
-                                        @php
-                                            if ($count == 7) {
-                                                break;
-                                            }
-                                        @endphp
-                                    <div class="swiper-slide">
-                                        <div class="listing">
-
-                                            <!--Begin: slider body  -->
-                                            <br><br><br>
-                                                    <div class="post-slide">
-                                                        <div class="post-img">
-                                                            <div class='c-video__image-container vid-fit-reveal box-video-youtube'
-                                                                data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
-                                                                <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
-                                                                    data-src="{{ $video['media_url'] }}">
-                                                                    <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
-                                                                </a>
-                                                                <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                                                encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                            </div>
-                                                        </div>
-                                        
-                                                        <div class="view_eye_post">
-                                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                                            <p class="views" style="color: black;">View</p>
-                                                            <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <!--End: slider body  -->
-                                                    
-                                        </div>
-                                    </div>
-                                    @php $count++; @endphp
-                                @endforeach
-                            </div>
-                        </div>
-                    </section>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next id-five-22"></div>
-                    <div class="swiper-button-prev id-six-22"></div>
-                    </div>
-                    <!--End: trendding video slider -->
-
-                </div>
-            </div>
-        </div>
-    @endif
-
-    @if($post_count >= 7)
-        <!-- Begin: Trending Video's -->
-        <div class="@if($recent_blog->count() > 0) bg-light @else '' @endif">
-            <div class="container">
-                <div class="row mb-3 align-items-center" id="Trending-Videos">
-                    <div class="col-md-7 text-left border-primary">
-                        <h2 class="font-weight-light text-primary mt-5">Trending Videos
-                        </h2>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="below_info justify-content-end">
+                        <div class="col-md-12">
+                            <div class="below_info justify-content-end">
                                 <a href="{{ route('page.trending_videos') }}">
                                     <button class="btn btn-primary btn-sm">
                                         View All
                                     </button>
                                 </a>
-                            
+                            </div>
                         </div>
-                    </div>
 
-                    <!--Begin: trendding video slider -->      
-                            <div class="col-md-12 padding-0-set-sm">
-                                <section class="card_texting container ptb-100-500 ptb-sm-50-50">
-                                    <div class="swiper-container-latest-1 swiper_topics_carousel_set">
-                                        <div class="swiper-wrapper">
+                        @foreach ($AllMedia_view_arr as $video_key => $video)
+                            <!--Begin: slid body  -->
+                            <br><br><br>
+                            <div class="col-lg-3">
+                                <div class="post-slide">
+                                    <div class="post-img">
+                                        <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                            data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}"
+                                            data-vid="box-video-youtube_{{ $video['id'] }}">
+                                            <a href="" target="_blank" class="bg-video"
+                                                id="youtube_id_{{ $video['id'] }}" data-toggle="modal"
+                                                data-target="#youtubeModal" data-src="{{ $video['media_url'] }}">
+                                                <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
+                                            </a>
+                                            <iframe width="560" height="215" src="{{ $video['media_url'] }}"
+                                                id="vid-reveal_{{ $video['id'] }}" title="YouTube video player"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; 
+                                    encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+
+                                    <div class="view_eye_post">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <p class="views" style="color: black;">View</p>
+                                        <span class="youtube_section_number">: {{ $video['totalcount'] }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End: slider body  -->
+                        @endforeach
+                        <div>
+                            <div>
+                                <div>
+        @endif
+
+        @if ($post_count > 4 && $post_count <= 6)
+            <div class="@if ($recent_blog->count() > 0) bg-light @else '' @endif">
+                <div class="container">
+                    <div class="row mb-3 align-items-center" id="Trending-Videos">
+
+                        <div class="col-md-7 text-left border-primary">
+                            <h2 class="font-weight-light text-primary mt-5">Trending Videos
+                            </h2>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="below_info justify-content-end">
+                                <a href="{{ route('page.trending_videos') }}">
+                                    <button class="btn btn-primary btn-sm">
+                                        View All
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--Begin: trendding video slider -->
+                        <div class="col-md-12 padding-0-set-sm">
+                            <section class="card_texting container ptb-100-500 ptb-sm-50-50">
+                                <div class="swiper-container-latest-2 swiper_topics_carousel_set">
+                                    <div class="swiper-wrapper">
+                                        @php $count = 1; @endphp
+                                        @foreach ($AllMedia_view_arr as $video_key => $video)
+                                            @php
+                                                if ($count == 7) {
+                                                    break;
+                                                }
+                                            @endphp
+                                            <div class="swiper-slide">
+                                                <div class="listing">
+
+                                                    <!--Begin: slider body  -->
+                                                    <br><br><br>
+                                                    <div class="post-slide">
+                                                        <div class="post-img">
+                                                            <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                                                data-id="{{ $video['id'] }}"
+                                                                id="#js-fitvideo_{{ $video['id'] }}"
+                                                                data-vid="box-video-youtube_{{ $video['id'] }}">
+                                                                <a href="" target="_blank" class="bg-video"
+                                                                    id="youtube_id_{{ $video['id'] }}"
+                                                                    data-toggle="modal" data-target="#youtubeModal"
+                                                                    data-src="{{ $video['media_url'] }}">
+                                                                    <div class="bt-play"
+                                                                        id="bt-play_{{ $video['id'] }}"></div>
+                                                                </a>
+                                                                <iframe width="560" height="215"
+                                                                    src="{{ $video['media_url'] }}"
+                                                                    id="vid-reveal_{{ $video['id'] }}"
+                                                                    title="YouTube video player" frameborder="0"
+                                                                    allow="accelerometer; autoplay; clipboard-write; 
+                                                                encrypted-media; gyroscope; picture-in-picture"
+                                                                    allowfullscreen></iframe>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="view_eye_post">
+                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                            <p class="views" style="color: black;">View</p>
+                                                            <span class="youtube_section_number">:
+                                                                {{ $video['totalcount'] }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <!--End: slider body  -->
+
+                                                </div>
+                                            </div>
+                                            @php $count++; @endphp
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next id-five-22"></div>
+                            <div class="swiper-button-prev id-six-22"></div>
+                        </div>
+                        <!--End: trendding video slider -->
+
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($post_count >= 7)
+            <!-- Begin: Trending Video's -->
+            <div class="@if ($recent_blog->count() > 0) bg-light @else '' @endif">
+                <div class="container">
+                    <div class="row mb-3 align-items-center" id="Trending-Videos">
+                        <div class="col-md-7 text-left border-primary">
+                            <h2 class="font-weight-light text-primary mt-5">Trending Videos
+                            </h2>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="below_info justify-content-end">
+                                <a href="{{ route('page.trending_videos') }}">
+                                    <button class="btn btn-primary btn-sm">
+                                        View All
+                                    </button>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <!--Begin: trendding video slider -->
+                        <div class="col-md-12 padding-0-set-sm">
+                            <section class="card_texting container ptb-100-500 ptb-sm-50-50">
+                                <div class="swiper-container-latest-1 swiper_topics_carousel_set">
+                                    <div class="swiper-wrapper">
                                         @php $count = 1; @endphp
                                         @foreach ($AllMedia_view_arr as $video_key => $video)
                                             @php
@@ -1811,72 +1938,83 @@
                                                 }
                                             @endphp
 
-                                                <div class="swiper-slide">
-                                                    <div class="listing">
-                                        
-                                                        <!--Begin: slider body  -->
-                                                        <br><br><br>
-                                                        <div class="post-slide">
-                                                            <div class="post-img">
-                                                                <div class='c-video__image-container vid-fit-reveal box-video-youtube'
-                                                                    data-id="{{ $video['id'] }}" id="#js-fitvideo_{{ $video['id'] }}" data-vid="box-video-youtube_{{ $video['id'] }}">
-                                                                    <a href="" target="_blank" class="bg-video" id="youtube_id_{{ $video['id'] }}" data-toggle="modal" data-target="#youtubeModal"
-                                                                        data-src="{{ $video['media_url'] }}">
-                                                                        <div class="bt-play" id="bt-play_{{ $video['id'] }}"></div>
-                                                                    </a>
-                                                                    <iframe width="560" height="215" src="{{ $video['media_url']}}"  id="vid-reveal_{{ $video['id'] }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-                                                                    encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                                </div>
-                                                            </div>
-                                            
-                                                            <div class="view_eye_post">
-                                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                                <p class="views" style="color: black;">View</p>
-                                                                <span class="youtube_section_number">: {{$video['totalcount'] }}</span>
+                                            <div class="swiper-slide">
+                                                <div class="listing">
+
+                                                    <!--Begin: slider body  -->
+                                                    <br><br><br>
+                                                    <div class="post-slide">
+                                                        <div class="post-img">
+                                                            <div class='c-video__image-container vid-fit-reveal box-video-youtube'
+                                                                data-id="{{ $video['id'] }}"
+                                                                id="#js-fitvideo_{{ $video['id'] }}"
+                                                                data-vid="box-video-youtube_{{ $video['id'] }}">
+                                                                <a href="" target="_blank" class="bg-video"
+                                                                    id="youtube_id_{{ $video['id'] }}"
+                                                                    data-toggle="modal" data-target="#youtubeModal"
+                                                                    data-src="{{ $video['media_url'] }}">
+                                                                    <div class="bt-play"
+                                                                        id="bt-play_{{ $video['id'] }}"></div>
+                                                                </a>
+                                                                <iframe width="560" height="215"
+                                                                    src="{{ $video['media_url'] }}"
+                                                                    id="vid-reveal_{{ $video['id'] }}"
+                                                                    title="YouTube video player" frameborder="0"
+                                                                    allow="accelerometer; autoplay; clipboard-write; 
+                                                                    encrypted-media; gyroscope; picture-in-picture"
+                                                                    allowfullscreen></iframe>
                                                             </div>
                                                         </div>
-                                                        <!--End: slider body  -->
-                                                    
-                                                            </div>
+
+                                                        <div class="view_eye_post">
+                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                            <p class="views" style="color: black;">View</p>
+                                                            <span class="youtube_section_number">:
+                                                                {{ $video['totalcount'] }}</span>
                                                         </div>
-                                            
+                                                    </div>
+                                                    <!--End: slider body  -->
+
+                                                </div>
+                                            </div>
+
                                             @php $count++; @endphp
-                                            @endforeach
-                                        </div>
+                                        @endforeach
                                     </div>
-                                
-                                </section>
-                                <div class="swiper-pagination"></div>
-                                <div class="swiper-button-next id-five-1"></div>
-                                <div class="swiper-button-prev id-six-1"></div>
-                            </div>
-                    <!--End: trendding video slider -->
+                                </div>
+
+                            </section>
+                            <div class="swiper-pagination"></div>
+                            <div class="swiper-button-next id-five-1"></div>
+                            <div class="swiper-button-prev id-six-1"></div>
+                        </div>
+                        <!--End: trendding video slider -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- End: Trending Video's -->
+            <!-- End: Trending Video's -->
+        @endif
     @endif
-@endif
 
-<!-- For youtube modal-->
-<div class="modal-4">
-    <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
-            <div class="modal-content content_design3">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <!-- For youtube modal-->
+    <div class="modal-4">
+        <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered modal_dialog" role="document">
+                <div class="modal-content content_design3">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="exampleModalLabel_youtube">Youtube</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <iframe src="" id="youtubeiframesrcURL" frameborder="0" class="min_h_300"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
                 </div>
-                <iframe src="" id="youtubeiframesrcURL" frameborder="0" class="min_h_300"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Modal -->
     <div class="modal fade" id="reload_page_modal" tabindex="-1" role="dialog"
@@ -2033,7 +2171,7 @@
         if (is_login && is_terms_read == 1 && agreement_updated_date > user_accept_agreement_date) {
             console.log("bbbbbbb")
             const expDate = new Date();
-            expDate.setTime(expDate.getTime() + (5 * 60 * 1000));            
+            expDate.setTime(expDate.getTime() + (5 * 60 * 1000));
             setTimeout(function() {
                 $('#nda_modal').modal({
                     backdrop: 'static',
@@ -2263,11 +2401,10 @@
 
             });
         });
-
     </script>
- 
-<!-- for trendding video's slider button-->
-@if ($post_count > 4 && $post_count <= 6 )
+
+    <!-- for trendding video's slider button-->
+    @if ($post_count > 4 && $post_count <= 6)
         <script>
             // alert("dslkdlk");
             var swiper = new Swiper(".swiper-container-latest-2", {
@@ -2289,10 +2426,10 @@
                 }
             });
         </script>
-@endif
+    @endif
 
-@if($post_count >= 7)
-    <script>
+    @if ($post_count >= 7)
+        <script>
             var swiper = new Swiper(".swiper-container-latest-1", {
                 effect: "coverflow",
                 grabCursor: true,
@@ -2311,12 +2448,12 @@
                     prevEl: '.swiper-button-prev.id-six-1',
                 }
             });
-    </script>
-@endif
+        </script>
+    @endif
 
-<script>
-// for count and create views
-            $(document).ready(function() {
+    <script>
+        // for count and create views
+        $(document).ready(function() {
             $(".vid-fit-reveal").on('click', function() {
                 var id = $(this).attr('data-id');
                 var main_id = $(this).attr('id');
@@ -2342,36 +2479,35 @@
         });
 
 
-            //for youtube video playing
+        //for youtube video playing
 
-            $(".box-video-youtube").click(function () {
-                $('#youtubeiframesrcURL').attr('src', '');
-                // $('#youtubeiframesrcURL').removeAttr('class');
-                $('#exampleModalLabel_podcast').text('');                
+        $(".box-video-youtube").click(function() {
+            $('#youtubeiframesrcURL').attr('src', '');
+            // $('#youtubeiframesrcURL').removeAttr('class');
+            $('#exampleModalLabel_podcast').text('');
 
 
-                var youtube_div_Id = $(this).data('vid');
-                var split_youtube_div_id = youtube_div_Id.split('_')[1]; 
-                // console.log(split_youtube_div_id)               
-                var youtubeUrl = $('#youtube_id_'+split_youtube_div_id).data('src');
-                // console.log(youtubeUrl)
-                
-                $('#youtubeiframesrcURL').attr('src', youtubeUrl);
-            });
+            var youtube_div_Id = $(this).data('vid');
+            var split_youtube_div_id = youtube_div_Id.split('_')[1];
+            // console.log(split_youtube_div_id)               
+            var youtubeUrl = $('#youtube_id_' + split_youtube_div_id).data('src');
+            // console.log(youtubeUrl)
 
-            $("#youtubeModal").on("hidden.bs.modal", function() {
-                $('#youtubeiframesrcURL').attr('src', '');            
-            });
-</script>
+            $('#youtubeiframesrcURL').attr('src', youtubeUrl);
+        });
 
-<script>
-    $(document).on('click', 'a[href^="#"]', function (event) {
-    event.preventDefault();
+        $("#youtubeModal").on("hidden.bs.modal", function() {
+            $('#youtubeiframesrcURL').attr('src', '');
+        });
+    </script>
 
-    $('html, body').animate({
-        scrollTop: $($.attr(this, 'href')).offset().top
-    }, 1500);
-});
-</script>
+    <script>
+        $(document).on('click', 'a[href^="#"]', function(event) {
+            event.preventDefault();
 
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 1500);
+        });
+    </script>
 @endsection

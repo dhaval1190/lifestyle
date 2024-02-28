@@ -47,6 +47,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOTools;
+use Artesaos\SEOTools\Facades\JsonLd;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -99,6 +101,7 @@ class PagesController extends Controller
         OpenGraph::setTitle($settings->setting_site_seo_home_title . ' - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
         OpenGraph::setDescription($settings->setting_site_seo_home_description);
         OpenGraph::setUrl(URL::current());
+        OpenGraph::addProperty('type', 'WebPage');
         if(empty($settings->setting_site_logo))
         {
             OpenGraph::addImage(asset('favicon-96x96.ico'));
@@ -107,6 +110,17 @@ class PagesController extends Controller
         {
             OpenGraph::addImage(Storage::disk('public')->url('setting/' . $settings->setting_site_logo));
         }
+
+        SEOTools::setTitle($settings->setting_site_seo_home_title . ' - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
+        SEOTools::setDescription($settings->setting_site_seo_home_description);
+        SEOTools::opengraph()->setUrl(URL::current());
+        SEOTools::setCanonical(URL::current());
+        SEOTools::opengraph()->addProperty('type', 'WebPage');
+        SEOTools::jsonLd()->addImage(Storage::disk('public')->url('setting/' . $settings->setting_site_logo));
+
+        JsonLd::setTitle($settings->setting_site_seo_home_title . ' - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
+        JsonLd::setDescription($settings->setting_site_seo_home_description);
+        JsonLd::addImage(Storage::disk('public')->url('setting/' . $settings->setting_site_logo));
 
         // Twitter
         TwitterCard::setTitle($settings->setting_site_seo_home_title . ' - ' . (empty($settings->setting_site_name) ? config('app.name', 'Laravel') : $settings->setting_site_name));
