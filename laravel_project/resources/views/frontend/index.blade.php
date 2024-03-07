@@ -249,7 +249,7 @@
             margin: 20px 0px;
         }
 
-        /* .four_main_section {
+        .four_main_section {
             border-radius: 0px 12px 12px 0px;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -259,7 +259,7 @@
             background: #FFFFFF 0% 0% no-repeat padding-box;
             border-radius: 12px 12px 0px 0px;
             opacity: 0.77;
-        } */
+        }
 
         .section_set:hover .border-primary2 {
             color: #F05127 !important;

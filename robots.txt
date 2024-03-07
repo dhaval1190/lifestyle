@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: 
+Disallow: /cgi-bin/
+Sitemap: https://coacheshq.com/sitemap.xml
