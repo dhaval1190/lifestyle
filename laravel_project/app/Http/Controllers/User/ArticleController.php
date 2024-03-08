@@ -406,6 +406,8 @@ class ArticleController extends Controller
     {
 
         // dd($request->all());
+        $txt = "<pre>".print_r($request->all(), true)."</pre>";
+	    file_put_contents(storage_path('logs/check_log.log'), $txt);
         
         $settings = app('site_global_settings');
 
