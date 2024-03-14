@@ -910,7 +910,7 @@ class ArticleController extends Controller
                         $data["item_id"] = $new_item->id;
                         $data["article_by"] = Auth::user()->name;
                         $data["date"] = date('Y-m-d');                   
-                        $data["subject"] = 'New Article ('.$item_title.') Create At: ' .$data["date"].' ('.$data["article_by"].')';
+                        $data["subject"] = 'New Topic ('.$item_title.') Create At: ' .$data["date"].' ('.$data["article_by"].')';
                         /**
              * Start initial SMTP settings
              */

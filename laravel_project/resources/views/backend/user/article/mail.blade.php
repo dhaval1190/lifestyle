@@ -54,7 +54,7 @@
                     Topic Title : {{$article_title}}
                 </p>
                 <p style="padding: 10px 0px; font-weight: bold">
-                    Article Created By : {{$article_by}}
+                    Topic Created By : {{$article_by}}
                 </p>
                 <p style="padding: 10px 0px; font-weight: bold">
                     Date : {{$date}}
