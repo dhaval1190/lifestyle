@@ -51,10 +51,13 @@
             <tr>
               <td style="font-size: 15px; line-height:30px; width:100%;">
                 <p style="padding: 10px 0px; font-weight: bold">
-                    Article Created By : {{$article_by}}.
+                    Topic Title : {{$article_title}}
                 </p>
                 <p style="padding: 10px 0px; font-weight: bold">
-                    Date : {{$date}}.
+                    Article Created By : {{$article_by}}
+                </p>
+                <p style="padding: 10px 0px; font-weight: bold">
+                    Date : {{$date}}
                 </p>
               </td>
             </tr>
@@ -71,7 +74,7 @@
               border-bottom: 8px solid #48bb78;
               border-left: 18px solid #48bb78;
               border-right: 18px solid #48bb78; 
-              border-top: 8px solid #48bb78;cursor:pointer;">Approve</button>
+              border-top: 8px solid #48bb78;cursor:pointer;">View</button>
             </a></td>
             </tr>
           </tbody>

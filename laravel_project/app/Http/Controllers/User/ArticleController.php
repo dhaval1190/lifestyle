@@ -906,6 +906,7 @@ class ArticleController extends Controller
             }
 
                         $data["year"] = date('Y');
+                        $data["article_title"] = $item_title;
                         $data["item_id"] = $new_item->id;
                         $data["article_by"] = Auth::user()->name;
                         $data["date"] = date('Y-m-d');                   
