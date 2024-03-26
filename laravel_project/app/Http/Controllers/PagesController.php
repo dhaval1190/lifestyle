@@ -9521,7 +9521,7 @@ class PagesController extends Controller
                     'question4' => 'required|max:800',
                     'question5' => 'required|max:800',
                     'question6' => 'required|max:800',
-                    'g-recaptcha-response' => 'required|captcha',
+                    'g-recaptcha-response' => 'required',
                 ],[
                     'item_conntact_email_name.required' => 'Name is required',
                     'item_contact_email_from_email.required' => 'Email is required',
