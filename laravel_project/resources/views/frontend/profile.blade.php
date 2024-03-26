@@ -445,6 +445,8 @@
                                 <label class="nav-link shadow-sm step4 steps  border  ">Step Five</label>
                                 <label class="nav-link shadow-sm step5 steps  border  ">Step Six</label>
                             </div>
+
+                            <div id="re_captcha_error"></div>
                             <form action="{{ route('page.item.contact', ['item_slug' => $item->item_slug]) }}"
                                 method="POST" name="contactFormModal" id="contactFormModal" class="contact-coach-form">
                                 @csrf
@@ -2245,6 +2247,10 @@
                                 if (response.msg.item_contact_email_note) {
                                     $('.note_error').text(response.msg
                                         .item_contact_email_note)
+                                }
+                                if (response.msg['g-recaptcha-response'][0]) {
+                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+response.msg['g-recaptcha-response'][0]+'</li></ul>')
+                                    
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
 

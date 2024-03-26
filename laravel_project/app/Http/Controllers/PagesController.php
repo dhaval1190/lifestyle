@@ -1360,6 +1360,7 @@ class PagesController extends Controller
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
             'subject' => 'required|max:255',
             'message' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ];
 
         // Start Google reCAPTCHA version 2
@@ -9459,12 +9460,12 @@ class PagesController extends Controller
                     'name' => $name, 
                     'url' => route('page.show_pass',['id' => encrypt($user_otp->id)]),
                 ];
-                if($request->user_bio == null){
-                    Mail::send('frontend.email.change_user_password', ["user_details"=>$user_details], function ($message) use ($user_details) {
-                        $message->to($user_details['email'])
-                            ->subject($user_details['subject']);
-                    });
-                }
+
+                Mail::send('frontend.email.change_user_password', ["user_details"=>$user_details], function ($message) use ($user_details) {
+                    $message->to($user_details['email'])
+                        ->subject($user_details['subject']);
+                });
+            
             }
             // if($user_otp) {            
             //     // if($email == 'dg@textdrip.com') {
@@ -9520,6 +9521,7 @@ class PagesController extends Controller
                     'question4' => 'required|max:800',
                     'question5' => 'required|max:800',
                     'question6' => 'required|max:800',
+                    'g-recaptcha-response' => 'required|captcha',
                 ],[
                     'item_conntact_email_name.required' => 'Name is required',
                     'item_contact_email_from_email.required' => 'Email is required',
@@ -9529,6 +9531,7 @@ class PagesController extends Controller
                     'question4.required' => 'Question 4 field is required',
                     'question5.required' => 'Question 5 field is required',
                     'question6.required' => 'Question 6 field is required',
+                    'g-recaptcha-response.required' => 'Re-Captcha field is required',
                 ]);
 
                 // return response()->json(['status'=>"success",'msg'=>$request->all()]);
@@ -9664,22 +9667,24 @@ class PagesController extends Controller
                                     ];
 
                                     try{
-                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
-                                            $messages->to($email_to);
-                                            $messages->subject($email_subject);
-                                        });
+                                        if($request->user_bio == null){
+                                            Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
+                                                $messages->to($email_to);
+                                                $messages->subject($email_subject);
+                                            });
 
-                                        $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
-                                        $data = [
-                                            "registration_ids" => $FcmToken,
-                                            "notification" => [
-                                                "title" =>'New Notification From Your Profile',
-                                                "body" =>'From : '.$request['item_conntact_email_name'],  
-                                            ]
-                                        ];
-            
-                                        \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                                        \Session::flash('flash_type', 'success');
+                                            $FcmToken = User::where('id',$request->userId)->whereNotNull('device_token')->pluck('device_token')->all();   
+                                            $data = [
+                                                "registration_ids" => $FcmToken,
+                                                "notification" => [
+                                                    "title" =>'New Notification From Your Profile',
+                                                    "body" =>'From : '.$request['item_conntact_email_name'],  
+                                                ]
+                                            ];
+                
+                                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                            \Session::flash('flash_type', 'success');
+                                        }
                                     }
                                     catch(\Exception $e){
                                         Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
@@ -9702,22 +9707,24 @@ class PagesController extends Controller
                                     ];
 
                                     try{
-                                        Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
-                                            $messages->to($email_to);
-                                            $messages->subject($email_subject);
-                                        });
+                                        if($request->user_bio == null){
+                                            Mail::send('frontend.email.contact_coach_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
+                                                $messages->to($email_to);
+                                                $messages->subject($email_subject);
+                                            });
 
-                                        $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
-                                        $data = [
-                                            "registration_ids" => $FcmToken,
-                                            "notification" => [
-                                                "title" =>'New Notification From Your Article: '.$request->articleTitle,
-                                                "body" =>'From : '.$request['item_conntact_email_name'],  
-                                            ]
-                                        ];
-            
-                                        \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                                        \Session::flash('flash_type', 'success');
+                                            $FcmToken = User::where('id',$item->user_id)->whereNotNull('device_token')->pluck('device_token')->all();  
+                                            $data = [
+                                                "registration_ids" => $FcmToken,
+                                                "notification" => [
+                                                    "title" =>'New Notification From Your Article: '.$request->articleTitle,
+                                                    "body" =>'From : '.$request['item_conntact_email_name'],  
+                                                ]
+                                            ];
+                
+                                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                            \Session::flash('flash_type', 'success');
+                                        }
                                     }
                                     catch(\Exception $e){
                                         Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
