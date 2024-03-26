@@ -705,6 +705,8 @@
                                             </span> -->
                                     </a>
                                 </div>
+
+                                <input type="hidden" name="user_bio" id="user_bio">
                             </form>
 
                         </div>

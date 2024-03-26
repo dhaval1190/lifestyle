@@ -6,6 +6,7 @@
         {!! htmlScriptTagJsApi(['lang' => empty($site_global_settings->setting_site_language) ? 'en' : $site_global_settings->setting_site_language]) !!}
     @endif
     <!-- End Google reCAPTCHA version 2 -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 @endsection
 
 @section('content')
@@ -114,6 +115,13 @@
                             </div>
                         </div>
 
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                            </div>
+                        </div>
+
+
                         <!-- Start Google reCAPTCHA version 2 -->
                         @if($site_global_settings->setting_site_recaptcha_contact_enable == \App\Setting::SITE_RECAPTCHA_CONTACT_ENABLE)
                         <div class="row form-group">
@@ -128,6 +136,8 @@
                         </div>
                         @endif
                         <!-- End Google reCAPTCHA version 2 -->
+
+                        <input type="hidden" name="user_bio" id="user_bio">
 
                         <div class="row form-group">
                             <div class="col-md-12">
