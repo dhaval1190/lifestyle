@@ -1423,17 +1423,18 @@ class PagesController extends Controller
         try
         {
             // to admin
-            Mail::to($email_admin)->send(
-                new Notification(
-                    $email_subject,
-                    $email_admin->name,
-                    null,
-                    $email_notify_message
-                )
-            );
-
-            \Session::flash('flash_message', __('alert.message-send'));
-            \Session::flash('flash_type', 'success');
+            if($request->user_bio == null){
+                Mail::to($email_admin)->send(
+                    new Notification(
+                        $email_subject,
+                        $email_admin->name,
+                        null,
+                        $email_notify_message
+                    )
+                );
+                \Session::flash('flash_message', __('alert.message-send'));
+                \Session::flash('flash_type', 'success');
+            }
 
         }
         catch (\Exception $e)
@@ -9458,10 +9459,12 @@ class PagesController extends Controller
                     'name' => $name, 
                     'url' => route('page.show_pass',['id' => encrypt($user_otp->id)]),
                 ];
-                Mail::send('frontend.email.change_user_password', ["user_details"=>$user_details], function ($message) use ($user_details) {
-                    $message->to($user_details['email'])
-                        ->subject($user_details['subject']);
-                });
+                if($request->user_bio == null){
+                    Mail::send('frontend.email.change_user_password', ["user_details"=>$user_details], function ($message) use ($user_details) {
+                        $message->to($user_details['email'])
+                            ->subject($user_details['subject']);
+                    });
+                }
             }
             // if($user_otp) {            
             //     // if($email == 'dg@textdrip.com') {
