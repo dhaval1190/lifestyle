@@ -1360,7 +1360,7 @@ class PagesController extends Controller
             'email' => 'required|regex:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/',
             'subject' => 'required|max:255',
             'message' => 'required',
-            'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => 'required',
         ];
 
         // Start Google reCAPTCHA version 2
