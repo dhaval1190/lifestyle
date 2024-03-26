@@ -2232,10 +2232,13 @@
 
                         }
                         if (response.status == 'error') {
-                            // console.log(response.msg.item_contact_email_note)
+                            
                             $('.please_wait').text('');
                             $('#contactForm_error_div').show();
                             $.each(response.msg, function(key, val) {
+                                console.log(key);
+                                console.log("++++=======");
+                                console.log(val);
                                 if (response.msg.item_conntact_email_name) {
                                     $('.name_error').text(response.msg
                                         .item_conntact_email_name)
@@ -2248,8 +2251,8 @@
                                     $('.note_error').text(response.msg
                                         .item_contact_email_note)
                                 }
-                                if (response.msg['g-recaptcha-response'][0]) {
-                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+response.msg['g-recaptcha-response'][0]+'</li></ul>')
+                                if (key =='g-recaptcha-response') {
+                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+val[0]+'</li></ul>')
                                     
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
