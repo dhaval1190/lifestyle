@@ -118,6 +118,11 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                @error('g-recaptcha-response')
+                                <p class="name_error error_color pt-1">
+                                    <strong>{{ $message }}</strong>
+                                </p>
+                                @enderror
                             </div>
                         </div>
 
