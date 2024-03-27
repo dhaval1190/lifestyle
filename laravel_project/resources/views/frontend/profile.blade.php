@@ -3107,115 +3107,85 @@
             }
         });
 
-        $("#kt_login_step_01").on('click', function() {
-
-            $('#contactFormModal').on('submit', function(e) {
-                e.preventDefault();
-                $('.please_wait').text('Please Wait..');
-                var item_slug = <?php echo json_encode($item->item_slug); ?>;
-                var formData = new FormData(this);
-
-                jQuery.ajax({
-                    type: 'POST',
-                    url: "{{ route('validate.recaptcha') }}",
-                    data: formData,
-                    dataType: 'JSON',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
-                    },
-
-                    success: function(response) {
-                        
-                        if(response.status == "success"){
-
-                            // for send otp 
-                            $('#email_val').text('');
-                            if ($('#contactFormModal').valid()) {
-                                $("#kt_login_step_01").attr('disabled', true);
-                                $("#kt_login_step_01").attr('data-kt-indicator', 'on');
-                                email = $('#item_contact_email_from_email').val();
-                                name = $('#item_conntact_email_name').val();              
-                                var email_from = email.substring(0, email.indexOf("@"));
-                                var num = (email_from.match(/\./g)) ? email_from.match(/\./g).length : 0;
-                                if(num <= 2)
-                                {
-                                    $.ajax({
-                                        url: "/conact-coach",
-                                        headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                        },
-                                        method: "POST",
-                                        data: {
-                                            'email': email,
-                                            'name':name,
-                                            
-                                        },
-                                        success: function(response) {
-                                            if (response.status==false) {
-                                                $("#kt_login_step_01").removeAttr('disabled');
-                                                $("#kt_login_step_01").removeAttr('data-kt-indicator');
-                                                $("#resend_login_otp").removeAttr('disabled');
-                                                $("#resend_login_otp").removeAttr('data-kt-indicator');
-                                                if(response.message){
-                                                    $('.disabled-login-error').text(response.message);
-                                                    $('.disabled-login-error').show();
-                                                }
-                                                // if (response.errors.email) {
-                                                //     $('#email_val').text(response.errors.email);
-                                                // }
-                                            }else{
-                                                $("#new_user").val(response.new_user)
-                                                $("#resend_login_otp_title").text("OTP send in");
-                                                setCountDownLoginOTP();
-                                                $("#resend_login_otp").hide();
-                                                $("#kt_login_step_01").removeAttr('disabled');
-                                                $("#kt_login_step_01").removeAttr('data-kt-indicator');
-                                                $("#resend_login_otp").removeAttr('disabled');
-                                                $("#resend_login_otp").removeAttr('data-kt-indicator');
-                                                $('.disabled-login-error').text('');
-                                                $('.disabled-login-error').hide();
-                                                $(".step-01").hide();
-                                                $(".step-02").show();
-                                                $("#code_1").focus();
-                                                $("#indicator-progress").show();
-
-                                                // pls_wit
-                                            }
-                                        },
-                                        error: function(err) {
-                                            $("#kt_login_step_01").removeAttr('disabled');
-                                            $("#kt_login_step_01").removeAttr('data-kt-indicator');
-                                            if(!err.responseJSON.status) {
-                                                $('.disabled-login-error').text(err.responseJSON.message);
-                                                $('.disabled-login-error').show();
-                                                // if (err.responseJSON.errors.email) {
-                                                //     $('#email_val').text(err.responseJSON.errors.email);
-                                                // }
-                                            }
-                                        }
-                                    });
-                                }
-                                else {
+        $("#kt_login_step_01").on('click', function(e) {
+            e.preventDefault();
+            $('#email_val').text('');
+            if ($('#contactFormModal').valid()) {
+                var captcha = $('textarea#g-recaptcha-response').val();
+                if(captcha != ''){
+                    $("#kt_login_step_01").attr('disabled', true);
+                    $("#kt_login_step_01").attr('data-kt-indicator', 'on');
+                    email = $('#item_contact_email_from_email').val();
+                    name = $('#item_conntact_email_name').val();              
+                    var email_from = email.substring(0, email.indexOf("@"));
+                    var num = (email_from.match(/\./g)) ? email_from.match(/\./g).length : 0;
+                    if(num <= 2)
+                    {
+                        $.ajax({
+                            url: "/conact-coach",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            method: "POST",
+                            data: {
+                                'email': email,
+                                'name':name,
+                                
+                            },
+                            success: function(response) {
+                                if (response.status==false) {
                                     $("#kt_login_step_01").removeAttr('disabled');
                                     $("#kt_login_step_01").removeAttr('data-kt-indicator');
-                                    $('#email_val').text('Invalid email !');
+                                    $("#resend_login_otp").removeAttr('disabled');
+                                    $("#resend_login_otp").removeAttr('data-kt-indicator');
+                                    if(response.message){
+                                        $('.disabled-login-error').text(response.message);
+                                        $('.disabled-login-error').show();
+                                    }
+                                    // if (response.errors.email) {
+                                    //     $('#email_val').text(response.errors.email);
+                                    // }
+                                }else{
+                                    $("#new_user").val(response.new_user)
+                                    $("#resend_login_otp_title").text("OTP send in");
+                                    setCountDownLoginOTP();
+                                    $("#resend_login_otp").hide();
+                                    $("#kt_login_step_01").removeAttr('disabled');
+                                    $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                                    $("#resend_login_otp").removeAttr('disabled');
+                                    $("#resend_login_otp").removeAttr('data-kt-indicator');
+                                    $('.disabled-login-error').text('');
+                                    $('.disabled-login-error').hide();
+                                    $(".step-01").hide();
+                                    $(".step-02").show();
+                                    $("#code_1").focus();
+                                    $("#indicator-progress").show();
+
+                                    // pls_wit
+                                }
+                            },
+                            error: function(err) {
+                                $("#kt_login_step_01").removeAttr('disabled');
+                                $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                                if(!err.responseJSON.status) {
+                                    $('.disabled-login-error').text(err.responseJSON.message);
+                                    $('.disabled-login-error').show();
+                                    // if (err.responseJSON.errors.email) {
+                                    //     $('#email_val').text(err.responseJSON.errors.email);
+                                    // }
                                 }
                             }
-                        }
-                        if(response.status == "error"){
-                            $.each(response.msg, function(key, val) {
-                                if (key =='g-recaptcha-response') {
-                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false">'+val[0]+'</ul>') 
-                                }
-                            });
-                        }
-                        
+                        });
                     }
-                });
-            });  
+                    else {
+                        $("#kt_login_step_01").removeAttr('disabled');
+                        $("#kt_login_step_01").removeAttr('data-kt-indicator');
+                        $('#email_val').text('Invalid email !');
+                    }
+                }else{
+                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
+                }
+            }  
         });
 
         $("#kt_login_step_02").on('click', function() {
