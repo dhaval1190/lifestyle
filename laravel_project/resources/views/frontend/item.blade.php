@@ -3000,6 +3000,17 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-12">
+                                    <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                    @error('g-recaptcha-response')
+                                    <span class="invalid-tooltip">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                    <div id="re_captcha_error"></div>
+                                </div>
+                            </div>
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <button type="submit" id="submit" class="btn btn-primary py-2 px-4 text-white rounded">
@@ -3013,6 +3024,7 @@
                                         @endif --}}
                                 </div>
                             </div>
+                            <input type="hidden" name="user_bio" id="user_bio">
                         </form>
                     </div>
                 </div>
@@ -3743,6 +3755,9 @@
                                 }
                                 if (response.msg.item_share_email_note) {
                                     $('.profile_note_error').text(response.msg.item_share_email_note)
+                                }
+                                if (key == 'g-recaptcha-response') {
+                                    $('#re_captcha_error').append('<p class="profile_note_error error_color" role="alert">'+val[0]+'</p>')
                                 }
                                 $(':input[type="submit"]').prop('disabled', false);
 
