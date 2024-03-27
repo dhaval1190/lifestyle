@@ -137,6 +137,16 @@
                                 <p class="check_agreement_error error_color" role="alert"></p>
                         </div>
 
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                <p class="g-recaptcha_error error_color" role="alert"></p>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="user_bio" id="user_bio">
+
                         <!-- Start Google reCAPTCHA version 2 -->
                         @if($site_global_settings->setting_site_recaptcha_sign_up_enable == \App\Setting::SITE_RECAPTCHA_SIGN_UP_ENABLE)
                             <div class="row form-group">
@@ -375,6 +385,7 @@
                             if(response.status == 'error'){
                                 // console.log(response)
                                 $('.please_wait').text('');
+                                $('.g-recaptcha_error').text('');
                                 $.each(response.msg,function(key,val){                                    
                                     if(response.msg.name){
                                         $('.name_error').text(response.msg.name)
@@ -387,7 +398,10 @@
                                     }
                                     if(response.msg.check_agreement){
                                         $('.check_agreement_error').text(response.msg.check_agreement)
-                                    }                                    
+                                    }
+                                    if(key == 'g-recaptcha-response'){
+                                        $('.g-recaptcha_error').text(val)
+                                    }                          
                                     $(':input[type="submit"]').prop('disabled', false);
                                     
                                 });
