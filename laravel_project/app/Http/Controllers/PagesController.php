@@ -9122,11 +9122,13 @@ class PagesController extends Controller
                         'item_share_email_from_email' => 'required|email|max:255',
                         'item_share_email_to_email' => 'required|email|max:255',
                         'item_share_email_note' => 'required|string|max:255',
+                        'g-recaptcha-response' => 'required',
                         ],[
                         'item_share_email_name.required' => 'Name field is required',
                         'item_share_email_from_email.required' => 'From email is required',
                         'item_share_email_to_email.required' => 'To email is required',
                         'item_share_email_note.required' => 'Note field is required',
+                        'g-recaptcha-response.required' => 'Re-Captcha field is required',
                     ]);
                 
                 if($validator->passes()){
@@ -9167,13 +9169,15 @@ class PagesController extends Controller
                             'coach_article' => 'Article'
                         ];
                         try{
-                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
-                                $messages->to($email_to);
-                                $messages->subject($email_subject);
-                            });
+                            if($request->user_bio == null){
+                                Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
+                                    $messages->to($email_to);
+                                    $messages->subject($email_subject);
+                                });
 
-                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                            \Session::flash('flash_type', 'success');
+                                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                \Session::flash('flash_type', 'success');
+                            }
                         }
                         catch(\Exception $e){
                             Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
@@ -9191,20 +9195,22 @@ class PagesController extends Controller
                         try
                         {
                             // to admin
-                            Mail::to($email_to)->send(
-                                new Notification(
-                                    $email_subject,
-                                    $email_to,
-                                    null,
-                                    $email_notify_message,
-                                    __('frontend.item.view-listing-item'),
-                                    'success',
-                                    route('page.item', $item->item_slug)
-                                )
-                            );
-    
-                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                            \Session::flash('flash_type', 'success');
+                            if($request->user_bio == null){
+                                Mail::to($email_to)->send(
+                                    new Notification(
+                                        $email_subject,
+                                        $email_to,
+                                        null,
+                                        $email_notify_message,
+                                        __('frontend.item.view-listing-item'),
+                                        'success',
+                                        route('page.item', $item->item_slug)
+                                    )
+                                );
+        
+                                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                \Session::flash('flash_type', 'success');
+                            }
     
                         }
                         catch (\Exception $e)
@@ -9275,6 +9281,7 @@ class PagesController extends Controller
                     'profile_share_email_from_email' => 'required|email|max:255',
                     'profile_share_email_to_email' => 'required|email|max:255',
                     'profile_share_email_note' => 'required|string|max:255',
+                    'g-recaptcha-response' => 'required'
                 ],[
                     'profile_share_email_name.required' => 'Name is required',
                     'profile_share_email_name.regex'         =>  "Invalid name",
@@ -9285,7 +9292,8 @@ class PagesController extends Controller
                     'profile_share_email_to_email.required'=> 'To email is required',            
                     'profile_share_email_to_email.regex'         =>  "Invalid email format", 
                     'profile_share_email_to_email.email'       => "Invalid email format",
-                    'profile_share_email_note.required' => 'Note field is required'
+                    'profile_share_email_note.required' => 'Note field is required',
+                    'g-recaptcha-response.required' => 'Re-Captcha field is required'
                 ]);
 
                 if($validator->passes()){
@@ -9354,13 +9362,16 @@ class PagesController extends Controller
                             'coach_article' => 'Coach'
                         ];
                         try{
-                            Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
-                                $messages->to($email_to);
-                                $messages->subject($email_subject);
-                            });
 
-                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                            \Session::flash('flash_type', 'success');
+                            if($request->user_about == null || empty($request->user_about)){
+                                Mail::send('frontend.email.profile_share_email_template',$email_notify_message,function($messages) use ($email_to,$email_subject){
+                                    $messages->to($email_to);
+                                    $messages->subject($email_subject);
+                                });
+
+                                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                \Session::flash('flash_type', 'success');
+                            }
                         }
                         catch(\Exception $e){
                             Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
@@ -9384,20 +9395,22 @@ class PagesController extends Controller
                         try
                         {
                             // to admin
-                            Mail::to($email_to)->send(
-                                new Notification(
-                                    $email_subject,
-                                    $email_to,
-                                    null,
-                                    $email_notify_message,
-                                    __('frontend.item.view-listing'),
-                                    'success',
-                                    route('page.profile', $profileId)
-                                )
-                            );
+                            if($request->user_about == null || empty($request->user_about)){
+                                Mail::to($email_to)->send(
+                                    new Notification(
+                                        $email_subject,
+                                        $email_to,
+                                        null,
+                                        $email_notify_message,
+                                        __('frontend.item.view-listing'),
+                                        'success',
+                                        route('page.profile', $profileId)
+                                    )
+                                );
 
-                            \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                            \Session::flash('flash_type', 'success');    
+                                \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                                \Session::flash('flash_type', 'success');
+                            }
                         }
                         catch (\Exception $e)
                         {
@@ -9427,6 +9440,22 @@ class PagesController extends Controller
         // {
         //     abort(404);
         // }
+
+    }
+
+    public function checkRecaptchaValidation(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'g-recaptcha-response' => 'required',
+        ],[
+            'g-recaptcha-response.required' => 'Re-Captcha field is required',
+        ]);
+
+        if($validator->passes()){
+            return response()->json(['status'=>"success"]);
+        }else{
+            return response()->json(['status'=>"error",'msg'=>$validator->errors()]);
+        }
 
     }
 
@@ -11390,6 +11419,7 @@ class PagesController extends Controller
                 'item_share_email_name' => 'required|regex:/^[\pL\s]+$/u|max:30',
                 'item_share_email_to_email' => 'required|email|max:255',
                 'item_share_email_note' => 'required|string|max:255',
+                'g-recaptcha-response' => 'required'
             ],[
                 'item_share_email_name.required' => 'Name is required',
                 'item_share_email_name.regex'         =>  "Invalid name",
@@ -11397,7 +11427,8 @@ class PagesController extends Controller
                 'item_share_email_to_email.required'=> 'Email is required',            
                 'item_share_email_to_email.regex'         =>  "Invalid email format", 
                 'item_share_email_to_email.email'       => "Invalid email format",
-                'item_share_email_note.required'    => 'Note field is required'
+                'item_share_email_note.required'    => 'Note field is required',
+                'g-recaptcha-response.required' => 'Re-Captcha field is required'
             ]);
 
             if($validator->passes()){
@@ -11446,20 +11477,22 @@ class PagesController extends Controller
             try
             {
                 // to admin
-                Mail::to($email_to)->send(
-                    new Notification(
-                        $email_subject,
-                        $email_to,
-                        null,
-                        $email_notify_message,
-                        __('frontend.header.register'),
-                        'success',
-                        route('register', 'ref='.$referral_link)
-                    )
-                );
+                if($request->user_bio == null || empty($request->user_bio)){
+                    Mail::to($email_to)->send(
+                        new Notification(
+                            $email_subject,
+                            $email_to,
+                            null,
+                            $email_notify_message,
+                            __('frontend.header.register'),
+                            'success',
+                            route('register', 'ref='.$referral_link)
+                        )
+                    );
 
-                \Session::flash('flash_message', __('frontend.item.send-email-success'));
-                \Session::flash('flash_type', 'success');
+                    \Session::flash('flash_message', __('frontend.item.send-email-success'));
+                    \Session::flash('flash_type', 'success');
+                }
 
             }
             catch (\Exception $e)

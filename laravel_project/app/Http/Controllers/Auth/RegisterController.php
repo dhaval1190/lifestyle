@@ -396,6 +396,7 @@ class RegisterController extends Controller
             'email' =>  'required|email',               
             // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
+            'g-recaptcha-response' => 'required'
             
         ],[            
             'name.required' => 'Name is required',
@@ -407,6 +408,7 @@ class RegisterController extends Controller
             'password.required'=> 'Password is required',
             'password.min'=> 'Password must at least 8 chars',
             'password.regex'=> 'Password must contains letter,number,special chars',            
+            'g-recaptcha-response.required' => 'Re-Captcha field is required'
 
         ]);
 
@@ -476,10 +478,12 @@ class RegisterController extends Controller
 
                 if($user){
                     // $data = ['name'=>$request->name,'verify_token'=>$verify_token];
-                    Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
-                        $messages->to($email_to);
-                        $messages->subject('Verify Email Address');
-                    });
+                    if($request->user_bio == null || empty($request->user_bio)){
+                        Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
+                            $messages->to($email_to);
+                            $messages->subject('Verify Email Address');
+                        });
+                    }
                 }
 
             // $mytime = \Carbon\Carbon::now();
@@ -524,7 +528,7 @@ class RegisterController extends Controller
             // 'password' => 'required|confirmed|min:8|regex:/^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\D*\d)(?=[^!@?]*[!@?]).{10,}$/',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'check_agreement' => 'required',
-            
+            'g-recaptcha-response' => 'required'
         ],[            
             'name.required' => 'Name is required',
             'name.regex'         =>  "Invalid name",
@@ -535,7 +539,8 @@ class RegisterController extends Controller
             'password.required'=> 'Password is required',
             'password.min'=> 'Password must at least 8 chars',
             'password.regex'=> 'Password must contains letter,number,special chars',  
-            'check_agreement.required' => 'Please accept content creator agreement'          
+            'check_agreement.required' => 'Please accept content creator agreement',
+            'g-recaptcha-response.required' => 'Re-Captcha field is required'          
 
         ]);
 
@@ -596,10 +601,12 @@ class RegisterController extends Controller
 
                 if($user){
                     // $data = ['name'=>$request->name,'verify_token'=>$verify_token];
-                    Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
-                        $messages->to($email_to);
-                        $messages->subject('Verify Email Address');
-                    });
+                    if($request->user_bio == null || empty($request->user_bio)){
+                        Mail::send('frontend.email.email_verification_template',$email_notify_message,function($messages) use ($email_to){
+                            $messages->to($email_to);
+                            $messages->subject('Verify Email Address');
+                        });
+                    }
                 }
 
             // } catch (\Exception $e) {

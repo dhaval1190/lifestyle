@@ -3292,11 +3292,11 @@ class ItemController extends Controller
                 $validator = Validator::make($request->all(),[
                     'rating' => 'required|numeric|max:5',   
                     'body' => 'required|max:65535',
-                   
+                    'g-recaptcha-response' => 'required'
                 ],[
                     'rating.required' => 'Rating field is required',
                     'body.required' => 'Description is required',
-                   
+                    'g-recaptcha-response.required' => 'Re-Captcha field is required'
                 ]);
                 if($validator->passes()){
                 

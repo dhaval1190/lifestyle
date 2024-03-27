@@ -394,7 +394,7 @@
                             <span id="share_modal_">Shared SuccessFull</span>
                         </div>
                         <div class="alert alert-danger alert-dismissible fade show col-6" id="contactForm_error_div" role="alert" style="display:none;margin:4px;">
-                            <span id="contactForm_">Contact To This Coach SuccessFull</span>
+                            <span id="contactForm_">Failed to Contact This Coach</span>
                         </div>
                         @if(!empty($user_detail['user_about']))
                         <div class="upper_logo_info">
@@ -898,6 +898,16 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                        <p class="g_recaptcha_error error_color pt-1">
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="user_about" id="user_about">
+
                                 <div class="form-row">
                                     <div class="col-md-12">
                                         <button type="submit"class="btn btn-primary py-2 px-4 text-white rounded">
@@ -1037,6 +1047,13 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                        <p class="g-recaptcha_errors error_color" role="alert"></p>
                                     </div>
                                 </div>
                                 <!-- <div class="form-row mb-3">
@@ -1893,6 +1910,16 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                            <p class="g-recaptcha_error error_color" role="alert"></p>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="user_bio" id="user_bio">
+
                                     <div class="form-row">
                                         <div class="col-md-12">
                                             <button type="submit" class="btn btn-primary py-2 px-4 text-white rounded"
@@ -2134,6 +2161,7 @@
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)	
                             $('.please_wait').text('');
+                            $('.g-recaptcha_errors').text('');
                             $('#register_error_div').show();
 
                             $.each(response.msg, function(key, val) {
@@ -2146,6 +2174,9 @@
                                     $('.profile_review_body_error').text(response.msg
                                         .body)
                                 }
+                                if(key == 'g-recaptcha-response'){
+                                    $('.g-recaptcha_errors').text(val)
+                                }  
                                 $(':input[type="submit"]').prop('disabled', false);
                             });
                         }
@@ -2251,10 +2282,10 @@
                                     $('.note_error').text(response.msg
                                         .item_contact_email_note)
                                 }
-                                if (key =='g-recaptcha-response') {
-                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+val[0]+'</li></ul>')
+                                // if (key =='g-recaptcha-response') {
+                                //     $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+val[0]+'</li></ul>')
                                     
-                                }
+                                // }
                                 $(':input[type="submit"]').prop('disabled', false);
 
                             });
@@ -2347,6 +2378,7 @@
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)
                             $('.please_wait').text('');
+                            $('.g_recaptcha_error').text('');
                             $('#share_modal_error_div').show();
 
                             $.each(response.msg, function(key, val) {
@@ -2366,6 +2398,9 @@
                                     $('.profile_note_error').text(response.msg
                                         .profile_share_email_note)
                                 }
+                                if(key == 'g-recaptcha-response'){
+                                    $('.g_recaptcha_error').text(val)
+                                }  
                                 $(':input[type="submit"]').prop('disabled', false);
 
                             });
@@ -2451,6 +2486,7 @@
                         if (response.status == 'error') {
                             // console.log(response.msg.item_contact_email_note)
                             $('.please_wait').text('');
+                            $('.g-recaptcha_error').text('');
                             $.each(response.msg, function(key, val) {
                                 if (response.msg.item_share_email_name) {
                                     $('.profile_referal_name_error').text(response.msg
@@ -2464,6 +2500,10 @@
                                     $('.profile_referal_note_error').text(response.msg
                                         .item_share_email_note)
                                 }
+                                if(key == 'g-recaptcha-response'){
+                                    $('.g-recaptcha_error').text(val)
+                                }  
+
                                 $(':input[type="submit"]').prop('disabled', false);
 
                             });
