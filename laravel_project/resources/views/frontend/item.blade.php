@@ -4215,7 +4215,11 @@
             e.preventDefault();
             $('#email_val').text('');
             if ($('#contactFormModal').valid()) {
-                var captcha = $('textarea#g-recaptcha-response').val();
+                // var captcha = $('textarea#g-recaptcha-response').val();
+                var captcha = "";
+                $("form#contactFormModal textarea[name=g-recaptcha-response]").each(function(){
+                    captcha = $(this).val();
+                });
                 if(captcha != ''){
                     $("#kt_login_step_01").attr('disabled', true);
                     $("#kt_login_step_01").attr('data-kt-indicator', 'on');
