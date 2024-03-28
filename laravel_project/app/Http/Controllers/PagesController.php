@@ -9022,32 +9022,32 @@ class PagesController extends Controller
 
             try
             {
-                Mail::to($email_admin)->send(
-                    new Notification(
-                        $email_subject,
-                        $email_admin->name,
-                        null,
-                        $email_notify_message_admin,
-                        $email_notify_action_text,
-                        'success',
-                        route('admin.item-leads.index')
-                    )
-                );
+                // Mail::to($email_admin)->send(
+                //     new Notification(
+                //         $email_subject,
+                //         $email_admin->name,
+                //         null,
+                //         $email_notify_message_admin,
+                //         $email_notify_action_text,
+                //         'success',
+                //         route('admin.item-leads.index')
+                //     )
+                // );
 
-                if($email_user)
-                {
-                    Mail::to($email_user)->send(
-                        new Notification(
-                            $email_subject,
-                            $email_user->name,
-                            null,
-                            $email_notify_message_user,
-                            $email_notify_action_text,
-                            'success',
-                            route('user.item-leads.index')
-                        )
-                    );
-                }
+                // if($email_user)
+                // {
+                //     Mail::to($email_user)->send(
+                //         new Notification(
+                //             $email_subject,
+                //             $email_user->name,
+                //             null,
+                //             $email_notify_message_user,
+                //             $email_notify_action_text,
+                //             'success',
+                //             route('user.item-leads.index')
+                //         )
+                //     );
+                // }
             }
             catch (\Exception $e)
             {
@@ -9976,19 +9976,19 @@ class PagesController extends Controller
                             try
                             {
                                 // to admin
-                                Mail::to($email_to)->send(
-                                    new Notification(
-                                        $email_subject,
-                                        $email_to,
-                                        null,
-                                        $email_notify_message,
-                                        'View',
-                                        'success',
-                                        route('user.contact-leads.edit',['contact_lead'=>$contact_data_id]),
-                                        // null,
-                                        // null,
-                                    )
-                                );
+                                // Mail::to($email_to)->send(
+                                //     new Notification(
+                                //         $email_subject,
+                                //         $email_to,
+                                //         null,
+                                //         $email_notify_message,
+                                //         'View',
+                                //         'success',
+                                //         route('user.contact-leads.edit',['contact_lead'=>$contact_data_id]),
+                                //         // null,
+                                //         // null,
+                                //     )
+                                // );
 
                                 \Session::flash('flash_message', __('frontend.item.send-email-success'));
                                 \Session::flash('flash_type', 'success');

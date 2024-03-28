@@ -2862,7 +2862,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{ __('frontend.item.share-listing') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3031,7 +3031,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
             </div>
         </div>
     </div>
@@ -3044,7 +3044,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{ __('Contact This Coach') }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3293,7 +3293,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
             </div>
         </div>
     </div>
@@ -3308,7 +3308,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{ __('categories.all-cat') . " - " . $item->item_title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3326,7 +3326,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
             </div>
         </div>
     </div>
@@ -3340,7 +3340,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ __('item_hour.modal-item-hour-exceptions-title')  }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3385,7 +3385,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('importer_csv.error-notify-modal-close') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('importer_csv.error-notify-modal-close') }}</button>
             </div>
         </div>
     </div>
@@ -3399,7 +3399,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{ __('theme_directory_hub.listing.qr-code')  }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3411,7 +3411,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('importer_csv.error-notify-modal-close') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('importer_csv.error-notify-modal-close') }}</button>
             </div>
         </div>
     </div>
@@ -3423,7 +3423,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">{{ __('rating_summary.contact') . ' ' . $item->item_title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -3515,7 +3515,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary rounded" data-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
+                <button type="button" class="btn btn-secondary rounded" data-bs-dismiss="modal">{{ __('backend.shared.cancel') }}</button>
             </div>
         </div>
     </div>
