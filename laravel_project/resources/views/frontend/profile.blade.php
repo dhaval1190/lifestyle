@@ -3183,7 +3183,7 @@
                         $('#email_val').text('Invalid email !');
                     }
                 }else{
-                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
+                    $('#re_captcha_error').html('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
                 }
             }  
         });

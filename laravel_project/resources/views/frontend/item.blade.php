@@ -3207,6 +3207,7 @@
                                         <p class="question6_error error_color_modal" role="alert"></p>
                                         <p class="question6_desc_char_count count_error"></p>
                                         <div class="g-recaptcha" data-sitekey="6LeXpRIpAAAAANR5q7jXCepgrSKbM91QWgLumZXc"></div>
+                                        <div id="re_captcha_error1"></div>
 
                                     </div>
                                 </div>                            
@@ -3216,7 +3217,7 @@
                                             <button type="button" class="previous btn btn-primary float-left mt-2">&lt; Previous</button>                                        
                                             <button type="button" class="next btn btn-primary float-right mt-2">Next &gt;</button>
 
-                                            <button type="submit" id="kt_login_step_01"class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2">
+                                            <button type="submit" id="kt_login_step_01" class="btn btn-primary py-2 px-4 text-white rounded float-right mt-2">
                                                 {{ __('frontend.item.send-email') }}
                                             </button>
                                         {{-- @endif --}}
@@ -4210,7 +4211,8 @@
             }
         });
 
-        $("#kt_login_step_01").on('click', function() {
+        $("#kt_login_step_01").on('click', function(e) {
+            e.preventDefault();
             $('#email_val').text('');
             if ($('#contactFormModal').valid()) {
                 var captcha = $('textarea#g-recaptcha-response').val();
@@ -4285,7 +4287,7 @@
                         $('#email_val').text('Invalid email !');
                     }
                 }else{
-                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
+                    $('#re_captcha_error1').html('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
                 }
             }
         });
