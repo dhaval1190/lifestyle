@@ -2251,10 +2251,10 @@
                                     $('.note_error').text(response.msg
                                         .item_contact_email_note)
                                 }
-                                if (key =='g-recaptcha-response') {
-                                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+val[0]+'</li></ul>')
+                                // if (key =='g-recaptcha-response') {
+                                //     $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false"><li class="parsley-required">'+val[0]+'</li></ul>')
                                     
-                                }
+                                // }
                                 $(':input[type="submit"]').prop('disabled', false);
 
                             });
@@ -3143,7 +3143,7 @@
                         $('#email_val').text('Invalid email !');
                     }
                 }else{
-                    $('#re_captcha_error').append('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
+                    $('#re_captcha_error').html('<ul class="parsley-errors-list" aria-hidden="false">Re-Captcha field is required</ul>') 
                 }
             }  
         });
